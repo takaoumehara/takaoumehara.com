@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Work — Takao Umehara</title>
+  <meta name="description" content="Selected product design and innovation work by Takao Umehara — from EdTech platforms reaching millions of students to global brand systems for Verizon, T-Mobile, and Coca-Cola.">
+  <meta property="og:title" content="Work — Takao Umehara">
+  <meta property="og:description" content="Selected product design and innovation work — EdTech, telecom, Web3, and brand systems for Verizon, T-Mobile, and Coca-Cola.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Geist Sans (Vercel) ─── */
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      /* 5-3C'02 Rich palette */
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      /* Rich variant vars */
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.02em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.is-open { display: flex; }
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.is-active { color: var(--ink); }
+
+    /* ─── Page header ─── */
+    .page-header {
+      padding: 64px 32px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(38px, 5vw, 60px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 0.92;
+    }
+
+    .page-count {
+      font-size: 13px;
+      color: var(--ink-dim);
+      letter-spacing: 0.01em;
+    }
+
+    /* ─── Filter tabs ─── */
+    .filter-bar {
+      padding: 0 32px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 28px;
+    }
+
+    .filter-btn {
+      appearance: none;
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 9px 14px;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      cursor: pointer;
+      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
+    }
+
+    .filter-btn:hover {
+      color: var(--ink);
+      border-color: rgba(18,18,18,0.24);
+    }
+
+    .filter-btn.is-active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    /* ─── Grid ─── */
+    .work-grid-wrap {
+      padding: 40px 32px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2px;
+    }
+
+    /* ─── Work card (5-3C'02 Rich) ─── */
+    .work-card {
+      position: relative;
+      display: grid;
+      grid-template-rows: 260px auto auto;
+      overflow: hidden;
+      isolation: isolate;
+      outline: none;
+      touch-action: manipulation;
+      cursor: pointer;
+      background: transparent;
+      transition: opacity 280ms ease, transform 280ms ease;
+    }
+
+    .work-card[data-hidden="true"] {
+      opacity: 0;
+      transform: scale(0.97);
+      pointer-events: none;
+      position: absolute;
+      visibility: hidden;
+    }
+
+    .work-card:focus-visible {
+      box-shadow: 0 0 0 2px rgba(18,18,18,0.2) inset;
+    }
+
+    .card-image {
+      position: relative;
+      overflow: hidden;
+      background: #efebe6;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      /* Rich gradient — coloured glass */
+      background:
+        radial-gradient(circle at 18% 24%, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.12) 18%, transparent 42%),
+        radial-gradient(circle at 76% 68%, rgba(255,255,255,0.18) 0%, transparent 34%),
+        linear-gradient(126deg,
+          hsla(196 92% 74% / 0.94) 0%,
+          hsla(226 94% 60% / 0.96) 22%,
+          hsla(268 88% 74% / 0.96) 46%,
+          hsla(322 86% 74% / 0.94) 72%,
+          hsla(38 96% 78% / 0.90) 100%);
+      box-shadow:
+        26px 0 56px rgba(255,255,255,0.14),
+        0 0 38px rgba(133,145,255,0.10);
+      width: var(--image-hover-width, 174%);
+      inset: 0 auto 0 0;
+      transform: translate3d(var(--image-hover-from, -96%), 0, 0);
+      transition:
+        opacity 320ms ease,
+        transform var(--image-hover-enter-ms, 1260ms) cubic-bezier(0.22, 0.84, 0.22, 1),
+        background 180ms ease;
+    }
+
+    .card-image.hover-active::before {
+      opacity: var(--image-hover-opacity, 0.985);
+      transform: translate3d(var(--image-hover-to, -4%), 0, 0);
+    }
+
+    .card-image.hover-leaving::before {
+      opacity: 0;
+      animation: gradient-image-leave var(--image-hover-leave-ms, 920ms) cubic-bezier(0.22, 0.84, 0.22, 1) forwards;
+    }
+
+    .card-image > .rr,
+    .card-image > .rr > .inner {
+      height: 100%;
+    }
+
+    .card-img-bg {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center top;
+      transition: transform 640ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .work-card.is-hovering .card-img-bg {
+      transform: scale(1.025);
+    }
+
+    /* placeholder card */
+    .card-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e8e4df 0%, #d8d2ca 100%);
+    }
+
+    .placeholder-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(18,18,18,0.28);
+    }
+
+    /* ─── AI banner (shown on "AI" filter) ─── */
+    .work-card.ai-banner {
+      grid-column: 1 / -1;
+      display: block;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      overflow: hidden;
+      transition: border-color 240ms ease, box-shadow 240ms ease;
+    }
+
+    .work-card.ai-banner::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      z-index: 2;
+      background: linear-gradient(90deg, var(--t1) 0%, var(--t2) 34%, var(--t3) 68%, var(--t4) 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 460ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .work-card.ai-banner:hover::before { transform: scaleX(1); }
+    .work-card.ai-banner:hover {
+      border-color: rgba(18,18,18,0.16);
+      box-shadow: var(--shadow);
+    }
+
+    .ai-banner-inner {
+      position: relative;
+      padding: 46px 40px 42px;
+      display: grid;
+      gap: 14px;
+      max-width: 840px;
+    }
+
+    .ai-banner-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    .ai-banner-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.0;
+      color: var(--ink);
+    }
+
+    .ai-banner-desc {
+      font-size: 16px;
+      line-height: 1.66;
+      color: var(--ink-mid);
+    }
+
+    .ai-banner-cta {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      transition: color 160ms ease;
+      margin-top: 4px;
+    }
+
+    .work-card.ai-banner:hover .ai-banner-cta { color: var(--ink); }
+
+    .card-body {
+      padding: 18px 16px 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px 20px;
+    }
+
+    .card-title {
+      font-size: clamp(22px, 2.2vw, 28px);
+      line-height: 1.02;
+      letter-spacing: -0.028em;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      line-height: 1.58;
+      color: var(--ink-mid);
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 6px 9px;
+      border: 1px solid rgba(18,18,18,0.10);
+      background: transparent;
+    }
+
+    /* ─── press-frame ─── */
+    .press-frame {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .work-card.is-pressing .press-frame,
+    .work-card.is-held .press-frame {
+      opacity: 1;
+      animation: press-frame var(--press-ms) cubic-bezier(0.24, 0.86, 0.24, 1) forwards;
+      background:
+        linear-gradient(90deg, var(--a1), var(--a2)) 0 0 / 0 1px no-repeat,
+        linear-gradient(90deg, var(--a2), var(--a3)) 100% 0 / 1px 0 no-repeat,
+        linear-gradient(90deg, var(--a3), var(--a4)) 100% 100% / 0 1px no-repeat,
+        linear-gradient(90deg, var(--a4), var(--a1)) 0 100% / 1px 0 no-repeat;
+    }
+
+    /* ─── text-reactive ─── */
+    .text-reactive { transition: color 180ms ease; }
+
+    .text-reactive.is-hovered {
+      background-image: linear-gradient(var(--hover-angle, var(--angle)), #121212 0%, var(--t1) 24%, var(--t2) 46%, var(--t3) 70%, var(--t4) 92%, #121212 100%);
+      background-size: 240% 100%;
+      background-position: var(--hover-shift, 0%) 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: text-flow 1s ease forwards;
+    }
+
+    .text-reactive.is-exiting {
+      background-image: linear-gradient(var(--hover-angle, var(--angle)), #121212 0%, var(--t1) 24%, var(--t2) 46%, var(--t3) 70%, var(--t4) 92%, #121212 100%);
+      background-size: 240% 100%;
+      background-position: var(--hover-shift, 0%) 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: text-flow-out 560ms cubic-bezier(0.22, 0.84, 0.22, 1) forwards;
+    }
+
+    /* ─── rr reveal ─── */
+    .rr {
+      position: relative;
+      overflow: hidden;
+      --delay: 0ms;
+      --dur: 900ms;
+      --from-x: -7%;
+      --from-y: 0%;
+    }
+
+    .rr > .cover {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      width: var(--bar-width, 70%);
+      inset: 0 auto 0 0;
+      background: linear-gradient(var(--angle), var(--a1) 0%, var(--a2) 32%, var(--a3) 66%, var(--a4) 100%);
+      box-shadow: 20px 0 30px rgba(255,255,255,0.08);
+      transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%));
+      will-change: transform, opacity;
+    }
+
+    .rr > .inner {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translate3d(var(--from-x), var(--from-y), 0);
+    }
+
+    .rr.is-on > .cover {
+      animation: gradient-band-sweep var(--dur) cubic-bezier(0.22, 0.84, 0.22, 1) var(--delay) forwards;
+    }
+
+    .rr.is-on > .inner {
+      animation: mask-reveal var(--dur) cubic-bezier(0.22, 0.84, 0.22, 1) var(--delay) forwards;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes gradient-band-sweep {
+      0%   { transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%)); opacity: 0; }
+      8%   { transform: translateX(0); opacity: 0.94; }
+      24%  { transform: translateX(0); opacity: 0.94; }
+      100% { transform: translateX(232%); opacity: 0.92; }
+    }
+
+    @keyframes mask-reveal {
+      0%   { clip-path: inset(0 100% 0 0); opacity: 0; transform: translate3d(var(--from-x), var(--from-y), 0); }
+      14%  { clip-path: inset(0 100% 0 0); opacity: 0; transform: translate3d(var(--from-x), var(--from-y), 0); }
+      30%  { opacity: 0.24; }
+      100% { clip-path: inset(0 0 0 0); opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+
+    @keyframes gradient-image-leave {
+      0%   { transform: translate3d(-4%, 0, 0); opacity: 0.9; }
+      100% { transform: translate3d(124%, 0, 0); opacity: 0; }
+    }
+
+    @keyframes press-frame {
+      0%   { background-size: 0 1px, 1px 0, 0 1px, 1px 0; opacity: 0; }
+      18%  { opacity: 1; }
+      100% { background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%; opacity: 1; }
+    }
+
+    @keyframes text-flow {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    @keyframes text-flow-out {
+      0%   { background-position: var(--hover-shift, 50%) 50%; opacity: 1; }
+      100% { background-position: 140% 50%; opacity: 1; }
+    }
+
+    @keyframes page-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header {
+      animation: page-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 60ms both;
+    }
+
+    .filter-bar {
+      animation: page-in 500ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both;
+    }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-radius: 6px 0 0 6px;
+    }
+    .lang-btn {
+      appearance: none; background: none; border: none;
+      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      color: var(--ink-dim); padding: 0;
+      transition: color 160ms ease;
+    }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+
+    /* bilingual content */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* JP typography overrides */
+    html.lang-jp body { font-family: var(--ff-jp); }
+    html.lang-jp .card-title {
+      line-height: 1.14;
+      letter-spacing: -0.02em;
+    }
+    html.lang-jp .ai-banner-title {
+      line-height: 1.24;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .work-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .work-grid { grid-template-columns: 1fr; }
+      .site-nav, .page-header, .filter-bar, .work-grid-wrap {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .ai-banner-inner { padding: 32px 24px 30px; }
+    }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .rr > .inner  { animation: none !important; opacity: 1 !important; clip-path: inset(0 0 0 0) !important; transform: none !important; }
+      .rr > .cover  { animation: none !important; opacity: 0 !important; }
+      .card-image::before { animation: none !important; transition: none !important; }
+      .page-header, .filter-bar { animation: none !important; opacity: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="work.html" class="is-active" aria-current="page">Work</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Lang Switch ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Header ── -->
+  <div class="page-header">
+    <div>
+      <div style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:12px;">Selected Work</div>
+      <h1 class="page-title">All projects</h1>
+    </div>
+    <div class="page-count" id="count-label">19 projects</div>
+  </div>
+
+  <!-- ── Filters ── -->
+  <div class="filter-bar">
+    <button class="filter-btn is-active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="product">Product Design</button>
+    <button class="filter-btn" data-filter="brand">Brand &amp; Visual</button>
+    <button class="filter-btn" data-filter="innovation">Innovation</button>
+    <button class="filter-btn" data-filter="personal">Personal</button>
+    <button class="filter-btn" data-filter="ai">AI</button>
+  </div>
+
+  <!-- ── Grid ── -->
+  <div class="work-grid-wrap">
+    <div class="work-grid" id="work-grid">
+
+      <!-- AI banner — shown only on the "AI" filter -->
+      <article class="work-card ai-banner" tabindex="0" data-href="ai-products.html" data-cat="ai" data-hidden="true">
+        <div class="ai-banner-inner">
+          <div class="ai-banner-eyebrow">Creativity Is Everywhere LLC</div>
+          <h2 class="ai-banner-title">
+            <span class="t-en">12 AI products — see the full lab</span>
+            <span class="t-jp">12 の AI プロダクト — ラボの全貌へ</span>
+          </h2>
+          <p class="ai-banner-desc">
+            <span class="t-en">Beyond client design work, I build and ship AI-native products — developer tools, MCP servers, and web experiments — through Creativity Is Everywhere.</span>
+            <span class="t-jp is-block">クライアントのデザインワークの枠を越えて、Creativity Is Everywhere を通じて AI ネイティブなプロダクトを開発・公開しています。開発者向けツール、MCP サーバー、ウェブ実験まで。</span>
+          </p>
+          <span class="ai-banner-cta">
+            <span class="t-en">Explore AI Products →</span>
+            <span class="t-jp">AIプロダクトを見る →</span>
+          </span>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- Product Design -->
+      <article class="work-card" tabindex="0" data-href="projects/ela-quests.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="980">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/Quest_teaser_tr.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="540">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">EdTech</span><span class="pill text-reactive">Product
+                  Design</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="740">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Amplify ELA Quests</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="880">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Immersive AR-powered learning modules reaching millions of students
+                across the US.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="620">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Amplify Education</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="640">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead Designer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/verizon-ai-agents.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="990">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/verizon-ai-agents/hero-workflow-agents.jpg'); background-position:center center;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="545">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Agentic UX</span><span class="pill text-reactive">AI Workflow</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="745">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">AI Workflow Transformation</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="885">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Built purpose-specific AI agents that shifted 42 designers from tactical executors to strategic pilots across 6 Verizon brands.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="625">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Verizon Value</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="645">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead Product Designer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/tmobile.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1000">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/M−Mobile_teaser2.jpg')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="545">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Retail CX</span><span
+                  class="pill text-reactive">Multi-touchpoint</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="745">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">T-Mobile BOPIS</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="885">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Integrated kiosk, staff app, and voice AI for seamless retail pickup.
+                Selected as preferred innovation partner.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="625">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">T-Mobile</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="645">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead UX</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/cli-studios.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="990">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/cli-studios/CLI_UI_Screens.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="542">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">App Design</span><span
+                  class="pill text-reactive">Design System</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="742">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">CLI Studios App</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="882">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Full mobile redesign + design system. Reduced future dev time by 25%.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="622">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">CLI Studios</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="642">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead Designer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/web3-wallet.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="985">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/EventStack-Mobile.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="543">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Web3</span><span
+                  class="pill text-reactive">Award</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="743">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Web3 Custodial Wallet</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="883">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">NFT-enhanced event management wallet. 2023 Merit Gold Award —
+                Metaverse &amp; AI.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="623">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead Designer</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="643">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">2023</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/hummingbird.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="975">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/Product_Education-HummingBird.jpeg')">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="541">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">EdTech</span><span class="pill text-reactive">UI
+                  Design</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="741">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Hummingbird</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="881">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Real-time student feedback app. Boosted classroom efficiency by 40%.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="621">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Amplify Education</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="641">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead Designer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/credit-card-portal.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="970">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg"
+                style="background-image:url('assets/credit-card-portal/nobrand_Bankcard.001.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="540">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">FinTech</span><span
+                  class="pill text-reactive">UX/UI</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="740">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Credit Card Portal</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="880">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">105 screens, 10 user flows, 125+ components for First PREMIER Bank's
+                portal.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="620">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">First PREMIER Bank</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="640">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead Designer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/ux-audit.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="965">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/image-asset.jpeg')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="539">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Insurance</span><span class="pill text-reactive">UX
+                  Audit</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="739">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">USAA Life Insurance</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="879">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Trauma-informed heuristic evaluation. 40% navigation improvement, 25%
+                dropout reduction.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="619">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">USAA</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="639">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead UX</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/edutrack.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="960">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/LessonPlanner_Hero_(1).png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="538">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">EdTech</span><span
+                  class="pill text-reactive">iPad</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="738">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">EduTrack</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="878">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Digital lesson planner for educators — intuitive scheduling and
+                deadline tracking.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="618">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead Designer</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="638">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">2024</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/odell-education.html" data-cat="brand product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="960">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/odell-education/Books_Gradebooks_Grade9-sm.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="538">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">EdTech</span><span
+                  class="pill text-reactive">Branding</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="738">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Odell Education</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="878">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Brand identity and program website for a high school literacy
+                curriculum — a grade 9–12 visual system.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="618">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Brand &amp; Product Design</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="638">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Odell Education</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/menlomath.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="945">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="537">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">EdTech</span><span
+                  class="pill text-reactive">iPad</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="737">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Menlo Math</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="877">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Redesign of a middle-school math curriculum app — theme-driven,
+                card-based unit navigation.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="617">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">UX / UI Design</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="637">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">SunBay Math</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/vocab-app.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="950">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_3.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="536">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">EdTech</span><span
+                  class="pill text-reactive">Tooling</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="736">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Amplify Vocabulary App</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="876">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Word-list management UX for Amplify's ELA curriculum — a clear,
+                table-driven authoring tool.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="616">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">UX Design</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="636">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Amplify Education</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/carnegie.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="955">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/thumb-Nils-transparent.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="537">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">EdTech</span><span
+                  class="pill text-reactive">Platform</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="737">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Carnegie NILS™</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="877">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">PDSA platform redesign. 40% adoption increase, 25% operational
+                efficiency boost.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="617">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Carnegie Foundation</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="637">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Lead Designer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- Verizon Placeholder -->
+      <article class="work-card" tabindex="0" data-href="projects/verizon-totalwireless.html" data-cat="product">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="950">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png'); background-position:center top;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="536">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Telecom</span><span class="pill text-reactive">UX
+                  Design</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="736">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Verizon TotalWireless</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="876">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Post-login experience design for a major prepaid wireless platform.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="616">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Verizon / TotalWireless</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="636">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">UX Design</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- Brand & Visual -->
+      <article class="work-card" tabindex="0" data-href="projects/value-frontier.html" data-cat="brand">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="970">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/VF_Hero.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="540">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Branding</span><span
+                  class="pill text-reactive">Strategy</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="740">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Value Frontier</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="880">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Brand DNA to full identity system, culminating in the DO! NUTS TOKYO
+                sub-brand launch.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="620">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Value Frontier</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="640">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Creative Director</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/coca-cola.html" data-cat="brand">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="965">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/Coke_Hero_1500x1000.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="539">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Global Brand</span><span
+                  class="pill text-reactive">Branding</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="739">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Coca-Cola Rebranding</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="879">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Global visual refresh across billboards, vehicles, packaging and
+                environmental design. With Ogilvy.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="619">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Coca-Cola / Ogilvy</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="639">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Senior Designer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/koji-fizz.html" data-cat="brand">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="960">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg"
+                style="background-image:url('assets/shared/Screenshot_2023-12-21_at_9.53.28_PM.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="538">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Film</span><span
+                  class="pill text-reactive">Brand</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="738">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">KOJI FIZZ Films</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="878">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Short film series featuring NY designers and artists for brand
+                promotion.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="618">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">See the Sun / KOJI FIZZ</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="638">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Film Producer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/kitadoko.html" data-cat="brand">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="955">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/Space_Design_kitadoko.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="537">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Rebranding</span><span
+                  class="pill text-reactive">Service Design</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="737">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Kitadoko</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="877">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">150-year-old salon rebranded. Female clientele 10%→50%, repeat rate
+                0%→90%.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="617">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Kitadoko Hair Salon</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="637">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Creative Director</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/dnt.html" data-cat="brand innovation">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="950">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/image-asset_3.jpeg')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="536">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Social Innovation</span><span
+                  class="pill text-reactive">Award</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="736">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">DO! NUTS TOKYO</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="876">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Sustainability platform for Tokyo Metropolitan Government. 2021
+                American Graphic Design Award.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="616">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Tokyo Metropolitan Gov.</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="636">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Creative Director</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/xq.html" data-cat="brand innovation">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="945">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/xq_map_v7-2.jpg')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="535">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">EdTech</span><span
+                  class="pill text-reactive">Platform</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="735">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">XQ Super School</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="875">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Nationwide HS redesign competition hub with XQ Canvas Framework and
+                XQ Directory.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="615">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Emerson Collective</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="635">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Design Director</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/graffitiwear.html" data-cat="brand personal">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="940">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg"
+                style="background-image:url('assets/shared/Screenshot_2026-02-19_at_12.51.33.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="534">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Apparel</span><span
+                  class="pill text-reactive">Brand</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="734">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">GraffitiWear</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="874">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">NYC street culture–inspired apparel for JWSNY. 50%+ adoption among
+                students and faculty.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="614">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">JWSNY</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="634">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Creative Director</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- Personal -->
+      <article class="work-card" tabindex="0" data-href="projects/festival-design.html" data-cat="personal">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="935">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg"
+                style="background-image:url('assets/festival-design/Aki_Pattern_Fine_Vert02.png'); background-position:center;">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="533">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Event Design</span><span
+                  class="pill text-reactive">Cultural</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="733">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">Akimatsuri Festival</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="873">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Branding, 7 hand-built games, 110 volunteers. Revenue tripled.
+                Perfect satisfaction score.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="613">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">NY Japanese Saturday School</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="633">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">2022–2024</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/extraordinary.html" data-cat="personal">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="930">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/exmag-01.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="532">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Book</span><span class="pill text-reactive">Art
+                  Direction</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="732">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">extra•ordinary</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="872">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Co-authored creativity book published by Rockport. 11,000+ copies
+                sold worldwide.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="612">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Rockport Publishing</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="632">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Co-author &amp; Designer</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="projects/skateboard-egift.html" data-cat="personal">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="925">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image:url('assets/shared/image-asset_2.jpeg')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="531">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">Packaging</span><span
+                  class="pill text-reactive">Experience</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="731">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">E-Gift Reimagined</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="871">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Transforming a digital gift card into a tangible unboxing experience
+                with skateboarding life lessons.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="611">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Personal</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="631">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Creative Director</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- Innovation -->
+      <article class="work-card" tabindex="0" data-href="https://intentfirst.ai" data-external="true"
+        data-cat="innovation">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="920">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-placeholder"
+                style="background:linear-gradient(135deg,#1a1e2e 0%,#222840 40%,#1e2038 100%);">
+                <div style="text-align:center;">
+                  <div style="font-size:13px;letter-spacing:0.06em;color:rgba(180,200,255,0.7);font-weight:500;">
+                    intentfirst.ai</div>
+                  <div
+                    style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(140,160,220,0.4);margin-top:6px;">
+                    Context Grammar</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="530">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="chips"><span class="pill text-reactive">AI Design</span><span
+                  class="pill text-reactive">Framework</span></div>
+            </div>
+          </div>
+          <div class="rr" data-role="title" data-speed="730">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-title text-reactive">intentfirst.ai</div>
+            </div>
+          </div>
+          <div class="rr" data-role="body" data-speed="870">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-desc text-reactive">Context Grammar — a design language bridging what users ask and what
+                they need in Agentic AI systems.</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="610">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">intentfirst.ai</div>
+            </div>
+          </div>
+          <div class="rr" data-role="meta" data-speed="630">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="meta text-reactive">Founder ↗</div>
+            </div>
+          </div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+    </div><!-- /work-grid -->
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer
+    style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+    <div>
+      <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+      <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">Freelance &amp; consulting through <strong
+          style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></div>
+    </div>
+    <div style="display:flex; gap:20px; list-style:none; flex-wrap:wrap;">
+      <a href="index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+      <a href="about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+      <a href="contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+      <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener"
+        style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    // ── Palette presets (from 5-3C family — 6 presets) ──
+    const presets = [
+      { angle:"102deg", a1:"hsla(198 82% 72% / 0.44)", a2:"hsla(248 74% 80% / 0.36)", a3:"hsla(324 72% 81% / 0.40)", a4:"hsla(36 80% 78% / 0.34)", t1:"hsl(198 58% 56%)", t2:"hsl(248 58% 70%)", t3:"hsl(324 60% 72%)", t4:"hsl(36 58% 62%)" },
+      { angle:"96deg",  a1:"hsla(222 84% 62% / 0.48)", a2:"hsla(198 80% 74% / 0.34)", a3:"hsla(274 62% 80% / 0.32)", a4:"hsla(36 74% 80% / 0.28)",  t1:"hsl(222 62% 52%)", t2:"hsl(198 56% 60%)", t3:"hsl(274 50% 72%)", t4:"hsl(36 54% 66%)" },
+      { angle:"110deg", a1:"hsla(40 80% 74% / 0.38)",  a2:"hsla(320 70% 76% / 0.42)", a3:"hsla(266 62% 80% / 0.34)", a4:"hsla(194 78% 74% / 0.32)", t1:"hsl(40 56% 62%)",  t2:"hsl(320 58% 68%)", t3:"hsl(266 52% 72%)", t4:"hsl(194 56% 60%)" },
+      { angle:"90deg",  a1:"hsla(206 86% 70% / 0.46)", a2:"hsla(232 86% 60% / 0.42)", a3:"hsla(274 62% 78% / 0.28)", a4:"hsla(42 72% 82% / 0.22)",  t1:"hsl(206 62% 56%)", t2:"hsl(232 62% 52%)", t3:"hsl(274 50% 72%)", t4:"hsl(42 54% 70%)" },
+      { angle:"108deg", a1:"hsla(42 78% 78% / 0.34)",  a2:"hsla(28 84% 72% / 0.28)",  a3:"hsla(314 68% 76% / 0.40)", a4:"hsla(196 78% 76% / 0.30)", t1:"hsl(42 58% 68%)",  t2:"hsl(28 60% 62%)",  t3:"hsl(314 58% 70%)", t4:"hsl(196 56% 62%)" },
+      { angle:"100deg", a1:"hsla(202 70% 84% / 0.30)", a2:"hsla(248 62% 82% / 0.32)", a3:"hsla(330 62% 84% / 0.28)", a4:"hsla(48 70% 84% / 0.24)",  t1:"hsl(202 52% 66%)", t2:"hsl(248 50% 72%)", t3:"hsl(330 52% 74%)", t4:"hsl(48 52% 72%)" }
+    ];
+
+    const pickPreset = () => presets[Math.floor(Math.random() * presets.length)];
+    const whole = (min, max) => Math.round(min + Math.random() * (max - min));
+
+    const applyPreset = (target, preset) => {
+      target.style.setProperty("--angle", preset.angle);
+      target.style.setProperty("--a1", preset.a1);
+      target.style.setProperty("--a2", preset.a2);
+      target.style.setProperty("--a3", preset.a3);
+      target.style.setProperty("--a4", preset.a4);
+      target.style.setProperty("--t1", preset.t1);
+      target.style.setProperty("--t2", preset.t2);
+      target.style.setProperty("--t3", preset.t3);
+      target.style.setProperty("--t4", preset.t4);
+    };
+
+    // ── Filter ──
+    const filterBtns = [...document.querySelectorAll(".filter-btn")];
+    const cards = [...document.querySelectorAll(".work-card")];
+    const countLabel = document.getElementById("count-label");
+
+    const updateCount = (visible) => {
+      countLabel.textContent = `${visible} project${visible !== 1 ? "s" : ""}`;
+    };
+
+    const applyFilter = (filter) => {
+      let visible = 0;
+      cards.forEach((card) => {
+        const cats = (card.dataset.cat || "").split(" ");
+        const isAi = cats.includes("ai");
+        // AI-only cards live outside the normal project set:
+        // hidden on "All", shown only under the "AI" tab.
+        const show = filter === "ai" ? isAi : (filter === "all" ? !isAi : cats.includes(filter));
+        card.dataset.hidden = show ? "false" : "true";
+        if (show) visible++;
+      });
+      if (filter === "ai") {
+        countLabel.textContent = "12 AI products";
+      } else {
+        updateCount(visible);
+      }
+    };
+
+    filterBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        filterBtns.forEach((b) => b.classList.remove("is-active"));
+        btn.classList.add("is-active");
+        applyFilter(btn.dataset.filter);
+      });
+    });
+
+    // Initial state — hide AI-only cards and set the correct count.
+    applyFilter("all");
+
+    // ── Reveal system ──
+    const triggerReveal = (item, delay) => {
+      const speed = parseInt(item.dataset.speed || "900", 10);
+      item.style.setProperty("--delay", `${delay}ms`);
+      item.style.setProperty("--dur", `${speed}ms`);
+      item.classList.remove("is-on");
+      requestAnimationFrame(() => requestAnimationFrame(() => item.classList.add("is-on")));
+    };
+
+    const revealCard = (card, baseDelay) => {
+      applyPreset(card, pickPreset());
+      const items = [...card.querySelectorAll(".rr")];
+      let cursor = baseDelay;
+      const order = { image: 0, meta: 1, title: 2, body: 3 };
+      const sorted = [...items].sort((a, b) => {
+        const ra = order[a.dataset.role] ?? 2;
+        const rb = order[b.dataset.role] ?? 2;
+        return ra - rb;
+      });
+      sorted.forEach((item, i) => {
+        cursor += whole(20, 48) + (i === 0 ? 0 : 0);
+        triggerReveal(item, cursor);
+      });
+    };
+
+    // IntersectionObserver for cards with stagger
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting || entry.target._revealed) return;
+        entry.target._revealed = true;
+        cardObserver.unobserve(entry.target);
+        const allCards = cards.filter((c) => c.dataset.hidden !== "true");
+        const idx = allCards.indexOf(entry.target);
+        revealCard(entry.target, Math.max(0, (idx % 3) * 60));
+      });
+    }, { threshold: 0.10, rootMargin: "0px 0px -40px 0px" });
+
+    cards.forEach((card) => cardObserver.observe(card));
+
+    // ── Hover interactions (index.html detailed version) ──
+    cards.forEach((card) => {
+      const cardImage = card.querySelector(".card-image");
+      const trioTexts = [...card.querySelectorAll(".card-title, .card-desc, .pill")];
+
+      const clearTextState = () => {
+        trioTexts.forEach((el) => {
+          el.classList.remove("is-hovered", "is-exiting");
+          clearTimeout(el._exitTimer);
+        });
+      };
+
+      const startTextHover = () => {
+        applyPreset(card, pickPreset());
+        trioTexts.forEach((el) => {
+          el.style.setProperty("--hover-shift", `${whole(18, 78)}%`);
+          el.classList.remove("is-exiting");
+          el.classList.add("is-hovered");
+        });
+        if (cardImage) {
+          cardImage.classList.remove("hover-leaving");
+          cardImage.classList.add("hover-active");
+        }
+      };
+
+      const startTextExit = () => {
+        trioTexts.forEach((el) => {
+          el.classList.remove("is-hovered");
+          el.classList.add("is-exiting");
+          clearTimeout(el._exitTimer);
+          el._exitTimer = setTimeout(() => {
+            el.classList.remove("is-exiting");
+            el.style.removeProperty("--hover-shift");
+          }, 560);
+        });
+        if (cardImage) {
+          cardImage.classList.remove("hover-active");
+          cardImage.classList.add("hover-leaving");
+          clearTimeout(cardImage._leaveTimer);
+          cardImage._leaveTimer = setTimeout(() => {
+            cardImage.classList.remove("hover-leaving");
+          }, 920);
+        }
+      };
+
+      card.addEventListener("pointerenter", () => {
+        card.classList.add("is-hovering");
+        startTextHover();
+      });
+
+      card.addEventListener("pointerleave", () => {
+        card.classList.remove("is-hovering", "is-pressing", "is-held");
+        startTextExit();
+      });
+
+      card.addEventListener("pointerdown", () => card.classList.add("is-pressing"));
+      card.addEventListener("pointerup",   () => card.classList.remove("is-pressing"));
+
+      card.addEventListener("click", () => {
+        const href = card.dataset.href;
+        if (!href) return;
+        card.classList.add("is-held");
+        clearTimeout(card._holdTimer);
+        card._holdTimer = setTimeout(() => card.classList.remove("is-held"), 920);
+        setTimeout(() => {
+          if (card.dataset.external === "true") {
+            window.open(href, "_blank", "noopener");
+          } else {
+            window.location.href = href;
+          }
+        }, 120);
+      });
+    });
+  })();
+
+  // ── Lang switch ──
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

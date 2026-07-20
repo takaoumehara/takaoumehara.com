@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>extra&bull;ordinary &mdash; A Book on Everyday Creativity | Takao Umehara</title>
+  <meta name="description" content="extra&bull;ordinary — a published book co-authored, photographed, and art-directed by Takao Umehara exploring everyday creativity, selling 11,000+ copies worldwide and featured in Japan's DESIGN QUARTERLY. Case study by Takao Umehara.">
+  <meta property="og:title" content="extra&bull;ordinary &mdash; A Book on Everyday Creativity | Takao Umehara">
+  <meta property="og:description" content="extra&bull;ordinary — a published book on everyday creativity, co-authored and art-directed by Takao Umehara, selling 11,000+ copies worldwide.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/extraordinary/extraordinary_bookcover.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-block; padding: 13px 20px;
+      background: var(--ink); color: #fff;
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--ink);
+      transition: background 180ms ease, color 180ms ease;
+    }
+    .btn-primary:hover { background: #2a2a2a; }
+    .btn-secondary {
+      display: inline-block; padding: 13px 20px;
+      background: transparent; color: var(--ink);
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Footer ─── */
+    .site-footer { border-top: 1px solid var(--line); padding: 40px 32px; max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 12px; letter-spacing: 0.08em; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-copy { font-size: 12px; color: var(--ink-dim); }
+
+    /* ─── Animations ─── */
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-kicker, .hero-headline, .hero-body, .hero-cta { animation: none !important; opacity: 1 !important; }
+    }
+
+    /* ─── Project page styles ─── */
+    .project-hero { position:relative; min-height:480px; overflow:hidden; display:flex; align-items:flex-end; }
+    .project-hero-img { position:absolute; inset:0; background-size:cover; background-position:center; }
+    .project-hero-overlay { position:absolute; inset:0; background:linear-gradient(0deg,rgba(18,18,18,0.72) 0%,rgba(18,18,18,0.2) 55%,transparent 100%); }
+    .project-hero-content { position:relative; z-index:2; padding:48px 32px; max-width:1200px; margin:0 auto; width:100%; }
+    .project-hero-tags { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+    .project-hero-tag { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.24); padding:5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size:clamp(32px,5vw,64px); font-weight:400; letter-spacing:-0.03em; line-height:0.93; color:#fff; max-width:800px; margin-bottom:20px; }
+    .project-hero-meta { display:flex; gap:32px; flex-wrap:wrap; }
+    .project-meta-item { display:flex; flex-direction:column; gap:3px; }
+    .project-meta-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.48); }
+    .project-meta-value { font-size:13px; color:rgba(255,255,255,0.86); }
+    .project-body { max-width:1200px; margin:0 auto; padding:64px 32px 80px; }
+    .project-overview { display:grid; grid-template-columns:1fr 1.6fr; gap:64px; margin-bottom:72px; padding-bottom:72px; border-bottom:1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size:clamp(22px,2.4vw,30px); font-weight:400; letter-spacing:-0.02em; margin-bottom:20px; }
+    .project-text { font-size:16px; line-height:1.72; color:var(--ink-mid); margin-bottom:20px; }
+    .project-aside-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
+    .project-aside-stat { margin-bottom:24px; }
+    .project-aside-num { font-size:32px; font-weight:600; letter-spacing:-0.04em; }
+    .project-aside-desc { font-size:13px; color:var(--ink-dim); margin-top:4px; }
+    .project-deliverables { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .project-deliverables li { font-size:14px; color:var(--ink-mid); display:flex; gap:10px; align-items:baseline; }
+    .project-deliverables li::before { content:"—"; color:rgba(18,18,18,0.24); flex-shrink:0; }
+    .outcomes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:64px; }
+    .outcome-block { padding:28px 24px; border:1px solid var(--line); }
+    .outcome-num { font-size:36px; font-weight:600; letter-spacing:-0.05em; margin-bottom:6px; }
+    .outcome-label { font-size:13px; color:var(--ink-mid); line-height:1.5; }
+    .project-section { margin-bottom:64px; }
+
+    /* ─── Impact callout ─── */
+    .impact-callout { text-align:center; padding-bottom:56px; margin-bottom:56px; border-bottom:1px solid var(--line); }
+    .impact-callout-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:14px; }
+    .impact-callout-num { font-family:"DM Serif Display", Georgia, serif; font-size:clamp(56px,10vw,128px); font-weight:400; letter-spacing:-0.03em; line-height:0.92; }
+    .impact-callout-sub { font-size:16px; color:var(--ink-mid); margin-top:14px; }
+    @media (max-width:600px) { .impact-callout { padding-bottom:40px; margin-bottom:40px; } }
+
+    /* ─── Tools tags ─── */
+    .tools-list { display:flex; gap:8px; flex-wrap:wrap; }
+    .tool-tag { font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim); }
+
+    /* ─── Buy link ─── */
+    .buy-section { padding:40px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); margin-bottom:64px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap; }
+    .buy-label { font-size:15px; font-weight:600; letter-spacing:-0.02em; }
+    .buy-sub { font-size:13px; color:var(--ink-dim); margin-top:4px; }
+
+    /* ─── Back link ─── */
+    .back-link { display:inline-flex; align-items:center; gap:8px; font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; }
+    .back-link:hover { color:var(--ink); }
+    .back-bar { padding:20px 32px; max-width:1200px; margin:0 auto; }
+
+    /* ─── Lang switch ─── */
+    .lang-switch { position:fixed; right:0; bottom:80px; z-index:100; writing-mode:vertical-rl; display:flex; align-items:center; gap:5px; padding:16px 9px; background:rgba(255,255,255,0.94); backdrop-filter:blur(8px); border-left:1px solid rgba(18,18,18,0.10); border-radius:6px 0 0 6px; }
+    .lang-btn { appearance:none; background:none; border:none; font-family:var(--ff); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; color:var(--ink-dim); padding:0; transition:color 160ms ease; }
+    .lang-btn.is-active { color:var(--ink); font-weight:600; }
+    .lang-sep { font-size:9px; color:rgba(18,18,18,0.18); }
+    .t-jp { display:none; }
+    html.lang-jp .t-en { display:none; }
+    html.lang-jp .t-jp { display:inline; }
+    html.lang-jp .t-jp.is-block { display:block; }
+
+    /* ─── Gallery system ─── */
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    .g-cell.diagram { background: white; }
+    .g-cell.diagram img { width: 100%; height: auto; display: block; }
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+    @media (max-width: 700px) { .g-row.r3 { grid-template-columns: 1fr 1fr; } .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; } }
+
+    /* ─── Responsive ─── */
+    @media (max-width:900px) {
+      .project-overview { grid-template-columns:1fr; gap:40px; }
+      .outcomes-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:600px) {
+      .site-nav { padding:16px 20px; }
+      .project-hero-content { padding:32px 20px; }
+      .project-body { padding:40px 20px 60px; }
+      .back-bar { padding:20px; }
+      .outcomes-grid { grid-template-columns:1fr; }
+      .buy-section { flex-direction:column; align-items:flex-start; }
+      .nav-links { gap:16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+                  transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Image Fade-In ─── */
+    .g-cell img {
+      opacity: 0;
+      transition: opacity 400ms ease;
+    }
+    .g-cell img.loaded {
+      opacity: 1;
+    }
+
+    /* ─── Gallery Hover ─── */
+    .g-cell {
+      border-radius: 2px;
+    }
+    .g-cell img {
+      transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
+      cursor: zoom-in;
+    }
+    .g-cell:hover img.loaded {
+      transform: scale(1.008);
+    }
+
+    /* ─── Lightbox ─── */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(10,10,10,0.93);
+      display: none; align-items: center; justify-content: center;
+      padding: 4vh 4vw; cursor: zoom-out;
+    }
+    .lightbox.is-open { display: flex; }
+    .lightbox img {
+      max-width: 100%; max-height: 100%; object-fit: contain;
+      border-radius: 3px; box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+      animation: lb-in 220ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .lightbox-hint {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+    }
+    @keyframes lb-in { from { opacity: 0; transform: scale(0.965); } to { opacity: 1; transform: scale(1); } }
+
+    /* ─── Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .g-cell img { opacity: 1 !important; transition: none !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../work.html" class="is-active" aria-current="page">Work</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="back-bar">
+    <a href="../work.html" class="back-link">&larr; All Work</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/extraordinary/extraordinary_bookcover.png'); background-position:center top;"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Book Design</span>
+        <span class="project-hero-tag">Art Direction</span>
+        <span class="project-hero-tag">Photography</span>
+        <span class="project-hero-tag">Creativity</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">extra&bull;ordinary</span>
+        <span class="t-jp">extra&bull;ordinary</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">
+            <span class="t-en">Publisher</span>
+            <span class="t-jp">出版社</span>
+          </span>
+          <span class="project-meta-value">Rockport Publishing</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">
+            <span class="t-en">Co-author, Art Director &amp; Designer</span>
+            <span class="t-jp">共著者・アートディレクター・デザイナー</span>
+          </span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">2013</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <main class="project-body">
+
+    <!-- ════════════════════════════════════
+         Impact Callout
+    ════════════════════════════════════ -->
+    <div class="impact-callout reveal-on-scroll">
+      <p class="impact-callout-label">
+        <span class="t-en">Impact</span>
+        <span class="t-jp">成果</span>
+      </p>
+      <div class="impact-callout-num">11,000+</div>
+      <p class="impact-callout-sub">
+        <span class="t-en">Copies sold worldwide</span>
+        <span class="t-jp">世界累計販売部数</span>
+      </p>
+    </div>
+
+    <!-- ════════════════════════════════════
+         Overview (left: stats / right: narrative)
+    ════════════════════════════════════ -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">Impact</span>
+          <span class="t-jp">成果</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">11K+</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Copies sold worldwide</span>
+            <span class="t-jp">世界累計販売部数</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num" style="font-size:22px; padding-top:6px;">DQ</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Featured in DESIGN QUARTERLY (Japan)</span>
+            <span class="t-jp">日本の「DESIGN QUARTERLY」に掲載</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num" style="font-size:22px; padding-top:6px;">LA</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Book launch exhibition in Los Angeles</span>
+            <span class="t-jp">ロサンゼルスで書籍展示イベントを開催</span>
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top:32px;">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">成果物</span>
+        </p>
+        <ul class="project-deliverables">
+          <li>
+            <span class="t-en">Co-authorship &amp; concept development</span>
+            <span class="t-jp">共著・コンセプト開発</span>
+          </li>
+          <li>
+            <span class="t-en">Photography &amp; art direction</span>
+            <span class="t-jp">写真撮影・アートディレクション</span>
+          </li>
+          <li>
+            <span class="t-en">Full book design &amp; layout</span>
+            <span class="t-jp">本全体のデザイン・レイアウト</span>
+          </li>
+          <li>
+            <span class="t-en">LA launch exhibition</span>
+            <span class="t-jp">LA書籍展示イベント</span>
+          </li>
+          <li>
+            <span class="t-en">Exhibition furniture from unconventional materials</span>
+            <span class="t-jp">非定番素材による展示用家具製作</span>
+          </li>
+        </ul>
+
+        <p class="project-aside-label" style="margin-top:32px;">
+          <span class="t-en">Collaborator</span>
+          <span class="t-jp">共同制作者</span>
+        </p>
+        <p style="font-size:14px; color:var(--ink-mid); line-height:1.58;">
+          <span class="t-en">Hisako Ichiki &mdash; Architect, <a href="https://bunchdesign.net/about-us" target="_blank" rel="noopener" style="color:var(--ink-mid); text-decoration-color:rgba(18,18,18,0.28);">Bunch Design</a> (Los Angeles)</span>
+          <span class="t-jp">市来尚子 &mdash; 建築家、<a href="https://bunchdesign.net/about-us" target="_blank" rel="noopener" style="color:var(--ink-mid); text-decoration-color:rgba(18,18,18,0.28);">Bunch Design</a>（ロサンゼルス）</span>
+        </p>
+
+        <p class="project-aside-label" style="margin-top:32px;">
+          <span class="t-en">Tools</span>
+          <span class="t-jp">ツール</span>
+        </p>
+        <div class="tools-list">
+          <span class="tool-tag">Adobe InDesign</span>
+          <span class="tool-tag"><span class="t-en">Photography</span><span class="t-jp">写真撮影</span></span>
+          <span class="tool-tag"><span class="t-en">Pen &amp; Paper</span><span class="t-jp">ペンと紙</span></span>
+        </div>
+      </aside>
+
+      <div>
+        <!-- The Story -->
+        <h2 class="project-section-title">
+          <span class="t-en">The Story</span>
+          <span class="t-jp">ストーリー</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">This book began with no plan at all. My friend Hisako Ichiki &mdash; an architect everyone calls Chako &mdash; and I made one loose promise: let&rsquo;s do something interesting in the city of Los Angeles. We deliberately didn&rsquo;t decide what. For three months we talked for hours, brainstormed, and ran experiment after experiment &mdash; once hauling a sofa into the giant freight elevator of a converted factory loft in downtown LA and living in it for a whole day.</span>
+          <span class="t-jp is-block">この本は、何を作るか決めないまま始まりました。建築家の友人・市来尚子（通称チャコ）と交わした約束はひとつだけ —「ロサンゼルスの街で、何か面白いことをやろう」。私たちは3ヶ月にわたって長時間の議論とブレインストームを重ね、実験を繰り返しました。ダウンタウンの元工場をリノベした住居の巨大エレベーターにソファを持ち込み、丸一日そこで暮らしてみたこともあります。</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">A vague ambition eventually surfaced &mdash; we wanted to make something that would spark creativity in the people around us &mdash; but we had no idea what form it should take. Then one exercise from all those experiments stayed with us: picking up ordinary products and sketching completely different uses for them. Only later did we realize the exercise itself had been limbering up our brains, training us to think flexibly. So we went back to those sketches with a simple thought: <em>what if we just showed these to people?</em></span>
+          <span class="t-jp is-block">やがて「周りの人たちのクリエイティビティを刺激する何かを作りたい」という漠然としたアイデアが浮かびました。ただ、それをどう実現するかは全く見えていませんでした。そんな中、数々の実験のうちひとつだけ心に引っかかり続けたエクササイズがあった — 身の回りの製品を眺めて、全く違う使い方をスケッチするというものです。後になって気づいたのは、このエクササイズ自体が私たちの頭を柔らかくし、物事を柔軟に考えられるようにしていたということでした。そこでスケッチに立ち返り、ふと思いついたのです。<em>これをそのまま人に見せてみたらどうだろう？</em></span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">We art-directed the concepts, shot every one as original photography, and shaped the work into a book. Then we pitched it to more than ten publishers. Exactly one said yes &mdash; and that single yes carried <em>extra&bull;ordinary</em> into the world.</span>
+          <span class="t-jp is-block">そこからアートディレクションを行い、全コンセプトを撮り下ろしの写真に収め、なんとか本というかたちに仕上げました。そして10社以上の出版社に掛け合い、最終的に応じてくれたのはたった1社。その「1社のYES」が、<em>extra&bull;ordinary</em> を世に送り出すきっかけになりました。</span>
+        </p>
+
+        <!-- What I Made -->
+        <h2 class="project-section-title" style="margin-top:40px;">
+          <span class="t-en">What I Made</span>
+          <span class="t-jp">制作したもの</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I co-authored and art-directed the entire book. I photographed all the concepts &mdash; setting up controlled lighting and precise compositions to give mundane objects a sense of wonder. I designed every layout in Adobe InDesign, building a reading rhythm that mirrored the book&rsquo;s core message: look closer, look differently.</span>
+          <span class="t-jp is-block">本全体の共著者兼アートディレクターを務めました。全コンセプトの写真を撮影 &mdash; 照明を細かく調整し、精密な構図で日用品に驚きの感覚を与えました。Adobe InDesignですべてのレイアウトをデザインし、本の核心メッセージ「もっとよく見る、違う目で見る」を体現する読書リズムを構築しました。</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">To launch the book, we turned an LA gallery into the book itself &mdash; an exhibition and installation where concepts from its pages were built as real, functional pieces. The book went on to sell 11,000+ copies worldwide and was later featured in Japan&rsquo;s DESIGN QUARTERLY magazine.</span>
+          <span class="t-jp is-block">出版記念には、ロサンゼルスのギャラリーを「本そのもの」に変えました — 誌面のコンセプトを実際に機能する作品として制作したエキシビション／インスタレーションです。本は世界で11,000部以上を売り上げ、のちに日本のデザイン誌「DESIGN QUARTERLY」で特集されました。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════
+         Outcomes
+    ════════════════════════════════════ -->
+    <p class="project-aside-label" style="margin-bottom:20px;">
+      <span class="t-en">Outcomes</span>
+      <span class="t-jp">成果</span>
+    </p>
+    <div class="outcomes-grid reveal-on-scroll">
+      <div class="outcome-block">
+        <div class="outcome-num">11K+</div>
+        <div class="outcome-label">
+          <span class="t-en">Copies sold worldwide</span>
+          <span class="t-jp">世界累計販売部数</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num" style="font-size:22px; padding-top:6px;">DQ</div>
+        <div class="outcome-label">
+          <span class="t-en">Featured in DESIGN QUARTERLY (Japan)</span>
+          <span class="t-jp">日本の「DESIGN QUARTERLY」に掲載</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num" style="font-size:22px; padding-top:6px;">LA</div>
+        <div class="outcome-label">
+          <span class="t-en">Book launch exhibition in Los Angeles</span>
+          <span class="t-jp">ロサンゼルスで書籍展示イベントを開催</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         GALLERY: Book Cover & Publication
+    ═══════════════════════════════════════════════ -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">From Prototype to Published Book</span>
+        <span class="t-jp">プロトタイプから出版へ</span>
+      </p>
+
+      <div class="g-row r2">
+        <div>
+          <div class="g-cell brand">
+            <img src="../assets/extraordinary/Experimental_extraordinary.png" alt="The first handmade prototype — the book's spine is a real brush, resting in a dustpan" loading="lazy">
+          </div>
+          <p style="font-size:12.5px; color:var(--ink-dim); margin-top:10px; line-height:1.65;">
+            <span class="t-en">The very first prototype &mdash; a handmade book that practices what it preaches. Its spine is a real brush, so the book itself has a second use &mdash; photographed resting in its dustpan.</span>
+            <span class="t-jp is-block">一番最初に作った手製のプロトタイプ。本の主張を本自身が体現するように、背表紙が本物のブラシになっていて、本そのものに「別の用途」がある — だからチリトリとともに撮影されています。</span>
+          </p>
+        </div>
+        <div>
+          <div class="g-cell brand">
+            <img src="../assets/extraordinary/extraordinary_bookcover.png" alt="extra&bull;ordinary — the published book cover" loading="lazy">
+          </div>
+          <p style="font-size:12.5px; color:var(--ink-dim); margin-top:10px; line-height:1.65;">
+            <span class="t-en">The published edition &mdash; <em>extra&bull;ordinary</em> (Rockport Publishing, 2013).</span>
+            <span class="t-jp is-block">実際に出版された市販版 — <em>extra&bull;ordinary</em>（Rockport Publishing、2013年）。</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buy -->
+    <div class="buy-section">
+      <div>
+        <div class="buy-label">
+          <span class="t-en">Get the book</span>
+          <span class="t-jp">本を購入する</span>
+        </div>
+        <div class="buy-sub">
+          <span class="t-en">Available on Amazon &mdash; Rockport Publishing, 2013</span>
+          <span class="t-jp">Amazonにて販売中 &mdash; Rockport Publishing, 2013</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:12px; flex-wrap:wrap;">
+        <a href="https://www.amazon.com/Extra-Ordinary-Amusing-Unleashing-Creativity/dp/1592531229" target="_blank" rel="noopener" class="btn-primary">
+          <span class="t-en">Buy on Amazon (US) &rarr;</span>
+          <span class="t-jp">Amazon.comで購入 &rarr;</span>
+        </a>
+        <a href="https://www.amazon.co.jp/Extra-Ordinary-Amusing-Unleashing-Creativity/dp/1592531229/ref=sr_1_1" target="_blank" rel="noopener" class="btn-secondary">
+          <span class="t-en">Buy on Amazon (JP) &rarr;</span>
+          <span class="t-jp">Amazon.co.jpで購入 &rarr;</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         GALLERY: Interior Spreads
+    ═══════════════════════════════════════════════ -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">Interior Spreads</span>
+        <span class="t-jp">書籍内ページ</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/extraordinary/extraordinary_cropped_Page_19.png" alt="extra&bull;ordinary &mdash; page 19" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/extraordinary/extraordinary_cropped_Page_20.png" alt="extra&bull;ordinary &mdash; page 20" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/extraordinary/extraordinary_cropped_Page_04.png" alt="extra&bull;ordinary &mdash; page 04" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/extraordinary/extraordinary_cropped_Page_11.png" alt="extra&bull;ordinary &mdash; page 11" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/extraordinary/extraordinary_cropped_Page_12.png" alt="extra&bull;ordinary &mdash; page 12" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/extraordinary/extraordinary_cropped_Page_13.png" alt="extra&bull;ordinary &mdash; page 13" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/extraordinary/extraordinary_cropped_Page_18.png" alt="extra&bull;ordinary &mdash; page 18" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/extraordinary/extraordinary_cropped_Page_62.png" alt="extra&bull;ordinary &mdash; page 62" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         GALLERY: Los Angeles Launch Exhibition
+    ═══════════════════════════════════════════════ -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">Los Angeles Launch Exhibition</span>
+        <span class="t-jp">ロサンゼルス書籍展示</span>
+      </p>
+
+      <div class="g-row r3">
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/extraoridinaryshow01-min.jpg" alt="LA exhibition &mdash; 01" loading="lazy">
+        </div>
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/extraoridinaryshow02-min.jpg" alt="LA exhibition &mdash; 02" loading="lazy">
+        </div>
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/extraoridinaryshow03-min.jpg" alt="LA exhibition &mdash; 03" loading="lazy">
+        </div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/extraoridinaryshow04-min.jpg" alt="LA exhibition &mdash; 04" loading="lazy">
+        </div>
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/Show_extraoridinaryshow05.jpg" alt="LA exhibition &mdash; 05" loading="lazy">
+        </div>
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/extraoridinaryshow07-min.jpg" alt="LA exhibition &mdash; 07" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         GALLERY: Process — Build & Construction
+    ═══════════════════════════════════════════════ -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">Process &mdash; Build &amp; Construction</span>
+        <span class="t-jp">制作プロセス &mdash; ビルドと施工</span>
+      </p>
+
+      <div class="g-row r3">
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/extraordinary-show-process10-min.JPG" alt="Exhibition build process" loading="lazy">
+        </div>
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/extraordinary-show-process3-min.JPG" alt="Exhibition build process" loading="lazy">
+        </div>
+        <div class="g-cell photo">
+          <img src="../assets/extraordinary/extraordinary-show-process12-min.JPG" alt="Exhibition build process" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         GALLERY: Magazine Feature
+    ═══════════════════════════════════════════════ -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">DESIGN QUARTERLY Feature</span>
+        <span class="t-jp">DESIGN QUARTERLY 掲載</span>
+      </p>
+
+      <div class="g-row r3">
+        <div class="g-cell brand">
+          <img src="../assets/shared/exmag-01.png" alt="Design Quarterly feature &mdash; page 1" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/extraordinary/exmag-02.png" alt="Design Quarterly feature &mdash; page 2" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/extraordinary/exmag-03.png" alt="Design Quarterly feature &mdash; page 3" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:32px;">
+      <a href="../work.html" class="btn-secondary">
+        <span class="t-en">&larr; All Work</span>
+        <span class="t-jp">&larr; 作品一覧</span>
+      </a>
+    </div>
+
+  </main>
+
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Work</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+
+// ── Scroll Reveal ──
+(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+})();
+
+// ── Image Fade-In ──
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'));
+});
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+
+  // ── Lightbox (click any gallery image to enlarge) ──
+  (() => {
+    const box = document.createElement('div');
+    box.className = 'lightbox';
+    box.innerHTML = '<img alt=""><span class="lightbox-hint">Click / Esc to close</span>';
+    document.body.appendChild(box);
+    const big = box.querySelector('img');
+    const close = () => { box.classList.remove('is-open'); big.src = ''; };
+    box.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    document.querySelectorAll('.g-cell img').forEach(img => {
+      img.addEventListener('click', () => {
+        big.src = img.currentSrc || img.src;
+        big.alt = img.alt || '';
+        box.classList.add('is-open');
+      });
+    });
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Takao Umehara — Product Designer & Innovation Strategist</title>
+  <meta name="description" content="Takao Umehara — NYC-based product designer and innovation strategist. Product design, creative direction, and AI products through Creativity Is Everywhere LLC.">
+  <meta property="og:title" content="Takao Umehara — Product Designer & Innovation Strategist">
+  <meta property="og:description" content="NYC-based product designer and innovation strategist. Product design, creative direction, and AI products through Creativity Is Everywhere LLC.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Geist Sans (Vercel) ─── */
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 44px; height: 44px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 8px; width: 28px; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 12px; }
+    .nav-toggle span:nth-child(2) { top: 21px; }
+    .nav-toggle span:nth-child(3) { top: 30px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 21px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; width: 44px; height: 44px; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      /* 5-3C'02 Rich palette */
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      /* Rich variant vars */
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.02em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.is-open { display: flex; }
+    }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 96px 32px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-kicker {
+      margin-bottom: 20px;
+    }
+
+    .hero-headline {
+      font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
+      font-size: clamp(46px, 7vw, 92px);
+      font-weight: 400; /* serif displays read better at regular weight */
+      line-height: 0.92;
+      letter-spacing: -0.025em; /* serifs need less tracking */
+      font-style: italic; /* DM Serif Display italic adds elegance */
+      max-width: 920px;
+      margin-bottom: 36px;
+      color: var(--ink);
+    }
+
+    .hero-body {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 56px;
+      align-items: start;
+      max-width: 920px;
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      line-height: 1.68;
+      color: var(--ink-mid);
+    }
+
+    .hero-positioning {
+      font-size: 15px;
+      line-height: 1.72;
+      color: var(--ink-mid);
+      padding-top: 4px;
+      border-top: 1px solid var(--line);
+    }
+
+    .hero-cta {
+      margin-top: 40px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .btn-primary:hover { background: #2a2a2a; }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Section header ─── */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      padding: 0 32px;
+      margin: 0 auto 28px;
+      max-width: 1200px;
+    }
+
+    .section-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(22px, 2.4vw, 32px);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+    }
+
+    .section-link {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .section-link:hover { color: var(--ink); }
+
+    /* ─── Work grid wrapper ─── */
+    .work-section {
+      padding: 72px 0 80px;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 2px;
+    }
+
+    /* ─── Work card (5-3C'02 Rich) ─── */
+    .work-card {
+      position: relative;
+      display: grid;
+      grid-template-rows: 260px auto auto;
+      overflow: hidden;
+      isolation: isolate;
+      outline: none;
+      touch-action: manipulation;
+      cursor: pointer;
+      background: transparent;
+    }
+
+    /* Featured card — 2-col span, taller image */
+    .work-card.is-featured {
+      grid-column: span 2;
+      grid-template-rows: 400px auto auto;
+    }
+
+    /* Dark card — intentfirst.ai innovation */
+    .work-card.is-dark {
+      background: #0f0f10;
+    }
+    .work-card.is-dark .card-image {
+      background: #1a1e2e;
+      border-bottom-color: rgba(255,255,255,0.06);
+    }
+    .work-card.is-dark .card-title,
+    .work-card.is-dark .card-desc { color: rgba(255,255,255,0.82); }
+    .work-card.is-dark .meta,
+    .work-card.is-dark .pill {
+      color: rgba(255,255,255,0.38);
+      border-color: rgba(255,255,255,0.10);
+    }
+    .work-card.is-dark .text-reactive.is-hovered,
+    .work-card.is-dark .text-reactive.is-exiting { color: transparent; }
+
+    .work-card:focus-visible {
+      box-shadow: 0 0 0 2px rgba(18,18,18,0.2) inset;
+    }
+
+    .card-image {
+      position: relative;
+      overflow: hidden;
+      background: #efebe6;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .card-image::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      /* Rich gradient — coloured glass */
+      background:
+        radial-gradient(circle at 18% 24%, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.12) 18%, transparent 42%),
+        radial-gradient(circle at 76% 68%, rgba(255,255,255,0.18) 0%, transparent 34%),
+        linear-gradient(126deg,
+          hsla(196 92% 74% / 0.94) 0%,
+          hsla(226 94% 60% / 0.96) 22%,
+          hsla(268 88% 74% / 0.96) 46%,
+          hsla(322 86% 74% / 0.94) 72%,
+          hsla(38 96% 78% / 0.90) 100%);
+      box-shadow:
+        26px 0 56px rgba(255,255,255,0.14),
+        0 0 38px rgba(133,145,255,0.10);
+      width: var(--image-hover-width, 174%);
+      inset: 0 auto 0 0;
+      transform: translate3d(var(--image-hover-from, -96%), 0, 0);
+      transition:
+        opacity 320ms ease,
+        transform var(--image-hover-enter-ms, 1260ms) cubic-bezier(0.22, 0.84, 0.22, 1),
+        background 180ms ease;
+    }
+
+    .card-image.hover-active::before {
+      opacity: var(--image-hover-opacity, 0.985);
+      transform: translate3d(var(--image-hover-to, -4%), 0, 0);
+    }
+
+    .card-image.hover-leaving::before {
+      opacity: 0;
+      animation: gradient-image-leave var(--image-hover-leave-ms, 920ms) cubic-bezier(0.22, 0.84, 0.22, 1) forwards;
+    }
+
+    .card-image > .rr,
+    .card-image > .rr > .inner {
+      height: 100%;
+    }
+
+    .card-img-bg {
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center top;
+      transition: transform 640ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .work-card.is-hovering .card-img-bg {
+      transform: scale(1.025);
+    }
+
+    /* placeholder card */
+    .card-img-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e8e4df 0%, #d8d2ca 100%);
+    }
+
+    .placeholder-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(18,18,18,0.28);
+    }
+
+    .card-body {
+      padding: 18px 16px 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px 20px;
+    }
+
+    .card-title {
+      font-size: clamp(22px, 2.2vw, 28px);
+      line-height: 1.02;
+      letter-spacing: -0.028em;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 14px;
+      line-height: 1.58;
+      color: var(--ink-mid);
+    }
+
+    .chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill {
+      padding: 6px 9px;
+      border: 1px solid rgba(18,18,18,0.10);
+      background: transparent;
+    }
+
+    /* ─── press-frame ─── */
+    .press-frame {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .work-card.is-pressing .press-frame,
+    .work-card.is-held .press-frame {
+      opacity: 1;
+      animation: press-frame var(--press-ms) cubic-bezier(0.24, 0.86, 0.24, 1) forwards;
+      background:
+        linear-gradient(90deg, var(--a1), var(--a2)) 0 0 / 0 1px no-repeat,
+        linear-gradient(90deg, var(--a2), var(--a3)) 100% 0 / 1px 0 no-repeat,
+        linear-gradient(90deg, var(--a3), var(--a4)) 100% 100% / 0 1px no-repeat,
+        linear-gradient(90deg, var(--a4), var(--a1)) 0 100% / 1px 0 no-repeat;
+    }
+
+    /* ─── text-reactive ─── */
+    .text-reactive { transition: color 180ms ease; }
+
+    .text-reactive.is-hovered {
+      background-image: linear-gradient(var(--hover-angle, var(--angle)), #121212 0%, var(--t1) 24%, var(--t2) 46%, var(--t3) 70%, var(--t4) 92%, #121212 100%);
+      background-size: 240% 100%;
+      background-position: var(--hover-shift, 0%) 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: text-flow 1s ease forwards;
+    }
+
+    .text-reactive.is-exiting {
+      background-image: linear-gradient(var(--hover-angle, var(--angle)), #121212 0%, var(--t1) 24%, var(--t2) 46%, var(--t3) 70%, var(--t4) 92%, #121212 100%);
+      background-size: 240% 100%;
+      background-position: var(--hover-shift, 0%) 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: text-flow-out 560ms cubic-bezier(0.22, 0.84, 0.22, 1) forwards;
+    }
+
+    /* ─── rr reveal ─── */
+    .rr {
+      position: relative;
+      overflow: hidden;
+      --delay: 0ms;
+      --dur: 900ms;
+      --from-x: -7%;
+      --from-y: 0%;
+    }
+
+    .rr > .cover {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0;
+      width: var(--bar-width, 70%);
+      inset: 0 auto 0 0;
+      background: linear-gradient(var(--angle), var(--a1) 0%, var(--a2) 32%, var(--a3) 66%, var(--a4) 100%);
+      box-shadow: 20px 0 30px rgba(255,255,255,0.08);
+      transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%));
+      will-change: transform, opacity;
+    }
+
+    .rr > .inner {
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      clip-path: inset(0 100% 0 0);
+      transform: translate3d(var(--from-x), var(--from-y), 0);
+    }
+
+    .rr.is-on > .cover {
+      animation: gradient-band-sweep var(--dur) cubic-bezier(0.22, 0.84, 0.22, 1) var(--delay) forwards;
+    }
+
+    .rr.is-on > .inner {
+      animation: mask-reveal var(--dur) cubic-bezier(0.22, 0.84, 0.22, 1) var(--delay) forwards;
+    }
+
+    /* ─── Initiatives section ─── */
+    .initiatives-section {
+      padding: 72px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+
+    .initiatives-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .initiative-card {
+      position: relative;
+      padding: 40px 36px 36px;
+      overflow: hidden;
+      isolation: isolate;
+      min-height: 280px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .initiative-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--ink);
+      opacity: 0;
+      transition: opacity 320ms ease;
+    }
+
+    .initiative-card:hover::before { opacity: 0.12; }
+
+    .initiative-tag {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    .initiative-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(26px, 3vw, 38px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 0.96;
+    }
+
+    .initiative-desc {
+      font-size: 15px;
+      line-height: 1.60;
+      color: var(--ink-mid);
+    }
+
+    .initiative-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .initiative-clients {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .initiative-arrow {
+      font-size: 18px;
+      color: var(--ink-dim);
+      transition: transform 240ms ease, color 240ms ease;
+    }
+
+    .initiative-card:hover .initiative-arrow {
+      transform: translate(4px, -4px);
+      color: var(--ink);
+    }
+
+    /* ─── AI Tools & Infrastructure ─── */
+    .tools-section {
+      padding: 78px 0 86px;
+      border-top: 1px solid var(--line);
+    }
+
+    .tools-head { align-items: flex-end; }
+    .tools-head > div { max-width: 720px; }
+
+    .tools-intro {
+      margin-top: 18px;
+      max-width: 680px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink-mid);
+    }
+
+    .tools-list {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      border-top: 1px solid var(--line);
+    }
+
+    .tools-row {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.28fr) minmax(260px, 0.72fr);
+      gap: clamp(32px, 7vw, 104px);
+      padding: 38px 0 42px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tools-row:nth-child(2) {
+      grid-template-columns: minmax(0, 0.92fr) minmax(300px, 1.08fr);
+    }
+
+    .tools-row::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--t1), var(--t2), var(--t3), var(--t4));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 460ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .tools-row:hover::before,
+    .tools-row:focus-within::before { transform: scaleX(1); }
+
+    .tools-index {
+      margin-bottom: 22px;
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--ink-dim);
+    }
+
+    .tools-name {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(28px, 3.4vw, 46px);
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      line-height: 1;
+    }
+
+    .tools-outcome {
+      margin-top: 16px;
+      max-width: 650px;
+      font-size: clamp(17px, 1.8vw, 22px);
+      line-height: 1.45;
+      color: var(--ink-mid);
+    }
+
+    .tools-meta {
+      align-self: end;
+      display: grid;
+      gap: 12px;
+    }
+
+    .tools-classification {
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink);
+    }
+
+    .tools-stack {
+      font-size: 12px;
+      line-height: 1.55;
+      color: var(--ink-dim);
+    }
+
+    .tools-link {
+      justify-self: start;
+      margin-top: 10px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      text-decoration: none;
+      transition: color 160ms ease, transform 240ms ease;
+    }
+
+    .tools-link:hover { color: var(--ink); transform: translateX(3px); }
+
+    .tools-link:focus-visible,
+    .tools-head .section-link:focus-visible {
+      outline: 2px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    /* ─── AI Products section ─── */
+    .ai-section {
+      padding: 72px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+
+    .ai-intro {
+      max-width: 760px;
+      padding: 0 32px;
+      margin: 0 auto 34px;
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink-mid);
+    }
+
+    .ai-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2px;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .ai-card {
+      position: relative;
+      display: grid;
+      grid-template-rows: auto auto 1fr auto;
+      gap: 13px;
+      padding: 26px 24px 22px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      text-decoration: none;
+      color: inherit;
+      overflow: hidden;
+      isolation: isolate;
+      transition: border-color 240ms ease, box-shadow 240ms ease;
+    }
+
+    .ai-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--t1) 0%, var(--t2) 34%, var(--t3) 68%, var(--t4) 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 460ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .ai-card:hover::before { transform: scaleX(1); }
+    .ai-card:hover {
+      border-color: rgba(18,18,18,0.16);
+      box-shadow: var(--shadow);
+    }
+
+    .ai-badge {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      padding: 4px 9px;
+      border: 1px solid var(--border);
+    }
+
+    .ai-badge::before {
+      content: "";
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--ink-dim);
+    }
+
+    .ai-badge.shipped::before { background: hsl(158 42% 46%); }
+    .ai-badge.near::before    { background: hsl(36 64% 52%); }
+    .ai-badge.proto::before   { background: hsl(248 46% 62%); }
+    .ai-badge.case::before    { background: hsl(198 54% 50%); }
+
+    .ai-name {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: 25px;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.04;
+    }
+
+    .ai-tagline {
+      font-size: 13.5px;
+      line-height: 1.56;
+      color: var(--ink-mid);
+    }
+
+    .ai-card-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ai-stack {
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      color: var(--ink-dim);
+    }
+
+    .ai-arrow {
+      font-size: 15px;
+      color: var(--ink-dim);
+      transition: transform 240ms ease, color 240ms ease;
+      flex-shrink: 0;
+    }
+
+    .ai-card:hover .ai-arrow { transform: translate(3px, -3px); color: var(--ink); }
+
+    .ai-card.is-case { grid-template-rows: auto auto auto 1fr auto; }
+    .ai-thumb {
+      margin: -26px -24px 4px;
+      aspect-ratio: 5 / 2;
+      background-size: cover;
+      background-position: center;
+      transition: transform 640ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .ai-card:hover .ai-thumb { transform: scale(1.035); }
+
+    /* ─── Capabilities strip ─── */
+    .capabilities-section {
+      padding: 72px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 28px auto 0;
+    }
+
+    .capability-block {
+      padding: 32px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .capability-block:last-child { border-right: 0; }
+    .capability-block:not(:first-child) { padding-left: 32px; }
+
+    .capability-num {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 16px;
+    }
+
+    .capability-title {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.022em;
+      margin-bottom: 12px;
+    }
+
+    .capability-desc {
+      font-size: 14px;
+      line-height: 1.62;
+      color: var(--ink-mid);
+    }
+
+    .capability-list {
+      list-style: none;
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .capability-list li {
+      font-size: 13px;
+      color: var(--ink-dim);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .capability-list li::before {
+      content: "—";
+      color: rgba(18,18,18,0.24);
+      flex-shrink: 0;
+    }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .footer-llc {
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-top: 5px;
+      letter-spacing: 0.01em;
+    }
+
+    .footer-llc strong {
+      color: var(--ink-mid);
+      font-weight: 500;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes gradient-band-sweep {
+      0%   { transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%)); opacity: 0; }
+      8%   { transform: translateX(0); opacity: 0.94; }
+      24%  { transform: translateX(0); opacity: 0.94; }
+      100% { transform: translateX(232%); opacity: 0.92; }
+    }
+
+    @keyframes mask-reveal {
+      0%   { clip-path: inset(0 100% 0 0); opacity: 0; transform: translate3d(var(--from-x), var(--from-y), 0); }
+      14%  { clip-path: inset(0 100% 0 0); opacity: 0; transform: translate3d(var(--from-x), var(--from-y), 0); }
+      30%  { opacity: 0.24; }
+      100% { clip-path: inset(0 0 0 0); opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+
+    @keyframes gradient-image-leave {
+      0%   { transform: translate3d(-4%, 0, 0); opacity: 0.9; }
+      100% { transform: translate3d(124%, 0, 0); opacity: 0; }
+    }
+
+    @keyframes press-frame {
+      0%   { background-size: 0 1px, 1px 0, 0 1px, 1px 0; opacity: 0; }
+      18%  { opacity: 1; }
+      100% { background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%; opacity: 1; }
+    }
+
+    @keyframes text-flow {
+      0%   { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    @keyframes text-flow-out {
+      0%   { background-position: var(--hover-shift, 50%) 50%; opacity: 1; }
+      100% { background-position: 140% 50%; opacity: 1; }
+    }
+
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-kicker  { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 80ms both; }
+    .hero-headline{ animation: hero-in 900ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both; }
+    .hero-body    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 280ms both; }
+    .hero-cta     { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 400ms both; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 1000px) {
+      .work-card.is-featured { grid-column: span 3; grid-template-rows: 340px auto auto; }
+    }
+
+    @media (max-width: 900px) {
+      .project-grid { grid-template-columns: 1fr 1fr; }
+      .work-card.is-featured { grid-column: span 2; grid-template-rows: 320px auto auto; }
+      .initiatives-grid { grid-template-columns: 1fr; }
+      .ai-grid { grid-template-columns: 1fr 1fr; }
+      .capabilities-grid { grid-template-columns: 1fr; }
+      .capability-block { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px 0; }
+      .capability-block:not(:first-child) { padding-left: 0; }
+      .hero-body { grid-template-columns: 1fr; gap: 28px; }
+    }
+
+    @media (max-width: 767px) {
+      .tools-head { align-items: flex-start; }
+      .tools-list { padding: 0 20px; }
+      .tools-row,
+      .tools-row:nth-child(2) {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 32px 0 36px;
+      }
+      .tools-meta { align-self: auto; }
+    }
+
+    @media (max-width: 600px) {
+      .project-grid { grid-template-columns: 1fr; padding: 0 20px; }
+      .work-card.is-featured { grid-column: span 1; grid-template-rows: 260px auto auto; }
+      .ai-grid { grid-template-columns: 1fr; }
+      .site-nav { padding: 16px 20px; }
+      .hero { padding: 64px 20px 56px; }
+      .section-head, .initiatives-grid, .capabilities-grid, .ai-grid, .ai-intro { padding: 0 20px; }
+    }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-radius: 6px 0 0 6px;
+    }
+    .lang-btn {
+      appearance: none; background: none; border: none;
+      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      color: var(--ink-dim); padding: 0;
+      transition: color 160ms ease;
+    }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+
+    /* bilingual content */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* JP typography overrides */
+    html.lang-jp body { font-family: var(--ff-jp); }
+    html.lang-jp .hero-headline {
+      font-family: "DM Serif Display", "Noto Sans JP", Georgia, serif;
+      line-height: 1.18;
+      font-size: clamp(36px, 5.5vw, 72px);
+      font-style: normal;
+    }
+    html.lang-jp .initiative-title {
+      line-height: 1.12;
+    }
+    html.lang-jp .card-title {
+      line-height: 1.14;
+      letter-spacing: -0.02em;
+    }
+    html.lang-jp .section-title {
+      line-height: 1.14;
+    }
+    html.lang-jp .ai-name {
+      line-height: 1.18;
+    }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .rr > .inner  { animation: none !important; opacity: 1 !important; clip-path: inset(0 0 0 0) !important; transform: none !important; }
+      .rr > .cover  { animation: none !important; opacity: 0 !important; }
+      .card-image::before { animation: none !important; transition: none !important; }
+      .hero-kicker, .hero-headline, .hero-body, .hero-cta { animation: none !important; opacity: 1 !important; }
+      .tools-row::before,
+      .tools-link { transition: none !important; }
+      .tools-link:hover { transform: none; }
+      .nav-toggle span { transition: none !important; }
+      .nav-links a { transition: none !important; }
+      .lang-btn { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links" id="primary-nav-links">
+      <li><a href="work.html">Work</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav-links"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-kicker eyebrow">
+      <span class="t-en">Product Designer &amp; Innovation Strategist — New York</span>
+      <span class="t-jp">プロダクトデザイナー ／ イノベーション・ストラテジスト — ニューヨーク</span>
+    </div>
+    <h1 class="hero-headline">
+      <span class="t-en">Design at the intersection of product, experience, and innovation.</span>
+      <span class="t-jp">プロダクト、体験、イノベーションの交差点に生まれるデザイン。</span>
+    </h1>
+    <div class="hero-body">
+      <p class="hero-desc">
+        <span class="t-en">I build digital products, shape brand systems, and develop innovation frameworks — from EdTech platforms reaching millions of students to global rebrands for Coca-Cola.</span>
+        <span class="t-jp is-block">デジタルプロダクトの構築、ブランドシステムの設計、イノベーションフレームワークの開発。数百万の生徒に届くEdTechプラットフォームから、Coca-Colaのグローバルリブランディングまで。</span>
+      </p>
+      <p class="hero-positioning">
+        <span class="t-en">My best work happens where the problem doesn't have a name yet — designing experiences that shift perception, generate genuine delight, and translate directly into business impact. That's why innovation isn't a service I offer. It's how I think.</span>
+        <span class="t-jp is-block">最もやりがいを感じるのは、まだ問題に名前がついていない場所で働くとき。認識を変え、本物の喜びを生み出し、ビジネスインパクトに直結する体験を設計すること。だからイノベーションは、提供するサービスではなく、私の思考の仕方そのものです。</span>
+      </p>
+    </div>
+    <div class="hero-cta">
+      <a href="work.html" class="btn-primary">View all work</a>
+      <a href="contact.html" class="btn-secondary">Start a conversation</a>
+    </div>
+  </section>
+
+  <!-- ── Featured Work ── -->
+  <section class="work-section" id="selected-work">
+    <div class="section-head">
+      <h2 class="section-title">Selected Work</h2>
+      <a href="work.html" class="section-link">All projects →</a>
+    </div>
+
+    <div class="project-grid" id="project-grid">
+
+      <!-- 1. ELA Quests — Featured (spans 2 cols) -->
+      <article class="work-card is-featured" tabindex="0" data-href="projects/ela-quests.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1020">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image: url('assets/shared/Quest_teaser_tr.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="560"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">EdTech</span><span class="pill text-reactive">Product Design</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="760"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Amplify ELA Quests</div></div></div>
+          <div class="rr" data-role="body" data-speed="900"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Immersive in-classroom learning experiences using AR and storytelling, reaching millions of students across the US.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="640"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Amplify Education</div></div></div>
+          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- 2. Verizon TotalWireless -->
+      <article class="work-card" tabindex="0" data-href="projects/verizon-totalwireless.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1060">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image: url('assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png'); background-position: center top;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="580"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Telecom</span><span class="pill text-reactive">UX Design</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="790"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Verizon TotalWireless</div></div></div>
+          <div class="rr" data-role="body" data-speed="930"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Post-login experience design for a major prepaid wireless platform — streamlining account management for millions of subscribers.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Verizon / TotalWireless</div></div></div>
+          <div class="rr" data-role="meta" data-speed="680"><div class="cover"></div><div class="inner"><div class="meta text-reactive">UX Design</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- 3. T-Mobile BOPIS -->
+      <article class="work-card" tabindex="0" data-href="projects/tmobile.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1040">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image: url('assets/shared/M−Mobile_teaser2.jpg')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Retail CX</span><span class="pill text-reactive">Multi-touchpoint</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="780"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">T-Mobile BOPIS</div></div></div>
+          <div class="rr" data-role="body" data-speed="920"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">An integrated Buy Online Pick Up In Store system — kiosk, staff app, and voice AI — that made T-Mobile a preferred innovation partner.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">T-Mobile</div></div></div>
+          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead UX</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- 4. CLI Studios -->
+      <article class="work-card" tabindex="0" data-href="projects/cli-studios.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1030">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image: url('assets/cli-studios/CLI_UI_Screens.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="560"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">App Design</span><span class="pill text-reactive">Design System</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="760"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">CLI Studios App</div></div></div>
+          <div class="rr" data-role="body" data-speed="900"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Complete mobile app redesign — heuristic analysis, IA restructuring, and a design system that reduced future dev time by 25%.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="640"><div class="cover"></div><div class="inner"><div class="meta text-reactive">CLI Studios</div></div></div>
+          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- 5. Web3 Custodial Wallet -->
+      <article class="work-card" tabindex="0" data-href="projects/web3-wallet.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1010">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image: url('assets/shared/EventStack-Mobile.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="555"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Web3</span><span class="pill text-reactive">Award</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="755"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Web3 Custodial Wallet</div></div></div>
+          <div class="rr" data-role="body" data-speed="895"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">NFT-enhanced event management wallet. 2023 Merit Gold Award — Metaverse &amp; AI.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="635"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
+          <div class="rr" data-role="meta" data-speed="655"><div class="cover"></div><div class="inner"><div class="meta text-reactive">2023</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- 6. Kitadoko -->
+      <article class="work-card" tabindex="0" data-href="projects/kitadoko.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1050">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image: url('assets/shared/Space_Design_kitadoko.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="565"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Rebranding</span><span class="pill text-reactive">Service Design</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Kitadoko</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">A 150-year-old hair salon rebranded end to end. Female clientele grew 10%→50%, repeat rate 0%→90%.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="645"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Kitadoko Hair Salon</div></div></div>
+          <div class="rr" data-role="meta" data-speed="665"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Creative Director</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- 7. KOJI FIZZ -->
+      <article class="work-card" tabindex="0" data-href="projects/koji-fizz.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1050">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image: url('assets/shared/Screenshot_2023-12-21_at_9.53.28_PM.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="565"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Film</span><span class="pill text-reactive">Brand</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">KOJI FIZZ Films</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Produced a short film series featuring New York designers and artists, showcasing KOJI FIZZ's influence on creative life and work.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="645"><div class="cover"></div><div class="inner"><div class="meta text-reactive">See the Sun / KOJI FIZZ</div></div></div>
+          <div class="rr" data-role="meta" data-speed="665"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Film Producer</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+      <!-- 8. extra•ordinary -->
+      <article class="work-card" tabindex="0" data-href="projects/extraordinary.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1015">
+            <div class="cover"></div>
+            <div class="inner">
+              <div class="card-img-bg" style="background-image: url('assets/shared/exmag-01.png')"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="552"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Book</span><span class="pill text-reactive">Art Direction</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="752"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">extra•ordinary</div></div></div>
+          <div class="rr" data-role="body" data-speed="892"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Co-authored and art-directed a book on everyday creativity published by Rockport. Over 11,000 copies sold worldwide.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="632"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Rockport Publishing</div></div></div>
+          <div class="rr" data-role="meta" data-speed="652"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Co-author &amp; Designer</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
+    </div><!-- /project-grid -->
+  </section>
+
+  <!-- ── AI Tools & Infrastructure ── -->
+  <section class="tools-section" id="ai-tools" aria-labelledby="ai-tools-title">
+    <div class="section-head tools-head">
+      <div>
+        <h2 class="section-title" id="ai-tools-title"><span class="t-en">AI Tools &amp; Infrastructure</span><span class="t-jp">AIツールとインフラストラクチャ</span></h2>
+        <p class="tools-intro">
+          <span class="t-en">I design and build practical tools, skills, and systems for people working with AI agents.</span>
+          <span class="t-jp is-block">AIエージェントと働く人のための、ツール・スキル・基盤を設計し、実装しています。</span>
+        </p>
+      </div>
+      <a href="ai-tools.html" class="section-link">
+        <span class="t-en">Explore AI tools →</span>
+        <span class="t-jp">AI ツールを見る →</span>
+      </a>
+    </div>
+
+    <div class="tools-list">
+      <article class="tools-row">
+        <div class="tools-primary">
+          <p class="tools-index" aria-hidden="true">01</p>
+          <h3 class="tools-name">cross-model-handoff</h3>
+          <p class="tools-outcome">
+            <span class="t-en">Carry AI coding work across tools without rebuilding context.</span>
+            <span class="t-jp is-block">AI コーディングの文脈を作り直さず、ツールをまたいで作業を引き継ぐ。</span>
+          </p>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">Agent workflow · Plugin · Skill system</p>
+          <p class="tools-stack">AGENTS.md · Claude Code hooks · Markdown</p>
+          <a href="ai-tools.html#cross-model-handoff" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tools-row">
+        <div class="tools-primary">
+          <p class="tools-index" aria-hidden="true">02</p>
+          <h3 class="tools-name">snap-pair-core</h3>
+          <p class="tools-outcome">
+            <span class="t-en">Turn many phones into one live, shared experience—without an app install.</span>
+            <span class="t-jp is-block">アプリをインストールせず、何台ものスマートフォンをひとつのライブ体験につなぐ。</span>
+          </p>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">Realtime infrastructure · React · Firebase · Agent skill</p>
+          <p class="tools-stack">Firebase Auth · Cloud Functions · Realtime Database</p>
+          <a href="ai-tools.html#snap-pair-core" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── AI Products ── -->
+  <section class="ai-section" id="ai-products">
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="t-en">AI Products</span>
+        <span class="t-jp">AIプロダクト</span>
+      </h2>
+      <a href="ai-products.html" class="section-link">
+        <span class="t-en">View all AI products →</span>
+        <span class="t-jp">AIプロダクトをすべて見る →</span>
+      </a>
+    </div>
+    <p class="ai-intro">
+      <span class="t-en">Beyond client work, I design and ship AI-native products through Creativity Is Everywhere — from developer tools that make coding agents smarter to meditative web experiments.</span>
+      <span class="t-jp is-block">クライアントワークの傍らで、Creativity Is Everywhere を通じて AI ネイティブなプロダクトを自ら設計し、世に出しています。コーディングエージェントを賢くする開発者向けツールから、瞑想的なウェブ実験まで。</span>
+    </p>
+    <div class="ai-grid">
+
+      <a href="https://github.com/takaoumehara/failforward" target="_blank" rel="noopener" class="ai-card">
+        <span class="ai-badge shipped"><span class="t-en">Shipped</span><span class="t-jp">公開済み</span></span>
+        <div class="ai-name">failforward</div>
+        <p class="ai-tagline">
+          <span class="t-en">Learn from failures, improve continuously.</span>
+          <span class="t-jp is-block">失敗から学び、継続的に改善する。</span>
+        </p>
+        <div class="ai-card-foot">
+          <span class="ai-stack">CLI · Python · Claude Code</span>
+          <span class="ai-arrow">↗</span>
+        </div>
+      </a>
+
+      <a href="ai-products.html" class="ai-card">
+        <span class="ai-badge near"><span class="t-en">Near launch</span><span class="t-jp">リリース間近</span></span>
+        <div class="ai-name">MyBrainSpec</div>
+        <p class="ai-tagline">
+          <span class="t-en">A personalized BrainManual from a quick cognitive self-check.</span>
+          <span class="t-jp is-block">認知セルフチェックから、あなただけの「ブレインマニュアル」を。</span>
+        </p>
+        <div class="ai-card-foot">
+          <span class="ai-stack">React · Firebase · Gemini</span>
+          <span class="ai-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="ai-products.html" class="ai-card">
+        <span class="ai-badge proto"><span class="t-en">Prototype</span><span class="t-jp">プロトタイプ</span></span>
+        <div class="ai-name">BreakBias Studio</div>
+        <p class="ai-tagline">
+          <span class="t-en">Force non-obvious innovation ideas with SIT.</span>
+          <span class="t-jp is-block">SIT で、当たり前でない発想を強制的に生み出す。</span>
+        </p>
+        <div class="ai-card-foot">
+          <span class="ai-stack">Node/TS · MCP server</span>
+          <span class="ai-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="ai-products.html" class="ai-card">
+        <span class="ai-badge proto"><span class="t-en">Prototype</span><span class="t-jp">プロトタイプ</span></span>
+        <div class="ai-name">Typespace</div>
+        <p class="ai-tagline">
+          <span class="t-en">Typed words become constellations, then dissolve.</span>
+          <span class="t-jp is-block">打った言葉が星座になり、やがて宇宙へ還る。</span>
+        </p>
+        <div class="ai-card-foot">
+          <span class="ai-stack">Next.js · react-three-fiber</span>
+          <span class="ai-arrow">→</span>
+        </div>
+      </a>
+
+      <a href="projects/verizon-ai-agents.html" class="ai-card is-case">
+        <div class="ai-thumb" style="background-image:url('assets/verizon-ai-agents/hero-workflow-agents.jpg');"></div>
+        <span class="ai-badge case"><span class="t-en">Enterprise · Case study</span><span class="t-jp">エンタープライズ事例</span></span>
+        <div class="ai-name">Verizon AI Workflow</div>
+        <p class="ai-tagline">
+          <span class="t-en">AI-powered UX workflow transformation — agents that shifted 42 designers to strategic pilots across 6 brands.</span>
+          <span class="t-jp is-block">AI による UX ワークフロー変革。６ブランドの 42 人のデザイナーを戦略的パイロットへ引き上げたエージェント群。</span>
+        </p>
+        <div class="ai-card-foot">
+          <span class="ai-stack">Agentic UX · 6 brands</span>
+          <span class="ai-arrow">→</span>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── Initiatives ── -->
+  <section class="initiatives-section">
+    <div class="section-head">
+      <h2 class="section-title">Initiatives</h2>
+    </div>
+    <div class="initiatives-grid">
+
+      <a href="breakbias.html" class="initiative-card">
+        <div class="initiative-tag">Innovation Training</div>
+        <div>
+          <div class="initiative-title">BreakBias</div>
+          <div class="initiative-desc" style="margin-top:14px;">Eight structured tools for overcoming the cognitive biases that block innovation. Available as workshops for teams, in online and in-person formats.</div>
+        </div>
+        <div class="initiative-footer">
+          <div class="initiative-clients">Microsoft · Tiffany · Havas · Dentsu · Google</div>
+          <div class="initiative-arrow">↗</div>
+        </div>
+      </a>
+
+      <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="initiative-card intentfirst">
+        <div class="initiative-tag">AI Design Research</div>
+        <div>
+          <div class="initiative-title">intentfirst.ai</div>
+          <div class="initiative-desc" style="margin-top:14px;">Context Grammar is a design language that gives AI systems the vocabulary to understand not just what users ask, but what they actually need — across 8 Context Tokens and a 3-layer memory model.</div>
+        </div>
+        <div class="initiative-footer">
+          <div class="initiative-clients">Agentic AI · OS Design · Context-aware UX</div>
+          <div class="initiative-arrow">↗</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ── Capabilities ── -->
+  <section class="capabilities-section">
+    <div class="section-head">
+      <h2 class="section-title">What I do</h2>
+    </div>
+    <div class="capabilities-grid">
+      <div class="capability-block">
+        <div class="capability-num">01</div>
+        <div class="capability-title">Products &amp; Systems</div>
+        <p class="capability-desc">End-to-end product design from research to launch — UX strategy, interaction design, design systems, and prototyping.</p>
+        <ul class="capability-list">
+          <li>UX research &amp; strategy</li>
+          <li>Product design (mobile, web, kiosk)</li>
+          <li>Design systems &amp; component libraries</li>
+          <li>Co-design workshop facilitation</li>
+        </ul>
+      </div>
+      <div class="capability-block">
+        <div class="capability-num">02</div>
+        <div class="capability-title">Brands &amp; Experiences</div>
+        <p class="capability-desc">Brand strategy and visual identity — from positioning and naming through full identity systems and environmental design.</p>
+        <ul class="capability-list">
+          <li>Brand strategy &amp; positioning</li>
+          <li>Visual identity systems</li>
+          <li>CX &amp; service design</li>
+          <li>Creative direction</li>
+        </ul>
+      </div>
+      <div class="capability-block">
+        <div class="capability-num">03</div>
+        <div class="capability-title">Innovation &amp; Strategy</div>
+        <p class="capability-desc">Structured approaches to creative thinking and organisational transformation — BreakBias, design sprints, and AI-era design frameworks.</p>
+        <ul class="capability-list">
+          <li>Innovation workshops (BreakBias)</li>
+          <li>Design sprint facilitation</li>
+          <li>AI/UX framework development</li>
+          <li>Business model design</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Lang Switch ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer">
+      <div>
+        <div class="footer-logo">Takao Umehara</div>
+        <div class="footer-llc">Freelance &amp; consulting work accepted through <strong>Creativity Is Everywhere LLC</strong></div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+        
+        <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
+        <li><a href="intentfirst.html">intentfirst.ai</a></li>
+      </ul>
+      <div class="footer-copy">New York City</div>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    const CDN = "assets/";
+
+    // ── Palette presets (from 5-3C family) ──
+    const presets = [
+      { angle:"102deg", a1:"hsla(198 82% 72% / 0.44)", a2:"hsla(248 74% 80% / 0.36)", a3:"hsla(324 72% 81% / 0.40)", a4:"hsla(36 80% 78% / 0.34)", t1:"hsl(198 58% 56%)", t2:"hsl(248 58% 70%)", t3:"hsl(324 60% 72%)", t4:"hsl(36 58% 62%)" },
+      { angle:"96deg",  a1:"hsla(222 84% 62% / 0.48)", a2:"hsla(198 80% 74% / 0.34)", a3:"hsla(274 62% 80% / 0.32)", a4:"hsla(36 74% 80% / 0.28)",  t1:"hsl(222 62% 52%)", t2:"hsl(198 56% 60%)", t3:"hsl(274 50% 72%)", t4:"hsl(36 54% 66%)" },
+      { angle:"110deg", a1:"hsla(40 80% 74% / 0.38)",  a2:"hsla(320 70% 76% / 0.42)", a3:"hsla(266 62% 80% / 0.34)", a4:"hsla(194 78% 74% / 0.32)", t1:"hsl(40 56% 62%)",  t2:"hsl(320 58% 68%)", t3:"hsl(266 52% 72%)", t4:"hsl(194 56% 60%)" },
+      { angle:"90deg",  a1:"hsla(206 86% 70% / 0.46)", a2:"hsla(232 86% 60% / 0.42)", a3:"hsla(274 62% 78% / 0.28)", a4:"hsla(42 72% 82% / 0.22)",  t1:"hsl(206 62% 56%)", t2:"hsl(232 62% 52%)", t3:"hsl(274 50% 72%)", t4:"hsl(42 54% 70%)" },
+      { angle:"108deg", a1:"hsla(42 78% 78% / 0.34)",  a2:"hsla(28 84% 72% / 0.28)",  a3:"hsla(314 68% 76% / 0.40)", a4:"hsla(196 78% 76% / 0.30)", t1:"hsl(42 58% 68%)",  t2:"hsl(28 60% 62%)",  t3:"hsl(314 58% 70%)", t4:"hsl(196 56% 62%)" },
+      { angle:"100deg", a1:"hsla(202 70% 84% / 0.30)", a2:"hsla(248 62% 82% / 0.32)", a3:"hsla(330 62% 84% / 0.28)", a4:"hsla(48 70% 84% / 0.24)",  t1:"hsl(202 52% 66%)", t2:"hsl(248 50% 72%)", t3:"hsl(330 52% 74%)", t4:"hsl(48 52% 72%)" }
+    ];
+
+    const pickPreset = () => presets[Math.floor(Math.random() * presets.length)];
+    const whole = (min, max) => Math.round(min + Math.random() * (max - min));
+
+    const applyPreset = (target, preset) => {
+      target.style.setProperty("--angle", preset.angle);
+      target.style.setProperty("--a1", preset.a1);
+      target.style.setProperty("--a2", preset.a2);
+      target.style.setProperty("--a3", preset.a3);
+      target.style.setProperty("--a4", preset.a4);
+      target.style.setProperty("--t1", preset.t1);
+      target.style.setProperty("--t2", preset.t2);
+      target.style.setProperty("--t3", preset.t3);
+      target.style.setProperty("--t4", preset.t4);
+    };
+
+    // ── Reveal system ──
+    const revealItems = [...document.querySelectorAll(".rr")];
+
+    const triggerReveal = (item, delay) => {
+      const speed = parseInt(item.dataset.speed || "900", 10);
+      item.style.setProperty("--delay", `${delay}ms`);
+      item.style.setProperty("--dur", `${speed}ms`);
+      item.classList.remove("is-on");
+      requestAnimationFrame(() => requestAnimationFrame(() => item.classList.add("is-on")));
+    };
+
+    // Apply a preset to each card's rr items on reveal
+    const revealCard = (card, baseDelay) => {
+      applyPreset(card, pickPreset());
+      const items = [...card.querySelectorAll(".rr")];
+      let cursor = baseDelay;
+      const order = { image: 0, meta: 1, title: 2, body: 3 };
+      const sorted = [...items].sort((a, b) => {
+        const ra = order[a.dataset.role] ?? 2;
+        const rb = order[b.dataset.role] ?? 2;
+        return ra - rb;
+      });
+      sorted.forEach((item, i) => {
+        cursor += whole(20, 48) + (i === 0 ? 0 : 0);
+        triggerReveal(item, cursor);
+      });
+    };
+
+    // IntersectionObserver for cards
+    const cardObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const card = entry.target;
+        if (card._revealed) return;
+        card._revealed = true;
+        cardObserver.unobserve(card);
+        // Stagger cards in same row
+        const allCards = [...document.querySelectorAll(".work-card")];
+        const idx = allCards.indexOf(card);
+        revealCard(card, idx * 40);
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
+
+    document.querySelectorAll(".work-card").forEach((card) => {
+      cardObserver.observe(card);
+    });
+
+    // ── Hover interactions ──
+    document.querySelectorAll(".work-card").forEach((card) => {
+      const cardImage = card.querySelector(".card-image");
+      const trioTexts = [...card.querySelectorAll(".card-title, .card-desc, .pill")];
+
+      const clearTextState = () => {
+        trioTexts.forEach((el) => {
+          el.classList.remove("is-hovered", "is-exiting");
+          clearTimeout(el._exitTimer);
+        });
+      };
+
+      const startTextHover = () => {
+        applyPreset(card, pickPreset());
+        trioTexts.forEach((el) => {
+          el.style.setProperty("--hover-shift", `${whole(18, 78)}%`);
+          el.classList.remove("is-exiting");
+          el.classList.add("is-hovered");
+        });
+        if (cardImage) {
+          cardImage.classList.remove("hover-leaving");
+          cardImage.classList.add("hover-active");
+        }
+      };
+
+      const startTextExit = () => {
+        trioTexts.forEach((el) => {
+          el.classList.remove("is-hovered");
+          el.classList.add("is-exiting");
+          clearTimeout(el._exitTimer);
+          el._exitTimer = setTimeout(() => {
+            el.classList.remove("is-exiting");
+            el.style.removeProperty("--hover-shift");
+          }, 560);
+        });
+        if (cardImage) {
+          cardImage.classList.remove("hover-active");
+          cardImage.classList.add("hover-leaving");
+          clearTimeout(cardImage._leaveTimer);
+          cardImage._leaveTimer = setTimeout(() => {
+            cardImage.classList.remove("hover-leaving");
+          }, 920);
+        }
+      };
+
+      card.addEventListener("pointerenter", () => {
+        card.classList.add("is-hovering");
+        startTextHover();
+      });
+
+      card.addEventListener("pointerleave", () => {
+        card.classList.remove("is-hovering", "is-pressing", "is-held");
+        startTextExit();
+      });
+
+      card.addEventListener("pointerdown", () => card.classList.add("is-pressing"));
+      card.addEventListener("pointerup",   () => card.classList.remove("is-pressing"));
+
+      card.addEventListener("click", () => {
+        const href = card.dataset.href;
+        if (!href) return;
+        card.classList.add("is-held");
+        clearTimeout(card._holdTimer);
+        card._holdTimer = setTimeout(() => card.classList.remove("is-held"), 920);
+        setTimeout(() => {
+          if (card.dataset.external === "true") {
+            window.open(href, "_blank", "noopener");
+          } else {
+            window.location.href = href;
+          }
+        }, 120);
+      });
+    });
+
+  })();
+
+  // ── Lang switch ──
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      html.lang = lang === "jp" ? "ja" : "en";
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (!toggle || !links) return;
+    const close = () => {
+      toggle.classList.remove('is-open');
+      links.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+    toggle.addEventListener('click', () => {
+      const open = !links.classList.contains('is-open');
+      toggle.classList.toggle('is-open', open);
+      links.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    links.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
+  })();
+  </script>
+
+</body>
+</html>

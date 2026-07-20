@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>GraffitiWear — School Community Apparel | Takao Umehara</title>
+  <meta name="description" content="GraffitiWear — a graffiti-inspired apparel collection designed by Takao Umehara for the Japanese Weekend School of New York, reaching over 50% adoption among students, faculty, and parents. Case study by Takao Umehara.">
+  <meta property="og:title" content="GraffitiWear — School Community Apparel | Takao Umehara">
+  <meta property="og:description" content="GraffitiWear — a graffiti-inspired apparel collection for a Japanese weekend school that reached over 50% community adoption.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/shared/Screenshot_2026-02-19_at_12.51.33.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    :root {
+      --bg: #fbfaf7; --ink: #121212; --ink-mid: #4c4841; --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08); --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92); --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44); --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40); --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%); --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%); --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg; --bar-width: 70%;
+      --image-hover-opacity: 0.985; --image-hover-width: 174%;
+      --image-hover-from: -96%; --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms; --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms; --press-ms: 760ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--ff); color: var(--ink); background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); min-height: 100vh; }
+    .eyebrow, .kicker, .meta, .small, .pill { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); }
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; }
+    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(18,18,18,0.72) 0%,rgba(18,18,18,0.18) 60%,transparent 100%); }
+    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
+    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
+    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
+    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+    .project-aside-stat { margin-bottom: 24px; }
+    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
+    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
+    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+    .project-section { margin-bottom: 64px; }
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
+    .outcomes-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-bottom: 64px; }
+    .outcome-block { padding: 28px 24px; border: 1px solid var(--line); }
+    .outcome-num { font-size: 36px; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 6px; }
+    .outcome-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+    .outcome-change { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); margin-top: 6px; }
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; border-radius: 2px; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+    .nav-project { display: flex; justify-content: space-between; align-items: center; padding: 32px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
+    .nav-project a { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; display: flex; align-items: center; gap: 8px; }
+    .nav-project a:hover { color: var(--ink); }
+    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-left: 1px solid rgba(18,18,18,0.10); border-radius: 6px 0 0 6px; }
+    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    @media (max-width: 900px) {
+      .project-overview { grid-template-columns: 1fr; gap: 40px; }
+      .outcomes-grid { grid-template-columns: 1fr 1fr; }
+      .g-row.r3 { grid-template-columns: 1fr 1fr; }
+      .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .project-hero-content { padding: 32px 20px; }
+      .project-body { padding: 40px 20px 60px; }
+      .breadcrumb { padding: 16px 20px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .g-row.r2, .g-row.r3 { grid-template-columns: 1fr; }
+    }
+    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .g-cell img { opacity: 0; transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .g-cell img.loaded { opacity: 1; }
+    .g-cell:hover img.loaded { transform: scale(1.008); }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; }
+      .g-cell img { opacity: 1 !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../work.html" class="is-active" aria-current="page">Work</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="../work.html">Work</a>
+    <span>/</span>
+    <a href="#">GraffitiWear</a>
+  </div>
+
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/shared/Screenshot_2026-02-19_at_12.51.33.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Graphic Design</span>
+        <span class="project-hero-tag">Apparel</span>
+        <span class="project-hero-tag">Community Design</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">GraffitiWear &#8212; School Community Apparel</span>
+        <span class="t-jp">GraffitiWear &#8212; &#12473;&#12463;&#12540;&#12523;&#12467;&#12511;&#12517;&#12491;&#12486;&#12451;&#12450;&#12497;&#12524;&#12523;</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">Japanese Weekend School of New York</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Creative Director &amp; Lead Designer</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">2025</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="project-body">
+
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">Outcomes</span>
+          <span class="t-jp">&#25104;&#26524;</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">50%+</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Adoption among students, faculty, and parents</span>
+            <span class="t-jp">&#29983;&#24466;&#12289;&#25945;&#32887;&#21729;&#12289;&#20445;&#35703;&#32773;&#12398;&#25505;&#29992;&#29575;</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">Pop-up</div>
+          <div class="project-aside-desc">
+            <span class="t-en">On-campus store execution</span>
+            <span class="t-jp">&#12461;&#12515;&#12531;&#12497;&#12473;&#20869;&#12509;&#12483;&#12503;&#12450;&#12483;&#12503;&#12473;&#12488;&#12450;&#23455;&#26045;</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">NYC &#215; JP</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Bridged NYC street culture with Japanese education</span>
+            <span class="t-jp">NYC&#12473;&#12488;&#12522;&#12540;&#12488;&#12459;&#12523;&#12481;&#12515;&#12540;&#12392;&#26085;&#26412;&#25945;&#32946;&#12434;&#34701;&#21512;</span>
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top: 32px;">
+          <span class="t-en">Scope</span>
+          <span class="t-jp">&#12473;&#12467;&#12540;&#12503;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Graphic Design</span><span class="t-jp">&#12464;&#12521;&#12501;&#12451;&#12483;&#12463;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Brand Strategy</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#25126;&#30053;</span></li>
+          <li><span class="t-en">Apparel Design</span><span class="t-jp">&#12450;&#12497;&#12524;&#12523;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Promotion Design</span><span class="t-jp">&#12503;&#12525;&#12514;&#12540;&#12471;&#12519;&#12531;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Pop-up Store</span><span class="t-jp">&#12509;&#12483;&#12503;&#12450;&#12483;&#12503;&#12473;&#12488;&#12450;</span></li>
+        </ul>
+      </aside>
+
+      <div>
+        <h2 class="project-section-title">
+          <span class="t-en">The Opportunity</span>
+          <span class="t-jp">&#27231;&#20250;</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">The Japanese Weekend School of New York (JWSNY) lacked a unified community identity that could bridge its educational mission with the vibrant street culture of New York City. The school needed something more than standard merchandise &#8212; it needed wearable art that students, faculty, and parents would be proud to wear, transforming school spirit into a visible, shared identity.</span>
+          <span class="t-jp is-block">&#12491;&#12517;&#12540;&#12520;&#12540;&#12463;&#26085;&#26412;&#20154;&#23398;&#26657;&#65288;JWSNY&#65289;&#12395;&#12399;&#12289;&#25945;&#32946;&#12511;&#12483;&#12471;&#12519;&#12531;&#12392;&#12491;&#12517;&#12540;&#12520;&#12540;&#12463;&#12398;&#27963;&#27671;&#12354;&#12427;&#12473;&#12488;&#12522;&#12540;&#12488;&#12459;&#12523;&#12481;&#12515;&#12540;&#12434;&#27211;&#28193;&#12375;&#12377;&#12427;&#32113;&#19968;&#12373;&#12428;&#12383;&#12467;&#12511;&#12517;&#12491;&#12486;&#12451;&#12450;&#12452;&#12487;&#12531;&#12486;&#12451;&#12486;&#12451;&#12364;&#12354;&#12426;&#12414;&#12379;&#12435;&#12391;&#12375;&#12383;&#12290;&#27161;&#28310;&#30340;&#12394;&#12510;&#12540;&#12481;&#12515;&#12531;&#12480;&#12452;&#12474;&#20197;&#19978;&#12398;&#12418;&#12398;&#12364;&#24517;&#35201;&#12391;&#12375;&#12383;&#12290;&#29983;&#24466;&#12289;&#25945;&#32887;&#21729;&#12289;&#20445;&#35703;&#32773;&#12364;&#35463;&#12426;&#12434;&#25345;&#12387;&#12390;&#30528;&#12427;&#12454;&#12455;&#12450;&#12521;&#12502;&#12523;&#12450;&#12540;&#12488;&#12391;&#12289;&#12473;&#12463;&#12540;&#12523;&#12473;&#12500;&#12522;&#12483;&#12488;&#12434;&#30446;&#12395;&#35211;&#12360;&#12427;&#20849;&#26377;&#12450;&#12452;&#12487;&#12531;&#12486;&#12451;&#12486;&#12451;&#12395;&#22793;&#12360;&#12427;&#12371;&#12392;&#12364;&#27714;&#12417;&#12425;&#12428;&#12390;&#12356;&#12414;&#12375;&#12383;&#12290;</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">My Direction</span>
+          <span class="t-jp">&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I designed an apparel collection using bold, hand-drawn typography and symbolic illustrations that represented layers of learning, friendship, and cultural identity. The graffiti-inspired aesthetic drew directly from NYC street art traditions while honoring the school's Japanese heritage &#8212; creating designs that felt authentically New York and distinctly JWSNY.</span>
+          <span class="t-jp is-block">&#22823;&#32966;&#12394;&#25163;&#25551;&#12365;&#12479;&#12452;&#12509;&#12464;&#12521;&#12501;&#12451;&#12392;&#12289;&#23398;&#12403;&#12289;&#21451;&#24773;&#12289;&#25991;&#21270;&#30340;&#12450;&#12452;&#12487;&#12531;&#12486;&#12451;&#12486;&#12451;&#12398;&#23652;&#12434;&#34920;&#12377;&#35937;&#24500;&#30340;&#12394;&#12452;&#12521;&#12473;&#12488;&#12524;&#12540;&#12471;&#12519;&#12531;&#12434;&#20351;&#12387;&#12383;&#12450;&#12497;&#12524;&#12523;&#12467;&#12524;&#12463;&#12471;&#12519;&#12531;&#12434;&#12487;&#12470;&#12452;&#12531;&#12375;&#12414;&#12375;&#12383;&#12290;&#12464;&#12521;&#12501;&#12451;&#12486;&#12451;&#12395;&#12452;&#12531;&#12473;&#12497;&#12452;&#12450;&#12373;&#12428;&#12383;&#32654;&#23398;&#12399;&#12289;NYC&#12473;&#12488;&#12522;&#12540;&#12488;&#12450;&#12540;&#12488;&#12398;&#20253;&#32113;&#12363;&#12425;&#30452;&#25509;&#24341;&#12365;&#20986;&#12375;&#12394;&#12364;&#12425;&#12289;&#23398;&#26657;&#12398;&#26085;&#26412;&#12398;&#36986;&#29987;&#12434;&#23562;&#37325;&#12375;&#12414;&#12375;&#12383;&#12290;</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">The project extended beyond design into execution &#8212; I led the pop-up store experience on campus, creating an event that turned the collection launch into a community celebration. The result was over 50% adoption among students, faculty, and parents, transforming the campus visual landscape and significantly strengthening community unity and belonging.</span>
+          <span class="t-jp is-block">&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#12399;&#12487;&#12470;&#12452;&#12531;&#12434;&#36229;&#12360;&#12390;&#23455;&#34892;&#12414;&#12391;&#25313;&#22823;&#12375;&#12414;&#12375;&#12383;&#12290;&#12461;&#12515;&#12531;&#12497;&#12473;&#20869;&#12398;&#12509;&#12483;&#12503;&#12450;&#12483;&#12503;&#12473;&#12488;&#12450;&#20307;&#39443;&#12434;&#12522;&#12540;&#12489;&#12375;&#12289;&#12467;&#12524;&#12463;&#12471;&#12519;&#12531;&#12398;&#30330;&#22770;&#12434;&#12467;&#12511;&#12517;&#12491;&#12486;&#12451;&#12398;&#31069;&#31085;&#12395;&#22793;&#12360;&#12414;&#12375;&#12383;&#12290;&#32080;&#26524;&#12289;&#29983;&#24466;&#12289;&#25945;&#32887;&#21729;&#12289;&#20445;&#35703;&#32773;&#12398;50%&#20197;&#19978;&#12364;&#25505;&#29992;&#12375;&#12289;&#12461;&#12515;&#12531;&#12497;&#12473;&#12398;&#12499;&#12472;&#12517;&#12450;&#12523;&#12521;&#12531;&#12489;&#12473;&#12465;&#12540;&#12503;&#12434;&#22793;&#12360;&#12289;&#12467;&#12511;&#12517;&#12491;&#12486;&#12451;&#12398;&#32080;&#26463;&#21147;&#12392;&#24112;&#23646;&#24847;&#35672;&#12434;&#22823;&#24133;&#12395;&#24375;&#21270;&#12375;&#12414;&#12375;&#12383;&#12290;</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">Tools &amp; Methods</span>
+          <span class="t-jp">&#12484;&#12540;&#12523;&#65286;&#25163;&#27861;</span>
+        </h2>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Hand-drawn Typography</span><span class="t-jp">&#25163;&#25551;&#12365;&#12479;&#12452;&#12509;&#12464;&#12521;&#12501;&#12451;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Illustration</span><span class="t-jp">&#12452;&#12521;&#12473;&#12488;&#12524;&#12540;&#12471;&#12519;&#12531;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Apparel Production</span><span class="t-jp">&#12450;&#12497;&#12524;&#12523;&#35069;&#36896;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Pop-up Retail</span><span class="t-jp">&#12509;&#12483;&#12503;&#12450;&#12483;&#12503;&#12522;&#12486;&#12540;&#12523;</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section">
+      <h2 class="project-section-title reveal-on-scroll">
+        <span class="t-en">Results</span>
+        <span class="t-jp">&#25104;&#26524;</span>
+      </h2>
+      <div class="outcomes-grid reveal-on-scroll">
+        <div class="outcome-block">
+          <div class="outcome-num">50%+</div>
+          <div class="outcome-label"><span class="t-en">Community adoption rate</span><span class="t-jp">&#12467;&#12511;&#12517;&#12491;&#12486;&#12451;&#25505;&#29992;&#29575;</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">3 Groups</div>
+          <div class="outcome-label"><span class="t-en">Students, faculty, and parents engaged</span><span class="t-jp">&#29983;&#24466;&#12289;&#25945;&#32887;&#21729;&#12289;&#20445;&#35703;&#32773;&#12364;&#21442;&#21152;</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">Pop-up</div>
+          <div class="outcome-label"><span class="t-en">On-campus store launched collection</span><span class="t-jp">&#12461;&#12515;&#12531;&#12497;&#12473;&#20869;&#12473;&#12488;&#12450;&#12391;&#12467;&#12524;&#12463;&#12471;&#12519;&#12531;&#30330;&#22770;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery reveal-on-scroll">
+
+      <!-- ── Lookbook ── -->
+      <p class="gallery-label">
+        <span class="t-en">Lookbook</span>
+        <span class="t-jp">&#12523;&#12483;&#12463;&#12502;&#12483;&#12463;</span>
+      </p>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_10.png" alt="Black T-shirt, kids colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_24.png" alt="Black T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_11.png" alt="Gray Camel T-shirt, kids colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_25.png" alt="Dark Apricot T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_18.png" alt="Khaki crewneck sweatshirt, kids colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_26.png" alt="Navy Blue T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_32.png" alt="Black hoodie, teen to adult colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_33.png" alt="Gray Coffee hoodie, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_34.png" alt="Navy Blue hoodie, teen to adult colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_40.png" alt="Black zip-up hoodie, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_41.png" alt="Navy Blue zip-up hoodie styled with everyday layers, front and back" loading="lazy"></div>
+      </div>
+
+      <!-- ── Lineups ── -->
+      <p class="gallery-label">
+        <span class="t-en">Lineups</span>
+        <span class="t-jp">&#12521;&#12452;&#12531;&#12490;&#12483;&#12503;</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell natural"><img src="../assets/shared/Screenshot_2026-02-19_at_13.04.18.png" alt="GraffitiWear product lineup matrix across kids and teen-to-adult sizing" loading="lazy"></div>
+      </div>
+
+      <!-- ── The Final Artwork ── -->
+      <p class="gallery-label">
+        <span class="t-en">The Final Artwork</span>
+        <span class="t-jp">&#26368;&#32066;&#12450;&#12540;&#12488;&#12527;&#12540;&#12463;</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/ForMockup2.png" alt="Full graffiti artwork featuring MATSURI, NYUGAKU, and HANABI lettering" loading="lazy"></div>
+      </div>
+
+    </div>
+
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">&#25104;&#26524;&#29289;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Apparel Collection</span><span class="t-jp">&#12450;&#12497;&#12524;&#12523;&#12467;&#12524;&#12463;&#12471;&#12519;&#12531;</span></li>
+          <li><span class="t-en">Graphic Design</span><span class="t-jp">&#12464;&#12521;&#12501;&#12451;&#12483;&#12463;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Promotion Materials</span><span class="t-jp">&#12503;&#12525;&#12514;&#12540;&#12471;&#12519;&#12531;&#36039;&#26448;</span></li>
+          <li><span class="t-en">Pop-up Store</span><span class="t-jp">&#12509;&#12483;&#12503;&#12450;&#12483;&#12503;&#12473;&#12488;&#12450;</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Methods</span>
+          <span class="t-jp">&#25163;&#27861;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Hand-drawn Typography</span><span class="t-jp">&#25163;&#25551;&#12365;&#12479;&#12452;&#12509;&#12464;&#12521;&#12501;&#12451;</span></li>
+          <li><span class="t-en">Illustration</span><span class="t-jp">&#12452;&#12521;&#12473;&#12488;&#12524;&#12540;&#12471;&#12519;&#12531;</span></li>
+          <li><span class="t-en">Brand Strategy</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#25126;&#30053;</span></li>
+          <li><span class="t-en">Community Engagement</span><span class="t-jp">&#12467;&#12511;&#12517;&#12491;&#12486;&#12451;&#12456;&#12531;&#12466;&#12540;&#12472;&#12513;&#12531;&#12488;</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Team</span>
+          <span class="t-jp">&#12481;&#12540;&#12512;</span>
+        </p>
+        <p class="project-text" style="font-size: 13px;">
+          <span class="t-en">School Parents Association. I served as Creative Director and Lead Designer &#8212; creating the concept, hand-drawn graphics, apparel designs, promotion materials, and pop-up store experience.</span>
+          <span class="t-jp is-block">&#23398;&#26657;&#20445;&#35703;&#32773;&#20250;&#12290;&#12463;&#12522;&#12456;&#12452;&#12486;&#12451;&#12502;&#12487;&#12451;&#12524;&#12463;&#12479;&#12540;&#20860;&#12522;&#12540;&#12489;&#12487;&#12470;&#12452;&#12490;&#12540;&#12392;&#12375;&#12390;&#12289;&#12467;&#12531;&#12475;&#12503;&#12488;&#12289;&#25163;&#25551;&#12365;&#12464;&#12521;&#12501;&#12451;&#12483;&#12463;&#12473;&#12289;&#12450;&#12497;&#12524;&#12523;&#12487;&#12470;&#12452;&#12531;&#12289;&#12503;&#12525;&#12514;&#12540;&#12471;&#12519;&#12531;&#36039;&#26448;&#12289;&#12509;&#12483;&#12503;&#12450;&#12483;&#12503;&#12473;&#12488;&#12450;&#20307;&#39443;&#12434;&#21109;&#36896;&#12290;</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="nav-project">
+      <a href="xq.html">&#8592; <span class="t-en">Prev: XQ Super School</span><span class="t-jp">&#21069;&#65306;XQ Super School</span></a>
+      <a href="../work.html"><span class="t-en">All Work</span><span class="t-jp">&#12377;&#12409;&#12390;&#12398;&#20181;&#20107;</span> &#8594;</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">&#12501;&#12522;&#12540;&#12521;&#12531;&#12473;&#12539;&#12467;&#12531;&#12469;&#12523;&#12486;&#12451;&#12531;&#12464;&#12399; <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> &#12434;&#36890;&#12376;&#12390;</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Work</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">&middot;</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+})();
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'));
+});
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

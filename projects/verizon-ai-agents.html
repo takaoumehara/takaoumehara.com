@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Verizon — AI-Powered UX Workflow Transformation — Takao Umehara</title>
+  <meta name="description" content="How a fleet of 10 purpose-built AI agents transformed the UX workflow for Verizon Value's 6-brand design team — knowledge management, edge-case detection, CX strategy, writing evaluation, and design production.">
+  <meta property="og:title" content="Verizon — AI-Powered UX Workflow Transformation — Takao Umehara">
+  <meta property="og:description" content="A fleet of 10 purpose-built AI agents that replaced Verizon Value's structural design-workflow failures, from tribal knowledge to late-phase edge cases.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/verizon-ai-agents/hero-workflow-agents.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
+    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
+    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
+  </style>
+  <style>
+    /* ─── Mobile Menu ─── */
+    .nav-toggle { display:none; appearance:none; background:none; border:none; cursor:pointer; width:28px; height:20px; position:relative; padding:0; }
+    .nav-toggle span { display:block; position:absolute; left:0; width:100%; height:1.5px; background:var(--ink); transition:transform 280ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top:0; } .nav-toggle span:nth-child(2) { top:9px; } .nav-toggle span:nth-child(3) { top:18px; }
+    .nav-toggle.is-open span:nth-child(1) { top:9px; transform:rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity:0; }
+    .nav-toggle.is-open span:nth-child(3) { top:9px; transform:rotate(-45deg); }
+    @media (max-width:768px) {
+      .nav-toggle { display:block; }
+      .nav-links { display:none; position:absolute; top:100%; left:0; right:0; flex-direction:column; gap:0; padding:0; background:rgba(255,255,255,0.97); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
+      .nav-links.is-open { display:flex; }
+      .nav-links li { border-top:1px solid var(--line); }
+      .nav-links a { display:block; padding:16px 32px; font-size:14px; }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      /* 5-3C'02 Rich palette */
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; }
+    body {
+      font-family:var(--ff); color:var(--ink);
+      background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height:100vh;
+    }
+
+    .eyebrow, .kicker, .meta, .small, .pill { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); }
+
+    /* ─── Nav ─── */
+    .site-nav { position:sticky; top:0; z-index:40; display:flex; justify-content:space-between; align-items:center; padding:14px 32px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
+    .nav-logo { display:flex; flex-direction:column; gap:3px; text-decoration:none; line-height:1; }
+    .nav-logo-name { font-size:15px; font-weight:600; letter-spacing:-0.018em; color:var(--ink); }
+    .nav-logo-tag { font-size:10.5px; letter-spacing:0.02em; color:var(--ink-dim); font-weight:400; }
+    .nav-links { display:flex; gap:28px; list-style:none; }
+    .nav-links a { font-size:13px; color:var(--ink-mid); text-decoration:none; letter-spacing:0.01em; transition:color 160ms ease; }
+    .nav-links a:hover { color:var(--ink); }
+    .nav-links a.is-active { color:var(--ink); font-weight:600; }
+
+    /* ─── Buttons ─── */
+    .btn-primary { display:inline-block; padding:13px 20px; background:var(--ink); color:#fff; font-family:var(--ff); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; border:1px solid var(--ink); transition:background 180ms ease; }
+    .btn-primary:hover { background:#2a2a2a; }
+
+    /* ─── Footer ─── */
+    .site-footer { border-top:1px solid var(--line); padding:40px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; }
+    .footer-logo { font-size:15px; font-weight:600; letter-spacing:-0.018em; }
+    .footer-links { display:flex; gap:24px; list-style:none; }
+    .footer-links a { font-size:12px; letter-spacing:0.08em; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; }
+    .footer-links a:hover { color:var(--ink); }
+    .footer-copy { font-size:12px; color:var(--ink-dim); }
+
+    /* ─── Animations ─── */
+    @keyframes hero-in { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion:reduce) {
+      .reveal-on-scroll { opacity:1 !important; transform:none !important; transition:none !important; }
+    }
+
+    /* ─── Project Detail ─── */
+    .project-hero { position:relative; min-height:560px; overflow:hidden; display:flex; align-items:flex-end; background:#0a0a0c url('../assets/verizon-ai-agents/hero-workflow-agents.jpg') center/cover no-repeat; }
+    .project-hero-overlay { position:absolute; inset:0; background:linear-gradient(0deg,rgba(10,10,12,0.82) 0%,rgba(10,10,12,0.16) 45%,rgba(10,10,12,0.55) 100%); }
+    .project-hero-content { position:relative; z-index:2; padding:56px 32px; max-width:1200px; margin:0 auto; width:100%; }
+    .project-hero-tags { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+    .project-hero-tag { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.24); padding:5px 9px; }
+    .project-hero-title { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(32px,5vw,64px); font-weight:400; letter-spacing:-0.03em; line-height:0.93; color:#fff; max-width:860px; margin-bottom:24px; }
+    .project-hero-subtitle { font-size:17px; line-height:1.68; color:rgba(255,255,255,0.62); max-width:680px; margin-bottom:32px; }
+    .project-hero-meta { display:flex; gap:32px; flex-wrap:wrap; }
+    .project-meta-item { display:flex; flex-direction:column; gap:3px; }
+    .project-meta-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.38); }
+    .project-meta-value { font-size:13px; color:rgba(255,255,255,0.82); }
+
+    .breadcrumb { padding:20px 32px; max-width:1200px; margin:0 auto; }
+    .breadcrumb a { font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; }
+    .breadcrumb a:hover { color:var(--ink); }
+    .breadcrumb span { font-size:12px; color:rgba(18,18,18,0.28); margin:0 8px; }
+
+    .project-body { max-width:1200px; margin:0 auto; padding:64px 32px 80px; }
+    .project-overview { display:grid; grid-template-columns:1fr 1.6fr; gap:64px; margin-bottom:72px; padding-bottom:72px; border-bottom:1px solid var(--line); }
+    .project-section-title { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(22px,2.4vw,30px); font-weight:400; letter-spacing:-0.02em; margin-bottom:20px; }
+    .project-text { font-size:16px; line-height:1.72; color:var(--ink-mid); margin-bottom:20px; }
+    .project-aside-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
+    .project-aside-stat { margin-bottom:24px; }
+    .project-aside-num { font-size:32px; font-weight:600; letter-spacing:-0.04em; }
+    .project-aside-desc { font-size:13px; color:var(--ink-dim); margin-top:4px; }
+    .project-deliverables { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .project-deliverables li { font-size:14px; color:var(--ink-mid); display:flex; gap:10px; align-items:baseline; }
+    .project-deliverables li::before { content:"\2014"; color:rgba(18,18,18,0.24); flex-shrink:0; }
+
+    .project-section { margin-bottom:64px; }
+    .section-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+    .impact-block { background:#f5f3ef; padding:40px 36px; margin-bottom:64px; }
+    .impact-title { font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
+    .impact-text { font-size:17px; line-height:1.7; color:var(--ink-mid); }
+
+    .outcomes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:64px; }
+    .outcome-block { padding:28px 24px; border:1px solid var(--line); }
+    .outcome-num { font-size:36px; font-weight:600; letter-spacing:-0.05em; margin-bottom:6px; }
+    .outcome-label { font-size:13px; color:var(--ink-mid); line-height:1.5; }
+
+    .nav-project { display:flex; justify-content:space-between; align-items:center; padding:32px 0 0; border-top:1px solid var(--line); margin-top:32px; }
+    .nav-project a { font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; display:flex; align-items:center; gap:8px; }
+    .nav-project a:hover { color:var(--ink); }
+
+    /* ─── Friction Grid ─── */
+    .friction-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-bottom:48px; }
+    .friction-card { background:#0f0f10; padding:36px 32px; display:flex; flex-direction:column; gap:12px; }
+    .friction-num { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.36); }
+    .friction-title { font-size:20px; font-weight:600; letter-spacing:-0.022em; color:#fff; line-height:1.18; }
+    .friction-desc { font-size:14px; line-height:1.62; color:rgba(255,255,255,0.52); }
+
+    /* ─── Solution Mapping ─── */
+    .solution-map { display:grid; grid-template-columns:1fr auto 1fr; gap:0; margin-bottom:48px; border:1px solid var(--line); overflow:hidden; }
+    .sol-friction { background:#f5f3f0; padding:32px 28px; }
+    .sol-arrow { display:flex; align-items:center; justify-content:center; padding:0 20px; color:var(--ink-dim); font-size:18px; }
+    .sol-agent { background:#fff; padding:32px 28px; }
+    .sol-label { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:10px; }
+    .sol-name { font-size:17px; font-weight:600; letter-spacing:-0.02em; margin-bottom:6px; }
+    .sol-desc { font-size:13px; line-height:1.56; color:var(--ink-mid); }
+
+    /* ─── Agent Cards ─── */
+    .agent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:48px; }
+    .agent-card { padding:32px 28px; border:1px solid var(--line); position:relative; }
+    .agent-card.is-accent { border-left:3px solid; }
+    .agent-color-orange { border-left-color:#f97316; }
+    .agent-color-blue { border-left-color:#2563eb; }
+    .agent-color-green { border-left-color:#16a34a; }
+    .agent-color-yellow { border-left-color:#eab308; }
+    .agent-color-purple { border-left-color:#7c3aed; }
+    .agent-color-teal { border-left-color:#0d9488; }
+    .agent-role { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:8px; }
+    .agent-name { font-size:18px; font-weight:600; letter-spacing:-0.022em; margin-bottom:10px; }
+    .agent-desc { font-size:13px; line-height:1.56; color:var(--ink-mid); }
+
+    /* ─── Workflow Timeline ─── */
+    .workflow-timeline { position:relative; margin-bottom:48px; }
+    .wf-row { display:grid; grid-template-columns:repeat(6,1fr); gap:2px; margin-bottom:2px; }
+    .wf-step { padding:20px 16px; font-size:12px; font-weight:500; letter-spacing:-0.01em; line-height:1.4; min-height:80px; display:flex; align-items:flex-start; }
+    .wf-step.is-dark { background:#0f0f10; color:rgba(255,255,255,0.82); }
+    .wf-step.is-light { background:#f5f3f0; color:var(--ink-mid); }
+    .wf-agent-bar { display:flex; gap:2px; margin-bottom:2px; }
+    .wf-agent-label { padding:10px 16px; font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#fff; display:flex; align-items:center; }
+    .wf-bar-orange { background:#f97316; flex:1; }
+    .wf-bar-green { background:#16a34a; }
+    .wf-bar-blue { background:#2563eb; flex:1.5; }
+    .wf-bar-yellow { background:#eab308; color:#121212; }
+    .wf-tools-bar { display:flex; gap:2px; margin-bottom:16px; }
+    .wf-tool { padding:8px 16px; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); border:1px solid var(--line); flex:1; text-align:center; }
+
+    /* ─── Big Statement ─── */
+    .big-statement { margin:8px 0 72px; }
+    .big-statement h2 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(38px,5.6vw,76px); line-height:1.06; letter-spacing:-0.03em; max-width:1020px; margin-top:8px; }
+    .big-statement .hl { box-shadow:inset 0 -0.24em 0 0 rgba(249,115,22,0.26); }
+    .big-statement-note { font-size:16px; line-height:1.7; color:var(--ink-mid); max-width:640px; margin-top:24px; }
+    .big-statement-sub { margin-top:36px; display:flex; gap:48px; flex-wrap:wrap; }
+    .bs-stat-num { font-size:clamp(30px,3.4vw,46px); font-weight:600; letter-spacing:-0.045em; line-height:1; }
+    .bs-stat-label { font-size:12px; color:var(--ink-dim); margin-top:8px; letter-spacing:0.04em; }
+
+    /* ─── Fleet Roster ─── */
+    .fleet-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+    .fleet-card { border:1px solid var(--line); background:rgba(255,255,255,0.72); padding:32px 28px 30px; }
+    .fleet-num { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+    .fleet-dot { width:13px; height:13px; border-radius:4px; flex-shrink:0; }
+    .fleet-name { font-size:clamp(24px,2.3vw,31px); font-weight:600; letter-spacing:-0.03em; line-height:1.05; margin-bottom:8px; }
+    .fleet-role { font-size:11px; letter-spacing:0.13em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:14px; }
+    .fleet-job { font-size:13.5px; line-height:1.62; color:var(--ink-mid); }
+    .fleet-members { display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
+    .fleet-member { font-size:11px; padding:5px 11px; border:1px solid var(--border); border-radius:14px; color:var(--ink-mid); background:rgba(255,255,255,0.6); }
+    @media (max-width:900px) { .fleet-grid { grid-template-columns:1fr 1fr; } .big-statement-sub { gap:32px; } }
+    @media (max-width:600px) { .fleet-grid { grid-template-columns:1fr; } }
+
+    /* ─── Journey Strip (at a glance) ─── */
+    .journey-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:2px; margin:8px 0 12px; }
+    .journey-step { border:1px solid var(--line); padding:24px 20px; background:rgba(255,255,255,0.66); }
+    .journey-phase { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:12px; }
+    .journey-num { font-size:26px; font-weight:600; letter-spacing:-0.04em; margin-bottom:6px; line-height:1.1; }
+    .journey-desc { font-size:12.5px; line-height:1.55; color:var(--ink-mid); }
+    .journey-dots { display:flex; gap:6px; margin-bottom:8px; }
+    .journey-dot { width:14px; height:14px; border-radius:4px; }
+
+    /* ─── Sally Scorecard ─── */
+    .scorecard { display:grid; grid-template-columns:auto 1fr; gap:48px; border:1px solid var(--line); background:#fff; padding:40px 36px; align-items:center; margin:28px 0 10px; }
+    .scorecard-total { text-align:left; }
+    .scorecard-num { font-size:64px; font-weight:600; letter-spacing:-0.05em; color:#d92d20; line-height:1; }
+    .scorecard-num small { font-size:22px; color:var(--ink-dim); font-weight:400; letter-spacing:-0.01em; }
+    .scorecard-verdict { font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#d92d20; font-weight:600; margin-top:10px; }
+    .scorecard-note { font-size:12.5px; color:var(--ink-dim); margin-top:8px; max-width:230px; line-height:1.55; }
+    .score-rows { display:flex; flex-direction:column; gap:18px; }
+    .score-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:7px; }
+    .score-label strong { font-weight:600; }
+    .score-label span:last-child { color:var(--ink-dim); }
+    .score-bar { height:6px; background:rgba(18,18,18,0.07); overflow:hidden; }
+    .score-fill { height:100%; }
+    .score-finding { font-size:12px; color:var(--ink-dim); margin-top:6px; }
+
+    /* ─── Strategic Option Cards ─── */
+    .option-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:20px 0 8px; }
+    .option-card { border:1px solid var(--line); padding:24px 22px; background:rgba(255,255,255,0.66); }
+    .option-tier { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px; font-weight:600; }
+    .option-name { font-size:15px; font-weight:600; letter-spacing:-0.01em; margin-bottom:8px; }
+    .option-desc { font-size:12.5px; line-height:1.55; color:var(--ink-mid); }
+
+    /* ─── Method / Pro-Tip Cards ─── */
+    .method-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:28px 0 8px; }
+    .method-card { border:1px solid var(--line); padding:28px 24px; background:rgba(255,255,255,0.66); }
+    .method-num { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:10px; }
+    .method-title { font-size:16px; font-weight:600; letter-spacing:-0.015em; margin-bottom:10px; }
+    .method-desc { font-size:13px; line-height:1.6; color:var(--ink-mid); }
+
+    @media (max-width:900px) {
+      .journey-strip { grid-template-columns:1fr 1fr; }
+      .scorecard { grid-template-columns:1fr; gap:28px; }
+      .option-cards { grid-template-columns:1fr; }
+      .method-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width:600px) {
+      .journey-strip { grid-template-columns:1fr; }
+    }
+
+    /* ─── Agent Profile (Sally / Justin) ─── */
+    .agent-profile { display:grid; grid-template-columns:220px 1fr; gap:44px; align-items:start; margin-bottom:8px; }
+    .agent-profile-img { width:100%; height:auto; display:block; border-radius:50%; }
+    .agent-profile-name { font-size:22px; font-weight:600; letter-spacing:-0.022em; margin-bottom:4px; }
+    .agent-profile-tag { font-size:12px; color:var(--ink-dim); margin-bottom:18px; }
+    .framework-tags { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 8px; }
+    .framework-tag { font-size:11px; letter-spacing:0.02em; padding:7px 13px; border:1px solid var(--border); border-radius:20px; color:var(--ink-mid); background:rgba(255,255,255,0.6); }
+    .output-list { list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:16px; }
+    .output-list li { font-size:13.5px; line-height:1.6; color:var(--ink-mid); padding-left:18px; position:relative; }
+    .output-list li::before { content:"\2192"; position:absolute; left:0; color:var(--ink-dim); }
+    .output-list strong { color:var(--ink); font-weight:600; }
+
+    /* ─── Trap / Scan Grids ─── */
+    .trap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:28px 0; }
+    .trap-block { background:#0f0f10; padding:26px 24px; }
+    .trap-title { font-size:15px; font-weight:600; color:#fff; margin-bottom:8px; letter-spacing:-0.01em; }
+    .trap-desc { font-size:12.5px; line-height:1.56; color:rgba(255,255,255,0.56); }
+    .scan-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin:28px 0 8px; }
+    .scan-block { padding:24px 20px; border:1px solid var(--line); }
+    .scan-block.is-accent { border-left:3px solid; }
+    .scan-title { font-size:14px; font-weight:600; letter-spacing:-0.01em; margin-bottom:8px; }
+    .scan-desc { font-size:12.5px; line-height:1.5; color:var(--ink-mid); }
+
+    @media (max-width:900px) {
+      .agent-profile { grid-template-columns:1fr; }
+      .agent-profile-img { max-width:180px; }
+      .trap-grid { grid-template-columns:1fr; }
+      .scan-grid { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:600px) {
+      .scan-grid { grid-template-columns:1fr; }
+    }
+
+    /* ─── Master Brain Diagram ─── */
+    .brain-diagram { display:grid; grid-template-columns:1fr 1.2fr 1fr; gap:0; margin-bottom:48px; align-items:center; }
+    .brain-spoke { display:flex; flex-direction:column; gap:20px; }
+    .brain-spoke-item { padding:20px 24px; border:1px solid var(--line); }
+    .brain-spoke-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:6px; }
+    .brain-spoke-text { font-size:13px; color:var(--ink-mid); line-height:1.5; }
+    .brain-center { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 24px; }
+    .brain-hub { width:160px; height:160px; border-radius:50%; border:2px solid var(--line); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; margin-bottom:12px; }
+    .brain-hub-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); }
+    .brain-hub-title { font-size:18px; font-weight:600; letter-spacing:-0.02em; }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal-on-scroll { opacity:0; transform:translateY(16px); transition:opacity 600ms cubic-bezier(0.22,0.84,0.22,1), transform 600ms cubic-bezier(0.22,0.84,0.22,1); }
+    .reveal-on-scroll.is-visible { opacity:1; transform:translateY(0); }
+
+    /* ─── Responsive ─── */
+    @media (max-width:900px) {
+      .project-overview { grid-template-columns:1fr; gap:40px; }
+      .outcomes-grid { grid-template-columns:1fr 1fr; }
+      .friction-grid { grid-template-columns:1fr; }
+      .agent-grid { grid-template-columns:1fr 1fr; }
+      .solution-map { grid-template-columns:1fr; }
+      .sol-arrow { padding:12px; transform:rotate(90deg); }
+      .brain-diagram { grid-template-columns:1fr; gap:16px; }
+      .wf-row { grid-template-columns:repeat(3,1fr); }
+    }
+    @media (max-width:600px) {
+      .site-nav { padding:16px 20px; }
+      .project-hero-content { padding:32px 20px; }
+      .project-body { padding:40px 20px 60px; }
+      .breadcrumb { padding:16px 20px; }
+      .outcomes-grid { grid-template-columns:1fr; }
+      .agent-grid { grid-template-columns:1fr; }
+      .wf-row { grid-template-columns:repeat(2,1fr); }
+    }
+
+    /* ─── Lang switch ─── */
+    .lang-switch { position:fixed; right:0; bottom:80px; z-index:100; writing-mode:vertical-rl; display:flex; align-items:center; gap:5px; padding:16px 9px; background:rgba(255,255,255,0.94); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-left:1px solid rgba(18,18,18,0.10); border-radius:6px 0 0 6px; }
+    .lang-btn { appearance:none; background:none; border:none; font-family:var(--ff); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; color:var(--ink-dim); padding:0; transition:color 160ms ease; }
+    .lang-btn.is-active { color:var(--ink); font-weight:600; }
+    .lang-sep { font-size:9px; color:rgba(18,18,18,0.18); }
+    .t-jp { display:none; }
+    html.lang-jp .t-en { display:none; }
+    html.lang-jp .t-jp { display:inline; }
+    html.lang-jp .t-jp.is-block { display:block; }
+
+    /* ─── Hero / gallery image ─── */
+    .g-cell { overflow:hidden; background:#f5f3f0; border-radius:2px; }
+    .g-cell.natural { background:#f5f3f0; }
+    .g-cell.natural img { width:100%; height:auto; display:block; }
+    .g-caption { font-size:12px; color:var(--ink-dim); line-height:1.55; margin-top:10px; }
+
+    /* ─── Notice box ─── */
+    .notice-box { display:flex; gap:20px; align-items:flex-start; border:1px solid var(--border); background:rgba(255,255,255,0.72); padding:26px 30px; margin-bottom:56px; }
+    .notice-box-icon { flex-shrink:0; width:38px; height:38px; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; letter-spacing:0.03em; }
+    .notice-box-title { font-size:15px; font-weight:600; letter-spacing:-0.02em; margin-bottom:8px; }
+    .notice-box-text { font-size:14px; color:var(--ink-mid); line-height:1.68; }
+    @media (max-width:600px) { .notice-box { flex-direction:column; gap:14px; padding:20px 18px; } }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../work.html" class="is-active" aria-current="page">Work</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="../work.html">Work</a>
+    <span>/</span>
+    <a href="#">Verizon AI Workflow</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="project-hero">
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Agentic UX</span>
+        <span class="project-hero-tag">AI Workflow</span>
+        <span class="project-hero-tag">Design Ops</span>
+        <span class="project-hero-tag">Change Management</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">AI-Powered UX Workflow Transformation</span>
+        <span class="t-jp">AIによるUXワークフローの変革</span>
+      </h1>
+      <p class="project-hero-subtitle">
+        <span class="t-en">When Gemini became the only AI allowed inside Verizon's locked-down enterprise, nobody knew what to do with it. I built ten purpose-built agents woven into the existing workflow &mdash; without tearing it up &mdash; and shifted 42 designers from tactical executors to strategic pilots.</span>
+        <span class="t-jp is-block">固く閉ざされたVerizonのエンタープライズ環境で、唯一許可されたAIがGeminiだった。だが誰もその使い方を知らなかった。私は既存のワークフローを壊すことなく、その中に織り込む形で10の目的特化型エージェントを構築し、42人のデザイナーを戦術的な実行者から戦略的な操縦者へと変えた。</span>
+      </p>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">
+            <span class="t-en">Verizon Value (6 Brands)</span>
+            <span class="t-jp">Verizon Value（6ブランド）</span>
+          </span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">
+            <span class="t-en">Lead Product Designer (Agentic UX &amp; AI Systems)</span>
+            <span class="t-jp">リードプロダクトデザイナー（Agentic UX &amp; AIシステム）</span>
+          </span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">
+            <span class="t-en">2025 &ndash; Present</span>
+            <span class="t-jp">2025年 &ndash; 現在</span>
+          </span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Scope</span>
+          <span class="project-meta-value">
+            <span class="t-en">UX Strategy, AI Architecture, System Integration</span>
+            <span class="t-jp">UX戦略、AIアーキテクチャ、システム統合</span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <main class="project-body">
+
+    <!-- ── Confidentiality Notice ── -->
+    <div class="notice-box">
+      <div class="notice-box-icon">NDA</div>
+      <div>
+        <div class="notice-box-title">
+          <span class="t-en">Confidentiality Notice</span>
+          <span class="t-jp">機密保持に関する注記</span>
+        </div>
+        <p class="notice-box-text">
+          <span class="t-en">This case study describes the work at a high level. Specific metrics, internal tooling configurations, agent instructions, and proprietary processes have been generalized or anonymized to respect client confidentiality. The frictions, architecture, and design thinking remain authentic to my contribution.</span>
+          <span class="t-jp is-block">このケーススタディは、取り組みを高いレベルで概観したものです。具体的な数値、社内ツールの構成、エージェントの指示、独自のプロセスは、クライアントの機密保持のため一般化または匿名化しています。課題、アーキテクチャ、デザイン思考の核心は、私の貢献に忠実なものです。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ── One-Line Summary ── -->
+    <div class="big-statement reveal-on-scroll">
+      <div class="section-label"><span class="t-en">The Work, In One Line</span><span class="t-jp">この仕事を一行で</span></div>
+      <h2>
+        <span class="t-en">I designed <span class="hl">10 AI agents</span> for the product-development flow.</span>
+        <span class="t-jp is-block">プロダクト開発フローのために、<span class="hl">10のAIエージェント</span>をデザインした。</span>
+      </h2>
+      <p class="big-statement-note">
+        <span class="t-en">Not demos &mdash; working teammates. Born from the team's real pain, built inside a locked-down enterprise stack, running in production with 42 designers.</span>
+        <span class="t-jp is-block">デモではない &mdash; 実際に働く仲間たちだ。チームの現実の痛みから生まれ、閉ざされたエンタープライズ環境の中で作られ、42人のデザイナーの現場で稼働している。</span>
+      </p>
+      <div class="big-statement-sub">
+        <div>
+          <div class="bs-stat-num">16</div>
+          <div class="bs-stat-label"><span class="t-en">one-hour interviews conducted</span><span class="t-jp">実施した1時間インタビュー</span></div>
+        </div>
+        <div>
+          <div class="bs-stat-num">40+</div>
+          <div class="bs-stat-label"><span class="t-en">friction points mapped</span><span class="t-jp">マッピングした摩擦点</span></div>
+        </div>
+        <div>
+          <div class="bs-stat-num">10</div>
+          <div class="bs-stat-label"><span class="t-en">agents designed &amp; shipped</span><span class="t-jp">設計・出荷したエージェント</span></div>
+        </div>
+        <div>
+          <div class="bs-stat-num">42&rarr;80+</div>
+          <div class="bs-stat-label"><span class="t-en">people onboarded</span><span class="t-jp">オンボードした人数</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── The Fleet ── -->
+    <div class="project-section reveal-on-scroll" style="margin-bottom:72px;">
+      <div class="section-label"><span class="t-en">Meet the Fleet</span><span class="t-jp">エージェントの顔ぶれ</span></div>
+      <div class="fleet-grid">
+        <div class="fleet-card">
+          <div class="fleet-num"><span class="fleet-dot" style="background:#f97316;"></span>01</div>
+          <div class="fleet-name">Master Brain</div>
+          <div class="fleet-role"><span class="t-en">Single Source of Truth</span><span class="t-jp">単一の信頼できる情報源</span></div>
+          <div class="fleet-job"><span class="t-en">The organizational memory. Ask it anything the project has ever known.</span><span class="t-jp is-block">組織の記憶。プロジェクトが知っていたことなら、何でも聞ける。</span></div>
+        </div>
+        <div class="fleet-card">
+          <div class="fleet-num"><span class="fleet-dot" style="background:#16a34a;"></span>02</div>
+          <div class="fleet-name">Justin Case</div>
+          <div class="fleet-role"><span class="t-en">Edge Case Detector</span><span class="t-jp">エッジケース検出</span></div>
+          <div class="fleet-job"><span class="t-en">Breaks the logic before the code is written &mdash; 20&ndash;40 ranked edge cases per audit.</span><span class="t-jp is-block">コードが書かれる前にロジックを壊す &mdash; 1回の監査で20〜40件のエッジケース。</span></div>
+        </div>
+        <div class="fleet-card">
+          <div class="fleet-num"><span class="fleet-dot" style="background:#2563eb;"></span>03</div>
+          <div class="fleet-name">Sally</div>
+          <div class="fleet-role"><span class="t-en">Principal CX Strategist</span><span class="t-jp">プリンシパルCXストラテジスト</span></div>
+          <div class="fleet-job"><span class="t-en">Science-backed UX evaluation for when user testing isn't an option.</span><span class="t-jp is-block">ユーザーテストができないときの、科学に裏づけられたUX評価。</span></div>
+        </div>
+        <div class="fleet-card">
+          <div class="fleet-num"><span class="fleet-dot" style="background:#eab308;"></span>04</div>
+          <div class="fleet-name">WDS Team</div>
+          <div class="fleet-role"><span class="t-en">Strategic Design Engine &middot; 5 Agents</span><span class="t-jp">戦略的デザインエンジン &middot; 5エージェント</span></div>
+          <div class="fleet-job"><span class="t-en">Five specialists relaying brief &rarr; strategy &rarr; spec &rarr; prototype.</span><span class="t-jp is-block">5人の専門家が、ブリーフ&rarr;戦略&rarr;仕様&rarr;プロトタイプへとリレーする。</span></div>
+          <div class="fleet-members">
+            <span class="fleet-member">Mimir</span>
+            <span class="fleet-member">Saga</span>
+            <span class="fleet-member">Freya</span>
+            <span class="fleet-member">Idunn</span>
+            <span class="fleet-member">Eira</span>
+          </div>
+        </div>
+        <div class="fleet-card">
+          <div class="fleet-num"><span class="fleet-dot" style="background:#0d9488;"></span>05</div>
+          <div class="fleet-name">Clara</div>
+          <div class="fleet-role"><span class="t-en">UX Writing Evaluator</span><span class="t-jp">UXライティング評価</span></div>
+          <div class="fleet-job"><span class="t-en">Judges every word against the brand-voice guidelines.</span><span class="t-jp is-block">すべての言葉を、ブランドボイス・ガイドラインに照らして評価する。</span></div>
+        </div>
+        <div class="fleet-card">
+          <div class="fleet-num"><span class="fleet-dot" style="background:#7c3aed;"></span>06</div>
+          <div class="fleet-name">Alex</div>
+          <div class="fleet-role"><span class="t-en">The Agent Architect</span><span class="t-jp">エージェント・アーキテクト</span></div>
+          <div class="fleet-job"><span class="t-en">A skill creator &mdash; the agent that designs new agents.</span><span class="t-jp is-block">スキルクリエイター &mdash; 新しいエージェントを設計するエージェント。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Overview -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label"><span class="t-en">Scale</span><span class="t-jp">規模</span></p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">42</div>
+          <div class="project-aside-desc"><span class="t-en">Designers in initial rollout</span><span class="t-jp">初期展開のデザイナー数</span></div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">80+</div>
+          <div class="project-aside-desc"><span class="t-en">Cross-functional stakeholders in expanded rollout</span><span class="t-jp">拡大展開における部門横断のステークホルダー</span></div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">40+</div>
+          <div class="project-aside-desc"><span class="t-en">Friction points identified and mapped</span><span class="t-jp">特定・マッピングした摩擦点</span></div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">6</div>
+          <div class="project-aside-desc"><span class="t-en">Brands across Verizon Value portfolio</span><span class="t-jp">Verizon Value ポートフォリオのブランド数</span></div>
+        </div>
+        <p class="project-aside-label" style="margin-top:32px;"><span class="t-en">Deliverables</span><span class="t-jp">成果物</span></p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Friction audit (16 interviews, 40+ findings)</span><span class="t-jp">摩擦の監査（16回のインタビュー、40以上の発見）</span></li>
+          <li><span class="t-en">10 purpose-built AI agents across 6 systems</span><span class="t-jp">6システム・10種の目的特化型AIエージェント</span></li>
+          <li><span class="t-en">Multi-agent design engine (WDS)</span><span class="t-jp">マルチエージェント・デザインエンジン（WDS）</span></li>
+          <li><span class="t-en">2-session AI workflow training workshop (Jan&ndash;Feb 2026)</span><span class="t-jp">全2回のAIワークフロー・トレーニングワークショップ（2026年1&ndash;2月）</span></li>
+          <li><span class="t-en">Organization-wide rollout strategy</span><span class="t-jp">組織全体への展開戦略</span></li>
+        </ul>
+      </aside>
+      <div>
+        <h2 class="project-section-title"><span class="t-en">The Setting: One Tool, No Map</span><span class="t-jp">舞台：ツールはひとつ、地図はなし</span></h2>
+        <p class="project-text">
+          <span class="t-en">Through 2025, Verizon's enterprise environment was locked down tight. No external AI tools. No API access. No custom models. Then the approved Gemini suite arrived &mdash; Gemini, Gems, NotebookLM, Canvas, Figma Make &mdash; and everyone suddenly had access to AI. What nobody had was a method.</span>
+          <span class="t-jp is-block">2025年を通じて、Verizonのエンタープライズ環境は固く閉ざされていた。外部AIツールは不可。APIアクセスも不可。カスタムモデルも不可。そこへ、承認済みのGeminiスイート &mdash; Gemini、Gems、NotebookLM、Canvas、Figma Make &mdash; がやってきた。全員が突然AIを使えるようになった。だが、誰も「使い方」を持っていなかった。</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">Adoption was high. Operational improvement was zero. Designers still spent half their day in clarification meetings. Edge cases still exploded in development. Strategic thinking was still crushed by "just push the pixels" pressure. Same pain. Faster computers.</span>
+          <span class="t-jp is-block">利用率は高かった。だが業務の改善はゼロだった。デザイナーは相変わらず一日の半分を確認のための会議に費やしていた。エッジケースは相変わらず開発段階で噴出した。戦略的思考は相変わらず「とにかくピクセルを動かせ」という圧力に押しつぶされていた。痛みは同じ。ただコンピューターが速くなっただけだ。</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">So I moved first &mdash; not by replacing our product-development workflow, but by architecting AI <em>into</em> it. I stopped asking "how do we get people to use AI?" and started asking: <strong>where exactly does the pain live?</strong></span>
+          <span class="t-jp is-block">だから私が先に動いた &mdash; プロダクト開発のワークフローを置き換えるのではなく、その<em>中に</em>AIを設計として織り込むことによって。「どうすれば人々にAIを使ってもらえるか？」と問うのをやめ、こう問い始めた &mdash; <strong>痛みは正確にどこに存在するのか？</strong></span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top:40px;"><span class="t-en">Diagnosis Before Prescription</span><span class="t-jp">処方の前に、診断を</span></h2>
+        <p class="project-text">
+          <span class="t-en">In late 2025 I ran one-hour interviews with sixteen designers. Not about AI. About their daily reality. No surveys. No assumption mapping. Sit down. Tell me about yesterday. Tell me about the last time you wanted to throw your laptop.</span>
+          <span class="t-jp is-block">2025年後半、私は16人のデザイナーに1時間ずつインタビューを行った。AIについてではない。彼らの日々の現実についてだ。アンケートもなし。仮説マッピングもなし。ただ座って、昨日のことを話してほしい。最後にラップトップを投げ出したくなったのはいつか、話してほしい、と。</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">I didn't just collect the feedback &mdash; I measured it. Categorizing the 16 transcripts surfaced 40+ distinct friction points, each scored on a heat map by severity, business impact, ease of change, and AI opportunity. Top of the table: the "Pre-Discovery Black Hole," "Designing in the Dark," "No Single Source of Truth." The diagnosis came before the prescription.</span>
+          <span class="t-jp is-block">フィードバックをただ集めるのではなく、測定した。16本の書き起こしを分類すると、40以上の明確な摩擦点が浮かび上がり、それぞれを深刻度、ビジネスインパクト、変更の容易さ、AIの機会でスコアリングしたヒートマップにまとめた。表の最上位には「プレディスカバリーのブラックホール」「暗闇の中でのデザイン」「単一の信頼できる情報源の不在」。処方の前に、まず診断があった。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ── At a Glance: What I Did ── -->
+    <div class="project-section reveal-on-scroll" style="margin-bottom:56px;">
+      <div class="section-label"><span class="t-en">At a Glance &mdash; What I Did</span><span class="t-jp">全体像 &mdash; 私がやったこと</span></div>
+      <div class="journey-strip">
+        <div class="journey-step">
+          <div class="journey-phase"><span class="t-en">Late 2025 &middot; Listen</span><span class="t-jp">2025年後半 &middot; 聴く</span></div>
+          <div class="journey-num">16</div>
+          <div class="journey-desc"><span class="t-en">One-on-one interviews mapping the design team&rsquo;s daily reality.</span><span class="t-jp is-block">1対1のインタビューで、デザインチームの日々の現実をマッピング。</span></div>
+        </div>
+        <div class="journey-step">
+          <div class="journey-phase"><span class="t-en">Measure</span><span class="t-jp">測る</span></div>
+          <div class="journey-num">40+</div>
+          <div class="journey-desc"><span class="t-en">Friction points scored by severity, impact, and AI opportunity &mdash; distilled into 4 structural failures.</span><span class="t-jp is-block">深刻度・インパクト・AIの機会でスコアリングした摩擦点。4つの構造的欠陥に凝縮。</span></div>
+        </div>
+        <div class="journey-step">
+          <div class="journey-phase"><span class="t-en">Build</span><span class="t-jp">作る</span></div>
+          <div class="journey-dots">
+            <span class="journey-dot" style="background:#f97316;"></span>
+            <span class="journey-dot" style="background:#16a34a;"></span>
+            <span class="journey-dot" style="background:#2563eb;"></span>
+            <span class="journey-dot" style="background:#eab308;"></span>
+            <span class="journey-dot" style="background:#0d9488;"></span>
+            <span class="journey-dot" style="background:#7c3aed;"></span>
+          </div>
+          <div class="journey-num">10</div>
+          <div class="journey-desc"><span class="t-en">Purpose-built AI agents &mdash; from Master Brain to the WDS design team &mdash; inside the approved Gemini stack.</span><span class="t-jp is-block">目的特化型AIエージェント &mdash; Master BrainからWDSデザインチームまで &mdash; を承認済みGeminiスタックの中に構築。</span></div>
+        </div>
+        <div class="journey-step">
+          <div class="journey-phase"><span class="t-en">Jan&ndash;Feb 2026 &middot; Teach</span><span class="t-jp">2026年1&ndash;2月 &middot; 教える</span></div>
+          <div class="journey-num">2 &times; 42</div>
+          <div class="journey-desc"><span class="t-en">Two hands-on training workshop sessions delivered to 42 designers, with every Gem shared to try live.</span><span class="t-jp is-block">42人のデザイナーに2回の実践型トレーニングワークショップを実施。全Gemをその場で試せる形で共有。</span></div>
+        </div>
+        <div class="journey-step">
+          <div class="journey-phase"><span class="t-en">Scale</span><span class="t-jp">広げる</span></div>
+          <div class="journey-num">80+</div>
+          <div class="journey-desc"><span class="t-en">Rollout expanding beyond design to PM, research, and content stakeholders across 6 brands.</span><span class="t-jp is-block">デザインを越えて、6ブランドのPM・リサーチ・コンテンツのステークホルダーへ展開拡大中。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Friction: The Four Structural Failures ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">Diagnosis</span><span class="t-jp">診断</span></div>
+      <h2 class="project-section-title"><span class="t-en">Four Structural Failures</span><span class="t-jp">4つの構造的な欠陥</span></h2>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">None of these were tool problems. They were structural problems &mdash; how knowledge was organized, how validation happened, how decisions got made. The plumbing was broken at the foundation level.</span>
+        <span class="t-jp is-block">これらはどれもツールの問題ではなかった。構造の問題だった &mdash; 知識がどう整理されるか、検証がどう行われるか、意思決定がどう下されるか。配管が土台のレベルで壊れていたのだ。</span>
+      </p>
+
+      <div class="friction-grid">
+        <div class="friction-card">
+          <div class="friction-num"><span class="t-en">Friction 01</span><span class="t-jp">摩擦 01</span></div>
+          <div class="friction-title"><span class="t-en">Tribal Knowledge Trap</span><span class="t-jp">属人的知識の罠</span></div>
+          <div class="friction-desc"><span class="t-en">Critical business logic, project requirements, and institutional knowledge fragmented across emails and "tribal knowledge" rather than a centralized repository. When someone left, the knowledge left with them.</span><span class="t-jp is-block">重要なビジネスロジック、プロジェクト要件、組織的な知識が、中央のリポジトリではなく、メールや「属人的な知識」の中に分散していた。誰かが去ると、その知識も一緒に去っていった。</span></div>
+        </div>
+        <div class="friction-card">
+          <div class="friction-num"><span class="t-en">Friction 02</span><span class="t-jp">摩擦 02</span></div>
+          <div class="friction-title"><span class="t-en">Late-Phase Discovery</span><span class="t-jp">後工程での発覚</span></div>
+          <div class="friction-desc"><span class="t-en">Edge cases surfaced after design handoff. Every single time. By then, fixing them cost 10x more. The happy path was a trap &mdash; it looked complete but was riddled with holes.</span><span class="t-jp is-block">エッジケースはデザインのハンドオフ後に表面化した。毎回、必ず。その時点では、修正コストは10倍に膨らんでいた。ハッピーパスは罠だった &mdash; 完成しているように見えて、実は穴だらけだった。</span></div>
+        </div>
+        <div class="friction-card">
+          <div class="friction-num"><span class="t-en">Friction 03</span><span class="t-jp">摩擦 03</span></div>
+          <div class="friction-title"><span class="t-en">Designing in the Dark</span><span class="t-jp">暗闇の中でのデザイン</span></div>
+          <div class="friction-desc"><span class="t-en">No budget for user testing. No dedicated research time. Stakeholder opinions filled the void where data should have been. Opinions are not evidence &mdash; but when evidence doesn't exist, opinions win by default.</span><span class="t-jp is-block">ユーザーテストの予算はなし。専任のリサーチ時間もなし。データがあるべき空白を、ステークホルダーの意見が埋めていた。意見は証拠ではない &mdash; だが証拠が存在しなければ、意見が自動的に勝ってしまう。</span></div>
+        </div>
+        <div class="friction-card">
+          <div class="friction-num"><span class="t-en">Friction 04</span><span class="t-jp">摩擦 04</span></div>
+          <div class="friction-title"><span class="t-en">Strategic Design Compression</span><span class="t-jp">戦略的デザインの圧縮</span></div>
+          <div class="friction-desc"><span class="t-en">Constant pressure for rapid delivery forced designers into "pixel pushing" roles, sacrificing the strategic rigor required to act as partners rather than production resources. Speed killed depth.</span><span class="t-jp is-block">迅速な納品への絶え間ない圧力が、デザイナーを「ピクセルを動かすだけ」の役割へと追い込み、制作リソースではなくパートナーとして振る舞うために必要な戦略的な厳密さを犠牲にした。スピードが深さを殺した。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Insight Block ── -->
+    <div class="impact-block reveal-on-scroll">
+      <div class="impact-title"><span class="t-en">Key Insight</span><span class="t-jp">重要な洞察</span></div>
+      <div class="impact-text">
+        <span class="t-en">AI could not fix these problems by just being available. That's like giving someone a power drill when the blueprint is wrong &mdash; you just make bad holes faster. AI had to be <strong>architected into the workflow</strong> at the exact point where each friction lived. Precision surgery. Not a blanket prescription.</span>
+        <span class="t-jp is-block">AIは、ただ利用できるというだけでは、これらの問題を解決できなかった。それは、設計図が間違っているのに電動ドリルを渡すようなものだ &mdash; ただ、まずい穴を速く開けるだけになる。AIは、それぞれの摩擦が存在するまさにその地点で、<strong>ワークフローの中に設計として組み込まれ</strong>なければならなかった。一律の処方ではなく、精密な外科手術だ。</span>
+      </div>
+    </div>
+
+    <!-- ── How I Built It ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">The Method</span><span class="t-jp">手法</span></div>
+      <h2 class="project-section-title"><span class="t-en">How I Built Agents Inside a Locked Room</span><span class="t-jp">閉ざされた環境の中でエージェントを作る方法</span></h2>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">This was 2025 &mdash; AI agents were still an early, unsettled idea, and I had no API, no custom models, no external tooling to build them with. So the engineering happened outside, and the deployment happened inside.</span>
+        <span class="t-jp is-block">2025年当時 &mdash; AIエージェントはまだ黎明期の固まりきらない概念で、しかも構築に使えるAPIも、カスタムモデルも、外部ツールもなかった。だからエンジニアリングは外で行い、デプロイは中で行った。</span>
+      </p>
+      <div class="method-grid">
+        <div class="method-card">
+          <div class="method-num"><span class="t-en">Step 01 &mdash; Research</span><span class="t-jp">ステップ 01 &mdash; リサーチ</span></div>
+          <div class="method-title"><span class="t-en">Spec-Driven, Not Vibe-Prompted</span><span class="t-jp">雰囲気プロンプトではなく、仕様駆動</span></div>
+          <div class="method-desc"><span class="t-en">I studied BMAD &mdash; a framework that replaces unstructured "vibe coding" with a rigorous agent-led process where detailed specifications act as the new code &mdash; and adapted its discipline from engineering to design work.</span><span class="t-jp is-block">「雰囲気で書くコーディング」を、詳細な仕様書が新しいコードとして機能する厳密なエージェント主導プロセスに置き換えるフレームワーク「BMAD」を研究し、その規律をエンジニアリングからデザインの仕事へと転用した。</span></div>
+        </div>
+        <div class="method-card">
+          <div class="method-num"><span class="t-en">Step 02 &mdash; Author</span><span class="t-jp">ステップ 02 &mdash; 記述</span></div>
+          <div class="method-title"><span class="t-en">Claude Code as the Workshop</span><span class="t-jp">工房としてのClaude Code</span></div>
+          <div class="method-desc"><span class="t-en">Using Claude Code and spec-driven techniques on my own time, I authored the heavy assets: versioned agent instruction sets, audit protocols, menu commands, and curated knowledge libraries &mdash; far more machinery than anyone writes in a prompt box.</span><span class="t-jp is-block">自分の時間にClaude Codeと仕様駆動の手法を使い、重量級の資産を書き上げた。バージョン管理されたエージェント指示書、監査プロトコル、メニューコマンド、キュレーション済みナレッジライブラリ &mdash; プロンプト欄に手打ちできる量をはるかに超える機構だ。</span></div>
+        </div>
+        <div class="method-card">
+          <div class="method-num"><span class="t-en">Step 03 &mdash; Deploy</span><span class="t-jp">ステップ 03 &mdash; デプロイ</span></div>
+          <div class="method-title"><span class="t-en">Gems + NotebookLM as the Runtime</span><span class="t-jp">実行環境としてのGems + NotebookLM</span></div>
+          <div class="method-desc"><span class="t-en">Each agent shipped as a Gemini Gem carrying its instruction set, wired to a dedicated NotebookLM knowledge base. Everything ran on the approved enterprise stack &mdash; nothing to install, nothing to approve, nothing to break.</span><span class="t-jp is-block">各エージェントは、指示書を積んだGemini Gemとして出荷され、専用のNotebookLMナレッジベースに接続された。すべてが承認済みのエンタープライズスタック上で動く &mdash; インストールも、承認申請も、壊れるものも、何もない。</span></div>
+        </div>
+      </div>
+      <p class="project-text" style="max-width:680px; margin-top:24px;">
+        <span class="t-en">The existing workflow &mdash; BRD, CX Playbook, design, handoff, QA, launch &mdash; was never torn up. The agents attached to it at the exact points where the pain lived. That's why adoption worked: nobody had to change how they shipped; the work just got smarter around them.</span>
+        <span class="t-jp is-block">既存のワークフロー &mdash; BRD、CXプレイブック、デザイン、ハンドオフ、QA、ローンチ &mdash; を破壊することは一度もなかった。エージェントは、痛みが存在するまさにその地点で、ワークフローに接続された。定着がうまくいったのはそのためだ。誰も仕事の進め方を変える必要はなく、仕事のほうが賢くなって寄り添ってきたのだ。</span>
+      </p>
+    </div>
+
+    <!-- ── Solution: Four Agent Systems ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">Solution Architecture</span><span class="t-jp">ソリューションアーキテクチャ</span></div>
+      <h2 class="project-section-title"><span class="t-en">Four Systems That Replaced Four Structural Failures</span><span class="t-jp">4つの構造的欠陥を置き換えた4つのシステム</span></h2>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">Not four prompts. Not four shortcuts. Four purpose-built AI agents, each designed to replace a specific structural failure with an architectural solution &mdash; not a generic assistant, but a precision instrument built for one job. These four were the core; the fleet then grew to ten with Clara and Alex, below.</span>
+        <span class="t-jp is-block">4つのプロンプトではない。4つのショートカットでもない。目的特化型のAIエージェントが4つ。それぞれが、特定の構造的欠陥を、アーキテクチャによる解決策で置き換えるために設計されている &mdash; 汎用アシスタントではなく、ひとつの仕事のために作られた精密な道具だ。この4つが中核となり、後述のClaraとAlexを加えて、艦隊は10体にまで育っていった。</span>
+      </p>
+    </div>
+
+    <!-- Friction → Agent Mapping -->
+    <div class="reveal-on-scroll" style="margin-bottom:64px;">
+      <div class="solution-map" style="margin-bottom:2px;">
+        <div class="sol-friction">
+          <div class="sol-label"><span class="t-en">Friction</span><span class="t-jp">摩擦</span></div>
+          <div class="sol-name"><span class="t-en">Tribal Knowledge Trap</span><span class="t-jp">属人的知識の罠</span></div>
+          <div class="sol-desc"><span class="t-en">Knowledge fragmented in heads and Slack threads</span><span class="t-jp">知識が個人の頭とSlackのスレッドに分散</span></div>
+        </div>
+        <div class="sol-arrow">&rarr;</div>
+        <div class="sol-agent">
+          <div class="sol-label" style="color:#f97316;"><span class="t-en">AI Solution</span><span class="t-jp">AIソリューション</span></div>
+          <div class="sol-name">Master Brain</div>
+          <div class="sol-desc"><span class="t-en">Three-layer knowledge hub (Brand, Research, Project) on NotebookLM. Single source of truth that eliminates tribal knowledge dependency.</span><span class="t-jp is-block">NotebookLM上に構築した3層のナレッジハブ（ブランド、リサーチ、プロジェクト）。属人的知識への依存を解消する、単一の信頼できる情報源。</span></div>
+        </div>
+      </div>
+      <div class="solution-map" style="margin-bottom:2px;">
+        <div class="sol-friction">
+          <div class="sol-label"><span class="t-en">Friction</span><span class="t-jp">摩擦</span></div>
+          <div class="sol-name"><span class="t-en">Late-Phase Discovery</span><span class="t-jp">後工程での発覚</span></div>
+          <div class="sol-desc"><span class="t-en">Edge cases surfaced after handoff at 10x cost</span><span class="t-jp">エッジケースがハンドオフ後に10倍のコストで表面化</span></div>
+        </div>
+        <div class="sol-arrow">&rarr;</div>
+        <div class="sol-agent">
+          <div class="sol-label" style="color:#16a34a;"><span class="t-en">AI Solution</span><span class="t-jp">AIソリューション</span></div>
+          <div class="sol-name"><span class="t-en">Justin &mdash; Edge Case Detector</span><span class="t-jp">Justin &mdash; エッジケース検出</span></div>
+          <div class="sol-desc"><span class="t-en">4-layer deep scan across data, system, user state, and temporal layers. Outputs a Logic Gap Matrix before a single line of code is written.</span><span class="t-jp is-block">データ、システム、ユーザー状態、時間軸の4層にわたる深いスキャン。コードを1行も書く前に、ロジックギャップ・マトリクスを出力する。</span></div>
+        </div>
+      </div>
+      <div class="solution-map" style="margin-bottom:2px;">
+        <div class="sol-friction">
+          <div class="sol-label"><span class="t-en">Friction</span><span class="t-jp">摩擦</span></div>
+          <div class="sol-name"><span class="t-en">Designing in the Dark</span><span class="t-jp">暗闇の中でのデザイン</span></div>
+          <div class="sol-desc"><span class="t-en">No budget for user testing, opinion-based decisions</span><span class="t-jp">ユーザーテストの予算がなく、意見ベースの意思決定</span></div>
+        </div>
+        <div class="sol-arrow">&rarr;</div>
+        <div class="sol-agent">
+          <div class="sol-label" style="color:#2563eb;"><span class="t-en">AI Solution</span><span class="t-jp">AIソリューション</span></div>
+          <div class="sol-name"><span class="t-en">Sally &mdash; Principal CX Strategist</span><span class="t-jp">Sally &mdash; プリンシパルCXストラテジスト</span></div>
+          <div class="sol-desc"><span class="t-en">Behavioral-science-grounded agent (Fogg, Nudge Theory, Cognitive Load, Nielsen&rsquo;s Heuristics) that audits flows and returns ranked strategic options. Replaces the void where user testing should have been.</span><span class="t-jp is-block">行動科学（Fogg、ナッジ理論、認知負荷理論、Nielsenのヒューリスティクス）に基づくエージェントで、フローを監査し、優先順位付けされた戦略的選択肢を返す。ユーザーテストがあるべきだった空白を埋める。</span></div>
+        </div>
+      </div>
+      <div class="solution-map">
+        <div class="sol-friction">
+          <div class="sol-label"><span class="t-en">Friction</span><span class="t-jp">摩擦</span></div>
+          <div class="sol-name"><span class="t-en">Strategic Design Compression</span><span class="t-jp">戦略的デザインの圧縮</span></div>
+          <div class="sol-desc"><span class="t-en">Speed pressure eliminated all strategic thinking</span><span class="t-jp">スピードの圧力が戦略的思考をすべて奪った</span></div>
+        </div>
+        <div class="sol-arrow">&rarr;</div>
+        <div class="sol-agent">
+          <div class="sol-label" style="color:#eab308;"><span class="t-en">AI Solution</span><span class="t-jp">AIソリューション</span></div>
+          <div class="sol-name"><span class="t-en">WDS &mdash; Strategic Design Collective</span><span class="t-jp">WDS &mdash; 戦略的デザイン・コレクティブ</span></div>
+          <div class="sol-desc"><span class="t-en">Multi-agent design engine with specialist roles. The system does the scaffolding. Humans do the judgment.</span><span class="t-jp is-block">専門的な役割を持つマルチエージェントのデザインエンジン。システムが足場を組み、人間が判断を下す。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Master Brain Detail ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">System 01 &mdash; Knowledge Infrastructure</span><span class="t-jp">システム 01 &mdash; ナレッジ基盤</span></div>
+      <h2 class="project-section-title">The Master Brain</h2>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">A single, centralized, and constantly learning knowledge hub built on NotebookLM. Three layers &mdash; Brand, Research, and Project &mdash; feed into a unified source of truth. Every meeting transcript uploaded within 24 hours.</span>
+        <span class="t-jp is-block">NotebookLM上に構築した、単一で中央集約され、常に学習し続けるナレッジハブ。ブランド、リサーチ、プロジェクトという3つの層が、統一された信頼できる情報源へと流れ込む。すべての会議の書き起こしは24時間以内にアップロードされる。</span>
+      </p>
+
+      <div class="brain-diagram">
+        <div class="brain-spoke">
+          <div class="brain-spoke-item">
+            <div class="brain-spoke-label"><span class="t-en">Project Documentation</span><span class="t-jp">プロジェクト文書</span></div>
+            <div class="brain-spoke-text"><span class="t-en">Scope, business documents, CX strategy, technical requirements</span><span class="t-jp">スコープ、ビジネス文書、CX戦略、技術要件</span></div>
+          </div>
+          <div class="brain-spoke-item">
+            <div class="brain-spoke-label"><span class="t-en">Strategic Direction</span><span class="t-jp">戦略的方向性</span></div>
+            <div class="brain-spoke-text"><span class="t-en">Feedback and knowledge from Associate Directors and Executive Leaders</span><span class="t-jp">アソシエイトディレクターや経営リーダーからのフィードバックと知見</span></div>
+          </div>
+        </div>
+        <div class="brain-center">
+          <div class="brain-hub">
+            <div class="brain-hub-label">NotebookLM</div>
+            <div class="brain-hub-title">Project<br>Master Brain</div>
+          </div>
+          <p style="font-size:12px; color:var(--ink-dim); max-width:200px;"><span class="t-en">Synthesizes answers from organizational memory in real-time</span><span class="t-jp">組織の記憶からリアルタイムで答えを合成する</span></p>
+        </div>
+        <div class="brain-spoke">
+          <div class="brain-spoke-item">
+            <div class="brain-spoke-label"><span class="t-en">Organizational Knowledge</span><span class="t-jp">組織的知識</span></div>
+            <div class="brain-spoke-text"><span class="t-en">Recorded and transcribed Webex meeting transcripts capturing context and rationale</span><span class="t-jp">文脈と根拠を捉えた、録画・書き起こし済みのWebex会議の記録</span></div>
+          </div>
+          <div class="brain-spoke-item">
+            <div class="brain-spoke-label"><span class="t-en">Customer &amp; Market Intelligence</span><span class="t-jp">顧客・市場インテリジェンス</span></div>
+            <div class="brain-spoke-text"><span class="t-en">Industry trends, competitor websites, and video transcripts of service comparisons</span><span class="t-jp">業界動向、競合サイト、サービス比較動画の書き起こし</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="trap-grid" style="margin-top:8px;">
+        <div class="trap-block">
+          <div class="trap-title"><span class="t-en">Synthesized Answers</span><span class="t-jp">合成された答え</span></div>
+          <div class="trap-desc"><span class="t-en">However massive the project corpus, knowledge can be synthesized any way you need &mdash; briefings, comparisons, even an auto-generated designer-onboarding video from 120+ sources.</span><span class="t-jp is-block">プロジェクトの資料がどれほど膨大でも、知識は必要な形に合成できる &mdash; ブリーフィング、比較、さらには120以上のソースから自動生成されたデザイナー向けオンボーディング動画まで。</span></div>
+        </div>
+        <div class="trap-block">
+          <div class="trap-title"><span class="t-en">Eliminates Tribal Knowledge</span><span class="t-jp">属人的知識の解消</span></div>
+          <div class="trap-desc"><span class="t-en">No more depending on the one person who happens to hold deep brand or project history in their head.</span><span class="t-jp is-block">ブランドやプロジェクトの深い経緯を、たまたま頭の中に持っている一人の人物に依存することはもうない。</span></div>
+        </div>
+        <div class="trap-block">
+          <div class="trap-title"><span class="t-en">A Continuously Evolving Brain</span><span class="t-jp">進化し続ける脳</span></div>
+          <div class="trap-desc"><span class="t-en">As the project moves, new transcripts and documents keep flowing in &mdash; every meeting uploaded within 24 hours. The brain never goes stale.</span><span class="t-jp is-block">プロジェクトが進むにつれ、新しい書き起こしや文書が流れ込み続ける &mdash; すべての会議は24時間以内にアップロード。脳は決して古びない。</span></div>
+        </div>
+      </div>
+
+      <p class="project-text" style="max-width:680px; margin-top:24px;">
+        <span class="t-en">In practice this runs as a layered system: a <strong>Brand Master Brain</strong> and a <strong>Research Master Brain</strong> feed each <strong>Project Master Brain</strong>. And the payoff is concrete &mdash; on one payment-flexibility initiative, the brain could already articulate the entire business case on demand: the customer suspension gap, the recoverable nine-figure annual revenue, and the three "how might we" questions the design had to answer. That's the difference between a file archive and an organizational memory.</span>
+        <span class="t-jp is-block">実運用では、これは層構造のシステムとして動く。<strong>ブランドMaster Brain</strong>と<strong>リサーチMaster Brain</strong>が、各<strong>プロジェクトMaster Brain</strong>に流れ込むのだ。効果は具体的だった &mdash; ある支払い柔軟化のイニシアチブでは、顧客の利用停止ギャップ、回収可能な9桁ドル規模の年間売上、そしてデザインが答えるべき3つの「How might we」の問いまで、ビジネスケース全体をその場で語れる状態になっていた。ファイル置き場と「組織の記憶」の違いが、ここにある。</span>
+      </p>
+    </div>
+
+    <!-- ── Justin Case Detail ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">System 02 &mdash; Edge Case Detection</span><span class="t-jp">システム 02 &mdash; エッジケース検出</span></div>
+      <h2 class="project-section-title">Justin Case</h2>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">The name is the pitch: built to check things <em>just in case</em>. A Gemini Gem wired to a dedicated NotebookLM instance of edge-case detection resources, Justin exists to break the logic before the code is written &mdash; running a structured deep scan on a design before it ever reaches a developer's queue.</span>
+        <span class="t-jp is-block">名前がそのままコンセプトだ &mdash; 「念のため」（just in case）確認するために作られている。エッジケース検出のリソースを溜め込んだ専用のNotebookLMに接続されたGemini Gemが、Justinの正体だ。コードが書かれる前にロジックを壊す &mdash; デザインが開発者のキューに届くよりも前に、構造化されたディープスキャンを実行する。</span>
+      </p>
+
+      <p class="project-aside-label" style="margin-top:32px; margin-bottom:4px;"><span class="t-en">The &ldquo;Happy Path&rdquo; Trap</span><span class="t-jp">「ハッピーパス」の罠</span></p>
+      <div class="trap-grid">
+        <div class="trap-block">
+          <div class="trap-title"><span class="t-en">Logic Gaps</span><span class="t-jp">ロジックギャップ</span></div>
+          <div class="trap-desc"><span class="t-en">Contradictions hidden between business rules and the UX flow that implements them.</span><span class="t-jp is-block">ビジネスルールと、それを実装するUXフローの間に隠れた矛盾。</span></div>
+        </div>
+        <div class="trap-block">
+          <div class="trap-title"><span class="t-en">Invisible States</span><span class="t-jp">見えない状態</span></div>
+          <div class="trap-desc"><span class="t-en">Missing definitions for loading, empty, or error states &mdash; the states nobody designs until something breaks.</span><span class="t-jp is-block">ローディング、空、エラーの各状態の定義漏れ &mdash; 何かが壊れるまで、誰も設計しない状態。</span></div>
+        </div>
+        <div class="trap-block">
+          <div class="trap-title"><span class="t-en">The 10x Cost</span><span class="t-jp">10倍のコスト</span></div>
+          <div class="trap-desc"><span class="t-en">Fixing a bug in development costs roughly 10x more than catching it at the design stage.</span><span class="t-jp is-block">開発段階でバグを直すコストは、デザイン段階で発見する場合のおよそ10倍。</span></div>
+        </div>
+      </div>
+
+      <div class="agent-profile" style="margin-top:12px;">
+        <img class="agent-profile-img" src="../assets/verizon-ai-agents/agent-justin-portrait.jpg" alt="Illustrated portrait of Justin Case, the Edge Case Detector AI agent, examining a layered wireframe stack with a magnifying glass" loading="lazy">
+        <div>
+          <p class="project-aside-label" style="margin-bottom:4px;"><span class="t-en">The 4-Layer Deep Scan Protocol</span><span class="t-jp">4層のディープスキャン・プロトコル</span></p>
+          <p class="project-text" style="margin-bottom:0;">
+            <span class="t-en">Fed the Project Master Brain, an Initiative Alignment Brief, and optionally existing UI screens, Justin scans across four layers and returns a ranked matrix of every logic gap found &mdash; each one paired with an open question for product and engineering to resolve before build starts.</span>
+            <span class="t-jp is-block">プロジェクトのMaster Brain、イニシアチブ整合ブリーフ、そして任意で既存のUI画面を与えられると、Justinは4つの層にわたってスキャンを行い、発見したロジックギャップを重要度順にまとめたマトリクスを返す &mdash; それぞれに、開発が始まる前にプロダクトとエンジニアリングが解決すべき未解決の問いが添えられている。</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="scan-grid">
+        <div class="scan-block is-accent agent-color-orange">
+          <div class="scan-title"><span class="t-en">Data Layer</span><span class="t-jp">データ層</span></div>
+          <div class="scan-desc"><span class="t-en">Invalid inputs, massive lists, empty states, special characters.</span><span class="t-jp is-block">不正な入力、大量のリスト、空状態、特殊文字。</span></div>
+        </div>
+        <div class="scan-block is-accent agent-color-blue">
+          <div class="scan-title"><span class="t-en">System Layer</span><span class="t-jp">システム層</span></div>
+          <div class="scan-desc"><span class="t-en">Latency, timeouts, offline modes, double-clicks.</span><span class="t-jp is-block">レイテンシー、タイムアウト、オフラインモード、ダブルクリック。</span></div>
+        </div>
+        <div class="scan-block is-accent agent-color-purple">
+          <div class="scan-title"><span class="t-en">User State Layer</span><span class="t-jp">ユーザー状態層</span></div>
+          <div class="scan-desc"><span class="t-en">Guest vs. logged-in, suspended accounts, permissions.</span><span class="t-jp is-block">ゲストとログイン済み、停止中のアカウント、権限。</span></div>
+        </div>
+        <div class="scan-block is-accent" style="border-left-color:#121212;">
+          <div class="scan-title"><span class="t-en">Temporal Layer</span><span class="t-jp">時間層</span></div>
+          <div class="scan-desc"><span class="t-en">Timezone conflicts, session timeouts, &ldquo;back&rdquo; button errors.</span><span class="t-jp is-block">タイムゾーンの衝突、セッションタイムアウト、「戻る」ボタンのエラー。</span></div>
+        </div>
+      </div>
+
+      <p class="project-aside-label" style="margin-top:36px; margin-bottom:8px;"><span class="t-en">What the Matrix Actually Catches</span><span class="t-jp">マトリクスが実際に捕まえるもの</span></p>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">Type <strong>#audit</strong> and Justin returns a spreadsheet of 20&ndash;40 ranked edge cases, each phrased as a question product and engineering must answer. Real catches from one payment feature: <em>what happens to a payment made at 11:59 PM when the system suspends the account at 12:02 AM? Does a user in Guam (UTC+10) see &ldquo;Day 0&rdquo; while US-Eastern servers still say &ldquo;Day &minus;1&rdquo;? If AutoPay batches lock 24&ndash;48 hours ahead, does the user get double-billed? What does five rage-clicks on &ldquo;Pay&rdquo; during a 60-second API hang actually charge?</em></span>
+        <span class="t-jp is-block"><strong>#audit</strong> と入力すると、Justinは20〜40件のエッジケースを重要度順に並べたスプレッドシートを返す。それぞれが、プロダクトとエンジニアリングが答えるべき問いの形をとる。ある支払い機能での実際の検出例 &mdash; <em>23時59分の支払いは、システムが0時2分にアカウントを停止する場合どうなるのか？ グアム（UTC+10）のユーザーには「Day 0」でも、米東部のサーバーではまだ「Day &minus;1」ではないか？ AutoPayのバッチ処理が24〜48時間前にロックされるなら、二重請求は起きないか？ APIが60秒固まっている間に「支払う」を5回連打したら、実際にはいくら請求されるのか？</em></span>
+      </p>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">And it held up to scrutiny: on a plan-migration initiative, the product manager and engineers reviewed Justin's findings line by line and rated most of them four to five stars &mdash; edge cases like a suspended-line migration trap and legacy-promo removal that would otherwise have surfaced months later, in production.</span>
+        <span class="t-jp is-block">そして、この出力は検証にも耐えた。あるプラン移行のイニシアチブでは、プロダクトマネージャーとエンジニアがJustinの検出結果を1行ずつレビューし、その大半に星4〜5の評価をつけた &mdash; 停止中回線の移行トラップや、旧プロモーションの消滅といった、放っておけば数か月後に本番環境で発覚していたはずのエッジケースだ。</span>
+      </p>
+
+      <div class="option-cards">
+        <div class="option-card">
+          <div class="option-tier" style="color:#16a34a;"><span class="t-en">Save Time</span><span class="t-jp">時間を守る</span></div>
+          <div class="option-desc"><span class="t-en">Stop the "what if?" scramble during development &mdash; the questions are answered before build starts.</span><span class="t-jp is-block">開発中の「もしこうだったら？」という混乱を止める &mdash; 問いは、実装が始まる前に答えられている。</span></div>
+        </div>
+        <div class="option-card">
+          <div class="option-tier" style="color:#16a34a;"><span class="t-en">Prioritize</span><span class="t-jp">優先順位を決める</span></div>
+          <div class="option-desc"><span class="t-en">Decide now which edge cases to fix and which to consciously ignore &mdash; with the trade-off on the record.</span><span class="t-jp is-block">どのエッジケースを直し、どれを意識的に無視するかを今決める &mdash; トレードオフを記録に残した上で。</span></div>
+        </div>
+        <div class="option-card">
+          <div class="option-tier" style="color:#16a34a;"><span class="t-en">Confidence</span><span class="t-jp">自信</span></div>
+          <div class="option-desc"><span class="t-en">Hand off designs that are bulletproof. Zero surprise. Early decisions.</span><span class="t-jp is-block">穴のないデザインをハンドオフする。驚きはゼロ。意思決定は早く。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Sally Detail ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">System 03 &mdash; CX Strategy Engine</span><span class="t-jp">システム 03 &mdash; CX戦略エンジン</span></div>
+      <h2 class="project-section-title">Sally &mdash; <span class="t-en">Principal CX Strategist</span><span class="t-jp">プリンシパルCXストラテジスト</span></h2>
+
+      <div class="agent-profile" style="margin-top:20px;">
+        <img class="agent-profile-img" src="../assets/verizon-ai-agents/agent-sally-portrait.jpg" alt="Illustrated portrait of Sally, the Principal CX Strategist AI agent, reviewing a checklist surrounded by behavioral-science and research icons" loading="lazy">
+        <div>
+          <p class="project-text" style="margin-bottom:20px;">
+            <span class="t-en">Also a Gemini Gem paired with a dedicated NotebookLM knowledge base, Sally exists to fill the void where user testing should have been. Give her UI screens, a persona, and a user goal, and she autonomously runs an <strong>8-Step Deep Analysis</strong> across three layers &mdash; Strategy (the Why), Logic (the How), and Visuals (the What) &mdash; stress-testing the flow against human psychology instead of in-the-room opinion. She identifies the frictions, backs each one up with science, offers three or more solutions, and then builds the presentation.</span>
+            <span class="t-jp is-block">こちらもGemini Gemと専用のNotebookLMナレッジベースを組み合わせたエージェントで、本来ユーザーテストがあるべきだった空白を埋めるために存在する。UI画面、ペルソナ、ユーザーゴールを渡すと、戦略（Why）、ロジック（How）、ビジュアル（What）の3層にわたる<strong>8ステップの深層分析</strong>を自律的に実行し、会議室での意見ではなく人間の心理に照らしてフローを負荷試験する。摩擦を特定し、それぞれを科学で裏づけ、3つ以上の解決策を提示し、そしてプレゼンテーションまで作り上げる。</span>
+          </p>
+          <p class="project-aside-label" style="margin-bottom:0;"><span class="t-en">Built on</span><span class="t-jp">依拠するフレームワーク</span></p>
+          <div class="framework-tags">
+            <span class="framework-tag">Fogg Behavior Model</span>
+            <span class="framework-tag"><span class="t-en">Nudge Theory</span><span class="t-jp">ナッジ理論</span></span>
+            <span class="framework-tag"><span class="t-en">Cognitive Load Theory</span><span class="t-jp">認知負荷理論</span></span>
+            <span class="framework-tag"><span class="t-en">Nielsen&rsquo;s 10 Heuristics</span><span class="t-jp">Nielsenの10のヒューリスティクス</span></span>
+            <span class="framework-tag">ISO 9241-210</span>
+            <span class="framework-tag">Jobs-to-be-Done</span>
+            <span class="framework-tag">Double Diamond</span>
+            <span class="framework-tag"><span class="t-en">Visual Saliency &amp; Thumb Zone</span><span class="t-jp">視覚的顕著性 &amp; サムゾーン</span></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="project-aside-label" style="margin-top:40px; margin-bottom:4px;"><span class="t-en">Real Output &mdash; A CX Audit Scorecard</span><span class="t-jp">実際のアウトプット &mdash; CX監査スコアカード</span></p>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">This is what changed the conversation. Auditing a device-activation flow against its persona, Sally didn't offer an opinion &mdash; she returned a verdict: the flow treats an <em>owner</em> (who already holds the device) like a <em>shopper</em> (who needs to buy), triggering "double-payment anxiety" and abandonment at the exact screen where a cart total appears.</span>
+        <span class="t-jp is-block">会話を変えたのはこれだ。デバイスのアクティベーションフローをペルソナに照らして監査したSallyは、意見ではなく判定を返した &mdash; このフローは、すでにデバイスを手にしている<em>所有者</em>を、これから買う<em>買い物客</em>のように扱っており、カート合計が表示されるまさにその画面で「二重支払いへの不安」と離脱を引き起こしている、と。</span>
+      </p>
+      <div class="scorecard">
+        <div class="scorecard-total">
+          <div class="scorecard-num">41<small>/100</small></div>
+          <div class="scorecard-verdict"><span class="t-en">Overall CX Score: Fail</span><span class="t-jp">総合CXスコア：不合格</span></div>
+          <div class="scorecard-note"><span class="t-en">Verdict: critical strategic failure &mdash; an "identity crisis" between owner and shopper.</span><span class="t-jp is-block">判定：致命的な戦略上の欠陥 &mdash; 所有者と買い物客の間の「アイデンティティの混乱」。</span></div>
+        </div>
+        <div class="score-rows">
+          <div>
+            <div class="score-label"><strong><span class="t-en">Strategy &mdash; the Why</span><span class="t-jp">戦略 &mdash; Why</span></strong><span>20/100</span></div>
+            <div class="score-bar"><div class="score-fill" style="width:20%; background:#d92d20;"></div></div>
+            <div class="score-finding"><span class="t-en">Critical: solving for "sales" instead of "setup."</span><span class="t-jp is-block">致命的：「セットアップ」ではなく「販売」を解いてしまっている。</span></div>
+          </div>
+          <div>
+            <div class="score-label"><strong><span class="t-en">Logic &mdash; the How</span><span class="t-jp">ロジック &mdash; How</span></strong><span>45/100</span></div>
+            <div class="score-bar"><div class="score-fill" style="width:45%; background:#f97316;"></div></div>
+            <div class="score-finding"><span class="t-en">High friction: heuristic violations (recall vs. recognition).</span><span class="t-jp is-block">高摩擦：ヒューリスティクス違反（再生記憶 vs 再認記憶）。</span></div>
+          </div>
+          <div>
+            <div class="score-label"><strong><span class="t-en">Visuals &mdash; the What</span><span class="t-jp">ビジュアル &mdash; What</span></strong><span>60/100</span></div>
+            <div class="score-bar"><div class="score-fill" style="width:60%; background:#eab308;"></div></div>
+            <div class="score-finding"><span class="t-en">Moderate: price saliency overpowers the primary action.</span><span class="t-jp is-block">中程度：価格の視覚的顕著性が、主要アクションを圧倒している。</span></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="project-aside-label" style="margin-top:40px; margin-bottom:4px;"><span class="t-en">Never One Answer &mdash; Always a Ladder of Options</span><span class="t-jp">答えはひとつではなく、常に選択肢の階段</span></p>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">For each friction, Sally returns three tiers of solution &mdash; quick fix, standard, north star &mdash; each with its reasoning attached. One example, for a manual serial-number entry step that violated Fogg's Ability principle:</span>
+        <span class="t-jp is-block">それぞれの摩擦に対して、Sallyは3段階の解決策を返す &mdash; クイックフィックス、スタンダード、ノーススター。それぞれに根拠が添えられる。Foggの「能力」の原則に違反していた、シリアル番号の手入力ステップに対する一例：</span>
+      </p>
+      <div class="option-cards">
+        <div class="option-card">
+          <div class="option-tier" style="color:var(--ink-dim);"><span class="t-en">Option A &mdash; Quick Fix</span><span class="t-jp">案A &mdash; クイックフィックス</span></div>
+          <div class="option-name"><span class="t-en">Input Masking</span><span class="t-jp">入力マスキング</span></div>
+          <div class="option-desc"><span class="t-en">Auto-format the field in groups of four as the user types &mdash; reduces cognitive load by allowing easier spot-checking.</span><span class="t-jp is-block">入力中に4桁ずつ自動整形する &mdash; 目視確認がしやすくなり、認知負荷を下げる。</span></div>
+        </div>
+        <div class="option-card" style="border-top:3px solid #2563eb;">
+          <div class="option-tier" style="color:#2563eb;"><span class="t-en">Option B &mdash; The Standard</span><span class="t-jp">案B &mdash; スタンダード</span></div>
+          <div class="option-name"><span class="t-en">Camera Scan</span><span class="t-jp">カメラスキャン</span></div>
+          <div class="option-desc"><span class="t-en">A "scan barcode" button opening the browser camera &mdash; eliminates typing entirely, cutting time-on-task roughly 40%.</span><span class="t-jp is-block">ブラウザカメラを開く「バーコードをスキャン」ボタン &mdash; 入力自体をなくし、タスク時間を約40%削減。</span></div>
+        </div>
+        <div class="option-card">
+          <div class="option-tier" style="color:var(--ink-dim);"><span class="t-en">Option C &mdash; North Star</span><span class="t-jp">案C &mdash; ノーススター</span></div>
+          <div class="option-name"><span class="t-en">Zero-UI (Auto)</span><span class="t-jp">Zero-UI（自動）</span></div>
+          <div class="option-desc"><span class="t-en">A QR code on the packaging pre-fills the data &mdash; removes the step completely, but requires a supply-chain update.</span><span class="t-jp is-block">パッケージのQRコードがデータを事前入力 &mdash; ステップ自体を消し去るが、サプライチェーンの更新が必要。</span></div>
+        </div>
+      </div>
+
+      <p class="project-aside-label" style="margin-top:40px; margin-bottom:8px;"><span class="t-en">What Sally Produces</span><span class="t-jp">Sallyが生み出すもの</span></p>
+      <ul class="output-list" style="max-width:680px;">
+        <li><span class="t-en"><strong>Initiative Alignment Briefs</strong> &mdash; framing a project's business case and CX opportunity before design work starts.</span><span class="t-jp is-block"><strong>イニシアチブ整合ブリーフ</strong> &mdash; デザイン作業が始まる前に、プロジェクトのビジネスケースとCX上の機会を明確にする。</span></li>
+        <li><span class="t-en"><strong>CX Audit Reports</strong> &mdash; detail report, executive summary, and slide deck, scored sub-score by sub-score.</span><span class="t-jp is-block"><strong>CX監査レポート</strong> &mdash; 詳細レポート、エグゼクティブサマリー、スライド資料。サブスコアごとに採点される。</span></li>
+        <li><span class="t-en"><strong>Strategic Options slides</strong> &mdash; for each friction found, ranked solution paths with trade-offs a designer can defend to stakeholders, not a single fix handed down.</span><span class="t-jp is-block"><strong>戦略的選択肢のスライド</strong> &mdash; 発見された摩擦それぞれに対して、デザイナーがステークホルダーに説明できる、トレードオフ付きの解決パスを提示する。単一の答えを下すのではない。</span></li>
+      </ul>
+      <p class="project-text" style="max-width:680px; margin-top:20px;">
+        <span class="t-en">The team's gain is threefold: <strong>instant self-auditing</strong> without testing budgets or lead times, <strong>scientific consistency</strong> &mdash; every screen held to the same ISO and behavioral-science standards &mdash; and <strong>internal validation</strong>, so designers walk into stakeholder reviews with evidence instead of hope.</span>
+        <span class="t-jp is-block">チームが得たものは3つ。テスト予算もリードタイムも要らない<strong>即時のセルフ監査</strong>。すべての画面が同じISOと行動科学の基準で評価される<strong>科学的な一貫性</strong>。そして<strong>社内での検証</strong> &mdash; デザイナーは祈りではなく、証拠を持ってステークホルダーレビューに臨めるようになった。</span>
+      </p>
+    </div>
+
+    <!-- ── WDS Agent Team ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">System 04 &mdash; Strategic Design Engine</span><span class="t-jp">システム 04 &mdash; 戦略的デザインエンジン</span></div>
+      <h2 class="project-section-title">WDS &mdash; Whiteport Design Studio</h2>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">A team of five specialist agents, codenamed after Norse gods, working in sequence &mdash; each with a defined role in the design pipeline. WDS is a strategic-design module built on top of BMAD (Breakthrough Method of Agile AI-Driven Development), an internal framework for structured, spec-first agent work. Where BMAD's engineering roles focus on shipping code, WDS focuses entirely on translating business goals into conceptual specifications precise enough to hand to a developer.</span>
+        <span class="t-jp is-block">北欧の神々のコードネームを持つ、5人の専門エージェントのチームが、順を追って連携する &mdash; それぞれがデザインパイプラインの中で明確な役割を持つ。WDSは、構造化された仕様先行型のエージェント運用のための社内フレームワーク「BMAD」（Breakthrough Method of Agile AI-Driven Development）の上に構築された、戦略デザイン専用のモジュールだ。BMADのエンジニアリング系の役割がコードの実装に注力するのに対し、WDSはビジネス目標を、開発者に渡せるほど精密なコンセプト仕様へと翻訳することに完全に特化している。</span>
+      </p>
+
+      <div class="agent-grid">
+        <div class="agent-card is-accent agent-color-orange">
+          <div class="agent-role"><span class="t-en">Orchestrator</span><span class="t-jp">オーケストレーター</span></div>
+          <div class="agent-name">Mimir</div>
+          <div class="agent-desc"><span class="t-en">The wise guide. Assesses experience level, sets up the project, and routes to the correct specialist agent.</span><span class="t-jp is-block">賢明な案内役。習熟度を評価し、プロジェクトを立ち上げ、適切な専門エージェントへ振り分ける。</span></div>
+        </div>
+        <div class="agent-card is-accent agent-color-blue">
+          <div class="agent-role"><span class="t-en">Analyst</span><span class="t-jp">アナリスト</span></div>
+          <div class="agent-name">Saga</div>
+          <div class="agent-desc"><span class="t-en">The strategic thinker. Handles the product brief and trigger mapping, connecting business goals to user psychology.</span><span class="t-jp is-block">戦略的な思考役。プロダクトブリーフとトリガーマッピングを担い、ビジネス目標とユーザー心理を結びつける。</span></div>
+        </div>
+        <div class="agent-card is-accent agent-color-green">
+          <div class="agent-role"><span class="t-en">Designer</span><span class="t-jp">デザイナー</span></div>
+          <div class="agent-name">Freya</div>
+          <div class="agent-desc"><span class="t-en">The UX/UI specialist. Converts strategy into usage scenarios, interaction flows, and conceptual specifications &mdash; how it works and why.</span><span class="t-jp is-block">UX/UI専門役。戦略を、利用シナリオ、インタラクションフロー、コンセプト仕様へと変換する &mdash; どう機能し、なぜそうなのかを定める。</span></div>
+        </div>
+        <div class="agent-card is-accent agent-color-yellow">
+          <div class="agent-role"><span class="t-en">Architect / PM</span><span class="t-jp">アーキテクト / PM</span></div>
+          <div class="agent-name">Idunn</div>
+          <div class="agent-desc"><span class="t-en">The bridge to engineering. Translates design concepts into platform architecture and technical requirements (PRD) developers can use.</span><span class="t-jp is-block">エンジニアリングへの橋渡し役。デザインコンセプトを、開発者が使えるプラットフォームアーキテクチャと技術要件（PRD）へと翻訳する。</span></div>
+        </div>
+        <div class="agent-card is-accent agent-color-purple">
+          <div class="agent-role"><span class="t-en">Visual Designer</span><span class="t-jp">ビジュアルデザイナー</span></div>
+          <div class="agent-name">Eira</div>
+          <div class="agent-desc"><span class="t-en">Integrates with image-generation tools to create visual concepts, brand explorations, and design tokens.</span><span class="t-jp is-block">画像生成ツールと連携し、ビジュアルコンセプト、ブランド探索、デザイントークンを生成する。</span></div>
+        </div>
+      </div>
+
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">Fed the Project Master Brain and an Initiative Alignment Brief, the team relays the work forward &mdash; and out the other side comes a CX/UX strategy, multiple solution scenarios, and detailed prototyping prompts ready for Gemini Canvas or Figma Make. On one payment project this took a tangled brief from <em>chaos to concept</em>: strategy first, then interactive prototypes built on the brand's actual design-system tokens &mdash; and when the team wanted breadth, the engine generated dozens of interaction variations of the same flow at once, letting designers review an entire solution space before committing a single pixel.</span>
+        <span class="t-jp is-block">プロジェクトのMaster Brainとイニシアチブ整合ブリーフを受け取ると、チームはリレー形式で仕事を前へ送っていく &mdash; そして反対側から出てくるのは、CX/UX戦略、複数のソリューションシナリオ、そしてGemini CanvasやFigma Makeでそのまま使える詳細なプロトタイピングプロンプトだ。ある支払い関連プロジェクトでは、もつれたブリーフを<em>カオスからコンセプトへ</em>と導いた。まず戦略、次にブランドの実際のデザインシステム・トークンに基づくインタラクティブなプロトタイプ。さらに幅が欲しいときは、同じフローのインタラクションバリエーションを一度に数十案生成し、1ピクセルもコミットする前にソリューション空間全体をレビューできるようにした。</span>
+      </p>
+    </div>
+
+    <!-- ── Clara & Alex ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">Systems 05 &amp; 06 &mdash; The Fleet Kept Growing</span><span class="t-jp">システム 05 &amp; 06 &mdash; 増え続ける艦隊</span></div>
+      <h2 class="project-section-title"><span class="t-en">Clara &amp; Alex &mdash; the Guardian and the Builder</span><span class="t-jp">Clara と Alex &mdash; 番人と建築家</span></h2>
+      <div class="method-grid" style="grid-template-columns:1fr 1fr;">
+        <div class="method-card" style="border-top:3px solid #0d9488;">
+          <div class="method-num"><span class="t-en">Agent 05 &mdash; UX Writing Evaluator</span><span class="t-jp">エージェント 05 &mdash; UXライティング評価</span></div>
+          <div class="method-title" style="font-size:24px;">Clara</div>
+          <div class="method-desc"><span class="t-en">Every screen ships with words, and words drift off-brand faster than pixels do. Clara evaluates copy against the brand-voice guidelines &mdash; clarity, accessibility, tone &mdash; and returns a verdict with rewrites, so content quality gets checked as systematically as the UX itself.</span><span class="t-jp is-block">すべての画面は言葉とともに出荷される。そして言葉は、ピクセルよりも速くブランドから逸れていく。Claraはコピーをブランドボイス・ガイドラインに照らして評価し &mdash; 明確さ、アクセシビリティ、トーン &mdash; 書き直し案つきの判定を返す。UXと同じ体系的な検査を、コンテンツの品質にも。</span></div>
+        </div>
+        <div class="method-card" style="border-top:3px solid #7c3aed;">
+          <div class="method-num"><span class="t-en">Agent 06 &mdash; The Agent Architect</span><span class="t-jp">エージェント 06 &mdash; エージェント・アーキテクト</span></div>
+          <div class="method-title" style="font-size:24px;">Alex</div>
+          <div class="method-desc"><span class="t-en">The meta-agent: an agent-design tool &mdash; think of it as a skill creator. Describe a job, and Alex interviews you, drafts the Gem instruction set, wires up the knowledge base, and hands you a working specialist. Designers who couldn't write a prompt six weeks earlier were building their own agents. The system became self-replicating.</span><span class="t-jp is-block">メタエージェント &mdash; エージェントを設計するためのツールで、いわばスキルクリエイターだ。作りたい仕事を伝えると、Alexがヒアリングし、Gemの指示書を起草し、ナレッジベースを接続し、動く専門エージェントを手渡してくれる。6週間前にはプロンプトすら書けなかったデザイナーが、自分のエージェントを作るようになった。システムは自己複製を始めたのだ。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Pro Tips / Craft ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">Beyond the Agents &mdash; Craft</span><span class="t-jp">エージェントの先へ &mdash; 技法</span></div>
+      <h2 class="project-section-title"><span class="t-en">Techniques I Taught the Team</span><span class="t-jp">チームに教えた技法</span></h2>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">The workshops didn't stop at "here are the agents." Each session shipped working techniques the team could reuse the same afternoon.</span>
+        <span class="t-jp is-block">ワークショップは「これがエージェントです」では終わらなかった。各セッションで、その日の午後からすぐ再利用できる実践的な技法を届けた。</span>
+      </p>
+      <div class="method-grid">
+        <div class="method-card">
+          <div class="method-num"><span class="t-en">Technique 01</span><span class="t-jp">技法 01</span></div>
+          <div class="method-title"><span class="t-en">Ground AI in Design-System Code</span><span class="t-jp">AIをデザインシステムのコードに接地させる</span></div>
+          <div class="method-desc"><span class="t-en">Extract the actual code components from the Figma design system and feed them to Figma Make or Gemini Canvas. Grounded in tokens-as-code, prototypes inherently obey brand constraints &mdash; high fidelity from the very first prompt.</span><span class="t-jp is-block">Figmaのデザインシステムから実際のコードコンポーネントを抽出し、Figma MakeやGemini Canvasに与える。コード化されたトークンに接地させると、プロトタイプは最初のプロンプトからブランドの制約に自然に従う。</span></div>
+        </div>
+        <div class="method-card">
+          <div class="method-num"><span class="t-en">Technique 02</span><span class="t-jp">技法 02</span></div>
+          <div class="method-title"><span class="t-en">Separate Ideation From Execution</span><span class="t-jp">発想と実行を切り離す</span></div>
+          <div class="method-desc"><span class="t-en">"Show me 40 different ways to solve for X." Generate a gallery of prototype variations in one pass &mdash; review a massive range of architectural approaches before committing to pixel-perfect design.</span><span class="t-jp is-block">「Xを解決する40通りの方法を見せて」。一度の実行でプロトタイプのバリエーション・ギャラリーを生成し、ピクセルパーフェクトなデザインに取りかかる前に、幅広いアプローチを見渡す。</span></div>
+        </div>
+        <div class="method-card">
+          <div class="method-num"><span class="t-en">Technique 03</span><span class="t-jp">技法 03</span></div>
+          <div class="method-title"><span class="t-en">Let Documents Become Slides &amp; Storyboards</span><span class="t-jp">文書をスライドとストーリーボードに変える</span></div>
+          <div class="method-desc"><span class="t-en">Turn an alignment brief into an editable business-case deck with Gemini Canvas, or generate full storyboard frames &mdash; flow, descriptions, captions, UI elements &mdash; ready for illustration by the other Gems.</span><span class="t-jp is-block">整合ブリーフをGemini Canvasで編集可能なビジネスケース資料に変換する。あるいはストーリーボード一式 &mdash; フロー、説明、キャプション、UI要素 &mdash; を生成し、他のGemでそのままイラスト化できる状態にする。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Workflow Transformation ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">Before &amp; After</span><span class="t-jp">ビフォー＆アフター</span></div>
+      <h2 class="project-section-title"><span class="t-en">Workflow Transformation</span><span class="t-jp">ワークフローの変革</span></h2>
+      <p class="project-text" style="max-width:680px;">
+        <span class="t-en">The workflow sequence stayed the same: BRD, CX Playbook, User Journey, Design, Prototype, Handoff, QA, Launch. But every phase now has an AI agent running in parallel &mdash; surfacing context, validating assumptions, catching edge cases.</span>
+        <span class="t-jp is-block">ワークフローの流れ自体は変わっていない。BRD、CXプレイブック、ユーザージャーニー、デザイン、プロトタイプ、ハンドオフ、QA、ローンチ。だが、いまや各フェーズでAIエージェントが並行して動いている &mdash; 文脈を引き出し、前提を検証し、エッジケースを捕まえる。</span>
+      </p>
+
+      <p class="project-aside-label" style="margin-bottom:12px; margin-top:36px;"><span class="t-en">New Workflow with AI Agents</span><span class="t-jp">AIエージェントを組み込んだ新しいワークフロー</span></p>
+      <div class="wf-row">
+        <div class="wf-step is-light"><span class="t-en">BRD / Tech Requirements</span><span class="t-jp">BRD / 技術要件</span></div>
+        <div class="wf-step is-dark"><span class="t-en">Initiative Alignment Document</span><span class="t-jp">イニシアチブ整合ドキュメント</span></div>
+        <div class="wf-step is-dark"><span class="t-en">Edge Case Detection</span><span class="t-jp">エッジケース検出</span></div>
+        <div class="wf-step is-dark"><span class="t-en">Functional Prototype</span><span class="t-jp">機能プロトタイプ</span></div>
+        <div class="wf-step is-dark"><span class="t-en">Design Exploration</span><span class="t-jp">デザイン探索</span></div>
+        <div class="wf-step is-dark"><span class="t-en">Synthetic Usability Testing</span><span class="t-jp">合成ユーザビリティテスト</span></div>
+      </div>
+      <div class="wf-agent-bar">
+        <div class="wf-agent-label wf-bar-orange" style="flex:1;"><span class="t-en">Project Masterbrain</span><span class="t-jp">プロジェクトMasterbrain</span></div>
+        <div class="wf-agent-label wf-bar-blue" style="flex:1.5;"><span class="t-en">Multi-Agent Design Engine (BMAD/WDS)</span><span class="t-jp">マルチエージェント・デザインエンジン（BMAD/WDS）</span></div>
+      </div>
+      <div class="wf-agent-bar">
+        <div class="wf-agent-label wf-bar-green" style="flex:0.8; padding:8px 12px; font-size:9px;"><span class="t-en">Edge Case Detection</span><span class="t-jp">エッジケース検出</span></div>
+        <div style="flex:1.2;"></div>
+        <div class="wf-agent-label wf-bar-yellow" style="flex:0.8; padding:8px 12px; font-size:9px;"><span class="t-en">Synthetic Usability</span><span class="t-jp">合成ユーザビリティ</span></div>
+      </div>
+      <div class="wf-tools-bar">
+        <div class="wf-tool">NotebookLM</div>
+        <div class="wf-tool">Gem</div>
+        <div class="wf-tool">Canvas</div>
+        <div class="wf-tool">Figma Make</div>
+      </div>
+      <div class="wf-row">
+        <div class="wf-step is-light"><span class="t-en">Prototyping / Stakeholder Alignment</span><span class="t-jp">プロトタイピング / ステークホルダー調整</span></div>
+        <div class="wf-step is-light"><span class="t-en">Design Finalization</span><span class="t-jp">デザイン確定</span></div>
+        <div class="wf-step is-light"><span class="t-en">Handoff / Implementation</span><span class="t-jp">ハンドオフ / 実装</span></div>
+        <div class="wf-step is-light"><span class="t-en">QA</span><span class="t-jp">QA</span></div>
+        <div class="wf-step is-light"><span class="t-en">Launch</span><span class="t-jp">ローンチ</span></div>
+        <div class="wf-step is-light"><span class="t-en">Post-Launch Data</span><span class="t-jp">ローンチ後のデータ</span></div>
+      </div>
+    </div>
+
+    <!-- ── Outcomes ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">Impact</span><span class="t-jp">インパクト</span></div>
+      <h2 class="project-section-title"><span class="t-en">Scale &amp; Outcomes</span><span class="t-jp">スケールと成果</span></h2>
+
+      <div class="outcomes-grid" style="margin-top:28px;">
+        <div class="outcome-block">
+          <div class="outcome-num">42 &rarr; 80+</div>
+          <div class="outcome-label"><span class="t-en">Designers to cross-functional stakeholders (PM, research, content) in rollout expansion</span><span class="t-jp is-block">展開の拡大に伴い、デザイナーから部門横断のステークホルダー（PM、リサーチ、コンテンツ）へ</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">6</div>
+          <div class="outcome-label"><span class="t-en">Brands across Verizon Value portfolio targeted for full transformation</span><span class="t-jp is-block">全面的な変革の対象となる Verizon Value ポートフォリオのブランド</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">10x &rarr; 0</div>
+          <div class="outcome-label"><span class="t-en">Edge case rework cost eliminated by detecting issues during ideation, not development</span><span class="t-jp is-block">問題を開発段階ではなくアイデア段階で検出することで、エッジケースの手戻りコストを解消</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Cognitive Shift ── -->
+    <div class="impact-block reveal-on-scroll">
+      <div class="impact-title"><span class="t-en">The Cognitive Shift</span><span class="t-jp">認知の転換</span></div>
+      <div class="impact-text">
+        <span class="t-en"><strong>Before:</strong> Designers operated tactically. They filled gaps left by broken processes. They were reactive. They were exhausted.<br><br><strong>After:</strong> Designers operated at the strategic level the role was always supposed to require. They made decisions. They challenged assumptions. They designed with evidence.<br><br>Same pipeline. Fundamentally different output.</span>
+        <span class="t-jp is-block"><strong>ビフォー：</strong> デザイナーは戦術的に動いていた。壊れたプロセスが残した隙間を埋めていた。受け身だった。疲弊していた。<br><br><strong>アフター：</strong> デザイナーは、この役割が本来求めていたはずの戦略的なレベルで動くようになった。意思決定を下した。前提に異を唱えた。証拠に基づいてデザインした。<br><br>同じパイプライン。まったく異なるアウトプット。</span>
+      </div>
+    </div>
+
+    <!-- ── Lessons ── -->
+    <div class="project-section reveal-on-scroll">
+      <div class="section-label"><span class="t-en">Reflection</span><span class="t-jp">振り返り</span></div>
+      <h2 class="project-section-title"><span class="t-en">Four Lessons</span><span class="t-jp">4つの教訓</span></h2>
+
+      <div class="friction-grid" style="margin-top:24px;">
+        <div class="friction-card">
+          <div class="friction-num">01</div>
+          <div class="friction-title"><span class="t-en">AI Amplifies Your Architecture</span><span class="t-jp">AIはアーキテクチャを増幅する</span></div>
+          <div class="friction-desc"><span class="t-en">If your knowledge is fragmented, AI gives you fragmented answers faster. Fix the architecture first. Then add AI. Never reverse the order.</span><span class="t-jp is-block">知識が分散していれば、AIは分散した答えを、より速く返してくるだけだ。まずアーキテクチャを直す。その上でAIを加える。この順序を決して逆にしてはならない。</span></div>
+        </div>
+        <div class="friction-card">
+          <div class="friction-num">02</div>
+          <div class="friction-title"><span class="t-en">Start With Pain, Not Technology</span><span class="t-jp">技術ではなく、痛みから始める</span></div>
+          <div class="friction-desc"><span class="t-en">The right question is never "how do we use AI?" It's "where does the pain actually live?" The solutions emerged from diagnosis. Every single time.</span><span class="t-jp is-block">正しい問いは決して「どうAIを使うか？」ではない。「痛みは実際どこに存在するのか？」だ。解決策は診断から生まれた。毎回、必ず。</span></div>
+        </div>
+        <div class="friction-card">
+          <div class="friction-num">03</div>
+          <div class="friction-title"><span class="t-en">Constraints Are a Design Brief</span><span class="t-jp">制約はデザインの要件だ</span></div>
+          <div class="friction-desc"><span class="t-en">Gemini and NotebookLM. That was it. No custom models. No API access. Constraints forced architectural thinking. The walls became the floor plan.</span><span class="t-jp is-block">GeminiとNotebookLM。それだけだった。カスタムモデルもなし。APIアクセスもなし。制約が、アーキテクチャで考えることを強いた。壁が、そのまま間取り図になった。</span></div>
+        </div>
+        <div class="friction-card">
+          <div class="friction-num">04</div>
+          <div class="friction-title"><span class="t-en">Specificity Makes Agents Useful</span><span class="t-jp">具体性がエージェントを役立たせる</span></div>
+          <div class="friction-desc"><span class="t-en">Specific inputs. Specific outputs. Specific job. Vague agents produce vague results. Precise agents replace structural failures.</span><span class="t-jp is-block">具体的な入力。具体的な出力。具体的な仕事。曖昧なエージェントは曖昧な結果を生む。精密なエージェントは、構造的な欠陥を置き換える。</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Project Navigation ── -->
+    <div class="nav-project">
+      <a href="credit-card-portal.html">&larr; Credit Card Portal</a>
+      <a href="ela-quests.html">ELA Quests &rarr;</a>
+    </div>
+
+  </main>
+
+  <!-- ── Language Switch ── -->
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer">
+      <div>
+        <div class="footer-logo">Takao Umehara</div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
+        <li><a href="../intentfirst.html">intentfirst.ai</a></li>
+      </ul>
+      <div class="footer-copy">New York City</div>
+    </div>
+  </footer>
+
+  <script>
+  // Language toggle
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll('.lang-btn')];
+    const saved = localStorage.getItem('tu-lang') || 'en';
+    const setLang = (lang) => {
+      html.classList.toggle('lang-jp', lang === 'jp');
+      btns.forEach((b) => b.classList.toggle('is-active', b.dataset.lang === lang));
+      localStorage.setItem('tu-lang', lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  })();
+
+  // Scroll reveal
+  (() => {
+    const items = document.querySelectorAll('.reveal-on-scroll');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); observer.unobserve(e.target); } });
+    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    items.forEach(el => observer.observe(el));
+  })();
+
+  // Mobile menu
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

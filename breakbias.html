@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>BreakBias — Takao Umehara</title>
+  <meta name="description" content="BreakBias — eight structured tools for overcoming the cognitive biases that block innovation, available as team workshops from Takao Umehara.">
+  <meta property="og:title" content="BreakBias — Takao Umehara">
+  <meta property="og:description" content="Eight structured tools for overcoming the cognitive biases that block innovation, available as team workshops.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Google Sans","Google Sans Text","Product Sans",system-ui,sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+
+    /* ─── Dark hero ─── */
+    .hero-dark {
+      background: #121212;
+      background-image:
+        radial-gradient(circle at 20% 50%, rgba(100,120,255,0.12) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(200,100,200,0.08) 0%, transparent 35%),
+        radial-gradient(circle at 60% 80%, rgba(80,160,220,0.06) 0%, transparent 30%);
+      color: #fff;
+      padding: 96px 32px 88px;
+    }
+
+    .hero-dark-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-kicker {
+      margin-bottom: 20px;
+    }
+
+    .hero-kicker-text {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+
+    .hero-headline-dark {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(44px, 6.8vw, 88px);
+      line-height: 0.91;
+      letter-spacing: -0.03em;
+      font-weight: 400;
+      max-width: 900px;
+      margin-bottom: 32px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-tagline {
+      font-size: clamp(18px, 2.2vw, 26px);
+      line-height: 1.4;
+      letter-spacing: -0.025em;
+      color: rgba(255,255,255,0.72);
+      max-width: 640px;
+      font-style: italic;
+    }
+
+    /* ─── What is section ─── */
+    .what-section {
+      padding: 80px 0 72px;
+      border-top: 1px solid var(--line);
+    }
+
+    .what-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .what-text h2 {
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      margin-bottom: 20px;
+    }
+
+    .what-text p {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink-mid);
+      margin-bottom: 16px;
+    }
+
+    .what-quote {
+      position: relative;
+      padding: 32px 36px;
+      background: rgba(18,18,18,0.03);
+      border-left: 2px solid var(--ink);
+    }
+
+    .what-quote blockquote {
+      font-size: clamp(18px, 2vw, 24px);
+      line-height: 1.45;
+      letter-spacing: -0.025em;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .what-quote cite {
+      display: block;
+      margin-top: 16px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      font-style: normal;
+    }
+
+    /* ─── Section header ─── */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      padding: 0 32px;
+      margin: 0 auto 28px;
+      max-width: 1200px;
+    }
+
+    .section-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    /* ─── Audience cards ─── */
+    .audiences-section {
+      padding: 72px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+
+    .audiences-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 28px auto 0;
+    }
+
+    .audience-card {
+      position: relative;
+      padding: 36px 32px;
+      overflow: hidden;
+      isolation: isolate;
+      min-height: 240px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 14px;
+    }
+
+    .audience-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(188,233,255,0.18) 0%,
+        rgba(200,185,255,0.12) 40%,
+        rgba(255,185,210,0.14) 70%,
+        rgba(255,215,170,0.10) 100%
+      );
+      opacity: 0;
+      transition: opacity 480ms ease;
+    }
+
+    .audience-card:hover::before { opacity: 1; }
+
+    .audience-num {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    .audience-title {
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      line-height: 1;
+    }
+
+    .audience-desc {
+      font-size: 14px;
+      line-height: 1.62;
+      color: var(--ink-mid);
+    }
+
+    /* ─── Clients trained ─── */
+    .clients-band {
+      padding: 48px 0;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .clients-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .clients-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      flex-shrink: 0;
+    }
+
+    .clients-names {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      color: var(--ink-mid);
+    }
+
+    /* ─── CTA band ─── */
+    .cta-section {
+      padding: 80px 0 88px;
+    }
+
+    .cta-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .cta-headline {
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      line-height: 0.95;
+      margin-bottom: 24px;
+      max-width: 600px;
+      color: var(--ink);
+    }
+
+    .cta-sub {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--ink-mid);
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+
+    .cta-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .btn-primary:hover { background: #2a2a2a; }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .footer-llc {
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-top: 5px;
+      letter-spacing: 0.01em;
+    }
+
+    .footer-llc strong {
+      color: var(--ink-mid);
+      font-weight: 500;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-kicker  { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 80ms both; }
+    .hero-headline-dark {
+      animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both;
+    }
+    .hero-tagline { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 260ms both; }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-radius: 6px 0 0 6px;
+    }
+
+    .lang-btn {
+      appearance: none; background: none; border: none;
+      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      color: var(--ink-dim); padding: 0;
+      transition: color 160ms ease;
+    }
+
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+
+    /* bilingual content */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-kicker, .hero-headline-dark, .hero-tagline { animation: none !important; opacity: 1 !important; }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .what-grid { grid-template-columns: 1fr; gap: 36px; }
+      .audiences-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .hero-dark { padding: 64px 20px 72px; }
+      .what-grid, .section-head, .audiences-grid, .clients-inner, .cta-inner { padding: 0 20px; }
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="work.html">Work</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Dark Hero ── -->
+  <section class="hero-dark">
+    <div class="hero-dark-inner">
+      <div class="hero-kicker">
+        <span class="hero-kicker-text">
+          <span class="t-en">Innovation Training Program</span>
+          <span class="t-jp">イノベーション・トレーニングプログラム</span>
+        </span>
+      </div>
+      <h1 class="hero-headline-dark">BreakBias</h1>
+      <p class="hero-tagline">
+        <span class="t-en">Eight tools for thinking past the thinking that blocks you.</span>
+        <span class="t-jp is-block">思考を妨げる思考を乗り越える、8つのツール。</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ── What is BreakBias ── -->
+  <section class="what-section">
+    <div class="what-grid">
+      <div class="what-text">
+        <h2>
+          <span class="t-en">What is BreakBias?</span>
+          <span class="t-jp">BreakBiasとは？</span>
+        </h2>
+        <p>
+          <span class="t-en">BreakBias is a master course and training program that helps individuals, teams, and organizations develop creative thinking skills and overcome the cognitive biases that block innovation.</span>
+          <span class="t-jp is-block">BreakBiasは、個人・チーム・組織がイノベーションを阻む認知バイアスを克服し、クリエイティブな思考力を磨くためのトレーニングプログラムです。</span>
+        </p>
+        <p>
+          <span class="t-en">The program features 8 structured tools that enable independent creative thinking — a practical, reproducible alternative to traditional brainstorming. Sessions are available online and in-person, fully tailored to your industry and goals.</span>
+          <span class="t-jp is-block">プログラムには8つの体系的なツールが含まれており、自律的なクリエイティブ思考を可能にします。従来のブレインストーミングに代わる実践的で再現性の高い手法です。オンラインおよび対面形式で提供し、業界やニーズに合わせてカスタマイズします。</span>
+        </p>
+      </div>
+      <div class="what-quote">
+        <blockquote>
+          <span class="t-en">"Have you considered how to think about ideas — not just what to think about?"</span>
+          <span class="t-jp is-block">「アイデアについて何を考えるかではなく、どう考えるかを考えたことはありますか？」</span>
+        </blockquote>
+        <cite>
+          <span class="t-en">The core question behind BreakBias</span>
+          <span class="t-jp">BreakBiasの根幹にある問い</span>
+        </cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Three Audiences ── -->
+  <section class="audiences-section">
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="t-en">Who it's for</span>
+        <span class="t-jp">対象者</span>
+      </h2>
+    </div>
+    <div class="audiences-grid">
+
+      <div class="audience-card">
+        <div class="audience-num">01</div>
+        <div>
+          <div class="audience-title">
+            <span class="t-en">Individuals</span>
+            <span class="t-jp">個人</span>
+          </div>
+          <p class="audience-desc" style="margin-top:12px;">
+            <span class="t-en">Creative professionals who want to unlock their creative potential and develop a more structured approach to ideation and problem-solving.</span>
+            <span class="t-jp is-block">自分の創造力を解放し、アイデア創出と問題解決への体系的なアプローチを身につけたいクリエイティブ・プロフェッショナル。</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="audience-card">
+        <div class="audience-num">02</div>
+        <div>
+          <div class="audience-title">
+            <span class="t-en">Teams</span>
+            <span class="t-jp">チーム</span>
+          </div>
+          <p class="audience-desc" style="margin-top:12px;">
+            <span class="t-en">Groups looking to improve ideation, break through creative blocks, and generate game-changing ideas together — with repeatable tools anyone on the team can use.</span>
+            <span class="t-jp is-block">アイデア創出を改善し、クリエイティブな壁を打破し、突破口となるアイデアを一緒に生み出したいチーム。チーム全員が使える再現可能なツールを提供します。</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="audience-card">
+        <div class="audience-num">03</div>
+        <div>
+          <div class="audience-title">
+            <span class="t-en">Organizations</span>
+            <span class="t-jp">組織</span>
+          </div>
+          <p class="audience-desc" style="margin-top:12px;">
+            <span class="t-en">Companies building a culture of innovation — embedding creative thinking capabilities across departments to stay ahead of constant change.</span>
+            <span class="t-jp is-block">イノベーション文化を醸成したい企業・組織。部門全体にクリエイティブ思考の能力を根付かせ、絶え間ない変化に対応し続けます。</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Clients Trained ── -->
+  <div class="clients-band">
+    <div class="clients-inner">
+      <div class="clients-label">
+        <span class="t-en">Trained at</span>
+        <span class="t-jp">トレーニング先</span>
+      </div>
+      <div class="clients-names">Microsoft · Tiffany &amp; Co. · Havas · Dentsu · Google</div>
+    </div>
+  </div>
+
+  <!-- ── CTA ── -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <h2 class="cta-headline">
+        <span class="t-en">Ready to break through?</span>
+        <span class="t-jp is-block">さあ、突破しよう。</span>
+      </h2>
+      <p class="cta-sub">
+        <span class="t-en">BreakBias workshops are available online and in-person, customized to your team's industry and goals. Start a conversation to explore what's possible.</span>
+        <span class="t-jp is-block">BreakBiasワークショップはオンラインおよび対面で提供しています。業界や目標に合わせてカスタマイズします。まずはお気軽にご相談ください。</span>
+      </p>
+      <div class="cta-links">
+        <a href="contact.html" class="btn-primary">
+          <span class="t-en">Start a conversation</span>
+          <span class="t-jp">お問い合わせ</span>
+        </a>
+        <a href="https://breakbias.medium.com/" target="_blank" rel="noopener" class="btn-secondary">
+          <span class="t-en">Read on Medium</span>
+          <span class="t-jp">Mediumで読む</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Lang Switch ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer">
+      <div>
+        <div class="footer-logo">Takao Umehara</div>
+        <div class="footer-llc">
+          <span class="t-en">Freelance &amp; consulting work accepted through <strong>Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp is-block">フリーランス・コンサルティング業務は<strong>Creativity Is Everywhere LLC</strong>を通じて受け付けています</span>
+        </div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+        
+        <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
+        <li><a href="intentfirst.html">intentfirst.ai</a></li>
+      </ul>
+      <div class="footer-copy">New York City</div>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

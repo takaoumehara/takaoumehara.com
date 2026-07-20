@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="en" class=""> 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Total Prepaid Carrier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            padding-bottom: 80px;
+            background-color: #f9fafb;
+            color: #1f2937;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        #app-container {
+            min-height: 100vh;
+            position: relative;
+            max-width: 100%;
+        }
+
+        main {
+            flex-grow: 1;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* ===== PROGRESS STEPPER (Numbered circles + connecting lines) ===== */
+        .progress-stepper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 0;
+            gap: 0;
+        }
+        .progress-step-item {
+            display: flex;
+            align-items: center;
+            gap: 0;
+        }
+        .progress-step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            flex-shrink: 0;
+            background-color: #e5e7eb;
+            color: #6b7280;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .progress-step-label {
+            font-size: 0.625rem;
+            color: #6b7280;
+            margin-left: 0.35rem;
+            white-space: nowrap;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        .progress-step-line {
+            width: 28px;
+            height: 2px;
+            background-color: #e5e7eb;
+            margin: 0 4px;
+            flex-shrink: 0;
+            transition: background-color 0.3s;
+        }
+        .progress-step-circle.current {
+            background-color: #7C3AED;
+            color: white;
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+        }
+        .progress-step-circle.completed {
+            background-color: #10b981;
+            color: white;
+            border-color: #10b981;
+        }
+        .progress-step-line.completed {
+            background-color: #10b981;
+        }
+        .progress-step-circle.current + .progress-step-label,
+        .progress-step-circle.completed + .progress-step-label {
+            color: #1f2937;
+        }
+        .dark .progress-step-circle {
+            background-color: #374151;
+            color: #9ca3af;
+        }
+        .dark .progress-step-line {
+            background-color: #374151;
+        }
+        .dark .progress-step-label {
+            color: #6b7280;
+        }
+        .dark .progress-step-circle.current {
+            background-color: #8B5CF6;
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+        }
+        .dark .progress-step-circle.completed {
+            background-color: #059669;
+            border-color: #059669;
+        }
+        .dark .progress-step-line.completed {
+            background-color: #059669;
+        }
+        .dark .progress-step-circle.current + .progress-step-label,
+        .dark .progress-step-circle.completed + .progress-step-label {
+            color: #f3f4f6;
+        }
+
+        /* ===== Bottom Sticky Cart Summary Bar ===== */
+        #bottom-cart-summary-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #1f2937;
+            color: white;
+            padding: 0.75rem 1rem;
+            padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+            box-shadow: 0 -4px 15px rgba(0,0,0,0.2);
+            z-index: 40;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: translateY(0);
+            opacity: 1;
+        }
+        #bottom-cart-summary-bar.hidden-bar {
+            transform: translateY(100%);
+            opacity: 0;
+        }
+        #bottom-cart-summary-bar strong {
+            font-weight: 600;
+        }
+
+        /* ===== Cart Panel Overlay (dark backdrop) ===== */
+        #cart-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 45;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #cart-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ===== Main Shopping Cart Panel (Bottom Slide-up) ===== */
+        #shopping-cart {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 85vh;
+            max-height: 90vh;
+            background-color: #ffffff;
+            border-radius: 16px 16px 0 0;
+            transform: translateY(100%);
+            transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.3s;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .dark #shopping-cart {
+            background-color: #111827;
+        }
+
+        #shopping-cart.cart-expanded {
+            transform: translateY(0);
+        }
+
+        /* Cart panel handle/pill indicator */
+        .cart-handle {
+            width: 36px;
+            height: 4px;
+            background-color: #d1d5db;
+            border-radius: 2px;
+            margin: 8px auto 0;
+            flex-shrink: 0;
+        }
+        .dark .cart-handle {
+            background-color: #4b5563;
+        }
+
+        .cart-content-area {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        #cart-toggle-btn-mobile,
+        #minimized-cart-trigger-mobile,
+        #minimized-cart-trigger-desktop,
+        #mobile-cart-close-strip {
+            display: none !important;
+        }
+
+        @media (min-width: 769px) {
+            #main-content {
+                width: 100%;
+                padding: 2rem 2.5rem;
+            }
+            /* Desktop side panel mode */
+            #shopping-cart {
+                position: fixed;
+                right: 0;
+                top: 0;
+                bottom: 0;
+                left: auto;
+                width: 400px;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                border-left: 1px solid #e5e7eb;
+                box-shadow: none;
+                transform: translateX(100%);
+            }
+            .dark #shopping-cart {
+                border-left-color: #374151;
+            }
+            #shopping-cart.cart-expanded {
+                transform: translateX(0);
+            }
+            #cart-overlay.visible {
+                background-color: rgba(0, 0, 0, 0.3);
+            }
+        }
+        @media (max-width: 768px) {
+            #main-content {
+                width: 100%;
+                padding: 1rem;
+            }
+        }
+
+        /* ===== Savings & Due Today Split Bar ===== */
+        .savings-due-bar {
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 0;
+            flex-shrink: 0;
+        }
+        .savings-due-bar .savings-half {
+            flex: 1;
+            background-color: #C4B5FD;
+            color: #3B0764;
+            padding: 0.65rem 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .savings-due-bar .due-half {
+            flex: 1;
+            background-color: #7C3AED;
+            color: #ffffff;
+            padding: 0.65rem 0.75rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .savings-due-bar .bar-label {
+            font-size: 0.625rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            opacity: 0.85;
+        }
+        .savings-due-bar .bar-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        /* ===== Activation Notice Styles ===== */
+        #cart-activation-notice-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0.75rem;
+            background-color: #f3f4f6;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+        }
+        .dark #cart-activation-notice-header {
+            background-color: #374151;
+            border-color: #4b5563;
+        }
+        #cart-activation-notice-header p {
+            font-weight: 500;
+            font-size: 0.8125rem;
+        }
+        #cart-activation-notice-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+            opacity: 1;
+            padding: 0.75rem;
+            background-color: #f9fafb;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #e5e7eb;
+            border-top: none;
+        }
+        .dark #cart-activation-notice-content {
+            background-color: #1f2937;
+            border-color: #4b5563;
+        }
+        #cart-activation-notice-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        #cart-activation-notice-content ul { list-style-position: inside; padding-left: 0.5rem; }
+        #cart-activation-notice-content li { margin-bottom: 0.25rem; font-size: 0.8125rem; }
+
+        /* ===== Plan/Device Card Styles (Premium) ===== */
+        .plan-card, .device-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .dark .plan-card, .dark .device-card {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        .plan-card:hover, .device-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+        }
+        .plan-card.selected, .device-card.selected {
+            border-color: #7C3AED;
+            border-width: 2px;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15), 0 4px 12px rgba(124, 58, 237, 0.1);
+        }
+        .dark .plan-card.selected, .dark .device-card.selected {
+            border-color: #8B5CF6;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25), 0 4px 12px rgba(124, 58, 237, 0.15);
+        }
+
+        /* ===== Scrollbar Styles ===== */
+        .cart-content-area::-webkit-scrollbar { width: 6px; }
+        .cart-content-area::-webkit-scrollbar-track { background: transparent; }
+        .cart-content-area::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 10px; }
+        .dark .cart-content-area::-webkit-scrollbar-thumb { background: #4b5563; }
+        .cart-content-area::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+        /* ===== Animation Styles ===== */
+        .animate-pulse-once { animation: pulse 0.7s ease-out; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(1.02); } }
+
+        /* ===== Promo Banners (Subtle/Elegant) ===== */
+        .promo-banner {
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+        .dark .promo-banner {
+            background: #1f2937;
+            border-color: #374151;
+        }
+        .promo-banner-header { cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .promo-banner-content { max-height: 500px; overflow: hidden; transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out; opacity: 1; padding-top: 0.5rem; }
+        .promo-banner-content.collapsed { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin-top:0; }
+        .account-discount-card { cursor: pointer; }
+        .feature-standard { color: #6b7280; } .dark .feature-standard { color: #9CA3AF; }
+        .feature-upgraded { color: #7C3AED; font-weight: 500; } .dark .feature-upgraded { color: #C4B5FD; }
+        .feature-new { color: #7C3AED; font-weight: 600; } .dark .feature-new { color: #818CF8; }
+        .feature-highlight { font-weight: bold; color: #D97706; } .dark .feature-highlight { color: #F59E0B; }
+
+        .checkbox-icon { width: 1.25rem; height: 1.25rem; margin-right: 0.5rem; flex-shrink: 0; }
+        .button-prominent { background-color: #7C3AED; color: white; font-weight: 600; border-radius: 8px; }
+        .button-prominent:hover { background-color: #6D28D9; }
+        .dark .button-prominent { background-color: #8B5CF6; }
+        .dark .button-prominent:hover { background-color: #4F46E5; }
+
+        button:active, .select-btn:active, .button-prominent:active { transform: scale(0.97); transition: transform 80ms ease; }
+
+        .highlight-cart-item { animation: highlight-item 1.5s ease-out; }
+        @keyframes highlight-item { 0% { background-color: #dbeafe; } 50% { background-color: #bfdbfe; } 100% { background-color: #F9FAFB; } }
+        .dark .highlight-cart-item { animation: highlight-item-dark 1.5s ease-out; }
+        @keyframes highlight-item-dark { 0% { background-color: #1e3a8a; } 50% { background-color: #1e40af; } 100% { background-color: #1f2937; } }
+
+        .summary-item { display: flex; justify-content: space-between; padding: 0.25rem 0; font-size: 0.8125rem; }
+        .summary-item-label { color: #6b7280; } .dark .summary-item-label { color: #9CA3AF; }
+        .summary-item-value { color: #1F2937; font-weight: 500; } .dark .summary-item-value { color: #F3F4F6; }
+        .summary-item-value.discount { color: #7C3AED; } .dark .summary-item-value.discount { color: #C4B5FD; }
+        .summary-total { font-size: 1rem; font-weight: 700; }
+
+        /* Full Screen Summary Modal Styles */
+        #full-summary-modal { position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.6); z-index: 60; display: flex; align-items: center; justify-content: center; padding: 1rem; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
+        #full-summary-modal.modal-visible { opacity: 1; visibility: visible; }
+        #full-summary-modal-content { background-color: white; padding: 1.5rem; border-radius: 14px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.2); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; }
+        .dark #full-summary-modal-content { background-color: #1F2937; }
+
+        /* Device section needs attention highlight */
+        .device-section-needs-attention {
+            background-color: #eff6ff; 
+            border: 1px dashed #60a5fa; 
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+        }
+        .dark .device-section-needs-attention {
+            background-color: #1e3a8a; 
+            border: 1px dashed #3b82f6; 
+        }
+
+        /* Dark Mode Switch */
+        #theme-switch-button {
+            background-color: #f3f4f6;
+            color: #6b7280;
+            border-radius: 9999px;
+            padding: 0.5rem;
+            transition: background-color 0.2s, color 0.2s;
+            border: 1px solid #e5e7eb;
+        }
+        .dark #theme-switch-button {
+            background-color: #374151;
+            color: #d1d5db;
+            border-color: #4b5563;
+        }
+        #theme-switch-button:hover {
+            background-color: #e5e7eb;
+        }
+        .dark #theme-switch-button:hover {
+            background-color: #4b5563;
+        }
+        #theme-switch-button svg {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        /* ===== BYOD Modal Overlay ===== */
+        #byod-modal {
+            background-color: rgba(0, 0, 0, 0.6) !important;
+        }
+        #byod-modal > div {
+            border-radius: 14px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+    </style>
+</head>
+<body class="bg-[#f9fafb] dark:bg-gray-900 text-[#1f2937] dark:text-gray-200">
+    <div id="app-container">
+        <main id="main-content" class="p-4 md:p-8 space-y-6 bg-[#f9fafb] dark:bg-gray-900 text-[#1f2937] dark:text-gray-200">
+            <header class="mb-6">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-3xl font-bold text-violet-600 dark:text-violet-400">Total Prepaid</h1>
+                    <button id="theme-switch-button" title="Toggle theme">
+                        <svg id="theme-icon-sun" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-6.364-.386l1.591-1.591M3 12h2.25m.386-6.364l1.591 1.591" />
+                        </svg>
+                        <svg id="theme-icon-moon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="hidden">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                        </svg>
+                    </button>
+                </div>
+                <div id="progress-indicator" class="progress-stepper">
+                    <div class="progress-step-item">
+                        <span id="step-lines" class="progress-step-circle" aria-label="Step 1: Lines">1</span>
+                        <span class="progress-step-label">Lines</span>
+                    </div>
+                    <div id="line-plans" class="progress-step-line"></div>
+                    <div class="progress-step-item">
+                        <span id="step-plans" class="progress-step-circle" aria-label="Step 2: Plans">2</span>
+                        <span class="progress-step-label">Plans</span>
+                    </div>
+                    <div id="line-plans-devices" class="progress-step-line"></div>
+                    <div class="progress-step-item">
+                        <span id="step-devices" class="progress-step-circle" aria-label="Step 3: Devices">3</span>
+                        <span class="progress-step-label">Devices</span>
+                    </div>
+                    <div id="line-devices-checkout" class="progress-step-line"></div>
+                    <div class="progress-step-item">
+                        <span id="step-checkout" class="progress-step-circle" aria-label="Step 4: Checkout">4</span>
+                        <span class="progress-step-label">Checkout</span>
+                    </div>
+                </div>
+                <nav class="mt-3">
+                    <ul class="flex space-x-1 border-b border-[#e5e7eb] pb-0 dark:border-gray-700">
+                        <li><button class="font-semibold text-violet-600 dark:text-violet-400 border-b-2 border-violet-600 dark:border-violet-400 pb-1 px-2" data-view="phone-plans">Phone Plans</button></li>
+                        <li><button class="text-gray-500 hover:text-violet-600 dark:text-gray-400 dark:hover:text-violet-400 pb-1 px-2" data-view="tablet-plans">Tablet Plans</button></li>
+                        <li><button class="text-gray-500 hover:text-violet-600 dark:text-gray-400 dark:hover:text-violet-400 pb-1 px-2" data-view="hotspot-data">Hotspot Data</button></li>
+                        <li><button class="text-gray-500 hover:text-violet-600 dark:text-gray-400 dark:hover:text-violet-400 pb-1 px-2" data-view="home-internet">Home Internet</button></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <div id="view-container">
+                <section id="phone-plans-view" class="space-y-6">
+                    <div id="lines-selection-section">
+                        <label for="lines-count-display" class="block text-lg font-medium text-gray-700 dark:text-gray-300 mb-2">How many lines do you need?</label>
+                        <div class="flex items-center space-x-0">
+                            <button id="decrease-lines" class="bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-[#1f2937] dark:text-gray-200 font-semibold w-11 h-11 flex items-center justify-center rounded-l-lg border border-[#e5e7eb] dark:border-gray-600 text-lg">-</button>
+                            <input type="text" id="lines-count-display" value="1" readonly class="w-14 h-11 text-center border-y border-[#e5e7eb] dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 text-[#1f2937] font-semibold text-lg">
+                            <button id="increase-lines" class="bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-[#1f2937] dark:text-gray-200 font-semibold w-11 h-11 flex items-center justify-center rounded-r-lg border border-[#e5e7eb] dark:border-gray-600 text-lg">+</button>
+                        </div>
+                         <button id="confirm-lines-btn" class="mt-3 bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold py-2.5 px-5 rounded-lg min-h-[44px] hidden transition-colors">Confirm Lines & Choose Plans</button>
+                    </div>
+                    <div id="plans-and-discounts-section" class="hidden space-y-6">
+                        <div id="promotions-container" class="space-y-3 my-4">
+                            <div id="promo-hot-deal" class="promo-banner p-4">
+                                <div class="promo-banner-header">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/50 flex-shrink-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+                                        </span>
+                                        <p class="text-[#1f2937] dark:text-gray-200 font-medium text-sm">Add lines for just <strong class="text-violet-600 dark:text-violet-400">$30/mo</strong> each</p>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 toggle-promo-btn" data-promo-id="promo-hot-deal">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform duration-200"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                    </button>
+                                </div>
+                                <div class="promo-banner-content mt-2 collapsed"> <p class="text-sm text-[#6b7280] dark:text-gray-400">This special offer applies when adding multiple lines to your account. Enjoy great savings on each additional line!</p>
+                                </div>
+                            </div>
+                            <div id="promo-family-special" class="promo-banner p-4">
+                                 <div class="promo-banner-header">
+                                    <div class="flex items-center gap-2">
+                                        <span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-violet-100 dark:bg-violet-900/50 flex-shrink-0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-3.5 h-3.5 text-violet-600 dark:text-violet-400"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+                                        </span>
+                                        <p class="text-[#1f2937] dark:text-gray-200 font-medium text-sm">4th line <strong class="text-violet-600 dark:text-violet-400">FREE forever</strong> on select plans</p>
+                                    </div>
+                                    <button class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 toggle-promo-btn" data-promo-id="promo-family-special">
+                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 transition-transform duration-200"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                    </button>
+                                </div>
+                                <div class="promo-banner-content mt-2 collapsed"> <p class="text-sm text-[#6b7280] dark:text-gray-400">Valid on Total 5G Unlimited and Total 5G+ Unlimited plans when you have 4 or more lines. The 4th line's plan cost becomes $0.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="plan-cards-container" class="grid grid-cols-1 lg:grid-cols-3 gap-6"></div>
+                        <div class="mt-8 pt-6 border-t border-[#e5e7eb] dark:border-gray-700">
+                            <h3 class="text-xl font-semibold mb-4 text-[#1f2937] dark:text-gray-100">Account Discounts</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div id="autopay-discount-card" class="account-discount-card bg-white dark:bg-gray-800 p-5 rounded-xl border border-[#e5e7eb] dark:border-gray-700 flex flex-col hover:border-[#7C3AED] transition-all" style="box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                                    <div class="flex items-start mb-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-blue-500 dark:text-blue-400 p-2 bg-blue-100 dark:bg-blue-900/50 rounded-full mr-3 flex-shrink-0"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Save $5/mo with AutoPay</h4>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Enable automatic payments and save $5 per month on eligible plans.</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center mt-auto pt-3">
+                                        <input type="checkbox" id="autopay-discount-checkbox" class="form-checkbox h-5 w-5 text-violet-600 border-gray-300 dark:border-gray-600 rounded focus:ring-violet-500 pointer-events-none">
+                                        <label for="autopay-discount-checkbox" class="ml-2 text-sm text-gray-700 dark:text-gray-300 select-none">Enable AutoPay Discount</label>
+                                    </div>
+                                </div>
+                                <div id="byod-general-discount-card" class="account-discount-card bg-white dark:bg-gray-800 p-5 rounded-xl border border-[#e5e7eb] dark:border-gray-700 flex flex-col hover:border-[#7C3AED] transition-all" style="box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
+                                    <div class="flex items-start mb-3">
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-violet-500 dark:text-violet-400 p-2 bg-violet-100 dark:bg-violet-900/50 rounded-full mr-3 flex-shrink-0"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                                        <div>
+                                            <h4 class="text-lg font-semibold text-gray-700 dark:text-gray-200">Save $20-$30/mo with BYOD</h4>
+                                            <p class="text-sm text-gray-500 dark:text-gray-400">Use your own device and save based on your selected plan.</p>
+                                        </div>
+                                    </div>
+                                     <div class="flex items-center mt-auto pt-3">
+                                        <input type="checkbox" id="byod-general-discount-checkbox" class="form-checkbox h-5 w-5 text-violet-600 border-gray-300 dark:border-gray-600 rounded focus:ring-violet-500 pointer-events-none">
+                                        <label for="byod-general-discount-checkbox" class="ml-2 text-sm text-gray-700 dark:text-gray-300 select-none">BYOD Active (when device chosen)</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="plp-view" class="hidden space-y-6">
+                     <div class="flex justify-between items-center">
+                        <h2 class="text-2xl font-semibold">Choose Your Device for Line <span id="plp-line-number"></span></h2>
+                        <button id="back-to-plans-btn" class="text-violet-600 hover:text-violet-800 dark:text-violet-400 dark:hover:text-violet-300 font-medium">&larr; Back to Plans</button>
+                    </div>
+                    <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow"> <h3 class="text-lg font-medium mb-2">Filter Devices (Placeholder)</h3> </div>
+                    <div id="device-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"> </div>
+                </section>
+                <section id="pdp-view" class="hidden space-y-6"> 
+                </section>
+                <div id="byod-modal" class="fixed inset-0 overflow-y-auto h-full w-full hidden z-[55] flex items-center justify-center p-4">
+                    <div class="bg-white dark:bg-gray-800 p-6 w-full max-w-sm space-y-5" style="border-radius: 14px;">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-[#1f2937] dark:text-white">BYOD for Line <span id="byod-modal-line-number"></span></h3>
+                            <button id="close-byod-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 p-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        <p class="text-sm text-[#6b7280] dark:text-gray-300">Use your existing compatible phone. How would you like to activate it?</p>
+                        <div class="space-y-3">
+                            <button id="byod-esim-btn" class="w-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold py-3 px-4 rounded-lg text-sm min-h-[44px]">Activate with eSIM (Instant)</button>
+                            <button id="byod-simkit-btn" class="w-full bg-white hover:bg-gray-50 text-[#1f2937] font-semibold py-3 px-4 rounded-lg text-sm border border-[#e5e7eb] dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600 min-h-[44px]">Get a SIM Kit (Free, ships in 2 days)</button>
+                        </div>
+                        <div class="flex items-start gap-2 bg-violet-50 dark:bg-violet-900/20 p-3 rounded-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4 text-violet-600 dark:text-violet-400 flex-shrink-0 mt-0.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <p class="text-xs text-violet-700 dark:text-violet-300">BYOD saves you money on your monthly plan.</p>
+                        </div>
+                    </div>
+                </div>
+                <section id="tablet-plans-view" class="hidden p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <h2 class="text-2xl font-semibold mb-2">Tablet Plans</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Save $40/mo when you bundle a tablet plan with any phone plan.</p>
+                    <div id="tablet-plan-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"> <p class="text-center col-span-full p-8 text-gray-500 dark:text-gray-400">Tablet plan options coming soon...</p> </div>
+                </section>
+                <section id="hotspot-data-view" class="hidden p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
+                    <h2 class="text-2xl font-semibold mb-2">Hotspot Data Plans</h2>
+                    <p class="text-gray-600 dark:text-gray-300 mb-4">Power your devices anywhere. Get $5 off per line with Auto Pay.</p>
+                     <div id="hotspot-plan-cards-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"> <p class="text-center col-span-full p-8 text-gray-500 dark:text-gray-400">Hotspot data plan options coming soon...</p> </div>
+                </section>
+                <section id="home-internet-view" class="hidden p-6 bg-white dark:bg-gray-800 rounded-lg shadow">
+                     <h2 class="text-2xl font-semibold mb-2">Home Internet Plans</h2>
+                     <div id="home-internet-plan-cards-container" class="grid grid-cols-1 gap-6"> <p class="text-center col-span-full p-8 text-gray-500 dark:text-gray-400">Home Internet plan options coming soon...</p> </div>
+                </section>
+            </div> 
+        </main>
+
+        <div id="bottom-cart-summary-bar">
+            <div class="flex flex-col sm:flex-row sm:items-center">
+                <div class="mb-1 sm:mb-0">
+                    <span class="text-sm">Today: <strong id="minimized-due-today">$0.00</strong></span>
+                    <span class="text-sm ml-2 sm:ml-4">Monthly: <strong id="minimized-monthly-payment">$0.00/mo</strong></span>
+                </div>
+                <span class="text-xs text-gray-400 sm:ml-3">(<span id="minimized-cart-item-count">0</span> items)</span>
+            </div>
+            <button id="expand-cart-btn" class="text-sm bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold py-2.5 px-5 rounded-lg min-h-[44px]">
+                See Detail & Checkout
+            </button>
+        </div>
+
+        <!-- Cart overlay backdrop -->
+        <div id="cart-overlay" role="button" aria-label="Close cart" tabindex="0"></div>
+
+        <aside id="shopping-cart">
+            <!-- Handle/pill indicator -->
+            <div class="cart-handle md:hidden"></div>
+
+            <div class="px-4 pt-3 pb-3 flex justify-between items-center border-b border-[#e5e7eb] dark:border-gray-700 flex-shrink-0">
+                <h2 class="text-lg font-semibold flex items-center dark:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 mr-2 text-[#7C3AED] dark:text-violet-400">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                    </svg>
+                    Cart
+                </h2>
+                <button id="collapse-cart-btn" class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Savings & Due Today Split Bar -->
+            <div class="px-4 pt-3 pb-3 border-b border-[#e5e7eb] dark:border-gray-700 flex-shrink-0">
+                <div class="savings-due-bar">
+                    <div class="savings-half">
+                        <span class="bar-label">Savings</span>
+                        <span class="bar-value" id="today-savings-bar">$0.00</span>
+                    </div>
+                    <div class="due-half">
+                        <span class="bar-label">Due Today</span>
+                        <span class="bar-value" id="today-cost">$0.00</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cart-summary-placeholder" class="px-4 py-3 border-b border-[#e5e7eb] dark:border-gray-700 flex-shrink-0 space-y-1">
+                  <div class="flex justify-between items-baseline">
+                      <span class="text-xs text-[#6b7280] dark:text-gray-400">One-time savings</span>
+                      <span class="text-xs text-[#7C3AED] font-medium" id="today-savings">$0.00</span>
+                  </div>
+                  <div class="flex justify-between items-baseline">
+                      <span class="text-sm font-medium text-[#1f2937] dark:text-white">Monthly payment</span>
+                      <span class="text-sm font-semibold text-[#7C3AED] dark:text-violet-400" id="monthly-cost">$0.00/mo</span>
+                  </div>
+                  <div class="flex justify-between items-baseline">
+                      <span class="text-xs text-[#6b7280] dark:text-gray-400">Monthly savings</span>
+                      <span class="text-xs text-[#7C3AED] font-medium" id="monthly-savings">$0.00/mo</span>
+                  </div>
+            </div>
+
+            <div class="px-4 py-2.5 border-b border-[#e5e7eb] dark:border-gray-700 flex-shrink-0">
+                <button id="view-full-summary-btn" class="w-full text-xs text-[#7C3AED] hover:text-[#6D28D9] py-2 px-3 bg-violet-50 dark:bg-violet-900/30 dark:text-violet-300 rounded-lg text-center font-medium transition-colors">
+                    View Detailed Summary
+                </button>
+                <div id="full-summary-modal" class="hidden">
+                    <div id="full-summary-modal-content" class="dark:text-gray-200">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-semibold">Order Summary</h3>
+                            <button id="close-summary-modal-btn" class="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        <div id="full-summary-details-content" class="space-y-1">
+                            </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cart-items-container" class="cart-content-area p-4 space-y-4"></div>
+            
+            <div class="px-4 py-3 border-t border-[#e5e7eb] dark:border-gray-700 mt-auto flex-shrink-0" style="padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));">
+                <div id="cart-activation-notice" class="hidden mb-3">
+                    <div id="cart-activation-notice-header" class="dark:text-gray-200">
+                        <p>Complete to checkout:</p>
+                        <button id="toggle-activation-notice-btn" class="text-[#7C3AED] hover:text-[#6D28D9] dark:text-violet-400 dark:hover:text-violet-300">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 transition-transform duration-200"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                        </button>
+                    </div>
+                    <div id="cart-activation-notice-content" class="collapsed">
+                        <ul id="cart-activation-steps" class="list-disc dark:text-gray-300"></ul>
+                    </div>
+                </div>
+                <button id="checkout-btn" class="w-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white font-semibold py-3 px-4 rounded-lg disabled:opacity-40 disabled:cursor-not-allowed min-h-[48px] transition-colors" disabled>
+                    Proceed to Checkout
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // --- DATA (Existing data remains the same) ---
+        const phonePlans = [ /* ... your existing phonePlans data ... */ 
+            { id: 'base', name: 'Total Unlimited Base', price: 40, linePrices: { 1: 40, 2: 30, 3: 30, 4: 30, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30 }, byodDiscount: 20, autopayEligible: false, icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-violet-500"><path d="M12.001 19.069L4.068 19.069L4.068 17.069L12.001 17.069L12.001 19.069ZM12.001 15.069L6.068 15.069L6.068 13.069L12.001 13.069L12.001 15.069ZM12.001 11.069L8.068 11.069L8.068 9.069L12.001 9.069L12.001 11.069ZM12.001 7.069L10.068 7.069L10.068 5.069L12.001 5.069L12.001 7.069Z"/></svg>`, features: [ { text: 'Unlimited data', type: 'standard' }, { text: '5 GB hotspot', type: 'standard' }, { text: 'Calling to 85+ destinations', type: 'standard' }, { text: 'Texting to 200+ destinations', type: 'standard' }, { text: 'Roaming in Canada & Mexico', type: 'standard' }, { text: 'Get $200 on phone w/ Total Rewards', type: 'new', detail: 'After 12 monthly plan payments.'} ] },
+            { id: 'total5g', name: 'Total 5G Unlimited', price: 55, linePrices: { 1: 55, 2: 30, 3: 25, 4: 0, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30 }, byodDiscount: 25, autopayEligible: true, fourthLineFreeEligible: true, icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-blue-500"><path d="M4.068 19.069L12.001 19.069L12.001 17.069L4.068 17.069L4.068 19.069ZM12.001 15.069L6.068 15.069L6.068 13.069L12.001 13.069L12.001 15.069ZM16.001 11.069L8.068 11.069L8.068 9.069L16.001 9.069L16.001 11.069ZM18.001 7.069L10.068 7.069L10.068 5.069L18.001 5.069L18.001 7.069Z"/></svg>`, features: [ { text: '12x faster unlimited data', type: 'upgraded', baseFeatureText: 'Unlimited data' }, { text: '15 GB Hotspot', type: 'upgraded', baseFeatureText: '5 GB hotspot' }, { text: 'Calling to 85+ destinations', type: 'standard' }, { text: 'Texting to 200+ destinations', type: 'standard' }, { text: 'Roaming in Canada & Mexico', type: 'standard' }, { text: 'Plus roaming in 15+ countries', type: 'new' }, { text: 'Get your fourth line at no additional cost', type: 'new', highlight: true }, { text: 'Disney+ Premium on us for 6 months', type: 'new', highlight: true }, { text: 'Get $200 on phone w/ Total Rewards', type: 'standard', detail: 'After 12 monthly plan payments.'} ] },
+            { id: 'total5gplus', name: 'Total 5G+ Unlimited', price: 65, linePrices: { 1: 65, 2: 30, 3: 25, 4: 0, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30 }, byodDiscount: 30, autopayEligible: true, fourthLineFreeEligible: true, icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-violet-600"><path d="M4.068 19.069L12.001 19.069L12.001 17.069L4.068 17.069L4.068 19.069ZM12.001 15.069L6.068 15.069L6.068 13.069L12.001 13.069L12.001 15.069ZM16.001 11.069L8.068 11.069L8.068 9.069L16.001 9.069L16.001 11.069ZM20.001 7.069L10.068 7.069L10.068 5.069L20.001 5.069L20.001 7.069ZM19 12h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2Z"/></svg>`, features: [ { text: '12x faster unlimited data', type: 'standard' }, { text: 'Unlimited Hotspot', type: 'upgraded', baseFeatureText: '15 GB Hotspot' }, { text: 'Calling to 85+ destinations', type: 'standard' }, { text: 'Texting to 200+ destinations', type: 'standard' }, { text: 'Roaming in Canada & Mexico', type: 'standard' }, { text: 'Plus roaming in 15+ countries', type: 'standard' }, { text: '$10 long distance credit to 120+ destinations', type: 'new'}, { text: 'Get your fourth line at no additional cost', type: 'new', highlight: true }, { text: 'Disney+ Premium Included', type: 'upgraded', baseFeatureText: 'Disney+ Premium on us for 6 months', highlight: true }, { text: 'Get $200 on phone w/ Total Rewards', type: 'standard', detail: 'After 12 monthly plan payments.'} ] }
+        ];
+        const devices = [ /* ... your existing devices data ... */ 
+            { id: 'dev1', name: 'Galaxy Nova 12', price: 699.99, image: 'https://placehold.co/150x150/E2E8F0/4A5568?text=Nova+12', brand: 'Galaxy', features: ['6.7" Super Retina Display', 'Pro Camera System', 'A18 Bionic Chip'], colors: ['Deep Purple', 'Silver', 'Gold', 'Space Black'], promoDiscount: 50.00 },
+            { id: 'dev2', name: 'Pixel Stream 8', price: 499.00, image: 'https://placehold.co/150x150/D1FAE5/065F46?text=Pixel+S8', brand: 'Pixel', features: ['Tensor G4 Chip', 'Advanced AI Camera', 'All-day Battery'], colors: ['Obsidian', 'Snow', 'Lemongrass'], promoDiscount: 75.00 },
+            { id: 'dev3', name: 'Moto Edge X', price: 349.50, image: 'https://placehold.co/150x150/DBEAFE/1E40AF?text=Moto+EX', brand: 'Moto', features: ['144Hz OLED Display', '50MP Camera', 'TurboPower Charging'], colors: ['Cosmic Blue', 'Stardust White'], promoDiscount: 0 },
+            { id: 'dev4', name: 'Total Value Phone', price: 199.99, image: 'https://placehold.co/150x150/FEF3C7/92400E?text=Value+Phone', brand: 'Total', features: ['Reliable Performance', 'Great Battery Life', 'Affordable'], colors: ['Black', 'Blue'], promoDiscount: 20.00 }
+        ];
+        const tabletPlans = [ ]; const hotspotPlans = [ ]; const homeInternetPlans = [ ]; 
+        const featureIcons = { default: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><path d="M20 6 9 17l-5-5"/></svg>`, data: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><path d="M3.55 10.04c.13-.63.32-1.24.57-1.82.25-.58.55-1.13.9-1.64.35-.51.75-.98 1.2-1.4.45-.42.95-.78 1.48-1.08.53-.3 1.1-.54 1.7-.71.6-.17 1.22-.28 1.85-.32.63-.04 1.27.01 1.88.13.61.12 1.2.31 1.75.56.55.25 1.07.55 1.55.9.48.35.92.75 1.31 1.2.39.45.73.95 1.03 1.48.3.53.54 1.1.71 1.7.17.6.28 1.22.32 1.85.04.63-.01 1.27-.13 1.88-.12.61-.31 1.2-.56 1.75s-.55 1.07-.9 1.55c-.35.48-.75.92-1.2 1.31-.45.39-.95.73-1.48 1.03-.53.3-1.1.54-1.7.71-.6.17-1.22.28-1.85.32-.63-.04-1.27-.01-1.88-.13-.61-.12-1.2-.31-1.75-.56-.55-.25-1.07-.55-1.55-.9-.48-.35-.92-.75-1.31-1.2-.39-.45-.73-.95-1.03 1.48-.3-.53-.54-1.1-.71 1.7-.17-.6-.28-1.22-.32-1.85-.04-.63.01-1.27.13-1.88Z"/><path d="M8.83 7.77c.2-.25.42-.48.67-.7.25-.22.52-.42.8-.6.28-.18.58-.34.88-.48.3-.14.62-.26.94-.35.32-.09.65-.15.98-.18.33-.03.66-.03.99.01.33.04.65.1.96.19.31.09.61.21.9.35.29.14.56.3.82.48.26.18.5.38.72.6.22.22.42.45.6.7.18.25.34.52.48.8.14.28.26.58.35.88.09.3.15.62.18.94.03.32.03.65-.01.98-.04.33-.1.65-.19.96-.09.31-.21.61-.35.9-.14.29-.3.56-.48.82-.18.26-.38.5-.6.72-.22.22-.45.42-.7.6-.25.18-.52.34-.8.48-.28.14-.58.26-.88.35-.3.09-.62.15-.94.18-.32.03-.65.03-.98-.01-.33-.04-.65-.1-.96-.19-.31-.09-.61-.21-.9-.35-.29-.14-.56-.3-.82-.48-.26-.18-.5-.38-.72-.6-.22-.22-.42-.45-.6-.7-.18-.25-.34-.52-.48-.8-.14-.28-.26.58-.35-.88-.09-.3-.15-.62-.18-.94-.03-.32-.03-.65.01.98.04.33.1-.65.19-.96.09.31.21-.61.35-.9.14-.29.3-.56.48-.82Z"/></svg>`, hotspot: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`, rewards: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`, calling: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`, texting: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`, roaming: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`, speed: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 14l-4-4h3V8h2v4h3l-4 4z"/></svg>`, disney: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`, terms: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`, credit: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`, fourthLineFree: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 text-gray-500 dark:text-gray-400 flex-shrink-0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,};
+        const uncheckedBoxSVG = `<svg class="checkbox-icon text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M9 9.563C9 9.254 9.254 9 9.563 9h4.874c.31 0 .563.254.563.563v4.874c0 .31-.254.563-.563.563H9.563A.563.563 0 019 14.437V9.564z" /></svg>`;
+        const checkedBoxSVG = `<svg class="checkbox-icon text-violet-500 dark:text-violet-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+
+        // --- STATE ---
+        let currentView = 'phone-plans'; let numberOfLines = 1; let cart = { phoneLines: [], tabletLines: [], hotspotLines: [], homeInternetLines: [], isAutopayEnabled: false, fwaLine: null }; let selectedPhonePlanForAllLines = null; let currentLineForDeviceSelection = null; let currentLineForBYOD = null;
+        let linesConfirmed = false; 
+
+        // --- DOM ELEMENTS ---
+        const linesCountDisplay = document.getElementById('lines-count-display'); const increaseLinesBtn = document.getElementById('increase-lines'); const decreaseLinesBtn = document.getElementById('decrease-lines'); const planCardsContainer = document.getElementById('plan-cards-container'); const cartItemsContainer = document.getElementById('cart-items-container'); const todayCostEl = document.getElementById('today-cost'); const todaySavingsEl = document.getElementById('today-savings'); const monthlyCostEl = document.getElementById('monthly-cost'); const monthlySavingsEl = document.getElementById('monthly-savings'); const checkoutBtn = document.getElementById('checkout-btn'); const viewContainer = document.getElementById('view-container'); 
+        const shoppingCartEl = document.getElementById('shopping-cart'); 
+        const byodModal = document.getElementById('byod-modal'); const closeByodModalBtn = document.getElementById('close-byod-modal'); const byodEsimBtn = document.getElementById('byod-esim-btn'); const byodSimkitBtn = document.getElementById('byod-simkit-btn'); const byodModalLineNumberEl = document.getElementById('byod-modal-line-number'); const plpLineNumberEl = document.getElementById('plp-line-number'); const backToPlansBtn = document.getElementById('back-to-plans-btn'); 
+        const fullSummaryModal = document.getElementById('full-summary-modal');
+        const fullSummaryDetailsContentEl = document.getElementById('full-summary-details-content');
+        const closeSummaryModalBtn = document.getElementById('close-summary-modal-btn');
+        const viewFullSummaryBtn = document.getElementById('view-full-summary-btn'); const promotionsContainer = document.getElementById('promotions-container'); const mainContentEl = document.getElementById('main-content');
+        
+        // Bottom Cart Elements
+        const bottomCartSummaryBar = document.getElementById('bottom-cart-summary-bar');
+        const minimizedDueTodayEl = document.getElementById('minimized-due-today');
+        const minimizedMonthlyPaymentEl = document.getElementById('minimized-monthly-payment');
+        const minimizedCartItemCountEl = document.getElementById('minimized-cart-item-count');
+        const expandCartBtn = document.getElementById('expand-cart-btn');
+        const collapseCartBtn = document.getElementById('collapse-cart-btn'); 
+
+        const cartActivationNoticeEl = document.getElementById('cart-activation-notice'); 
+        const cartActivationNoticeHeader = document.getElementById('cart-activation-notice-header');
+        const cartActivationNoticeContent = document.getElementById('cart-activation-notice-content');
+        const toggleActivationNoticeBtn = document.getElementById('toggle-activation-notice-btn');
+        const cartActivationStepsEl = document.getElementById('cart-activation-steps'); 
+        const tabletPlanCardsContainer = document.getElementById('tablet-plan-cards-container'); const hotspotPlanCardsContainer = document.getElementById('hotspot-plan-cards-container'); const homeInternetPlanCardsContainer = document.getElementById('home-internet-plan-cards-container'); const autopayDiscountCardEl = document.getElementById('autopay-discount-card'); const byodGeneralDiscountCardEl = document.getElementById('byod-general-discount-card'); const autopayDiscountCheckbox = document.getElementById('autopay-discount-checkbox'); const byodGeneralDiscountCheckbox = document.getElementById('byod-general-discount-checkbox'); const navButtons = document.querySelectorAll('nav ul li button');
+        const deviceGridContainer = document.getElementById('device-grid-container');
+        const pdpViewContent = document.getElementById('pdp-view');
+        const progressIndicatorEl = document.getElementById('progress-indicator');
+        const linesSelectionSection = document.getElementById('lines-selection-section');
+        const plansAndDiscountsSection = document.getElementById('plans-and-discounts-section');
+        const confirmLinesBtn = document.getElementById('confirm-lines-btn');
+
+        // Theme Switch Elements
+        const themeSwitchBtn = document.getElementById('theme-switch-button');
+        const themeIconSun = document.getElementById('theme-icon-sun');
+        const themeIconMoon = document.getElementById('theme-icon-moon');
+        const htmlElement = document.documentElement;
+
+
+        // --- THEME SWITCH LOGIC ---
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                htmlElement.classList.add('dark');
+                themeIconSun.classList.remove('hidden');
+                themeIconMoon.classList.add('hidden');
+            } else {
+                htmlElement.classList.remove('dark');
+                themeIconMoon.classList.remove('hidden');
+                themeIconSun.classList.add('hidden');
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('theme', newTheme);
+            applyTheme(newTheme);
+        }
+
+        // --- RENDER FUNCTIONS ---
+        function getFeatureIcon(featureText) { const lowerFeature = featureText.toLowerCase(); if (lowerFeature.includes('unlimited data')) return featureIcons.data; if (lowerFeature.includes('unlimited hotspot')) return featureIcons.data; if (lowerFeature.includes('hotspot')) return featureIcons.hotspot; if (lowerFeature.includes('disney') || lowerFeature.includes('disney+')) return featureIcons.disney; if (lowerFeature.includes('reward') || lowerFeature.includes('$200 on your next 5g phone')) return featureIcons.rewards; if (lowerFeature.includes('calling to')) return featureIcons.calling; if (lowerFeature.includes('texting to')) return featureIcons.texting; if (lowerFeature.includes('roaming in')) return featureIcons.roaming; if (lowerFeature.includes('faster') || lowerFeature.includes('12x')) return featureIcons.speed; if (lowerFeature.includes('fourth line') || lowerFeature.includes('4th line')) return featureIcons.fourthLineFree; if (lowerFeature.includes('offer terms')) return featureIcons.terms; if (lowerFeature.includes('credit to')) return featureIcons.credit; return featureIcons.default; }
+        function renderPhonePlanCards() { planCardsContainer.innerHTML = ''; phonePlans.forEach(plan => { const isSelected = selectedPhonePlanForAllLines && selectedPhonePlanForAllLines.id === plan.id; const card = document.createElement('div'); card.className = `plan-card p-5 flex flex-col ${isSelected ? 'selected' : ''}`; let featuresHTML = '<ul class="text-sm space-y-2 text-[#6b7280] dark:text-gray-400 mb-5 flex-grow">'; plan.features.forEach(feature => { let featureClass = 'feature-standard'; if (feature.type === 'upgraded') featureClass = 'feature-upgraded'; if (feature.type === 'new') featureClass = 'feature-new'; if (feature.highlight) featureClass += ' feature-highlight'; featuresHTML += `<li class="flex items-start">${getFeatureIcon(feature.text)}<span class="${featureClass}">${feature.text}${feature.detail ? ` <em class="text-xs text-[#9ca3af]">(${feature.detail})</em>` : ''}</span></li>`; }); featuresHTML += '</ul>'; let priceDisplay; if (numberOfLines === 1) { priceDisplay = `<span class="text-3xl font-bold text-[#1f2937] dark:text-white">$${plan.price}</span><span class="text-sm font-normal text-[#6b7280] ml-1">/mo</span>`; } else { priceDisplay = `<span class="text-3xl font-bold text-[#1f2937] dark:text-white">$${plan.price}</span><span class="text-sm font-normal text-[#6b7280] ml-1">/mo (1st line)</span>`; } card.innerHTML = `<div class="flex items-center mb-2">${plan.icon}<h3 class="text-lg font-semibold ml-2 text-[#1f2937] dark:text-white">${plan.name}</h3></div><div class="mb-4">${priceDisplay}</div>${featuresHTML}<button data-plan-id="${plan.id}" class="select-phone-plan-btn w-full ${isSelected ? 'bg-[#7C3AED] hover:bg-[#6D28D9]' : 'bg-[#7C3AED] hover:bg-[#6D28D9]'} text-white font-semibold py-2.5 px-4 rounded-lg mt-auto min-h-[44px] transition-colors">${isSelected ? 'Selected' : 'Select Plan'}</button>`; planCardsContainer.appendChild(card); }); }
+        
+        function renderCart() { 
+            cartItemsContainer.innerHTML = ''; 
+            let totalCartItems = cart.phoneLines.length + cart.tabletLines.length + cart.hotspotLines.length + cart.homeInternetLines.length; 
+            if (minimizedCartItemCountEl) minimizedCartItemCountEl.textContent = totalCartItems;
+            
+            if (totalCartItems === 0) { cartItemsContainer.innerHTML = `<p class="text-gray-500 dark:text-gray-400">Your cart is empty. To get started, add lines and select a plan.</p>`; updateCartSummary(); checkCheckoutButtonState(); return; } 
+            
+            cart.phoneLines.forEach(line => { 
+                const lineEl = document.createElement('div'); 
+                lineEl.className = 'bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow animate-pulse-once'; 
+                const linePrice = line.plan ? getEffectivePhoneLinePrice(line, cart.phoneLines.length) : 0; 
+                
+                const planStatusIcon = line.plan ? checkedBoxSVG : uncheckedBoxSVG;
+                const deviceStatusIcon = line.device ? checkedBoxSVG : uncheckedBoxSVG;
+
+                let deviceHTML = `
+                    <div class="flex items-center">
+                        ${deviceStatusIcon}
+                        <span class="font-medium text-gray-700 dark:text-gray-300">Device</span>
+                    </div>`;
+                
+                const deviceSectionClasses = ['ml-7', 'mt-1'];
+
+                if (line.device) {
+                    deviceHTML += `
+                        <div class="${deviceSectionClasses.join(' ')}">
+                            <div class="flex items-center">
+                                <img src="${line.device.image || 'https://placehold.co/40x40/CCCCCC/999999?text=DEV'}" alt="${line.device.name}" class="w-10 h-10 rounded-md object-cover mr-3" onerror="this.onerror=null;this.src='https://placehold.co/40x40/CCCCCC/999999?text=NoImg';">
+                                <div>
+                                    <p class="text-sm font-medium">${line.device.name}</p>
+                                    ${line.device.type === 'byod' ? `<p class="text-xs text-gray-500 dark:text-gray-400">${line.device.byodOption === 'eSIM' ? 'Using eSIM' : `SIM Kit ($${(line.device.price || 0).toFixed(2)})`}</p><p class="text-xs text-violet-600 dark:text-violet-400">-$${(line.plan && line.plan.byodDiscount ? line.plan.byodDiscount : 0).toFixed(2)}/mo discount</p>` : `<p class="text-xs text-gray-500 dark:text-gray-400">$${(line.device.price || 0).toFixed(2)}</p>`}
+                                </div>
+                            </div>
+                            ${line.protectionPlan ? `<p class="text-xs text-blue-600 dark:text-blue-400 mt-1 ml-1">Protection Plan: +$5.00/mo</p>` : ''}
+                        </div>
+                        <button data-line="${line.lineNumber}" data-line-type="phone" class="edit-device-btn text-xs text-violet-500 hover:underline ml-7 mt-1">Change Device</button>`;
+                } else {
+                    deviceHTML += `
+                        <div class="${deviceSectionClasses.join(' ')}">
+                            <p class="text-sm text-violet-600 dark:text-violet-400 font-medium mb-1">Next: Choose a device for this line.</p>
+                            <div class="space-y-2 sm:space-y-0 sm:space-x-2 flex flex-col sm:flex-row">
+                                <button data-line="${line.lineNumber}" data-line-type="phone" class="select-new-device-for-line-btn text-sm bg-violet-500 hover:bg-violet-600 text-white font-semibold py-2 px-3 rounded-md button-prominent flex-1">Shop Phones</button>
+                                <button data-line="${line.lineNumber}" data-line-type="phone" class="select-byod-for-line-btn text-sm bg-violet-600 hover:bg-violet-700 text-white font-semibold py-2 px-3 rounded-md button-prominent flex-1">Use Own Device</button>
+                            </div>
+                        </div>`;
+                }
+
+
+                lineEl.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-semibold text-lg">Line ${line.lineNumber} (Phone)</h4>
+                        <button data-line-remove="${line.lineNumber}" class="remove-line-btn text-red-500 hover:text-red-700 text-xs">Remove</button>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="border p-3 rounded-md bg-white dark:bg-gray-700/50 dark:border-gray-600">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="flex items-center">
+                                    ${planStatusIcon}
+                                    <span class="font-medium text-gray-700 dark:text-gray-300">Plan</span>
+                                </div>
+                                ${line.plan ? `<button data-line="${line.lineNumber}" data-line-type="phone" class="edit-plan-btn text-xs text-violet-500 hover:underline">Change</button>` : ''}
+                            </div>
+                            ${line.plan ? `
+                                <div class="ml-7 mt-1 flex items-center">
+                                    ${line.plan.icon.replace('w-8 h-8', 'w-6 h-6')}
+                                    <div class="ml-2">
+                                        <p class="text-sm font-medium">${line.plan.name}</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400">$${linePrice.toFixed(2)}/mo</p>
+                                    </div>
+                                </div>
+                            ` : `
+                                <button data-line="${line.lineNumber}" data-line-type="phone" class="select-plan-for-line-btn mt-1 ml-7 text-sm bg-violet-100 text-violet-700 hover:bg-violet-200 dark:bg-violet-700 dark:text-violet-100 dark:hover:bg-violet-600 py-1 px-3 rounded-md">Select a plan</button>
+                            `}
+                        </div>
+                        <div class="border p-3 rounded-md bg-white dark:bg-gray-700/50 dark:border-gray-600">
+                            ${deviceHTML}
+                        </div>
+                    </div>`; 
+                cartItemsContainer.appendChild(lineEl); 
+            }); 
+            updateCartSummary(); 
+            checkCheckoutButtonState(); 
+            updateProgressIndicator();
+        }
+        function renderTabletPlanCards() { const c = document.getElementById('tablet-plan-cards-container'); if(c) c.innerHTML = '<p class="text-center col-span-full p-8 text-gray-500 dark:text-gray-400">Tablet plan options coming soon...</p>'; }
+        function renderHotspotPlanCards() { const c = document.getElementById('hotspot-plan-cards-container'); if(c) c.innerHTML = '<p class="text-center col-span-full p-8 text-gray-500 dark:text-gray-400">Hotspot data plan options coming soon...</p>'; }
+        function renderHomeInternetPlanCards() { const c = document.getElementById('home-internet-plan-cards-container'); if(c) c.innerHTML = '<p class="text-center col-span-full p-8 text-gray-500 dark:text-gray-400">Home Internet plan options coming soon...</p>'; }
+        
+        function renderDeviceGrid(forLineNumber) { 
+            if (!deviceGridContainer) return;
+            deviceGridContainer.innerHTML = ''; 
+            if (devices.length === 0) {
+                deviceGridContainer.innerHTML = '<p class="text-center col-span-full p-8 text-gray-500 dark:text-gray-400">No devices available at this time.</p>';
+                return;
+            }
+            devices.forEach(device => {
+                const card = document.createElement('div');
+                card.className = 'device-card p-5 flex flex-col items-center text-center cursor-pointer';
+                card.dataset.deviceId = device.id;
+                const hasPromo = device.promoDiscount > 0;
+                card.innerHTML = `
+                    <div class="w-full bg-[#f9fafb] dark:bg-gray-800 rounded-lg p-4 mb-3 flex items-center justify-center" style="aspect-ratio: 1;">
+                        <img src="${device.image}" alt="${device.name}" class="w-28 h-28 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/150x150/CCCCCC/4A5568?text=No+Image';">
+                    </div>
+                    <h4 class="text-sm font-semibold text-[#1f2937] dark:text-gray-200 mb-1">${device.name}</h4>
+                    <div class="mb-3">
+                        <span class="text-xl font-bold text-[#1f2937] dark:text-white">$${device.price.toFixed(2)}</span>
+                        ${hasPromo ? `<span class="block text-xs text-[#7C3AED] font-medium mt-0.5">Save $${device.promoDiscount.toFixed(2)}</span>` : ''}
+                    </div>
+                    <button data-device-id="${device.id}" class="select-device-plp-btn mt-auto w-full bg-[#7C3AED] hover:bg-[#6D28D9] text-white text-sm font-semibold py-2.5 px-3 rounded-lg min-h-[44px] transition-colors">
+                        Select
+                    </button>
+                `;
+                deviceGridContainer.appendChild(card);
+            });
+        }
+
+        function renderPDP(device, forLineNumber) { 
+            if (!pdpViewContent || !device) {
+                if(pdpViewContent) pdpViewContent.innerHTML = '<p class="text-center p-8 text-gray-500 dark:text-gray-400">Device details not available.</p>';
+                return;
+            }
+
+            let lineCheckboxesHTML = '<div class="mb-4"><h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-2">Apply to Lines:</h4><div class="space-y-2">';
+            cart.phoneLines.forEach(line => {
+                const isPrechecked = (line.lineNumber === forLineNumber) || (line.plan && !line.device);
+                lineCheckboxesHTML += `
+                    <label class="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
+                        <input type="checkbox" class="form-checkbox h-4 w-4 text-violet-600 pdp-line-checkbox" data-line-number="${line.lineNumber}" ${isPrechecked ? 'checked' : ''}>
+                        <span>Line ${line.lineNumber} ${line.plan ? `(${line.plan.name})` : '(No plan yet)'} ${line.device ? `- Has ${line.device.name}` : ''}</span>
+                    </label>
+                `;
+            });
+            lineCheckboxesHTML += '</div></div>';
+
+            pdpViewContent.innerHTML = `
+                <div class="bg-white dark:bg-gray-800 p-6 md:p-8 rounded-lg shadow-xl max-w-2xl mx-auto">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800 dark:text-gray-100">${device.name}</h2>
+                        <button id="back-to-plp-btn" data-line="${forLineNumber}" class="text-violet-600 hover:text-violet-800 dark:text-violet-400 dark:hover:text-violet-300 font-medium">&larr; Back to Devices</button>
+                    </div>
+                    <div class="md:flex md:space-x-6">
+                        <div class="md:w-1/2 mb-6 md:mb-0">
+                            <img src="${device.image.replace('150x150', '300x300')}" alt="${device.name}" class="w-full h-auto object-contain rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/300x300/CCCCCC/4A5568?text=No+Image';">
+                        </div>
+                        <div class="md:w-1/2">
+                            <p class="text-2xl font-bold text-violet-600 dark:text-violet-400 mb-4">$${device.price.toFixed(2)}</p>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Brand</h4>
+                                <p class="text-gray-700 dark:text-gray-300">${device.brand}</p>
+                            </div>
+                            <div class="mb-4">
+                                <h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Colors</h4>
+                                <div class="flex space-x-2">
+                                    ${device.colors.map(color => `<span class="inline-block px-3 py-1 text-xs font-medium bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-200 rounded-full">${color}</span>`).join('')}
+                                </div>
+                            </div>
+                             <div class="mb-6">
+                                <h4 class="text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase mb-1">Key Features</h4>
+                                <ul class="list-disc list-inside text-gray-600 dark:text-gray-300 text-sm space-y-1">
+                                    ${device.features.map(feature => `<li>${feature}</li>`).join('')}
+                                </ul>
+                            </div>
+                            ${lineCheckboxesHTML}
+                            <div class="mb-4">
+                                <label class="flex items-center space-x-2 text-sm text-gray-700 dark:text-gray-300">
+                                    <input type="checkbox" id="pdp-protection-plan-checkbox" class="form-checkbox h-4 w-4 text-violet-600">
+                                    <span>Add Protection Plan (+$5.00/mo)</span>
+                                </label>
+                            </div>
+                            <button id="confirm-device-pdp-btn" data-device-id="${device.id}" class="w-full bg-violet-600 hover:bg-violet-700 text-white font-bold py-3 px-4 rounded-lg shadow-md">
+                                Add Device to Selected Lines
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            const backToPlpBtn = document.getElementById('back-to-plp-btn');
+            if (backToPlpBtn) {
+                backToPlpBtn.addEventListener('click', () => {
+                    switchView('plp', { lineNumber: parseInt(backToPlpBtn.dataset.line) });
+                });
+            }
+        }
+        
+        function getEffectivePhoneLinePrice(line, totalPhoneLines) { if (!line.plan) return 0; let price = line.plan.linePrices[line.lineNumber]; if (line.plan.fourthLineFreeEligible && line.lineNumber >= 4 && totalPhoneLines >= 4 && line.lineNumber === 4) { price = 0; } if (price === undefined) { console.warn(`Price for line ${line.lineNumber} on plan ${line.plan.name} is undefined.`); return line.plan.price; } return price; }
+        function updateCartSummary() { 
+            let grossMonthlyPlanTotal = 0;
+            let grossDeviceTotal = 0;
+            let oneTimeDeviceDiscounts = 0;
+            let monthlyRecurringDiscounts = 0; 
+            let protectionPlanCosts = 0;
+
+            cart.phoneLines.forEach(line => {
+                if (line.plan) {
+                    grossMonthlyPlanTotal += line.plan.price; 
+                    if (line.device && line.device.type === 'byod' && line.plan.byodDiscount) { 
+                        monthlyRecurringDiscounts += line.plan.byodDiscount; 
+                    }
+                }
+                if (line.device) {
+                    if (line.device.type !== 'byod' && line.device.price) { 
+                        grossDeviceTotal += line.device.price; 
+                        if(line.device.promoDiscount) {
+                            oneTimeDeviceDiscounts += line.device.promoDiscount;
+                        }
+                    } else if (line.device.type === 'byod' && line.device.byodOption === 'SIM Kit' && line.device.price) { 
+                        grossDeviceTotal += line.device.price; 
+                    }
+                }
+                if (line.protectionPlan) { 
+                    protectionPlanCosts += 5; 
+                } 
+            }); 
+
+            if (cart.isAutopayEnabled) { 
+                cart.phoneLines.forEach(line => { 
+                    if (line.plan && line.plan.autopayEligible) { 
+                        monthlyRecurringDiscounts += 5; 
+                    } 
+                }); 
+            }
+            
+            let effectiveMonthlyPlanCost = 0;
+            cart.phoneLines.forEach(line => {
+                if(line.plan) effectiveMonthlyPlanCost += getEffectivePhoneLinePrice(line, cart.phoneLines.length);
+            });
+
+            const dueToday = Math.max(0, grossDeviceTotal - oneTimeDeviceDiscounts + effectiveMonthlyPlanCost + protectionPlanCosts - monthlyRecurringDiscounts); 
+            const futureMonthlyPayment = Math.max(0, effectiveMonthlyPlanCost + protectionPlanCosts - monthlyRecurringDiscounts);
+            
+            todayCostEl.textContent = `$${dueToday.toFixed(2)}`;
+            todaySavingsEl.textContent = `$${oneTimeDeviceDiscounts.toFixed(2)}`;
+            monthlyCostEl.textContent = `$${futureMonthlyPayment.toFixed(2)}/mo`;
+            monthlySavingsEl.textContent = `$${monthlyRecurringDiscounts.toFixed(2)}/mo`;
+            const todaySavingsBar = document.getElementById('today-savings-bar');
+            if (todaySavingsBar) todaySavingsBar.textContent = `$${(oneTimeDeviceDiscounts + monthlyRecurringDiscounts).toFixed(2)}`;
+            
+            if (minimizedDueTodayEl) minimizedDueTodayEl.textContent = `$${dueToday.toFixed(2)}`;
+            if (minimizedMonthlyPaymentEl) minimizedMonthlyPaymentEl.textContent = `$${futureMonthlyPayment.toFixed(2)}/mo`;
+            
+            renderFullSummaryDetails({ 
+                subtotal: grossDeviceTotal + (cart.phoneLines.reduce((acc, line) => acc + (line.plan ? line.plan.price : 0), 0) * 1) + protectionPlanCosts, 
+                totalDiscounts: oneTimeDeviceDiscounts + monthlyRecurringDiscounts, 
+                discountsForLines: monthlyRecurringDiscounts, 
+                additionalDiscounts: oneTimeDeviceDiscounts, 
+                dueToday: dueToday,
+                futureMonthlyPayment: futureMonthlyPayment
+            }); 
+            checkCheckoutButtonState(); 
+            updateProgressIndicator();
+        }
+        function renderFullSummaryDetails(summary) { 
+            if (!fullSummaryDetailsContentEl) return; 
+            fullSummaryDetailsContentEl.innerHTML = `
+                <div class="summary-item">
+                    <span class="summary-item-label">Subtotal (before discounts & taxes)</span>
+                    <span class="summary-item-value">$${summary.subtotal.toFixed(2)}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-label">Total Discounts</span>
+                    <span class="summary-item-value discount">-$${summary.totalDiscounts.toFixed(2)}</span>
+                </div>
+                <div class="summary-item pl-4"> <span class="summary-item-label text-xs">Discounts for lines (AutoPay, BYOD, etc.)</span>
+                    <span class="summary-item-value discount text-xs">-$${summary.discountsForLines.toFixed(2)}/mo</span>
+                </div>
+                 <div class="summary-item pl-4"> <span class="summary-item-label text-xs">Device Promotions</span>
+                    <span class="summary-item-value discount text-xs">-$${summary.additionalDiscounts.toFixed(2)}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-label">Shipping</span>
+                    <span class="summary-item-value">Free</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-label">Taxes</span>
+                    <span class="summary-item-value text-gray-500 dark:text-gray-400">Calculated at checkout</span>
+                </div>
+                <hr class="my-2 border-gray-300 dark:border-gray-600">
+                <div class="summary-item summary-total">
+                    <span class="summary-item-label">Due today</span>
+                    <span class="summary-item-value text-violet-600 dark:text-violet-400">$${summary.dueToday.toFixed(2)}</span>
+                </div>
+                <div class="summary-item mt-1">
+                    <span class="summary-item-label">Future monthly payment</span>
+                    <span class="summary-item-value text-violet-600 dark:text-violet-400">$${summary.futureMonthlyPayment.toFixed(2)}/mo</span>
+                </div>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">First month's payment will be due today.</p>
+            `; 
+        }
+        function initializeCart() { cart.phoneLines = []; for (let i = 1; i <= numberOfLines; i++) { cart.phoneLines.push({ lineNumber: i, plan: selectedPhonePlanForAllLines, device: null, type: 'phone', protectionPlan: false }); } cart.tabletLines = []; cart.hotspotLines = []; cart.homeInternetLines = []; cart.fwaLine = null; cart.isAutopayEnabled = autopayDiscountCheckbox.checked; renderCart(); updateCartSummary(); }
+        function updateNumberOfLines(change){ 
+            const newNumberOfLines = numberOfLines + change; 
+            if (newNumberOfLines >= 1 && newNumberOfLines <= 10) { 
+                numberOfLines = newNumberOfLines; 
+                linesCountDisplay.value = numberOfLines; 
+                if (cart.phoneLines.length < newNumberOfLines) { 
+                    for (let i = cart.phoneLines.length + 1; i <= newNumberOfLines; i++) { 
+                        cart.phoneLines.push({ lineNumber: i, plan: selectedPhonePlanForAllLines, device: null, type: 'phone', protectionPlan: false }); 
+                    } 
+                } else if (cart.phoneLines.length > newNumberOfLines) { 
+                    cart.phoneLines = cart.phoneLines.slice(0, newNumberOfLines); 
+                } 
+                if (numberOfLines > 0 && !linesConfirmed && confirmLinesBtn) {
+                    confirmLinesBtn.classList.remove('hidden');
+                } else if (numberOfLines === 0 && confirmLinesBtn) { 
+                    confirmLinesBtn.classList.add('hidden');
+                }
+                if (linesConfirmed) { 
+                    showPlansAndDiscounts(false); 
+                }
+                renderPhonePlanCards(); 
+                renderCart(); 
+                updateCartSummary(); 
+            } 
+        }
+        function removeLineFromCart(lineNumberToRemove) { cart.phoneLines = cart.phoneLines.filter(line => line.lineNumber !== lineNumberToRemove); numberOfLines = cart.phoneLines.length; if (numberOfLines === 0 && linesCountDisplay.value !== "1") { linesCountDisplay.value = "1"; numberOfLines = 1; initializeCart(); hidePlansAndDiscounts(); } else { linesCountDisplay.value = numberOfLines; } renderCart(); updateCartSummary(); renderPhonePlanCards(); }
+        function selectPhonePlan(planId) { 
+            selectedPhonePlanForAllLines = phonePlans.find(p => p.id === planId); 
+            cart.phoneLines.forEach(line => { line.plan = selectedPhonePlanForAllLines; }); 
+            renderPhonePlanCards(); 
+            renderCart(); 
+            updateCartSummary(); 
+            
+            if (!shoppingCartEl.classList.contains('cart-expanded')) {
+                toggleCartPanel(true);
+            }
+            setTimeout(() => { 
+                const firstLineNeedingDevice = cart.phoneLines.find(line => !line.device);
+                if (firstLineNeedingDevice) {
+                    const lineIndex = cart.phoneLines.findIndex(l => l.lineNumber === firstLineNeedingDevice.lineNumber);
+                    const lineElementInCart = cartItemsContainer.querySelector(`.bg-gray-50:nth-child(${lineIndex + 1})`); 
+                    if (lineElementInCart) {
+                        lineElementInCart.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+                        const shopPhonesButton = lineElementInCart.querySelector('.select-new-device-for-line-btn');
+                        if (shopPhonesButton) {
+                            shopPhonesButton.classList.add('ring-2', 'ring-offset-2', 'ring-red-500', 'animate-pulse');
+                            setTimeout(() => {
+                                shopPhonesButton.classList.remove('ring-2', 'ring-offset-2', 'ring-red-500', 'animate-pulse');
+                            }, 2500);
+                        }
+                    }
+                }
+            }, 350); 
+        }
+        
+        function addDeviceToSelectedLines(deviceDetails, addProtection) {
+            const selectedLineCheckboxes = pdpViewContent.querySelectorAll('.pdp-line-checkbox:checked');
+            if (selectedLineCheckboxes.length === 0) {
+                console.warn("No lines selected to add the device.");
+                return;
+            }
+            let updatedLineNumbers = [];
+            selectedLineCheckboxes.forEach(checkbox => {
+                const lineNumber = parseInt(checkbox.dataset.lineNumber);
+                updatedLineNumbers.push(lineNumber);
+                const line = cart.phoneLines.find(l => l.lineNumber === lineNumber);
+                if (line) {
+                    line.device = { ...deviceDetails, type: 'new-phone' };
+                    line.protectionPlan = addProtection;
+                }
+            });
+            renderCart(); 
+            updateCartSummary(); 
+            
+            switchView('phone-plans'); 
+            if (!shoppingCartEl.classList.contains('cart-expanded')) {
+                toggleCartPanel(true);
+            }
+            
+            setTimeout(() => {
+                if (updatedLineNumbers.length > 0) {
+                    const firstUpdatedLineNumber = Math.min(...updatedLineNumbers);
+                    const lineIndex = cart.phoneLines.findIndex(l => l.lineNumber === firstUpdatedLineNumber);
+                    if (lineIndex !== -1) {
+                         const lineElementInCart = cartItemsContainer.querySelector(`.bg-gray-50:nth-child(${lineIndex + 1})`);
+                        if (lineElementInCart) {
+                            lineElementInCart.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            lineElementInCart.classList.add('highlight-cart-item');
+                            setTimeout(() => {
+                                lineElementInCart.classList.remove('highlight-cart-item');
+                            }, 1500);
+                        }
+                    }
+                }
+            }, 350); 
+        }
+
+        function selectBYODForLine(lineNumber, option) { const line = cart.phoneLines.find(l => l.lineNumber === lineNumber); if (line) { const byodSimPrice = 0.99; line.device = { name: 'Bring Your Own Device', type: 'byod', byodOption: option, price: option === 'SIM Kit' ? byodSimPrice : 0, image: 'https://placehold.co/40x40/90CAF9/1E88E5?text=BYOD' }; line.protectionPlan = false; renderCart(); updateCartSummary(); byodModal.classList.add('hidden'); if (!shoppingCartEl.classList.contains('cart-expanded')) { toggleCartPanel(true); } } }
+        function checkCheckoutButtonState() { let allLinesConfigured = true; let activationSteps = []; if (cart.phoneLines.length === 0) { allLinesConfigured = false; } cart.phoneLines.forEach(line => { if (!line.plan) { allLinesConfigured = false; activationSteps.push(`Line ${line.lineNumber}: Select a plan.`); } if (!line.device) { allLinesConfigured = false; activationSteps.push(`Line ${line.lineNumber}: Select a device or set BYOD.`); } }); checkoutBtn.disabled = !allLinesConfigured; 
+            if (allLinesConfigured || cart.phoneLines.length === 0) { 
+                cartActivationNoticeEl.classList.add('hidden');
+                cartActivationNoticeContent.classList.add('collapsed');
+                if (toggleActivationNoticeBtn) {
+                    const svgIcon = toggleActivationNoticeBtn.querySelector('svg');
+                    if (svgIcon) svgIcon.style.transform = 'rotate(0deg)';
+                }
+            } else {
+                cartActivationNoticeEl.classList.remove('hidden');
+                cartActivationStepsEl.innerHTML = activationSteps.map(step => `<li>${step}</li>`).join('');
+            }
+        }
+        function switchView(viewName, params = {}) { 
+            currentView = viewName; 
+            document.querySelectorAll('#view-container > section').forEach(view => { view.classList.add('hidden'); }); 
+            navButtons.forEach(btn => { btn.classList.remove('font-semibold', 'text-violet-600', 'dark:text-violet-400', 'border-violet-600', 'dark:border-violet-400'); btn.classList.add('text-gray-500', 'dark:text-gray-400', 'hover:text-violet-600', 'dark:hover:text-violet-400'); }); 
+            const activeView = document.getElementById(`${viewName}-view`); 
+            const activeNavButton = document.querySelector(`nav button[data-view="${viewName}"]`); 
+            if (activeView) activeView.classList.remove('hidden'); 
+            if (activeNavButton) { activeNavButton.classList.add('font-semibold', 'text-violet-600', 'dark:text-violet-400', 'border-violet-600', 'dark:border-violet-400'); activeNavButton.classList.remove('text-gray-500', 'dark:text-gray-400'); } 
+            if (viewName === 'plp' && params.lineNumber) { if(plpLineNumberEl) plpLineNumberEl.textContent = params.lineNumber; currentLineForDeviceSelection = params.lineNumber; renderDeviceGrid(params.lineNumber); } 
+            else if (viewName === 'pdp' && params.device && params.lineNumber) { renderPDP(params.device, params.lineNumber); } 
+            window.scrollTo(0,0); 
+            updateProgressIndicator();
+        }
+        
+        function toggleCartPanel(show) {
+            const cartOverlay = document.getElementById('cart-overlay');
+            if (show) {
+                shoppingCartEl.classList.add('cart-expanded');
+                bottomCartSummaryBar.classList.add('hidden-bar');
+                if (cartOverlay) cartOverlay.classList.add('visible');
+            } else {
+                shoppingCartEl.classList.remove('cart-expanded');
+                bottomCartSummaryBar.classList.remove('hidden-bar');
+                if (cartOverlay) cartOverlay.classList.remove('visible');
+            }
+        }
+
+        function updateProgressIndicator() {
+            if (!progressIndicatorEl) return;
+            const linesStep = document.getElementById('step-lines');
+            const plansStep = document.getElementById('step-plans');
+            const devicesStep = document.getElementById('step-devices');
+            const checkoutStep = document.getElementById('step-checkout');
+            const linePlans = document.getElementById('line-plans');
+            const linePlansDevices = document.getElementById('line-plans-devices');
+            const lineDevicesCheckout = document.getElementById('line-devices-checkout');
+
+            const allCircles = [linesStep, plansStep, devicesStep, checkoutStep];
+            const allLines = [linePlans, linePlansDevices, lineDevicesCheckout];
+
+            allCircles.forEach(step => {
+                if(step) step.classList.remove('current', 'completed');
+            });
+            allLines.forEach(line => {
+                if(line) line.classList.remove('completed');
+            });
+
+            let allLinesHavePlan = cart.phoneLines.length > 0 && cart.phoneLines.every(line => line.plan);
+            let allLinesHaveDevice = cart.phoneLines.length > 0 && cart.phoneLines.every(line => line.device);
+
+            if (!linesConfirmed) {
+                if(linesStep) linesStep.classList.add('current');
+            } else if (linesConfirmed && !allLinesHavePlan) {
+                if(linesStep) linesStep.classList.add('completed');
+                if(linePlans) linePlans.classList.add('completed');
+                if(plansStep) plansStep.classList.add('current');
+            } else if (allLinesHavePlan && !allLinesHaveDevice) {
+                if(linesStep) linesStep.classList.add('completed');
+                if(plansStep) plansStep.classList.add('completed');
+                if(linePlans) linePlans.classList.add('completed');
+                if(linePlansDevices) linePlansDevices.classList.add('completed');
+                if(devicesStep) devicesStep.classList.add('current');
+            } else if (allLinesHavePlan && allLinesHaveDevice) {
+                if(linesStep) linesStep.classList.add('completed');
+                if(plansStep) plansStep.classList.add('completed');
+                if(devicesStep) devicesStep.classList.add('completed');
+                if(linePlans) linePlans.classList.add('completed');
+                if(linePlansDevices) linePlansDevices.classList.add('completed');
+                if(lineDevicesCheckout) lineDevicesCheckout.classList.add('completed');
+                if(checkoutStep) checkoutStep.classList.add('current');
+            } else {
+                 if(linesStep) linesStep.classList.add('current');
+            }
+        }
+
+        function showPlansAndDiscounts(updateProg = true) {
+            if (plansAndDiscountsSection) plansAndDiscountsSection.classList.remove('hidden');
+            if (confirmLinesBtn) confirmLinesBtn.classList.add('hidden'); 
+            linesConfirmed = true;
+            if(updateProg) updateProgressIndicator();
+        }
+        function hidePlansAndDiscounts() {
+            if (plansAndDiscountsSection) plansAndDiscountsSection.classList.add('hidden');
+            if (confirmLinesBtn && numberOfLines > 0) confirmLinesBtn.classList.remove('hidden');
+            linesConfirmed = false;
+            updateProgressIndicator();
+        }
+
+
+        // --- EVENT LISTENERS ---
+        planCardsContainer.addEventListener('click', (e) => { if (e.target.classList.contains('select-phone-plan-btn')) { selectPhonePlan(e.target.dataset.planId); } });
+        navButtons.forEach(button => { button.addEventListener('click', (e) => { switchView(e.target.dataset.view); }); });
+        
+        increaseLinesBtn.addEventListener('click', () => {
+            updateNumberOfLines(1);
+            if (numberOfLines > 0 && !linesConfirmed && confirmLinesBtn) confirmLinesBtn.classList.remove('hidden');
+        });
+        decreaseLinesBtn.addEventListener('click', () => {
+            updateNumberOfLines(-1);
+            if (numberOfLines > 0 && !linesConfirmed && confirmLinesBtn) confirmLinesBtn.classList.remove('hidden');
+            else if (numberOfLines === 0 && confirmLinesBtn) confirmLinesBtn.classList.add('hidden');
+        });
+        if (confirmLinesBtn) {
+            confirmLinesBtn.addEventListener('click', () => showPlansAndDiscounts(true));
+        }
+
+        if (expandCartBtn) expandCartBtn.addEventListener('click', () => toggleCartPanel(true));
+        if (collapseCartBtn) collapseCartBtn.addEventListener('click', () => toggleCartPanel(false));
+        const cartOverlayEl = document.getElementById('cart-overlay');
+        if (cartOverlayEl) cartOverlayEl.addEventListener('click', () => toggleCartPanel(false));
+        if (themeSwitchBtn) themeSwitchBtn.addEventListener('click', toggleTheme);
+        
+        if (deviceGridContainer) { deviceGridContainer.addEventListener('click', (e) => { const button = e.target.closest('.select-device-plp-btn'); if (button) { const deviceId = button.dataset.deviceId; const selectedDevice = devices.find(d => d.id === deviceId); if (selectedDevice && currentLineForDeviceSelection !== null) { switchView('pdp', { device: selectedDevice, lineNumber: currentLineForDeviceSelection }); } } }); }
+        if (pdpViewContent) { 
+            pdpViewContent.addEventListener('click', (e) => { 
+                const button = e.target.closest('#confirm-device-pdp-btn'); 
+                if (button) { 
+                    const deviceId = button.dataset.deviceId; 
+                    const deviceToAdd = devices.find(d => d.id === deviceId); 
+                    const protectionCheckbox = document.getElementById('pdp-protection-plan-checkbox');
+                    const addProtection = protectionCheckbox ? protectionCheckbox.checked : false;
+                    if (deviceToAdd) { 
+                        addDeviceToSelectedLines(deviceToAdd, addProtection);
+                    } 
+                } 
+            }); 
+        }
+        
+        promotionsContainer.addEventListener('click', (e) => { const button = e.target.closest('.toggle-promo-btn'); if (button) { const promoId = button.dataset.promoId; const promoBanner = document.getElementById(promoId); if (!promoBanner) return; const content = promoBanner.querySelector('.promo-banner-content'); const icon = button.querySelector('svg'); if (!content || !icon) return; content.classList.toggle('collapsed'); icon.style.transform = content.classList.contains('collapsed') ? 'rotate(0deg)' : 'rotate(180deg)'; } });
+        if (cartActivationNoticeHeader) { cartActivationNoticeHeader.addEventListener('click', () => { if(cartActivationNoticeContent && toggleActivationNoticeBtn) { cartActivationNoticeContent.classList.toggle('collapsed'); 
+        const svgIcon = toggleActivationNoticeBtn.querySelector('svg');
+        if (svgIcon) svgIcon.style.transform = cartActivationNoticeContent.classList.contains('collapsed') ? 'rotate(0deg)' : 'rotate(180deg)'; } });}
+        autopayDiscountCardEl.addEventListener('click', () => { cart.isAutopayEnabled = !cart.isAutopayEnabled; autopayDiscountCheckbox.checked = cart.isAutopayEnabled; updateCartSummary(); });
+        cartItemsContainer.addEventListener('click', (e) => { 
+            const target = e.target; 
+            const lineNumStr = target.dataset.line || target.closest('[data-line]')?.dataset.line; 
+            if (target.closest('.remove-line-btn')) { 
+                const lineToRemoveStr = target.closest('.remove-line-btn').dataset.lineRemove; 
+                if (lineToRemoveStr) removeLineFromCart(parseInt(lineToRemoveStr)); 
+                return; 
+            } 
+            if (!lineNumStr) return; 
+            const lineNumber = parseInt(lineNumStr); 
+            
+            const actionDelay = 100; 
+
+            if (target.classList.contains('select-plan-for-line-btn') || target.classList.contains('edit-plan-btn')) { 
+                currentLineForDeviceSelection = lineNumber; 
+                toggleCartPanel(false); 
+                setTimeout(() => {
+                    switchView('phone-plans'); 
+                    document.getElementById('phone-plans-view').scrollIntoView({ behavior: 'smooth' }); 
+                }, actionDelay);
+            } else if (target.classList.contains('select-new-device-for-line-btn') || target.classList.contains('edit-device-btn')) { 
+                currentLineForDeviceSelection = lineNumber; 
+                toggleCartPanel(false); 
+                setTimeout(() => {
+                    switchView('plp', { lineNumber });
+                }, actionDelay); 
+            } else if (target.classList.contains('select-byod-for-line-btn')) { 
+                currentLineForBYOD = lineNumber; 
+                if(byodModalLineNumberEl) byodModalLineNumberEl.textContent = lineNumber; 
+                byodModal.classList.remove('hidden'); 
+            } 
+        });
+        if (closeByodModalBtn) closeByodModalBtn.addEventListener('click', () => byodModal.classList.add('hidden'));
+        if (byodEsimBtn) byodEsimBtn.addEventListener('click', () => { if (currentLineForBYOD !== null) selectBYODForLine(currentLineForBYOD, 'eSIM'); });
+        if (byodSimkitBtn) byodSimkitBtn.addEventListener('click', () => { if (currentLineForBYOD !== null) selectBYODForLine(currentLineForBYOD, 'SIM Kit'); });
+        if (backToPlansBtn) backToPlansBtn.addEventListener('click', () => { if (currentLineForDeviceSelection !== null) { switchView('phone-plans'); } else { switchView('phone-plans'); } });
+        
+        if (viewFullSummaryBtn) { 
+            viewFullSummaryBtn.addEventListener('click', () => { 
+                if (fullSummaryModal) {
+                    updateCartSummary(); 
+                    fullSummaryModal.classList.remove('hidden');
+                    setTimeout(() => fullSummaryModal.classList.add('modal-visible'), 10); 
+                }
+            }); 
+        }
+        if (closeSummaryModalBtn) {
+            closeSummaryModalBtn.addEventListener('click', () => {
+                if (fullSummaryModal) {
+                    fullSummaryModal.classList.remove('modal-visible');
+                    setTimeout(() => fullSummaryModal.classList.add('hidden'), 300); 
+                }
+            });
+        }
+        if (fullSummaryModal) {
+            fullSummaryModal.addEventListener('click', (e) => {
+                if (e.target === fullSummaryModal) { 
+                     if (fullSummaryModal) {
+                        fullSummaryModal.classList.remove('modal-visible');
+                        setTimeout(() => fullSummaryModal.classList.add('hidden'), 300);
+                    }
+                }
+            });
+        }
+
+        function initApp() {
+            // Apply saved theme or default to light
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            applyTheme(savedTheme);
+
+            renderPhonePlanCards(); renderTabletPlanCards(); renderHotspotPlanCards(); renderHomeInternetPlanCards();
+            initializeCart(); 
+            switchView('phone-plans'); 
+            document.querySelectorAll('.promo-banner.collapsed .toggle-promo-btn svg').forEach(icon => { icon.style.transform = 'rotate(0deg)'; });
+            document.querySelectorAll('.promo-banner:not(.collapsed) .toggle-promo-btn svg').forEach(icon => { icon.style.transform = 'rotate(180deg)'; });
+            if (cartActivationNoticeContent && toggleActivationNoticeBtn) { 
+                cartActivationNoticeContent.classList.add('collapsed');
+                const svgIcon = toggleActivationNoticeBtn.querySelector('svg');
+                if (svgIcon) svgIcon.style.transform = 'rotate(0deg)';
+            }
+            if(!linesConfirmed && plansAndDiscountsSection) { 
+                plansAndDiscountsSection.classList.add('hidden');
+                if (numberOfLines > 0 && confirmLinesBtn) { 
+                     confirmLinesBtn.classList.remove('hidden');
+                }
+            } else if (linesConfirmed && plansAndDiscountsSection) {
+                plansAndDiscountsSection.classList.remove('hidden');
+                 if (confirmLinesBtn) confirmLinesBtn.classList.add('hidden');
+            }
+
+            toggleCartPanel(false); 
+            updateCartSummary(); 
+        }
+        
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

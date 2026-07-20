@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Amplify Vocabulary App — Word List Management | Takao Umehara</title>
+  <meta name="description" content="Amplify Vocabulary App — a dual-pane word-list management tool letting ELA curriculum authors search, import, and validate vocabulary lists against a master library of thousands of words. Product design case study by Takao Umehara.">
+  <meta property="og:title" content="Amplify Vocabulary App — Word List Management | Takao Umehara">
+  <meta property="og:description" content="A dual-pane word-list management tool letting ELA curriculum authors search, import, and validate vocabulary lists against a master library of thousands of words.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_3.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>  <style>
+    :root { --bg: #fbfaf7; --ink: #121212; --ink-mid: #4c4841; --ink-dim: #79746d; --line: rgba(18,18,18,0.08); --border: rgba(18,18,18,0.10); --surface: rgba(255,255,255,0.92); --shadow: 0 18px 42px rgba(18,18,18,0.04); --ff: "Geist Sans", system-ui, -apple-system, sans-serif; --angle: 102deg; --a1: hsla(198 82% 72% / 0.44); --a2: hsla(248 74% 80% / 0.36); --a3: hsla(324 72% 81% / 0.40); --a4: hsla(36 80% 78% / 0.34); --t1: hsl(198 58% 56%); --t2: hsl(248 58% 70%); --t3: hsl(324 60% 72%); --t4: hsl(36 58% 62%); --hover-angle: 98deg; --bar-width: 70%; --image-hover-opacity: 0.985; --image-hover-width: 174%; --image-hover-from: -96%; --image-hover-to: -4%; --image-hover-leave-to: 124%; --image-hover-enter-ms: 1260ms; --image-hover-leave-ms: 920ms; --hover-ms: 880ms; --press-ms: 760ms; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--ff); color: var(--ink); background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); min-height: 100vh; }
+    .eyebrow, .kicker, .meta, .small, .pill { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); }
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    @keyframes gradient-band-sweep { 0% { transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%)); opacity: 0; } 8% { transform: translateX(0); opacity: 0.94; } 24% { transform: translateX(0); opacity: 0.94; } 100% { transform: translateX(232%); opacity: 0.92; } }
+    @keyframes mask-reveal { 0% { clip-path: inset(0 100% 0 0); opacity: 0; } 14% { clip-path: inset(0 100% 0 0); opacity: 0; } 30% { opacity: 0.24; } 100% { clip-path: inset(0 0 0 0); opacity: 1; } }
+    @keyframes hero-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .t-jp { display: none; } html.lang-jp .t-en { display: none; } html.lang-jp .t-jp { display: inline; } html.lang-jp .t-jp.is-block { display: block; }
+    @media (prefers-reduced-motion: reduce) { .hero-kicker, .hero-headline, .hero-body, .hero-cta { animation: none !important; opacity: 1 !important; } }
+    .project-hero { position:relative; min-height:480px; overflow:hidden; display:flex; align-items:flex-end; }
+    .project-hero-img { position:absolute; inset:0; background-size:cover; background-position:center; }
+    .project-hero-overlay { position:absolute; inset:0; background:linear-gradient(0deg,rgba(18,18,18,0.72) 0%,rgba(18,18,18,0.18) 60%,transparent 100%); }
+    .project-hero-content { position:relative; z-index:2; padding:48px 32px; max-width:1200px; margin:0 auto; width:100%; }
+    .project-hero-tags { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+    .project-hero-tag { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.24); padding:5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size:clamp(32px,5vw,64px); font-weight:400; letter-spacing:-0.03em; line-height:0.93; color:#fff; max-width:800px; margin-bottom:20px; }
+    .project-hero-meta { display:flex; gap:32px; flex-wrap:wrap; }
+    .project-meta-item { display:flex; flex-direction:column; gap:3px; }
+    .project-meta-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.48); }
+    .project-meta-value { font-size:13px; color:rgba(255,255,255,0.86); }
+    .project-body { max-width:1200px; margin:0 auto; padding:64px 32px 80px; }
+    .project-overview { display:grid; grid-template-columns:1fr 1.6fr; gap:64px; margin-bottom:72px; padding-bottom:72px; border-bottom:1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size:clamp(22px,2.4vw,30px); font-weight:400; letter-spacing:-0.02em; margin-bottom:20px; }
+    .project-text { font-size:16px; line-height:1.72; color:var(--ink-mid); margin-bottom:20px; }
+    .project-aside-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
+    .project-aside-stat { margin-bottom:24px; }
+    .project-aside-num { font-size:32px; font-weight:600; letter-spacing:-0.04em; }
+    .project-aside-desc { font-size:13px; color:var(--ink-dim); margin-top:4px; }
+    .project-deliverables { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .project-deliverables li { font-size:14px; color:var(--ink-mid); display:flex; gap:10px; align-items:baseline; }
+    .project-deliverables li::before { content:"—"; color:rgba(18,18,18,0.24); flex-shrink:0; }
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-cell { overflow: hidden; background: #f5f3f0; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    @media (max-width: 700px) { .g-row.r3 { grid-template-columns: 1fr 1fr; } }
+    .outcomes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:64px; }
+    .outcome-block { padding:28px 24px; border:1px solid var(--line); }
+    .outcome-num { font-size:36px; font-weight:600; letter-spacing:-0.05em; margin-bottom:6px; }
+    .outcome-label { font-size:13px; color:var(--ink-mid); line-height:1.5; }
+    .proj-video { position:relative; background:#111; border-radius:2px; overflow:hidden; margin:4px 0; }
+    .proj-video video { width:100%; display:block; }
+    .lang-switch { position:fixed; right:0; bottom:80px; z-index:100; writing-mode:vertical-rl; display:flex; align-items:center; gap:5px; padding:16px 9px; background:rgba(255,255,255,0.94); backdrop-filter:blur(8px); border-left:1px solid rgba(18,18,18,0.10); border-radius:6px 0 0 6px; }
+    .lang-btn { appearance:none; background:none; border:none; font-family:var(--ff); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; color:var(--ink-dim); padding:0; transition:color 160ms ease; }
+    .lang-btn.is-active { color:var(--ink); font-weight:600; }
+    .lang-sep { font-size:9px; color:rgba(18,18,18,0.18); }
+    .breadcrumb { padding:20px 32px; max-width:1200px; margin:0 auto; }
+    .breadcrumb a { font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; }
+    .breadcrumb a:hover { color:var(--ink); }
+    .breadcrumb span { font-size:12px; color:rgba(18,18,18,0.28); margin:0 8px; }
+    .nav-project { display:flex; justify-content:space-between; align-items:center; padding:32px 0 0; border-top:1px solid var(--line); margin-top:32px; }
+    .nav-project a { font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; display:flex; align-items:center; gap:8px; }
+    .nav-project a:hover { color:var(--ink); }
+    @media (max-width:900px) { .project-overview { grid-template-columns:1fr; gap:40px; } .outcomes-grid { grid-template-columns:1fr 1fr; } .g-row.r3 { grid-template-columns:1fr 1fr; } }
+    @media (max-width:600px) { .site-nav { padding:16px 20px; } .project-hero-content { padding:32px 20px; } .project-body { padding:40px 20px 60px; } .breadcrumb { padding:16px 20px; } .outcomes-grid { grid-template-columns:1fr; } .g-row.r2, .g-row.r3 { grid-template-columns:1fr; } }
+    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .g-cell img { opacity: 0; transition: opacity 400ms ease; }
+    .g-cell img.loaded { opacity: 1; }
+    .g-cell { border-radius: 2px; }
+    .g-cell img { transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .g-cell:hover img.loaded { transform: scale(1.008); }
+    @media (prefers-reduced-motion: reduce) { .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; } .g-cell img { opacity: 1 !important; transition: none !important; } .g-cell:hover img { transform: none !important; } }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
+    <ul class="nav-links">
+      <li><a href="../work.html" class="is-active" aria-current="page">Work</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="breadcrumb"><a href="../work.html">Work</a><span>/</span><a href="#">Vocab App</a></div>
+
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_3.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">EdTech</span>
+        <span class="project-hero-tag">Admin Tool</span>
+        <span class="project-hero-tag">UX Design</span>
+      </div>
+      <h1 class="project-hero-title"><span class="t-en">Amplify Vocabulary App: Word List Management</span><span class="t-jp">Amplify Vocabularyアプリ：単語リスト管理</span></h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item"><span class="project-meta-label">Client</span><span class="project-meta-value">Amplify Education</span></div>
+        <div class="project-meta-item"><span class="project-meta-label">Role</span><span class="project-meta-value">UX Design</span></div>
+      </div>
+    </div>
+  </section>
+
+  <main class="project-body">
+
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label"><span class="t-en">Scope</span><span class="t-jp">スコープ</span></p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">G6–G8</div>
+          <div class="project-aside-desc"><span class="t-en">Grade band covered by the vocabulary curriculum</span><span class="t-jp">語彙カリキュラムが対象とする学年帯</span></div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">4</div>
+          <div class="project-aside-desc"><span class="t-en">Management modules: Words, Activities, Encounters, Word Lists</span><span class="t-jp">管理モジュール：単語・アクティビティ・エンカウンター・単語リスト</span></div>
+        </div>
+      </aside>
+      <div>
+        <h2 class="project-section-title"><span class="t-en">The Tension</span><span class="t-jp">問題の核心</span></h2>
+        <p class="project-text">
+          <span class="t-en">Amplify's ELA curriculum draws on a master library of thousands of vocabulary words, and curriculum authors needed to assemble and maintain custom word lists from that library for different grades, streams, and lesson plans. Doing this by hand — cross-checking spreadsheets, retyping definitions, catching duplicates — was slow and error-prone. There was no dependable way to see, at a glance, whether a word being added already existed elsewhere in the system.</span>
+          <span class="t-jp is-block">Amplifyの英語ELAカリキュラムは、数千語からなるマスター単語ライブラリを基盤としており、カリキュラム制作者は学年・ストリーム・レッスンプランごとにこのライブラリからカスタム単語リストを組み立て、維持する必要があった。スプレッドシートを突き合わせ、定義を手入力し、重複を目視で確認する — この手作業は時間がかかり、ミスも起こりやすかった。追加しようとしている単語がシステム内の他の場所にすでに存在するかどうかを、一目で確実に把握する手段がなかった。</span>
+        </p>
+        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">My Approach</span><span class="t-jp">アプローチ</span></h2>
+        <p class="project-text">
+          <span class="t-en">I designed a dual-pane word list manager: the master "All Words" library on the left, the list being built on the right, both searchable and filterable by stream and grade. Authors could hand-pick words directly from the master list, or bulk-import a CSV — and when an import turned up malformed rows or duplicate entries, the interface surfaced them inline, with side-by-side comparison cards so authors could choose the master entry or the incoming one before anything was committed. Every destructive action, like removing a word from a list, got a confirmation step and an undo path.</span>
+          <span class="t-jp is-block">左に全単語を収めたマスターライブラリ「All Words」、右に作成中のリストを配置したデュアルペイン構成の単語リスト管理ツールを設計した。両ペインともストリームや学年で検索・絞り込みができる。制作者はマスターリストから単語を直接選んで追加することも、CSVで一括インポートすることもできる。インポート時に不備のある行や重複した単語が見つかった場合は、その場でインライン表示し、マスター側と取り込み側のエントリーを並べたカードで、確定前にどちらを採用するか選べるようにした。リストから単語を削除するような破壊的な操作には、必ず確認ステップとアンドゥの経路を用意した。</span>
+        </p>
+        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">Tools &amp; Methods</span><span class="t-jp">ツール＆手法</span></h2>
+        <div class="tools-list" style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">UX Research</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Information Architecture</span><span class="t-jp">情報設計</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Figma</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="outcomes-grid reveal-on-scroll">
+      <div class="outcome-block">
+        <div class="outcome-num">
+          <span class="t-en">Streamlined</span>
+          <span class="t-jp">効率化</span>
+        </div>
+        <div class="outcome-label"><span class="t-en">Word list creation reduced to search, select, and import</span><span class="t-jp">単語リスト作成を検索・選択・インポートに集約</span></div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">CSV</div>
+        <div class="outcome-label"><span class="t-en">Bulk import workflow with inline duplicate and error handling</span><span class="t-jp">重複・エラーをその場で処理する一括インポート機能</span></div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">
+          <span class="t-en">Table-Driven</span>
+          <span class="t-jp">テーブル駆動</span>
+        </div>
+        <div class="outcome-label"><span class="t-en">Structure-first UI matching how curriculum authors already worked</span><span class="t-jp">制作者の既存の作業フローに沿った構造優先のUI</span></div>
+      </div>
+    </div>
+
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label"><span class="t-en">01 — The Tool: Manage Word Lists, from the master library to a table-driven authoring workspace.</span><span class="t-jp">01 — ツール本体：マスターライブラリからテーブル駆動の制作ワークスペースへ。</span></p>
+      <div class="g-row r1">
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_7.png" alt="All Words — master vocabulary library with search, stream and grade filters, and pagination across hundreds of pages" loading="lazy"></div>
+      </div>
+      <div class="g-row r2">
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_4.png" alt="Create a new word list — dual-pane workspace pairing the master library with the list being built" loading="lazy"></div>
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_24.png" alt="A populated word list — imported words shown with duplicate flags ready for review" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label"><span class="t-en">02 — Interaction Details: bulk import, inline validation, and safe editing states.</span><span class="t-jp">02 — インタラクション詳細：一括インポート、インラインバリデーション、安全な編集状態。</span></p>
+      <div class="g-row r2">
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_5.png" alt="Uploading a CSV — native file picker for bulk word list import" loading="lazy"></div>
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_6.png" alt="Import in progress after a CSV file is selected" loading="lazy"></div>
+      </div>
+      <div class="g-row r2">
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_8.png" alt="Import confirmation step before words are added to the list" loading="lazy"></div>
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_9.png" alt="Inline validation flags a row with missing part-of-speech data and surfaces duplicate words before import completes" loading="lazy"></div>
+      </div>
+      <div class="g-row r2">
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_20.png" alt="Multi-selecting words directly from the master word list" loading="lazy"></div>
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_22.png" alt="Confirmation toast after adding selected words, with an undo option" loading="lazy"></div>
+      </div>
+      <div class="g-row r3">
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_13.png" alt="Delete confirmation — a safeguard before removing a word from a list" loading="lazy"></div>
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_14.png" alt="Undo toast after removing a word from a list" loading="lazy"></div>
+        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_highlight.png" alt="Row hover and selection highlight state in the word table" loading="lazy"></div>
+      </div>
+    </div>
+
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label"><span class="t-en">03 — Walkthrough</span><span class="t-jp">03 — ウォークスルー</span></p>
+      <div class="g-row r1">
+        <div class="proj-video">
+          <video controls preload="metadata" poster="../assets/vocab-app/Vocabapp_walkthru-poster.jpg">
+            <source src="../assets/vocab-app/Vocabapp_walkthru.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label"><span class="t-en">Deliverables</span><span class="t-jp">成果物</span></p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">UX Research &amp; Insight Generation</span><span class="t-jp">UXリサーチ＆インサイト</span></li>
+          <li><span class="t-en">Information Architecture</span><span class="t-jp">情報設計</span></li>
+          <li><span class="t-en">Wireframing &amp; Prototyping</span><span class="t-jp">ワイヤーフレーム＆プロトタイピング</span></li>
+          <li><span class="t-en">UI Design (Web App)</span><span class="t-jp">UIデザイン（Webアプリ）</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label"><span class="t-en">Methods</span><span class="t-jp">手法</span></p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Task Analysis</span><span class="t-jp">タスク分析</span></li>
+          <li><span class="t-en">Content &amp; Data Modeling</span><span class="t-jp">コンテンツ＆データモデリング</span></li>
+          <li><span class="t-en">Usability Review</span><span class="t-jp">ユーザビリティレビュー</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label"><span class="t-en">Team</span><span class="t-jp">チーム</span></p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Curriculum Team (Domain Expert)</span><span class="t-jp">カリキュラムチーム（ドメインエキスパート）</span></li>
+          <li><span class="t-en">Engineering</span><span class="t-jp">エンジニアリング</span></li>
+          <li><span class="t-en">QA</span><span class="t-jp">QA</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="nav-project">
+      <a href="../work.html"><span class="t-en">&larr; All Work</span><span class="t-jp">&larr; すべての仕事</span></a>
+      <a href="ela-quests.html"><span class="t-en">Next: Amplify ELA Quests</span><span class="t-jp">次：Amplify ELA Quests</span> &rarr;</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Work</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">&middot;</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => { html.classList.toggle("lang-jp", lang === "jp"); btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang)); localStorage.setItem("tu-lang", lang); };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+    (() => {
+      const obs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } }); }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+    })();
+    document.querySelectorAll('.g-cell img').forEach(img => { if (img.complete) img.classList.add('loaded'); else img.addEventListener('load', () => img.classList.add('loaded')); });
+
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

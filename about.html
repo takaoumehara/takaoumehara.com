@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>About — Takao Umehara</title>
+  <meta name="description" content="About Takao Umehara — a NYC-based product designer and innovation strategist blending product design, brand strategy, and AI-era innovation frameworks.">
+  <meta property="og:title" content="About — Takao Umehara">
+  <meta property="og:description" content="A NYC-based product designer and innovation strategist blending product design, brand strategy, and AI-era innovation frameworks.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Google Sans","Google Sans Text","Product Sans",system-ui,sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 96px 32px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-kicker {
+      margin-bottom: 20px;
+    }
+
+    .hero-headline {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(44px, 6.8vw, 88px);
+      line-height: 0.91;
+      letter-spacing: -0.03em;
+      font-weight: 400;
+      max-width: 900px;
+      margin-bottom: 32px;
+      color: var(--ink);
+    }
+
+    .hero-desc {
+      font-size: 17px;
+      line-height: 1.62;
+      color: var(--ink-mid);
+      max-width: 640px;
+      margin-bottom: 0;
+    }
+
+    /* ─── Section header ─── */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 24px;
+      padding: 0 32px;
+      margin: 0 auto 28px;
+      max-width: 1200px;
+    }
+
+    .section-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+
+    /* ─── Capabilities strip ─── */
+    .capabilities-section {
+      padding: 72px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 28px auto 0;
+    }
+
+    .capability-block {
+      padding: 32px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .capability-block:last-child { border-right: 0; }
+    .capability-block:not(:first-child) { padding-left: 32px; }
+
+    .capability-num {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 16px;
+    }
+
+    .capability-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .capability-desc {
+      font-size: 14px;
+      line-height: 1.62;
+      color: var(--ink-mid);
+    }
+
+    /* ─── Timeline section ─── */
+    .timeline-section {
+      padding: 72px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 28px auto 0;
+    }
+
+    .timeline-item {
+      display: contents;
+    }
+
+    .timeline-left {
+      padding: 28px 32px 28px 0;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline-right {
+      padding: 28px 0 28px 32px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .timeline-item:last-child .timeline-left,
+    .timeline-item:last-child .timeline-right {
+      border-bottom: 0;
+    }
+
+    .timeline-org {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      margin-bottom: 4px;
+    }
+
+    .timeline-role {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    .timeline-desc {
+      font-size: 14px;
+      line-height: 1.62;
+      color: var(--ink-mid);
+    }
+
+    /* ─── Highlights strip ─── */
+    .highlights-section {
+      padding: 56px 0 72px;
+      border-top: 1px solid var(--line);
+    }
+
+    .highlights-row {
+      display: flex;
+      gap: 0;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 28px auto 0;
+      flex-wrap: wrap;
+    }
+
+    .highlight-item {
+      flex: 1 1 200px;
+      padding: 24px 32px 24px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .highlight-item:last-child { border-right: 0; }
+
+    .highlight-num {
+      font-size: clamp(28px, 3.2vw, 42px);
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      margin-bottom: 6px;
+      color: var(--ink);
+    }
+
+    .highlight-label {
+      font-size: 13px;
+      color: var(--ink-dim);
+      line-height: 1.5;
+    }
+
+    /* ─── Clients section ─── */
+    .clients-section {
+      padding: 64px 0 72px;
+      border-top: 1px solid var(--line);
+    }
+
+    .clients-list {
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 28px auto 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .client-item {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      color: var(--ink-mid);
+      padding: 16px 24px 16px 0;
+      margin-right: 24px;
+      border-bottom: 1px solid var(--line);
+      flex: 0 0 auto;
+      transition: color 160ms ease;
+    }
+
+    .client-item:hover { color: var(--ink); }
+
+    /* ─── Social links ─── */
+    .social-section {
+      padding: 56px 0 72px;
+      border-top: 1px solid var(--line);
+    }
+
+    .social-row {
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .btn-primary:hover { background: #2a2a2a; }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .footer-llc {
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-top: 5px;
+      letter-spacing: 0.01em;
+    }
+
+    .footer-llc strong {
+      color: var(--ink-mid);
+      font-weight: 500;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-kicker  { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 80ms both; }
+    .hero-headline {
+      animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both;
+    }
+    .hero-desc    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 260ms both; }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-radius: 6px 0 0 6px;
+    }
+
+    .lang-btn {
+      appearance: none; background: none; border: none;
+      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      color: var(--ink-dim); padding: 0;
+      transition: color 160ms ease;
+    }
+
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+
+    /* bilingual content */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-kicker, .hero-headline, .hero-desc { animation: none !important; opacity: 1 !important; }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .capabilities-grid { grid-template-columns: 1fr; }
+      .capability-block { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px 0; }
+      .capability-block:not(:first-child) { padding-left: 0; }
+      .timeline-grid { grid-template-columns: 1fr; }
+      .timeline-left { border-right: 0; border-bottom: 0; padding-bottom: 4px; padding-right: 0; }
+      .timeline-right { padding-left: 0; }
+    }
+
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .hero { padding: 64px 20px 56px; }
+      .section-head, .capabilities-grid, .timeline-grid, .highlights-row, .clients-list, .social-row { padding: 0 20px; }
+      .highlight-item { padding-right: 20px; }
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="work.html">Work</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="about.html" class="is-active" aria-current="page">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-kicker eyebrow">
+      <span class="t-en">About</span>
+      <span class="t-jp">私について</span>
+    </div>
+    <h1 class="hero-headline">
+      <span class="t-en">Product designer, innovation strategist, and creative thinker based in New York City.</span>
+      <span class="t-jp">ニューヨーク在住のプロダクトデザイナー、イノベーション・ストラテジスト。</span>
+    </h1>
+    <p class="hero-desc">
+      <span class="t-en">Throughout my career, I have consistently taken on key leadership roles such as Product Design Lead, UX Lead, and Senior Product Designer. My approach combines strategic vision with hands-on design skills to create products that resonate with users and meet business goals.</span>
+      <span class="t-jp is-block">これまでのキャリアを通じて、プロダクトデザインリード、UXリード、シニアプロダクトデザイナーとして重要なリーダーシップポジションを担ってきました。戦略的なビジョンと実践的なデザインスキルを組み合わせ、ユーザーに響き、ビジネス目標を達成するプロダクトを生み出しています。</span>
+    </p>
+  </section>
+
+  <!-- ── Highlights ── -->
+  <section class="highlights-section">
+    <div class="highlights-row">
+      <div class="highlight-item">
+        <div class="highlight-num">12+</div>
+        <div class="highlight-label">
+          <span class="t-en">Products launched across EdTech, FinTech, Blockchain, Commerce, AI, Web3 &amp; Retail</span>
+          <span class="t-jp is-block">EdTech、FinTech、ブロックチェーン、コマース、AI、Web3、小売業界でのプロダクト立ち上げ</span>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">10+</div>
+        <div class="highlight-label">
+          <span class="t-en">ELA Quests product launches at Amplify Education, reaching millions of students</span>
+          <span class="t-jp is-block">Amplify EducationでのELA Questsプロダクト立ち上げ、数百万の生徒へ届く</span>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">11K+</div>
+        <div class="highlight-label">
+          <span class="t-en">Copies sold of <em>extra•ordinary</em> (Rockport Publishing)</span>
+          <span class="t-jp is-block">『extra•ordinary』（Rockport Publishing）の販売部数</span>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">5</div>
+        <div class="highlight-label">
+          <span class="t-en">Global companies trained with BreakBias — Microsoft, Tiffany, Havas, Dentsu, Google</span>
+          <span class="t-jp is-block">BreakBiasのトレーニング企業 — Microsoft、Tiffany、Havas、Dentsu、Google</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Expertise ── -->
+  <section class="capabilities-section">
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="t-en">Expertise</span>
+        <span class="t-jp">専門領域</span>
+      </h2>
+    </div>
+    <div class="capabilities-grid">
+      <div class="capability-block">
+        <div class="capability-num">01</div>
+        <div class="capability-title">
+          <span class="t-en">Products &amp; Systems</span>
+          <span class="t-jp">プロダクト &amp; システム</span>
+        </div>
+        <p class="capability-desc">
+          <span class="t-en">End-to-end UX/UI, design systems, prototyping</span>
+          <span class="t-jp is-block">エンドツーエンドのUX/UI、デザインシステム、プロトタイピング</span>
+        </p>
+      </div>
+      <div class="capability-block">
+        <div class="capability-num">02</div>
+        <div class="capability-title">
+          <span class="t-en">Brands &amp; Experiences</span>
+          <span class="t-jp">ブランド &amp; 体験</span>
+        </div>
+        <p class="capability-desc">
+          <span class="t-en">Brand strategy, visual identity, CX design</span>
+          <span class="t-jp is-block">ブランド戦略、ビジュアルアイデンティティ、CXデザイン</span>
+        </p>
+      </div>
+      <div class="capability-block">
+        <div class="capability-num">03</div>
+        <div class="capability-title">
+          <span class="t-en">Innovation &amp; Strategy</span>
+          <span class="t-jp">イノベーション &amp; 戦略</span>
+        </div>
+        <p class="capability-desc">
+          <span class="t-en">BreakBias workshops, design sprints, AI UX</span>
+          <span class="t-jp is-block">BreakBiasワークショップ、デザインスプリント、AI UX</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Career Timeline ── -->
+  <section class="timeline-section">
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="t-en">Career</span>
+        <span class="t-jp">キャリア</span>
+      </h2>
+    </div>
+    <div class="timeline-grid">
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-org">Amplify Education</div>
+          <div class="timeline-role">
+            <span class="t-en">Product Design Lead</span>
+            <span class="t-jp">プロダクトデザインリード</span>
+          </div>
+        </div>
+        <div class="timeline-right">
+          <p class="timeline-desc">
+            <span class="t-en">Led 10+ ELA Quests product launches — AR-powered educational experiences reaching millions of students across the United States.</span>
+            <span class="t-jp is-block">10以上のELA Questsプロダクトを立ち上げ。ARを活用した教育体験を全米の数百万の生徒へ届けました。</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-org">Concentrix Catalyst</div>
+          <div class="timeline-role">
+            <span class="t-en">Lead Product Designer</span>
+            <span class="t-jp">リードプロダクトデザイナー</span>
+          </div>
+        </div>
+        <div class="timeline-right">
+          <p class="timeline-desc">
+            <span class="t-en">Designed a major US bank credit card portal — 105 screens, complete design system, and end-to-end UX for millions of cardholders.</span>
+            <span class="t-jp is-block">米国大手銀行のクレジットカードポータルを設計。105画面、完全なデザインシステム、数百万のカード会員向けのエンドツーエンドUX。</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-org">Ogilvy Brand Integration Group</div>
+          <div class="timeline-role">
+            <span class="t-en">Senior Designer</span>
+            <span class="t-jp">シニアデザイナー</span>
+          </div>
+        </div>
+        <div class="timeline-right">
+          <p class="timeline-desc">
+            <span class="t-en">Led design for Coca-Cola's global rebranding campaign, ensuring visual consistency and brand integrity across markets worldwide.</span>
+            <span class="t-jp is-block">Coca-Colaのグローバルリブランディングキャンペーンのデザインを主導し、世界市場全体でのビジュアルの一貫性とブランドの完全性を確保。</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-org">Creativity Is Everywhere LLC</div>
+          <div class="timeline-role">
+            <span class="t-en">Founder</span>
+            <span class="t-jp">ファウンダー</span>
+          </div>
+        </div>
+        <div class="timeline-right">
+          <p class="timeline-desc">
+            <span class="t-en">Brand strategy, product design, and innovation consulting for clients across the US and Japan — including T-Mobile, Tokyo Metropolitan Government, and Emerson Collective.</span>
+            <span class="t-jp is-block">米国と日本のクライアントへのブランド戦略、プロダクトデザイン、イノベーションコンサルティング。T-Mobile、東京都、Emerson Collectiveなど。</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-org">BreakBias</div>
+          <div class="timeline-role">
+            <span class="t-en">Creator</span>
+            <span class="t-jp">クリエイター</span>
+          </div>
+        </div>
+        <div class="timeline-right">
+          <p class="timeline-desc">
+            <span class="t-en">Created an innovation training program with 8 structured tools. Trained professionals at Microsoft, Tiffany, Havas, Dentsu, and Google.</span>
+            <span class="t-jp is-block">8つの体系的なツールを備えたイノベーショントレーニングプログラムを開発。Microsoft、Tiffany、Havas、Dentsu、Googleのプロフェッショナルを指導。</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-left">
+          <div class="timeline-org">intentfirst.ai</div>
+          <div class="timeline-role">
+            <span class="t-en">Founder</span>
+            <span class="t-jp">ファウンダー</span>
+          </div>
+        </div>
+        <div class="timeline-right">
+          <p class="timeline-desc">
+            <span class="t-en">Developed the Context Grammar framework for Agentic AI design — a design language that bridges what users ask and what they actually need.</span>
+            <span class="t-jp is-block">エージェンティックAIデザインのためのContext Grammarフレームワークを開発。ユーザーの要求と本当のニーズを繋ぐデザイン言語。</span>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Notable Clients ── -->
+  <section class="clients-section">
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="t-en">Notable Clients</span>
+        <span class="t-jp">主なクライアント</span>
+      </h2>
+    </div>
+    <div class="clients-list">
+      <span class="client-item">Amplify Education</span>
+      <span class="client-item">T-Mobile</span>
+      <span class="client-item">Coca-Cola</span>
+      <span class="client-item">USAA</span>
+      <span class="client-item">Carnegie Foundation</span>
+      <span class="client-item">Tokyo Metropolitan Government</span>
+      <span class="client-item">Emerson Collective</span>
+      <span class="client-item">CLI Studios</span>
+      <span class="client-item">Value Frontier</span>
+      <span class="client-item">JWSNY</span>
+    </div>
+  </section>
+
+  <!-- ── Social / Publications ── -->
+  <section class="social-section">
+    <div class="section-head">
+      <h2 class="section-title">
+        <span class="t-en">Find me online</span>
+        <span class="t-jp">オンラインで探す</span>
+      </h2>
+    </div>
+    <div class="social-row">
+      <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" class="btn-primary">LinkedIn</a>
+      <a href="https://breakbias.medium.com/" target="_blank" rel="noopener" class="btn-secondary">Medium</a>
+      <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="btn-secondary">intentfirst.ai</a>
+    </div>
+  </section>
+
+  <!-- ── Lang Switch ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer">
+      <div>
+        <div class="footer-logo">Takao Umehara</div>
+        <div class="footer-llc">
+          <span class="t-en">Freelance &amp; consulting work accepted through <strong>Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp is-block">フリーランス・コンサルティング業務は<strong>Creativity Is Everywhere LLC</strong>を通じて受け付けています</span>
+        </div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+        
+        <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
+        <li><a href="intentfirst.html">intentfirst.ai</a></li>
+      </ul>
+      <div class="footer-copy">New York City</div>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

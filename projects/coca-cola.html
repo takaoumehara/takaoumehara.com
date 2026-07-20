@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Coca-Cola — Global Visual Directions | Takao Umehara</title>
+  <meta name="description" content="Coca-Cola Global Visual Directions — two global brand campaign worlds deployed across international markets in 6+ formats. Design case study by Takao Umehara, Ogilvy Brand Integration Group.">
+  <meta property="og:title" content="Coca-Cola — Global Visual Directions | Takao Umehara">
+  <meta property="og:description" content="Coca-Cola Global Visual Directions — two global brand campaign worlds deployed across international markets in 6+ formats.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/shared/Coke_Hero_1500x1000.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    :root {
+      --bg: #fbfaf7; --ink: #121212; --ink-mid: #4c4841; --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08); --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92); --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44); --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40); --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%); --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%); --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg; --bar-width: 70%;
+      --image-hover-opacity: 0.985; --image-hover-width: 174%;
+      --image-hover-from: -96%; --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms; --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms; --press-ms: 760ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--ff); color: var(--ink);
+      background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+    .eyebrow, .kicker, .meta, .small, .pill { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); }
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; }
+    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(18,18,18,0.72) 0%,rgba(18,18,18,0.18) 60%,transparent 100%); }
+    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
+    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
+    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
+    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+    .project-aside-stat { margin-bottom: 24px; }
+    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
+    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
+    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+    .project-section { margin-bottom: 64px; }
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
+    .outcomes-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-bottom: 64px; }
+    .outcome-block { padding: 28px 24px; border: 1px solid var(--line); }
+    .outcome-num { font-size: 36px; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 6px; }
+    .outcome-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+    .outcome-change { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); margin-top: 6px; }
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; border-radius: 2px; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+    .nav-project { display: flex; justify-content: space-between; align-items: center; padding: 32px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
+    .nav-project a { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; display: flex; align-items: center; gap: 8px; }
+    .nav-project a:hover { color: var(--ink); }
+    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-left: 1px solid rgba(18,18,18,0.10); border-radius: 6px 0 0 6px; }
+    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    @media (max-width: 900px) {
+      .project-overview { grid-template-columns: 1fr; gap: 40px; }
+      .outcomes-grid { grid-template-columns: 1fr 1fr; }
+      .g-row.r3 { grid-template-columns: 1fr 1fr; }
+      .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .project-hero-content { padding: 32px 20px; }
+      .project-body { padding: 40px 20px 60px; }
+      .breadcrumb { padding: 16px 20px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .g-row.r2, .g-row.r3 { grid-template-columns: 1fr; }
+    }
+    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .g-cell img { opacity: 0; transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .g-cell img.loaded { opacity: 1; }
+    .g-cell:hover img.loaded { transform: scale(1.008); }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; }
+      .g-cell img { opacity: 1 !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../work.html" class="is-active" aria-current="page">Work</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="../work.html">Work</a>
+    <span>/</span>
+    <a href="#">Coca-Cola</a>
+  </div>
+
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/shared/Coke_Hero_1500x1000.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Visual Design</span>
+        <span class="project-hero-tag">Branding</span>
+        <span class="project-hero-tag">Global Campaign</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">Coca-Cola &#8212; Global Visual Directions</span>
+        <span class="t-jp">Coca-Cola &#8212; &#12464;&#12525;&#12540;&#12496;&#12523;&#12499;&#12472;&#12517;&#12450;&#12523;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">The Coca-Cola Company</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Senior Designer, Ogilvy Brand Integration Group</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Scope</span>
+          <span class="project-meta-value">Global Markets</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="project-body">
+
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">Outcomes</span>
+          <span class="t-jp">&#25104;&#26524;</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">Global</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Deployed across international markets</span>
+            <span class="t-jp">&#22269;&#38555;&#24066;&#22580;&#12395;&#23637;&#38283;</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">2 Directions</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Parallel visual systems for brand refresh</span>
+            <span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#12522;&#12501;&#12524;&#12483;&#12471;&#12517;&#12398;&#12383;&#12417;&#12398;2&#12388;&#12398;&#12499;&#12472;&#12517;&#12450;&#12523;&#12471;&#12473;&#12486;&#12512;</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">6+ Formats</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Billboards, vehicles, packaging, environment, stationery, coolers</span>
+            <span class="t-jp">&#30475;&#26495;&#12289;&#36554;&#20001;&#12289;&#12497;&#12483;&#12465;&#12540;&#12472;&#12289;&#29872;&#22659;&#12289;&#25991;&#20855;&#12289;&#12463;&#12540;&#12521;&#12540;</span>
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top: 32px;">
+          <span class="t-en">Scope</span>
+          <span class="t-jp">&#12473;&#12467;&#12540;&#12503;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Design Directions</span><span class="t-jp">&#12487;&#12470;&#12452;&#12531;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;</span></li>
+          <li><span class="t-en">Brand Touchpoint Applications</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#12479;&#12483;&#12481;&#12509;&#12452;&#12531;&#12488;&#12450;&#12503;&#12522;&#12465;&#12540;&#12471;&#12519;&#12531;</span></li>
+          <li><span class="t-en">Billboard &amp; OOH</span><span class="t-jp">&#30475;&#26495;&#12539;OOH</span></li>
+          <li><span class="t-en">Vehicle Wraps</span><span class="t-jp">&#36554;&#20001;&#12521;&#12483;&#12500;&#12531;&#12464;</span></li>
+          <li><span class="t-en">Packaging &amp; Stationery</span><span class="t-jp">&#12497;&#12483;&#12465;&#12540;&#12472;&#12539;&#25991;&#20855;</span></li>
+        </ul>
+      </aside>
+
+      <div>
+        <h2 class="project-section-title">
+          <span class="t-en">The Opportunity</span>
+          <span class="t-jp">&#27231;&#20250;</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">Under VP of Design David Butler's guidance, Coca-Cola needed fresh global visual directions to refresh consumer touchpoints worldwide. The world's most recognized brand sought new creative approaches that could revitalize its visual presence across billboards, vehicles, packaging, and environmental installations &#8212; while staying true to its iconic identity.</span>
+          <span class="t-jp is-block">&#12487;&#12470;&#12452;&#12531;&#25285;&#24403;&#21103;&#31038;&#38263;David Butler&#12398;&#25351;&#25582;&#12398;&#12418;&#12392;&#12289;Coca-Cola&#12399;&#19990;&#30028;&#20013;&#12398;&#28040;&#36027;&#32773;&#12479;&#12483;&#12481;&#12509;&#12452;&#12531;&#12488;&#12434;&#12522;&#12501;&#12524;&#12483;&#12471;&#12517;&#12377;&#12427;&#26032;&#12375;&#12356;&#12464;&#12525;&#12540;&#12496;&#12523;&#12499;&#12472;&#12517;&#12450;&#12523;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;&#12434;&#24517;&#35201;&#12392;&#12375;&#12390;&#12356;&#12414;&#12375;&#12383;&#12290;&#19990;&#30028;&#12391;&#26368;&#12418;&#35469;&#30693;&#12373;&#12428;&#12383;&#12502;&#12521;&#12531;&#12489;&#12399;&#12289;&#12450;&#12452;&#12467;&#12491;&#12483;&#12463;&#12394;&#12450;&#12452;&#12487;&#12531;&#12486;&#12451;&#12486;&#12451;&#12395;&#24544;&#23455;&#12391;&#12354;&#12426;&#12394;&#12364;&#12425;&#12289;&#30475;&#26495;&#12289;&#36554;&#20001;&#12289;&#12497;&#12483;&#12465;&#12540;&#12472;&#12289;&#29872;&#22659;&#12452;&#12531;&#12473;&#12479;&#12524;&#12540;&#12471;&#12519;&#12531;&#20840;&#20307;&#12391;&#12499;&#12472;&#12517;&#12450;&#12523;&#12503;&#12524;&#12476;&#12531;&#12473;&#12434;&#27963;&#24615;&#21270;&#12391;&#12365;&#12427;&#26032;&#12375;&#12356;&#12463;&#12522;&#12456;&#12452;&#12486;&#12451;&#12502;&#12450;&#12503;&#12525;&#12540;&#12481;&#12434;&#27714;&#12417;&#12390;&#12356;&#12414;&#12375;&#12383;&#12290;</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">My Direction</span>
+          <span class="t-jp">&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I developed two parallel visual directions at Ogilvy's Brand Integration Group. <strong>Direction 01: Coke-Animal World</strong> introduced whimsical creatures constructed entirely from Coke bottle silhouettes &#8212; a playful universe that transformed the iconic bottle shape into a cast of imaginative characters, including a giant swan billboard installed in Times Square. This direction deployed across billboards, buses, and coolers for maximum street-level impact.</span>
+          <span class="t-jp is-block">Ogilvy&#12398;Brand Integration Group&#12391;2&#12388;&#12398;&#12497;&#12521;&#12524;&#12523;&#12394;&#12499;&#12472;&#12517;&#12450;&#12523;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;&#12434;&#38283;&#30330;&#12375;&#12414;&#12375;&#12383;&#12290;<strong>&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;01&#65306;Coke-Animal World</strong>&#12399;&#12289;Coke&#12508;&#12488;&#12523;&#12398;&#12471;&#12523;&#12456;&#12483;&#12488;&#12363;&#12425;&#23436;&#20840;&#12395;&#27083;&#25104;&#12373;&#12428;&#12383;&#39080;&#22793;&#12431;&#12426;&#12394;&#29983;&#12365;&#29289;&#12383;&#12385;&#12434;&#32057;&#20171;&#12375;&#12414;&#12375;&#12383;&#12290;&#12479;&#12452;&#12512;&#12474;&#12473;&#12463;&#12456;&#12450;&#12395;&#35373;&#32622;&#12373;&#12428;&#12383;&#22823;&#22411;&#12398;&#30333;&#40575;&#30475;&#26495;&#12418;&#12371;&#12398;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;&#12398;&#20195;&#34920;&#20316;&#12391;&#12377;&#12290;&#12450;&#12452;&#12467;&#12491;&#12483;&#12463;&#12394;&#12508;&#12488;&#12523;&#24418;&#29366;&#12434;&#24819;&#20687;&#21147;&#35914;&#12363;&#12394;&#12461;&#12515;&#12521;&#12463;&#12479;&#12540;&#12395;&#22793;&#25563;&#12377;&#12427;&#12371;&#12398;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;&#12399;&#12289;&#30475;&#26495;&#12289;&#12496;&#12473;&#12289;&#12463;&#12540;&#12521;&#12540;&#12395;&#23637;&#38283;&#12373;&#12428;&#12414;&#12375;&#12383;&#12290;</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en"><strong>Direction 02: SketchVibe World</strong> took a contrasting approach &#8212; hand-sketched aesthetics that brought warmth and approachability to the brand. This direction was applied across cans, letterhead, wall murals, transit lightboxes, coolers, and vehicle wraps, creating an organic visual language that invited consumer engagement. Both directions were deployed across international markets worldwide.</span>
+          <span class="t-jp is-block"><strong>&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;02&#65306;SketchVibe World</strong>&#12399;&#23550;&#29031;&#30340;&#12394;&#12450;&#12503;&#12525;&#12540;&#12481;&#12434;&#21462;&#12426;&#12414;&#12375;&#12383;&#12290;&#25163;&#25551;&#12365;&#12398;&#32654;&#23398;&#12364;&#12502;&#12521;&#12531;&#12489;&#12395;&#28201;&#12363;&#12415;&#12392;&#35242;&#12375;&#12415;&#12420;&#12377;&#12373;&#12434;&#12418;&#12383;&#12425;&#12375;&#12414;&#12375;&#12383;&#12290;&#12371;&#12398;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;&#12399;&#32566;&#12289;&#12524;&#12479;&#12540;&#12504;&#12483;&#12489;&#12289;&#22721;&#38754;&#12511;&#12517;&#12521;&#12523;&#12289;&#20132;&#36890;&#26426;&#38364;&#12398;&#12521;&#12452;&#12488;&#12508;&#12483;&#12463;&#12473;&#12289;&#12463;&#12540;&#12521;&#12540;&#12289;&#36554;&#20001;&#12521;&#12483;&#12500;&#12531;&#12464;&#12395;&#36969;&#29992;&#12373;&#12428;&#12289;&#28040;&#36027;&#32773;&#12456;&#12531;&#12466;&#12540;&#12472;&#12513;&#12531;&#12488;&#12434;&#20419;&#12377;&#12458;&#12540;&#12460;&#12491;&#12483;&#12463;&#12394;&#12499;&#12472;&#12517;&#12450;&#12523;&#35328;&#35486;&#12434;&#21109;&#36896;&#12375;&#12414;&#12375;&#12383;&#12290;&#20001;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;&#12392;&#12418;&#19990;&#30028;&#20013;&#12398;&#22269;&#38555;&#24066;&#22580;&#12395;&#23637;&#38283;&#12373;&#12428;&#12414;&#12375;&#12383;&#12290;</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">Tools &amp; Methods</span>
+          <span class="t-jp">&#12484;&#12540;&#12523;&#65286;&#25163;&#27861;</span>
+        </h2>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Visual Direction</span><span class="t-jp">&#12499;&#12472;&#12517;&#12450;&#12523;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Brand Integration</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#12452;&#12531;&#12486;&#12464;&#12524;&#12540;&#12471;&#12519;&#12531;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Illustration</span><span class="t-jp">&#12452;&#12521;&#12473;&#12488;&#12524;&#12540;&#12471;&#12519;&#12531;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Touchpoint Design</span><span class="t-jp">&#12479;&#12483;&#12481;&#12509;&#12452;&#12531;&#12488;&#12487;&#12470;&#12452;&#12531;</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section">
+      <h2 class="project-section-title reveal-on-scroll">
+        <span class="t-en">Results</span>
+        <span class="t-jp">&#25104;&#26524;</span>
+      </h2>
+      <div class="outcomes-grid reveal-on-scroll">
+        <div class="outcome-block">
+          <div class="outcome-num">Global</div>
+          <div class="outcome-label"><span class="t-en">Deployed across international markets</span><span class="t-jp">&#22269;&#38555;&#24066;&#22580;&#12395;&#23637;&#38283;</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">2 Worlds</div>
+          <div class="outcome-label"><span class="t-en">Animal World + SketchVibe World</span><span class="t-jp">Animal World + SketchVibe World</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">6+ Formats</div>
+          <div class="outcome-label"><span class="t-en">Billboards, vehicles, packaging, environment, stationery, coolers</span><span class="t-jp">&#30475;&#26495;&#12289;&#36554;&#20001;&#12289;&#12497;&#12483;&#12465;&#12540;&#12472;&#12289;&#29872;&#22659;&#12289;&#25991;&#20855;&#12289;&#12463;&#12540;&#12521;&#12540;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery reveal-on-scroll">
+
+      <p class="gallery-label">
+        <span class="t-en">Direction 01 &#8212; Coke-Animal World: Billboards &amp; OOH</span>
+        <span class="t-jp">&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;01 &#8212; Coke-Animal World&#65306;&#23621;&#22806;&#24191;&#21578;&#65288;OOH&#65289;</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell photo"><img src="../assets/coca-cola/Billboard_0045_2019-01-14_1_2_3_4.jpeg" alt="Coca-Cola Animal World swan billboard, Times Square" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/coca-cola/Billboard_0110_2019-01-14.jpeg" alt="Coca-Cola Animal World elephant billboard" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/coca-cola/Billboard_0151_2019-01-14.jpeg" alt="Coca-Cola Animal World elephant billboard, Rome" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/coca-cola/coke_animal01.jpg" alt="Coca-Cola Animal World swan-elephant illustration" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/coca-cola/Van_0958_2019-01-14.jpeg" alt="Coca-Cola Animal World van wrap" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/extraordinary/animal_space_vert-01.jpg" alt="Coca-Cola Animal World illustration, swan" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/extraordinary/animal_space_vert-02-01.jpg" alt="Coca-Cola Animal World illustration, winged creatures" loading="lazy"></div>
+      </div>
+
+      <p class="gallery-label">
+        <span class="t-en">Direction 02 &#8212; SketchVibe World: Hand-Sketched Applications</span>
+        <span class="t-jp">&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;02 &#8212; SketchVibe World&#65306;&#25163;&#25551;&#12365;&#12499;&#12472;&#12517;&#12450;&#12523;&#23637;&#38283;</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell photo"><img src="../assets/coca-cola/Wall_1469_2019-01-14_1.jpeg" alt="Coca-Cola SketchVibe wall mural" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/coca-cola/Coke-leterhead.png" alt="Coca-Cola SketchVibe letterhead and collateral system" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/coca-cola/coke-handsketch-can.png" alt="Coca-Cola SketchVibe hand-sketched can designs" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/coca-cola/web_hero_coke.png" alt="Coca-Cola SketchVibe subway lightbox ad" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/coca-cola/Bus_0520_2019-01-14_1.jpeg" alt="Coca-Cola SketchVibe bus wrap" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/koji-fizz/BarrelCooler_core.jpg" alt="Coca-Cola SketchVibe barrel cooler" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/coca-cola/Van_0956_2019-01-14_1.jpeg" alt="Coca-Cola SketchVibe van wrap" loading="lazy"></div>
+      </div>
+
+    </div>
+
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">&#25104;&#26524;&#29289;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Visual Design Directions</span><span class="t-jp">&#12499;&#12472;&#12517;&#12450;&#12523;&#12487;&#12470;&#12452;&#12531;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;</span></li>
+          <li><span class="t-en">Billboard &amp; OOH</span><span class="t-jp">&#30475;&#26495;&#12539;OOH</span></li>
+          <li><span class="t-en">Vehicle Wraps</span><span class="t-jp">&#36554;&#20001;&#12521;&#12483;&#12500;&#12531;&#12464;</span></li>
+          <li><span class="t-en">Packaging</span><span class="t-jp">&#12497;&#12483;&#12465;&#12540;&#12472;</span></li>
+          <li><span class="t-en">Stationery &amp; Collateral</span><span class="t-jp">&#25991;&#20855;&#12539;&#12467;&#12521;&#12486;&#12521;&#12523;</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Methods</span>
+          <span class="t-jp">&#25163;&#27861;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Visual Direction Development</span><span class="t-jp">&#12499;&#12472;&#12517;&#12450;&#12523;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;&#38283;&#30330;</span></li>
+          <li><span class="t-en">Brand Integration</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#12452;&#12531;&#12486;&#12464;&#12524;&#12540;&#12471;&#12519;&#12531;</span></li>
+          <li><span class="t-en">Illustration Systems</span><span class="t-jp">&#12452;&#12521;&#12473;&#12488;&#12524;&#12540;&#12471;&#12519;&#12531;&#12471;&#12473;&#12486;&#12512;</span></li>
+          <li><span class="t-en">Touchpoint Mapping</span><span class="t-jp">&#12479;&#12483;&#12481;&#12509;&#12452;&#12531;&#12488;&#12510;&#12483;&#12500;&#12531;&#12464;</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Team</span>
+          <span class="t-jp">&#12481;&#12540;&#12512;</span>
+        </p>
+        <p class="project-text" style="font-size: 13px;">
+          <span class="t-en">Ogilvy Brand Integration Group. I served as Senior Designer &#8212; developing both visual directions, creating illustration systems, and designing applications across all consumer touchpoints.</span>
+          <span class="t-jp is-block">Ogilvy Brand Integration Group&#12290;&#12471;&#12491;&#12450;&#12487;&#12470;&#12452;&#12490;&#12540;&#12392;&#12375;&#12390;&#12289;&#20001;&#12499;&#12472;&#12517;&#12450;&#12523;&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;&#12398;&#38283;&#30330;&#12289;&#12452;&#12521;&#12473;&#12488;&#12524;&#12540;&#12471;&#12519;&#12531;&#12471;&#12473;&#12486;&#12512;&#12398;&#20316;&#25104;&#12289;&#20840;&#28040;&#36027;&#32773;&#12479;&#12483;&#12481;&#12509;&#12452;&#12531;&#12488;&#12395;&#12431;&#12383;&#12427;&#12450;&#12503;&#12522;&#12465;&#12540;&#12471;&#12519;&#12531;&#12487;&#12470;&#12452;&#12531;&#12434;&#25285;&#24403;&#12290;</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="nav-project">
+      <a href="value-frontier.html">&#8592; <span class="t-en">Prev: Value Frontier</span><span class="t-jp">&#21069;&#65306;Value Frontier</span></a>
+      <a href="dnt.html"><span class="t-en">Next: DO! NUTS TOKYO</span><span class="t-jp">&#27425;&#65306;DO! NUTS TOKYO</span> &#8594;</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">&#12501;&#12522;&#12540;&#12521;&#12531;&#12473;&#12539;&#12467;&#12531;&#12469;&#12523;&#12486;&#12451;&#12531;&#12464;&#12399; <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> &#12434;&#36890;&#12376;&#12390;</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Work</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">&middot;</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+})();
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'));
+});
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>intentfirst.ai — Takao Umehara</title>
+  <meta name="description" content="intentfirst.ai — Context Grammar, a design language giving AI systems the vocabulary to understand not just what users ask, but what they actually need.">
+  <meta property="og:title" content="intentfirst.ai — Takao Umehara">
+  <meta property="og:description" content="Context Grammar is a design language giving AI systems the vocabulary to understand not just what users ask, but what they actually need.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --ff: "Google Sans","Google Sans Text","Product Sans",system-ui,sans-serif;
+      --if-ink: rgba(255,255,255,0.88);
+      --if-dim: rgba(255,255,255,0.42);
+      --if-line: rgba(255,255,255,0.10);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background: var(--bg);
+      min-height: 100vh;
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag  { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; transition: color 160ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+
+    /* ─── Hero (dark) ─── */
+    .if-hero {
+      background: #0c0e16;
+      position: relative;
+      overflow: hidden;
+      padding: 96px 32px 80px;
+    }
+    .if-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(100,130,255,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(160,100,255,0.08) 0%, transparent 40%);
+      pointer-events: none;
+    }
+    .if-hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .if-eyebrow {
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: rgba(255,255,255,0.40); margin-bottom: 24px;
+    }
+    .if-headline {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(40px, 6vw, 80px);
+      font-weight: 400; font-style: italic;
+      line-height: 0.94; letter-spacing: -0.025em;
+      color: rgba(255,255,255,0.92);
+      max-width: 800px; margin-bottom: 32px;
+    }
+    .if-subhead {
+      font-size: 17px; line-height: 1.68;
+      color: rgba(255,255,255,0.56);
+      max-width: 560px; margin-bottom: 48px;
+    }
+    .if-cta {
+      display: flex; gap: 16px; align-items: center; flex-wrap: wrap;
+    }
+    .btn-if-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 20px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.88);
+      font-family: var(--ff); font-size: 12px;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      text-decoration: none; transition: background 180ms ease;
+    }
+    .btn-if-primary:hover { background: rgba(255,255,255,0.16); }
+    .btn-if-secondary {
+      font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase;
+      color: rgba(255,255,255,0.38); text-decoration: none;
+      transition: color 160ms ease;
+    }
+    .btn-if-secondary:hover { color: rgba(255,255,255,0.64); }
+
+    /* ─── What section ─── */
+    .if-body { max-width: 1200px; margin: 0 auto; padding: 80px 32px; }
+
+    .if-section-label {
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-dim); margin-bottom: 48px;
+    }
+
+    .if-what {
+      display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 80px;
+      margin-bottom: 96px; padding-bottom: 80px;
+      border-bottom: 1px solid var(--line);
+    }
+    .if-what-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(28px, 3.2vw, 42px);
+      font-weight: 400; letter-spacing: -0.02em; line-height: 1.08;
+      margin-bottom: 24px;
+    }
+    .if-what-body { font-size: 16px; line-height: 1.72; color: var(--ink-mid); }
+    .if-what-body p + p { margin-top: 16px; }
+    .if-aside { padding-top: 8px; }
+    .if-aside-block { margin-bottom: 32px; }
+    .if-aside-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 8px; }
+    .if-aside-value { font-size: 15px; line-height: 1.56; color: var(--ink-mid); }
+
+    /* ─── 8 tokens ─── */
+    .if-tokens-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(24px, 2.6vw, 36px);
+      font-weight: 400; letter-spacing: -0.02em;
+      margin-bottom: 40px;
+    }
+    .if-tokens {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px;
+      margin-bottom: 96px;
+    }
+    .if-token {
+      padding: 28px 24px; border: 1px solid var(--line);
+      background: rgba(255,255,255,0.6);
+    }
+    .if-token-num { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 12px; }
+    .if-token-name { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .if-token-desc { font-size: 13px; line-height: 1.56; color: var(--ink-mid); }
+
+    /* ─── Why / link ─── */
+    .if-link-band {
+      background: #0c0e16;
+      padding: 64px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 40px; flex-wrap: wrap;
+    }
+    .if-link-band-inner { max-width: 1200px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 40px; flex-wrap: wrap; }
+    .if-link-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(24px, 3vw, 38px);
+      font-weight: 400; font-style: italic;
+      color: rgba(255,255,255,0.88); max-width: 520px;
+    }
+
+    /* ─── Footer ─── */
+    footer { border-top: 1px solid var(--line); }
+    .site-footer {
+      padding: 36px 32px; max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+    .footer-logo { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; }
+    .footer-llc { font-size: 11px; color: var(--ink-dim); margin-top: 4px; }
+    .footer-llc strong { color: var(--ink-mid); font-weight: 500; }
+    .footer-links { display: flex; gap: 20px; list-style: none; flex-wrap: wrap; }
+    .footer-links a { font-size: 12px; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .footer-links a:hover { color: var(--ink); }
+
+    /* ─── Lang switch ─── */
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px;
+      padding: 16px 9px; background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px); border-left: 1px solid rgba(18,18,18,0.10);
+      border-radius: 6px 0 0 6px;
+    }
+    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    @keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    .if-eyebrow { animation: fade-up 600ms ease 80ms both; }
+    .if-headline { animation: fade-up 800ms cubic-bezier(0.22,0.84,0.22,1) 140ms both; }
+    .if-subhead  { animation: fade-up 700ms cubic-bezier(0.22,0.84,0.22,1) 240ms both; }
+    .if-cta      { animation: fade-up 600ms cubic-bezier(0.22,0.84,0.22,1) 340ms both; }
+
+    @media (max-width: 900px) {
+      .if-what { grid-template-columns: 1fr; gap: 40px; }
+      .if-tokens { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .site-nav, .if-hero, .if-body, .if-link-band { padding-left: 20px; padding-right: 20px; }
+      .if-tokens { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="work.html">Work</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Dark Hero ── -->
+  <section class="if-hero">
+    <div class="if-hero-inner">
+      <div class="if-eyebrow">
+        <span class="t-en">Initiative — AI Design Research</span>
+        <span class="t-jp">イニシアティブ — AIデザインリサーチ</span>
+      </div>
+      <h1 class="if-headline">
+        <span class="t-en">AI knows what you asked.<br>It doesn't know what you need.</span>
+        <span class="t-jp">AIはあなたが何を尋ねたかは知っている。<br>でも、本当に必要なものはわからない。</span>
+      </h1>
+      <p class="if-subhead">
+        <span class="t-en">intentfirst.ai is a design language framework — Context Grammar — that gives AI systems the vocabulary to understand intent, not just input.</span>
+        <span class="t-jp is-block">intentfirst.aiは、AIシステムが入力だけでなく意図を理解するための語彙を与えるデザイン言語フレームワーク「Context Grammar」です。</span>
+      </p>
+      <div class="if-cta">
+        <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="btn-if-primary">
+          Visit intentfirst.ai ↗
+        </a>
+        <a href="work.html" class="btn-if-secondary">
+          <span class="t-en">← Back to work</span>
+          <span class="t-jp">← 仕事に戻る</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <div class="if-body">
+    <div class="if-section-label">
+      <span class="t-en">What it is</span>
+      <span class="t-jp">何であるか</span>
+    </div>
+
+    <div class="if-what">
+      <div>
+        <h2 class="if-what-title">
+          <span class="t-en">A design language for the age of Agentic AI.</span>
+          <span class="t-jp">エージェント型AIの時代のためのデザイン言語。</span>
+        </h2>
+        <div class="if-what-body">
+          <p>
+            <span class="t-en">Today's AI interfaces understand instructions. But they struggle to understand <em>context</em> — the physical state of the user, their cognitive load, how much autonomy they want, and what they're actually trying to accomplish beneath the surface of their request.</span>
+            <span class="t-jp is-block">今日のAIインターフェースは指示を理解する。しかし、ユーザーの身体的状態、認知負荷、望む自律性の程度、そしてリクエストの表面の下にある本当の目的といった「文脈」を理解するのは苦手だ。</span>
+          </p>
+          <p>
+            <span class="t-en">Context Grammar is a framework of 8 Context Tokens — structured signals that describe not what a user says, but who they are in that moment. Combined with a 3-layer memory model (Identity / Accumulated Learning / Right Now), it gives AI the grammar to adapt interfaces to human reality.</span>
+            <span class="t-jp is-block">Context Grammarは8つのContext Tokenから成るフレームワーク。ユーザーが何を言うかではなく、その瞬間に誰であるかを記述する構造化されたシグナルだ。3層記憶モデル（アイデンティティ／蓄積された学習／今この瞬間）と組み合わせることで、AIは人間の現実に適応するための文法を得る。</span>
+          </p>
+          <p>
+            <span class="t-en">Three applied projects — The Living Home, The Family Trip, Fluid Handoff — demonstrate the framework across real household and collaboration scenarios.</span>
+            <span class="t-jp is-block">3つの応用プロジェクト（The Living Home、The Family Trip、Fluid Handoff）が、実際の家庭やコラボレーションシナリオを通じてフレームワークを実証している。</span>
+          </p>
+        </div>
+      </div>
+      <div class="if-aside">
+        <div class="if-aside-block">
+          <div class="if-aside-label">Status</div>
+          <div class="if-aside-value">
+            <span class="t-en">Active research — published at intentfirst.ai</span>
+            <span class="t-jp is-block">アクティブリサーチ — intentfirst.aiで公開中</span>
+          </div>
+        </div>
+        <div class="if-aside-block">
+          <div class="if-aside-label">
+            <span class="t-en">Target audience</span>
+            <span class="t-jp">対象読者</span>
+          </div>
+          <div class="if-aside-value">
+            <span class="t-en">AI/OS design teams at Samsung, Google, Apple, and other Agentic AI platforms</span>
+            <span class="t-jp is-block">Samsung、Google、AppleなどのAgentic AIプラットフォームのAI/OSデザインチーム</span>
+          </div>
+        </div>
+        <div class="if-aside-block">
+          <div class="if-aside-label">Language</div>
+          <div class="if-aside-value">EN / JA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 Context Tokens -->
+    <h2 class="if-tokens-title">
+      <span class="t-en">8 Context Tokens</span>
+      <span class="t-jp">8つのContext Token</span>
+    </h2>
+    <div class="if-tokens">
+      <div class="if-token">
+        <div class="if-token-num">01</div>
+        <div class="if-token-name">Physical State</div>
+        <div class="if-token-desc">
+          <span class="t-en">Where the user is and what their body is doing.</span>
+          <span class="t-jp is-block">ユーザーがどこにいて、体が何をしているか。</span>
+        </div>
+      </div>
+      <div class="if-token">
+        <div class="if-token-num">02</div>
+        <div class="if-token-name">Cognitive Load</div>
+        <div class="if-token-desc">
+          <span class="t-en">How much mental bandwidth is available right now.</span>
+          <span class="t-jp is-block">今この瞬間、どれだけの精神的余裕があるか。</span>
+        </div>
+      </div>
+      <div class="if-token">
+        <div class="if-token-num">03</div>
+        <div class="if-token-name">Social Exposure</div>
+        <div class="if-token-desc">
+          <span class="t-en">Who else can see or hear this interaction.</span>
+          <span class="t-jp is-block">このインタラクションを他に誰が見聞きできるか。</span>
+        </div>
+      </div>
+      <div class="if-token">
+        <div class="if-token-num">04</div>
+        <div class="if-token-name">Priority Weight</div>
+        <div class="if-token-desc">
+          <span class="t-en">How urgent and important this task is relative to others.</span>
+          <span class="t-jp is-block">このタスクが他と比較してどれだけ緊急・重要か。</span>
+        </div>
+      </div>
+      <div class="if-token">
+        <div class="if-token-num">05</div>
+        <div class="if-token-name">Form Factor</div>
+        <div class="if-token-desc">
+          <span class="t-en">The device, surface, and interaction modality in use.</span>
+          <span class="t-jp is-block">使用中のデバイス、サーフェス、インタラクション様式。</span>
+        </div>
+      </div>
+      <div class="if-token">
+        <div class="if-token-num">06</div>
+        <div class="if-token-name">Feasibility</div>
+        <div class="if-token-desc">
+          <span class="t-en">What is actually possible given current constraints.</span>
+          <span class="t-jp is-block">現在の制約において実際に何が可能か。</span>
+        </div>
+      </div>
+      <div class="if-token">
+        <div class="if-token-num">07</div>
+        <div class="if-token-name">Autonomy Dial</div>
+        <div class="if-token-desc">
+          <span class="t-en">How much the user wants AI to decide vs. assist.</span>
+          <span class="t-jp is-block">ユーザーがAIに決定させたいか、補助させたいかの度合い。</span>
+        </div>
+      </div>
+      <div class="if-token">
+        <div class="if-token-num">08</div>
+        <div class="if-token-name">Disclosure Dial</div>
+        <div class="if-token-desc">
+          <span class="t-en">How much of the AI's reasoning should be surfaced.</span>
+          <span class="t-jp is-block">AIの推論をどこまでユーザーに見せるか。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CTA band ── -->
+  <div class="if-link-band">
+    <div class="if-link-band-inner">
+      <p class="if-link-title">
+        <span class="t-en">The full framework, applied projects, and essays are at intentfirst.ai.</span>
+        <span class="t-jp">フレームワーク全体、応用プロジェクト、エッセイはintentfirst.aiで。</span>
+      </p>
+      <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="btn-if-primary" style="flex-shrink:0;">
+        Open intentfirst.ai ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Lang Switch ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer">
+      <div>
+        <div class="footer-logo">Takao Umehara</div>
+        <div class="footer-llc">Freelance &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="work.html">Work</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

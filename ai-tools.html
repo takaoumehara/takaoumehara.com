@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>AI Tools &amp; Infrastructure — Takao Umehara</title>
+  <meta name="description" content="Open-source AI agent workflows and realtime infrastructure designed and built by Takao Umehara: cross-model-handoff and snap-pair-core.">
+  <meta property="og:title" content="AI Tools &amp; Infrastructure — Takao Umehara">
+  <meta property="og:description" content="Practical tools, skills, and systems for people working with AI agents.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      color: var(--ink);
+      background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      font-family: var(--ff);
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: var(--ink); line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .nav-logo-tag { color: var(--ink-dim); font-size: 10.5px; font-weight: 400; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { color: var(--ink-mid); font-size: 13px; letter-spacing: 0.01em; text-decoration: none; transition: color 160ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; appearance: none; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-left: 1px solid var(--border);
+      border-radius: 6px 0 0 6px;
+      writing-mode: vertical-rl;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .lang-btn { padding: 0; appearance: none; background: none; border: none; color: var(--ink-dim); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { color: rgba(18,18,18,0.18); font-size: 9px; }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    .tools-hero { max-width: 1200px; margin: 0 auto; padding: 72px 32px 64px; border-bottom: 1px solid var(--line); }
+    .tools-eyebrow { margin-bottom: 14px; color: var(--ink-dim); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .tools-title { max-width: 900px; font-family: "DM Serif Display", Georgia, serif; font-size: clamp(44px, 7vw, 84px); font-weight: 400; letter-spacing: -0.04em; line-height: 0.94; }
+    .tools-positioning { max-width: 720px; margin-top: 28px; color: var(--ink-mid); font-size: clamp(17px, 2vw, 21px); line-height: 1.65; }
+    .stories { max-width: 1200px; margin: 0 auto; padding: 0 32px 72px; }
+    .tool-story { display: grid; grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.28fr); gap: clamp(42px, 8vw, 120px); padding: 76px 0 82px; border-bottom: 1px solid var(--line); scroll-margin-top: 84px; }
+    .tool-story:nth-child(2) { grid-template-columns: minmax(0, 1.12fr) minmax(280px, 0.88fr); }
+    .story-summary { position: sticky; top: 96px; align-self: start; }
+    .story-number { margin-bottom: 18px; color: var(--ink-dim); font-size: 10px; letter-spacing: 0.18em; }
+    .story-name { overflow-wrap: anywhere; font-family: "DM Serif Display", Georgia, serif; font-size: clamp(34px, 4.2vw, 58px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
+    .story-outcome { margin-top: 18px; color: var(--ink-mid); font-size: 17px; line-height: 1.58; }
+    .story-classification { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); color: var(--ink-dim); font-size: 11px; letter-spacing: 0.08em; line-height: 1.6; text-transform: uppercase; }
+    .story-details { display: grid; gap: 0; }
+    .story-section { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 24px; padding: 24px 0; border-top: 1px solid var(--line); }
+    .story-section:first-child { padding-top: 0; border-top: 0; }
+    .story-label { padding-top: 3px; color: var(--ink-dim); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; }
+    .story-copy { color: var(--ink-mid); font-size: 15px; line-height: 1.76; }
+    .story-cta { justify-self: start; display: inline-block; margin-top: 28px; padding: 13px 18px; border: 1px solid var(--ink); color: var(--ink); font-size: 11px; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease, transform 240ms ease; }
+    .story-cta:hover { background: var(--ink); color: #fff; transform: translateY(-2px); }
+    .story-cta:focus-visible,
+    .nav-links a:focus-visible,
+    .nav-logo:focus-visible,
+    .lang-btn:focus-visible,
+    .nav-toggle:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .footer-llc { margin-top: 5px; color: var(--ink-dim); font-size: 11px; }
+    .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+    .footer-links a { color: var(--ink-dim); font-size: 12px; text-decoration: none; }
+    html.lang-jp .tools-title, html.lang-jp .story-name { line-height: 1.14; }
+
+    @media (max-width: 768px) {
+      .tool-story,
+      .tool-story:nth-child(2) { grid-template-columns: 1fr; }
+      .story-section { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 767px) {
+      .nav-toggle { display: block; }
+      .nav-links { position: absolute; top: 100%; right: 0; left: 0; display: none; flex-direction: column; gap: 0; padding: 0; background: rgba(255,255,255,0.97); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+
+    @media (max-width: 768px) {
+      .site-nav, .tools-hero, .stories, .site-footer { padding-right: 20px; padding-left: 20px; }
+      .tools-hero { padding-top: 54px; padding-bottom: 48px; }
+      .tool-story,
+      .tool-story:nth-child(2) { grid-template-columns: 1fr; gap: 40px; padding: 56px 0 60px; }
+      .story-summary { position: static; }
+      .story-section { grid-template-columns: 1fr; gap: 9px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .story-cta { transition: none !important; }
+      .story-cta:hover { transform: none; }
+      .nav-toggle span { transition: none !important; }
+      .nav-links a { transition: none !important; }
+      .lang-btn { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a href="index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
+    <ul class="nav-links">
+      <li><a href="work.html">Work</a></li>
+      <li><a href="ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="lang-switch" id="lang-switch" aria-label="Language"><button class="lang-btn is-active" type="button" data-lang="en">EN</button><span class="lang-sep" aria-hidden="true">|</span><button class="lang-btn" type="button" data-lang="jp">JP</button></div>
+
+  <main>
+    <header class="tools-hero">
+      <p class="tools-eyebrow"><span class="t-en">Designed &amp; built by Takao</span><span class="t-jp">Takaoが設計・実装</span></p>
+      <h1 class="tools-title"><span class="t-en">AI Tools &amp; Infrastructure</span><span class="t-jp">AIツールとインフラストラクチャ</span></h1>
+      <p class="tools-positioning"><span class="t-en">I design and build practical tools, skills, and systems for people working with AI agents.</span><span class="t-jp is-block">AIエージェントと働く人のための、ツール・スキル・基盤を設計し、実装しています。</span></p>
+    </header>
+
+    <div class="stories">
+      <article class="tool-story" id="cross-model-handoff" aria-labelledby="cross-model-handoff-title">
+        <header class="story-summary">
+          <p class="story-number" aria-hidden="true">01</p>
+          <h2 class="story-name" id="cross-model-handoff-title">cross-model-handoff</h2>
+          <p class="story-outcome"><span class="t-en">Carry AI coding work across tools without rebuilding context.</span><span class="t-jp is-block">AI コーディングの文脈を作り直さず、ツールをまたいで作業を引き継ぐ。</span></p>
+          <p class="story-classification">Agent workflow · Plugin · Skill system</p>
+        </header>
+        <div class="story-details">
+          <section class="story-section"><h3 class="story-label"><span class="t-en">Problem</span><span class="t-jp">課題</span></h3><p class="story-copy"><span class="t-en">Switching AI coding tools or clearing context forces people to explain the work again and loses running state that source control cannot capture.</span><span class="t-jp is-block">AI コーディングツールを切り替えたり、コンテキストを消去したりするたびに、作業の背景を説明し直し、ソース管理では残せない実行中の状態まで失ってしまいます。</span></p></section>
+          <section class="story-section"><h3 class="story-label"><span class="t-en">System</span><span class="t-jp">仕組み</span></h3><p class="story-copy"><span class="t-en">A lightweight handoff protocol built from `.handoff/` notes, memorable passphrases, `AGENTS.md`, three reusable skills, and Claude Code hooks.</span><span class="t-jp is-block">`.handoff/` のメモ、覚えやすいパスフレーズ、`AGENTS.md`、3 つの再利用可能なスキル、Claude Code のフックで構成した軽量な引き継ぎプロトコルです。</span></p></section>
+          <section class="story-section"><h3 class="story-label"><span class="t-en">Evidence</span><span class="t-jp">実装実績</span></h3><p class="story-copy"><span class="t-en">Works across Claude Code, Codex, Gemini CLI, Antigravity, Cursor, and other tools that read project instructions. Includes five-language documentation and an MIT license.</span><span class="t-jp is-block">Claude Code、Codex、Gemini CLI、Antigravity、Cursor をはじめ、プロジェクト指示を読むツール間で利用できます。ドキュメントは 5 言語に対応し、MIT ライセンスで公開しています。</span></p></section>
+          <a class="story-cta" href="https://github.com/takaoumehara/cross-model-handoff" target="_blank" rel="noopener" aria-label="View cross-model-handoff on GitHub (opens in a new tab)"><span class="t-en">View cross-model-handoff on GitHub ↗</span><span class="t-jp">GitHub で cross-model-handoff を見る ↗</span></a>
+        </div>
+      </article>
+
+      <article class="tool-story" id="snap-pair-core" aria-labelledby="snap-pair-core-title">
+        <header class="story-summary">
+          <p class="story-number" aria-hidden="true">02</p>
+          <h2 class="story-name" id="snap-pair-core-title">snap-pair-core</h2>
+          <p class="story-outcome"><span class="t-en">Turn many phones into one live, shared experience—without an app install.</span><span class="t-jp is-block">アプリをインストールせず、何台ものスマートフォンをひとつのライブ体験につなぐ。</span></p>
+          <p class="story-classification">Realtime infrastructure · React · Firebase · Agent skill</p>
+        </header>
+        <div class="story-details">
+          <section class="story-section"><h3 class="story-label"><span class="t-en">Problem</span><span class="t-jp">課題</span></h3><p class="story-copy"><span class="t-en">Safe, temporary multi-device experiences repeatedly need the same difficult foundation: pairing, presence, shared state, room capacity, and authorization.</span><span class="t-jp is-block">安全で一時的なマルチデバイス体験をつくるたびに、ペアリング、プレゼンス、共有状態、定員管理、認可という同じ基盤を一から実装する必要があります。</span></p></section>
+          <section class="story-section"><h3 class="story-label"><span class="t-en">System</span><span class="t-jp">仕組み</span></h3><p class="story-copy"><span class="t-en">A React hook plus Firebase Auth, callable Cloud Functions, Realtime Database rules, cleanup, tests, a one-file Lite example, and an AI-agent skill that generates safe integrations.</span><span class="t-jp is-block">React hook、Firebase Auth、callable Cloud Functions、Realtime Database のセキュリティルール、クリーンアップ、テスト、1 ファイルの Lite サンプル、安全な統合を生成する AI エージェント向けスキルをまとめています。</span></p></section>
+          <section class="story-section"><h3 class="story-label"><span class="t-en">Evidence</span><span class="t-jp">実装実績</span></h3><p class="story-copy"><span class="t-en">Supports QR or six-character pairing, rooms up to 300 participants, server-assisted membership, emulator and production paths, multilingual documentation, and an MIT license.</span><span class="t-jp is-block">QR コードまたは 6 文字コードでのペアリング、最大 300 人のルーム、サーバー側で管理するメンバーシップ、エミュレーターと本番環境の両方の導入経路に対応。多言語ドキュメントを備え、MIT ライセンスで公開しています。</span></p></section>
+          <a class="story-cta" href="https://github.com/takaoumehara/snap-pair-core" target="_blank" rel="noopener" aria-label="View snap-pair-core on GitHub (opens in a new tab)"><span class="t-en">View snap-pair-core on GitHub ↗</span><span class="t-jp">GitHub で snap-pair-core を見る ↗</span></a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc">Freelance &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div></div>
+    <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="work.html">Work</a></li><li><a href="ai-products.html">AI Products</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul>
+  </footer>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      html.lang = lang === "jp" ? "ja" : "en";
+      btns.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((button) => button.addEventListener("click", () => setLang(button.dataset.lang)));
+  })();
+
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (!toggle || !links) return;
+    const close = () => {
+      toggle.classList.remove('is-open');
+      links.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    };
+    toggle.addEventListener('click', () => {
+      const open = !links.classList.contains('is-open');
+      toggle.classList.toggle('is-open', open);
+      links.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    links.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+      toggle.classList.remove('is-open');
+      links.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }));
+  })();
+  </script>
+</body>
+</html>
