@@ -13,6 +13,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/work-card-grid.css">
+  <script src="assets/work-card-grid.js" defer></script>
   <style>
     @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
     @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
@@ -236,12 +238,44 @@
 
   <div class="lang-switch" id="lang-switch" aria-label="Language"><button class="lang-btn is-active" type="button" data-lang="en">EN</button><span class="lang-sep" aria-hidden="true">|</span><button class="lang-btn" type="button" data-lang="jp">JP</button></div>
 
-  <main class="deck">
+  <main class="work-list-page">
+    <header class="work-list-header">
+      <div>
+        <p class="work-list-kicker"><span class="t-en">AI Tools — open source, designed &amp; built by Takao</span><span class="t-jp">AI Tools — オープンソース · Takaoが設計・実装</span></p>
+        <h1 class="work-list-title"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h1>
+      </div>
+      <p class="page-count"><span class="t-en">3 open-source tools</span><span class="t-jp">3 つのオープンソースツール</span></p>
+    </header>
+    <p class="work-list-intro"><span class="t-en"><strong>Claude skills, CLIs, and realtime libraries</strong> — each one grew out of a real friction in AI-assisted work and is available to use today.</span><span class="t-jp is-block"><strong>Claude スキル、CLI、リアルタイムライブラリ。</strong>どれも AI 協働で出会った実際の摩擦から生まれ、いま使える形で公開しています。</span></p>
+
+    <div class="work-grid" aria-label="AI tools">
+      <article class="work-card" id="snap-pair" tabindex="0" data-href="https://github.com/takaoumehara/snap-pair-core" data-external="true">
+        <span id="snap-pair-core" aria-hidden="true"></span>
+        <div class="card-image"><div class="card-art card-art--snap"><span class="card-art-label">Snap<br>Pair</span><span class="card-art-note">Multi-device pairing</span></div></div>
+        <div class="card-body"><div class="chips"><span class="pill">Realtime library</span><span class="pill">Claude skill</span></div><h2 class="card-title">Snap Pair</h2><p class="card-desc"><span class="t-en">A React + Firebase pairing layer that lets every phone in the room join an app in one scan.</span><span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる React + Firebase のペアリング層。</span></p></div>
+        <div class="card-footer"><span class="card-meta">React + Firebase · MIT</span><span class="card-meta card-meta--link">GitHub ↗</span></div>
+      </article>
+
+      <article class="work-card" id="failforward" tabindex="0" data-href="https://github.com/takaoumehara/failforward" data-external="true">
+        <div class="card-image"><div class="card-art card-art--fail"><span class="card-art-label">fail<br>forward</span><span class="card-art-note">Failure memory for agents</span></div></div>
+        <div class="card-body"><div class="chips"><span class="pill">CLI</span><span class="pill">Claude skill</span></div><h2 class="card-title">failforward</h2><p class="card-desc"><span class="t-en">A zero-dependency CLI that records failures and recalls the useful lessons before similar work starts.</span><span class="t-jp is-block">失敗を記録し、似た作業が始まる前に役立つ教訓を呼び出す依存ゼロの CLI。</span></p></div>
+        <div class="card-footer"><span class="card-meta">Python · Codex · Gemini · MIT</span><span class="card-meta card-meta--link">GitHub ↗</span></div>
+      </article>
+
+      <article class="work-card" id="cross-model-handoff" tabindex="0" data-href="https://github.com/takaoumehara/cross-model-handoff" data-external="true">
+        <div class="card-image"><div class="card-art card-art--handoff"><span class="card-art-label">cross-model<br>handoff</span><span class="card-art-note">Context transfer protocol</span></div></div>
+        <div class="card-body"><div class="chips"><span class="pill">Plugin</span><span class="pill">Skill system</span></div><h2 class="card-title">cross-model-handoff</h2><p class="card-desc"><span class="t-en">A lightweight note-and-passphrase protocol for moving active work between AI tools without losing context.</span><span class="t-jp is-block">作業中の文脈を失わずに AI ツール間を移動するための、メモとパスフレーズによる軽量プロトコル。</span></p></div>
+        <div class="card-footer"><span class="card-meta">Claude · Codex · Gemini · Cursor</span><span class="card-meta card-meta--link">GitHub ↗</span></div>
+      </article>
+    </div>
+  </main>
+
+  <div class="deck legacy-tools-deck" aria-hidden="true">
 
     <!-- ═══ Slide 1 · Page hero (dark, blue glow) ═══ -->
     <header class="wds-hero wds-slide reveal-on-scroll">
       <p class="wds-kick"><span class="t-en">AI Tools — open source, designed &amp; built by Takao</span><span class="t-jp">AI Tools — オープンソース · Takaoが設計・実装</span></p>
-      <h1 class="wds-serif"><span class="t-en">Working tools for people who <em>build with agents</em>.</span><span class="t-jp is-block">エージェントとともに作る人のための、<em>動くツール</em>。</span></h1>
+      <h2 class="wds-serif"><span class="t-en">Working tools for people who <em>build with agents</em>.</span><span class="t-jp is-block">エージェントとともに作る人のための、<em>動くツール</em>。</span></h2>
       <p class="wds-hero-lead"><span class="t-en"><strong>Claude skills, CLIs, and realtime libraries</strong> — each one born from a real friction in my own AI-assisted work, and each one running in real products today.</span><span class="t-jp is-block"><strong>Claude スキル、CLI、リアルタイムライブラリ。</strong>どれも自分自身の AI 協働で出会った摩擦から生まれ、いま実際のプロダクトで稼働しています。</span></p>
       <div class="wds-chips" aria-label="Tool types">
         <span class="wds-chip"><b>3</b> <span class="t-en">tools</span><span class="t-jp">ツール</span></span>
@@ -253,8 +287,8 @@
     </header>
 
     <!-- ═══ Slide 2 · Snap Pair statement (vivid blue) ═══ -->
-    <section class="tool-statement st-blue wds-slide reveal-on-scroll" id="snap-pair" style="--m-tint: var(--a-blue); scroll-margin-top: 84px;">
-      <span id="snap-pair-core" aria-hidden="true"></span>
+    <section class="tool-statement st-blue wds-slide reveal-on-scroll" data-legacy-anchor="snap-pair" style="--m-tint: var(--a-blue); scroll-margin-top: 84px;">
+      <span data-legacy-anchor="snap-pair-core" aria-hidden="true"></span>
       <p class="wds-kick"><span class="t-en">01 · Snap Pair</span><span class="t-jp">01 · Snap Pair</span></p>
       <h2 class="wds-serif"><span class="t-en">Every phone in the room joins your app in <em>one scan</em>.</span><span class="t-jp is-block">その場のスマホが、<em>ワンスキャン</em>でアプリの一部になる。</span></h2>
       <div class="wds-chips">
@@ -320,7 +354,7 @@
     </section>
 
     <!-- ═══ Slide 4 · failforward statement (dark, orange glow) ═══ -->
-    <section class="wds-hero hero-ff wds-slide reveal-on-scroll" id="failforward" style="--m-tint: var(--a-orange); scroll-margin-top: 84px;">
+    <section class="wds-hero hero-ff wds-slide reveal-on-scroll" data-legacy-anchor="failforward" style="--m-tint: var(--a-orange); scroll-margin-top: 84px;">
       <p class="wds-kick"><span class="t-en">02 · failforward</span><span class="t-jp">02 · failforward</span></p>
       <h2 class="wds-serif"><span class="t-en">Your coding agent stops repeating <em>yesterday's mistakes</em>.</span><span class="t-jp is-block">エージェントが、<em>昨日と同じ失敗</em>を繰り返さなくなる。</span></h2>
       <div class="wds-chips">
@@ -363,7 +397,7 @@
     </section>
 
     <!-- ═══ Slide 6 · cross-model-handoff statement (vivid violet) ═══ -->
-    <section class="tool-statement st-violet wds-slide reveal-on-scroll" id="cross-model-handoff" style="--m-tint: var(--a-violet); scroll-margin-top: 84px;">
+    <section class="tool-statement st-violet wds-slide reveal-on-scroll" data-legacy-anchor="cross-model-handoff" style="--m-tint: var(--a-violet); scroll-margin-top: 84px;">
       <p class="wds-kick"><span class="t-en">03 · cross-model-handoff</span><span class="t-jp">03 · cross-model-handoff</span></p>
       <h2 class="wds-serif"><span class="t-en">Switch AI tools mid-task. Keep the <em>whole context</em>.</span><span class="t-jp is-block">AIツールを途中で乗り換えても、<em>文脈はそのまま</em>。</span></h2>
       <div class="wds-chips">
@@ -417,7 +451,7 @@
       </div>
     </section>
 
-  </main>
+  </div>
 
   <footer class="site-footer">
     <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc">Freelance &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div></div>
