@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>XQ Super School — High School Redesign Platform | Takao Umehara</title>
+  <meta name="description" content="Design direction for XQ Super School, Emerson Collective's nationwide high school redesign platform, including the XQ Canvas collaborative framework and XQ Directory team-building tool.">
+  <meta property="og:title" content="XQ Super School — High School Redesign Platform | Takao Umehara">
+  <meta property="og:description" content="Design direction for Emerson Collective's XQ Super School platform, including the XQ Canvas framework and XQ Directory team-building tool.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/shared/xq_map_v7-2.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    :root {
+      --bg: #fbfaf7; --ink: #121212; --ink-mid: #4c4841; --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08); --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92); --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44); --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40); --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%); --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%); --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg; --bar-width: 70%;
+      --image-hover-opacity: 0.985; --image-hover-width: 174%;
+      --image-hover-from: -96%; --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms; --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms; --press-ms: 760ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--ff); color: var(--ink); background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); min-height: 100vh; }
+    .eyebrow, .kicker, .meta, .small, .pill { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); }
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; }
+    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(18,18,18,0.72) 0%,rgba(18,18,18,0.18) 60%,transparent 100%); }
+    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
+    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
+    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
+    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+    .project-aside-stat { margin-bottom: 24px; }
+    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
+    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
+    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+    .project-section { margin-bottom: 64px; }
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
+    .outcomes-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-bottom: 64px; }
+    .outcome-block { padding: 28px 24px; border: 1px solid var(--line); }
+    .outcome-num { font-size: 36px; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 6px; }
+    .outcome-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+    .outcome-change { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); margin-top: 6px; }
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; border-radius: 2px; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+    .xq-video { position: relative; aspect-ratio: 16/9; background: #111; border-radius: 2px; overflow: hidden; }
+    .xq-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+    .video-link { display: inline-block; margin: 8px 0 0; font-size: 12px; letter-spacing: 0.06em; color: var(--ink-dim); text-decoration: none; }
+    .video-link:hover { color: var(--ink); }
+    .nav-project { display: flex; justify-content: space-between; align-items: center; padding: 32px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
+    .nav-project a { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; display: flex; align-items: center; gap: 8px; }
+    .nav-project a:hover { color: var(--ink); }
+    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-left: 1px solid rgba(18,18,18,0.10); border-radius: 6px 0 0 6px; }
+    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    @media (max-width: 900px) {
+      .project-overview { grid-template-columns: 1fr; gap: 40px; }
+      .outcomes-grid { grid-template-columns: 1fr 1fr; }
+      .g-row.r3 { grid-template-columns: 1fr 1fr; }
+      .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .project-hero-content { padding: 32px 20px; }
+      .project-body { padding: 40px 20px 60px; }
+      .breadcrumb { padding: 16px 20px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .g-row.r2, .g-row.r3 { grid-template-columns: 1fr; }
+    }
+    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .g-cell img { opacity: 0; transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .g-cell img.loaded { opacity: 1; }
+    .g-cell:hover img.loaded { transform: scale(1.008); }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; }
+      .g-cell img { opacity: 1 !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html" class="is-active" aria-current="page">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="../brand.html">Brand &amp; Visual</a>
+    <span>/</span>
+    <a href="#">XQ Super School</a>
+  </div>
+
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/shared/xq_map_v7-2.jpg');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Strategic Design</span>
+        <span class="project-hero-tag">UX/UI</span>
+        <span class="project-hero-tag">Framework Design</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">XQ Super School &#8212; High School Redesign Platform</span>
+        <span class="t-jp">XQ Super School &#8212; &#39640;&#26657;&#20877;&#35373;&#35336;&#12503;&#12521;&#12483;&#12488;&#12501;&#12457;&#12540;&#12512;</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">Emerson Collective (Laurene Powell Jobs)</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Design Director</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Partner</span>
+          <span class="project-meta-value">Amplify Education</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="project-body">
+
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">Outcomes</span>
+          <span class="t-jp">&#25104;&#26524;</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">Nationwide</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Competition hub for US high school redesign</span>
+            <span class="t-jp">&#20840;&#31859;&#39640;&#26657;&#20877;&#35373;&#35336;&#12467;&#12531;&#12506;&#12486;&#12451;&#12471;&#12519;&#12531;&#12495;&#12502;</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">XQ Canvas</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Collaborative design tool for school vision</span>
+            <span class="t-jp">&#23398;&#26657;&#12499;&#12472;&#12519;&#12531;&#12398;&#12383;&#12417;&#12398;&#21332;&#20685;&#12487;&#12470;&#12452;&#12531;&#12484;&#12540;&#12523;</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">XQ Directory</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Team-building feature for applicants</span>
+            <span class="t-jp">&#24540;&#21215;&#32773;&#12398;&#12383;&#12417;&#12398;&#12481;&#12540;&#12512;&#27083;&#31689;&#27231;&#33021;</span>
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top: 32px;">
+          <span class="t-en">Scope</span>
+          <span class="t-jp">&#12473;&#12467;&#12540;&#12503;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Experience Strategy</span><span class="t-jp">&#20307;&#39443;&#25126;&#30053;</span></li>
+          <li><span class="t-en">UX/UI Design</span><span class="t-jp">UX/UI&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Framework Design (XQ Canvas)</span><span class="t-jp">&#12501;&#12524;&#12540;&#12512;&#12527;&#12540;&#12463;&#12487;&#12470;&#12452;&#12531;&#65288;XQ Canvas&#65289;</span></li>
+          <li><span class="t-en">Motion Design</span><span class="t-jp">&#12514;&#12540;&#12471;&#12519;&#12531;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Directory Feature Design</span><span class="t-jp">&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;&#27231;&#33021;&#12487;&#12470;&#12452;&#12531;</span></li>
+        </ul>
+      </aside>
+
+      <div>
+        <h2 class="project-section-title">
+          <span class="t-en">The Opportunity</span>
+          <span class="t-jp">&#27231;&#20250;</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">Emerson Collective, founded by Laurene Powell Jobs, launched a nationwide competition to fundamentally redesign American high schools. The initiative needed a digital platform that could serve as the central hub &#8212; not just a website, but an ecosystem of tools that would enable diverse teams across the country to envision, design, and submit innovative school models.</span>
+          <span class="t-jp is-block">Laurene Powell Jobs&#12364;&#35373;&#31435;&#12375;&#12383;Emerson Collective&#12399;&#12289;&#12450;&#12513;&#12522;&#12459;&#12398;&#39640;&#26657;&#12434;&#26681;&#26412;&#30340;&#12395;&#20877;&#35373;&#35336;&#12377;&#12427;&#20840;&#22269;&#30340;&#12394;&#12467;&#12531;&#12506;&#12486;&#12451;&#12471;&#12519;&#12531;&#12434;&#31435;&#12385;&#19978;&#12370;&#12414;&#12375;&#12383;&#12290;&#12371;&#12398;&#12452;&#12491;&#12471;&#12450;&#12481;&#12502;&#12395;&#12399;&#12289;&#21336;&#12394;&#12427;&#12454;&#12455;&#12502;&#12469;&#12452;&#12488;&#12391;&#12399;&#12394;&#12367;&#12289;&#20840;&#22269;&#12398;&#22810;&#27096;&#12394;&#12481;&#12540;&#12512;&#12364;&#38761;&#26032;&#30340;&#12394;&#23398;&#26657;&#12514;&#12487;&#12523;&#12434;&#27083;&#24819;&#12289;&#35373;&#35336;&#12289;&#25552;&#20986;&#12391;&#12365;&#12427;&#12484;&#12540;&#12523;&#12398;&#12456;&#12467;&#12471;&#12473;&#12486;&#12512;&#12364;&#24517;&#35201;&#12391;&#12375;&#12383;&#12290;</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">My Direction</span>
+          <span class="t-jp">&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">As Design Director, I designed XQSUPERSCHOOL.ORG as the competition's central hub &#8212; a comprehensive platform that housed competition information, educational resources, and community features. The key innovation was the <strong>XQ Canvas Framework</strong>, a collaborative design tool inspired by the Business Model Canvas. It enabled applicant teams to iteratively develop their high school vision through structured yet creative exercises.</span>
+          <span class="t-jp is-block">&#12487;&#12470;&#12452;&#12531;&#12487;&#12451;&#12524;&#12463;&#12479;&#12540;&#12392;&#12375;&#12390;&#12289;XQSUPERSCHOOL.ORG&#12434;&#12467;&#12531;&#12506;&#12486;&#12451;&#12471;&#12519;&#12531;&#12398;&#20013;&#24515;&#30340;&#12495;&#12502;&#12392;&#12375;&#12390;&#35373;&#35336;&#12375;&#12414;&#12375;&#12383;&#12290;&#37325;&#35201;&#12394;&#12452;&#12494;&#12505;&#12540;&#12471;&#12519;&#12531;&#12399;<strong>XQ Canvas Framework</strong>&#12391;&#12289;&#12499;&#12472;&#12493;&#12473;&#12514;&#12487;&#12523;&#12461;&#12515;&#12531;&#12496;&#12473;&#12395;&#12452;&#12531;&#12473;&#12497;&#12452;&#12450;&#12373;&#12428;&#12383;&#21332;&#20685;&#12487;&#12470;&#12452;&#12531;&#12484;&#12540;&#12523;&#12391;&#12377;&#12290;&#24540;&#21215;&#12481;&#12540;&#12512;&#12364;&#27083;&#36896;&#21270;&#12373;&#12428;&#12383;&#21109;&#36896;&#30340;&#12394;&#28436;&#32722;&#12434;&#36890;&#12376;&#12390;&#12289;&#39640;&#26657;&#12499;&#12472;&#12519;&#12531;&#12434;&#21453;&#24489;&#30340;&#12395;&#38283;&#30330;&#12391;&#12365;&#12427;&#12424;&#12358;&#12395;&#12375;&#12414;&#12375;&#12383;&#12290;</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">I also designed the <strong>XQ Directory</strong> &#8212; a team-building feature that allowed individuals passionate about education reform to find and connect with each other, forming the diverse teams the competition required. Motion design and storyboarding brought these tools to life, making complex processes feel intuitive and engaging. The platform achieved significant nationwide participation in the school redesign competition.</span>
+          <span class="t-jp is-block">&#12414;&#12383;&#12289;<strong>XQ Directory</strong>&#12434;&#35373;&#35336;&#12375;&#12414;&#12375;&#12383;&#12290;&#25945;&#32946;&#25913;&#38761;&#12395;&#24773;&#29105;&#12434;&#25345;&#12388;&#20491;&#20154;&#12364;&#12362;&#20114;&#12356;&#12434;&#35211;&#12388;&#12369;&#12390;&#12388;&#12394;&#12364;&#12426;&#12289;&#12467;&#12531;&#12506;&#12364;&#27714;&#12417;&#12427;&#22810;&#27096;&#12394;&#12481;&#12540;&#12512;&#12434;&#32080;&#25104;&#12391;&#12365;&#12427;&#12481;&#12540;&#12512;&#27083;&#31689;&#27231;&#33021;&#12391;&#12377;&#12290;&#12514;&#12540;&#12471;&#12519;&#12531;&#12487;&#12470;&#12452;&#12531;&#12392;&#12473;&#12488;&#12540;&#12522;&#12540;&#12508;&#12540;&#12487;&#12451;&#12531;&#12464;&#12391;&#12371;&#12428;&#12425;&#12398;&#12484;&#12540;&#12523;&#12395;&#21629;&#12434;&#21561;&#12365;&#36796;&#12415;&#12289;&#35079;&#38609;&#12394;&#12503;&#12525;&#12475;&#12473;&#12434;&#30452;&#24863;&#30340;&#12391;&#39749;&#21147;&#30340;&#12394;&#12418;&#12398;&#12395;&#12375;&#12414;&#12375;&#12383;&#12290;&#12503;&#12521;&#12483;&#12488;&#12501;&#12457;&#12540;&#12512;&#12399;&#23398;&#26657;&#20877;&#35373;&#35336;&#12467;&#12531;&#12506;&#12391;&#20840;&#22269;&#30340;&#12394;&#21442;&#21152;&#12434;&#36948;&#25104;&#12375;&#12414;&#12375;&#12383;&#12290;</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">Tools &amp; Methods</span>
+          <span class="t-jp">&#12484;&#12540;&#12523;&#65286;&#25163;&#27861;</span>
+        </h2>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Experience Strategy</span><span class="t-jp">&#20307;&#39443;&#25126;&#30053;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">UX/UI Design</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Storyboarding</span><span class="t-jp">&#12473;&#12488;&#12540;&#12522;&#12540;&#12508;&#12540;&#12487;&#12451;&#12531;&#12464;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Motion Design</span><span class="t-jp">&#12514;&#12540;&#12471;&#12519;&#12531;&#12487;&#12470;&#12452;&#12531;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Framework Design</span><span class="t-jp">&#12501;&#12524;&#12540;&#12512;&#12527;&#12540;&#12463;&#12487;&#12470;&#12452;&#12531;</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-section">
+      <h2 class="project-section-title reveal-on-scroll">
+        <span class="t-en">Results</span>
+        <span class="t-jp">&#25104;&#26524;</span>
+      </h2>
+      <div class="outcomes-grid reveal-on-scroll">
+        <div class="outcome-block">
+          <div class="outcome-num">Nationwide</div>
+          <div class="outcome-label"><span class="t-en">Significant participation in school redesign</span><span class="t-jp">&#23398;&#26657;&#20877;&#35373;&#35336;&#12408;&#12398;&#22823;&#35215;&#27169;&#21442;&#21152;</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">XQ Canvas</div>
+          <div class="outcome-label"><span class="t-en">Strategic framework adopted by applicant teams</span><span class="t-jp">&#24540;&#21215;&#12481;&#12540;&#12512;&#12395;&#25505;&#29992;&#12373;&#12428;&#12383;&#25126;&#30053;&#12501;&#12524;&#12540;&#12512;&#12527;&#12540;&#12463;</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">3 Products</div>
+          <div class="outcome-label"><span class="t-en">Website + Canvas + Directory ecosystem</span><span class="t-jp">&#12454;&#12455;&#12502;&#12469;&#12452;&#12488; + Canvas + Directory&#12456;&#12467;&#12471;&#12473;&#12486;&#12512;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gallery reveal-on-scroll">
+
+      <!-- ── XQSUPERSCHOOL.ORG ── -->
+      <p class="gallery-label">
+        <span class="t-en">XQSUPERSCHOOL.ORG &#8212; Competition Hub</span>
+        <span class="t-jp">XQSUPERSCHOOL.ORG &#8212; &#12467;&#12531;&#12506;&#12486;&#12451;&#12471;&#12519;&#12531;&#12495;&#12502;</span>
+      </p>
+
+      <div class="g-row r3">
+        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web0.png" alt="XQ Super School website home" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web1.png" alt="XQ website page 1" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web2.png" alt="XQ website page 2" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web3.png" alt="XQ website page 3" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web4.png" alt="XQ website page 4" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web5.png" alt="XQ website page 5" loading="lazy"></div>
+      </div>
+
+      <!-- ── XQ Canvas Framework ── -->
+      <p class="gallery-label">
+        <span class="t-en">XQ Canvas Framework</span>
+        <span class="t-jp">XQ Canvas&#12501;&#12524;&#12540;&#12512;&#12527;&#12540;&#12463;</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="xq-video">
+          <iframe src="https://www.youtube.com/embed/6blXp2roX98?modestbranding=1&amp;rel=0&amp;iv_load_policy=3" title="XQ CANVAS" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+      <a class="video-link" href="https://youtu.be/6blXp2roX98" target="_blank" rel="noopener"><span class="t-en">Watch “XQ CANVAS” on YouTube ↗</span><span class="t-jp">「XQ CANVAS」をYouTubeで見る ↗</span></a>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_Canvas_Shadow.png" alt="XQ Canvas tool, full framework view" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/xq-canvas/XQCanvas_inAction.jpg" alt="Workshop photo, team using XQ Canvas" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/xq-canvas/XQCanvas_real.jpg" alt="Workshop photo, team reviewing XQ Canvas" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_canvas_altschool.png" alt="XQ Canvas filled out, AltSchool example" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/xq-canvas/Motion_Design_XQ.png" alt="XQ motion design storyboard for Canvas walkthrough" loading="lazy"></div>
+      </div>
+
+      <!-- ── XQ Directory ── -->
+      <p class="gallery-label">
+        <span class="t-en">XQ Directory &#8212; Team Building</span>
+        <span class="t-jp">XQ Directory &#8212; &#12481;&#12540;&#12512;&#27083;&#31689;</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="xq-video">
+          <iframe src="https://www.youtube.com/embed/G6W69Tk6swQ?modestbranding=1&amp;rel=0&amp;iv_load_policy=3" title="XQ DIRECTORY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+      <a class="video-link" href="https://youtu.be/G6W69Tk6swQ" target="_blank" rel="noopener"><span class="t-en">Watch “XQ DIRECTORY” on YouTube ↗</span><span class="t-jp">「XQ DIRECTORY」をYouTubeで見る ↗</span></a>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/xq-canvas/hero-image-XQdirectory.png" alt="XQ Directory hero" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/xq-directory/XQ_Dir_Web-0.png" alt="XQ Directory web page 0" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/xq-directory/XQ_Dir_Web-1.png" alt="XQ Directory web page 1" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/xq-directory/XQ_Dir_Web-2.png" alt="XQ Directory web page 2" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/xq-directory/XQ_Dir_Web-3.png" alt="XQ Directory web page 3" loading="lazy"></div>
+      </div>
+
+    </div>
+
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">&#25104;&#26524;&#29289;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Experience Strategy</span><span class="t-jp">&#20307;&#39443;&#25126;&#30053;</span></li>
+          <li><span class="t-en">UX/UI Design</span><span class="t-jp">UX/UI&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">XQ Canvas Framework</span><span class="t-jp">XQ Canvas&#12501;&#12524;&#12540;&#12512;&#12527;&#12540;&#12463;</span></li>
+          <li><span class="t-en">XQ Directory</span><span class="t-jp">XQ&#12487;&#12451;&#12524;&#12463;&#12488;&#12522;</span></li>
+          <li><span class="t-en">Motion Design</span><span class="t-jp">&#12514;&#12540;&#12471;&#12519;&#12531;&#12487;&#12470;&#12452;&#12531;</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Methods</span>
+          <span class="t-jp">&#25163;&#27861;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Experience Strategy</span><span class="t-jp">&#20307;&#39443;&#25126;&#30053;</span></li>
+          <li><span class="t-en">Storyboarding &amp; Animation</span><span class="t-jp">&#12473;&#12488;&#12540;&#12522;&#12540;&#12508;&#12540;&#12487;&#12451;&#12531;&#12464;&#12539;&#12450;&#12491;&#12513;&#12540;&#12471;&#12519;&#12531;</span></li>
+          <li><span class="t-en">Framework Design</span><span class="t-jp">&#12501;&#12524;&#12540;&#12512;&#12527;&#12540;&#12463;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Workshop Facilitation</span><span class="t-jp">&#12527;&#12540;&#12463;&#12471;&#12519;&#12483;&#12503;&#12501;&#12449;&#12471;&#12522;&#12486;&#12540;&#12471;&#12519;&#12531;</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Team</span>
+          <span class="t-jp">&#12481;&#12540;&#12512;</span>
+        </p>
+        <p class="project-text" style="font-size: 13px;">
+          <span class="t-en">Amplify Education partnership. Creative director, visual designer, business strategist, web developer, media strategist, project manager. I served as Design Director &#8212; leading experience strategy, UX/UI design, framework design, and motion design.</span>
+          <span class="t-jp is-block">Amplify Education&#12392;&#12398;&#12497;&#12540;&#12488;&#12490;&#12540;&#12471;&#12483;&#12503;&#12290;&#12463;&#12522;&#12456;&#12452;&#12486;&#12451;&#12502;&#12487;&#12451;&#12524;&#12463;&#12479;&#12540;&#12289;&#12499;&#12472;&#12517;&#12450;&#12523;&#12487;&#12470;&#12452;&#12490;&#12540;&#12289;&#12499;&#12472;&#12493;&#12473;&#12473;&#12488;&#12521;&#12486;&#12472;&#12473;&#12488;&#12289;&#12454;&#12455;&#12502;&#38283;&#30330;&#32773;&#12289;&#12513;&#12487;&#12451;&#12450;&#12473;&#12488;&#12521;&#12486;&#12472;&#12473;&#12488;&#12289;&#12503;&#12525;&#12472;&#12455;&#12463;&#12488;&#12510;&#12493;&#12540;&#12472;&#12515;&#12540;&#12290;&#12487;&#12470;&#12452;&#12531;&#12487;&#12451;&#12524;&#12463;&#12479;&#12540;&#12392;&#12375;&#12390;&#12289;&#20307;&#39443;&#25126;&#30053;&#12289;UX/UI&#12487;&#12470;&#12452;&#12531;&#12289;&#12501;&#12524;&#12540;&#12512;&#12527;&#12540;&#12463;&#12487;&#12470;&#12452;&#12531;&#12289;&#12514;&#12540;&#12471;&#12519;&#12531;&#12487;&#12470;&#12452;&#12531;&#12434;&#12522;&#12540;&#12489;&#12290;</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="nav-project">
+      <a href="dnt.html">&#8592; <span class="t-en">Prev: DO! NUTS TOKYO</span><span class="t-jp">&#21069;&#65306;DO! NUTS TOKYO</span></a>
+      <a href="graffitiwear.html"><span class="t-en">Next: GraffitiWear</span><span class="t-jp">&#27425;&#65306;GraffitiWear</span> &#8594;</a>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">&#12501;&#12522;&#12540;&#12521;&#12531;&#12473;&#12539;&#12467;&#12531;&#12469;&#12523;&#12486;&#12451;&#12531;&#12464;&#12399; <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> &#12434;&#36890;&#12376;&#12390;</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">&middot;</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+})();
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'));
+});
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

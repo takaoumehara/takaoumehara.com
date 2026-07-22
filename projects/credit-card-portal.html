@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Credit Card Web Portal Redesign · First PREMIER Bank — Takao Umehara</title>
+  <meta name="description" content="Credit Card Web Portal Redesign — a FinTech UX/UI overhaul spanning 105 screens and 125+ modular design system components for First PREMIER Bank. Product design case study by Takao Umehara.">
+  <meta property="og:title" content="Credit Card Web Portal Redesign · First PREMIER Bank — Takao Umehara">
+  <meta property="og:description" content="Credit Card Web Portal Redesign — a FinTech UX/UI overhaul spanning 105 screens and 125+ modular design system components for First PREMIER Bank.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/credit-card-portal/nobrand_Bankcard.001.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: background 180ms ease, color 180ms ease;
+    }
+    .btn-primary:hover { background: #2a2a2a; }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 12px; letter-spacing: 0.08em; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-copy { font-size: 12px; color: var(--ink-dim); }
+
+    /* ─── Animations ─── */
+    @keyframes gradient-band-sweep {
+      0%   { transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%)); opacity: 0; }
+      8%   { transform: translateX(0); opacity: 0.94; }
+      24%  { transform: translateX(0); opacity: 0.94; }
+      100% { transform: translateX(232%); opacity: 0.92; }
+    }
+    @keyframes mask-reveal {
+      0%   { clip-path: inset(0 100% 0 0); opacity: 0; transform: translate3d(var(--from-x), var(--from-y), 0); }
+      14%  { clip-path: inset(0 100% 0 0); opacity: 0; transform: translate3d(var(--from-x), var(--from-y), 0); }
+      30%  { opacity: 0.24; }
+      100% { clip-path: inset(0 0 0 0); opacity: 1; transform: translate3d(0, 0, 0); }
+    }
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── EN/JP lang switch ─── */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-kicker, .hero-headline, .hero-body, .hero-cta { animation: none !important; opacity: 1 !important; }
+    }
+
+    /* ─── Project detail styles ─── */
+    .project-hero { position:relative; min-height:480px; overflow:hidden; display:flex; align-items:flex-end; }
+    .project-hero-img { position:absolute; inset:0; background-size:cover; background-position:center; }
+    .project-hero-overlay { position:absolute; inset:0; background:linear-gradient(0deg,rgba(18,18,18,0.72) 0%,rgba(18,18,18,0.18) 60%,transparent 100%); }
+    .project-hero-content { position:relative; z-index:2; padding:48px 32px; max-width:1200px; margin:0 auto; width:100%; }
+    .project-hero-tags { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+    .project-hero-tag { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.24); padding:5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size:clamp(32px,5vw,64px); font-weight:400; letter-spacing:-0.03em; line-height:0.93; color:#fff; max-width:800px; margin-bottom:20px; }
+    .project-hero-company { font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.72); margin:-6px 0 22px; }
+    .project-hero-meta { display:flex; gap:32px; flex-wrap:wrap; }
+    .project-meta-item { display:flex; flex-direction:column; gap:3px; }
+    .project-meta-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.48); }
+    .project-meta-value { font-size:13px; color:rgba(255,255,255,0.86); }
+    .project-body { max-width:1200px; margin:0 auto; padding:64px 32px 80px; }
+    .project-overview { display:grid; grid-template-columns:1fr 1.6fr; gap:64px; margin-bottom:72px; padding-bottom:72px; border-bottom:1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size:clamp(22px,2.4vw,30px); font-weight:400; letter-spacing:-0.02em; margin-bottom:20px; }
+    .project-text { font-size:16px; line-height:1.72; color:var(--ink-mid); margin-bottom:20px; }
+    .project-aside-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
+    .project-aside-stat { margin-bottom:24px; }
+    .project-aside-num { font-size:32px; font-weight:600; letter-spacing:-0.04em; }
+    .project-aside-desc { font-size:13px; color:var(--ink-dim); margin-top:4px; }
+    .project-deliverables { list-style:none; display:flex; flex-direction:column; gap:10px; }
+    .project-deliverables li { font-size:14px; color:var(--ink-mid); display:flex; gap:10px; align-items:baseline; }
+    .project-deliverables li::before { content:"—"; color:rgba(18,18,18,0.24); flex-shrink:0; }
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; }
+    /* ui: aspect-ratio container for UI screenshots with neutral bg */
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    /* dark: black-background screenshots — no forced ratio, no grey border */
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    /* natural: light bg, natural ratio (diagrams, sketches, any mixed) */
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    /* diagram: replaces old diagram class — now uses natural ratio, white bg */
+    .g-cell.diagram { background: white; }
+    .g-cell.diagram img { width: 100%; height: auto; display: block; }
+    /* photo: cover crop for photography */
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* brand: identity assets, white bg */
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+    @media (max-width: 700px) { .g-row.r3 { grid-template-columns: 1fr 1fr; } .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; } }
+    .outcomes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:64px; }
+    .outcome-block { padding:28px 24px; border:1px solid var(--line); }
+    .outcome-num { font-size:36px; font-weight:600; letter-spacing:-0.05em; margin-bottom:6px; }
+    .outcome-label { font-size:13px; color:var(--ink-mid); line-height:1.5; }
+    .lang-switch { position:fixed; right:0; bottom:80px; z-index:100; writing-mode:vertical-rl; display:flex; align-items:center; gap:5px; padding:16px 9px; background:rgba(255,255,255,0.94); backdrop-filter:blur(8px); border-left:1px solid rgba(18,18,18,0.10); border-radius:6px 0 0 6px; }
+    .lang-btn { appearance:none; background:none; border:none; font-family:var(--ff); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; color:var(--ink-dim); padding:0; transition:color 160ms ease; }
+    .lang-btn.is-active { color:var(--ink); font-weight:600; }
+    .lang-sep { font-size:9px; color:rgba(18,18,18,0.18); }
+
+    .project-section { margin-bottom:64px; }
+    .section-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+    .impact-block { background:#f5f3ef; padding:40px 36px; margin-bottom:64px; }
+    .impact-title { font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
+    .impact-text { font-size:17px; line-height:1.7; color:var(--ink-mid); }
+
+    .breadcrumb { padding:20px 32px; max-width:1200px; margin:0 auto; }
+    .breadcrumb a { font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; }
+    .breadcrumb a:hover { color:var(--ink); }
+    .breadcrumb span { font-size:12px; color:rgba(18,18,18,0.28); margin:0 8px; }
+
+    .nav-project { display:flex; justify-content:space-between; align-items:center; padding:32px 0 0; border-top:1px solid var(--line); margin-top:32px; }
+    .nav-project a { font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; display:flex; align-items:center; gap:8px; }
+    .nav-project a:hover { color:var(--ink); }
+
+    @media (max-width:900px) {
+      .project-overview { grid-template-columns:1fr; gap:40px; }
+      .outcomes-grid { grid-template-columns:1fr 1fr; }
+      .g-row.r3 { grid-template-columns:1fr 1fr; }
+    }
+    @media (max-width:600px) {
+      .site-nav { padding:16px 20px; }
+      .project-hero-content { padding:32px 20px; }
+      .project-body { padding:40px 20px 60px; }
+      .breadcrumb { padding:16px 20px; }
+      .outcomes-grid { grid-template-columns:1fr; }
+      .g-row.r2, .g-row.r3 { grid-template-columns:1fr; }
+    }
+
+/* ─── Conceptual Diagrams ─── */
+    .diagram-section { margin: 72px 0; }
+    .diagram-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(20px, 2vw, 26px);
+      font-weight: 400; letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+
+    .before-after-diagram {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch;
+      border: 1px solid var(--line); overflow: hidden;
+    }
+    .ba-col { padding: 36px 32px; }
+    .ba-col.before { background: #f5f3f0; }
+    .ba-col.after { background: #fff; }
+    .ba-divider {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 20px; background: var(--line); font-size: 18px; color: var(--ink-dim);
+      writing-mode: vertical-rl;
+    }
+    .ba-label {
+      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-dim); margin-bottom: 20px;
+    }
+    .ba-item {
+      display: flex; align-items: baseline; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid var(--line);
+      font-size: 14px; color: var(--ink-mid); line-height: 1.5;
+    }
+    .ba-item:last-child { border-bottom: 0; }
+    .ba-icon { font-size: 16px; flex-shrink: 0; opacity: 0.5; }
+    .ba-col.after .ba-icon { opacity: 1; }
+    .ba-col.after .ba-item { color: var(--ink); }
+
+    .system-map {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+      border: 1px solid var(--line); overflow: hidden;
+    }
+    .system-layer {
+      padding: 32px 28px; border-right: 1px solid var(--line);
+    }
+    .system-layer:last-child { border-right: 0; }
+    .system-layer-label {
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-dim); margin-bottom: 16px;
+    }
+    .system-layer-title {
+      font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 14px;
+    }
+    .system-layer-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .system-layer-items li {
+      font-size: 13px; color: var(--ink-mid); padding-left: 14px;
+      position: relative;
+    }
+    .system-layer-items li::before {
+      content: ""; position: absolute; left: 0; top: 7px;
+      width: 5px; height: 5px; border-radius: 50%;
+      background: rgba(18,18,18,0.16);
+    }
+
+    .impact-cascade {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+      border: 1px solid var(--line); overflow: hidden;
+    }
+    .cascade-step {
+      padding: 36px 28px; border-right: 1px solid var(--line);
+      position: relative;
+    }
+    .cascade-step:last-child { border-right: 0; }
+    .cascade-step::after {
+      content: "→"; position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+      font-size: 16px; color: var(--ink-dim); z-index: 1; background: var(--bg);
+      padding: 4px;
+    }
+    .cascade-step:last-child::after { display: none; }
+    .cascade-num {
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-dim); margin-bottom: 12px;
+    }
+    .cascade-title { font-size: 17px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 8px; }
+    .cascade-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.56; }
+    .cascade-year { font-size: 11px; color: var(--ink-dim); margin-top: 12px; }
+
+    .nda-notice {
+      display: flex; align-items: baseline; gap: 10px;
+      padding: 16px 20px; border-left: 2px solid var(--ink-dim);
+      background: rgba(18,18,18,0.02); margin: 32px 0;
+      font-size: 13px; color: var(--ink-dim); line-height: 1.56;
+    }
+
+    @media (max-width: 900px) {
+      .before-after-diagram { grid-template-columns: 1fr; }
+      .ba-divider { writing-mode: horizontal-tb; padding: 12px; }
+      .system-map, .impact-cascade { grid-template-columns: 1fr; }
+      .system-layer, .cascade-step { border-right: 0; border-bottom: 1px solid var(--line); }
+      .cascade-step::after { display: none; }
+    }
+
+    /* ─── Scroll Reveal ─── */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+              transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Image Fade-In ─── */
+.g-cell img {
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.g-cell img.loaded {
+  opacity: 1;
+}
+
+/* ─── Gallery Hover ─── */
+.g-cell {
+  border-radius: 2px;
+}
+.g-cell img {
+  transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
+}
+.g-cell:hover img.loaded {
+  transform: scale(1.008);
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .g-cell img { opacity: 1 !important; transition: none !important; }
+  .g-cell:hover img { transform: none !important; }
+}
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="../work.html">Product Design</a>
+    <span>/</span>
+    <a href="#">Credit Card Web Portal</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/credit-card-portal/nobrand_Bankcard.001.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">FinTech</span>
+        <span class="project-hero-tag">UX/UI</span>
+        <span class="project-hero-tag">Design System</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">Credit Card Web Portal Redesign</span>
+        <span class="t-jp">クレジットカード Webポータル リデザイン</span>
+      </h1>
+      <div class="project-hero-company">First PREMIER Bank</div>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">First PREMIER Bank (via Concentrix Catalyst)</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Lead Product Designer</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">2022</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <main class="project-body">
+
+    <!-- NDA Notice -->
+    <div class="nda-notice reveal-on-scroll">
+      <span class="t-en">The UI branding shown here has been de-branded and re-created for portfolio purposes; specific customer data is anonymized. All numbers and outcomes described are factual.</span>
+      <span class="t-jp">ここに掲載しているUIのブランディングは、ポートフォリオ用に脱ブランド化・再作成したものです。個別の顧客データは匿名化しています。記載された数字と成果はすべて事実です。</span>
+    </div>
+
+    <!-- Overview: same layout as CLI Studios (left=stats, right=text) -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">Scope</span>
+          <span class="t-jp">スコープ</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">105</div>
+          <div class="project-aside-desc">
+            <span class="t-en">High-fidelity screens (85 desktop, 20 mobile)</span>
+            <span class="t-jp">ハイフィデリティ画面（デスクトップ85、モバイル20）</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">10</div>
+          <div class="project-aside-desc">
+            <span class="t-en">End-to-end user flows</span>
+            <span class="t-jp">エンドツーエンドのユーザーフロー</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">125+</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Modular design system components</span>
+            <span class="t-jp">モジュラーデザインシステム・コンポーネント</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">14</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Prototypes tested with stakeholders</span>
+            <span class="t-jp">ステークホルダーテスト済みプロトタイプ</span>
+          </div>
+        </div>
+      </aside>
+      <div>
+        <h2 class="project-section-title">
+          <span class="t-en">The Tension</span>
+          <span class="t-jp">問題の核心</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">The portal had been built incrementally over years — features layered on top of features without a unifying structure. The same account information appeared in multiple places with different interaction patterns. Users couldn't complete basic tasks like making a payment without navigating through redundant screens. Service call volume was climbing because users couldn't self-serve.</span>
+          <span class="t-jp is-block">このポータルは長年にわたって増築的に構築されていた。統一的な構造なく機能が重ねられた結果、同じアカウント情報が異なるインタラクションパターンで複数箇所に散在。支払いのような基本操作すら冗長な画面遷移を経なければ完了できなかった。セルフサービスできないユーザーからのサービスコールが増加していた。</span>
+        </p>
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">My Approach</span>
+          <span class="t-jp">アプローチ</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I led a discovery audit to find the structural root cause — not to catalog every problem. The insight: the portal's issues weren't cosmetic. They stemmed from a complete absence of design infrastructure. Each feature had been designed in isolation, with no shared components. The fix had to work at two levels: rebuild critical flows for immediate impact, and create a system to prevent recurrence. I prioritized 4 of 10 flows based on frequency × pain severity — account setup, login, summary, and payments.</span>
+          <span class="t-jp is-block">すべての問題をカタログ化するのではなく、構造的な根本原因を見つけるためにディスカバリー監査を主導した。インサイト：問題は表面的ではなく、デザインインフラの欠如に起因していた。解決策は2レベルで同時に機能する必要があった。利用頻度×深刻度で10フローから4つを優先した。</span>
+        </p>
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">Tools &amp; Methods</span>
+          <span class="t-jp">ツール＆手法</span>
+        </h2>
+        <div class="tools-list" style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Discovery Audit</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Figma</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Design System</span><span class="t-jp">デザインシステム</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Concept Testing</span><span class="t-jp">コンセプトテスト</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outcome -->
+    <div class="impact-block reveal-on-scroll">
+      <p class="impact-title">
+        <span class="t-en">Outcome</span>
+        <span class="t-jp">成果</span>
+      </p>
+      <p class="impact-text">
+        <span class="t-en">The redesign modernized the customer experience and reduced customer service call volume by removing the friction that drove most support requests. The 125+ component design system set the visual and interaction precedent later adopted across the bank's other digital products.</span>
+        <span class="t-jp is-block">リデザインによりカスタマーエクスペリエンスが刷新され、サポートリクエストの主因となっていた摩擦が解消されたことでカスタマーサービスへの問い合わせ件数が減少した。125以上のコンポーネントで構成されたデザインシステムは、後に銀行の他のデジタル製品にも採用される視覚・インタラクションの先例となった。</span>
+      </p>
+    </div>
+
+    <!-- ── Diagram: Before → After ── -->
+    <div class="diagram-section reveal-on-scroll">
+      <h2 class="diagram-title">
+        <span class="t-en">What changed</span>
+        <span class="t-jp">何が変わったか</span>
+      </h2>
+      <div class="before-after-diagram">
+        <div class="ba-col before">
+          <div class="ba-label">Before</div>
+          <div class="ba-item"><span class="ba-icon">✗</span> <span class="t-en">Same data in 3+ places, inconsistent patterns</span><span class="t-jp">同じデータが3箇所以上に、一貫性のないパターン</span></div>
+          <div class="ba-item"><span class="ba-icon">✗</span> <span class="t-en">Deep navigation — 5+ clicks for basic tasks</span><span class="t-jp">深いナビゲーション — 基本操作に5クリック以上</span></div>
+          <div class="ba-item"><span class="ba-icon">✗</span> <span class="t-en">No shared components — each feature bespoke</span><span class="t-jp">共有コンポーネントなし — 各機能が個別設計</span></div>
+          <div class="ba-item"><span class="ba-icon">✗</span> <span class="t-en">Dated aesthetic vs. competitor baseline</span><span class="t-jp">競合と比べ古いビジュアルデザイン</span></div>
+          <div class="ba-item"><span class="ba-icon">✗</span> <span class="t-en">Desktop-only — no responsive capability</span><span class="t-jp">デスクトップのみ — レスポンシブ非対応</span></div>
+        </div>
+        <div class="ba-divider">→</div>
+        <div class="ba-col after">
+          <div class="ba-label">After</div>
+          <div class="ba-item"><span class="ba-icon">✓</span> <span class="t-en">Single source of truth per data type</span><span class="t-jp">データタイプごとに単一の情報源</span></div>
+          <div class="ba-item"><span class="ba-icon">✓</span> <span class="t-en">Critical tasks in 2–3 steps max</span><span class="t-jp">重要タスクを最大2〜3ステップに</span></div>
+          <div class="ba-item"><span class="ba-icon">✓</span> <span class="t-en">125+ reusable components, consistent system</span><span class="t-jp">125以上の再利用可能コンポーネント</span></div>
+          <div class="ba-item"><span class="ba-icon">✓</span> <span class="t-en">Modern, competitive visual language</span><span class="t-jp">モダンで競争力のあるビジュアル言語</span></div>
+          <div class="ba-item"><span class="ba-icon">✓</span> <span class="t-en">85 desktop + 20 mobile screens delivered</span><span class="t-jp">デスクトップ85画面＋モバイル20画面を納品</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Priority Flows (with images) ── -->
+    <h2 class="project-section-title reveal-on-scroll">
+      <span class="t-en">Priority Flows — The 4 That Mattered Most</span>
+      <span class="t-jp">優先フロー — 最も重要だった4つ</span>
+    </h2>
+
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">01 — Set Up Online Access: First contact with the portal. Reduced from a multi-page form to a streamlined onboarding.</span>
+        <span class="t-jp">01 — オンラインアクセス設定：ポータルとの最初の接点。複数ページのフォームを効率的なオンボーディングに簡素化。</span>
+      </p>
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.004.png" alt="Set up online access — post-payment confirmation screen with CTA" loading="lazy"></div>
+      </div>
+      <div class="g-row r2">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.002.png" alt="Set up online access — sitemap showing the entry point in context" loading="lazy"></div>
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.003.png" alt="Set up online access — detailed flow diagram, entry points to authentication" loading="lazy"></div>
+      </div>
+
+      <p class="gallery-label">
+        <span class="t-en">02 — Login &amp; Authentication: Simplified credential recovery, clearer error states.</span>
+        <span class="t-jp">02 — ログイン＆認証：パスワード復旧の簡素化、エラー状態の明確化。</span>
+      </p>
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.007.png" alt="Login — welcome screen with credentials and set up online access CTA" loading="lazy"></div>
+      </div>
+      <div class="g-row r2">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.005.png" alt="Login — detailed flow diagram, authentication code and password recovery" loading="lazy"></div>
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.006.png" alt="Login — sitemap showing the login entry point in context" loading="lazy"></div>
+      </div>
+
+      <p class="gallery-label">
+        <span class="t-en">03 — Account Summary: The highest-traffic screen. Consolidated balance, recent transactions, and quick actions into a single view.</span>
+        <span class="t-jp">03 — アカウント概要：最もトラフィックの多い画面。残高、最近の取引、クイックアクションを1画面に統合。</span>
+      </p>
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.013.png" alt="Account summary — consolidated dashboard with balance and quick actions" loading="lazy"></div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.012.png" alt="Account summary — flow diagram of account card, statements, and transactions" loading="lazy"></div>
+      </div>
+
+      <p class="gallery-label">
+        <span class="t-en">04 — Make a Payment: The #1 driver of service calls. A three-step flow replaced a five-screen process.</span>
+        <span class="t-jp">04 — 支払い：サービスコールの最大要因。5画面のプロセスを3ステップのフローに置換。</span>
+      </p>
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.016.png" alt="Make a payment — payment screen with amount selection and quick actions" loading="lazy"></div>
+      </div>
+      <div class="g-row r2">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.014.png" alt="Make a payment — sitemap of payments, history, and quick actions" loading="lazy"></div>
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/nobrand_Bankcard.015.png" alt="Make a payment — detailed flow diagram from criteria to success message" loading="lazy"></div>
+      </div>
+    </div>
+
+    <!-- ── Diagram: Design System Architecture ── -->
+    <div class="diagram-section reveal-on-scroll">
+      <h2 class="diagram-title">
+        <span class="t-en">Design System — 125+ Components in 3 Layers</span>
+        <span class="t-jp">デザインシステム — 3層構造に125以上のコンポーネント</span>
+      </h2>
+      <div class="system-map">
+        <div class="system-layer">
+          <div class="system-layer-label">Layer 01</div>
+          <div class="system-layer-title">
+            <span class="t-en">Foundation</span>
+            <span class="t-jp">基盤</span>
+          </div>
+          <ul class="system-layer-items">
+            <li><span class="t-en">Color tokens (primary / neutral / semantic)</span><span class="t-jp">カラートークン</span></li>
+            <li><span class="t-en">Typography scale (7 levels)</span><span class="t-jp">タイポグラフィスケール（7段階）</span></li>
+            <li><span class="t-en">Spacing system (4px base grid)</span><span class="t-jp">スペーシングシステム（4px基準）</span></li>
+            <li><span class="t-en">Grid system (12-column)</span><span class="t-jp">グリッドシステム（12カラム）</span></li>
+            <li><span class="t-en">Elevation &amp; shadow tokens</span><span class="t-jp">エレベーション＆シャドウトークン</span></li>
+          </ul>
+        </div>
+        <div class="system-layer">
+          <div class="system-layer-label">Layer 02</div>
+          <div class="system-layer-title">
+            <span class="t-en">Components</span>
+            <span class="t-jp">コンポーネント</span>
+          </div>
+          <ul class="system-layer-items">
+            <li><span class="t-en">Form elements (inputs, selects, validation)</span><span class="t-jp">フォーム要素</span></li>
+            <li><span class="t-en">Navigation (tabs, breadcrumbs, menus)</span><span class="t-jp">ナビゲーション</span></li>
+            <li><span class="t-en">Data display (tables, cards, charts)</span><span class="t-jp">データ表示</span></li>
+            <li><span class="t-en">Feedback (alerts, toasts, modals)</span><span class="t-jp">フィードバック</span></li>
+            <li><span class="t-en">Actions (buttons, links, CTAs)</span><span class="t-jp">アクション</span></li>
+          </ul>
+        </div>
+        <div class="system-layer">
+          <div class="system-layer-label">Layer 03</div>
+          <div class="system-layer-title">
+            <span class="t-en">Patterns</span>
+            <span class="t-jp">パターン</span>
+          </div>
+          <ul class="system-layer-items">
+            <li><span class="t-en">Authentication flows</span><span class="t-jp">認証フロー</span></li>
+            <li><span class="t-en">Transaction patterns</span><span class="t-jp">取引パターン</span></li>
+            <li><span class="t-en">Account management</span><span class="t-jp">アカウント管理</span></li>
+            <li><span class="t-en">Error recovery sequences</span><span class="t-jp">エラー復旧シーケンス</span></li>
+            <li><span class="t-en">Onboarding templates</span><span class="t-jp">オンボーディングテンプレート</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Design System Screenshots ── -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">Design System Documentation — Style Guide &amp; Component Library</span>
+        <span class="t-jp">デザインシステム資料 — スタイルガイド＆コンポーネントライブラリ</span>
+      </p>
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/shared/Designsystems.001.png" alt="Design system — foundations &amp; tokens" loading="lazy"></div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/shared/Designsystems.002.png" alt="Design system — component inventory" loading="lazy"></div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/shared/Designsystems.003.png" alt="Design system — pattern documentation" loading="lazy"></div>
+      </div>
+    </div>
+
+    <!-- ── Diagram: Impact Cascade ── -->
+    <div class="diagram-section reveal-on-scroll">
+      <h2 class="diagram-title">
+        <span class="t-en">The Shift — From Portal Fix to Organization Standard</span>
+        <span class="t-jp">変化 — ポータル改修から組織標準へ</span>
+      </h2>
+      <div class="impact-cascade">
+        <div class="cascade-step">
+          <div class="cascade-num">
+            <span class="t-en">Immediate</span>
+            <span class="t-jp">即時効果</span>
+          </div>
+          <div class="cascade-title">
+            <span class="t-en">Service calls decreased</span>
+            <span class="t-jp">サービスコール減少</span>
+          </div>
+          <div class="cascade-desc">
+            <span class="t-en">Streamlined payment and account flows removed the friction that drove most support requests.</span>
+            <span class="t-jp">支払いとアカウントフローの効率化により、サポートリクエストの最大要因であった摩擦を除去。</span>
+          </div>
+          <div class="cascade-year">2022</div>
+        </div>
+        <div class="cascade-step">
+          <div class="cascade-num">
+            <span class="t-en">Ripple</span>
+            <span class="t-jp">波及効果</span>
+          </div>
+          <div class="cascade-title">
+            <span class="t-en">App v2.0 built on same system</span>
+            <span class="t-jp">同システムでアプリv2.0構築</span>
+          </div>
+          <div class="cascade-desc">
+            <span class="t-en">The component library proved extensible enough that the mobile app team adopted it for their 2022 release.</span>
+            <span class="t-jp">コンポーネントライブラリが拡張可能だったため、モバイルアプリチームが2022年リリースに採用。</span>
+          </div>
+          <div class="cascade-year">2022 Q3</div>
+        </div>
+        <div class="cascade-step">
+          <div class="cascade-num">
+            <span class="t-en">Legacy</span>
+            <span class="t-jp">長期的影響</span>
+          </div>
+          <div class="cascade-title">
+            <span class="t-en">Became the org-wide design standard</span>
+            <span class="t-jp">組織全体のデザイン標準に</span>
+          </div>
+          <div class="cascade-desc">
+            <span class="t-en">The design direction and system standardized visual language across all the bank's digital products.</span>
+            <span class="t-jp">デザインの方向性とシステムが銀行の全デジタル製品のビジュアル言語を統一。</span>
+          </div>
+          <div class="cascade-year">2023+</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Project details (compact) ── -->
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">成果物</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">User Research &amp; Insight Generation</span><span class="t-jp">ユーザーリサーチ＆インサイト</span></li>
+          <li><span class="t-en">UX Strategy &amp; Customer Journey Maps</span><span class="t-jp">UX戦略＆CJM</span></li>
+          <li><span class="t-en">Wireframing &amp; Prototyping (14 prototypes)</span><span class="t-jp">ワイヤーフレーム＆プロトタイプ</span></li>
+          <li><span class="t-en">UI Design (105 hi-fi screens)</span><span class="t-jp">UIデザイン（105画面）</span></li>
+          <li><span class="t-en">Design System (125+ components)</span><span class="t-jp">デザインシステム（125+コンポーネント）</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Methods</span>
+          <span class="t-jp">手法</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Discovery Audit</span><span class="t-jp">ディスカバリー監査</span></li>
+          <li><span class="t-en">Stakeholder Interviews</span><span class="t-jp">ステークホルダーインタビュー</span></li>
+          <li><span class="t-en">Concept Testing</span><span class="t-jp">コンセプトテスト</span></li>
+          <li><span class="t-en">Iterative Prototyping</span><span class="t-jp">反復プロトタイピング</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Organization</span>
+          <span class="t-jp">組織</span>
+        </p>
+        <p class="project-text" style="font-size: 13px;">
+          <span class="t-en">Concentrix Catalyst — engaged as the bank's design partner. I led design direction, system architecture, and screen delivery across the full engagement.</span>
+          <span class="t-jp is-block">Concentrix Catalyst — 銀行のデザインパートナーとして参画。デザインの方向性、システムアーキテクチャ、画面納品をリード。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="nav-project">
+      <a href="../work.html">← <span class="t-en">All Work</span><span class="t-jp">すべての仕事</span></a>
+      <a href="ux-audit.html"><span class="t-en">Next: USAA UX Audit</span><span class="t-jp">次：USAA UX監査</span> →</a>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <!-- ── Lang switch ── -->
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">·</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+
+// ── Scroll Reveal ──
+(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+})();
+
+// ── Image Fade-In ──
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'));
+});
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

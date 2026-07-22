@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Contact — Takao Umehara</title>
+  <meta name="description" content="Get in touch with Takao Umehara for product design, creative direction, and innovation strategy engagements through Creativity Is Everywhere LLC.">
+  <meta property="og:title" content="Contact — Takao Umehara">
+  <meta property="og:description" content="Get in touch for product design, creative direction, and innovation strategy engagements.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Google Sans","Google Sans Text","Product Sans",system-ui,sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+
+    /* ─── Hero ─── */
+    .hero {
+      padding: 96px 32px 64px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-kicker {
+      margin-bottom: 20px;
+    }
+
+    .hero-headline {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(44px, 6.8vw, 88px);
+      line-height: 0.91;
+      letter-spacing: -0.03em;
+      font-weight: 400;
+      max-width: 900px;
+      margin-bottom: 28px;
+      color: var(--ink);
+    }
+
+    .hero-sub {
+      font-size: 17px;
+      line-height: 1.62;
+      color: var(--ink-mid);
+      max-width: 560px;
+    }
+
+    /* ─── Contact blocks ─── */
+    .contact-section {
+      padding: 64px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .contact-block {
+      position: relative;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 12px;
+      padding: 40px 36px 36px;
+      overflow: hidden;
+      isolation: isolate;
+      min-height: 220px;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    /* Same gradient overlay as initiative cards */
+    .contact-block::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(188,233,255,0.18) 0%,
+        rgba(200,185,255,0.12) 40%,
+        rgba(255,185,210,0.14) 70%,
+        rgba(255,215,170,0.10) 100%
+      );
+      opacity: 0;
+      transition: opacity 480ms ease;
+    }
+
+    .contact-block:hover::before { opacity: 1; }
+
+    .contact-block-tag {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-block-title {
+      font-size: clamp(18px, 2vw, 24px);
+      font-weight: 600;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-block-value {
+      font-size: 14px;
+      color: var(--ink-dim);
+      letter-spacing: 0.01em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .contact-block-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .contact-block-action {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      transition: color 240ms ease;
+    }
+
+    .contact-block:hover .contact-block-action { color: var(--ink); }
+
+    .contact-block-arrow {
+      font-size: 18px;
+      color: var(--ink-dim);
+      transition: transform 240ms ease, color 240ms ease;
+    }
+
+    .contact-block:hover .contact-block-arrow {
+      transform: translate(4px, -4px);
+      color: var(--ink);
+    }
+
+    /* ─── Secondary links ─── */
+    .secondary-section {
+      padding: 56px 0 72px;
+      border-top: 1px solid var(--line);
+    }
+
+    .secondary-inner {
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .secondary-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 20px;
+    }
+
+    .secondary-links {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .footer-links a:hover { color: var(--ink); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .footer-llc {
+      font-size: 11px;
+      color: var(--ink-dim);
+      margin-top: 5px;
+      letter-spacing: 0.01em;
+    }
+
+    .footer-llc strong {
+      color: var(--ink-mid);
+      font-weight: 500;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes hero-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-kicker  { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 80ms both; }
+    .hero-headline {
+      animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both;
+    }
+    .hero-sub { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 260ms both; }
+    .contact-grid { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 360ms both; }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-radius: 6px 0 0 6px;
+    }
+
+    .lang-btn {
+      appearance: none; background: none; border: none;
+      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      color: var(--ink-dim); padding: 0;
+      transition: color 160ms ease;
+    }
+
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+
+    /* bilingual content */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-kicker, .hero-headline, .hero-sub, .contact-grid { animation: none !important; opacity: 1 !important; }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .hero { padding: 64px 20px 56px; }
+      .contact-grid, .secondary-inner { padding: 0 20px; }
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="ai-products.html">Agentic UX</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="work.html">Product Design</a></li>
+      <li><a href="brand.html">Brand &amp; Visual</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html" class="is-active" aria-current="page">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Hero ── -->
+  <section class="hero">
+    <div class="hero-kicker eyebrow">
+      <span class="t-en">Get in touch</span>
+      <span class="t-jp">お問い合わせ</span>
+    </div>
+    <h1 class="hero-headline">
+      <span class="t-en">Let's work together.</span>
+      <span class="t-jp">一緒に何かを作りましょう。</span>
+    </h1>
+    <p class="hero-sub">
+      <span class="t-en">Available for product design, brand strategy, UX consulting, and innovation workshops. Work accepted through Creativity Is Everywhere LLC.</span>
+      <span class="t-jp is-block">プロダクトデザイン、ブランド戦略、UXコンサルティング、イノベーションワークショップのご依頼を承っています。業務はCreativity Is Everywhere LLCを通じて受け付けています。</span>
+    </p>
+  </section>
+
+  <!-- ── Contact Blocks ── -->
+  <section class="contact-section">
+    <div class="contact-grid">
+
+      <!-- Email -->
+      <a href="mailto:takaoumehara@gmail.com" class="contact-block">
+        <div class="contact-block-tag">
+          <span class="t-en">Email</span>
+          <span class="t-jp">メール</span>
+        </div>
+        <div>
+          <div class="contact-block-title">takaoumehara@gmail.com</div>
+          <p class="contact-block-value" style="margin-top:10px;">
+            <span class="t-en">The best way to reach me for project inquiries, collaborations, and workshop bookings.</span>
+            <span class="t-jp is-block">プロジェクトのお問い合わせ、コラボレーション、ワークショップのご予約はメールが最も確実です。</span>
+          </p>
+        </div>
+        <div class="contact-block-footer">
+          <span class="contact-block-action">
+            <span class="t-en">Send a message</span>
+            <span class="t-jp">メールを送る</span>
+          </span>
+          <span class="contact-block-arrow">↗</span>
+        </div>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" class="contact-block">
+        <div class="contact-block-tag">LinkedIn</div>
+        <div>
+          <div class="contact-block-title">linkedin.com/in/takaoumehara/</div>
+          <p class="contact-block-value" style="margin-top:10px;">
+            <span class="t-en">Connect professionally, see my full work history, and follow updates on current projects.</span>
+            <span class="t-jp is-block">プロフェッショナルなつながり、職歴の詳細、現在のプロジェクトの最新情報はこちら。</span>
+          </p>
+        </div>
+        <div class="contact-block-footer">
+          <span class="contact-block-action">
+            <span class="t-en">Connect on LinkedIn</span>
+            <span class="t-jp">LinkedInで繋がる</span>
+          </span>
+          <span class="contact-block-arrow">↗</span>
+        </div>
+      </a>
+
+
+    </div>
+  </section>
+
+  <!-- ── Secondary Links ── -->
+  <section class="secondary-section">
+    <div class="secondary-inner">
+      <div class="secondary-label">
+        <span class="t-en">Also find me at</span>
+        <span class="t-jp">その他のリンク</span>
+      </div>
+      <div class="secondary-links">
+        <a href="https://breakbias.medium.com/" target="_blank" rel="noopener" class="btn-secondary">Medium — BreakBias</a>
+        <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="btn-secondary">intentfirst.ai</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Lang Switch ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer">
+      <div>
+        <div class="footer-logo">Takao Umehara</div>
+        <div class="footer-llc">
+          <span class="t-en">Freelance &amp; consulting work accepted through <strong>Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp is-block">フリーランス・コンサルティング業務は<strong>Creativity Is Everywhere LLC</strong>を通じて受け付けています</span>
+        </div>
+      </div>
+      <ul class="footer-links">
+        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
+        <li><a href="intentfirst.html">intentfirst.ai</a></li>
+      </ul>
+      <div class="footer-copy">New York City</div>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

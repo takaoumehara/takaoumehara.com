@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Kitadoko — Hair Salon Rebranding | Takao Umehara</title>
+  <meta name="description" content="Kitadoko — full rebrand of a 150-year-old Tokyo barbershop: brand, service and space design that took repeat rate from 0% to 90%. Case study by Takao Umehara.">
+  <meta property="og:title" content="Kitadoko — Hair Salon Rebranding | Takao Umehara">
+  <meta property="og:description" content="Kitadoko — full rebrand of a 150-year-old Tokyo barbershop that took repeat customer rate from 0% to 90%.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/shared/Space_Design_kitadoko.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      /* 5-3C'02 Rich palette */
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-block; padding: 13px 20px;
+      background: var(--ink); color: #fff;
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--ink);
+      transition: background 180ms ease;
+    }
+    .btn-primary:hover { background: #2a2a2a; }
+    .btn-secondary {
+      display: inline-block; padding: 13px 20px;
+      background: transparent; color: var(--ink);
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--line); padding: 40px 32px;
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 12px; letter-spacing: 0.08em; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-copy { font-size: 12px; color: var(--ink-dim); }
+
+    /* ─── Hero ─── */
+    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; }
+    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(18,18,18,0.58) 0%,rgba(18,18,18,0.06) 42%,transparent 62%); }
+    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
+    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+
+    /* ─── Body ─── */
+    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
+    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
+    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+    .project-aside-stat { margin-bottom: 24px; }
+    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
+    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
+    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+    .project-section { margin-bottom: 64px; }
+
+    /* ─── Breadcrumb ─── */
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
+
+    /* ─── Outcomes 4-col with before/after ─── */
+    .outcomes-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2px; margin-bottom: 64px; }
+    .outcome-block { padding: 28px 24px; border: 1px solid var(--line); }
+    .outcome-num { font-size: 36px; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 6px; }
+    .outcome-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+    .outcome-change { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); margin-top: 6px; }
+
+    /* ─── Process steps ─── */
+    .process-steps { display: flex; gap: 0; margin-bottom: 64px; }
+    .process-step { flex: 1; padding: 24px 20px; border-left: 1px solid var(--line); }
+    .process-step:first-child { border-left: none; padding-left: 0; }
+    .process-step-num { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
+    .process-step-label { font-size: 13px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.4; }
+
+    /* ─── Before / After Diagram ─── */
+    .diagram-section { margin: 72px 0; }
+    .diagram-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(20px, 2vw, 26px);
+      font-weight: 400; letter-spacing: -0.02em;
+      margin-bottom: 28px;
+    }
+    .before-after-diagram {
+      display: grid; grid-template-columns: 1fr auto 1fr; gap: 0; align-items: stretch;
+      border: 1px solid var(--line); overflow: hidden;
+    }
+    .ba-col { padding: 36px 32px; }
+    .ba-col.before { background: #f5f3f0; }
+    .ba-col.after { background: #fff; }
+    .ba-divider {
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 20px; background: var(--line); font-size: 18px; color: var(--ink-dim);
+      writing-mode: vertical-rl;
+    }
+    .ba-label {
+      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ink-dim); margin-bottom: 20px;
+    }
+    .ba-item {
+      display: flex; align-items: baseline; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid var(--line);
+      font-size: 14px; color: var(--ink-mid); line-height: 1.5;
+    }
+    .ba-item:last-child { border-bottom: 0; }
+    .ba-icon { font-size: 16px; flex-shrink: 0; opacity: 0.5; }
+    .ba-col.after .ba-icon { opacity: 1; }
+    .ba-col.after .ba-item { color: var(--ink); }
+
+    /* ─── Photo Before/After ─── */
+    .ba-photo-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ink-dim); margin: 26px 0 10px;
+    }
+    .ba-photo-label .ba-tag {
+      padding: 4px 10px; border: 1px solid var(--border); color: var(--ink-dim); background: #f5f3f0;
+    }
+    .ba-photo-label.after .ba-tag { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .ba-photo-caption { font-size: 12.5px; color: var(--ink-dim); margin: 10px 2px 0; line-height: 1.6; }
+
+    /* ─── Lightbox ─── */
+    .g-cell img { cursor: zoom-in; }
+    .lightbox {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(10,10,10,0.93);
+      display: none; align-items: center; justify-content: center;
+      padding: 4vh 4vw; cursor: zoom-out;
+    }
+    .lightbox.is-open { display: flex; }
+    .lightbox img {
+      max-width: 100%; max-height: 100%; object-fit: contain;
+      border-radius: 3px; box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+      animation: lb-in 220ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .lightbox-hint {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+    }
+    @keyframes lb-in { from { opacity: 0; transform: scale(0.965); } to { opacity: 1; transform: scale(1); } }
+
+    /* ─── Gallery ─── */
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    .g-cell.diagram { background: white; }
+    .g-cell.diagram img { width: 100%; height: auto; display: block; }
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+
+    /* ─── Section label ─── */
+    .section-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+
+    /* ─── Nav project ─── */
+    .nav-project { display: flex; justify-content: space-between; align-items: center; padding: 32px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
+    .nav-project a { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; display: flex; align-items: center; gap: 8px; }
+    .nav-project a:hover { color: var(--ink); }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94); backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-radius: 6px 0 0 6px;
+    }
+    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .project-overview { grid-template-columns: 1fr; gap: 40px; }
+      .outcomes-grid { grid-template-columns: 1fr 1fr; }
+      .process-steps { flex-direction: column; gap: 0; }
+      .process-step { border-left: none; border-top: 1px solid var(--line); padding: 20px 0; }
+      .process-step:first-child { border-top: none; }
+      .before-after-diagram { grid-template-columns: 1fr; }
+      .ba-divider { writing-mode: horizontal-tb; padding: 12px; }
+      .g-row.r3 { grid-template-columns: 1fr 1fr; }
+      .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .g-row.r3 { grid-template-columns: 1fr 1fr; }
+      .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .project-hero-content { padding: 32px 20px; }
+      .project-body { padding: 40px 20px 60px; }
+      .breadcrumb { padding: 16px 20px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .g-row.r2, .g-row.r3 { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+                  transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Image Fade-In ─── */
+    .g-cell img {
+      opacity: 0;
+      transition: opacity 400ms ease;
+    }
+    .g-cell img.loaded {
+      opacity: 1;
+    }
+
+    /* ─── Gallery Hover ─── */
+    .g-cell {
+      border-radius: 2px;
+    }
+    .g-cell img {
+      transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .g-cell:hover img.loaded {
+      transform: scale(1.008);
+    }
+
+    /* ─── Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .g-cell img { opacity: 1 !important; transition: none !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html" class="is-active" aria-current="page">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="../brand.html">Brand &amp; Visual</a>
+    <span>/</span>
+    <a href="#">Kitadoko</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/shared/Space_Design_kitadoko.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Rebranding</span>
+        <span class="project-hero-tag">Service Design</span>
+        <span class="project-hero-tag">Space Design</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">Kitadoko — Hair Salon Rebranding</span>
+        <span class="t-jp">Kitadoko &#8212; &#12504;&#12450;&#12469;&#12525;&#12531;&#12539;&#12522;&#12502;&#12521;&#12531;&#12487;&#12451;&#12531;&#12464;</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">Kitadoko Hair Salon</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Creative Director &amp; Design Strategist</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Heritage</span>
+          <span class="project-meta-value">Est. 1871 &mdash; 150+ years</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <main class="project-body">
+
+    <!-- ── Overview (left: stats, right: text) ── -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">0% &#8594; 90%</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Repeat customer rate</span>
+            <span class="t-jp">&#12522;&#12500;&#12540;&#12488;&#29575;</span>
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top: 32px;">
+          <span class="t-en">Scope</span>
+          <span class="t-jp">&#12473;&#12467;&#12540;&#12503;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Brand DNA &amp; Strategy</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;DNA&#12539;&#25126;&#30053;</span></li>
+          <li><span class="t-en">Business Model Design</span><span class="t-jp">&#12499;&#12472;&#12493;&#12473;&#12514;&#12487;&#12523;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Service Design</span><span class="t-jp">&#12469;&#12540;&#12499;&#12473;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Brand Identity</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#12450;&#12452;&#12487;&#12531;&#12486;&#12451;&#12486;&#12451;</span></li>
+          <li><span class="t-en">Space &amp; Interior Design</span><span class="t-jp">&#31354;&#38291;&#12539;&#12452;&#12531;&#12486;&#12522;&#12450;&#12487;&#12470;&#12452;&#12531;</span></li>
+          <li><span class="t-en">Logo Development</span><span class="t-jp">&#12525;&#12468;&#38283;&#30330;</span></li>
+        </ul>
+      </aside>
+
+      <div>
+        <h2 class="project-section-title">
+          <span class="t-en">The Opportunity</span>
+          <span class="t-jp">&#27231;&#20250;</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">A 150-year-old family barbershop, underground and invisible from the street &#8212; 90% male clientele, zero repeat customers. The new owner's vision: transform it into a modern salon that women and younger clients would choose.</span>
+          <span class="t-jp is-block">創業150年、通りから見えない地下の家族経営理容店 — 顧客の90%が男性、リピーターはゼロ。新オーナーのビジョンは、女性や若い客層に選ばれるモダンなサロンへの変革でした。</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">My Direction</span>
+          <span class="t-jp">&#12487;&#12451;&#12524;&#12463;&#12471;&#12519;&#12531;</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I started with the business, not the aesthetics: an innovation bootcamp with the CEO, journey mapping, and a business-model redesign built around ongoing customer relationships. The strategic anchor became the tagline <strong>"Kitadoko as a group of personal hair stylists"</strong> &#8212; a salon positioned not as a place, but as people. The identity, letterforms, service flow, and renovated interiors all followed from that one idea.</span>
+          <span class="t-jp is-block">美学ではなくビジネスから始めました。CEOとのイノベーションブートキャンプ、ジャーニーマッピング、継続的な顧客関係を軸にしたビジネスモデルの再設計。戦略の核はタグライン<strong>「パーソナルヘアスタイリスト集団としてのKitadoko」</strong> — サロンを「場所」ではなく「人」として位置づけました。アイデンティティ、レターフォーム、サービスフロー、改装された店舗空間は、すべてこの一つの考えから導かれています。</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">Tools &amp; Methods</span>
+          <span class="t-jp">&#12484;&#12540;&#12523;&#65286;&#25163;&#27861;</span>
+        </h2>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Innovation Bootcamp</span><span class="t-jp">&#12452;&#12494;&#12505;&#12540;&#12471;&#12519;&#12531;&#12502;&#12540;&#12488;&#12461;&#12515;&#12531;&#12503;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Brand Audit</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#30435;&#26619;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">BMC</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Business Tactics Cards</span><span class="t-jp">&#12499;&#12472;&#12493;&#12473;&#12479;&#12463;&#12486;&#12451;&#12463;&#12473;&#12459;&#12540;&#12489;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Journey Mapping</span><span class="t-jp">&#12472;&#12515;&#12540;&#12491;&#12540;&#12510;&#12483;&#12500;&#12531;&#12464;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Service Blueprint</span><span class="t-jp">&#12469;&#12540;&#12499;&#12473;&#12502;&#12523;&#12540;&#12503;&#12522;&#12531;&#12488;</span></span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Co-design Workshops</span><span class="t-jp">&#20849;&#21109;&#12527;&#12540;&#12463;&#12471;&#12519;&#12483;&#12503;</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Before / After (photos) ── -->
+    <div class="project-section reveal-on-scroll">
+      <h2 class="project-section-title">
+        <span class="t-en">Before &amp; After</span>
+        <span class="t-jp">ビフォー・アフター</span>
+      </h2>
+
+      <p class="ba-photo-label"><span class="ba-tag">Before</span>
+        <span class="t-en">1871 &#8212; the shop the new owner inherited</span>
+        <span class="t-jp">1871年創業 — 新オーナーが受け継いだ当時の店</span>
+      </p>
+      <div class="g-row r3">
+        <div class="g-cell photo"><img src="../assets/dnt/Screen_Shot_2023-07-17_at_11.26.42_AM.png" alt="Before — original KITADOKO storefront, brick facade with cluttered signage" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/credit-card-portal/Screenshot_2024-04-29_at_8.38.04_PM.png" alt="Before — dark interior with 'Established in 1871' lettering" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/credit-card-portal/Screenshot_2024-04-29_at_5.01.50_PM.png" alt="Before — old salon floor with styling chairs" loading="lazy"></div>
+      </div>
+      <p class="ba-photo-caption">
+        <span class="t-en">Barbershop-era signage, a dark masculine interior, and a salon floor that hadn't changed with its customers.</span>
+        <span class="t-jp">理容店時代のサイン、暗く男性的な内装、客層の変化に取り残されたサロンフロア。</span>
+      </p>
+
+      <p class="ba-photo-label after"><span class="ba-tag">After</span>
+        <span class="t-en">kitadoko &#8212; a group of personal hair stylists</span>
+        <span class="t-jp">kitadoko — パーソナルヘアスタイリスト集団へ</span>
+      </p>
+      <div class="g-row r3">
+        <div class="g-cell photo"><img src="../assets/kitadoko/kitadoko-door.jpg" alt="After — new kitadoko entrance and signage" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/shared/Space_Design_kitadoko.png" alt="After — renovated bright salon interior" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/kitadoko/kitadoko-retail-interior.jpg" alt="After — retail and reception area with new brand identity" loading="lazy"></div>
+      </div>
+      <p class="ba-photo-caption">
+        <span class="t-en">A bright, welcoming space with the new lowercase wordmark &#8212; designed to be chosen by the customers the old shop never reached.</span>
+        <span class="t-jp">新しい小文字のワードマークをまとった明るく開かれた空間 — かつて届かなかった客層に「選ばれる」ためのデザイン。</span>
+      </p>
+    </div>
+
+    <!-- ── Outcomes Grid ── -->
+    <div class="project-section">
+      <h2 class="project-section-title reveal-on-scroll">
+        <span class="t-en">Results</span>
+        <span class="t-jp">&#25104;&#26524;</span>
+      </h2>
+      <div class="outcomes-grid reveal-on-scroll">
+        <div class="outcome-block">
+          <div class="outcome-num">91%</div>
+          <div class="outcome-label"><span class="t-en">Customer satisfaction (4&#8211;5&#9733;)</span><span class="t-jp">顧客満足度（評価4〜5つ星）</span></div>
+          <div class="outcome-change"><span class="t-en">Up from 62%</span><span class="t-jp">62%から上昇</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">90%</div>
+          <div class="outcome-label"><span class="t-en">Repeat customer rate</span><span class="t-jp">&#12522;&#12500;&#12540;&#12488;&#29575;</span></div>
+          <div class="outcome-change"><span class="t-en">Up from 0%</span><span class="t-jp">0%&#12363;&#12425;&#19978;&#26119;</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">200</div>
+          <div class="outcome-label"><span class="t-en">Monthly visits per stylist</span><span class="t-jp">&#12473;&#12479;&#12452;&#12522;&#12473;&#12488;&#12354;&#12383;&#12426;&#26376;&#38291;&#26469;&#24215;&#25968;</span></div>
+          <div class="outcome-change"><span class="t-en">Up from 30</span><span class="t-jp">30&#12363;&#12425;&#22679;&#21152;</span></div>
+        </div>
+        <div class="outcome-block">
+          <div class="outcome-num">50%</div>
+          <div class="outcome-label"><span class="t-en">Female clientele</span><span class="t-jp">&#22899;&#24615;&#39015;&#23458;&#27604;&#29575;</span></div>
+          <div class="outcome-change"><span class="t-en">Up from 10%</span><span class="t-jp">10%&#12363;&#12425;&#19978;&#26119;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Process Steps ── -->
+    <div class="project-section reveal-on-scroll">
+      <h2 class="project-section-title">
+        <span class="t-en">Process</span>
+        <span class="t-jp">&#12503;&#12525;&#12475;&#12473;</span>
+      </h2>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="process-step-num">01</div>
+          <div class="process-step-label"><span class="t-en">Innovation Bootcamp</span><span class="t-jp">&#12452;&#12494;&#12505;&#12540;&#12471;&#12519;&#12531;&#12502;&#12540;&#12488;&#12461;&#12515;&#12531;&#12503;</span></div>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">02</div>
+          <div class="process-step-label"><span class="t-en">Brand Audit &amp; Strategy</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#30435;&#26619;&#12539;&#25126;&#30053;</span></div>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">03</div>
+          <div class="process-step-label"><span class="t-en">Business Model Redesign</span><span class="t-jp">&#12499;&#12472;&#12493;&#12473;&#12514;&#12487;&#12523;&#20877;&#35373;&#35336;</span></div>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">04</div>
+          <div class="process-step-label"><span class="t-en">Service Design</span><span class="t-jp">&#12469;&#12540;&#12499;&#12473;&#12487;&#12470;&#12452;&#12531;</span></div>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">05</div>
+          <div class="process-step-label"><span class="t-en">Brand Identity + Space Design</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#12450;&#12452;&#12487;&#12531;&#12486;&#12451;&#12486;&#12451; + &#31354;&#38291;&#12487;&#12470;&#12452;&#12531;</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!-- ── Gallery Sections ── -->
+    <!-- ════════════════════════════════════════════════ -->
+
+    <div class="gallery reveal-on-scroll">
+
+      <!-- ── Space Design & Brand Identity (the payoff — large, first) ── -->
+      <p class="gallery-label">
+        <span class="t-en">Space Design &amp; Brand Identity</span>
+        <span class="t-jp">空間デザインとブランドアイデンティティ</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko-logo-final.png" alt="Kitadoko final wordmark" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko-logo-development.gif" alt="Kitadoko logo development animation" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process19.png" alt="Kitadoko interior space language mood board" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process20.png" alt="Kitadoko interior floor plan and facade render" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process21.png" alt="Kitadoko cut &amp; styling area and waiting area renders" loading="lazy"></div>
+      </div>
+
+      <!-- ── Business & Service Design ── -->
+      <p class="gallery-label">
+        <span class="t-en">Business &amp; Service Design</span>
+        <span class="t-jp">ビジネス・サービスデザイン</span>
+      </p>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process3.png" alt="Kitadoko's new Brand DNA — vision, promise, personality, assets" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process11.png" alt="Business Model Canvas workshop — sticky notes from Kitadoko session" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process14.png" alt="Existing vs. new business model — adding recurring premium services" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process16.png" alt="Kitadoko service blueprint — before, during, after service" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process18.png" alt="New service model — expanding from 3 to 9 personalized services" loading="lazy"></div>
+      </div>
+
+      <!-- ── Brand Strategy & Development ── -->
+      <p class="gallery-label">
+        <span class="t-en">Brand Strategy &amp; Development</span>
+        <span class="t-jp">ブランド戦略と開発プロセス</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/credit-card-portal/Screenshot_2024-04-29_at_5.34.07_PM.png" alt="Six-step strategy process — from research to ongoing improvement" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process1.png" alt="Key findings from customer and employee experience research" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process2.png" alt="Persona definition — Satoko Murakami, Kitadoko's target customer" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process7.png" alt="Customer journey map — before, during, after service" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r12">
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process13.png" alt="Key findings translated into &quot;what if&quot; design opportunities" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/kitadoko/kitadoko_process15.png" alt="New brand tagline — Kitadoko as a group of personal hair stylists" loading="lazy"></div>
+      </div>
+
+      <!-- ── Brand Applications ── -->
+      <p class="gallery-label">
+        <span class="t-en">Brand Applications</span>
+        <span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#12450;&#12503;&#12522;&#12465;&#12540;&#12471;&#12519;&#12531;</span>
+      </p>
+
+      <div class="g-row r2">
+        <div class="g-cell brand"><img src="../assets/kitadoko/Kitadoko__web.png" alt="Kitadoko website" loading="lazy"></div>
+        <div class="g-cell natural"><img src="../assets/coca-cola/Card_5115_2019-01-15_1.jpeg" alt="Kitadoko business cards and membership stamp cards" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell photo"><img src="../assets/kitadoko/kitadoko_nigou_ten.jpg" alt="Kitadoko second store location" loading="lazy"></div>
+      </div>
+
+      <!-- ── Impact, By the Numbers ── -->
+      <p class="gallery-label">
+        <span class="t-en">Impact, By the Numbers</span>
+        <span class="t-jp">数字で見る成果</span>
+      </p>
+
+      <div class="g-row r3">
+        <div class="g-cell brand"><img src="../assets/value-frontier/Mask_group-0.png" alt="Higher customer satisfaction — 62% to 91% rating customers 4 and 5 stars" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/credit-card-portal/Mask_group-6.png" alt="Customer gender ratio shift — 90/10 male to 50/50 male-female" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/credit-card-portal/Mask_group-2.png" alt="Per-customer sales increased — service mix expanded to Head Spa and Scalp Care" loading="lazy"></div>
+      </div>
+
+    </div>
+
+    <!-- ── Project Details (compact 3-col) ── -->
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">&#25104;&#26524;&#29289;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Experience Strategy</span><span class="t-jp">&#20307;&#39443;&#25126;&#30053;</span></li>
+          <li><span class="t-en">Customer Journey Map</span><span class="t-jp">&#12459;&#12473;&#12479;&#12510;&#12540;&#12472;&#12515;&#12540;&#12491;&#12540;&#12510;&#12483;&#12503;</span></li>
+          <li><span class="t-en">Service Blueprint</span><span class="t-jp">&#12469;&#12540;&#12499;&#12473;&#12502;&#12523;&#12540;&#12503;&#12522;&#12531;&#12488;</span></li>
+          <li><span class="t-en">Brand Strategy &amp; Identity</span><span class="t-jp">&#12502;&#12521;&#12531;&#12489;&#25126;&#30053;&#12539;&#12450;&#12452;&#12487;&#12531;&#12486;&#12451;&#12486;&#12451;</span></li>
+          <li><span class="t-en">Store &amp; Space Design</span><span class="t-jp">&#24215;&#33303;&#12539;&#31354;&#38291;&#12487;&#12470;&#12452;&#12531;</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Methods</span>
+          <span class="t-jp">&#25163;&#27861;</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Innovation Bootcamp</span><span class="t-jp">&#12452;&#12494;&#12505;&#12540;&#12471;&#12519;&#12531;&#12502;&#12540;&#12488;&#12461;&#12515;&#12531;&#12503;</span></li>
+          <li><span class="t-en">Business Model Canvas</span><span class="t-jp">&#12499;&#12472;&#12493;&#12473;&#12514;&#12487;&#12523;&#12461;&#12515;&#12531;&#12496;&#12473;</span></li>
+          <li><span class="t-en">Business Tactics Cards</span><span class="t-jp">&#12499;&#12472;&#12493;&#12473;&#12479;&#12463;&#12486;&#12451;&#12463;&#12473;&#12459;&#12540;&#12489;</span></li>
+          <li><span class="t-en">Co-design Workshops</span><span class="t-jp">&#20849;&#21109;&#12527;&#12540;&#12463;&#12471;&#12519;&#12483;&#12503;</span></li>
+          <li><span class="t-en">Stakeholder Interviews</span><span class="t-jp">&#12473;&#12486;&#12540;&#12463;&#12507;&#12523;&#12480;&#12540;&#12452;&#12531;&#12479;&#12499;&#12517;&#12540;</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Team</span>
+          <span class="t-jp">&#12481;&#12540;&#12512;</span>
+        </p>
+        <p class="project-text" style="font-size: 13px;">
+          <span class="t-en">Client leadership team, Interior Design Company. I served as Creative Director and Design Strategist &#8212; leading brand direction, business model redesign, service design, and visual identity.</span>
+          <span class="t-jp is-block">&#12463;&#12521;&#12452;&#12450;&#12531;&#12488;&#12522;&#12540;&#12480;&#12540;&#12471;&#12483;&#12503;&#12481;&#12540;&#12512;&#12289;&#12452;&#12531;&#12486;&#12522;&#12450;&#12487;&#12470;&#12452;&#12531;&#20250;&#31038;&#12290;&#12463;&#12522;&#12456;&#12452;&#12486;&#12451;&#12502;&#12487;&#12451;&#12524;&#12463;&#12479;&#12540;&#20860;&#12487;&#12470;&#12452;&#12531;&#12473;&#12488;&#12521;&#12486;&#12472;&#12473;&#12488;&#12392;&#12375;&#12390;&#12289;&#12502;&#12521;&#12531;&#12489;&#26041;&#21521;&#24615;&#12289;&#12499;&#12472;&#12493;&#12473;&#12514;&#12487;&#12523;&#20877;&#35373;&#35336;&#12289;&#12469;&#12540;&#12499;&#12473;&#12487;&#12470;&#12452;&#12531;&#12289;&#12499;&#12472;&#12517;&#12450;&#12523;&#12450;&#12452;&#12487;&#12531;&#12486;&#12451;&#12486;&#12451;&#12434;&#12522;&#12540;&#12489;&#12290;</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Nav (prev/next) ── -->
+    <div class="nav-project">
+      <a href="../work.html">&#8592; <span class="t-en">All Work</span><span class="t-jp">&#12377;&#12409;&#12390;&#12398;&#20181;&#20107;</span></a>
+      <a href="dnt.html"><span class="t-en">Next: DO! NUTS TOKYO</span><span class="t-jp">&#27425;&#65306;DO! NUTS TOKYO</span> &#8594;</a>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">&#12501;&#12522;&#12540;&#12521;&#12531;&#12473;&#12539;&#12467;&#12531;&#12469;&#12523;&#12486;&#12451;&#12531;&#12464;&#12399; <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> &#12434;&#36890;&#12376;&#12390;</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <!-- ── Lang switch ── -->
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">&middot;</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+
+// ── Scroll Reveal ──
+(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+})();
+
+// ── Image Fade-In ──
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'));
+});
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+
+  // ── Lightbox (click any gallery image to enlarge) ──
+  (() => {
+    const box = document.createElement('div');
+    box.className = 'lightbox';
+    box.innerHTML = '<img alt=""><span class="lightbox-hint">Click / Esc to close</span>';
+    document.body.appendChild(box);
+    const big = box.querySelector('img');
+    const close = () => { box.classList.remove('is-open'); big.src = ''; };
+    box.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    document.querySelectorAll('.g-cell img').forEach(img => {
+      img.addEventListener('click', () => {
+        big.src = img.currentSrc || img.src;
+        big.alt = img.alt || '';
+        box.classList.add('is-open');
+      });
+    });
+  })();
+  </script>
+
+</body>
+</html>

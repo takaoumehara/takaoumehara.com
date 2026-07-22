@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Amplify ELA Quests — Takao Umehara</title>
+  <meta name="description" content="Amplify ELA Quests — immersive quest-based learning products reaching millions of students. Product design case study by Takao Umehara.">
+  <meta property="og:title" content="Amplify ELA Quests — Takao Umehara">
+  <meta property="og:description" content="Amplify ELA Quests — immersive quest-based learning products reaching millions of students.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/shared/Quest_teaser_tr.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 28px;
+      height: 20px;
+      position: relative;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--ink);
+      transition: transform 280ms ease, opacity 180ms ease;
+    }
+
+    .nav-toggle span:nth-child(1) {
+      top: 0;
+    }
+
+    .nav-toggle span:nth-child(2) {
+      top: 9px;
+    }
+
+    .nav-toggle span:nth-child(3) {
+      top: 18px;
+    }
+
+    .nav-toggle.is-open span:nth-child(1) {
+      top: 9px;
+      transform: rotate(45deg);
+    }
+
+    .nav-toggle.is-open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.is-open span:nth-child(3) {
+      top: 9px;
+      transform: rotate(-45deg);
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-links.is-open {
+        display: flex;
+      }
+
+      .nav-links li {
+        border-top: 1px solid var(--line);
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 16px 32px;
+        font-size: 14px;
+      }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18, 18, 18, 0.08);
+      --border: rgba(18, 18, 18, 0.10);
+      --surface: rgba(255, 255, 255, 0.92);
+      --shadow: 0 18px 42px rgba(18, 18, 18, 0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188, 233, 255, 0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255, 204, 229, 0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    .eyebrow,
+    .kicker,
+    .meta,
+    .small,
+    .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.is-active {
+      color: var(--ink);
+    }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .btn-primary:hover {
+      background: #2a2a2a;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(18, 18, 18, 0.3);
+    }
+
+    /* ─── Lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18, 18, 18, 0.10);
+      border-top: 1px solid rgba(18, 18, 18, 0.07);
+      border-bottom: 1px solid rgba(18, 18, 18, 0.07);
+      border-radius: 6px 0 0 6px;
+    }
+
+    .lang-btn {
+      appearance: none;
+      background: none;
+      border: none;
+      font-family: var(--ff);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--ink-dim);
+      padding: 0;
+      transition: color 160ms ease;
+    }
+
+    .lang-btn.is-active {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .lang-sep {
+      font-size: 9px;
+      color: rgba(18, 18, 18, 0.18);
+    }
+
+    /* ─── Bilingual ─── */
+    .t-jp {
+      display: none;
+    }
+
+    html.lang-jp .t-en {
+      display: none;
+    }
+
+    html.lang-jp .t-jp {
+      display: inline;
+    }
+
+    html.lang-jp .t-jp.is-block {
+      display: block;
+    }
+
+    /* ─── Animations ─── */
+    @keyframes gradient-band-sweep {
+      0% {
+        transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%));
+        opacity: 0;
+      }
+
+      8% {
+        transform: translateX(0);
+        opacity: 0.94;
+      }
+
+      24% {
+        transform: translateX(0);
+        opacity: 0.94;
+      }
+
+      100% {
+        transform: translateX(232%);
+        opacity: 0.92;
+      }
+    }
+
+    @keyframes mask-reveal {
+      0% {
+        clip-path: inset(0 100% 0 0);
+        opacity: 0;
+        transform: translate3d(var(--from-x), var(--from-y), 0);
+      }
+
+      14% {
+        clip-path: inset(0 100% 0 0);
+        opacity: 0;
+        transform: translate3d(var(--from-x), var(--from-y), 0);
+      }
+
+      30% {
+        opacity: 0.24;
+      }
+
+      100% {
+        clip-path: inset(0 0 0 0);
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+      }
+    }
+
+    @keyframes hero-in {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .rr>.inner {
+        animation: none !important;
+        opacity: 1 !important;
+        clip-path: inset(0 0 0 0) !important;
+        transform: none !important;
+      }
+
+      .rr>.cover {
+        animation: none !important;
+        opacity: 0 !important;
+      }
+    }
+
+    /* ─── Project-detail styles ─── */
+    .project-hero {
+      position: relative;
+      min-height: 480px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .project-hero-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .project-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(18, 18, 18, 0.72) 0%, rgba(18, 18, 18, 0.18) 60%, transparent 100%);
+    }
+
+    .project-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 48px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .project-hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .project-hero-tag {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      padding: 5px 9px;
+    }
+
+    .project-hero-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 0.93;
+      color: #fff;
+      max-width: 800px;
+      margin-bottom: 20px;
+    }
+
+    .project-hero-meta {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .project-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .project-meta-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.48);
+    }
+
+    .project-meta-value {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .project-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 32px 80px;
+    }
+
+    .project-overview {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      margin-bottom: 72px;
+      padding-bottom: 72px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .project-aside-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 16px;
+    }
+
+    .project-aside-stat {
+      margin-bottom: 24px;
+    }
+
+    .project-aside-num {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    .project-aside-desc {
+      font-size: 13px;
+      color: var(--ink-dim);
+      margin-top: 4px;
+    }
+
+    .project-section-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .project-text {
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--ink-mid);
+      margin-bottom: 20px;
+    }
+
+    .project-deliverables {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-deliverables li {
+      font-size: 14px;
+      color: var(--ink-mid);
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+
+    .project-deliverables li::before {
+      content: "—";
+      color: rgba(18, 18, 18, 0.24);
+      flex-shrink: 0;
+    }
+
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-bottom: 72px;
+    }
+
+    .outcome-block {
+      padding: 28px 24px;
+      border: 1px solid var(--line);
+    }
+
+    .outcome-num {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      margin-bottom: 6px;
+    }
+
+    .outcome-label {
+      font-size: 13px;
+      color: var(--ink-mid);
+      line-height: 1.5;
+    }
+
+    .project-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 48px;
+      border-top: 1px solid var(--line);
+    }
+
+    .project-nav-link {
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .project-nav-link:hover {
+      color: var(--ink);
+    }
+
+    /* ─── Quest Section ─── */
+    .quest-section {
+      margin-bottom: 72px;
+    }
+
+    .quest-header {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .quest-num {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 8px;
+    }
+
+    .quest-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(20px, 2.2vw, 28px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+
+    .quest-grade {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 12px;
+    }
+
+    .quest-desc {
+      font-size: 15px;
+      line-height: 1.68;
+      color: var(--ink-mid);
+      max-width: 800px;
+    }
+
+    .quest-rationale {
+      font-size: 15px;
+      line-height: 1.68;
+      color: var(--ink-mid);
+      max-width: 800px;
+      margin-top: 16px;
+      padding: 20px 24px;
+      border-left: 2px solid var(--ink-dim);
+      background: rgba(18, 18, 18, 0.02);
+    }
+
+    .quest-rationale-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 8px;
+    }
+
+    /* ─── Editorial Gallery System ─── */
+    .gallery {
+      margin-bottom: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .gallery-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin: 48px 0 12px;
+    }
+
+    .g-row {
+      display: grid;
+      gap: 4px;
+      margin-bottom: 0;
+    }
+
+    .g-row+.g-row {
+      margin-top: 4px;
+    }
+
+    .g-row.r1 {
+      grid-template-columns: 1fr;
+    }
+
+    .g-row.r2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .g-row.r3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .g-row.r21 {
+      grid-template-columns: 2fr 1fr;
+    }
+
+    .g-row.r12 {
+      grid-template-columns: 1fr 2fr;
+    }
+
+    .g-cell {
+      overflow: hidden;
+      background: #f5f3f0;
+    }
+
+    .g-cell.ui {
+      aspect-ratio: 16/9;
+      background: #f5f3f0;
+    }
+
+    .g-cell.ui img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .g-cell.dark {
+      background: #111;
+    }
+
+    .g-cell.dark img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .g-cell.natural {
+      background: #f5f3f0;
+    }
+
+    .g-cell.natural img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .g-cell.diagram {
+      background: white;
+    }
+
+    .g-cell.diagram img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .g-cell.photo {
+      aspect-ratio: 4/3;
+    }
+
+    .g-cell.photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .g-cell.brand {
+      background: white;
+    }
+
+    .g-cell.brand img {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 520px;
+      object-fit: contain;
+    }
+
+    @media (max-width: 700px) {
+      .g-row.r3 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .g-row.r21,
+      .g-row.r12 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+        transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Image Fade-In ─── */
+    .g-cell img {
+      opacity: 0;
+      transition: opacity 400ms ease;
+    }
+
+    .g-cell img.loaded {
+      opacity: 1;
+    }
+
+    /* ─── Gallery Hover ─── */
+    .g-cell {
+      border-radius: 2px;
+    }
+
+    .g-cell img {
+      transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .g-cell:hover img.loaded {
+      transform: scale(1.008);
+    }
+
+    /* ─── Tools list ─── */
+    .tools-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tool-tag {
+      font-size: 11px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      color: var(--ink-dim);
+    }
+
+    /* ─── Compact details ─── */
+    .project-details-compact {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 32px;
+      padding: 40px 0;
+      margin-bottom: 48px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-group-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 12px;
+    }
+
+    .detail-group-value {
+      font-size: 14px;
+      color: var(--ink-mid);
+      line-height: 1.6;
+    }
+
+    /* ─── Video ─── */
+    .quest-video {
+      position: relative;
+      width: 100%;
+      max-width: 800px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #111;
+      margin-bottom: 32px;
+    }
+
+    .quest-video video {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .quest-video-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin: 24px 0 10px;
+    }
+
+    .quest-video-link {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 8px 14px;
+      margin-top: 10px;
+      transition: border-color 180ms ease, color 180ms ease;
+    }
+
+    .quest-video-link:hover {
+      border-color: rgba(18, 18, 18, 0.3);
+      color: var(--ink);
+    }
+
+    .quest-yt-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .quest-yt-cell {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .quest-yt-cell iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .quest-embed {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/10;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      margin-bottom: 32px;
+    }
+
+    .quest-embed iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    @media (max-width: 700px) {
+      .quest-yt-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .project-overview {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .outcomes-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project-details-compact {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .site-nav {
+        padding: 16px 20px;
+      }
+
+      .project-body {
+        padding: 40px 20px 60px;
+      }
+
+      .project-hero-content {
+        padding: 32px 20px;
+      }
+
+      .project-nav {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .outcomes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .g-row.r2,
+      .g-row.r3 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-on-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+
+      .g-cell img {
+        opacity: 1 !important;
+        transition: none !important;
+      }
+
+      .g-cell:hover img {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image: url('../assets/shared/Quest_teaser_tr.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">EdTech</span>
+        <span class="project-hero-tag">Product Design</span>
+        <span class="project-hero-tag">AR</span>
+        <span class="project-hero-tag">Immersive Learning</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">Amplify Education ELA Quests</span>
+        <span class="t-jp">Amplify Education ELAクエスト</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">Amplify Education</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Lead Product Designer</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">2014 – 2025</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <main class="project-body">
+
+    <!-- ═══ Overview ═══ -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">Impact</span>
+          <span class="t-jp">インパクト</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">
+            <span class="t-en">Millions</span>
+            <span class="t-jp">数百万</span>
+          </div>
+          <div class="project-aside-desc">
+            <span class="t-en">Students reached across the US</span>
+            <span class="t-jp">全米の生徒に届く</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">10+</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Quest modules launched</span>
+            <span class="t-jp">クエストモジュールをローンチ</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">AR</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Technology integrated into classroom experiences</span>
+            <span class="t-jp">AR技術をクラスルーム体験に統合</span>
+          </div>
+        </div>
+      </aside>
+      <div>
+        <h2 class="project-section-title">
+          <span class="t-en">The Tension</span>
+          <span class="t-jp">問題の核心</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">Teachers wanted to deliver engaging, immersive ELA instruction, but creating those
+            experiences demanded specialized skills, time, and technical knowledge that most educators simply didn't
+            have. The gap between what the best teachers could achieve and what the average teacher could deliver was
+            widening.</span>
+          <span
+            class="t-jp is-block">教師たちは魅力的で没入感のあるELA指導を届けたいと考えていたが、そうした体験を生み出すには専門スキル・時間・技術知識が必要で、ほとんどの教育者にはそれがなかった。優秀な教師が達成できることと、一般的な教師が提供できることの差は広がる一方だった。</span>
+        </p>
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">My Approach</span>
+          <span class="t-jp">アプローチ</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I designed ready-to-use immersive quest modules that empowered all teachers to deliver
+            dynamic ELA instruction. Each quest was a complete 5-day lesson sequence with scripts, teacher guides, and
+            embedded assessments. I integrated AR technology for experiential learning, created a teacher-facing app for
+            seamless classroom implementation, and developed drawer-based navigation systems inspired by the content
+            itself.</span>
+          <span
+            class="t-jp is-block">すべての教師がダイナミックなELA指導を届けられるよう、すぐに使える没入型クエストモジュールを設計した。各クエストはスクリプト、教師ガイド、組み込みアセスメントを備えた5日間のレッスンシーケンス。体験学習のためにAR技術を統合し、シームレスな教室実装のための教師向けアプリを開発し、コンテンツ自体にインスパイアされた引き出し式ナビゲーションシステムを構築した。</span>
+        </p>
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">Tools &amp; Methods</span>
+          <span class="t-jp">ツール＆手法</span>
+        </h2>
+        <div class="tools-list">
+          <span class="tool-tag"><span class="t-en">Technology Research</span><span
+              class="t-jp">テクノロジーリサーチ</span></span>
+          <span class="tool-tag"><span class="t-en">UX Research</span><span class="t-jp">UXリサーチ</span></span>
+          <span class="tool-tag"><span class="t-en">Product Concept</span><span class="t-jp">プロダクトコンセプト</span></span>
+          <span class="tool-tag"><span class="t-en">Persona Creation</span><span class="t-jp">ペルソナ作成</span></span>
+          <span class="tool-tag"><span class="t-en">Journey Mapping</span><span class="t-jp">ジャーニーマッピング</span></span>
+          <span class="tool-tag"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
+          <span class="tool-tag">AR Integration</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Outcomes Grid ═══ -->
+    <div class="outcomes-grid reveal-on-scroll">
+      <div class="outcome-block">
+        <div class="outcome-num">01</div>
+        <div class="outcome-label">
+          <span class="t-en">Boosted student engagement through immersive storytelling, role-playing, and multimedia
+            experiences</span>
+          <span class="t-jp">没入型ストーリーテリング、ロールプレイ、マルチメディア体験による生徒のエンゲージメント向上</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">02</div>
+        <div class="outcome-label">
+          <span class="t-en">Enhanced literacy skills aligned with CCSS, strengthening critical reading, writing, and
+            speaking</span>
+          <span class="t-jp">CCSS準拠のリテラシースキル強化 — 読解力、作文力、スピーキング力の向上</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">03</div>
+        <div class="outcome-label">
+          <span class="t-en">Empowered teachers with step-by-step guides, assessment tools, and professional
+            development</span>
+          <span class="t-jp">ステップバイステップガイド、アセスメントツール、研修で教師を支援</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">04</div>
+        <div class="outcome-label">
+          <span class="t-en">Enabled data-driven instruction with embedded assessments and measurable literacy
+            growth</span>
+          <span class="t-jp">組み込みアセスメントによるデータ駆動型指導と測定可能なリテラシー成長</span>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══ Product Overview Video ═══ -->
+    <div class="reveal-on-scroll" style="margin-bottom: 72px;">
+      <h2 class="project-section-title" style="margin-bottom: 16px;">
+        <span class="t-en">Quests in Action</span>
+        <span class="t-jp">クエストの実際</span>
+      </h2>
+      <p class="project-text" style="max-width: 800px;">
+        <span class="t-en">An official overview of the Quest curriculum for Core Grades 3–5 — how the immersive,
+          multi-day modules I designed come together in the classroom.</span>
+        <span class="t-jp is-block">3〜5年生向けコアカリキュラムのクエストの公式概要 —
+          設計した没入型のマルチデイ・モジュールが教室でどのように機能するかを紹介する。</span>
+      </p>
+      <div
+        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 12px;">
+        <iframe src="https://www.youtube.com/embed/x4tz6Pd0pT4?modestbranding=1&rel=0&iv_load_policy=3"
+          title="Amplify Curriculum: Quests for the Core Grades 3-5" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+      </div>
+      <a href="https://www.youtube.com/watch?v=x4tz6Pd0pT4" target="_blank" rel="noopener" class="quest-video-link">
+        <span class="t-en">Watch on YouTube ↗</span>
+        <span class="t-jp">YouTubeで見る ↗</span>
+      </a>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- ═══ QUEST 01: Who Killed Edgar Allan Poe? ═══ -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="quest-section reveal-on-scroll">
+      <div class="quest-header">
+        <div class="quest-num">Quest 01</div>
+        <h3 class="quest-title">
+          <span class="t-en">Who Killed Edgar Allan Poe?</span>
+          <span class="t-jp">エドガー・アラン・ポーを殺したのは誰？</span>
+        </h3>
+        <div class="quest-grade">
+          <span class="t-en">7th Grade</span>
+          <span class="t-jp">7年生</span>
+        </div>
+        <p class="quest-desc">
+          <span class="t-en">Poe has been murdered and students must figure out who did it. They explore a range of
+            suspects, including characters from Poe's works and his critics. Students assume the identity of a suspect
+            and interview each other to uncover evidence.</span>
+          <span
+            class="t-jp is-block">ポーが殺害され、生徒たちは犯人を突き止めなければならない。ポーの作品に登場するキャラクターや批評家を含む容疑者を調査し、容疑者になりきって互いにインタビューし証拠を集める。</span>
+        </p>
+        <div class="quest-rationale">
+          <div class="quest-rationale-label">
+            <span class="t-en">Design Rationale</span>
+            <span class="t-jp">デザイン根拠</span>
+          </div>
+          <span class="t-en">This Quest incorporates bold visualizations and a wry sense of humor to highlight the
+            macabre fun of Poe's Gothic style. Students role-play as characters from Poe's poems, short stories, and
+            even his biography, as they try to solve an elaborate murder mystery. To unravel the plot, students practice
+            close reading of new primary source documents and additional works of Poe's not previously encountered in
+            the curriculum. They will use a digital, interactive detective notebook that allows them to collect and
+            organize their evidence as they work toward the creation of an opinion piece proving the identity of the
+            murderer in this mystery.</span>
+          <span
+            class="t-jp is-block">このクエストは、ポーのゴシックスタイルの不気味な楽しさを際立たせるため、大胆なビジュアライゼーションとウィットに富んだユーモアを取り入れている。生徒たちはポーの詩、短編小説、さらには伝記のキャラクターとしてロールプレイしながら、精巧な殺人ミステリーの解決に挑む。プロットを解き明かすため、カリキュラムで未出の一次資料やポーの追加作品の精読を練習する。デジタルの対話型探偵ノートブックを使い、証拠を収集・整理しながら、犯人の正体を証明する意見文の作成に取り組む。</span>
+        </div>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">Quest Walkthrough</span>
+        <span class="t-jp">クエストウォークスルー</span>
+      </p>
+      <div class="quest-video">
+        <video controls preload="metadata" poster="../assets/ela-quests/EdgarAllanPoe_01.png">
+          <source src="../assets/ela-quests/QUEST-Video_Amplify_live_Poe_Quest.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">Quest Opening</span>
+        <span class="t-jp">クエスト冒頭</span>
+      </p>
+      <div
+        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 12px;">
+        <iframe src="https://www.youtube.com/embed/R9Jo9R2OXHg?modestbranding=1&rel=0&iv_load_policy=3"
+          title="Amplify Edgar Allan Poe Quest Opening" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+      </div>
+      <a href="https://www.youtube.com/watch?v=R9Jo9R2OXHg" target="_blank" rel="noopener" class="quest-video-link">
+        <span class="t-en">Watch on YouTube ↗</span>
+        <span class="t-jp">YouTubeで見る ↗</span>
+      </a>
+
+      <div class="gallery">
+        <p class="gallery-label">
+          <span class="t-en">Quest Screens</span>
+          <span class="t-jp">クエスト画面</span>
+        </p>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/EdgarAllanPoe_01.png" alt="Edgar Allan Poe Quest — Screen 01" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/EdgarAllanPoe_02.png" alt="Edgar Allan Poe Quest — Screen 02" loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/EdgarAllanPoe_03.png" alt="Edgar Allan Poe Quest — Screen 03" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/EdgarAllanPoe_04.png" alt="Edgar Allan Poe Quest — Screen 04" loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r1">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/EdgarAllanPoe_05.png" alt="Edgar Allan Poe Quest — Screen 05" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- ═══ QUEST 02: Perception Academy ═══════════ -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="quest-section reveal-on-scroll">
+      <div class="quest-header">
+        <div class="quest-num">Quest 02</div>
+        <h3 class="quest-title">
+          <span class="t-en">Perception Academy</span>
+          <span class="t-jp">パーセプション・アカデミー</span>
+        </h3>
+        <div class="quest-grade">
+          <span class="t-en">7th Grade — AR Learning</span>
+          <span class="t-jp">7年生 — AR学習</span>
+        </div>
+        <p class="quest-desc">
+          <span class="t-en">Students explore a series of linked activities focusing on brain disorders and how they
+            affect our perception and response to the world. They move through the periods of a school day as though
+            they have one of the perception disorders described in Oliver Sacks's book <em>The Man Who Mistook His Wife
+              for a Hat</em>. AR technology deepened empathy and understanding of neurological conditions.</span>
+          <span
+            class="t-jp is-block">脳の障害とそれが私たちの知覚や世界への反応にどう影響するかに焦点を当てた一連の活動を探求する。オリバー・サックスの著書『妻を帽子とまちがえた男』に記載された知覚障害を体験しながら学校の1日を過ごす。AR技術が神経疾患への共感と理解を深めた。</span>
+        </p>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">Quest Introduction</span>
+        <span class="t-jp">クエスト紹介</span>
+      </p>
+      <div
+        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 12px;">
+        <iframe src="https://www.youtube.com/embed/WC69Qsph8I4?modestbranding=1&rel=0&iv_load_policy=3"
+          title="Perception Academy Quest" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+      </div>
+      <a href="https://www.youtube.com/watch?v=WC69Qsph8I4" target="_blank" rel="noopener" class="quest-video-link">
+        <span class="t-en">Watch on YouTube ↗</span>
+        <span class="t-jp">YouTubeで見る ↗</span>
+      </a>
+
+      <div class="gallery">
+        <p class="gallery-label">
+          <span class="t-en">Quest Screens</span>
+          <span class="t-jp">クエスト画面</span>
+        </p>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/PerceptionAcademy_Quest_Amplify_Page_05.png"
+              alt="Perception Academy — Page 05" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/PerceptionAcademy_Quest_Amplify_Page_07.png"
+              alt="Perception Academy — Page 07" loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/PerceptionAcademy_Quest_Amplify_Page_09.png"
+              alt="Perception Academy — Page 09" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/PerceptionAcademy_Quest_Amplify_Page_11.png"
+              alt="Perception Academy — Page 11" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">AR Development — Brain Disorder Breakfast Scene Prototypes</span>
+        <span class="t-jp">AR開発 — 脳障害の朝食シーン体験プロトタイプ</span>
+      </p>
+      <div class="quest-yt-row">
+        <div class="quest-yt-cell">
+          <iframe src="https://www.youtube.com/embed/zy8QF_tcOGg?modestbranding=1&rel=0&iv_load_policy=3"
+            title="AR Prototype — Brain Disorder 1" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>
+        <div class="quest-yt-cell">
+          <iframe src="https://www.youtube.com/embed/1DtlVvPcxlk?modestbranding=1&rel=0&iv_load_policy=3"
+            title="AR Prototype — Brain Disorder 2" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>
+        <div class="quest-yt-cell">
+          <iframe src="https://www.youtube.com/embed/8iEn-EOcqOA?modestbranding=1&rel=0&iv_load_policy=3"
+            title="AR Prototype — Brain Disorder 3" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- ═══ QUEST 03: Declare Yourself! ════════════ -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="quest-section reveal-on-scroll">
+      <div class="quest-header">
+        <div class="quest-num">Quest 03</div>
+        <h3 class="quest-title">
+          <span class="t-en">Declare Yourself!</span>
+          <span class="t-jp">自分を宣言しよう！</span>
+        </h3>
+        <div class="quest-grade">
+          <span class="t-en">Congress Roleplay</span>
+          <span class="t-jp">議会ロールプレイ</span>
+        </div>
+        <p class="quest-desc">
+          <span class="t-en">Students navigate the historical debate of the Declaration of Independence as members of
+            the Second Continental Congress. They embody historical figures, arguing their stances with evidence and
+            teamwork, aiming to sway opinions.</span>
+          <span
+            class="t-jp is-block">独立宣言をめぐる歴史的議論を第二次大陸会議のメンバーとして体験する。生徒は歴史上の人物になりきり、証拠とチームワークで自らの立場を主張し、意見を動かすことを目指す。</span>
+        </p>
+        <div class="quest-rationale">
+          <div class="quest-rationale-label">
+            <span class="t-en">Design Rationale — Drawer UI</span>
+            <span class="t-jp">デザイン根拠 — 引き出しUI</span>
+          </div>
+          <span class="t-en">The interface design takes inspiration from the historical drawers commonly found in
+            congress buildings. Each of the four main UI navigation elements functions like a drawer, allowing users to
+            "pull out" each section by clicking on its corresponding tab. This interactive drawer mechanism provides
+            access to distinct activities within the learning experience, making navigation intuitive and immersing
+            users in a tactile, period-appropriate design that reflects the setting of the content.</span>
+          <span
+            class="t-jp is-block">インターフェースデザインは、議事堂に見られる歴史的な引き出しからインスピレーションを得ている。4つのメインUIナビゲーション要素はそれぞれ引き出しのように機能し、対応するタブをクリックすることで各セクションを「引き出す」ことができる。このインタラクティブな引き出しメカニズムにより、学習体験内の個別アクティビティへのアクセスが可能になり、ナビゲーションを直感的にし、コンテンツの設定を反映した触覚的で時代にふさわしいデザインにユーザーを没入させる。</span>
+        </div>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">UI Walkthrough</span>
+        <span class="t-jp">UIウォークスルー</span>
+      </p>
+      <div
+        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 32px;">
+        <iframe src="https://www.youtube.com/embed/QmRjDav1-2I?modestbranding=1&rel=0&iv_load_policy=3"
+          title="Declare Yourself — UI Walkthrough" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+      </div>
+
+      <div class="gallery">
+        <div class="g-row r1">
+          <div class="g-cell dark">
+            <img src="../assets/dnt/Declare-3.png" alt="Declare Yourself! — Quest scene" loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/dnt/DeclareScreenshot2.png" alt="Declare Yourself! — Screenshot 2" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/dnt/DeclareScreenshot8.png" alt="Declare Yourself! — Screenshot 8" loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/dnt/DeclareScreenshot23.png" alt="Declare Yourself! — Screenshot 23" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/dnt/DeclareScreenshot30.png" alt="Declare Yourself! — Screenshot 30" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- ═══ QUEST 04: A Viking's Journey ═══════════ -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="quest-section reveal-on-scroll">
+      <div class="quest-header">
+        <div class="quest-num">Quest 04</div>
+        <h3 class="quest-title">
+          <span class="t-en">A Far From Home: A Viking's Journey</span>
+          <span class="t-jp">遠く故郷を離れて：バイキングの旅</span>
+        </h3>
+        <div class="quest-grade">
+          <span class="t-en">3rd Grade — Multi-sensory, 5 Lessons</span>
+          <span class="t-jp">3年生 — マルチセンサリー、5レッスン</span>
+        </div>
+        <p class="quest-desc">
+          <span class="t-en">Students embark on an immersive adventure as Vikings alongside Leif Erikson, aiming to
+            establish the first Norse settlement in North America. Through their voyage, they encounter diverse
+            characters, diving deep into Viking society. The Quest blends writing, listening, speaking, reading, and
+            physical activities across five 45-minute lessons.</span>
+          <span
+            class="t-jp is-block">レイフ・エリクソンとともにバイキングとして冒険に出発し、北米初のノース人入植地の建設を目指す。航海を通じて多様なキャラクターに出会い、バイキング社会を深く探求する。5回の45分レッスンにわたり、作文、リスニング、スピーキング、読解、身体活動を融合。</span>
+        </p>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">Quest Introduction</span>
+        <span class="t-jp">クエスト紹介</span>
+      </p>
+      <div class="quest-video">
+        <video controls preload="metadata">
+          <source src="../assets/ela-quests/QUEST-Video_Viking-short.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="gallery">
+        <div class="g-row r3">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Quest_Viking1.png" alt="A Viking's Journey — Visual 1" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Quest_Viking2.png" alt="A Viking's Journey — Visual 2" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Quest_Viking4.png" alt="A Viking's Journey — Visual 4" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- ═══ QUEST 05: The Contraption Quest ════════ -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="quest-section reveal-on-scroll">
+      <div class="quest-header">
+        <div class="quest-num">Quest 05</div>
+        <h3 class="quest-title">
+          <span class="t-en">The Contraption Quest</span>
+          <span class="t-jp">コントラプションクエスト</span>
+        </h3>
+        <div class="quest-grade">
+          <span class="t-en">Interactive Writing Adventure</span>
+          <span class="t-jp">インタラクティブ・ライティングアドベンチャー</span>
+        </div>
+        <p class="quest-desc">
+          <span class="t-en">Students explore the world of inventions and contraptions through a creative writing
+            journey. The quest challenges students to imagine, design, and write about their own fantastical machines
+            while developing narrative and expository writing skills.</span>
+          <span
+            class="t-jp is-block">発明とコントラプション（からくり）の世界をクリエイティブライティングの旅で探求する。自分だけの空想的な機械を想像し、設計し、それについて書くことで、物語的・説明的ライティングスキルを発展させる。</span>
+        </p>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">Quest Introduction</span>
+        <span class="t-jp">クエスト紹介</span>
+      </p>
+      <div class="quest-video">
+        <video controls preload="metadata">
+          <source src="../assets/ela-quests/QUEST-Video_Introducing_The_Contraption.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">Live Experience</span>
+        <span class="t-jp">ライブ体験</span>
+      </p>
+      <div class="quest-embed">
+        <img src="../assets/ela-quests/Contraption_Dashboard.jpg" alt="Contraption Quest — Live dashboard"
+          style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy">
+      </div>
+      <a href="https://learning.amplify.com/contraption/#/dashboard" target="_blank" rel="noopener"
+        class="quest-video-link">
+        <span class="t-en">Explore the live product ↗</span>
+        <span class="t-jp">実際のプロダクトを見る ↗</span>
+      </a>
+
+      <div class="gallery">
+        <p class="gallery-label">
+          <span class="t-en">Quest Screens</span>
+          <span class="t-jp">クエスト画面</span>
+        </p>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Contraption_Progress.jpg" alt="Contraption Quest — Machine build progress"
+              loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Contraption_Portal.jpg" alt="Contraption Quest — Portal transition scene"
+              loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Contraption_WritingPrompt.jpg"
+              alt="Contraption Quest — 'Visiting a Relative' writing prompt" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Contraption_MeMail.jpg" alt="Contraption Quest — Simulated meMail inbox"
+              loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Contraption_EmotionCube.jpg"
+              alt="Contraption Quest — Emotion-selector interaction" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Contraption_Final.jpg" alt="Contraption Quest — Completed machine reveal"
+              loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- ═══ QUEST 06: The Robot Quest ══════════════ -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="quest-section reveal-on-scroll">
+      <div class="quest-header">
+        <div class="quest-num">Quest 06</div>
+        <h3 class="quest-title">
+          <span class="t-en">The Robot Quest</span>
+          <span class="t-jp">ロボットクエスト</span>
+        </h3>
+        <div class="quest-grade">
+          <span class="t-en">Year-long Writing Adventure</span>
+          <span class="t-jp">年間を通じたライティングアドベンチャー</span>
+        </div>
+        <p class="quest-desc">
+          <span class="t-en">A year-long writing project that invited students to explore the theme of robots through
+            narrative and expository writing tasks. Students progressively built their writing skills through a sequence
+            of connected assignments, fostering both creativity and structure over the course of the school year.</span>
+          <span
+            class="t-jp is-block">ロボットをテーマに、物語的・説明的ライティング課題を通じて探求する年間プロジェクト。つながりのある一連の課題を通じてライティングスキルを段階的に構築し、学年を通じて創造性と構成力の両方を育成した。</span>
+        </p>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">Quest Introduction</span>
+        <span class="t-jp">クエスト紹介</span>
+      </p>
+      <div
+        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 12px;">
+        <iframe src="https://www.youtube.com/embed/tGTMEJtGkm4?modestbranding=1&rel=0&iv_load_policy=3"
+          title="Introducing The Robot" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+      </div>
+      <a href="https://www.youtube.com/watch?v=tGTMEJtGkm4" target="_blank" rel="noopener" class="quest-video-link">
+        <span class="t-en">Watch on YouTube ↗</span>
+        <span class="t-jp">YouTubeで見る ↗</span>
+      </a>
+
+      <p class="quest-video-label">
+        <span class="t-en">Live Experience</span>
+        <span class="t-jp">ライブ体験</span>
+      </p>
+      <div class="quest-embed">
+        <img src="../assets/ela-quests/Robot_01.png" alt="Robot Quest — Live dashboard"
+          style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy">
+      </div>
+      <a href="https://learning.amplify.com/robot/#/home" target="_blank" rel="noopener" class="quest-video-link">
+        <span class="t-en">Explore the live product ↗</span>
+        <span class="t-jp">実際のプロダクトを見る ↗</span>
+      </a>
+
+      <div class="gallery">
+        <p class="gallery-label">
+          <span class="t-en">Quest Screens</span>
+          <span class="t-jp">クエスト画面</span>
+        </p>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Robot_02.png" alt="Robot Quest — Keyboard controls" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Robot_03.png" alt="Robot Quest — Character design" loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Robot_06.png" alt="Robot Quest — Skill drill lesson screen" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Robot_08.png" alt="Robot Quest — Newspaper job application lesson"
+              loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- ═══ QUEST 07: Myth World ═══════════════════ -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="quest-section reveal-on-scroll">
+      <div class="quest-header">
+        <div class="quest-num">Quest 07</div>
+        <h3 class="quest-title">
+          <span class="t-en">Myth World</span>
+          <span class="t-jp">ミスワールド</span>
+        </h3>
+        <div class="quest-grade">
+          <span class="t-en">Greek Mythology Exploration</span>
+          <span class="t-jp">ギリシャ神話の探求</span>
+        </div>
+        <p class="quest-desc">
+          <span class="t-en">There's no one way to interpret Greek myths. Each myth can be enjoyed without context, and
+            yet also connects in ways great and small to other myths from the canon. This Quest is an exploration
+            designed to make students more broadly literate in the world of Greek mythology. Students can use their
+            devices to climb Mount Olympus or cross the Mediterranean Sea to Crete, reading new myths that take place in
+            each setting. Class discussions can also further help students to create small communities — not unlike a
+            Greek chorus or council — as they learn to share knowledge about this historical period.</span>
+          <span
+            class="t-jp is-block">ギリシャ神話の解釈にはたった一つの正解はない。各神話は単独でも楽しめるが、他の神話と大小様々なつながりを持っている。このクエストはギリシャ神話の世界を幅広く理解するための探究型学習。デバイスを使ってオリンポス山を登ったり、地中海を渡ってクレタ島に行き、各舞台で新しい神話を読む。クラスディスカッションを通じて、ギリシャのコーラスや評議会のような小さなコミュニティを作り、この歴史的時代についての知識を共有する。</span>
+        </p>
+      </div>
+
+      <p class="quest-video-label">
+        <span class="t-en">Quest Introduction</span>
+        <span class="t-jp">クエスト紹介</span>
+      </p>
+      <div class="quest-video">
+        <video controls preload="metadata">
+          <source src="../assets/ela-quests/QUEST-Video_Intro_Myth_World_Quest.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="gallery">
+        <p class="gallery-label">
+          <span class="t-en">Quest Screens</span>
+          <span class="t-jp">クエスト画面</span>
+        </p>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/GreekMyth1.png" alt="Myth World — Mount Olympus scene with the pantheon"
+              loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/GreekMyth7.png" alt="Myth World — Exploring the mortal realm"
+              loading="lazy">
+          </div>
+        </div>
+        <div class="g-row r2">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/GreekMyth9.png" alt="Myth World — Coastal island setting" loading="lazy">
+          </div>
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/GreekMyth10.png"
+              alt="Myth World — Interactive story tree connecting the myths" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!-- ═══ Teacher-Facing App ═════════════════════ -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <div class="quest-section reveal-on-scroll">
+      <div class="quest-header">
+        <div class="quest-num">
+          <span class="t-en">Teacher-Facing App</span>
+          <span class="t-jp">教師向けアプリ</span>
+        </div>
+        <h3 class="quest-title">
+          <span class="t-en">Quest Teacher Application</span>
+          <span class="t-jp">クエスト教師アプリケーション</span>
+        </h3>
+        <p class="quest-desc">
+          <span class="t-en">I designed a teacher-facing app to help teachers learn about each Quest, prepare for the
+            five days of lessons, and implement the Quest in the classroom. The app serves as an educational tool for
+            understanding the Quest and provides a comprehensive guide for the five-day lessons, complete with scripts
+            and flow. This ensured that every teacher, regardless of their previous experience, could confidently
+            conduct a beautifully crafted and engaging learning experience.</span>
+          <span
+            class="t-jp is-block">各クエストについて学び、5日間のレッスンの準備をし、教室でクエストを実施するための教師向けアプリを設計した。クエストを理解するための教育ツールとして機能し、スクリプトとフローを含む5日間のレッスンの包括的なガイドを提供。経験に関係なく、すべての教師が自信を持って美しく構築された魅力的な学習体験を実施できるようにした。</span>
+        </p>
+      </div>
+
+      <div class="gallery">
+        <div class="g-row r1">
+          <div class="g-cell dark">
+            <img src="../assets/ela-quests/Quest_Teacher_app.png" alt="Quest Teacher App" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══ Project Details (Compact) ═══ -->
+    <div class="project-details-compact reveal-on-scroll">
+      <div>
+        <div class="detail-group-label">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">成果物</span>
+        </div>
+        <div class="detail-group-value">
+          <span class="t-en">Technology Research, UX Research &amp; Strategy, Product Concept Development, Persona
+            Creation, Customer Journey Mapping, Wireframing, Prototyping, Implementation Support, Teacher-Facing App
+            Design</span>
+          <span
+            class="t-jp">テクノロジーリサーチ、UXリサーチ＆戦略、プロダクトコンセプト開発、ペルソナ作成、カスタマージャーニーマッピング、ワイヤーフレーミング、プロトタイピング、実装サポート、教師向けアプリデザイン</span>
+        </div>
+      </div>
+      <div>
+        <div class="detail-group-label">Role</div>
+        <div class="detail-group-value">Lead Product Designer</div>
+      </div>
+      <div>
+        <div class="detail-group-label">Team</div>
+        <div class="detail-group-value">Amplify ELA Quest Team</div>
+      </div>
+      <div>
+        <div class="detail-group-label">
+          <span class="t-en">Program</span>
+          <span class="t-jp">プログラム</span>
+        </div>
+        <div class="detail-group-value">
+          <a href="https://amplify.com/programs/amplify-english-language-arts/" target="_blank" rel="noopener"
+            style="color: var(--ink-mid); text-decoration: underline; text-underline-offset: 3px;">
+            <span class="t-en">View the live program ↗</span>
+            <span class="t-jp">実際のプログラムを見る ↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ═══ Nav ═══ -->
+    <div class="project-nav">
+      <a href="../work.html" class="project-nav-link">
+        <span class="t-en">&larr; All Work</span>
+        <span class="t-jp">&larr; 全作品</span>
+      </a>
+      <a href="tmobile.html" class="project-nav-link">
+        <span class="t-en">Next: T-Mobile BOPIS &rarr;</span>
+        <span class="t-jp">次へ: T-Mobile BOPIS &rarr;</span>
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="site-footer"
+      style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong
+              style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is
+              Everywhere LLC</strong> を通じて</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener"
+          style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+
+    // ── Scroll Reveal ──
+    (() => {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+    })();
+
+    // ── Image Fade-In ──
+    document.querySelectorAll('.g-cell img').forEach(img => {
+      if (img.complete) img.classList.add('loaded');
+      else img.addEventListener('load', () => img.classList.add('loaded'));
+    });
+
+    // ── Mobile Nav ──
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (toggle && links) {
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('is-open');
+          links.classList.toggle('is-open');
+        });
+        // Close on link click
+        links.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            toggle.classList.remove('is-open');
+            links.classList.remove('is-open');
+          });
+        });
+      }
+    })();
+  </script>
+
+</body>
+
+</html>

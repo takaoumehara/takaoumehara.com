@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>CLI Studios App Redesign — Takao Umehara</title>
+  <meta name="description" content="CLI Studios App Redesign — a unified design system and mobile UX overhaul projected to cut development time by 25%. Product design case study by Takao Umehara.">
+  <meta property="og:title" content="CLI Studios App Redesign — Takao Umehara">
+  <meta property="og:description" content="CLI Studios App Redesign — a unified design system and mobile UX overhaul projected to cut development time by 25%.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/cli-studios/CLI_UI_Screens.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+
+    /* ─── Lang switch ─── */
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex; align-items: center; gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-radius: 6px 0 0 6px;
+    }
+    .lang-btn {
+      appearance: none; background: none; border: none;
+      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      color: var(--ink-dim); padding: 0; transition: color 160ms ease;
+    }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+
+    /* ─── Bilingual ─── */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .rr > .inner  { animation: none !important; opacity: 1 !important; clip-path: inset(0 0 0 0) !important; transform: none !important; }
+      .rr > .cover  { animation: none !important; opacity: 0 !important; }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .project-overview { grid-template-columns: 1fr; gap: 40px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .problems-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .project-body { padding: 40px 20px 60px; }
+      .project-hero-content { padding: 32px 20px; }
+      .project-nav { flex-direction: column; gap: 12px; }
+      .video-compare { grid-template-columns: 1fr !important; max-width: 320px !important; }
+    }
+
+    /* ─── Project-detail styles ─── */
+    .project-hero {
+      position: relative; min-height: 480px; overflow: hidden;
+      display: flex; align-items: flex-end;
+    }
+    .project-hero-img {
+      position: absolute; inset: 0;
+      background-size: cover; background-position: center;
+    }
+    .project-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(0deg, rgba(18,18,18,0.72) 0%, rgba(18,18,18,0.18) 60%, transparent 100%);
+    }
+    .project-hero-content {
+      position: relative; z-index: 2; padding: 48px 32px;
+      max-width: 1200px; margin: 0 auto; width: 100%;
+    }
+    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .project-hero-tag {
+      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24);
+      padding: 5px 9px;
+    }
+    .project-hero-title {
+      font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px, 5vw, 64px); font-weight: 400; letter-spacing: -0.03em;
+      line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px;
+    }
+    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+
+    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
+    .project-overview {
+      display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px;
+      margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line);
+    }
+    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+    .project-aside-stat { margin-bottom: 24px; }
+    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
+    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px, 2.4vw, 30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
+    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
+    .project-deliverables li::before { content: "—"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+
+    .outcomes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 64px; }
+    .outcome-block { padding: 28px 24px; border: 1px solid var(--line); }
+    .outcome-num { font-size: 36px; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 6px; }
+    .outcome-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+
+    .project-nav { display: flex; justify-content: space-between; gap: 20px; padding-top: 48px; border-top: 1px solid var(--line); }
+    .project-nav-link { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .project-nav-link:hover { color: var(--ink); }
+
+    /* Problems grid */
+    .problems-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 64px; }
+    .problem-block { padding: 28px 24px; border: 1px solid var(--line); }
+    .problem-num { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
+    .problem-before { font-size: 14px; color: var(--ink-dim); margin-bottom: 8px; }
+    .problem-arrow { font-size: 18px; color: rgba(18,18,18,0.2); margin-bottom: 8px; }
+    .problem-after { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
+
+    /* Tools */
+    .tools-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 64px; }
+    .tool-tag { font-size: 12px; color: var(--ink-mid); border: 1px solid var(--line); padding: 8px 14px; }
+
+    /* ─── Gallery ─── */
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; }
+    /* ui: aspect-ratio container for UI screenshots with neutral bg */
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    /* dark: black-background screenshots — no forced ratio, no grey border */
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    /* natural: light bg, natural ratio (diagrams, sketches, any mixed) */
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    /* diagram: replaces old diagram class — now uses natural ratio, white bg */
+    .g-cell.diagram { background: white; }
+    .g-cell.diagram img { width: 100%; height: auto; display: block; }
+    /* photo: cover crop for photography */
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    /* brand: identity assets, white bg */
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+    @media (max-width: 700px) { .g-row.r3 { grid-template-columns: 1fr 1fr; } .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; } }
+
+/* ─── Scroll Reveal ─── */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+              transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+}
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Image Fade-In ─── */
+.g-cell img {
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+.g-cell img.loaded {
+  opacity: 1;
+}
+
+/* ─── Gallery Hover ─── */
+.g-cell {
+  border-radius: 2px;
+}
+.g-cell img {
+  transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
+}
+.g-cell:hover img.loaded {
+  transform: scale(1.008);
+}
+
+/* ─── Reduced Motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .g-cell img { opacity: 1 !important; transition: none !important; }
+  .g-cell:hover img { transform: none !important; }
+}
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- Hero -->
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image: url('../assets/cli-studios/CLI_UI_Screens.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">App Design</span>
+        <span class="project-hero-tag">Design System</span>
+        <span class="project-hero-tag">Mobile UX</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">CLI Studios App Redesign</span>
+        <span class="t-jp">CLI Studiosアプリ再設計</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">CLI Studios</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Lead Product Designer</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">2024</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Before & After Video Comparison — full-bleed black -->
+  <section class="reveal-on-scroll" style="background: #111; width: 100%; padding: 64px 32px 72px;">
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <h2 class="project-section-title" style="color: #fff;">
+        <span class="t-en">Before &amp; After</span>
+        <span class="t-jp">ビフォー＆アフター</span>
+      </h2>
+      <p class="gallery-label" style="color: rgba(255,255,255,0.48);">
+        <span class="t-en">Side by Side Comparison</span>
+        <span class="t-jp">並列比較</span>
+      </p>
+      <div class="video-compare" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 960px; margin: 0 auto;">
+        <div>
+          <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); margin-bottom: 10px; text-align: center;">
+            <span class="t-en">Before</span>
+            <span class="t-jp">ビフォー</span>
+          </div>
+          <div style="position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 4px; overflow: hidden; background: #000;">
+            <iframe src="https://www.youtube.com/embed/R19i8pe5X7A?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&color=white&controls=1&disablekb=0&playsinline=1" title="CLI Studios — Before" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); margin-bottom: 10px; text-align: center;">
+            <span class="t-en">After</span>
+            <span class="t-jp">アフター</span>
+          </div>
+          <div style="position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 4px; overflow: hidden; background: #000;">
+            <iframe src="https://www.youtube.com/embed/3b33QzoILPc?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&color=white&controls=1&disablekb=0&playsinline=1" title="CLI Studios — After" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Body -->
+  <main class="project-body">
+
+    <!-- Overview -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">Outcomes</span>
+          <span class="t-jp">成果</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">25%</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Projected dev time savings via unified design system</span>
+            <span class="t-jp">統合デザインシステムによる開発時間削減（見込み）</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">5</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Structural usability issues identified &amp; resolved</span>
+            <span class="t-jp">構造的な使いやすさの問題を特定し解決</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">13</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Pages of design system documentation delivered</span>
+            <span class="t-jp">デザインシステム資料を納品</span>
+          </div>
+        </div>
+      </aside>
+      <div>
+        <h2 class="project-section-title reveal-on-scroll">
+          <span class="t-en">The Tension</span>
+          <span class="t-jp">問題の核心</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">CLI Studios' app had five distinct usability problems — but they all traced back to one root cause: an over-reliance on modal views had collapsed the information architecture. Users couldn't distinguish content types, navigate confidently, or recover from wrong turns. The app needed a complete structural rethink, not a visual refresh.</span>
+          <span class="t-jp is-block">CLI Studiosのアプリには5つの使いやすさの問題があったが、すべてに共通する根本原因が一つあった：モーダル画面への過剰依存が情報アーキテクチャを崩壊させていた。ユーザーはコンテンツタイプを区別できず、自信を持ってナビゲートできず、間違えたときに戻れなかった。必要だったのは見た目のリフレッシュではなく、構造の全面的な再設計だった。</span>
+        </p>
+        <h2 class="project-section-title reveal-on-scroll" style="margin-top: 40px;">
+          <span class="t-en">My Approach</span>
+          <span class="t-jp">アプローチ</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I led with a heuristic evaluation against Nielsen's 10 principles, then user interviews to validate findings. The key insight: every problem was a symptom of the same architectural flaw. I made the decision to eliminate modals entirely — replacing them with full-page views and consistent back navigation — before addressing visual clarity. Structure first, then surface.</span>
+          <span class="t-jp is-block">Nielsen's 10原則に基づくヒューリスティック評価を行い、ユーザーインタビューで知見を検証した。主要なインサイト：すべての問題が同一のアーキテクチャ的欠陥の症状だった。視覚的な明確さの前に、モーダルを完全に廃止し、フルページビューと一貫したバックナビゲーションに置き換えるという意思決定を行った。構造が先、表面は後。</span>
+        </p>
+        <h2 class="project-section-title reveal-on-scroll" style="margin-top: 40px;">
+          <span class="t-en">Tools &amp; Methods</span>
+          <span class="t-jp">ツール＆手法</span>
+        </h2>
+        <div class="tools-list">
+          <span class="tool-tag">Figma</span>
+          <span class="tool-tag"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
+          <span class="tool-tag"><span class="t-en">Design System</span><span class="t-jp">デザインシステム</span></span>
+          <span class="tool-tag"><span class="t-en">Heuristic Evaluation</span><span class="t-jp">ヒューリスティック評価</span></span>
+          <span class="tool-tag"><span class="t-en">User Interviews</span><span class="t-jp">ユーザーインタビュー</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outcomes -->
+    <h2 class="project-section-title reveal-on-scroll">
+      <span class="t-en">Outcomes</span>
+      <span class="t-jp">成果</span>
+    </h2>
+    <div class="outcomes-grid reveal-on-scroll">
+      <div class="outcome-block">
+        <div class="outcome-num">25%</div>
+        <div class="outcome-label">
+          <span class="t-en">Projected reduction in dev time — design system enables component reuse across future builds</span>
+          <span class="t-jp">デザインシステムのコンポーネント再利用により将来の開発時間を25%削減（見込み）</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">5</div>
+        <div class="outcome-label">
+          <span class="t-en">Root structural problems solved — IA rebuilt, modals eliminated, navigation simplified</span>
+          <span class="t-jp">根本的な構造問題を解決 — IA再構築、モーダル廃止、ナビゲーション簡素化</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">13<span style="font-size:20px;font-weight:400;letter-spacing:0;"> pg</span></div>
+        <div class="outcome-label">
+          <span class="t-en">Design system documentation — 125+ components, interaction patterns, and accessibility specs</span>
+          <span class="t-jp">デザインシステム資料 — 125以上のコンポーネント、インタラクションパターン、アクセシビリティ仕様</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Heuristic process -->
+    <h2 class="project-section-title reveal-on-scroll">
+      <span class="t-en">Heuristic Analysis</span>
+      <span class="t-jp">ヒューリスティック分析</span>
+    </h2>
+
+    <!-- Gallery: Heuristic Evaluation -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">Heuristic Evaluation — 5 Problems Identified</span>
+        <span class="t-jp">ヒューリスティック評価 — 特定された5つの問題</span>
+      </p>
+      <div class="g-row r2">
+        <div class="g-cell dark">
+          <img src="../assets/ux-audit/Heuristics_(2).png" alt="Heuristic evaluation — issue 2" loading="lazy">
+        </div>
+        <div class="g-cell dark">
+          <img src="../assets/ux-audit/Heuristics_(4).png" alt="Heuristic evaluation — issue 4" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r2">
+        <div class="g-cell dark">
+          <img src="../assets/ux-audit/Heuristics_(5).png" alt="Heuristic evaluation — issue 5" loading="lazy">
+        </div>
+        <div class="g-cell dark">
+          <img src="../assets/ux-audit/Heuristics_(10).png" alt="Heuristic evaluation — issue 10" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r2">
+        <div class="g-cell dark">
+          <img src="../assets/ux-audit/Heuristics_(7).png" alt="Heuristic evaluation — issue 7" loading="lazy">
+        </div>
+        <div class="g-cell dark">
+          <img src="../assets/ux-audit/Heuristics_(6).png" alt="Heuristic evaluation — issue 6" loading="lazy">
+        </div>
+      </div>
+
+      <p class="gallery-label">
+        <span class="t-en">Interaction Flow Research</span>
+        <span class="t-jp">インタラクションフローリサーチ</span>
+      </p>
+      <div class="g-row r1">
+        <div class="g-cell dark">
+          <img src="../assets/ux-audit/Interaction_Flow_(2).jpg" alt="Interaction flow diagram" loading="lazy">
+        </div>
+      </div>
+
+      <p class="gallery-label">
+        <span class="t-en">Wireframe Sketches</span>
+        <span class="t-jp">ワイヤーフレームスケッチ</span>
+      </p>
+      <div class="g-row r2">
+        <div class="g-cell dark">
+          <img src="../assets/cli-studios/Sketch_(1).png" alt="Wireframe sketch 1" loading="lazy">
+        </div>
+        <div class="g-cell dark">
+          <img src="../assets/cli-studios/Sketch_(2).png" alt="Wireframe sketch 2" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Problems -->
+    <h2 class="project-section-title reveal-on-scroll">
+      <span class="t-en">5 Problems Solved</span>
+      <span class="t-jp">解決した5つの問題</span>
+    </h2>
+    <div class="problems-grid">
+      <div class="problem-block">
+        <div class="problem-num">
+          <span class="t-en">Problem 01</span>
+          <span class="t-jp">問題 01</span>
+        </div>
+        <div class="problem-before">
+          <span class="t-en">Poor Information Architecture</span>
+          <span class="t-jp">情報アーキテクチャの問題</span>
+        </div>
+        <div class="problem-arrow">↓</div>
+        <div class="problem-after">
+          <span class="t-en">4 clear sections: Home, Discover, Library, My Pick</span>
+          <span class="t-jp">4つの明確なセクション：ホーム、ディスカバー、ライブラリ、マイピック</span>
+        </div>
+      </div>
+      <div class="problem-block">
+        <div class="problem-num">
+          <span class="t-en">Problem 02</span>
+          <span class="t-jp">問題 02</span>
+        </div>
+        <div class="problem-before">
+          <span class="t-en">Indistinguishable Content Types</span>
+          <span class="t-jp">区別しにくいコンテンツタイプ</span>
+        </div>
+        <div class="problem-arrow">↓</div>
+        <div class="problem-after">
+          <span class="t-en">"Courses" → "Learning Path" / "Collections" → "Playlists" — renamed to match how users actually think about sequential vs. curated content</span>
+          <span class="t-jp">「コース」→「ラーニングパス」／「コレクション」→「プレイリスト」— ユーザーが順序のあるコンテンツとキュレーションされたコンテンツをどう認識するかに合わせてリネーム</span>
+        </div>
+      </div>
+      <div class="problem-block">
+        <div class="problem-num">
+          <span class="t-en">Problem 03</span>
+          <span class="t-jp">問題 03</span>
+        </div>
+        <div class="problem-before">
+          <span class="t-en">Confusing Navigation</span>
+          <span class="t-jp">分かりにくいナビゲーション</span>
+        </div>
+        <div class="problem-arrow">↓</div>
+        <div class="problem-after">
+          <span class="t-en">Full-page views replaced modals</span>
+          <span class="t-jp">モーダルをフルページビューに置き換え</span>
+        </div>
+      </div>
+      <div class="problem-block">
+        <div class="problem-num">
+          <span class="t-en">Problem 04</span>
+          <span class="t-jp">問題 04</span>
+        </div>
+        <div class="problem-before">
+          <span class="t-en">Poor Visual Clarity</span>
+          <span class="t-jp">視覚的わかりやすさの欠如</span>
+        </div>
+        <div class="problem-arrow">↓</div>
+        <div class="problem-after">
+          <span class="t-en">Distinct card designs per content type</span>
+          <span class="t-jp">コンテンツタイプごとに異なるカードデザイン</span>
+        </div>
+      </div>
+      <div class="problem-block">
+        <div class="problem-num">
+          <span class="t-en">Problem 05</span>
+          <span class="t-jp">問題 05</span>
+        </div>
+        <div class="problem-before">
+          <span class="t-en">Modal Overload</span>
+          <span class="t-jp">モーダルの過剰使用</span>
+        </div>
+        <div class="problem-arrow">↓</div>
+        <div class="problem-after">
+          <span class="t-en">Consistent back navigation throughout</span>
+          <span class="t-jp">全体を通じた一貫した戻るナビゲーション</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Before / After -->
+    <h2 class="project-section-title reveal-on-scroll">
+      <span class="t-en">Before &amp; After</span>
+      <span class="t-jp">ビフォー＆アフター</span>
+    </h2>
+
+    <!-- Gallery: Before & After -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">Before &amp; After — Redesigned Screens</span>
+        <span class="t-jp">ビフォー＆アフター — 再設計されたスクリーン</span>
+      </p>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/cli-studios/Before_and_After_login.png" alt="Before and after — Login screen" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/cli-studios/Before_and_After__Home.png" alt="Before and after — Home screen" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/cli-studios/Before_and_After_Discover.png" alt="Before and after — Discover screen" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/cli-studios/Before_and_After_Library_(1).png" alt="Before and after — Library screen" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell natural">
+          <img src="../assets/cli-studios/Before_and_After__My_Pick.png" alt="Before and after — My Pick screen" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- Design System -->
+    <h2 class="project-section-title reveal-on-scroll">
+      <span class="t-en">Design System</span>
+      <span class="t-jp">デザインシステム</span>
+    </h2>
+
+    <!-- Gallery: Design System -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">Design System — 13-Page Documentation</span>
+        <span class="t-jp">デザインシステム — 13ページのドキュメント</span>
+      </p>
+      <div class="g-row r3">
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-1.png" alt="Design System — page 1" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-2.png" alt="Design System — page 2" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-3.png" alt="Design System — page 3" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r3">
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-4.png" alt="Design System — page 4" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-5.png" alt="Design System — page 5" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-6.png" alt="Design System — page 6" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r3">
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-7.png" alt="Design System — page 7" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-8.png" alt="Design System — page 8" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-9.png" alt="Design System — page 9" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r3">
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-10.png" alt="Design System — page 10" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-11.png" alt="Design System — page 11" loading="lazy">
+        </div>
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts-12.png" alt="Design System — page 12" loading="lazy">
+        </div>
+      </div>
+      <div class="g-row r1">
+        <div class="g-cell brand">
+          <img src="../assets/cli-studios/Design_System_Parts.png" alt="Design System — overview" loading="lazy">
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div class="project-nav">
+      <a href="tmobile.html" class="project-nav-link">
+        <span class="t-en">← T-Mobile BOPIS</span>
+        <span class="t-jp">← T-Mobile BOPIS</span>
+      </a>
+      <a href="web3-wallet.html" class="project-nav-link">
+        <span class="t-en">Next: Web3 Wallet →</span>
+        <span class="t-jp">次へ: Web3ウォレット →</span>
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+
+// ── Scroll Reveal ──
+(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+})();
+
+// ── Image Fade-In ──
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'));
+});
+  
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

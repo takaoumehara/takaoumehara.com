@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Total Prepaid Carrier</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+
+        #app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        main {
+            transition: width 0.3s ease-in-out;
+            flex-grow: 1;
+        }
+
+        /* --- Progress Stepper --- */
+        .progress-stepper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 1rem 0 0.5rem;
+        }
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8125rem;
+            font-weight: 500;
+            color: #9ca3af;
+            white-space: nowrap;
+        }
+        .step-item .step-number {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: 2px solid #e5e7eb;
+            background: #fff;
+            color: #9ca3af;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        .step-item.current-step .step-number {
+            background: #7C3AED;
+            border-color: #7C3AED;
+            color: #fff;
+            box-shadow: 0 0 0 4px rgba(124,58,237,0.15);
+        }
+        .step-item.current-step .step-label {
+            color: #7C3AED;
+            font-weight: 600;
+        }
+        .step-item.completed-step .step-number {
+            background: #10b981;
+            border-color: #10b981;
+            color: #fff;
+        }
+        .step-item.completed-step .step-label {
+            color: #6b7280;
+        }
+        .step-connector {
+            width: 32px;
+            height: 2px;
+            background: #e5e7eb;
+            margin: 0 0.25rem;
+            flex-shrink: 0;
+            transition: background 0.3s ease;
+        }
+        .step-connector.completed {
+            background: #10b981;
+        }
+
+        /* --- Desktop/Tablet Styles (> 768px) --- */
+        @media (min-width: 769px) {
+            #shopping-cart {
+                width: 33.3333%;
+                min-width: 320px;
+                max-width: 450px;
+                position: relative;
+                transform: translateX(0) !important;
+                transition: none !important;
+                border-left: 1px solid #e5e7eb;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                overflow-y: auto;
+                background: #fff;
+            }
+            #minimized-cart-trigger-mobile,
+            #mobile-cart-close-strip,
+            #cart-toggle-btn-mobile {
+                display: none !important;
+            }
+            #minimized-cart-trigger-desktop {
+                display: none !important;
+            }
+            .device-section-needs-attention {
+                background-color: #eff6ff;
+                border: 1px dashed #60a5fa;
+                padding: 0.5rem;
+                border-radius: 0.5rem;
+            }
+        }
+
+
+        /* --- Mobile Styles (<= 768px) --- */
+        @media (max-width: 768px) {
+            #main-content {
+                width: 100%;
+                box-sizing: border-box;
+                margin-right: 0 !important;
+            }
+
+            #cart-toggle-btn-mobile {
+                display: none !important;
+            }
+
+            /* Floating pill cart trigger */
+            #minimized-cart-trigger-mobile {
+                display: flex !important;
+                position: fixed;
+                right: 16px;
+                bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+                left: auto;
+                top: auto;
+                width: auto;
+                height: auto;
+                background: #7C3AED;
+                color: white;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                padding: 12px 20px;
+                z-index: 45;
+                box-sizing: border-box;
+                box-shadow: 0 4px 20px rgba(79,70,229,0.35), 0 2px 8px rgba(0,0,0,0.1);
+                touch-action: none;
+                border-radius: 100px;
+                gap: 10px;
+                transition: transform 0.2s ease, box-shadow 0.2s ease;
+            }
+            #minimized-cart-trigger-mobile:active {
+                transform: scale(0.96);
+            }
+            #minimized-cart-trigger-mobile svg { width: 22px; height: 22px; flex-shrink: 0; }
+            #minimized-cart-trigger-mobile .item-count-badge {
+                position: absolute;
+                top: -6px;
+                right: -4px;
+                font-size: 0.65rem;
+                padding: 2px 6px;
+                min-width: 20px;
+                background-color: #ef4444;
+                color: #fff;
+                border-radius: 100px;
+                font-weight: 700;
+                text-align: center;
+                line-height: 1.2;
+                border: 2px solid #fff;
+            }
+            #minimized-cart-trigger-mobile .trigger-label {
+                font-size: 0.875rem;
+                font-weight: 600;
+                letter-spacing: -0.01em;
+            }
+
+            #shopping-cart {
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: auto;
+                width: 92vw;
+                height: 100vh;
+                background-color: white;
+                box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+                transform: translateX(100%);
+                transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+                z-index: 50;
+                display: flex;
+                flex-direction: column;
+                touch-action: pan-y;
+            }
+
+            #mobile-cart-close-strip {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 8vw;
+                height: 100vh;
+                z-index: 51;
+                cursor: pointer;
+                touch-action: none;
+                background: rgba(0,0,0,0.3);
+                backdrop-filter: blur(2px);
+            }
+
+            #minimized-cart-trigger-desktop { display: none !important; }
+
+            .step-label { display: none; }
+            .step-connector { width: 20px; }
+        }
+
+        .cart-content-area { flex-grow: 1; overflow-y: auto; }
+
+        /* --- Promotion Banners (subtle accordion) --- */
+        .promo-banner {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: box-shadow 0.2s ease;
+        }
+        .promo-banner:hover {
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .promo-banner-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+        }
+        .promo-banner-header .promo-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        .promo-banner-header .promo-tag .tag-badge {
+            font-size: 0.6875rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            padding: 2px 8px;
+            border-radius: 100px;
+        }
+        .promo-banner-header .promo-tag .tag-badge.indigo {
+            background: #F5F3FF;
+            color: #7C3AED;
+        }
+        .promo-banner-header .promo-tag .tag-badge.violet {
+            background: #F5F3FF;
+            color: #7C3AED;
+        }
+        .promo-banner-content {
+            max-height: 200px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+            opacity: 1;
+            padding: 0 1rem 0.75rem;
+            font-size: 0.8125rem;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+        .promo-banner-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        /* --- Cart Activation Notice --- */
+        #cart-activation-notice-header {
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.625rem 0.75rem;
+            background-color: #fef3c7;
+            border-radius: 8px 8px 0 0;
+            border: 1px solid #fde68a;
+            border-bottom: none;
+        }
+        #cart-activation-notice-header p {
+            font-weight: 500;
+            font-size: 0.8125rem;
+            color: #92400e;
+        }
+        #cart-activation-notice-content {
+            max-height: 500px;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out, padding 0.3s ease-in-out;
+            opacity: 1;
+            padding: 0.75rem;
+            background-color: #fffbeb;
+            border-radius: 0 0 8px 8px;
+            border: 1px solid #fde68a;
+            border-top: none;
+            font-size: 0.8125rem;
+            color: #78350f;
+        }
+        #cart-activation-notice-content.collapsed {
+            max-height: 0;
+            opacity: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        #cart-activation-notice-content ul { list-style-position: inside; padding-left: 0.5rem; }
+        #cart-activation-notice-content li { margin-bottom: 0.25rem; }
+
+        /* --- Plan & Device Cards --- */
+        .plan-card, .device-card {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+        .plan-card:hover, .device-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        }
+        .plan-card.selected {
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.2), 0 4px 12px rgba(124,58,237,0.1);
+        }
+        .device-card.selected {
+            border-color: #7C3AED;
+            box-shadow: 0 0 0 3px rgba(124,58,237,0.2);
+        }
+
+        /* --- Scrollbar --- */
+        .cart-content::-webkit-scrollbar { width: 6px; }
+        .cart-content::-webkit-scrollbar-track { background: transparent; }
+        .cart-content::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 100px; }
+        .cart-content::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+        .animate-pulse-once { animation: pulse 0.5s ease-out; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.85; transform: scale(1.01); } }
+
+        .account-discount-card { cursor: pointer; }
+
+        .feature-standard { color: #6b7280; }
+        .feature-upgraded { color: #7C3AED; font-weight: 500; }
+        .feature-new { color: #7C3AED; font-weight: 600; }
+        .feature-highlight { font-weight: bold; color: #d97706; }
+
+        .checkbox-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            margin-right: 0.5rem;
+            flex-shrink: 0;
+        }
+        .button-prominent {
+            background-color: #7C3AED;
+            color: white;
+            font-weight: 600;
+            border-radius: 8px;
+        }
+        .button-prominent:hover {
+            background-color: #6D28D9;
+        }
+        .highlight-cart-item {
+            animation: highlight-item 1.5s ease-out;
+        }
+        @keyframes highlight-item {
+            0% { background-color: #dbeafe; }
+            50% { background-color: #bfdbfe; }
+            100% { background-color: #f9fafb; }
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+            font-size: 0.8125rem;
+        }
+        .summary-item-label { color: #6b7280; }
+        .summary-item-value { color: #1f2937; font-weight: 500; }
+        .summary-item-value.discount { color: #7C3AED; }
+        .summary-total { font-size: 1rem; font-weight: 600; }
+
+        /* --- Savings & Due Today Bar --- */
+        .savings-due-bar {
+            display: flex;
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .savings-due-bar .savings-side {
+            flex: 1;
+            background: #C4B5FD;
+            color: #3B0764;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .savings-due-bar .due-side {
+            flex: 1;
+            background: #7C3AED;
+            color: #fff;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .savings-due-bar .bar-label {
+            font-size: 0.6875rem;
+            font-weight: 500;
+            opacity: 0.8;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .savings-due-bar .bar-value {
+            font-size: 1.125rem;
+            font-weight: 700;
+        }
+
+        /* --- Account Discount Cards --- */
+        .discount-card-refined {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1.25rem;
+            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            cursor: pointer;
+        }
+        .discount-card-refined:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        }
+        .discount-card-refined.active {
+            border-color: #7C3AED;
+            background: #F5F3FF;
+        }
+        .discount-card-refined .discount-amount {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #7C3AED;
+        }
+
+        /* --- Buttons --- */
+        .btn-primary {
+            background: #7C3AED;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            transition: background 0.15s ease;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-primary:hover { background: #6D28D9; }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #7C3AED;
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background 0.15s ease;
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-secondary:hover { background: #e5e7eb; }
+
+        /* Cart line items */
+        .cart-line-item {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .btn-primary:active, .btn-outline:active, button:active { transform: scale(0.97); transition: transform 80ms ease; }
+    </style>
+</head>
+<body>
+    <div id="app-container">
+        <main id="main-content" class="p-4 md:p-8 space-y-6">
+            <header class="mb-4">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-2xl font-bold" style="color:#7C3AED;">Total Prepaid</h1>
+                    <button id="cart-toggle-btn-mobile" class="md:hidden p-2 rounded-md hover:bg-gray-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                        </svg>
+                    </button>
+                </div>
+                <!-- Progress Stepper -->
+                <div id="progress-indicator" class="progress-stepper">
+                    <div id="step-plans" class="step-item">
+                        <span class="step-number">1</span>
+                        <span class="step-label">Plans</span>
+                    </div>
+                    <div id="connector-1" class="step-connector"></div>
+                    <div id="step-devices" class="step-item">
+                        <span class="step-number">2</span>
+                        <span class="step-label">Devices</span>
+                    </div>
+                    <div id="connector-2" class="step-connector"></div>
+                    <div id="step-checkout" class="step-item">
+                        <span class="step-number">3</span>
+                        <span class="step-label">Checkout</span>
+                    </div>
+                </div>
+                <nav class="mt-2">
+                    <ul class="flex space-x-1 border-b border-gray-200">
+                        <li><button class="font-semibold text-sm py-2 px-3 border-b-2 border-violet-600 text-violet-600" data-view="phone-plans">Phone Plans</button></li>
+                        <li><button class="text-sm py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-violet-600" data-view="tablet-plans">Tablet Plans</button></li>
+                        <li><button class="text-sm py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-violet-600" data-view="hotspot-data">Hotspot Data</button></li>
+                        <li><button class="text-sm py-2 px-3 border-b-2 border-transparent text-gray-500 hover:text-violet-600" data-view="home-internet">Home Internet</button></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <div id="view-container">
+                <section id="phone-plans-view" class="space-y-6">
+                    <div>
+                        <label for="lines-count-display" class="block text-sm font-medium text-gray-700 mb-2">How many lines do you need?</label>
+                        <div class="flex items-center space-x-0">
+                            <button id="decrease-lines" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-2 px-4 rounded-l-lg min-h-[44px]">-</button>
+                            <input type="text" id="lines-count-display" value="1" readonly class="w-14 text-center border-t border-b border-gray-300 py-2 text-sm font-semibold min-h-[44px]" style="border-left:none;border-right:none;">
+                            <button id="increase-lines" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-semibold py-2 px-4 rounded-r-lg min-h-[44px]">+</button>
+                        </div>
+                    </div>
+                    <div id="promotions-container" class="space-y-2 my-4">
+                        <div id="promo-hot-deal" class="promo-banner">
+                            <div class="promo-banner-header">
+                                <p class="promo-tag">
+                                    <span class="tag-badge indigo">Deal</span>
+                                    <span>Add phone lines for just $30/mo each</span>
+                                </p>
+                                <button class="text-gray-400 hover:text-gray-600 toggle-promo-btn p-1" data-promo-id="promo-hot-deal" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 transition-transform duration-200"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                </button>
+                            </div>
+                            <div class="promo-banner-content collapsed">
+                                <p>This special offer applies when adding multiple lines to your account. Enjoy great savings on each additional line!</p>
+                            </div>
+                        </div>
+                        <div id="promo-family-special" class="promo-banner">
+                             <div class="promo-banner-header">
+                                <p class="promo-tag">
+                                    <span class="tag-badge violet">Family</span>
+                                    <span>Get your 4th line FREE on select plans</span>
+                                </p>
+                                <button class="text-gray-400 hover:text-gray-600 toggle-promo-btn p-1" data-promo-id="promo-family-special" aria-expanded="false">
+                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 transition-transform duration-200"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                                </button>
+                            </div>
+                            <div class="promo-banner-content collapsed">
+                                <p>Valid on Total 5G Unlimited and Total 5G+ Unlimited plans when you have 4 or more lines. The 4th line's plan cost becomes $0.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="plan-cards-container" class="grid grid-cols-1 lg:grid-cols-3 gap-4"></div>
+                    <div class="mt-8 pt-6 border-t border-gray-200">
+                        <h3 class="text-lg font-semibold mb-4 text-gray-800">Account Discounts</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div id="autopay-discount-card" class="discount-card-refined account-discount-card flex flex-col">
+                                <div class="flex items-start mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center mr-3 flex-shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-gray-800">AutoPay Discount</h4>
+                                        <p class="discount-amount">Save $5/mo</p>
+                                        <p class="text-xs text-gray-500 mt-1">Enable automatic payments on eligible plans.</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mt-auto pt-3 border-t border-gray-100">
+                                    <input type="checkbox" id="autopay-discount-checkbox" class="form-checkbox h-4 w-4 text-violet-600 border-gray-300 rounded focus:ring-violet-500 pointer-events-none">
+                                    <label for="autopay-discount-checkbox" class="ml-2 text-xs text-gray-600 select-none">Enable AutoPay</label>
+                                </div>
+                            </div>
+                            <div id="byod-general-discount-card" class="discount-card-refined account-discount-card flex flex-col">
+                                <div class="flex items-start mb-3">
+                                    <div class="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center mr-3 flex-shrink-0">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                                    </div>
+                                    <div>
+                                        <h4 class="text-sm font-semibold text-gray-800">BYOD Discount</h4>
+                                        <p class="discount-amount">Save $20-$30/mo</p>
+                                        <p class="text-xs text-gray-500 mt-1">Use your own device and save based on your plan.</p>
+                                    </div>
+                                </div>
+                                 <div class="flex items-center mt-auto pt-3 border-t border-gray-100">
+                                    <input type="checkbox" id="byod-general-discount-checkbox" class="form-checkbox h-4 w-4 text-violet-600 border-gray-300 rounded focus:ring-violet-500 pointer-events-none">
+                                    <label for="byod-general-discount-checkbox" class="ml-2 text-xs text-gray-600 select-none">BYOD Active (when device chosen)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section id="plp-view" class="hidden space-y-6">
+                     <div class="flex justify-between items-center">
+                        <h2 class="text-xl font-semibold text-gray-800">Choose Device for Line <span id="plp-line-number"></span></h2>
+                        <button id="back-to-plans-btn" class="text-sm text-violet-600 hover:text-violet-800 font-medium flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            Back to Plans
+                        </button>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border border-gray-200">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">Filter Devices (Placeholder)</h3>
+                    </div>
+                    <div id="device-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"> </div>
+                </section>
+                <section id="pdp-view" class="hidden space-y-6">
+                    </section>
+                <div id="byod-modal" class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full hidden z-50 flex items-center justify-center p-4">
+                    <div class="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-md space-y-5">
+                        <div class="flex justify-between items-center">
+                            <h3 class="text-lg font-semibold text-gray-800">Bring Your Own Device — Line <span id="byod-modal-line-number"></span></h3>
+                            <button id="close-byod-modal" class="text-gray-400 hover:text-gray-600 p-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                        <p class="text-sm text-gray-600">Use your existing compatible phone. Choose activation method:</p>
+                        <div class="space-y-3">
+                            <button id="byod-esim-btn" class="w-full btn-primary">Activate with eSIM (Instant)</button>
+                            <button id="byod-simkit-btn" class="w-full btn-secondary" style="background:#F5F3FF;color:#7C3AED;">Get a SIM Kit (Free, ships in 2 days)</button>
+                        </div>
+                        <p class="text-xs text-gray-500">By choosing BYOD, you'll receive a discount on your monthly plan.</p>
+                    </div>
+                </div>
+                <section id="tablet-plans-view" class="hidden p-6 bg-white rounded-xl border border-gray-200">
+                    <h2 class="text-xl font-semibold mb-2 text-gray-800">Tablet Plans</h2>
+                    <p class="text-sm text-gray-500 mb-4">Save $40/mo when you bundle a tablet plan with any phone plan.</p>
+                    <div id="tablet-plan-cards-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"> <p class="text-center col-span-full p-8 text-gray-400 text-sm">Tablet plan options coming soon...</p> </div>
+                </section>
+                <section id="hotspot-data-view" class="hidden p-6 bg-white rounded-xl border border-gray-200">
+                    <h2 class="text-xl font-semibold mb-2 text-gray-800">Hotspot Data Plans</h2>
+                    <p class="text-sm text-gray-500 mb-4">Power your devices anywhere. Get $5 off per line with Auto Pay.</p>
+                     <div id="hotspot-plan-cards-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"> <p class="text-center col-span-full p-8 text-gray-400 text-sm">Hotspot data plan options coming soon...</p> </div>
+                </section>
+                <section id="home-internet-view" class="hidden p-6 bg-white rounded-xl border border-gray-200">
+                     <h2 class="text-xl font-semibold mb-2 text-gray-800">Home Internet Plans</h2>
+                     <div id="home-internet-plan-cards-container" class="grid grid-cols-1 gap-6"> <p class="text-center col-span-full p-8 text-gray-400 text-sm">Home Internet plan options coming soon...</p> </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Floating pill cart trigger for mobile -->
+        <div id="minimized-cart-trigger-mobile" class="hidden" role="button" tabindex="0" aria-label="Open cart" style="position:relative;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+            </svg>
+            <span id="minimized-cart-item-count-mobile" class="item-count-badge">0</span>
+            <span class="trigger-label">Cart</span>
+        </div>
+
+        <aside id="shopping-cart" style="background:#fff;">
+            <div id="minimized-cart-trigger-desktop" class="hidden md:flex">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 mb-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                </svg>
+                <span id="minimized-cart-item-count-desktop" class="item-count">0</span>
+                <span id="minimized-cart-monthly-cost-desktop" class="text-sm mt-1">$0/mo</span>
+            </div>
+
+            <div class="p-5 flex flex-col h-full" style="padding-top: calc(1.25rem + env(safe-area-inset-top, 0px));">
+                <div class="flex justify-between items-center mb-4 pb-3 border-b border-gray-200">
+                    <h2 class="text-lg font-semibold flex items-center gap-2 text-gray-800">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-violet-600">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                        </svg>
+                        Cart
+                    </h2>
+                    <button id="cart-close-btn" class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-gray-400">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Savings & Due Today Bar -->
+                <div class="savings-due-bar">
+                    <div class="savings-side">
+                        <span class="bar-label">Savings</span>
+                        <span class="bar-value" id="savings-bar-value">$0.00</span>
+                    </div>
+                    <div class="due-side">
+                        <span class="bar-label">Due Today</span>
+                        <span class="bar-value" id="due-today-bar-value">$0.00</span>
+                    </div>
+                </div>
+
+                <div id="cart-summary-placeholder" class="mb-4 pb-3 border-b border-gray-200">
+                     <div class="flex justify-between items-baseline">
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Due today</span>
+                        <span id="today-cost" class="text-lg font-bold" style="color:#7C3AED;">$0.00</span>
+                     </div>
+                     <div class="flex justify-between items-baseline text-xs text-gray-400 mt-0.5">
+                        <span>One-time savings</span>
+                        <span id="today-savings">$0.00</span>
+                     </div>
+                     <div class="flex justify-between items-baseline mt-2">
+                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wide">Monthly</span>
+                        <span id="monthly-cost" class="text-lg font-bold" style="color:#7C3AED;">$0.00/mo</span>
+                     </div>
+                     <div class="flex justify-between items-baseline text-xs text-gray-400 mt-0.5">
+                        <span>Monthly savings</span>
+                        <span id="monthly-savings">$0.00/mo</span>
+                     </div>
+                </div>
+
+                <div id="cart-items-container" class="cart-content-area space-y-3 pr-1 cart-content"></div>
+
+                <div class="mt-auto pt-4 border-t border-gray-200">
+                    <div id="cart-activation-notice" class="hidden mb-4">
+                        <div id="cart-activation-notice-header">
+                            <p>Complete these steps to checkout:</p>
+                            <button id="toggle-activation-notice-btn" class="text-amber-600 hover:text-amber-800 p-0.5">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 transition-transform duration-200"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" /></svg>
+                            </button>
+                        </div>
+                        <div id="cart-activation-notice-content" class="collapsed">
+                            <ul id="cart-activation-steps" class="list-disc"></ul>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <button id="view-full-summary-btn" class="w-full text-xs font-medium text-violet-600 hover:text-violet-800 py-2 px-3 bg-violet-50 rounded-lg text-center transition-colors">
+                            View Detailed Summary
+                        </button>
+                        <div id="full-summary-details" class="hidden mt-2 space-y-1 p-3 bg-gray-50 rounded-lg border border-gray-200">
+                            </div>
+                    </div>
+                    <button id="checkout-btn" class="w-full btn-primary text-sm shadow-sm" disabled>
+                        Proceed to Check Out
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <div id="mobile-cart-close-strip" class="hidden"></div>
+    </div>
+
+    <script>
+        // --- DATA ---
+        const phonePlans = [
+            { id: 'base', name: 'Total Unlimited Base', price: 40, linePrices: { 1: 40, 2: 30, 3: 30, 4: 30, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30 }, byodDiscount: 20, autopayEligible: false, icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-violet-600"><path d="M12.001 19.069L4.068 19.069L4.068 17.069L12.001 17.069L12.001 19.069ZM12.001 15.069L6.068 15.069L6.068 13.069L12.001 13.069L12.001 15.069ZM12.001 11.069L8.068 11.069L8.068 9.069L12.001 9.069L12.001 11.069ZM12.001 7.069L10.068 7.069L10.068 5.069L12.001 5.069L12.001 7.069Z"/></svg>`, features: [ { text: 'Unlimited data', type: 'standard' }, { text: '5 GB hotspot', type: 'standard' }, { text: 'Calling to 85+ destinations', type: 'standard' }, { text: 'Texting to 200+ destinations', type: 'standard' }, { text: 'Roaming in Canada & Mexico', type: 'standard' }, { text: 'Get $200 on phone w/ Total Rewards', type: 'new', detail: 'After 12 monthly plan payments.'} ] },
+            { id: 'total5g', name: 'Total 5G Unlimited', price: 55, linePrices: { 1: 55, 2: 30, 3: 25, 4: 0, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30 }, byodDiscount: 25, autopayEligible: true, fourthLineFreeEligible: true, icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-blue-500"><path d="M4.068 19.069L12.001 19.069L12.001 17.069L4.068 17.069L4.068 19.069ZM12.001 15.069L6.068 15.069L6.068 13.069L12.001 13.069L12.001 15.069ZM16.001 11.069L8.068 11.069L8.068 9.069L16.001 9.069L16.001 11.069ZM18.001 7.069L10.068 7.069L10.068 5.069L18.001 5.069L18.001 7.069Z"/></svg>`, features: [ { text: '12x faster unlimited data', type: 'upgraded', baseFeatureText: 'Unlimited data' }, { text: '15 GB Hotspot', type: 'upgraded', baseFeatureText: '5 GB hotspot' }, { text: 'Calling to 85+ destinations', type: 'standard' }, { text: 'Texting to 200+ destinations', type: 'standard' }, { text: 'Roaming in Canada & Mexico', type: 'standard' }, { text: 'Plus roaming in 15+ countries', type: 'new' }, { text: 'Get your fourth line at no additional cost', type: 'new', highlight: true }, { text: 'Disney+ Premium on us for 6 months', type: 'new', highlight: true }, { text: 'Get $200 on phone w/ Total Rewards', type: 'standard', detail: 'After 12 monthly plan payments.'} ] },
+            { id: 'total5gplus', name: 'Total 5G+ Unlimited', price: 65, linePrices: { 1: 65, 2: 30, 3: 25, 4: 0, 5: 30, 6: 30, 7: 30, 8: 30, 9: 30, 10: 30 }, byodDiscount: 30, autopayEligible: true, fourthLineFreeEligible: true, icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 text-violet-600"><path d="M4.068 19.069L12.001 19.069L12.001 17.069L4.068 17.069L4.068 19.069ZM12.001 15.069L6.068 15.069L6.068 13.069L12.001 13.069L12.001 15.069ZM16.001 11.069L8.068 11.069L8.068 9.069L16.001 9.069L16.001 11.069ZM20.001 7.069L10.068 7.069L10.068 5.069L20.001 5.069L20.001 7.069ZM19 12h-2v-2h-2v2h-2v2h2v2h2v-2h2v-2Z"/></svg>`, features: [ { text: '12x faster unlimited data', type: 'standard' }, { text: 'Unlimited Hotspot', type: 'upgraded', baseFeatureText: '15 GB Hotspot' }, { text: 'Calling to 85+ destinations', type: 'standard' }, { text: 'Texting to 200+ destinations', type: 'standard' }, { text: 'Roaming in Canada & Mexico', type: 'standard' }, { text: 'Plus roaming in 15+ countries', type: 'standard' }, { text: '$10 long distance credit to 120+ destinations', type: 'new'}, { text: 'Get your fourth line at no additional cost', type: 'new', highlight: true }, { text: 'Disney+ Premium Included', type: 'upgraded', baseFeatureText: 'Disney+ Premium on us for 6 months', highlight: true }, { text: 'Get $200 on phone w/ Total Rewards', type: 'standard', detail: 'After 12 monthly plan payments.'} ] }
+        ];
+        const devices = [
+            { id: 'dev1', name: 'Galaxy Nova 12', price: 699.99, image: 'https://placehold.co/150x150/E2E8F0/4A5568?text=Nova+12', brand: 'Galaxy', features: ['6.7" Super Retina Display', 'Pro Camera System', 'A18 Bionic Chip'], colors: ['Deep Purple', 'Silver', 'Gold', 'Space Black'], promoDiscount: 50.00 },
+            { id: 'dev2', name: 'Pixel Stream 8', price: 499.00, image: 'https://placehold.co/150x150/D1FAE5/065F46?text=Pixel+S8', brand: 'Pixel', features: ['Tensor G4 Chip', 'Advanced AI Camera', 'All-day Battery'], colors: ['Obsidian', 'Snow', 'Lemongrass'], promoDiscount: 75.00 },
+            { id: 'dev3', name: 'Moto Edge X', price: 349.50, image: 'https://placehold.co/150x150/DBEAFE/1E40AF?text=Moto+EX', brand: 'Moto', features: ['144Hz OLED Display', '50MP Camera', 'TurboPower Charging'], colors: ['Cosmic Blue', 'Stardust White'], promoDiscount: 0 },
+            { id: 'dev4', name: 'Total Value Phone', price: 199.99, image: 'https://placehold.co/150x150/FEF3C7/92400E?text=Value+Phone', brand: 'Total', features: ['Reliable Performance', 'Great Battery Life', 'Affordable'], colors: ['Black', 'Blue'], promoDiscount: 20.00 }
+        ];
+        const tabletPlans = []; const hotspotPlans = []; const homeInternetPlans = [];
+        const featureIcons = { default: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><path d="M20 6 9 17l-5-5"/></svg>`, data: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`, hotspot: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`, rewards: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>`, calling: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`, texting: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`, roaming: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>`, speed: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>`, disney: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>`, terms: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`, credit: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>`, fourthLineFree: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2 flex-shrink-0" style="color:#9ca3af"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`};
+        const uncheckedBoxSVG = `<svg class="checkbox-icon text-gray-300" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>`;
+        const checkedBoxSVG = `<svg class="checkbox-icon" style="color:#7C3AED" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>`;
+
+        // --- STATE ---
+        let currentView = 'phone-plans'; let numberOfLines = 1; let cart = { phoneLines: [], tabletLines: [], hotspotLines: [], homeInternetLines: [], isAutopayEnabled: false, fwaLine: null }; let selectedPhonePlanForAllLines = null; let currentLineForDeviceSelection = null; let currentLineForBYOD = null;
+        // --- DOM ELEMENTS ---
+        const linesCountDisplay = document.getElementById('lines-count-display'); const increaseLinesBtn = document.getElementById('increase-lines'); const decreaseLinesBtn = document.getElementById('decrease-lines'); const planCardsContainer = document.getElementById('plan-cards-container'); const cartItemsContainer = document.getElementById('cart-items-container'); const todayCostEl = document.getElementById('today-cost'); const todaySavingsEl = document.getElementById('today-savings'); const monthlyCostEl = document.getElementById('monthly-cost'); const monthlySavingsEl = document.getElementById('monthly-savings'); const checkoutBtn = document.getElementById('checkout-btn'); const viewContainer = document.getElementById('view-container'); const shoppingCartEl = document.getElementById('shopping-cart'); const cartToggleBtnMobile = document.getElementById('cart-toggle-btn-mobile'); const cartCloseBtn = document.getElementById('cart-close-btn'); const byodModal = document.getElementById('byod-modal'); const closeByodModalBtn = document.getElementById('close-byod-modal'); const byodEsimBtn = document.getElementById('byod-esim-btn'); const byodSimkitBtn = document.getElementById('byod-simkit-btn'); const byodModalLineNumberEl = document.getElementById('byod-modal-line-number'); const plpLineNumberEl = document.getElementById('plp-line-number'); const backToPlansBtn = document.getElementById('back-to-plans-btn'); const fullSummaryDetailsEl = document.getElementById('full-summary-details'); const viewFullSummaryBtn = document.getElementById('view-full-summary-btn'); const promotionsContainer = document.getElementById('promotions-container'); const mainContentEl = document.getElementById('main-content');
+        const minimizedCartTriggerMobile = document.getElementById('minimized-cart-trigger-mobile');
+        const minimizedCartItemCountMobile = document.getElementById('minimized-cart-item-count-mobile');
+        const minimizedCartTriggerDesktop = document.getElementById('minimized-cart-trigger-desktop');
+        const minimizedCartItemCountDesktop = document.getElementById('minimized-cart-item-count-desktop');
+        const minimizedCartMonthlyCostDesktop = document.getElementById('minimized-cart-monthly-cost-desktop');
+        const mobileCartCloseStrip = document.getElementById('mobile-cart-close-strip');
+        const cartActivationNoticeEl = document.getElementById('cart-activation-notice');
+        const cartActivationNoticeHeader = document.getElementById('cart-activation-notice-header');
+        const cartActivationNoticeContent = document.getElementById('cart-activation-notice-content');
+        const toggleActivationNoticeBtn = document.getElementById('toggle-activation-notice-btn');
+        const cartActivationStepsEl = document.getElementById('cart-activation-steps');
+        const tabletPlanCardsContainer = document.getElementById('tablet-plan-cards-container'); const hotspotPlanCardsContainer = document.getElementById('hotspot-plan-cards-container'); const homeInternetPlanCardsContainer = document.getElementById('home-internet-plan-cards-container'); const autopayDiscountCardEl = document.getElementById('autopay-discount-card'); const byodGeneralDiscountCardEl = document.getElementById('byod-general-discount-card'); const autopayDiscountCheckbox = document.getElementById('autopay-discount-checkbox'); const byodGeneralDiscountCheckbox = document.getElementById('byod-general-discount-checkbox'); const navButtons = document.querySelectorAll('nav ul li button');
+        const deviceGridContainer = document.getElementById('device-grid-container');
+        const pdpViewContent = document.getElementById('pdp-view');
+        const progressIndicatorEl = document.getElementById('progress-indicator');
+        const savingsBarValue = document.getElementById('savings-bar-value');
+        const dueTodayBarValue = document.getElementById('due-today-bar-value');
+
+        // --- Swipe State ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const swipeThreshold = 50;
+
+        // --- RENDER FUNCTIONS ---
+        function getFeatureIcon(featureText) { const lowerFeature = featureText.toLowerCase(); if (lowerFeature.includes('unlimited data')) return featureIcons.data; if (lowerFeature.includes('unlimited hotspot')) return featureIcons.data; if (lowerFeature.includes('hotspot')) return featureIcons.hotspot; if (lowerFeature.includes('disney') || lowerFeature.includes('disney+')) return featureIcons.disney; if (lowerFeature.includes('reward') || lowerFeature.includes('$200 on your next 5g phone')) return featureIcons.rewards; if (lowerFeature.includes('calling to')) return featureIcons.calling; if (lowerFeature.includes('texting to')) return featureIcons.texting; if (lowerFeature.includes('roaming in')) return featureIcons.roaming; if (lowerFeature.includes('faster') || lowerFeature.includes('12x')) return featureIcons.speed; if (lowerFeature.includes('fourth line') || lowerFeature.includes('4th line')) return featureIcons.fourthLineFree; if (lowerFeature.includes('offer terms')) return featureIcons.terms; if (lowerFeature.includes('credit to')) return featureIcons.credit; return featureIcons.default; }
+
+        function renderPhonePlanCards() {
+            planCardsContainer.innerHTML = '';
+            phonePlans.forEach(plan => {
+                const isSelected = selectedPhonePlanForAllLines && selectedPhonePlanForAllLines.id === plan.id;
+                const card = document.createElement('div');
+                card.className = `plan-card p-5 flex flex-col ${isSelected ? 'selected' : ''}`;
+
+                let featuresHTML = '<ul class="text-xs space-y-1.5 mb-4 flex-grow">';
+                plan.features.forEach(feature => {
+                    let featureClass = 'feature-standard';
+                    if (feature.type === 'upgraded') featureClass = 'feature-upgraded';
+                    if (feature.type === 'new') featureClass = 'feature-new';
+                    if (feature.highlight) featureClass += ' feature-highlight';
+                    featuresHTML += `<li class="flex items-start">${getFeatureIcon(feature.text)}<span class="${featureClass}">${feature.text}${feature.detail ? ` <em class="text-xs" style="color:#9ca3af;">(${feature.detail})</em>` : ''}</span></li>`;
+                });
+                featuresHTML += '</ul>';
+
+                let priceDisplay;
+                if (numberOfLines === 1) {
+                    priceDisplay = `<span class="text-3xl font-bold" style="color:#1f2937;">$${plan.price}</span><span class="text-sm font-normal" style="color:#6b7280;">/mo</span>`;
+                } else {
+                    priceDisplay = `<span class="text-3xl font-bold" style="color:#1f2937;">$${plan.price}</span><span class="text-sm font-normal" style="color:#6b7280;">/mo for 1st line</span>`;
+                }
+
+                card.innerHTML = `
+                    <div class="flex items-center mb-2">${plan.icon}<h3 class="text-base font-semibold ml-2" style="color:#1f2937;">${plan.name}</h3></div>
+                    <div class="mb-3">${priceDisplay}</div>
+                    ${featuresHTML}
+                    <button data-plan-id="${plan.id}" class="select-phone-plan-btn w-full btn-primary text-sm mt-auto">
+                        ${isSelected ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="inline mr-1"><path d="M20 6 9 17l-5-5"/></svg>Selected' : 'Select Plan'}
+                    </button>`;
+                planCardsContainer.appendChild(card);
+            });
+        }
+
+        function renderCart() {
+            cartItemsContainer.innerHTML = '';
+            let totalCartItems = cart.phoneLines.length + cart.tabletLines.length + cart.hotspotLines.length + cart.homeInternetLines.length;
+            if (minimizedCartItemCountMobile) minimizedCartItemCountMobile.textContent = totalCartItems;
+            if (minimizedCartItemCountDesktop) minimizedCartItemCountDesktop.textContent = totalCartItems;
+            if (totalCartItems === 0) { cartItemsContainer.innerHTML = `<p class="text-sm" style="color:#9ca3af;">Your cart is empty. Add lines and select a plan to get started.</p>`; updateCartSummary(); checkCheckoutButtonState(); return; }
+
+            const isMobileView = window.innerWidth <= 768;
+
+            cart.phoneLines.forEach(line => {
+                const lineEl = document.createElement('div');
+                lineEl.className = 'cart-line-item animate-pulse-once';
+                const linePrice = line.plan ? getEffectivePhoneLinePrice(line, cart.phoneLines.length) : 0;
+
+                const planStatusIcon = line.plan ? checkedBoxSVG : uncheckedBoxSVG;
+                const deviceStatusIcon = line.device ? checkedBoxSVG : uncheckedBoxSVG;
+
+                let deviceHTML = `
+                    <div class="flex items-center">
+                        ${deviceStatusIcon}
+                        <span class="text-sm font-medium" style="color:#6b7280;">Device</span>
+                    </div>`;
+
+                const deviceSectionClasses = ['ml-7', 'mt-1'];
+                if (!isMobileView && line.plan && !line.device) {
+                    deviceSectionClasses.push('device-section-needs-attention');
+                }
+
+                if (line.device) {
+                    deviceHTML += `
+                        <div class="${deviceSectionClasses.join(' ')}">
+                            <div class="flex items-center">
+                                <img src="${line.device.image || 'https://placehold.co/40x40/CCCCCC/999999?text=DEV'}" alt="${line.device.name}" class="w-9 h-9 rounded-lg object-cover mr-2" onerror="this.onerror=null;this.src='https://placehold.co/40x40/CCCCCC/999999?text=NoImg';">
+                                <div>
+                                    <p class="text-xs font-medium" style="color:#1f2937;">${line.device.name}</p>
+                                    ${line.device.type === 'byod' ? `<p class="text-xs" style="color:#6b7280;">${line.device.byodOption === 'eSIM' ? 'Using eSIM' : `SIM Kit ($${(line.device.price || 0).toFixed(2)})`}</p><p class="text-xs" style="color:#7C3AED;">-$${(line.plan && line.plan.byodDiscount ? line.plan.byodDiscount : 0).toFixed(2)}/mo discount</p>` : `<p class="text-xs" style="color:#6b7280;">$${(line.device.price || 0).toFixed(2)}</p>`}
+                                </div>
+                            </div>
+                            ${line.protectionPlan ? `<p class="text-xs mt-1 ml-1" style="color:#7C3AED;">Protection Plan: +$5.00/mo</p>` : ''}
+                        </div>
+                        <button data-line="${line.lineNumber}" data-line-type="phone" class="edit-device-btn text-xs font-medium ml-7 mt-1" style="color:#7C3AED;">Change Device</button>`;
+                } else {
+                    deviceHTML += `
+                        <div class="${deviceSectionClasses.join(' ')}">
+                            <p class="text-xs font-medium mb-1.5" style="color:#7C3AED;">Choose a device for this line</p>
+                            <div class="flex gap-2">
+                                <button data-line="${line.lineNumber}" data-line-type="phone" class="select-new-device-for-line-btn text-xs btn-primary py-1.5 px-3" style="min-height:36px;">Shop Phones</button>
+                                <button data-line="${line.lineNumber}" data-line-type="phone" class="select-byod-for-line-btn text-xs btn-secondary py-1.5 px-3" style="min-height:36px;background:#F5F3FF;color:#7C3AED;">Use Own</button>
+                            </div>
+                        </div>`;
+                }
+
+                lineEl.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="text-sm font-semibold" style="color:#1f2937;">Line ${line.lineNumber}</h4>
+                        <button data-line-remove="${line.lineNumber}" class="remove-line-btn text-xs font-medium" style="color:#ef4444;">Remove</button>
+                    </div>
+                    <div class="space-y-2">
+                        <div class="p-2.5 rounded-lg" style="background:#f9fafb;border:1px solid #f3f4f6;">
+                            <div class="flex justify-between items-center mb-1">
+                                <div class="flex items-center">
+                                    ${planStatusIcon}
+                                    <span class="text-sm font-medium" style="color:#6b7280;">Plan</span>
+                                </div>
+                                ${line.plan ? `<button data-line="${line.lineNumber}" data-line-type="phone" class="edit-plan-btn text-xs font-medium" style="color:#7C3AED;">Change</button>` : ''}
+                            </div>
+                            ${line.plan ? `
+                                <div class="ml-7 mt-1 flex items-center">
+                                    ${line.plan.icon.replace('w-8 h-8', 'w-5 h-5')}
+                                    <div class="ml-2">
+                                        <p class="text-xs font-medium" style="color:#1f2937;">${line.plan.name}</p>
+                                        <p class="text-xs" style="color:#6b7280;">$${linePrice.toFixed(2)}/mo</p>
+                                    </div>
+                                </div>
+                            ` : `
+                                <button data-line="${line.lineNumber}" data-line-type="phone" class="select-plan-for-line-btn mt-1 ml-7 text-xs btn-secondary py-1 px-3">Select a plan</button>
+                            `}
+                        </div>
+                        <div class="p-2.5 rounded-lg" style="background:#f9fafb;border:1px solid #f3f4f6;">
+                            ${deviceHTML}
+                        </div>
+                    </div>`;
+                cartItemsContainer.appendChild(lineEl);
+            });
+            updateCartSummary();
+            checkCheckoutButtonState();
+            updateProgressIndicator();
+        }
+
+        function renderTabletPlanCards() { const c = document.getElementById('tablet-plan-cards-container'); if(c) c.innerHTML = '<p class="text-center col-span-full p-8 text-gray-400 text-sm">Tablet plan options coming soon...</p>'; }
+        function renderHotspotPlanCards() { const c = document.getElementById('hotspot-plan-cards-container'); if(c) c.innerHTML = '<p class="text-center col-span-full p-8 text-gray-400 text-sm">Hotspot data plan options coming soon...</p>'; }
+        function renderHomeInternetPlanCards() { const c = document.getElementById('home-internet-plan-cards-container'); if(c) c.innerHTML = '<p class="text-center col-span-full p-8 text-gray-400 text-sm">Home Internet plan options coming soon...</p>'; }
+
+        function renderDeviceGrid(forLineNumber) {
+            if (!deviceGridContainer) return;
+            deviceGridContainer.innerHTML = '';
+            if (devices.length === 0) {
+                deviceGridContainer.innerHTML = '<p class="text-center col-span-full p-8 text-gray-400 text-sm">No devices available at this time.</p>';
+                return;
+            }
+            devices.forEach(device => {
+                const card = document.createElement('div');
+                card.className = 'device-card p-4 flex flex-col items-center text-center cursor-pointer';
+                card.dataset.deviceId = device.id;
+                card.innerHTML = `
+                    <div class="w-full aspect-square bg-gray-50 rounded-lg flex items-center justify-center mb-3 overflow-hidden">
+                        <img src="${device.image}" alt="${device.name}" class="w-28 h-28 object-contain">
+                    </div>
+                    <h4 class="text-sm font-semibold mb-0.5" style="color:#1f2937;">${device.name}</h4>
+                    <p class="text-lg font-bold mb-3" style="color:#7C3AED;">$${device.price.toFixed(2)}</p>
+                    ${device.promoDiscount > 0 ? `<p class="text-xs font-medium mb-2" style="color:#7C3AED;">Save $${device.promoDiscount.toFixed(2)}</p>` : ''}
+                    <button data-device-id="${device.id}" class="select-device-plp-btn mt-auto w-full btn-primary text-xs py-2">
+                        View Details
+                    </button>
+                `;
+                deviceGridContainer.appendChild(card);
+            });
+        }
+
+        function renderPDP(device, forLineNumber) {
+            if (!pdpViewContent || !device) {
+                if(pdpViewContent) pdpViewContent.innerHTML = '<p class="text-center p-8 text-gray-400 text-sm">Device details not available.</p>';
+                return;
+            }
+
+            let lineCheckboxesHTML = '<div class="mb-4"><h4 class="text-xs font-semibold uppercase tracking-wide mb-2" style="color:#9ca3af;">Apply to Lines:</h4><div class="space-y-2">';
+            cart.phoneLines.forEach(line => {
+                const isPrechecked = (line.lineNumber === forLineNumber) || (line.plan && !line.device);
+                lineCheckboxesHTML += `
+                    <label class="flex items-center space-x-2 text-xs" style="color:#6b7280;">
+                        <input type="checkbox" class="form-checkbox h-4 w-4 text-violet-600 pdp-line-checkbox" data-line-number="${line.lineNumber}" ${isPrechecked ? 'checked' : ''}>
+                        <span>Line ${line.lineNumber} ${line.plan ? `(${line.plan.name})` : '(No plan yet)'} ${line.device ? `- Has ${line.device.name}` : ''}</span>
+                    </label>
+                `;
+            });
+            lineCheckboxesHTML += '</div></div>';
+
+            pdpViewContent.innerHTML = `
+                <div class="bg-white p-5 md:p-6 rounded-2xl border border-gray-200 max-w-2xl mx-auto" style="box-shadow:0 4px 24px rgba(0,0,0,0.06);">
+                    <div class="flex justify-between items-center mb-5">
+                        <h2 class="text-xl font-bold" style="color:#1f2937;">${device.name}</h2>
+                        <button id="back-to-plp-btn" data-line="${forLineNumber}" class="text-sm font-medium flex items-center gap-1" style="color:#7C3AED;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                            Back
+                        </button>
+                    </div>
+                    <div class="md:flex md:space-x-6">
+                        <div class="md:w-1/2 mb-5 md:mb-0">
+                            <div class="bg-gray-50 rounded-xl p-4 flex items-center justify-center">
+                                <img src="${device.image.replace('150x150', '300x300')}" alt="${device.name}" class="w-full max-w-[240px] h-auto object-contain">
+                            </div>
+                        </div>
+                        <div class="md:w-1/2">
+                            <p class="text-2xl font-bold mb-3" style="color:#7C3AED;">$${device.price.toFixed(2)}</p>
+                            ${device.promoDiscount > 0 ? `<p class="text-sm font-medium mb-3" style="color:#7C3AED;">Save $${device.promoDiscount.toFixed(2)} with promo</p>` : ''}
+                            <div class="mb-3">
+                                <h4 class="text-xs font-semibold uppercase tracking-wide mb-1" style="color:#9ca3af;">Brand</h4>
+                                <p class="text-sm" style="color:#6b7280;">${device.brand}</p>
+                            </div>
+                            <div class="mb-3">
+                                <h4 class="text-xs font-semibold uppercase tracking-wide mb-1" style="color:#9ca3af;">Colors</h4>
+                                <div class="flex flex-wrap gap-1.5">
+                                    ${device.colors.map(color => `<span class="inline-block px-2.5 py-1 text-xs font-medium rounded-full" style="background:#f3f4f6;color:#6b7280;">${color}</span>`).join('')}
+                                </div>
+                            </div>
+                             <div class="mb-4">
+                                <h4 class="text-xs font-semibold uppercase tracking-wide mb-1" style="color:#9ca3af;">Key Features</h4>
+                                <ul class="text-sm space-y-1" style="color:#6b7280;">
+                                    ${device.features.map(feature => `<li class="flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2" class="mr-1.5 flex-shrink-0"><path d="M20 6 9 17l-5-5"/></svg>${feature}</li>`).join('')}
+                                </ul>
+                            </div>
+                            ${lineCheckboxesHTML}
+                            <div class="mb-4">
+                                <label class="flex items-center space-x-2 text-sm" style="color:#6b7280;">
+                                    <input type="checkbox" id="pdp-protection-plan-checkbox" class="form-checkbox h-4 w-4 text-violet-600">
+                                    <span>Add Protection Plan (+$5.00/mo)</span>
+                                </label>
+                            </div>
+                            <button id="confirm-device-pdp-btn" data-device-id="${device.id}" class="w-full btn-primary text-sm">
+                                Add Device to Selected Lines
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            const backToPlpBtn = document.getElementById('back-to-plp-btn');
+            if (backToPlpBtn) {
+                backToPlpBtn.addEventListener('click', () => {
+                    switchView('plp', { lineNumber: parseInt(backToPlpBtn.dataset.line) });
+                });
+            }
+        }
+
+        function getEffectivePhoneLinePrice(line, totalPhoneLines) { if (!line.plan) return 0; let price = line.plan.linePrices[line.lineNumber]; if (line.plan.fourthLineFreeEligible && line.lineNumber >= 4 && totalPhoneLines >= 4) {} if (price === undefined) { console.warn(`Price for line ${line.lineNumber} on plan ${line.plan.name} is undefined.`); return line.plan.price; } return price; }
+
+        function updateCartSummary() {
+            let grossMonthlyPlanTotal = 0;
+            let grossDeviceTotal = 0;
+            let oneTimeDeviceDiscounts = 0;
+            let monthlyRecurringDiscounts = 0;
+            let protectionPlanCosts = 0;
+
+            cart.phoneLines.forEach(line => {
+                if (line.plan) {
+                    grossMonthlyPlanTotal += line.plan.price;
+                    if (line.device && line.device.type === 'byod' && line.plan.byodDiscount) {
+                        monthlyRecurringDiscounts += line.plan.byodDiscount;
+                    }
+                }
+                if (line.device) {
+                    if (line.device.type !== 'byod' && line.device.price) {
+                        grossDeviceTotal += line.device.price;
+                        if(line.device.promoDiscount) {
+                            oneTimeDeviceDiscounts += line.device.promoDiscount;
+                        }
+                    } else if (line.device.type === 'byod' && line.device.byodOption === 'SIM Kit' && line.device.price) {
+                        grossDeviceTotal += line.device.price;
+                    }
+                }
+                if (line.protectionPlan) {
+                    protectionPlanCosts += 5;
+                }
+            });
+
+            if (cart.isAutopayEnabled) {
+                cart.phoneLines.forEach(line => {
+                    if (line.plan && line.plan.autopayEligible) {
+                        monthlyRecurringDiscounts += 5;
+                    }
+                });
+            }
+
+            let effectiveMonthlyPlanCost = 0;
+            cart.phoneLines.forEach(line => {
+                if(line.plan) effectiveMonthlyPlanCost += getEffectivePhoneLinePrice(line, cart.phoneLines.length);
+            });
+
+            const dueToday = Math.max(0, grossDeviceTotal - oneTimeDeviceDiscounts);
+            const futureMonthlyPayment = Math.max(0, effectiveMonthlyPlanCost + protectionPlanCosts - monthlyRecurringDiscounts);
+            const totalSavings = oneTimeDeviceDiscounts + monthlyRecurringDiscounts;
+
+            todayCostEl.textContent = `$${dueToday.toFixed(2)}`;
+            todaySavingsEl.textContent = `$${oneTimeDeviceDiscounts.toFixed(2)}`;
+            monthlyCostEl.textContent = `$${futureMonthlyPayment.toFixed(2)}/mo`;
+            monthlySavingsEl.textContent = `$${monthlyRecurringDiscounts.toFixed(2)}/mo`;
+
+            // Update savings & due today bar
+            if (savingsBarValue) savingsBarValue.textContent = `$${totalSavings.toFixed(2)}`;
+            if (dueTodayBarValue) dueTodayBarValue.textContent = `$${dueToday.toFixed(2)}`;
+
+            // Update mobile trigger label
+            const triggerLabel = document.querySelector('#minimized-cart-trigger-mobile .trigger-label');
+            if (triggerLabel) {
+                triggerLabel.textContent = dueToday > 0 ? `$${dueToday.toFixed(2)}` : 'Cart';
+            }
+
+            if (minimizedCartMonthlyCostDesktop) {
+                minimizedCartMonthlyCostDesktop.textContent = `$${futureMonthlyPayment.toFixed(2)}/mo`;
+            }
+            renderFullSummaryDetails({
+                subtotal: grossDeviceTotal + (cart.phoneLines.reduce((acc, line) => acc + (line.plan ? line.plan.price : 0), 0) * 1) + protectionPlanCosts,
+                totalDiscounts: oneTimeDeviceDiscounts + monthlyRecurringDiscounts,
+                discountsForLines: monthlyRecurringDiscounts,
+                additionalDiscounts: oneTimeDeviceDiscounts,
+                dueToday: dueToday,
+                futureMonthlyPayment: futureMonthlyPayment
+            });
+            checkCheckoutButtonState();
+            updateProgressIndicator();
+        }
+
+        function renderFullSummaryDetails(summary) {
+            if (!fullSummaryDetailsEl) return;
+            fullSummaryDetailsEl.innerHTML = `
+                <div class="summary-item">
+                    <span class="summary-item-label">Subtotal (before discounts)</span>
+                    <span class="summary-item-value">$${summary.subtotal.toFixed(2)}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-label">Total Discounts</span>
+                    <span class="summary-item-value discount">-$${summary.totalDiscounts.toFixed(2)}</span>
+                </div>
+                <div class="summary-item pl-4"> <span class="summary-item-label text-xs">Line discounts (AutoPay, BYOD)</span>
+                    <span class="summary-item-value discount text-xs">-$${summary.discountsForLines.toFixed(2)}/mo</span>
+                </div>
+                 <div class="summary-item pl-4"> <span class="summary-item-label text-xs">Device Promotions</span>
+                    <span class="summary-item-value discount text-xs">-$${summary.additionalDiscounts.toFixed(2)}</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-label">Shipping</span>
+                    <span class="summary-item-value" style="color:#7C3AED;">Free</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-item-label">Taxes</span>
+                    <span class="summary-item-value" style="color:#9ca3af;">At checkout</span>
+                </div>
+                <hr class="my-2" style="border-color:#e5e7eb;">
+                <div class="summary-item summary-total">
+                    <span class="summary-item-label">Due today</span>
+                    <span class="summary-item-value" style="color:#7C3AED;">$${summary.dueToday.toFixed(2)}</span>
+                </div>
+                <div class="summary-item mt-1">
+                    <span class="summary-item-label">Monthly payment</span>
+                    <span class="summary-item-value" style="color:#7C3AED;">$${summary.futureMonthlyPayment.toFixed(2)}/mo</span>
+                </div>
+                <p class="text-xs mt-1" style="color:#9ca3af;">First month's payment will be due today.</p>
+            `;
+        }
+
+        function initializeCart() { cart.phoneLines = []; for (let i = 1; i <= numberOfLines; i++) { cart.phoneLines.push({ lineNumber: i, plan: selectedPhonePlanForAllLines, device: null, type: 'phone', protectionPlan: false }); } cart.tabletLines = []; cart.hotspotLines = []; cart.homeInternetLines = []; cart.fwaLine = null; cart.isAutopayEnabled = autopayDiscountCheckbox.checked; renderCart(); updateCartSummary(); }
+        function updateNumberOfLines(change){ const newNumberOfLines = numberOfLines + change; if (newNumberOfLines >= 1 && newNumberOfLines <= 10) { numberOfLines = newNumberOfLines; linesCountDisplay.value = newNumberOfLines; if (cart.phoneLines.length < newNumberOfLines) { for (let i = cart.phoneLines.length + 1; i <= newNumberOfLines; i++) { cart.phoneLines.push({ lineNumber: i, plan: selectedPhonePlanForAllLines, device: null, type: 'phone', protectionPlan: false }); } } else if (cart.phoneLines.length > newNumberOfLines) { cart.phoneLines = cart.phoneLines.slice(0, newNumberOfLines); } renderPhonePlanCards(); renderCart(); updateCartSummary(); } }
+        function removeLineFromCart(lineNumberToRemove) { cart.phoneLines = cart.phoneLines.filter(line => line.lineNumber !== lineNumberToRemove); numberOfLines = cart.phoneLines.length; if (numberOfLines === 0 && linesCountDisplay.value !== "1") { linesCountDisplay.value = "1"; numberOfLines = 1; initializeCart(); } else { linesCountDisplay.value = numberOfLines; } renderCart(); updateCartSummary(); renderPhonePlanCards(); }
+
+        function selectPhonePlan(planId) {
+            selectedPhonePlanForAllLines = phonePlans.find(p => p.id === planId);
+            cart.phoneLines.forEach(line => { line.plan = selectedPhonePlanForAllLines; });
+            renderPhonePlanCards();
+            renderCart();
+            updateCartSummary();
+
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                toggleCartVisibility(true);
+                setTimeout(() => {
+                    const firstLineNeedingDevice = cart.phoneLines.find(line => !line.device);
+                    if (firstLineNeedingDevice) {
+                        const lineIndex = cart.phoneLines.findIndex(l => l.lineNumber === firstLineNeedingDevice.lineNumber);
+                        const lineElementInCart = cartItemsContainer.querySelector(`.cart-line-item:nth-child(${lineIndex + 1})`);
+                        if (lineElementInCart) {
+                            lineElementInCart.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            const shopPhonesButton = lineElementInCart.querySelector('.select-new-device-for-line-btn');
+                            if (shopPhonesButton) {
+                                shopPhonesButton.classList.add('ring-2', 'ring-offset-2', 'ring-red-500', 'animate-pulse');
+                                setTimeout(() => {
+                                    shopPhonesButton.classList.remove('ring-2', 'ring-offset-2', 'ring-red-500', 'animate-pulse');
+                                }, 2500);
+                            }
+                        }
+                    }
+                }, 350);
+            }
+        }
+
+        function addDeviceToSelectedLines(deviceDetails, addProtection) {
+            const selectedLineCheckboxes = pdpViewContent.querySelectorAll('.pdp-line-checkbox:checked');
+            if (selectedLineCheckboxes.length === 0) { console.warn("No lines selected."); return; }
+            let updatedLineNumbers = [];
+            selectedLineCheckboxes.forEach(checkbox => {
+                const lineNumber = parseInt(checkbox.dataset.lineNumber);
+                updatedLineNumbers.push(lineNumber);
+                const line = cart.phoneLines.find(l => l.lineNumber === lineNumber);
+                if (line) {
+                    line.device = { ...deviceDetails, type: 'new-phone' };
+                    line.protectionPlan = addProtection;
+                }
+            });
+            renderCart();
+            updateCartSummary();
+
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                switchView('phone-plans');
+                toggleCartVisibility(true);
+                setTimeout(() => {
+                    if (updatedLineNumbers.length > 0) {
+                        const firstUpdatedLineNumber = Math.min(...updatedLineNumbers);
+                        const lineIndex = cart.phoneLines.findIndex(l => l.lineNumber === firstUpdatedLineNumber);
+                        if (lineIndex !== -1) {
+                             const lineElementInCart = cartItemsContainer.querySelector(`.cart-line-item:nth-child(${lineIndex + 1})`);
+                             if (lineElementInCart) {
+                                lineElementInCart.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                                lineElementInCart.classList.add('highlight-cart-item');
+                                setTimeout(() => { lineElementInCart.classList.remove('highlight-cart-item'); }, 1500);
+                             }
+                        }
+                    }
+                }, 350);
+            } else {
+                 switchView('phone-plans');
+            }
+        }
+
+        function selectBYODForLine(lineNumber, option) { const line = cart.phoneLines.find(l => l.lineNumber === lineNumber); if (line) { const byodSimPrice = 0.99; line.device = { name: 'Bring Your Own Device', type: 'byod', byodOption: option, price: option === 'SIM Kit' ? byodSimPrice : 0, image: 'https://placehold.co/40x40/90CAF9/1E88E5?text=BYOD' }; line.protectionPlan = false; renderCart(); updateCartSummary(); byodModal.classList.add('hidden'); } }
+
+        function checkCheckoutButtonState() {
+            let allLinesConfigured = true; let activationSteps = [];
+            if (cart.phoneLines.length === 0) { allLinesConfigured = false; }
+            cart.phoneLines.forEach(line => {
+                if (!line.plan) { allLinesConfigured = false; activationSteps.push(`Line ${line.lineNumber}: Select a plan.`); }
+                if (!line.device) { allLinesConfigured = false; activationSteps.push(`Line ${line.lineNumber}: Select a device or set BYOD.`); }
+            });
+            checkoutBtn.disabled = !allLinesConfigured;
+            if (allLinesConfigured || cart.phoneLines.length === 0) {
+                cartActivationNoticeEl.classList.add('hidden');
+                cartActivationNoticeContent.classList.add('collapsed');
+                if (toggleActivationNoticeBtn) { const svgIcon = toggleActivationNoticeBtn.querySelector('svg'); if (svgIcon) svgIcon.style.transform = 'rotate(0deg)'; }
+            } else {
+                cartActivationNoticeEl.classList.remove('hidden');
+                cartActivationStepsEl.innerHTML = activationSteps.map(step => `<li>${step}</li>`).join('');
+            }
+        }
+
+        function switchView(viewName, params = {}) {
+            currentView = viewName;
+            document.querySelectorAll('#view-container > section').forEach(view => { view.classList.add('hidden'); });
+            navButtons.forEach(btn => { btn.classList.remove('font-semibold', 'text-violet-600', 'border-violet-600'); btn.classList.add('text-gray-500', 'hover:text-violet-600', 'border-transparent'); });
+            const activeView = document.getElementById(`${viewName}-view`);
+            const activeNavButton = document.querySelector(`nav button[data-view="${viewName}"]`);
+            if (activeView) activeView.classList.remove('hidden');
+            if (activeNavButton) { activeNavButton.classList.add('font-semibold', 'text-violet-600', 'border-violet-600'); activeNavButton.classList.remove('text-gray-500', 'border-transparent'); }
+            if (viewName === 'plp' && params.lineNumber) { if(plpLineNumberEl) plpLineNumberEl.textContent = params.lineNumber; currentLineForDeviceSelection = params.lineNumber; renderDeviceGrid(params.lineNumber); }
+            else if (viewName === 'pdp' && params.device && params.lineNumber) { renderPDP(params.device, params.lineNumber); }
+            window.scrollTo(0,0);
+            updateProgressIndicator();
+        }
+
+        function toggleCartVisibility(forceShow = null) {
+            const isMobile = window.innerWidth <= 768;
+            if (isMobile) {
+                const isCartContentVisible = shoppingCartEl.classList.contains('cart-mobile-visible');
+                if (forceShow === true || (forceShow === null && !isCartContentVisible)) {
+                    shoppingCartEl.style.transform = 'translateX(0)';
+                    shoppingCartEl.classList.add('cart-mobile-visible');
+                    if (mobileCartCloseStrip) mobileCartCloseStrip.classList.remove('hidden');
+                    if (minimizedCartTriggerMobile) minimizedCartTriggerMobile.style.display = 'none';
+                } else if (forceShow === false || (forceShow === null && isCartContentVisible)) {
+                    shoppingCartEl.style.transform = 'translateX(100%)';
+                    shoppingCartEl.classList.remove('cart-mobile-visible');
+                    if (mobileCartCloseStrip) mobileCartCloseStrip.classList.add('hidden');
+                    if (minimizedCartTriggerMobile) minimizedCartTriggerMobile.style.display = 'flex';
+                }
+            } else {
+                shoppingCartEl.classList.remove('cart-mobile-visible');
+                if (mobileCartCloseStrip) mobileCartCloseStrip.classList.add('hidden');
+            }
+        }
+
+        function updateProgressIndicator() {
+            if (!progressIndicatorEl) return;
+            const plansStep = document.getElementById('step-plans');
+            const devicesStep = document.getElementById('step-devices');
+            const checkoutStep = document.getElementById('step-checkout');
+            const connector1 = document.getElementById('connector-1');
+            const connector2 = document.getElementById('connector-2');
+
+            [plansStep, devicesStep, checkoutStep].forEach(step => {
+                if(step) step.classList.remove('current-step', 'completed-step');
+            });
+            if(connector1) connector1.classList.remove('completed');
+            if(connector2) connector2.classList.remove('completed');
+
+            let allPlansSelected = cart.phoneLines.length > 0 && cart.phoneLines.every(line => line.plan);
+            let allDevicesSelected = cart.phoneLines.length > 0 && cart.phoneLines.every(line => line.device);
+
+            if (!allPlansSelected && cart.phoneLines.length === 0 && currentView === 'phone-plans') {
+                 if(plansStep) plansStep.classList.add('current-step');
+            } else if (!allPlansSelected && cart.phoneLines.length > 0 && (currentView === 'phone-plans' || !selectedPhonePlanForAllLines)) {
+                 if(plansStep) plansStep.classList.add('current-step');
+            } else if (allPlansSelected && !allDevicesSelected) {
+                if(plansStep) plansStep.classList.add('completed-step');
+                if(connector1) connector1.classList.add('completed');
+                if(devicesStep) devicesStep.classList.add('current-step');
+            } else if (allPlansSelected && allDevicesSelected) {
+                if(plansStep) plansStep.classList.add('completed-step');
+                if(connector1) connector1.classList.add('completed');
+                if(devicesStep) devicesStep.classList.add('completed-step');
+                if(connector2) connector2.classList.add('completed');
+                if(checkoutStep) checkoutStep.classList.add('current-step');
+            } else {
+                 if(plansStep) plansStep.classList.add('current-step');
+            }
+        }
+
+
+        // --- Touch/Swipe Event Handlers ---
+        function handleTouchStart(event) { touchStartX = event.changedTouches[0].screenX; }
+        function handleTouchEndMinimizedTrigger(event) { touchEndX = event.changedTouches[0].screenX; if (touchEndX < touchStartX - swipeThreshold) { toggleCartVisibility(true); } touchStartX = 0; touchEndX = 0; }
+        function handleTouchEndCartArea(event) { if (touchStartX === 0 || !shoppingCartEl.classList.contains('cart-mobile-visible')) { touchStartX = 0; touchEndX = 0; return; } touchEndX = event.changedTouches[0].screenX; if (touchEndX > touchStartX + swipeThreshold) { toggleCartVisibility(false); } touchStartX = 0; touchEndX = 0; }
+
+        // --- EVENT LISTENERS ---
+        planCardsContainer.addEventListener('click', (e) => { if (e.target.classList.contains('select-phone-plan-btn')) { selectPhonePlan(e.target.dataset.planId); } });
+        navButtons.forEach(button => { button.addEventListener('click', (e) => { switchView(e.target.dataset.view); }); });
+        increaseLinesBtn.addEventListener('click', () => updateNumberOfLines(1));
+        decreaseLinesBtn.addEventListener('click', () => updateNumberOfLines(-1));
+        if (cartCloseBtn) cartCloseBtn.addEventListener('click', () => toggleCartVisibility(false));
+        if (minimizedCartTriggerMobile) { minimizedCartTriggerMobile.addEventListener('click', () => toggleCartVisibility(true)); minimizedCartTriggerMobile.addEventListener('touchstart', handleTouchStart, { passive: true }); minimizedCartTriggerMobile.addEventListener('touchend', handleTouchEndMinimizedTrigger, { passive: true }); }
+        if (cartToggleBtnMobile) cartToggleBtnMobile.addEventListener('click', () => toggleCartVisibility(true));
+        if (mobileCartCloseStrip) { mobileCartCloseStrip.addEventListener('click', () => toggleCartVisibility(false)); mobileCartCloseStrip.addEventListener('touchstart', handleTouchStart, { passive: true }); mobileCartCloseStrip.addEventListener('touchend', handleTouchEndCartArea, { passive: true }); }
+        if (shoppingCartEl) { shoppingCartEl.addEventListener('touchstart', handleTouchStart, { passive: true }); shoppingCartEl.addEventListener('touchend', handleTouchEndCartArea, { passive: true }); }
+        if (deviceGridContainer) { deviceGridContainer.addEventListener('click', (e) => { const button = e.target.closest('.select-device-plp-btn'); if (button) { const deviceId = button.dataset.deviceId; const selectedDevice = devices.find(d => d.id === deviceId); if (selectedDevice && currentLineForDeviceSelection !== null) { switchView('pdp', { device: selectedDevice, lineNumber: currentLineForDeviceSelection }); } } }); }
+        if (pdpViewContent) {
+            pdpViewContent.addEventListener('click', (e) => {
+                const button = e.target.closest('#confirm-device-pdp-btn');
+                if (button) {
+                    const deviceId = button.dataset.deviceId;
+                    const deviceToAdd = devices.find(d => d.id === deviceId);
+                    const protectionCheckbox = document.getElementById('pdp-protection-plan-checkbox');
+                    const addProtection = protectionCheckbox ? protectionCheckbox.checked : false;
+                    if (deviceToAdd) { addDeviceToSelectedLines(deviceToAdd, addProtection); }
+                }
+            });
+        }
+
+        promotionsContainer.addEventListener('click', (e) => { const button = e.target.closest('.toggle-promo-btn'); if (button) { const promoId = button.dataset.promoId; const promoBanner = document.getElementById(promoId); if (!promoBanner) return; const content = promoBanner.querySelector('.promo-banner-content'); const icon = button.querySelector('svg'); if (!content || !icon) return; content.classList.toggle('collapsed'); const isCollapsed = content.classList.contains('collapsed'); icon.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)'; button.setAttribute('aria-expanded', String(!isCollapsed)); } });
+        if (cartActivationNoticeHeader) { cartActivationNoticeHeader.addEventListener('click', () => { if(cartActivationNoticeContent && toggleActivationNoticeBtn) { cartActivationNoticeContent.classList.toggle('collapsed');
+        const svgIcon = toggleActivationNoticeBtn.querySelector('svg');
+        if (svgIcon) svgIcon.style.transform = cartActivationNoticeContent.classList.contains('collapsed') ? 'rotate(0deg)' : 'rotate(180deg)'; } });}
+        autopayDiscountCardEl.addEventListener('click', () => {
+            cart.isAutopayEnabled = !cart.isAutopayEnabled;
+            autopayDiscountCheckbox.checked = cart.isAutopayEnabled;
+            autopayDiscountCardEl.classList.toggle('active', cart.isAutopayEnabled);
+            updateCartSummary();
+        });
+        cartItemsContainer.addEventListener('click', (e) => {
+            const target = e.target;
+            const lineNumStr = target.dataset.line || target.closest('[data-line]')?.dataset.line;
+            if (target.closest('.remove-line-btn')) {
+                const lineToRemoveStr = target.closest('.remove-line-btn').dataset.lineRemove;
+                if (lineToRemoveStr) removeLineFromCart(parseInt(lineToRemoveStr));
+                return;
+            }
+            if (!lineNumStr) return;
+            const lineNumber = parseInt(lineNumStr);
+            if (target.classList.contains('select-plan-for-line-btn') || target.classList.contains('edit-plan-btn')) {
+                currentLineForDeviceSelection = lineNumber;
+                switchView('phone-plans');
+                document.getElementById('phone-plans-view').scrollIntoView({ behavior: 'smooth' });
+            } else if (target.classList.contains('select-new-device-for-line-btn') || target.classList.contains('edit-device-btn')) {
+                currentLineForDeviceSelection = lineNumber;
+                const isMobile = window.innerWidth <= 768;
+                if (isMobile) {
+                    toggleCartVisibility(false);
+                    setTimeout(() => { switchView('plp', { lineNumber }); }, 300);
+                } else {
+                    switchView('plp', { lineNumber });
+                }
+            } else if (target.classList.contains('select-byod-for-line-btn')) {
+                currentLineForBYOD = lineNumber;
+                if(byodModalLineNumberEl) byodModalLineNumberEl.textContent = lineNumber;
+                byodModal.classList.remove('hidden');
+            }
+        });
+        if (closeByodModalBtn) closeByodModalBtn.addEventListener('click', () => byodModal.classList.add('hidden'));
+        if (byodEsimBtn) byodEsimBtn.addEventListener('click', () => { if (currentLineForBYOD !== null) selectBYODForLine(currentLineForBYOD, 'eSIM'); });
+        if (byodSimkitBtn) byodSimkitBtn.addEventListener('click', () => { if (currentLineForBYOD !== null) selectBYODForLine(currentLineForBYOD, 'SIM Kit'); });
+        if (backToPlansBtn) backToPlansBtn.addEventListener('click', () => { switchView('phone-plans'); });
+        if (viewFullSummaryBtn) { viewFullSummaryBtn.addEventListener('click', () => {
+            fullSummaryDetailsEl.classList.toggle('hidden');
+            if (!fullSummaryDetailsEl.classList.contains('hidden')) {
+                updateCartSummary();
+                viewFullSummaryBtn.textContent = 'Hide Detailed Summary';
+            } else {
+                viewFullSummaryBtn.textContent = 'View Detailed Summary';
+            }
+        }); }
+
+        function debounce(func, wait) { let timeout; return function executedFunction(...args) { const later = () => { clearTimeout(timeout); func(...args); }; clearTimeout(timeout); timeout = setTimeout(later, wait); }; }
+
+        function applyScreenSpecificStyles() {
+            const isMobile = window.innerWidth <= 768;
+            mainContentEl.style.width = '';
+            mainContentEl.style.paddingRight = '';
+            shoppingCartEl.style.width = '';
+            shoppingCartEl.style.position = 'fixed';
+            shoppingCartEl.style.transform = '';
+            shoppingCartEl.classList.remove('cart-mobile-visible', 'cart-hidden');
+
+            if (minimizedCartTriggerMobile) minimizedCartTriggerMobile.style.display = 'none';
+            if (minimizedCartTriggerDesktop) minimizedCartTriggerDesktop.style.display = 'none';
+            if (mobileCartCloseStrip) mobileCartCloseStrip.classList.add('hidden');
+
+            if (isMobile) {
+                mainContentEl.style.width = '100%';
+                mainContentEl.style.boxSizing = 'border-box';
+                if (minimizedCartTriggerMobile) minimizedCartTriggerMobile.style.display = 'flex';
+
+                shoppingCartEl.style.width = '92vw';
+                shoppingCartEl.style.right = '0';
+                shoppingCartEl.style.left = 'auto';
+
+                if (shoppingCartEl.classList.contains('cart-mobile-visible')) {
+                    shoppingCartEl.style.transform = 'translateX(0)';
+                    if (mobileCartCloseStrip) mobileCartCloseStrip.classList.remove('hidden');
+                } else {
+                    shoppingCartEl.style.transform = 'translateX(100%)';
+                }
+            } else {
+                mainContentEl.style.width = `calc(100% - ${shoppingCartEl.style.width || '33.33%'})`;
+                shoppingCartEl.style.width = 'max(320px, min(450px, 33.33%))';
+                shoppingCartEl.style.position = 'relative';
+                shoppingCartEl.style.transform = 'translateX(0)';
+                shoppingCartEl.style.left = 'auto';
+                shoppingCartEl.style.right = '0';
+                if (minimizedCartTriggerDesktop) minimizedCartTriggerDesktop.style.display = 'none';
+                if (minimizedCartTriggerMobile) minimizedCartTriggerMobile.style.display = 'none';
+                shoppingCartEl.classList.remove('cart-mobile-visible');
+            }
+        }
+
+        const handleResize = debounce(() => { applyScreenSpecificStyles(); }, 250);
+
+        function initApp() {
+            renderPhonePlanCards(); renderTabletPlanCards(); renderHotspotPlanCards(); renderHomeInternetPlanCards();
+            initializeCart();
+            switchView('phone-plans');
+            document.querySelectorAll('.promo-banner.collapsed .toggle-promo-btn svg').forEach(icon => { icon.style.transform = 'rotate(0deg)'; });
+            document.querySelectorAll('.promo-banner:not(.collapsed) .toggle-promo-btn svg').forEach(icon => { icon.style.transform = 'rotate(180deg)'; });
+            if (cartActivationNoticeContent && toggleActivationNoticeBtn) {
+                cartActivationNoticeContent.classList.add('collapsed');
+                const svgIcon = toggleActivationNoticeBtn.querySelector('svg');
+                if (svgIcon) svgIcon.style.transform = 'rotate(0deg)';
+            }
+            applyScreenSpecificStyles();
+            updateCartSummary();
+        }
+
+        window.addEventListener('resize', handleResize);
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>KOJI FIZZ — Brand Promotion Films | Takao Umehara</title>
+  <meta name="description" content="KOJI FIZZ — a short documentary film series produced and directed by Takao Umehara featuring New York creatives, which became the core of KOJI FIZZ's brand promotion strategy. Case study by Takao Umehara.">
+  <meta property="og:title" content="KOJI FIZZ — Brand Promotion Films | Takao Umehara">
+  <meta property="og:description" content="KOJI FIZZ — a short documentary film series featuring New York creatives that became the core of the brand's promotion strategy.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/shared/Screenshot_2023-12-21_at_9.53.28_PM.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 28px;
+      height: 20px;
+      position: relative;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--ink);
+      transition: transform 280ms ease, opacity 180ms ease;
+    }
+
+    .nav-toggle span:nth-child(1) {
+      top: 0;
+    }
+
+    .nav-toggle span:nth-child(2) {
+      top: 9px;
+    }
+
+    .nav-toggle span:nth-child(3) {
+      top: 18px;
+    }
+
+    .nav-toggle.is-open span:nth-child(1) {
+      top: 9px;
+      transform: rotate(45deg);
+    }
+
+    .nav-toggle.is-open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.is-open span:nth-child(3) {
+      top: 9px;
+      transform: rotate(-45deg);
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-links.is-open {
+        display: flex;
+      }
+
+      .nav-links li {
+        border-top: 1px solid var(--line);
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 16px 32px;
+        font-size: 14px;
+      }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18, 18, 18, 0.08);
+      --border: rgba(18, 18, 18, 0.10);
+      --surface: rgba(255, 255, 255, 0.92);
+      --shadow: 0 18px 42px rgba(18, 18, 18, 0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg;
+      --bar-width: 70%;
+      --image-hover-opacity: 0.985;
+      --image-hover-width: 174%;
+      --image-hover-from: -96%;
+      --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms;
+      --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms;
+      --press-ms: 760ms;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188, 233, 255, 0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255, 204, 229, 0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    .eyebrow,
+    .kicker,
+    .meta,
+    .small,
+    .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.01em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .nav-links a.is-active {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .btn-primary:hover {
+      background: #2a2a2a;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(18, 18, 18, 0.3);
+    }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 40px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.025em;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--ink);
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Animations ─── */
+    @keyframes hero-in {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .hero-kicker,
+      .hero-headline,
+      .hero-body,
+      .hero-cta {
+        animation: none !important;
+        opacity: 1 !important;
+      }
+    }
+
+    /* ─── Project page styles ─── */
+    .project-hero {
+      position: relative;
+      min-height: 480px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .project-hero-img {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+    }
+
+    .project-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(18, 18, 18, 0.72) 0%, rgba(18, 18, 18, 0.2) 55%, transparent 100%);
+    }
+
+    .project-hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 48px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .project-hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .project-hero-tag {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      padding: 5px 9px;
+    }
+
+    .project-hero-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 0.93;
+      color: #fff;
+      max-width: 800px;
+      margin-bottom: 20px;
+    }
+
+    .project-hero-meta {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .project-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .project-meta-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.48);
+    }
+
+    .project-meta-value {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .project-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 32px 80px;
+    }
+
+    .project-overview {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      margin-bottom: 72px;
+      padding-bottom: 72px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .project-section-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .project-text {
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--ink-mid);
+      margin-bottom: 20px;
+    }
+
+    .project-aside-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 16px;
+    }
+
+    .project-aside-stat {
+      margin-bottom: 24px;
+    }
+
+    .project-aside-num {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    .project-aside-desc {
+      font-size: 13px;
+      color: var(--ink-dim);
+      margin-top: 4px;
+    }
+
+    .project-deliverables {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-deliverables li {
+      font-size: 14px;
+      color: var(--ink-mid);
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+
+    .project-deliverables li::before {
+      content: "—";
+      color: rgba(18, 18, 18, 0.24);
+      flex-shrink: 0;
+    }
+
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-bottom: 64px;
+    }
+
+    .outcome-block {
+      padding: 28px 24px;
+      border: 1px solid var(--line);
+    }
+
+    .outcome-num {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      margin-bottom: 6px;
+    }
+
+    .outcome-label {
+      font-size: 13px;
+      color: var(--ink-mid);
+      line-height: 1.5;
+    }
+
+    .project-section {
+      margin-bottom: 64px;
+    }
+
+    /* ─── Team grid ─── */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      margin-bottom: 64px;
+    }
+
+    .team-block {
+      padding: 24px 20px;
+      border: 1px solid var(--line);
+    }
+
+    .team-role {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 8px;
+    }
+
+    .team-name {
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+
+    /* ─── Tools tags ─── */
+    .tools-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tool-tag {
+      font-size: 11px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      color: var(--ink-dim);
+    }
+
+    /* ─── Product highlight ─── */
+    .product-highlight {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 2px;
+      margin-bottom: 64px;
+    }
+
+    .product-highlight img {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      background: #f4f2ee;
+      padding: 32px;
+    }
+
+    .product-highlight-text {
+      padding: 40px;
+      background: rgba(18, 18, 18, 0.02);
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .product-highlight-name {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    .product-highlight-desc {
+      font-size: 15px;
+      line-height: 1.68;
+      color: var(--ink-mid);
+    }
+
+    /* ─── Back link ─── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .back-link:hover {
+      color: var(--ink);
+    }
+
+    .back-bar {
+      padding: 20px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ─── Lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18, 18, 18, 0.10);
+      border-radius: 6px 0 0 6px;
+    }
+
+    .lang-btn {
+      appearance: none;
+      background: none;
+      border: none;
+      font-family: var(--ff);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--ink-dim);
+      padding: 0;
+      transition: color 160ms ease;
+    }
+
+    .lang-btn.is-active {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .lang-sep {
+      font-size: 9px;
+      color: rgba(18, 18, 18, 0.18);
+    }
+
+    .t-jp {
+      display: none;
+    }
+
+    html.lang-jp .t-en {
+      display: none;
+    }
+
+    html.lang-jp .t-jp {
+      display: inline;
+    }
+
+    html.lang-jp .t-jp.is-block {
+      display: block;
+    }
+
+    /* ─── Gallery system ─── */
+    .gallery {
+      margin-bottom: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .gallery-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin: 48px 0 12px;
+    }
+
+    .g-row {
+      display: grid;
+      gap: 4px;
+    }
+
+    .g-row+.g-row {
+      margin-top: 4px;
+    }
+
+    .g-row.r1 {
+      grid-template-columns: 1fr;
+    }
+
+    .g-row.r2 {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .g-row.r3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .g-row.r21 {
+      grid-template-columns: 2fr 1fr;
+    }
+
+    .g-row.r12 {
+      grid-template-columns: 1fr 2fr;
+    }
+
+    .g-cell {
+      overflow: hidden;
+      background: #f5f3f0;
+    }
+
+    .g-cell.ui {
+      aspect-ratio: 16/9;
+      background: #f5f3f0;
+    }
+
+    .g-cell.ui img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .g-cell.dark {
+      background: #111;
+    }
+
+    .g-cell.dark img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .g-cell.natural {
+      background: #f5f3f0;
+    }
+
+    .g-cell.natural img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .g-cell.diagram {
+      background: white;
+    }
+
+    .g-cell.diagram img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .g-cell.photo {
+      aspect-ratio: 4/3;
+    }
+
+    .g-cell.photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .g-cell.brand {
+      background: white;
+    }
+
+    .g-cell.brand img {
+      width: 100%;
+      height: auto;
+      display: block;
+      max-height: 520px;
+      object-fit: contain;
+    }
+
+    @media (max-width: 700px) {
+      .g-row.r3 {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .g-row.r21,
+      .g-row.r12 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width:900px) {
+      .project-overview {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .outcomes-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .product-highlight {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width:600px) {
+      .site-nav {
+        padding: 16px 20px;
+      }
+
+      .project-hero-content {
+        padding: 32px 20px;
+      }
+
+      .project-body {
+        padding: 40px 20px 60px;
+      }
+
+      .back-bar {
+        padding: 20px;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .outcomes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+        transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Image Fade-In ─── */
+    .g-cell img {
+      opacity: 0;
+      transition: opacity 400ms ease;
+    }
+
+    .g-cell img.loaded {
+      opacity: 1;
+    }
+
+    /* ─── Gallery Hover ─── */
+    .g-cell {
+      border-radius: 2px;
+    }
+
+    .g-cell img {
+      transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .g-cell:hover img.loaded {
+      transform: scale(1.008);
+    }
+
+    /* ─── Video Section ─── */
+    .video-section {
+      margin-bottom: 80px;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .video-card {}
+
+    .video-card-label {
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .video-card-sublabel {
+      font-size: 12px;
+      color: var(--ink-dim);
+      margin-bottom: 12px;
+    }
+
+    .video-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 2px;
+      background: #111;
+    }
+
+    .video-wrap iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+
+    .video-grid-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 700px) {
+      .video-grid-pair {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ─── Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-on-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+
+      .g-cell img {
+        opacity: 1 !important;
+        transition: none !important;
+      }
+
+      .g-cell:hover img {
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html" class="is-active" aria-current="page">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="back-bar">
+    <a href="../work.html" class="back-link">&larr; All Work</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="project-hero">
+    <div class="project-hero-img"
+      style="background-image:url('../assets/shared/Screenshot_2023-12-21_at_9.53.28_PM.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Film</span>
+        <span class="project-hero-tag">Brand Promotion</span>
+        <span class="project-hero-tag">Creative Direction</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">KOJI FIZZ &mdash; Brand Promotion Films</span>
+        <span class="t-jp">KOJI FIZZ &mdash; ブランドプロモーションフィルム</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">See the Sun / Morinaga &amp; Company</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">
+            <span class="t-en">Film Producer &amp; Creative Director</span>
+            <span class="t-jp">フィルムプロデューサー・クリエイティブディレクター</span>
+          </span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Location</span>
+          <span class="project-meta-value">New York City</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <main class="project-body">
+
+    <!-- ════════════════════════════════════
+         Overview (left: stats / right: narrative)
+    ════════════════════════════════════ -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">Impact</span>
+          <span class="t-jp">成果</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">Series</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Multi-film short documentary series</span>
+            <span class="t-jp">複数作品の短編ドキュメンタリーシリーズ</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">NYC</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Filmed on location across New York City</span>
+            <span class="t-jp">ニューヨーク各地でロケ撮影</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">Central</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Became core of brand promotion strategy</span>
+            <span class="t-jp">ブランドプロモーション戦略の中核に</span>
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top:32px;">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">成果物</span>
+        </p>
+        <ul class="project-deliverables">
+          <li>
+            <span class="t-en">Short film series</span>
+            <span class="t-jp">短編映画シリーズ</span>
+          </li>
+          <li>
+            <span class="t-en">Creative direction &amp; interview concept</span>
+            <span class="t-jp">クリエイティブディレクション・インタビュー構成</span>
+          </li>
+          <li>
+            <span class="t-en">On-location production management</span>
+            <span class="t-jp">ロケーション制作管理</span>
+          </li>
+          <li>
+            <span class="t-en">Brand narrative development</span>
+            <span class="t-jp">ブランドナラティブ開発</span>
+          </li>
+        </ul>
+
+        <p class="project-aside-label" style="margin-top:32px;">
+          <span class="t-en">Tools</span>
+          <span class="t-jp">ツール</span>
+        </p>
+        <div class="tools-list">
+          <span class="tool-tag"><span class="t-en">Film Production</span><span class="t-jp">映像制作</span></span>
+          <span class="tool-tag"><span class="t-en">Creative Direction</span><span
+              class="t-jp">クリエイティブディレクション</span></span>
+          <span class="tool-tag"><span class="t-en">Interview Design</span><span class="t-jp">インタビュー設計</span></span>
+        </div>
+      </aside>
+
+      <div>
+        <!-- The Story -->
+        <h2 class="project-section-title">
+          <span class="t-en">The Story</span>
+          <span class="t-jp">ストーリー</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">See the Sun partnered with KOJI FIZZ &mdash; a prebiotic drink developed by Morinaga &amp;
+            Company &mdash; to promote the product through authentic creative endorsement. Rather than running a
+            traditional advertising campaign, they wanted something more genuine: to capture how the product actually
+            influenced real creative professionals in their daily work environments.</span>
+          <span class="t-jp is-block">See the SunはKOJI
+            FIZZ（森永乳業が開発したプレバイオティクスドリンク）と提携し、本物のクリエイティブな支持を通じて製品を宣伝しようとしていました。従来の広告キャンペーンではなく、もっと本物の何かを求めていました：実際のクリエイティブプロフェッショナルの日常の仕事環境で、製品がどのように影響を与えているかを捉えること。</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">I was brought in to produce and direct the creative vision. The idea was straightforward:
+            go to the people. Visit New York-based designers and artists in their own studios and offices, sit down with
+            them, and let them tell their stories on camera. No scripts, no staged settings &mdash; just the real
+            texture of creative life in the city.</span>
+          <span
+            class="t-jp is-block">クリエイティブビジョンのプロデュースとディレクションのために声がかかりました。アイデアはシンプルでした：人々のもとへ行く。ニューヨークを拠点とするデザイナーやアーティストを彼ら自身のスタジオやオフィスに訪ね、座って、カメラの前で語ってもらう。台本なし、演出されたセッティングなし
+            &mdash; ただ都市のクリエイティブな生活のリアルな質感だけ。</span>
+        </p>
+
+        <!-- What I Made -->
+        <h2 class="project-section-title" style="margin-top:40px;">
+          <span class="t-en">What I Made</span>
+          <span class="t-jp">制作したもの</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I produced a series of short documentary films featuring interviews with New York-based
+            creative professionals. I conceptualized the interview format, scouted and coordinated on-location filming
+            across multiple studios and workspaces, and managed the entire production team &mdash; including film
+            director T.J. Misny and translator Mai Oyama. Each film was shot entirely on location, capturing the
+            authentic atmosphere of each subject's working environment.</span>
+          <span
+            class="t-jp is-block">ニューヨーク在住のクリエイティブプロフェッショナルへのインタビューを収めた短編ドキュメンタリーシリーズを制作しました。インタビュー形式のコンセプト立案、複数のスタジオやワークスペースでのロケハンと撮影コーディネート、そしてフィルムディレクターのT.J.
+            Misnyやトランスレーターの大山麻衣を含む制作チーム全体のマネジメントを担当。各作品はすべてロケで撮影し、それぞれの被写体の仕事環境の本物の雰囲気を捉えました。</span>
+        </p>
+        <p class="project-text">
+          <span class="t-en">The series exceeded the client's expectations and became central to KOJI FIZZ's brand
+            promotion strategy &mdash; a genuine portrait of creativity in New York, anchored by a product that supports
+            the creative mind.</span>
+          <span class="t-jp is-block">シリーズはクライアントの期待を超え、KOJI FIZZのブランドプロモーション戦略の中核となりました &mdash;
+            クリエイティブな思考を支える製品を軸にした、ニューヨークの創造性の本物のポートレート。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         FILMS: KOJI FIZZ New York Edition
+    ═══════════════════════════════════════════════ -->
+    <div class="video-section">
+      <p class="gallery-label reveal-on-scroll" style="margin-top:0;">
+        <span class="t-en">Films &mdash; KOJI FIZZ New York Edition</span>
+        <span class="t-jp">映像作品 &mdash; KOJI FIZZ ニューヨーク・エディション</span>
+      </p>
+
+      <!-- Compilation Video — full width -->
+      <div class="video-card reveal-on-scroll" style="margin-bottom:32px;">
+        <div class="video-card-label">
+          <span class="t-en">Compilation Film</span>
+          <span class="t-jp">コンピレーション映像</span>
+        </div>
+        <div class="video-card-sublabel">KOJI FIZZ New York Edition</div>
+        <div class="video-wrap">
+          <iframe src="https://www.youtube.com/embed/8mXYhHl5VDU" title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <a href="https://youtu.be/8mXYhHl5VDU" target="_blank" rel="noopener" class="back-link"
+          style="margin-top:12px;">
+          <span class="t-en">Watch on YouTube &nearr;</span>
+          <span class="t-jp">YouTubeで視聴する &nearr;</span>
+        </a>
+      </div>
+
+      <!-- Individual Interview Films -->
+      <div class="video-grid-pair" style="margin-bottom:24px;">
+        <div class="video-card reveal-on-scroll">
+          <div class="video-card-label">Jeff Silva</div>
+          <div class="video-card-sublabel">Creative Director</div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/51xvp6Y6TWE" title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <a href="https://youtu.be/51xvp6Y6TWE" target="_blank" rel="noopener" class="back-link"
+            style="margin-top:12px;">
+            <span class="t-en">Watch on YouTube &nearr;</span>
+            <span class="t-jp">YouTubeで視聴する &nearr;</span>
+          </a>
+        </div>
+        <div class="video-card reveal-on-scroll">
+          <div class="video-card-label">Elizabeth Hackenberg</div>
+          <div class="video-card-sublabel">Artist</div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/zBgODEp6kDQ" title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <a href="https://youtu.be/zBgODEp6kDQ" target="_blank" rel="noopener" class="back-link"
+            style="margin-top:12px;">
+            <span class="t-en">Watch on YouTube &nearr;</span>
+            <span class="t-jp">YouTubeで視聴する &nearr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="video-grid-pair">
+        <div class="video-card reveal-on-scroll">
+          <div class="video-card-label">Starr Blackshere</div>
+          <div class="video-card-sublabel">Artist at Blackshere Beauty</div>
+          <div class="video-wrap">
+            <iframe src="https://www.youtube.com/embed/2Z_y1drS53w" title="YouTube video player" frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <a href="https://youtu.be/2Z_y1drS53w" target="_blank" rel="noopener" class="back-link"
+            style="margin-top:12px;">
+            <span class="t-en">Watch on YouTube &nearr;</span>
+            <span class="t-jp">YouTubeで視聴する &nearr;</span>
+          </a>
+        </div>
+        <div class="video-card" style="visibility:hidden;"></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════
+         Outcomes
+    ════════════════════════════════════ -->
+    <p class="project-aside-label" style="margin-bottom:20px;">
+      <span class="t-en">Outcomes</span>
+      <span class="t-jp">成果</span>
+    </p>
+    <div class="outcomes-grid reveal-on-scroll">
+      <div class="outcome-block">
+        <div class="outcome-num">Series</div>
+        <div class="outcome-label">
+          <span class="t-en">Multi-film short documentary format featuring NYC creatives</span>
+          <span class="t-jp">NYCクリエイターを特集した複数作品の短編ドキュメンタリー</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">NYC</div>
+        <div class="outcome-label">
+          <span class="t-en">Creative community captured on location across the city</span>
+          <span class="t-jp">市内各地でロケ撮影したクリエイティブコミュニティ</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">Central</div>
+        <div class="outcome-label">
+          <span class="t-en">Became the core of KOJI FIZZ brand promotion</span>
+          <span class="t-jp">KOJI FIZZブランドプロモーションの中核に</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════
+         GALLERY: On Location — New York Creatives
+    ═══════════════════════════════════════════════ -->
+    <div class="gallery reveal-on-scroll">
+      <p class="gallery-label">
+        <span class="t-en">On Location &mdash; New York Creatives</span>
+        <span class="t-jp">ロケーション &mdash; ニューヨークのクリエイター</span>
+      </p>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_2877_s.jpg" alt="KOJI FIZZ on-location interview"
+            loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_2884_s.jpg" alt="KOJI FIZZ on-location interview"
+            loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8970.JPG" alt="KOJI FIZZ interview setup"
+            loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8952.JPG" alt="KOJI FIZZ interview" loading="lazy">
+        </div>
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8921.JPG" alt="KOJI FIZZ on location"
+            loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8941.jpeg" alt="KOJI FIZZ NYC creative"
+            loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8961.JPG" alt="KOJI FIZZ NYC creative"
+            loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8883.JPG" alt="KOJI FIZZ interview environment"
+            loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8563_s.jpg" alt="KOJI FIZZ on location"
+            loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8674_s.jpg" alt="KOJI FIZZ on location"
+            loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/koji-fizz/IMG_8605_s.jpg" alt="KOJI FIZZ on location"
+            loading="lazy"></div>
+      </div>
+
+      <p class="gallery-label">
+        <span class="t-en">Brand Identity</span>
+        <span class="t-jp">ブランドアイデンティティ</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/koji-fizz/KOJIGREY2-WHITE.png" alt="KOJI FIZZ brand identity"
+            loading="lazy"></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════
+         Project Details — Team
+    ════════════════════════════════════ -->
+    <div class="project-section">
+      <h2 class="project-section-title reveal-on-scroll">
+        <span class="t-en">Creative Team</span>
+        <span class="t-jp">クリエイティブチーム</span>
+      </h2>
+      <div class="team-grid">
+        <div class="team-block">
+          <div class="team-role">
+            <span class="t-en">Film Producer &amp; CD</span>
+            <span class="t-jp">プロデューサー・CD</span>
+          </div>
+          <div class="team-name">Takao Umehara</div>
+        </div>
+        <div class="team-block">
+          <div class="team-role">
+            <span class="t-en">Film Director</span>
+            <span class="t-jp">フィルムディレクター</span>
+          </div>
+          <div class="team-name">T.J. Misny</div>
+        </div>
+        <div class="team-block">
+          <div class="team-role">
+            <span class="t-en">Translator</span>
+            <span class="t-jp">通訳</span>
+          </div>
+          <div class="team-name">Mai Oyama</div>
+        </div>
+        <div class="team-block">
+          <div class="team-role">
+            <span class="t-en">KOJI FIZZ Inventor</span>
+            <span class="t-jp">KOJI FIZZ開発者</span>
+          </div>
+          <div class="team-name">Akifumi Yamada<br><span
+              style="font-size:12px; font-weight:400; color:var(--ink-dim);">Morinaga &amp; Co.</span></div>
+        </div>
+        <div class="team-block">
+          <div class="team-role">
+            <span class="t-en">Packaging Designer</span>
+            <span class="t-jp">パッケージデザイナー</span>
+          </div>
+          <div class="team-name">Masato Nagumo</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <div style="display:flex; gap:16px; flex-wrap:wrap; padding-top:16px;">
+      <a href="../work.html" class="btn-secondary">&larr; All Projects</a>
+      <a href="kitadoko.html" class="btn-primary">Next: Kitadoko &rarr;</a>
+    </div>
+
+  </main>
+
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <footer>
+    <div class="site-footer"
+      style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance &amp; consulting through <strong
+              style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is
+              Everywhere LLC</strong> を通じて</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener"
+          style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+
+    // ── Scroll Reveal ──
+    (() => {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+    })();
+
+    // ── Image Fade-In ──
+    document.querySelectorAll('.g-cell img').forEach(img => {
+      if (img.complete) img.classList.add('loaded');
+      else img.addEventListener('load', () => img.classList.add('loaded'));
+    });
+
+    // ── Mobile Nav ──
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (toggle && links) {
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('is-open');
+          links.classList.toggle('is-open');
+        });
+        // Close on link click
+        links.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            toggle.classList.remove('is-open');
+            links.classList.remove('is-open');
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

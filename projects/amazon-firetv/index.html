@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amazon Shopping — Fire TV</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Boot splash -->
+<div class="splash" id="splash">
+  <svg viewBox="0 0 260 78" fill="none" aria-label="amazon">
+    <text x="2" y="48" font-family="'Hanken Grotesk',sans-serif" font-weight="800" font-size="46" fill="#F4F6F6" letter-spacing="-1">amazon</text>
+    <path d="M28 58 C 78 76, 152 76, 196 56" stroke="#FF9900" stroke-width="6" stroke-linecap="round" fill="none"/>
+    <path d="M196 56 l 12 -3 -7 10 z" fill="#FF9900"/>
+  </svg>
+  <div class="bar"></div>
+</div>
+
+<!-- Onboarding — concept intro, skippable in one press -->
+<div class="onboard" id="onboard">
+  <div class="ob-inner">
+    <div class="ob-copy">
+      <div class="ob-kicker"><span class="flag">Demo</span>Built with snap-pair</div>
+      <h1 class="ob-title">Your phone is<br>the remote.</h1>
+      <p class="ob-sub">A concept of Amazon shopping on Fire&nbsp;TV, built with <b>snap-pair</b> —
+        an open-source QR device-pairing skill I developed. Everything here is simulated:
+        products, orders and Alexa replies. Not affiliated with Amazon.</p>
+      <ol class="ob-steps">
+        <li><span class="n">1</span><span><b>Scan the QR</b> with your phone or tablet camera</span></li>
+        <li><span class="n">2</span><span>It becomes your <b>D-pad, keyboard &amp; mic</b> — instantly</span></li>
+        <li><span class="n">3</span><span>In a hurry? <b>Arrow keys</b> work right here</span></li>
+      </ol>
+      <div class="ob-ctas">
+        <button class="btn btn-primary focusable" tabindex="-1" id="obStart">Explore the demo</button>
+        <a class="btn btn-ghost focusable" tabindex="-1" id="obRepo" href="https://github.com/takaoumehara/snap-pair" target="_blank" rel="noopener">
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+          snap-pair on GitHub
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" style="width:.85rem;height:.85rem;opacity:.6"><path d="M7 17 17 7M9 7h8v8"/></svg>
+        </a>
+      </div>
+      <div class="ob-hint"><span><span class="k">↵</span>Start now</span><span><span class="k">Esc</span>Skip</span></div>
+    </div>
+    <div class="ob-pair">
+      <div class="ob-qr" id="obQr"><div class="ob-qr-wait"></div></div>
+      <div class="ob-scan">Scan to connect — no app needed</div>
+      <div class="ob-code-label">Room code</div>
+      <div class="ob-code" id="obCode">· · · · · ·</div>
+    </div>
+  </div>
+</div>
+
+<!-- Top bar -->
+<header class="topbar" id="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 260 78" fill="none" aria-label="amazon">
+      <text x="2" y="48" font-family="'Hanken Grotesk',sans-serif" font-weight="800" font-size="46" fill="#F4F6F6" letter-spacing="-1">amazon</text>
+      <path d="M28 58 C 78 76, 152 76, 196 56" stroke="#FF9900" stroke-width="6" stroke-linecap="round" fill="none"/>
+      <path d="M196 56 l 12 -3 -7 10 z" fill="#FF9900"/>
+    </svg>
+    <span class="tv-tag">FIRE&nbsp;TV</span>
+  </div>
+
+  <button class="nav-pill focusable" tabindex="-1" data-route="home">Home</button>
+  <button class="nav-pill focusable" tabindex="-1" data-route="results">Protein Powder</button>
+  <button class="nav-pill focusable" tabindex="-1" data-route="deals">Today's Deals</button>
+  <button class="nav-pill focusable" tabindex="-1" data-route="orders">Buy Again</button>
+
+  <div class="spacer"></div>
+
+  <button class="top-icon focusable" tabindex="-1" data-route="search" id="btnSearch">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    Search
+  </button>
+  <button class="top-icon focusable" tabindex="-1" id="btnMic" title="Alexa (press V)">
+    <span class="alexa-brand-capsule">
+      <span class="alexa-blue-text">alexa</span>
+      <span class="alexa-sub-text">for shopping</span>
+    </span>
+  </button>
+  <button class="top-icon focusable" tabindex="-1" data-route="cart" id="btnCart">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M3 4h2l2.4 12.2a1.4 1.4 0 0 0 1.4 1.1h8.9a1.4 1.4 0 0 0 1.4-1.1L21 8H6"/><circle cx="10" cy="21" r="1.4" fill="currentColor"/><circle cx="17.5" cy="21" r="1.4" fill="currentColor"/></svg>
+    Cart<span class="badge" id="cartBadge" style="display:none">0</span>
+  </button>
+  <button class="avatar focusable" tabindex="-1" id="btnProfile">T</button>
+  <span class="clock" id="clock"></span>
+</header>
+
+<!-- Screens -->
+<main>
+  <section class="screen" id="screen-home"><div class="screen-scroll" id="home-scroll"></div></section>
+  <section class="screen" id="screen-search"><div class="search-layout" id="search-root"></div></section>
+  <section class="screen" id="screen-results"><div class="results-layout" id="results-root"></div></section>
+  <section class="screen" id="screen-pdp"><div class="screen-scroll" id="pdp-scroll"></div></section>
+  <section class="screen" id="screen-cart"><div class="cart-layout" id="cart-root"></div></section>
+  <section class="screen" id="screen-checkout"><div class="co-layout" id="checkout-root"></div></section>
+  <section class="screen" id="screen-confirm"><div class="confirm-wrap" id="confirm-root"></div></section>
+  <section class="screen" id="screen-orders"><div class="screen-scroll"><div class="orders-wrap" id="orders-root"></div></div></section>
+</main>
+
+<!-- Alexa overlay -->
+<div class="alexa" id="alexa">
+  <div class="alexa-card">
+    <div class="alexa-line"></div>
+    <div class="alexa-row">
+      <div class="alexa-orb">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+      </div>
+      <div class="alexa-content">
+        <div class="alexa-brand-display">
+          <span class="alexa-blue-text">alexa</span>
+          <span class="alexa-sub-text-light">for shopping</span>
+        </div>
+        <div class="alexa-state" id="alexaState">Listening</div>
+        <div class="alexa-heard" id="alexaHeard"><span class="dim">Try: “add this to my cart”</span></div>
+        <div class="alexa-reply" id="alexaReply" style="display:none"></div>
+        <div class="alexa-hints" id="alexaHints">
+          <span class="alexa-hint">“show me chocolate protein”</span>
+          <span class="alexa-hint">“sort by price”</span>
+          <span class="alexa-hint">“buy it now”</span>
+          <span class="alexa-hint">“reorder my protein”</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="toast-zone" id="toasts"></div>
+
+<!-- Remote pairing panel (snap-pair pattern: QR → code → room) -->
+<div class="pair-pop" id="pairPop">
+  <div class="pair-qr" id="pairQr"></div>
+  <div class="pair-info">
+    <div class="pair-title">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2.5"/><path d="M11 18.5h2"/></svg>
+      Use your phone as remote
+    </div>
+    <div class="pair-sub">Scan with your iPhone or Android camera — same Wi-Fi. D-pad, keyboard &amp; Alexa mic included.</div>
+    <div class="pair-code" id="pairCode"></div>
+    <div class="pair-connected" id="pairConnected" style="display:none"><span class="dot"></span><span id="pairName">Connected</span></div>
+  </div>
+</div>
+
+<!-- Hints -->
+<div class="hintbar">
+  <span><span class="k">↕↔</span>Navigate</span>
+  <span><span class="k">↵</span>Select</span>
+  <span><span class="k">Esc</span>Back</span>
+  <span><span class="k">V</span>Alexa voice</span>
+  <span><span class="k">R</span>Phone remote</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/focus.js"></script>
+<script src="js/voice.js"></script>
+<!-- Firebase (compat) for snap-pair phone-remote pairing -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script src="js/pair.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Agentic UX — Takao Umehara</title>
+  <meta name="description" content="Agentic UX by Takao Umehara — designing how humans and AI agents share work. Flagship research, enterprise agent deployments, and living prototypes.">
+  <meta property="og:title" content="Agentic UX — Takao Umehara">
+  <meta property="og:description" content="Designing how humans and AI agents share work — research, enterprise deployments, and living prototypes.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ─── Geist Sans (Vercel) ─── */
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      /* 5-3C'02 Rich palette */
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.02em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .nav-links.is-open { display: flex; }
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.is-active { color: var(--ink); }
+
+    /* ─── Page header ─── */
+    .page-header {
+      padding: 64px 32px 28px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .page-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 12px;
+    }
+
+    .page-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(38px, 5vw, 60px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 0.92;
+    }
+
+    .page-count {
+      font-size: 13px;
+      color: var(--ink-dim);
+      letter-spacing: 0.01em;
+    }
+
+    .lab-intro {
+      max-width: 820px;
+      padding: 0 32px;
+      margin: 0 auto 8px;
+      font-size: 17px;
+      line-height: 1.72;
+      color: var(--ink-mid);
+    }
+
+    /* ─── Lab wrap + groups ─── */
+    .lab-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 32px 40px;
+    }
+
+    .lab-group-head {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      flex-wrap: wrap;
+      padding: 40px 0 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    .lab-group:first-child .lab-group-head { border-top: 0; padding-top: 20px; }
+
+    .lab-group-title {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .lab-group-title::before {
+      content: "";
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--ink-dim);
+    }
+
+    .lab-group.flagship .lab-group-title::before { background: linear-gradient(135deg, var(--t1), var(--t3)); }
+    .lab-group.agents .lab-group-title::before { background: hsl(248 46% 62%); }
+    .lab-group.shipped .lab-group-title::before { background: hsl(158 42% 46%); }
+    .lab-group.near    .lab-group-title::before { background: hsl(36 64% 52%); }
+    .lab-group.proto   .lab-group-title::before { background: hsl(248 46% 62%); }
+    .lab-group.concept .lab-group-title::before { background: hsl(198 54% 50%); }
+    .lab-group.client  .lab-group-title::before { background: hsl(174 40% 44%); }
+
+    .lab-group-note {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .lab-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2px;
+    }
+
+    /* ─── Lab card ─── */
+    .lab-card {
+      position: relative;
+      display: grid;
+      grid-template-rows: auto auto auto 1fr auto;
+      gap: 12px;
+      padding: 26px 24px 20px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      overflow: hidden;
+      isolation: isolate;
+      transition: border-color 240ms ease, box-shadow 240ms ease;
+    }
+
+    .lab-card::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--t1) 0%, var(--t2) 34%, var(--t3) 68%, var(--t4) 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 460ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .lab-card:hover::before { transform: scaleX(1); }
+    .lab-card:hover {
+      border-color: rgba(18,18,18,0.16);
+      box-shadow: var(--shadow);
+    }
+
+    .lab-badge {
+      justify-self: start;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      padding: 4px 9px;
+      border: 1px solid var(--border);
+    }
+
+    .lab-badge::before {
+      content: "";
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--ink-dim);
+    }
+
+    .lab-badge.flagship::before { background: linear-gradient(135deg, var(--t1), var(--t3)); }
+    .lab-badge.shipped::before { background: hsl(158 42% 46%); }
+    .lab-badge.near::before    { background: hsl(36 64% 52%); }
+    .lab-badge.proto::before   { background: hsl(248 46% 62%); }
+    .lab-badge.concept::before { background: hsl(198 54% 50%); }
+    .lab-badge.client::before  { background: hsl(174 40% 44%); }
+
+    .lab-name {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: 26px;
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      line-height: 1.04;
+    }
+
+    .lab-card--flag { background: #ffffff; }
+    .lab-card--flag::before { transform: scaleX(1); }
+    .lab-card--flag .lab-name { font-size: 29px; }
+
+    .lab-tagline {
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .lab-desc {
+      font-size: 13px;
+      line-height: 1.62;
+      color: var(--ink-mid);
+    }
+
+    .lab-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-top: 14px;
+      margin-top: 2px;
+      border-top: 1px solid var(--line);
+    }
+
+    .lab-stack {
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      color: var(--ink-dim);
+    }
+
+    .lab-link {
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 160ms ease;
+    }
+
+    .lab-link:hover { color: var(--ink); }
+
+    /* ─── CTA ─── */
+    .lab-cta {
+      border-top: 1px solid var(--line);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 72px 32px 96px;
+      text-align: center;
+    }
+
+    .lab-cta-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(26px, 3vw, 40px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.02;
+      margin-bottom: 16px;
+    }
+
+    .lab-cta-desc {
+      font-size: 16px;
+      line-height: 1.66;
+      color: var(--ink-mid);
+      max-width: 560px;
+      margin: 0 auto 30px;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 22px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: background 180ms ease;
+    }
+
+    .btn-primary:hover { background: #2a2a2a; }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-radius: 6px 0 0 6px;
+    }
+    .lang-btn {
+      appearance: none; background: none; border: none;
+      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; cursor: pointer;
+      color: var(--ink-dim); padding: 0;
+      transition: color 160ms ease;
+    }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+
+    /* bilingual content */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* JP typography overrides */
+    html.lang-jp body { font-family: var(--ff-jp); }
+    html.lang-jp .page-title { line-height: 1.16; }
+    html.lang-jp .lab-name { line-height: 1.18; }
+    html.lang-jp .lab-cta-title { line-height: 1.2; }
+
+    /* ─── Animations ─── */
+    @keyframes page-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-header { animation: page-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 60ms both; }
+    .lab-intro   { animation: page-in 500ms cubic-bezier(0.22, 0.84, 0.22, 1) 140ms both; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .lab-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .lab-grid { grid-template-columns: 1fr; }
+      .site-nav, .page-header, .lab-intro, .lab-wrap, .lab-cta {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .page-header, .lab-intro { animation: none !important; opacity: 1 !important; }
+      .lab-card::before { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="ai-products.html" class="is-active" aria-current="page">Agentic UX</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="work.html">Product Design</a></li>
+      <li><a href="brand.html">Brand &amp; Visual</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Lang Switch ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Header ── -->
+  <div class="page-header">
+    <div>
+      <div class="page-eyebrow">Creativity Is Everywhere LLC</div>
+      <h1 class="page-title">
+        <span class="t-en">Agentic UX</span>
+        <span class="t-jp">Agentic UX</span>
+      </h1>
+    </div>
+    <div class="page-count">11 products</div>
+  </div>
+
+  <p class="lab-intro">
+    <span class="t-en"><strong>Agentic UX is the practice of designing how humans and AI agents share work.</strong> These are my working answers — from framework research and an enterprise agent fleet to living prototypes and playful lab experiments, all built through Creativity Is Everywhere LLC.</span>
+    <span class="t-jp is-block"><strong>Agentic UX とは、人と AI エージェントがどう仕事を分担するかをデザインする実践です。</strong>ここに並ぶのは、その私なりの答え。フレームワーク研究とエンタープライズのエージェント艦隊から、動くプロトタイプ、遊び心あるラボの実験まで、すべて Creativity Is Everywhere LLC を通じて作っています。</span>
+  </p>
+
+  <!-- ── Lab ── -->
+  <div class="lab-wrap">
+
+    <!-- ═══ FLAGSHIP ═══ -->
+    <section class="lab-group flagship">
+      <div class="lab-group-head">
+        <div class="lab-group-title"><span class="t-en">Flagship</span><span class="t-jp">フラッグシップ</span></div>
+        <div class="lab-group-note"><span class="t-en">Research, enterprise deployment, and a living prototype</span><span class="t-jp">研究、エンタープライズ導入、そして動くプロトタイプ</span></div>
+      </div>
+      <div class="lab-grid">
+
+        <article class="lab-card lab-card--flag">
+          <span class="lab-badge flagship"><span class="t-en">Research · Framework</span><span class="t-jp">研究・フレームワーク</span></span>
+          <h3 class="lab-name">intentfirst.ai</h3>
+          <p class="lab-tagline">
+            <span class="t-en">Start from intent, not screens — a design framework for the AI era.</span>
+            <span class="t-jp is-block">画面ではなく意図から始める — AI 時代のデザインフレームワーク。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">An ongoing research project defining how we design when AI agents share the work: Context Grammar, eight Context Tokens, and intent-first patterns for adaptive interfaces.</span>
+            <span class="t-jp is-block">AI エージェントと仕事を分かち合う時代のデザインを定義する継続的研究。Context Grammar、8 つの Context Token、そして意図駆動のアダプティブ・インターフェイスのパターン。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">Context Grammar · AI Design Research</span>
+            <a class="lab-link" href="https://intentfirst.ai" target="_blank" rel="noopener">intentfirst.ai ↗</a>
+          </div>
+        </article>
+
+        <article class="lab-card lab-card--flag">
+          <span class="lab-badge flagship"><span class="t-en">Enterprise · Shipped</span><span class="t-jp">エンタープライズ・導入済み</span></span>
+          <h3 class="lab-name">Verizon AI Workflow</h3>
+          <p class="lab-tagline">
+            <span class="t-en">A 10-agent fleet changing how 42 designers work across 6 brands.</span>
+            <span class="t-jp is-block">42 名・6 ブランドのデザイン組織の働き方を変えた、10 エージェントの艦隊。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">Design-org AI transformation at enterprise scale — agents for design ops, QA, and content, deployed inside Verizon Value's design organization.</span>
+            <span class="t-jp is-block">エンタープライズ規模のデザイン組織 AI 変革。デザインオペレーション、QA、コンテンツのためのエージェント群を、Verizon Value のデザイン組織に導入。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">Agent fleet · Design Ops</span>
+            <a class="lab-link" href="projects/verizon-ai-agents.html">Case study →</a>
+          </div>
+        </article>
+
+        <article class="lab-card lab-card--flag">
+          <span class="lab-badge flagship"><span class="t-en">Live prototype</span><span class="t-jp">公開中のプロトタイプ</span></span>
+          <h3 class="lab-name">Amazon Shopping on Fire TV</h3>
+          <p class="lab-tagline">
+            <span class="t-en">Agentic commerce for the living room — D-pad, Alexa voice, phone as remote.</span>
+            <span class="t-jp is-block">リビングルームのエージェンティック・コマース — D-pad、Alexa 音声、スマホがリモコンに。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">A living prototype you can drive right now: browse with the D-pad, talk to Alexa, and pair your phone in one scan as remote, keyboard, and mic. Built on Snap Pair. Not affiliated with Amazon.</span>
+            <span class="t-jp is-block">いますぐ触れる動くプロトタイプ。D-pad で閲覧し、Alexa に話しかけ、ワンスキャンでスマホがリモコン・キーボード・マイクに。Snap Pair 上に構築。Amazon 非公式。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">10-foot UI · Voice UX · Snap Pair</span>
+            <a class="lab-link" href="projects/amazon-firetv.html">View prototype →</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ═══ AGENT PRODUCTS ═══ -->
+    <section class="lab-group agents">
+      <div class="lab-group-head">
+        <div class="lab-group-title"><span class="t-en">Agent Products</span><span class="t-jp">エージェント・プロダクト</span></div>
+        <div class="lab-group-note"><span class="t-en">MCP servers, AI apps, and agent-powered tools — shipped to prototype</span><span class="t-jp">MCP サーバー、AI アプリ、エージェント活用ツール — 公開済みからプロトタイプまで</span></div>
+      </div>
+      <div class="lab-grid">
+
+        <article class="lab-card">
+          <span class="lab-badge shipped"><span class="t-en">Shipped</span><span class="t-jp">公開済み</span></span>
+          <h3 class="lab-name">Marubatsu Arena</h3>
+          <p class="lab-tagline">
+            <span class="t-en">Real-time online multiplayer tic-tac-toe, with an AI opponent.</span>
+            <span class="t-jp is-block">マルバツ2.0 — AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">A real-time multiplayer take on tic-tac-toe with an AI opponent. Built on Next.js 16 and Firebase Realtime Database, with a Gemini-powered move API. Deployed to production.</span>
+            <span class="t-jp is-block">AI 対戦相手を備えた、リアルタイム・マルチプレイヤーの○×ゲーム。Next.js 16 と Firebase Realtime Database で構築し、着手の判断は Gemini を用いた API が担います。本番環境にデプロイ済み。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">Next.js 16 · Firebase RTDB · Gemini</span>
+          </div>
+        </article>
+
+        <article class="lab-card">
+          <span class="lab-badge near"><span class="t-en">Near launch</span><span class="t-jp">リリース間近</span></span>
+          <h3 class="lab-name">MyBrainSpec</h3>
+          <p class="lab-tagline">
+            <span class="t-en">A personalized BrainManual from a quick cognitive self-check.</span>
+            <span class="t-jp is-block">認知セルフチェックから、あなただけの「ブレインマニュアル」を。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">A cognitive self-check that generates a personalized "BrainManual" — educational, not medical. A guest-first flow in Japanese and English, with Gemini analysis and text-to-speech through serverless proxies.</span>
+            <span class="t-jp is-block">認知の傾向をセルフチェックし、あなただけの「ブレインマニュアル」を生成します（医療目的ではなく教育目的）。会員登録なしで始められ、日本語・英語に対応。Gemini による分析と、サーバーレスプロキシ経由の音声読み上げ（TTS）を備えます。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">React/Vite · Firebase · Vercel · Gemini</span>
+          </div>
+        </article>
+
+        <article class="lab-card">
+          <span class="lab-badge proto"><span class="t-en">Prototype</span><span class="t-jp">プロトタイプ</span></span>
+          <h3 class="lab-name">BreakBias Studio</h3>
+          <p class="lab-tagline">
+            <span class="t-en">Force non-obvious innovation ideas, then judge them for market entry.</span>
+            <span class="t-jp is-block">当たり前でない発想を生み出し、市場参入の観点でふるいにかける。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">A SIT-based idea-generation engine and MCP server that forces non-obvious innovation ideas — Closed World, all-cells sweep — then filters them down to a market-entry judgment.</span>
+            <span class="t-jp is-block">SIT（体系的発明思考）にもとづくアイデア生成エンジン兼 MCP サーバー。「クローズド・ワールド」と全セルの総当たりで、当たり前でない発想を強制的に引き出し、市場参入の判断へと絞り込みます。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">Node/TS · MCP SDK</span>
+          </div>
+        </article>
+
+        <article class="lab-card">
+          <span class="lab-badge proto"><span class="t-en">Prototype</span><span class="t-jp">プロトタイプ</span></span>
+          <h3 class="lab-name">Ren UX Guard</h3>
+          <p class="lab-tagline">
+            <span class="t-en">Agent-to-agent UX auditing, so coding agents align on intent.</span>
+            <span class="t-jp is-block">エージェント同士で UX を監査し、意図をそろえる。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">An agent-to-agent UX auditing MCP that packages 10 expert roles and 27 frameworks so coding agents can audit UX and align on intent. A Python MCP on Vercel, validated by ROI simulation showing 9–15x rework prevention.</span>
+            <span class="t-jp is-block">10 の専門家ロールと 27 のフレームワークをまとめた、エージェント間 UX 監査のための MCP。コーディングエージェントが UX を監査し、意図をそろえられるようにします。Vercel 上で動く Python MCP で、ROI シミュレーションにより手戻り防止の効果を 9〜15 倍と検証。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">Python MCP · Vercel</span>
+          </div>
+        </article>
+
+        <article class="lab-card">
+          <span class="lab-badge proto"><span class="t-en">Prototype</span><span class="t-jp">プロトタイプ</span></span>
+          <h3 class="lab-name">InstaLink</h3>
+          <p class="lab-tagline">
+            <span class="t-en">A link-in-bio tool for promo codes and events, with AI extraction.</span>
+            <span class="t-jp is-block">プロモコードやイベント向けのリンク・イン・バイオ。AI 抽出付き。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">A link-in-bio publishing tool for promo codes and events (CheckoutMyLinks.com), with AI-assisted extraction from flyers and screenshots. Built with React 19, Gemini, and serverless functions.</span>
+            <span class="t-jp is-block">プロモコードやイベントを発信するためのリンク・イン・バイオ・ツール（CheckoutMyLinks.com）。チラシやスクリーンショットから AI が情報を抽出します。React 19、Gemini、サーバーレス関数で構築。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">React 19 · Gemini · Serverless</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ═══ LAB & PLAY ═══ -->
+    <section class="lab-group concept">
+      <div class="lab-group-head">
+        <div class="lab-group-title"><span class="t-en">Lab &amp; Play</span><span class="t-jp">ラボ＆プレイ</span></div>
+        <div class="lab-group-note"><span class="t-en">Built with AI agents — playful experiments in craft and motion</span><span class="t-jp">AI エージェントと作った、造形と動きの遊びの実験</span></div>
+      </div>
+      <div class="lab-grid">
+
+        <article class="lab-card">
+          <span class="lab-badge proto"><span class="t-en">Prototype</span><span class="t-jp">プロトタイプ</span></span>
+          <h3 class="lab-name">Typespace</h3>
+          <p class="lab-tagline">
+            <span class="t-en">In the void, words briefly form a constellation, then slowly return to the cosmos.</span>
+            <span class="t-jp is-block">無の中で、言葉はつかのま星座を結び、やがてゆっくりと宇宙へ還る。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">A meditative web app where typed words materialize as particle constellations and slowly dissolve. Built with Next.js, react-three-fiber, GLSL shaders, and the Web Audio API.</span>
+            <span class="t-jp is-block">打ち込んだ言葉が粒子の星座として立ちあらわれ、ゆっくりと溶けていく瞑想的なウェブアプリ。Next.js、react-three-fiber、GLSL シェーダー、Web Audio API で構築。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">Next.js · react-three-fiber · GLSL · Web Audio</span>
+          </div>
+        </article>
+
+        <article class="lab-card">
+          <span class="lab-badge proto"><span class="t-en">Prototype</span><span class="t-jp">プロトタイプ</span></span>
+          <h3 class="lab-name">EmojiDrop</h3>
+          <p class="lab-tagline">
+            <span class="t-en">An emoji-only arcade rescue shooter with combos and fever.</span>
+            <span class="t-jp is-block">絵文字だけで遊ぶ、コンボとフィーバー搭載のアーケード救出シューター。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">An emoji-only arcade rescue shooter with combo and fever systems, fully bilingual. Built as a single-file HTML5 Canvas game.</span>
+            <span class="t-jp is-block">絵文字だけで構成された、救出型のアーケードシューター。コンボとフィーバーのシステムを備え、日英のバイリンガル対応。1 ファイルの HTML5 Canvas ゲームとして制作。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">HTML5 Canvas · single-file</span>
+          </div>
+        </article>
+
+        <article class="lab-card">
+          <span class="lab-badge concept"><span class="t-en">Concept</span><span class="t-jp">コンセプト</span></span>
+          <h3 class="lab-name">Motion</h3>
+          <p class="lab-tagline">
+            <span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics.</span>
+            <span class="t-jp is-block">擬似ハプティクスにもとづく、意図を伝えるウェブアニメーションの実験場。</span>
+          </p>
+          <p class="lab-desc">
+            <span class="t-en">A living showcase of purposeful web animations grounded in pseudo-haptics — "interaction that conveys intent" — exploring how motion communicates meaning.</span>
+            <span class="t-jp is-block">擬似ハプティクスにもとづく、目的をもったウェブアニメーションの生きたショーケース。「意図を伝えるインタラクション」を掲げ、動きがいかに意味を伝えるかを探究します。</span>
+          </p>
+          <div class="lab-foot">
+            <span class="lab-stack">Web animation · Pseudo-haptics</span>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </div><!-- /lab-wrap -->
+
+  <!-- ── CTA ── -->
+  <section class="lab-cta">
+    <h2 class="lab-cta-title">
+      <span class="t-en">Have an AI product to build?</span>
+      <span class="t-jp">つくりたい AI プロダクトはありますか？</span>
+    </h2>
+    <p class="lab-cta-desc">
+      <span class="t-en">From developer tooling to consumer AI experiences, I design and ship through Creativity Is Everywhere. Let's talk about what you have in mind.</span>
+      <span class="t-jp is-block">開発者向けツールから、消費者向けの AI 体験まで。Creativity Is Everywhere を通じて設計し、世に出します。考えていることを、ぜひ聞かせてください。</span>
+    </p>
+    <a href="contact.html" class="btn-primary">
+      <span class="t-en">Start a conversation</span>
+      <span class="t-jp">相談する</span>
+    </a>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer
+    style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+    <div>
+      <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+      <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">Freelance &amp; consulting through <strong
+          style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></div>
+    </div>
+    <div style="display:flex; gap:20px; list-style:none; flex-wrap:wrap;">
+      <a href="index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+      <a href="ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+      <a href="work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+      <a href="brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+      <a href="about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+      <a href="contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+      <a href="https://github.com/takaoumehara" target="_blank" rel="noopener"
+        style="font-size:12px; color:var(--ink-dim); text-decoration:none;">GitHub</a>
+    </div>
+  </footer>
+
+  <script>
+  // ── Lang switch ──
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+
+</body>
+</html>

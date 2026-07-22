@@ -1,0 +1,1390 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Amazon Shopping on Fire TV — Takao Umehara</title>
+  <meta name="description" content="A living prototype of Amazon shopping on Fire TV — D-pad navigation, Alexa voice shopping, and snap-pair phone remote. Built by Takao Umehara.">
+  <meta property="og:title" content="Amazon Shopping on Fire TV — Takao Umehara">
+  <meta property="og:description" content="A living prototype of Amazon shopping on Fire TV — D-pad, Alexa voice, and phone-as-remote via snap-pair.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/amazon-firetv/firetv-hero.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 28px;
+      height: 20px;
+      position: relative;
+      padding: 0;
+    }
+
+    .nav-toggle span {
+      display: block;
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 1.5px;
+      background: var(--ink);
+      transition: transform 280ms ease, opacity 180ms ease;
+    }
+
+    .nav-toggle span:nth-child(1) {
+      top: 0;
+    }
+
+    .nav-toggle span:nth-child(2) {
+      top: 9px;
+    }
+
+    .nav-toggle span:nth-child(3) {
+      top: 18px;
+    }
+
+    .nav-toggle.is-open span:nth-child(1) {
+      top: 9px;
+      transform: rotate(45deg);
+    }
+
+    .nav-toggle.is-open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .nav-toggle.is-open span:nth-child(3) {
+      top: 9px;
+      transform: rotate(-45deg);
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        background: rgba(255, 255, 255, 0.97);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav-links.is-open {
+        display: flex;
+      }
+
+      .nav-links li {
+        border-top: 1px solid var(--line);
+      }
+
+      .nav-links a {
+        display: block;
+        padding: 16px 32px;
+        font-size: 14px;
+      }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18, 18, 18, 0.08);
+      --border: rgba(18, 18, 18, 0.10);
+      --surface: rgba(255, 255, 255, 0.92);
+      --shadow: 0 18px 42px rgba(18, 18, 18, 0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44);
+      --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40);
+      --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%);
+      --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%);
+      --t4: hsl(36 58% 62%);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188, 233, 255, 0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255, 204, 229, 0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .eyebrow,
+    .kicker,
+    .meta,
+    .small,
+    .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav-logo {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-decoration: none;
+      line-height: 1;
+    }
+
+    .nav-logo-name {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+    }
+
+    .nav-logo-tag {
+      font-size: 10.5px;
+      letter-spacing: 0.02em;
+      color: var(--ink-dim);
+      font-weight: 400;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--ink-mid);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      transition: color 160ms ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.is-active {
+      color: var(--ink);
+    }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: var(--ink);
+      color: #fff;
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--ink);
+      transition: background 180ms ease, color 180ms ease;
+    }
+
+    .btn-primary:hover {
+      background: #2a2a2a;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 13px 20px;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--ff);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(18, 18, 18, 0.3);
+    }
+
+    /* ─── Lang switch ─── */
+    .lang-switch {
+      position: fixed;
+      right: 0;
+      bottom: 80px;
+      z-index: 100;
+      writing-mode: vertical-rl;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18, 18, 18, 0.10);
+      border-top: 1px solid rgba(18, 18, 18, 0.07);
+      border-bottom: 1px solid rgba(18, 18, 18, 0.07);
+      border-radius: 6px 0 0 6px;
+    }
+
+    .lang-btn {
+      appearance: none;
+      background: none;
+      border: none;
+      font-family: var(--ff);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      color: var(--ink-dim);
+      padding: 0;
+      transition: color 160ms ease;
+    }
+
+    .lang-btn.is-active {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .lang-sep {
+      font-size: 9px;
+      color: rgba(18, 18, 18, 0.18);
+    }
+
+    /* ─── Bilingual ─── */
+    .t-jp {
+      display: none;
+    }
+
+    html.lang-jp .t-en {
+      display: none;
+    }
+
+    html.lang-jp .t-jp {
+      display: inline;
+    }
+
+    html.lang-jp .t-jp.is-block {
+      display: block;
+    }
+
+    html.lang-jp body {
+      font-family: var(--ff-jp);
+    }
+
+    /* ─── Animations ─── */
+    @keyframes hero-in {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ─── Reduced motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-on-scroll {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+    }
+
+    /* ─── Project-detail styles ─── */
+    .project-hero {
+      position: relative;
+      min-height: 520px;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      background: #0a0a0c;
+    }
+
+    .project-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(10, 10, 12, 0.92) 0%, rgba(10, 10, 12, 0.55) 50%, rgba(10, 10, 12, 0.75) 100%);
+      z-index: 2;
+    }
+
+    .project-hero-content {
+      position: relative;
+      z-index: 3;
+      padding: 48px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .project-hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .project-hero-tag {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      padding: 5px 9px;
+    }
+
+    .project-hero-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(32px, 5vw, 64px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 0.93;
+      color: #fff;
+      max-width: 800px;
+      margin-bottom: 20px;
+    }
+
+    html.lang-jp .project-hero-title {
+      line-height: 1.12;
+    }
+
+    .project-hero-subtitle {
+      font-size: 17px;
+      line-height: 1.68;
+      color: rgba(255, 255, 255, 0.62);
+      max-width: 680px;
+      margin-bottom: 32px;
+    }
+
+    .project-hero-meta {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .project-meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .project-meta-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.48);
+    }
+
+    .project-meta-value {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.86);
+    }
+
+    .breadcrumb {
+      padding: 20px 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .breadcrumb a {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--ink);
+    }
+
+    .breadcrumb span {
+      font-size: 12px;
+      color: rgba(18, 18, 18, 0.28);
+      margin: 0 8px;
+    }
+
+    .project-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 64px 32px 80px;
+    }
+
+    .project-overview {
+      display: grid;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 64px;
+      margin-bottom: 72px;
+      padding-bottom: 72px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .project-aside-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 16px;
+    }
+
+    .project-aside-stat {
+      margin-bottom: 24px;
+    }
+
+    .project-aside-num {
+      font-size: 32px;
+      font-weight: 600;
+      letter-spacing: -0.04em;
+    }
+
+    .project-aside-desc {
+      font-size: 13px;
+      color: var(--ink-dim);
+      margin-top: 4px;
+    }
+
+    .project-section-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(22px, 2.4vw, 30px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .project-text {
+      font-size: 16px;
+      line-height: 1.72;
+      color: var(--ink-mid);
+      margin-bottom: 20px;
+    }
+
+    .project-deliverables {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .project-deliverables li {
+      font-size: 14px;
+      color: var(--ink-mid);
+      display: flex;
+      gap: 10px;
+      align-items: baseline;
+    }
+
+    .project-deliverables li::before {
+      content: "—";
+      color: rgba(18, 18, 18, 0.24);
+      flex-shrink: 0;
+    }
+
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+      margin-bottom: 72px;
+    }
+
+    .outcome-block {
+      padding: 28px 24px;
+      border: 1px solid var(--line);
+    }
+
+    .outcome-num {
+      font-size: 36px;
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      margin-bottom: 6px;
+    }
+
+    .outcome-label {
+      font-size: 13px;
+      color: var(--ink-mid);
+      line-height: 1.5;
+    }
+
+    .project-nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 48px;
+      border-top: 1px solid var(--line);
+    }
+
+    .project-nav-link {
+      font-size: 12px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      text-decoration: none;
+      transition: color 160ms ease;
+    }
+
+    .project-nav-link:hover {
+      color: var(--ink);
+    }
+
+    /* ─── Hero actions ─── */
+    .project-hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .btn-hero-solid {
+      display: inline-block;
+      padding: 13px 22px;
+      background: #fff;
+      color: #0a0a0c;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid #fff;
+      transition: background 180ms ease, border-color 180ms ease;
+    }
+
+    .btn-hero-solid:hover {
+      background: rgba(255, 255, 255, 0.84);
+      border-color: rgba(255, 255, 255, 0.84);
+    }
+
+    .btn-hero-ghost {
+      display: inline-block;
+      padding: 13px 22px;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      transition: border-color 180ms ease;
+    }
+
+    .btn-hero-ghost:hover {
+      border-color: rgba(255, 255, 255, 0.72);
+    }
+
+    /* ─── Demo embed ─── */
+    .demo-hero {
+      position: relative;
+      width: 100%;
+      min-height: 680px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #0a0a0c;
+      margin-bottom: 32px;
+    }
+
+    .demo-hero iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* ─── Full-bleed simulator ─── */
+    .demo-full {
+      position: relative;
+      width: 100vw;
+      margin-left: calc(50% - 50vw);
+      height: min(92vh, 1080px);
+      min-height: 600px;
+      background: #ffffff;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 28px;
+    }
+
+    .demo-full iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    .demo-caption {
+      font-size: 13px;
+      color: var(--ink-dim);
+      line-height: 1.6;
+      margin-bottom: 72px;
+      max-width: 800px;
+    }
+
+    .demo-controls {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 72px;
+    }
+
+    /* ─── Video section ─── */
+    .video-section {
+      margin-bottom: 72px;
+    }
+
+    .video-player {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #0a0a0c;
+    }
+
+    .video-player video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .video-caption {
+      font-size: 13px;
+      color: var(--ink-dim);
+      line-height: 1.6;
+      margin-top: 14px;
+      max-width: 800px;
+    }
+
+    /* ─── Feature cards ─── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-bottom: 72px;
+    }
+
+    .feature-card {
+      padding: 28px 24px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .feature-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--ink-mid);
+    }
+
+    /* ─── Notice box ─── */
+    .notice-box {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.72);
+      padding: 26px 30px;
+      margin-bottom: 56px;
+    }
+
+    .notice-box-icon {
+      flex-shrink: 0;
+      width: 38px;
+      height: 38px;
+      background: var(--ink);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .notice-box-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .notice-box-text {
+      font-size: 14px;
+      color: var(--ink-mid);
+      line-height: 1.68;
+    }
+
+    /* ─── Tools list ─── */
+    .tools-list {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tool-tag {
+      font-size: 11px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      padding: 6px 10px;
+      border: 1px solid var(--border);
+      color: var(--ink-dim);
+    }
+
+    /* ─── Compact details ─── */
+    .project-details-compact {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 32px;
+      padding: 40px 0;
+      margin-bottom: 48px;
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-group-label {
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      margin-bottom: 12px;
+    }
+
+    .detail-group-value {
+      font-size: 14px;
+      color: var(--ink-mid);
+      line-height: 1.6;
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+        transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .project-overview {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .outcomes-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project-details-compact {
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+      }
+
+      .demo-hero {
+        min-height: 520px;
+      }
+
+      .demo-full {
+        height: min(86vh, 900px);
+        min-height: 520px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .site-nav {
+        padding: 16px 20px;
+      }
+
+      .project-body {
+        padding: 40px 20px 60px;
+      }
+
+      .project-hero-content {
+        padding: 32px 20px;
+      }
+
+      .project-nav {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .outcomes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .demo-hero {
+        min-height: 420px;
+      }
+
+      .demo-full {
+        height: min(80vh, 760px);
+        min-height: 440px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html" class="is-active" aria-current="page">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="../ai-products.html">Agentic UX</a>
+    <span>/</span>
+    <a href="#">
+      <span class="t-en">Amazon Shopping on Fire TV</span>
+      <span class="t-jp">Amazon Shopping on Fire TV</span>
+    </a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="project-hero">
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Agentic UX</span>
+        <span class="project-hero-tag">10-foot UI</span>
+        <span class="project-hero-tag">Voice AI</span>
+        <span class="project-hero-tag">Multi-device</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">Amazon Shopping on Fire TV</span>
+        <span class="t-jp">Fire TV 向け Amazon ショッピング</span>
+      </h1>
+      <p class="project-hero-subtitle">
+        <span class="t-en">A living prototype of agentic commerce for the living room. D-pad browse, Alexa voice shopping, and a phone that becomes the remote, keyboard, and mic — all paired in one scan.</span>
+        <span class="t-jp is-block">リビングルーム向けのエージェンティック・コマースの動くプロトタイプ。D-pad での閲覧、Alexa 音声ショッピング、そしてスマートフォンがリモコン・キーボード・マイクになる。すべてがワンスキャンでペアリングされる。</span>
+      </p>
+      <div class="project-hero-actions">
+        <a class="btn-hero-solid" href="https://amazonshoppingon-tv.vercel.app/" target="_blank" rel="noopener">
+          <span class="t-en">Open Live Demo ↗</span>
+          <span class="t-jp">ライブデモを開く ↗</span>
+        </a>
+        <a class="btn-hero-ghost" href="#simulator">
+          <span class="t-en">Try the simulator ↓</span>
+          <span class="t-jp">シミュレーターを試す ↓</span>
+        </a>
+      </div>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">
+            <span class="t-en">Context</span>
+            <span class="t-jp">文脈</span>
+          </span>
+          <span class="project-meta-value">
+            <span class="t-en">Personal R&D prototype</span>
+            <span class="t-jp">個人の研究用プロトタイプ</span>
+          </span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">
+            <span class="t-en">Design & Engineering</span>
+            <span class="t-jp">デザイン・エンジニアリング</span>
+          </span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">2026</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">
+            <span class="t-en">Stack</span>
+            <span class="t-jp">スタック</span>
+          </span>
+          <span class="project-meta-value">HTML/CSS/JS · Firebase · Web Speech API</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <main class="project-body">
+
+    <!-- ═══ Notice ═══ -->
+    <div class="notice-box reveal-on-scroll">
+      <div class="notice-box-icon">POC</div>
+      <div>
+        <div class="notice-box-title">
+          <span class="t-en">Concept prototype — not affiliated with Amazon</span>
+          <span class="t-jp">コンセプトプロトタイプ — Amazon 非公式</span>
+        </div>
+        <p class="notice-box-text">
+          <span class="t-en">This is an independent proof of concept that reimagines Amazon shopping on a TV interface. Product data, prices, and voice replies are simulated for demonstration. The Amazon logo and product images are used for illustrative context only.</span>
+          <span class="t-jp is-block">これは TV インターフェース上の Amazon ショッピングを再想像した、独立した概念実証プロトタイプです。商品データ、価格、音声応答はデモ用にシミュレートされています。Amazon のロゴと商品画像は、説明用の文脈でのみ使用されています。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ═══ Product Video ═══ -->
+    <div class="video-section reveal-on-scroll" id="walkthrough">
+      <h2 class="project-section-title" style="margin-bottom: 16px;">
+        <span class="t-en">Product Walkthrough</span>
+        <span class="t-jp">プロダクトウォークスルー</span>
+      </h2>
+      <p class="project-text" style="max-width: 800px;">
+        <span class="t-en">A 60-second overview of the Fire TV shopping concept, the Alexa voice flow, and the phone-as-remote pairing experience.</span>
+        <span class="t-jp is-block">Fire TV ショッピングコンセプト、Alexa 音声フロー、そしてスマホをリモコンにするペアリング体験を紹介する 60 秒の概要動画。</span>
+      </p>
+      <div class="video-player">
+        <video controls preload="metadata" playsinline poster="">
+          <source src="https://res.cloudinary.com/z3qdmts8/video/upload/v1784663780/ElevenLabs_Ama_jkr6vg.mp4" type="video/mp4">
+        </video>
+      </div>
+      <p class="video-caption">
+        <span class="t-en">Video generated with Cloud Design and hosted on Cloudinary for adaptive streaming across devices.</span>
+        <span class="t-jp">Cloud Design で生成した動画を、デバイスに応じたアダプティブストリーミングのために Cloudinary でホスティング。</span>
+      </p>
+    </div>
+
+    <!-- ═══ Live Simulator ═══ -->
+    <div class="reveal-on-scroll" id="simulator" style="margin-bottom: 8px;">
+      <h2 class="project-section-title" style="margin-bottom: 16px;">
+        <span class="t-en">Live Dual-Device Simulator</span>
+        <span class="t-jp">デュアルデバイス・ライブシミュレーター</span>
+      </h2>
+      <p class="project-text" style="max-width: 800px;">
+        <span class="t-en">The TV runs the Fire TV shopping experience. The phone mockup on the right is a live remote — or scan the QR code on the TV with your own phone to control it for real. Use arrow keys, Enter, Esc, <b>V</b> for Alexa, and <b>R</b> to show the pairing QR.</span>
+        <span class="t-jp is-block">TV が Fire TV ショッピング体験を実行しています。右側の電話モックアップはライブリモコンです — または、TV の QR コードを実際のスマートフォンでスキャンして、本当に操作することもできます。方向キー、Enter、Esc、<b>V</b> で Alexa、<b>R</b> でペアリング QR を表示します。</span>
+      </p>
+    </div>
+
+    <div class="demo-full reveal-on-scroll">
+      <iframe src="amazon-firetv/demo.html" title="Amazon Shopping on Fire TV — dual-device simulator" loading="lazy" allow="microphone"></iframe>
+    </div>
+
+    <p class="demo-caption reveal-on-scroll" style="margin-bottom: 24px;">
+      <span class="t-en"><b>Try it:</b> click inside the TV area, then use arrow keys to navigate, Enter to select, Esc to go back, and <b>V</b> to speak to Alexa. On mobile, the phone mockup works as a touch remote; on desktop, the QR code lets a real phone take over.</span>
+      <span class="t-jp is-block"><b>試してみる：</b> TV エリア内をクリックしてから、方向キーで移動、Enter で選択、Esc で戻る、<b>V</b> で Alexa に話しかけます。モバイルでは電話モックアップがタッチリモコンとして機能します。デスクトップでは、QR コードを使って実際のスマートフォンをコントローラーにできます。</span>
+    </p>
+
+    <div class="demo-controls reveal-on-scroll">
+      <a class="btn-primary" href="https://amazonshoppingon-tv.vercel.app/" target="_blank" rel="noopener">
+        <span class="t-en">Test it yourself — live site ↗</span>
+        <span class="t-jp">実際に試す — ライブサイト ↗</span>
+      </a>
+      <a class="btn-secondary" href="amazon-firetv/demo.html" target="_blank" rel="noopener">
+        <span class="t-en">Open simulator full screen ↗</span>
+        <span class="t-jp">シミュレーターを全画面で開く ↗</span>
+      </a>
+    </div>
+
+    <!-- ═══ Overview ═══ -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          <span class="t-en">At a glance</span>
+          <span class="t-jp">概要</span>
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">
+            <span class="t-en">3</span>
+          </div>
+          <div class="project-aside-desc">
+            <span class="t-en">Input modes unified: D-pad, voice, phone remote</span>
+            <span class="t-jp">D-pad、音声、スマホリモコンという3つの入力を統合</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">1</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Scan to pair — no app install required</span>
+            <span class="t-jp">スキャンしてペアリング — アプリ不要</span>
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">0</div>
+          <div class="project-aside-desc">
+            <span class="t-en">Build dependencies — vanilla HTML/CSS/JS</span>
+            <span class="t-jp">ビルド依存ゼロ — バニラ HTML/CSS/JS</span>
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top: 32px;">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">成果物</span>
+        </p>
+        <ul class="project-deliverables">
+          <li>
+            <span class="t-en">Interactive 10-foot TV shopping prototype</span>
+            <span class="t-jp">インタラクティブな 10ft TV ショッピングプロトタイプ</span>
+          </li>
+          <li>
+            <span class="t-en">Phone-as-remote web app (D-pad / trackpad / joystick / mic)</span>
+            <span class="t-jp">スマホをリモコンにするウェブアプリ（D-pad / トラックパッド / ジョイスティック / マイク）</span>
+          </li>
+          <li>
+            <span class="t-en">Alexa-style voice shopping intent parser</span>
+            <span class="t-jp">Alexa 風の音声ショッピング意図パーサー</span>
+          </li>
+          <li>
+            <span class="t-en">snap-pair QR + 6-character room code integration</span>
+            <span class="t-jp">snap-pair QR + 6 文字ルームコードの統合</span>
+          </li>
+        </ul>
+      </aside>
+      <div>
+        <h2 class="project-section-title">
+          <span class="t-en">The Problem</span>
+          <span class="t-jp">課題</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">Shopping on a TV should feel effortless from the couch. But text entry is painful, browsing with a tiny remote is slow, and voice alone can't always show enough context. The experience gets stuck between "lean-back" convenience and "lean-in" detail.</span>
+          <span class="t-jp is-block">TV での買い物は、ソファから気軽にできるはずだ。しかし文字入力は苦痛で、小さなリモコンでの閲覧は遅く、音声だけでは必要な文脈を示しきれないこともある。体験は「リラックスして使う」利便性と「じっくり見る」詳細の間で行き詰まっている。</span>
+        </p>
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">The Approach</span>
+          <span class="t-jp">アプローチ</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">I designed a 10-foot commerce interface where the TV stays the stage, and the phone becomes the best possible input device. D-pad navigation handles discovery. Alexa voice handles intent. And when you need a keyboard, precise pointer, or private mic, your phone is already paired and ready — no download, no login.</span>
+          <span class="t-jp is-block">TV を舞台に据え、スマートフォンを最適な入力デバイスとする 10ft コマース UI を設計した。D-pad ナビゲーションで発見し、Alexa 音声で意図を伝える。そしてキーボード、精密ポインター、プライベートマイクが必要なときは、すでにペアリング済みのスマートフォンが待機している — ダウンロードもログインも不要だ。</span>
+        </p>
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">Tools & Methods</span>
+          <span class="t-jp">ツール＆手法</span>
+        </h2>
+        <div class="tools-list">
+          <span class="tool-tag">10-foot UI</span>
+          <span class="tool-tag">Spatial Focus</span>
+          <span class="tool-tag">Voice UX</span>
+          <span class="tool-tag">snap-pair</span>
+          <span class="tool-tag">Firebase RTDB</span>
+          <span class="tool-tag">Web Speech API</span>
+          <span class="tool-tag">OKLCH</span>
+          <span class="tool-tag">Vanilla JS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Outcomes ═══ -->
+    <div class="outcomes-grid reveal-on-scroll">
+      <div class="outcome-block">
+        <div class="outcome-num">01</div>
+        <div class="outcome-label">
+          <span class="t-en">Unified lean-back and lean-forward modes in one coherent flow</span>
+          <span class="t-jp">リラックスモードと詳細モードを一つの流れに統合</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">02</div>
+        <div class="outcome-label">
+          <span class="t-en">Voice-first search and checkout with spoken confirmation</span>
+          <span class="t-jp">音声優位の検索と、音声確認でのチェックアウト</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">03</div>
+        <div class="outcome-label">
+          <span class="t-en">Phone remote with three navigation modes plus hold-to-talk mic</span>
+          <span class="t-jp">3 つのナビゲーションモードとホールドトークマイクを持つスマホリモコン</span>
+        </div>
+      </div>
+      <div class="outcome-block">
+        <div class="outcome-num">04</div>
+        <div class="outcome-label">
+          <span class="t-en">Self-contained demo, runnable from any static host</span>
+          <span class="t-jp">自己完結型デモ — どの静的ホストでも実行可能</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Feature Deep-dive ═══ -->
+    <div class="reveal-on-scroll" style="margin-bottom: 24px;">
+      <h2 class="project-section-title">
+        <span class="t-en">What the prototype does</span>
+        <span class="t-jp">プロトタイプでできること</span>
+      </h2>
+    </div>
+
+    <div class="feature-grid reveal-on-scroll">
+      <div class="feature-card">
+        <div class="feature-title">
+          <span class="t-en">TV shopping, redesigned for 10 feet</span>
+          <span class="t-jp">10ft 用に再設計された TV ショッピング</span>
+        </div>
+        <div class="feature-desc">
+          <span class="t-en">Home rails, product pages, filters, cart, and checkout — all laid out for distant viewing with oversized focus rings and high-contrast dark cinema UI.</span>
+          <span class="t-jp">ホームレール、商品ページ、フィルター、カート、チェックアウト — すべて遠距離視聴向けに、大きなフォーカスリングと高コントラストな暗色シネマ UI でレイアウト。</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">
+          <span class="t-en">Alexa for Shopping voice flows</span>
+          <span class="t-jp">Alexa for Shopping 音声フロー</span>
+        </div>
+        <div class="feature-desc">
+          <span class="t-en">Press V or the mic button and say things like “show me chocolate protein,” “add this to my cart,” or “checkout.” A local intent parser routes the command.</span>
+          <span class="t-jp">V またはマイクボタンを押して、「チョコレートプロテインを見せて」「カートに入れて」「チェックアウト」などと話す。ローカルの意図パーサーがコマンドを振り分ける。</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">
+          <span class="t-en">Phone becomes remote, keyboard, mic</span>
+          <span class="t-jp">スマホがリモコン・キーボード・マイクに</span>
+        </div>
+        <div class="feature-desc">
+          <span class="t-en">Scan the QR code on the TV and the phone becomes a D-pad, joystick, trackpad, text search box, and push-to-talk Alexa mic — instantly.</span>
+          <span class="t-jp">TV の QR コードをスキャンすると、スマートフォンが即座に D-pad、ジョイスティック、トラックパッド、テキスト検索ボックス、プッシュトークの Alexa マイクになる。</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">
+          <span class="t-en">snap-pair underneath</span>
+          <span class="t-jp">裏側は snap-pair</span>
+        </div>
+        <div class="feature-desc">
+          <span class="t-en">The pairing layer is my open-source snap-pair pattern: short code as a rendezvous handle, server-validated room membership, presence heartbeat, and automatic cleanup.</span>
+          <span class="t-jp">ペアリング層は私のオープンソース snap-pair パターンを使用：短いコードを待ち合わせハンドルとし、サーバー側で検証されたルームメンバーシップ、プレゼンスハートビート、自動クリーンアップを備える。</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">
+          <span class="t-en">Adaptive cross-device state</span>
+          <span class="t-jp">適応型クロスデバイス状態</span>
+        </div>
+        <div class="feature-desc">
+          <span class="t-en">Cart count, current screen, and search context are mirrored to the phone in real time, so the remote always knows what the TV is showing.</span>
+          <span class="t-jp">カート数、現在の画面、検索文脈がリアルタイムでスマホにミラーされるため、リモコンは常に TV が何を表示しているかを把握している。</span>
+        </div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-title">
+          <span class="t-en">Zero build tooling</span>
+          <span class="t-jp">ビルドツール不要</span>
+        </div>
+        <div class="feature-desc">
+          <span class="t-en">Pure HTML, CSS, and JavaScript. No bundler, no npm, no framework lock-in. It runs from a folder or any static host.</span>
+          <span class="t-jp">純粋な HTML、CSS、JavaScript。バンドラーも npm もフレームワークロックインもなし。フォルダーまたは任意の静的ホストから実行できる。</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Compact details ═══ -->
+    <div class="project-details-compact reveal-on-scroll">
+      <div>
+        <div class="detail-group-label">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">成果物</span>
+        </div>
+        <div class="detail-group-value">
+          <span class="t-en">TV app, phone remote, voice parser, snap-pair integration</span>
+          <span class="t-jp">TV アプリ、スマホリモコン、音声パーサー、snap-pair 統合</span>
+        </div>
+      </div>
+      <div>
+        <div class="detail-group-label">Role</div>
+        <div class="detail-group-value">
+          <span class="t-en">Design & Engineering</span>
+          <span class="t-jp">デザイン・エンジニアリング</span>
+        </div>
+      </div>
+      <div>
+        <div class="detail-group-label">Year</div>
+        <div class="detail-group-value">2026</div>
+      </div>
+      <div>
+        <div class="detail-group-label">
+          <span class="t-en">Live demo</span>
+          <span class="t-jp">ライブデモ</span>
+        </div>
+        <div class="detail-group-value">
+          <a href="https://amazonshoppingon-tv.vercel.app/" target="_blank" rel="noopener" style="color: var(--ink-mid); text-decoration: underline; text-underline-offset: 3px;">
+            <span class="t-en">amazonshoppingon-tv.vercel.app ↗</span>
+            <span class="t-jp">amazonshoppingon-tv.vercel.app ↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ Nav ═══ -->
+    <div class="project-nav">
+      <a href="../ai-products.html" class="project-nav-link">
+        <span class="t-en">&larr; Agentic UX</span>
+        <span class="t-jp">&larr; Agentic UX</span>
+      </a>
+      <a href="../ai-tools.html" class="project-nav-link">
+        <span class="t-en">Next: AI Tools &rarr;</span>
+        <span class="t-jp">次へ: AI Tools &rarr;</span>
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance & consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        html.lang = lang === "jp" ? "ja" : "en";
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+
+    // ── Scroll Reveal ──
+    (() => {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+    })();
+
+    // ── Mobile Nav ──
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (toggle && links) {
+        toggle.addEventListener('click', () => {
+          toggle.classList.toggle('is-open');
+          links.classList.toggle('is-open');
+        });
+        links.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            toggle.classList.remove('is-open');
+            links.classList.remove('is-open');
+          });
+        });
+      }
+    })();
+  </script>
+
+</body>
+
+</html>
