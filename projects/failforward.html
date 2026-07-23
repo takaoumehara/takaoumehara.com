@@ -3,18 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>AI Tools — Takao Umehara</title>
-  <meta name="description" content="Open-source tools for people who build with AI agents, designed and built by Takao Umehara: Snap Pair, failforward, and cross-model-handoff.">
-  <meta property="og:title" content="AI Tools — Takao Umehara">
-  <meta property="og:description" content="Claude skills, CLIs, and realtime libraries for people working with AI agents — all open source.">
-  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>failforward — Takao Umehara</title>
+  <meta name="description" content="failforward — a zero-dependency CLI plus Claude Code skill that records coding failures and recalls the useful lessons before similar work starts.">
+  <meta property="og:title" content="failforward — Takao Umehara">
+  <meta property="og:description" content="Your coding agent stops repeating yesterday's mistakes. A zero-dependency CLI, open source.">
+  <meta property="og:type" content="article">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/work-card-grid.css">
-  <script src="assets/work-card-grid.js" defer></script>
   <style>
     @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
     @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
@@ -29,29 +27,17 @@
       --border: rgba(18,18,18,0.10);
       --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
       --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-      /* accent palette — one per tool */
       --a-blue: #2563eb;
       --a-orange: #f97316;
       --a-violet: #7c3aed;
+      --m-tint: var(--a-orange);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { min-height: 100vh; color: var(--ink); background: var(--bg); font-family: var(--ff); }
 
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(255,255,255,0.92);
-      border-bottom: 1px solid var(--line);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-    }
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: rgba(255,255,255,0.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
     .nav-logo { display: flex; flex-direction: column; gap: 3px; color: var(--ink); line-height: 1; text-decoration: none; }
     .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
     .nav-logo-tag { color: var(--ink-dim); font-size: 10.5px; font-weight: 400; letter-spacing: 0.02em; }
@@ -67,24 +53,7 @@
     .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
     .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-    .lang-switch {
-      position: fixed;
-      right: 0;
-      bottom: 80px;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 16px 9px;
-      background: rgba(255,255,255,0.94);
-      border-top: 1px solid rgba(18,18,18,0.07);
-      border-bottom: 1px solid rgba(18,18,18,0.07);
-      border-left: 1px solid var(--border);
-      border-radius: 6px 0 0 6px;
-      writing-mode: vertical-rl;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
+    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(255,255,255,0.94); border-top: 1px solid rgba(18,18,18,0.07); border-bottom: 1px solid rgba(18,18,18,0.07); border-left: 1px solid var(--border); border-radius: 6px 0 0 6px; writing-mode: vertical-rl; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
     .lang-btn { padding: 0; appearance: none; background: none; border: none; color: var(--ink-dim); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 160ms ease; }
     .lang-btn.is-active { color: var(--ink); font-weight: 600; }
     .lang-sep { color: rgba(18,18,18,0.18); font-size: 9px; }
@@ -94,71 +63,52 @@
     html.lang-jp .t-jp.is-block { display: block; }
     html.lang-jp body { font-family: var(--ff-jp); }
 
-    /* ═══ Slide deck ═══ */
-    .deck { max-width: 1240px; margin: 0 auto; padding: 24px 20px 8px; }
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18, 18, 18, 0.28); margin: 0 8px; }
+
+    .deck { max-width: 1240px; margin: 0 auto; padding: 8px 20px 8px; }
     .wds-slide { margin-bottom: 2px; }
     .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
     .wds-kick { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
     html.lang-jp .wds-serif { line-height: 1.2; letter-spacing: -0.01em; }
     html.lang-jp .wds-serif em { white-space: nowrap; }
 
-    /* Hero statement — dark + glow */
     .wds-hero { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6.5vw, 96px) clamp(28px, 5vw, 78px); }
-    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(37,99,235,0.26), transparent 62%); pointer-events: none; }
+    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(249,115,22,0.24), transparent 62%); pointer-events: none; }
     .wds-hero > * { position: relative; z-index: 1; }
     .wds-hero .wds-kick { color: rgba(255,255,255,0.5); }
-    .wds-hero h1, .wds-hero h2 { font-size: clamp(40px, 6.6vw, 90px); max-width: 15ch; }
-    .wds-hero h1 em, .wds-hero h2 em { font-style: italic; color: #60a5fa; }
+    .wds-hero h1 { font-size: clamp(40px, 6.6vw, 84px); max-width: 15ch; }
+    .wds-hero h1 em { font-style: italic; color: #f7a63a; }
     .wds-hero-lead { font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.72; color: rgba(255,255,255,0.66); max-width: 60ch; margin-top: 30px; }
     .wds-hero-lead strong { color: #fff; font-weight: 600; }
-    .wds-hero.hero-ff::after { background: radial-gradient(ellipse at center, rgba(249,115,22,0.24), transparent 62%); }
-    .wds-hero.hero-ff h2 em { color: #f7a63a; }
-    .wds-hero.hero-close::after { background: radial-gradient(ellipse at center, rgba(124,58,237,0.22), transparent 62%); }
-    .wds-hero.hero-close h2 em { color: #a78bfa; }
 
-    /* Vivid statement — full color field */
     .tool-statement { position: relative; overflow: hidden; color: #fff; padding: clamp(46px, 6.5vw, 92px) clamp(28px, 5vw, 78px); }
     .tool-statement .wds-kick { color: rgba(255,255,255,0.62); }
-    .tool-statement h2 { font-size: clamp(38px, 5.8vw, 82px); max-width: 16ch; }
+    .tool-statement h2 { font-size: clamp(34px, 5vw, 66px); max-width: 17ch; }
     .tool-statement h2 em { font-style: italic; color: #f8f3e7; }
-    .tool-statement.st-blue { background: var(--a-blue); }
-    .tool-statement.st-violet { background: var(--a-violet); }
+    .tool-statement.st-orange { background: var(--a-orange); }
 
     .wds-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
-    .wds-chip { font-size: 11.5px; padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
+    .wds-chip { padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
     .wds-chip b { font-weight: 600; color: #fff; }
 
-    /* Mechanism — cream slide with diagram */
     .tool-mech { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
     .mech-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(220px, 0.75fr); gap: clamp(36px, 5vw, 84px); align-items: center; }
     .tool-mech h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
     .mech-lead { font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.72; color: var(--ink-mid); max-width: 62ch; }
     .mech-lead strong { color: var(--ink); font-weight: 600; }
-    .mech-lead code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.88em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
     .mech-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 28px; }
-    .mech-fact { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--m-tint, var(--ink)); padding: 16px 16px 18px; }
+    .mech-fact { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--m-tint); padding: 16px 16px 18px; }
     .mech-fact-l { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 7px; }
     .mech-fact-v { font-size: 13px; line-height: 1.55; color: var(--ink-mid); }
     .mech-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
     .story-cta { display: inline-block; padding: 13px 18px; border: 1px solid var(--ink); color: var(--ink); font-size: 11px; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
     .story-cta:hover { background: var(--ink); color: #fff; }
-    .story-cta--ghost { border-color: var(--border); }
-    .story-cta--ghost:hover { background: transparent; color: var(--ink); border-color: rgba(18,18,18,0.34); }
+    .wds-hero .story-cta { border-color: rgba(255,255,255,0.4); color: #fff; }
+    .wds-hero .story-cta:hover { background: #fff; color: #0d0d0f; }
 
-    /* Built with Snap Pair rail (inside cream slide) */
-    .mech-rail { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(18,18,18,0.12); }
-    .mech-rail-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
-    .rail-items { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
-    .rail-item { display: block; padding: 20px 22px; background: #fff; border: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color 180ms ease; }
-    a.rail-item:hover { border-color: rgba(18,18,18,0.32); }
-    .rail-item-status { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--a-blue); font-weight: 600; margin-bottom: 8px; }
-    .rail-item-status.is-soon { color: var(--ink-dim); }
-    .rail-item-name { font-size: 15px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 6px; }
-    .rail-item-desc { font-size: 12.5px; line-height: 1.55; color: var(--ink-dim); }
-
-    /* ─── Diagram figures — ink monoline icon system ───
-       Site icon direction: 1.75px monoline strokes in ink, geometric, no fills
-       except one tinted accent per subject. Drawn in on scroll. */
     .mech-figure { display: flex; justify-content: center; }
     .diagram { width: min(100%, 330px); height: auto; overflow: visible; }
     .diagram .ink { fill: none; stroke: var(--ink); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
@@ -170,26 +120,21 @@
     .is-visible .diagram .draw { stroke-dashoffset: 0; }
     .is-visible .diagram .draw.d2 { transition-delay: 260ms; }
     .is-visible .diagram .draw.d3 { transition-delay: 520ms; }
-    .diagram .dot { opacity: 0; }
-    .is-visible .diagram .dot { opacity: 1; animation: var(--dot-anim, none) 2.8s cubic-bezier(0.45, 0, 0.55, 1) 900ms infinite; }
-    @keyframes travel-pair { 0%, 12% { transform: translate(0, 0); } 55%, 70% { transform: translate(56px, 14px); } 100% { transform: translate(0, 0); } }
-    @keyframes travel-note { 0%, 10% { transform: translate(0, 0); opacity: 1; } 60%, 74% { transform: translate(52px, 0); opacity: 1; } 82% { opacity: 0; } 90% { transform: translate(0, 0); opacity: 0; } 100% { opacity: 1; } }
-    @keyframes pulse-ring { 0% { transform: scale(0.6); opacity: 0.9; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
     .diagram .pulse { transform-origin: center; transform-box: fill-box; opacity: 0; }
     .is-visible .diagram .pulse { animation: pulse-ring 2.8s ease-out 1200ms infinite; }
+    @keyframes pulse-ring { 0% { transform: scale(0.6); opacity: 0.9; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
 
-    /* Closing links */
-    .hero-close-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
-    .hero-close-cta { display: inline-block; padding: 13px 20px; border: 1px solid rgba(255,255,255,0.4); color: #fff; font-size: 11px; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
-    .hero-close-cta:hover { background: #fff; color: #0d0d0f; }
+    .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1240px; margin: 0 auto; padding: 48px 20px 64px; }
+    .project-nav-link { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .project-nav-link:hover { color: var(--ink); }
 
     .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22,0.84,0.22,1), transform 600ms cubic-bezier(0.22,0.84,0.22,1); }
     .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
 
-    .story-cta:focus-visible, .rail-item:focus-visible, .hero-close-cta:focus-visible,
-    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible, .nav-toggle:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+    .story-cta:focus-visible,
+    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible, .nav-toggle:focus-visible, .project-nav-link:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
-    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; }
+    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
     .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
     .footer-llc { margin-top: 5px; color: var(--ink-dim); font-size: 11px; }
     .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
@@ -200,7 +145,6 @@
       .mech-figure { justify-content: flex-start; }
       .diagram { width: min(72%, 280px); }
       .mech-facts { grid-template-columns: 1fr; }
-      .rail-items { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 767px) {
@@ -210,69 +154,107 @@
       .nav-links li { border-top: 1px solid var(--line); }
       .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
       .site-nav { padding: 16px 20px; }
-      .deck { padding: 16px 12px 8px; }
+      .deck { padding: 8px 12px 8px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
       .diagram .draw { stroke-dashoffset: 0 !important; transition: none !important; }
-      .diagram .dot, .diagram .pulse { animation: none !important; opacity: 1 !important; }
-      .story-cta, .rail-item, .hero-close-cta, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
+      .diagram .pulse { animation: none !important; opacity: 1 !important; }
+      .story-cta, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
   </style>
 </head>
 <body>
   <nav class="site-nav" aria-label="Primary navigation">
-    <a href="index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
+    <a href="../index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
     <ul class="nav-links">
-      <li><a href="ai-products.html">Agentic UX</a></li>
-      <li><a href="ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
-      <li><a href="work.html">Product Design</a></li>
-      <li><a href="brand.html">Brand &amp; Visual</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </nav>
 
   <div class="lang-switch" id="lang-switch" aria-label="Language"><button class="lang-btn is-active" type="button" data-lang="en">EN</button><span class="lang-sep" aria-hidden="true">|</span><button class="lang-btn" type="button" data-lang="jp">JP</button></div>
 
-  <main class="work-list-page">
-    <header class="work-list-header">
-      <div>
-        <p class="work-list-kicker"><span class="t-en">AI Tools — open source, designed &amp; built by Takao</span><span class="t-jp">AI Tools — オープンソース · Takaoが設計・実装</span></p>
-        <h1 class="work-list-title"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h1>
+  <div class="breadcrumb">
+    <a href="../ai-tools.html">AI Tools</a>
+    <span>/</span>
+    <a href="#">failforward</a>
+  </div>
+
+  <main class="deck">
+
+    <!-- ═══ Slide 1 · Hero (dark, orange glow) ═══ -->
+    <header class="wds-hero wds-slide reveal-on-scroll">
+      <p class="wds-kick"><span class="t-en">CLI · Claude Code Skill + Hook · Codex · Gemini · Qwen ready</span><span class="t-jp">CLI · Claude Code スキル + フック · Codex · Gemini · Qwen 対応</span></p>
+      <h1 class="wds-serif"><span class="t-en">Your coding agent stops repeating <em>yesterday's mistakes</em>.</span><span class="t-jp is-block">エージェントが、<em>昨日と同じ失敗</em>を繰り返さなくなる。</span></h1>
+      <p class="wds-hero-lead"><span class="t-en"><strong>failforward</strong> is a zero-dependency CLI plus Claude Code skill that records every build, test, and lint failure as plain Markdown — then recalls the relevant ones before similar work begins. Convention files extend it to Codex, Gemini, and Qwen.</span><span class="t-jp is-block"><strong>failforward</strong> は、ビルド・テスト・リントの失敗をプレーンな Markdown で記録し、似た作業が始まる前に関連する失敗を呼び出す、依存ゼロの CLI + Claude Code スキルです。規約ファイル経由で Codex・Gemini・Qwen にも拡張できます。</span></p>
+      <div class="wds-chips">
+        <span class="wds-chip">CLI</span>
+        <span class="wds-chip">Claude Code Skill + Hook</span>
+        <span class="wds-chip">Codex · Gemini · Qwen <span class="t-en">ready</span><span class="t-jp">対応</span></span>
+        <span class="wds-chip">MIT</span>
       </div>
-      <p class="page-count"><span class="t-en">3 open-source tools</span><span class="t-jp">3 つのオープンソースツール</span></p>
+      <div class="mech-ctas">
+        <a class="story-cta" href="https://github.com/takaoumehara/failforward" target="_blank" rel="noopener" aria-label="View failforward on GitHub (opens in a new tab)">GitHub ↗</a>
+      </div>
     </header>
-    <p class="work-list-intro"><span class="t-en"><strong>Claude skills, CLIs, and realtime libraries</strong> — each one grew out of a real friction in AI-assisted work and is available to use today.</span><span class="t-jp is-block"><strong>Claude スキル、CLI、リアルタイムライブラリ。</strong>どれも AI 協働で出会った実際の摩擦から生まれ、いま使える形で公開しています。</span></p>
 
-    <div class="work-grid" aria-label="AI tools">
-      <article class="work-card" id="snap-pair" tabindex="0" data-href="projects/snap-pair.html">
-        <div class="card-image"><div class="card-art card-art--snap"><span id="snap-pair-core" aria-hidden="true"></span><span class="card-art-label">Snap<br>Pair</span><span class="card-art-note">Multi-device pairing</span></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Realtime library</span><span class="pill">Claude skill</span></div><h2 class="card-title">Snap Pair</h2><p class="card-desc"><span class="t-en">A React + Firebase pairing layer that lets every phone in the room join an app in one scan.</span><span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる React + Firebase のペアリング層。</span></p></div>
-        <div class="card-footer"><span class="card-meta">React + Firebase · MIT</span><span class="card-meta card-meta--link">View project →</span></div>
-      </article>
+    <!-- ═══ Slide 2 · Mechanism (cream) ═══ -->
+    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="failforward details">
+      <div class="mech-grid">
+        <div>
+          <h3><span class="t-en">Every failure recorded. Every lesson recalled.</span><span class="t-jp is-block">すべての失敗を記録し、すべての教訓を呼び出す。</span></h3>
+          <p class="mech-lead"><span class="t-en">Capturing a mistake is easy; remembering to check for it next time is the hard part. failforward automates the second half: a PostToolUse hook records failures as they happen, and a lightweight token-overlap search surfaces the relevant ones before you repeat the same class of error — scoped per-project or globally, with a built-in <code>eval</code> command to measure how well recall is actually working.</span><span class="t-jp is-block">失敗を記録するのは簡単ですが、次にそれを確認することを忘れないのが難しい部分です。failforward はその後半を自動化します。PostToolUse フックが失敗をその場で記録し、軽量なトークン一致検索が、同じ種類の誤りを繰り返す前に関連する失敗を呼び出します。プロジェクト単位・グローバル単位のスコープに対応し、想起の精度を測る組み込みの <code>eval</code> コマンドも備えています。</span></p>
+          <div class="mech-facts">
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Capture</span><span class="t-jp">記録</span></div><div class="mech-fact-v"><span class="t-en">Automatic via PostToolUse hook</span><span class="t-jp">PostToolUse フックで自動</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Recall</span><span class="t-jp">想起</span></div><div class="mech-fact-v"><span class="t-en">Searched before similar work</span><span class="t-jp">類似作業の前に検索</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Footprint</span><span class="t-jp">構成</span></div><div class="mech-fact-v"><span class="t-en">One Python file, zero deps</span><span class="t-jp">Python 1 ファイル · 依存ゼロ</span></div></div>
+          </div>
+          <div class="mech-ctas">
+            <a class="story-cta" href="https://github.com/takaoumehara/failforward" target="_blank" rel="noopener" aria-label="View failforward on GitHub (opens in a new tab)">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="mech-figure" aria-hidden="true">
+          <svg class="diagram" viewBox="0 0 160 120" role="img">
+            <path class="ink draw" d="M14 26 L44 62 L58 50 L76 88"/>
+            <circle class="tint-fill" cx="76" cy="88" r="3.5"/>
+            <circle class="tint pulse" cx="76" cy="88" r="9"/>
+            <path class="tint draw d2" d="M76 88 L138 30"/>
+            <path class="tint draw d3" d="M126 28 L138 30 L136 42"/>
+            <path class="faint" d="M14 96 h132"/>
+            <text x="14" y="112">FAIL</text>
+            <text x="112" y="112">FORWARD</text>
+          </svg>
+        </div>
+      </div>
+    </section>
 
-      <article class="work-card" id="failforward" tabindex="0" data-href="projects/failforward.html">
-        <div class="card-image"><div class="card-art card-art--fail"><span class="card-art-label">fail<br>forward</span><span class="card-art-note">Failure memory for agents</span></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">CLI</span><span class="pill">Claude skill</span></div><h2 class="card-title">failforward</h2><p class="card-desc"><span class="t-en">A zero-dependency CLI that records failures and recalls the useful lessons before similar work starts.</span><span class="t-jp is-block">失敗を記録し、似た作業が始まる前に役立つ教訓を呼び出す依存ゼロの CLI。</span></p></div>
-        <div class="card-footer"><span class="card-meta">Python · Codex · Gemini · MIT</span><span class="card-meta card-meta--link">View project →</span></div>
-      </article>
+    <!-- ═══ Slide 3 · Closing (vivid orange) ═══ -->
+    <section class="tool-statement st-orange wds-slide reveal-on-scroll">
+      <p class="wds-kick"><span class="t-en">Why it matters</span><span class="t-jp">なぜ重要か</span></p>
+      <h2 class="wds-serif"><span class="t-en">One command away from <em>not making the same mistake twice</em>.</span><span class="t-jp is-block"><em>同じ失敗を二度しない</em>ために、コマンドひとつ。</span></h2>
+      <div class="mech-ctas">
+        <a class="story-cta" href="../ai-tools.html"><span class="t-en">Explore other AI Tools →</span><span class="t-jp">他の AI Tools を見る →</span></a>
+      </div>
+    </section>
 
-      <article class="work-card" id="cross-model-handoff" tabindex="0" data-href="projects/cross-model-handoff.html">
-        <div class="card-image"><div class="card-art card-art--handoff"><span class="card-art-label">cross-model<br>handoff</span><span class="card-art-note">Context transfer protocol</span></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Plugin</span><span class="pill">Skill system</span></div><h2 class="card-title">cross-model-handoff</h2><p class="card-desc"><span class="t-en">A lightweight note-and-passphrase protocol for moving active work between AI tools without losing context.</span><span class="t-jp is-block">作業中の文脈を失わずに AI ツール間を移動するための、メモとパスフレーズによる軽量プロトコル。</span></p></div>
-        <div class="card-footer"><span class="card-meta">Claude · Codex · Gemini · Cursor</span><span class="card-meta card-meta--link">View project →</span></div>
-      </article>
-    </div>
   </main>
 
+  <div class="project-nav">
+    <a href="snap-pair.html" class="project-nav-link"><span class="t-en">&larr; Snap Pair</span><span class="t-jp">&larr; Snap Pair</span></a>
+    <a href="cross-model-handoff.html" class="project-nav-link"><span class="t-en">Next: cross-model-handoff &rarr;</span><span class="t-jp">次へ: cross-model-handoff &rarr;</span></a>
+  </div>
 
   <footer class="site-footer">
     <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div></div>
-    <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="ai-products.html">Agentic UX</a></li><li><a href="work.html">Product Design</a></li><li><a href="brand.html">Brand &amp; Visual</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li></ul>
+    <ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="../ai-products.html">Agentic UX</a></li><li><a href="../work.html">Product Design</a></li><li><a href="../brand.html">Brand &amp; Visual</a></li><li><a href="../about.html">About</a></li><li><a href="../contact.html">Contact</a></li></ul>
   </footer>
 
   <script>

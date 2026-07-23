@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/geist-sans@5.0.3/index.css">
+<style>
+html,body{margin:0;padding:0;background:#FFFFFF}
+body{font-family:'Geist Sans','Noto Sans JP',-apple-system,sans-serif;color:#163E51;-webkit-font-smoothing:antialiased}
+a{color:#0080BC;text-decoration:none}
+a:hover{color:#0F5474;text-decoration:underline}
+::selection{background:#D3E78E;color:#163E51}
+</style>
+<script src="./image-slot.js"></script>
+</helmet>
+
+<div data-screen-label="Cover" style="background:#000;min-height:92vh;display:flex;flex-direction:column;justify-content:space-between;padding:64px;box-sizing:border-box">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:12px;letter-spacing:0.25em;color:#AFC1CD;text-transform:uppercase">Brand Guidelines</span>
+    <span style="font-size:12px;letter-spacing:0.15em;color:#AFC1CD">2026</span>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:48px;padding:48px 0">
+    <img src="assets/symbol.svg" alt="Konosaki symbol" style="width:170px;height:auto">
+    <img src="assets/wordmark-white.svg" alt="KONOSAKI" style="width:min(460px,70vw);height:auto">
+  </div>
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <span style="font-size:12px;color:#AFC1CD">Konosaki LLC</span>
+    <span style="font-size:12px;color:#AFC1CD">Identity &amp; Collateral</span>
+    <a href="https://konosaki-co.vercel.app/" style="font-size:12px;color:#74C2FA">konosaki.co</a>
+  </div>
+</div>
+
+<div data-screen-label="01 The Brand" style="max-width:1120px;margin:0 auto;padding:110px 56px 0;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">01</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">The Brand</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">ブランドについて</span></sc-if>
+  </div>
+  <p style="max-width:760px;font-size:24px;line-height:1.55;font-weight:500;margin:36px 0 0;text-wrap:pretty">Konosaki is a bilingual consulting partner connecting Japanese and global businesses. The identity is built on a single idea — <span style="color:#0080BC">a bridge</span>: a clear, confident path across languages, cultures, and markets.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:48px">
+    <div style="border-top:2px solid #0080BC;padding-top:16px"><div style="font-size:14px;font-weight:600">Trusted</div><p style="font-size:14px;line-height:1.6;color:#0F5474;margin:6px 0 0">Calm, precise, and professional — a partner, not a vendor.</p></div>
+    <div style="border-top:2px solid #74C2FA;padding-top:16px"><div style="font-size:14px;font-weight:600">Modern</div><p style="font-size:14px;line-height:1.6;color:#0F5474;margin:6px 0 0">Clean geometry and generous space over ornament.</p></div>
+    <div style="border-top:2px solid #D3E78E;padding-top:16px"><div style="font-size:14px;font-weight:600">Forward</div><p style="font-size:14px;line-height:1.6;color:#0F5474;margin:6px 0 0">The mark always leans ahead — motion across borders.</p></div>
+  </div>
+</div>
+
+<div data-screen-label="02 Logo" style="max-width:1120px;margin:0 auto;padding:110px 56px 0;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">02</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">Logo</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">ロゴ</span></sc-if>
+  </div>
+  <p style="max-width:680px;font-size:15px;line-height:1.7;color:#0F5474;margin:20px 0 0">The primary lockup places the symbol at the heart of the name — the bridge sits between <em>kono</em> (“this”) and <em>saki</em> (“ahead”), literally connecting the present to what comes next.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px">
+    <div style="border:1px solid #E3EAEF;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:56px 40px"><img src="assets/lockup-h-black.svg" alt="Primary lockup on light" style="width:100%;max-width:420px"></div>
+    <div style="background:#000;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:56px 40px"><img src="assets/lockup-h-white.svg" alt="Primary lockup on dark" style="width:100%;max-width:420px"></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:24px">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="border:1px solid #E3EAEF;border-radius:8px;display:flex;align-items:center;justify-content:center;height:220px"><img src="assets/symbol.svg" alt="Symbol" style="height:110px"></div>
+      <span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#0F5474">Symbol</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="border:1px solid #E3EAEF;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;height:220px"><img src="assets/symbol.svg" alt="" style="height:82px"><img src="assets/wordmark-black.svg" alt="KONOSAKI" style="width:150px"></div>
+      <span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#0F5474">Vertical lockup</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="border:1px solid #E3EAEF;border-radius:8px;display:flex;align-items:center;justify-content:center;height:220px;padding:0 32px;box-sizing:border-box"><img src="assets/wordmark-black.svg" alt="Wordmark" style="width:100%;max-width:240px"></div>
+      <span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#0F5474">Wordmark</span>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;margin-top:24px">
+    <div style="border:1px solid #E3EAEF;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:48px">
+      <div style="border:1px dashed #74C2FA;padding:36px 44px"><img src="assets/lockup-h-black.svg" alt="Clear space" style="width:300px;display:block"></div>
+    </div>
+    <div style="display:flex;flex-direction:column;justify-content:center;gap:18px">
+      <div><div style="font-size:14px;font-weight:600">Clear space</div><p style="font-size:14px;line-height:1.6;color:#0F5474;margin:6px 0 0">Keep space equal to the symbol’s height clear on all sides of the lockup.</p></div>
+      <div><div style="font-size:14px;font-weight:600">Minimum size</div><p style="font-size:14px;line-height:1.6;color:#0F5474;margin:6px 0 0">Lockup: 120&nbsp;px / 30&nbsp;mm wide. Symbol alone: 24&nbsp;px / 8&nbsp;mm.</p></div>
+      <div><div style="font-size:14px;font-weight:600">Backgrounds</div><p style="font-size:14px;line-height:1.6;color:#0F5474;margin:6px 0 0">Use only on white, Paper, black, or Deep Harbor. Never recolor the symbol.</p></div>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="03 Color" style="max-width:1120px;margin:0 auto;padding:110px 56px 0;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">03</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">Color</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">カラー</span></sc-if>
+  </div>
+  <p style="max-width:680px;font-size:15px;line-height:1.7;color:#0F5474;margin:20px 0 0">Four core colors carry the brand. The extended palette supports editorial layouts, charts, and social content — never more than two extended colors per composition.</p>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:40px">
+    <sc-for list="{{ core }}" as="c" hint-placeholder-count="4">
+      <div style="background:{{ c.hex }};border:1px solid {{ c.line }};border-radius:8px;height:170px;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;box-sizing:border-box">
+        <div style="font-size:14px;font-weight:600;color:{{ c.t }}">{{ c.name }}</div>
+        <div style="font-size:12px;color:{{ c.t }};opacity:0.75">{{ c.hex }}</div>
+      </div>
+    </sc-for>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px">
+    <sc-for list="{{ extended }}" as="c" hint-placeholder-count="8">
+      <div style="background:{{ c.hex }};border:1px solid {{ c.line }};border-radius:8px;height:100px;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;box-sizing:border-box">
+        <div style="font-size:13px;font-weight:600;color:{{ c.t }}">{{ c.name }}</div>
+        <div style="font-size:11px;color:{{ c.t }};opacity:0.75">{{ c.hex }}</div>
+      </div>
+    </sc-for>
+  </div>
+</div>
+
+<div data-screen-label="04 Typography" style="max-width:1120px;margin:0 auto;padding:110px 56px 0;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">04</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">Typography</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">タイポグラフィ</span></sc-if>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1.4fr;gap:24px;margin-top:40px">
+    <div style="border:1px solid #E3EAEF;border-radius:8px;padding:40px;display:flex;flex-direction:column;justify-content:space-between;gap:24px">
+      <div style="font-size:110px;font-weight:600;line-height:1">Aa</div>
+      <div>
+        <div style="font-size:16px;font-weight:600">Poppins</div>
+        <p style="font-size:13px;line-height:1.6;color:#0F5474;margin:6px 0 0">Geometric sans matching the circular forms of the wordmark. Japanese text is set in Noto Sans JP.</p>
+        <div style="font-size:13px;color:#AFC1CD;margin-top:14px;letter-spacing:0.04em">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz 0123456789</div>
+      </div>
+    </div>
+    <div style="border:1px solid #E3EAEF;border-radius:8px;padding:40px;display:flex;flex-direction:column;gap:22px;justify-content:center">
+      <div style="display:flex;align-items:baseline;gap:20px"><span style="font-size:11px;color:#AFC1CD;width:120px;flex:none">Display · 600 · 48</span><span style="font-size:34px;font-weight:600;line-height:1.1">Make the crossing</span></div>
+      <div style="display:flex;align-items:baseline;gap:20px"><span style="font-size:11px;color:#AFC1CD;width:120px;flex:none">Heading · 600 · 24</span><span style="font-size:22px;font-weight:600">Bilingual by design</span></div>
+      <div style="display:flex;align-items:baseline;gap:20px"><span style="font-size:11px;color:#AFC1CD;width:120px;flex:none">Body · 400 · 15</span><span style="font-size:15px;line-height:1.6;max-width:380px">We help companies localize and globalize by removing the barriers of language and culture.</span></div>
+      <div style="display:flex;align-items:baseline;gap:20px"><span style="font-size:11px;color:#AFC1CD;width:120px;flex:none">Caption · 500 · 12</span><span style="font-size:12px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:#0080BC">Cross-border consulting</span></div>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="05 Website" style="max-width:1120px;margin:0 auto;padding:110px 56px 0;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">05</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">Website</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">ウェブサイト</span></sc-if>
+  </div>
+  <p style="max-width:680px;font-size:15px;line-height:1.7;color:#0F5474;margin:20px 0 0">The identity live at <a href="https://konosaki-co.vercel.app/">konosaki-co.vercel.app</a>. Drop screenshots below to complete the showcase.</p>
+  <div style="border:1px solid #D4DEE6;border-radius:12px;overflow:hidden;margin-top:40px">
+    <div style="height:38px;background:#F4F7F9;border-bottom:1px solid #D4DEE6;display:flex;align-items:center;gap:8px;padding:0 16px">
+      <span style="width:9px;height:9px;border-radius:50%;background:#D4DEE6"></span>
+      <span style="width:9px;height:9px;border-radius:50%;background:#D4DEE6"></span>
+      <span style="width:9px;height:9px;border-radius:50%;background:#D4DEE6"></span>
+      <span style="flex:1;text-align:center;font-size:11px;color:#0F5474;background:#fff;border:1px solid #E3EAEF;border-radius:6px;padding:3px 0;margin:0 60px">konosaki-co.vercel.app</span>
+    </div>
+    <div style="height:540px;position:relative"><image-slot id="web-hero" shape="rect" src="uploads/Screenshot 2026-07-22 at 14.13.17.png" placeholder="Drop a desktop screenshot of the homepage hero"></image-slot></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px">
+    <div style="height:300px"><image-slot id="web-sub1" shape="rounded" radius="12" src="uploads/Screenshot 2026-07-22 at 14.13.36.png" placeholder="Drop a screenshot — services or about page"></image-slot></div>
+    <div style="height:300px"><image-slot id="web-sub2" shape="rounded" radius="12" src="uploads/Screenshot 2026-07-22 at 14.13.45.png" placeholder="Drop a screenshot — insights page"></image-slot></div>
+  </div>
+</div>
+
+<div data-screen-label="06 Business Cards" style="max-width:1120px;margin:0 auto;padding:110px 56px 0;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">06</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">Business Cards</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">名刺</span></sc-if>
+  </div>
+  <p style="max-width:680px;font-size:15px;line-height:1.7;color:#0F5474;margin:20px 0 0">Japanese standard 91 × 55 mm. Front carries only the lockup; all information lives on the back.</p>
+  <div style="background:#F4F7F9;border-radius:12px;padding:64px;display:flex;flex-wrap:wrap;gap:48px;justify-content:center;margin-top:40px">
+    <div style="width:364px;height:220px;background:#000;border-radius:6px;box-shadow:0 18px 40px rgba(22,62,81,0.22);display:flex;align-items:center;justify-content:center;flex:none">
+      <img src="assets/lockup-h-white.svg" alt="Card front" style="width:230px">
+    </div>
+    <div style="width:364px;height:220px;background:#fff;border-radius:6px;box-shadow:0 18px 40px rgba(22,62,81,0.16);padding:26px 28px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;flex:none">
+      <img src="assets/symbol.svg" alt="" style="height:30px;width:auto;align-self:flex-start">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px">
+        <div>
+          <div style="font-size:17px;font-weight:600">Sakura Tanida</div>
+          <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#0080BC;margin-top:3px">CEO · Konosaki LLC</div>
+        </div>
+        <div style="text-align:right;font-size:10.5px;line-height:1.75;color:#0F5474">
+          sakura.tanida@konosaki.co<br>+81 (0)3-1234-5678<br>konosaki.co
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="07 Presentation" style="max-width:1120px;margin:0 auto;padding:110px 56px 0;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">07</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">Presentation</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">スライドテンプレート</span></sc-if>
+  </div>
+  <p style="max-width:680px;font-size:15px;line-height:1.7;color:#0F5474;margin:20px 0 0">A 16:9 system on black and white with one accent per slide. Four master layouts cover every deck.</p>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:40px">
+    <div style="aspect-ratio:16/9;background:#000;border-radius:8px;padding:5.5%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;overflow:hidden">
+      <img src="assets/symbol.svg" alt="" style="height:30px;width:auto;align-self:flex-start">
+      <div>
+        <div style="font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#74C2FA">Capability Deck</div>
+        <div style="font-size:27px;font-weight:600;color:#fff;line-height:1.25;margin-top:10px;max-width:85%">Cross-border project management, mastered.</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <img src="assets/wordmark-white.svg" alt="" style="height:11px;width:auto">
+        <span style="font-size:10px;color:#AFC1CD">2026</span>
+      </div>
+    </div>
+    <div style="aspect-ratio:16/9;background:#0080BC;border-radius:8px;padding:5.5%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;position:relative">
+      <div style="position:absolute;top:-6%;right:4%;font-size:120px;font-weight:700;color:rgba(255,255,255,0.18);line-height:1">02</div>
+      <div style="font-size:12px;letter-spacing:0.2em;text-transform:uppercase;color:#D3E78E">Section</div>
+      <div style="font-size:25px;font-weight:600;color:#fff;margin-top:8px">What we do</div>
+    </div>
+    <div style="aspect-ratio:16/9;background:#fff;border:1px solid #E3EAEF;border-radius:8px;padding:5.5%;box-sizing:border-box;display:flex;flex-direction:column;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#0080BC;font-weight:600">Market entry</span>
+        <span style="flex:1;height:1px;background:#E3EAEF"></span>
+      </div>
+      <div style="font-size:20px;font-weight:600;margin-top:14px">Why Japan, why now</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:16px;flex:1">
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;gap:8px;font-size:11px;line-height:1.5;color:#0F5474"><span style="width:6px;height:6px;background:#0080BC;flex:none;margin-top:4px"></span>M&amp;A involving Japanese firms keeps accelerating</div>
+          <div style="display:flex;gap:8px;font-size:11px;line-height:1.5;color:#0F5474"><span style="width:6px;height:6px;background:#0080BC;flex:none;margin-top:4px"></span>Bilingual PMs close the HQ–subsidiary gap</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div style="display:flex;gap:8px;font-size:11px;line-height:1.5;color:#0F5474"><span style="width:6px;height:6px;background:#74C2FA;flex:none;margin-top:4px"></span>Culture-aware delivery reduces project risk</div>
+          <div style="display:flex;gap:8px;font-size:11px;line-height:1.5;color:#0F5474"><span style="width:6px;height:6px;background:#74C2FA;flex:none;margin-top:4px"></span>One partner across both sides of the border</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;font-size:9px;color:#AFC1CD">Konosaki LLC · 07</div>
+    </div>
+    <div style="aspect-ratio:16/9;background:#163E51;border-radius:8px;padding:5.5%;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:12px;overflow:hidden">
+      <div style="font-size:56px;font-weight:700;color:#D3E78E;line-height:1">14.7%</div>
+      <div style="font-size:13px;line-height:1.6;color:#fff;max-width:70%">annual growth in cross-border M&amp;A involving Japanese companies — and rising.</div>
+      <div style="font-size:9px;color:#AFC1CD;margin-top:8px">Source: RECOF Corporation</div>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="08 Social Media" style="max-width:1120px;margin:0 auto;padding:110px 56px 0;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">08</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">Social Media</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">ソーシャルメディア</span></sc-if>
+  </div>
+  <p style="max-width:680px;font-size:15px;line-height:1.7;color:#0F5474;margin:20px 0 0">Three Instagram post masters — insight, data, announcement — plus a story and a LinkedIn banner. One background color per post, always the lockup or symbol, never both.</p>
+  <div style="display:flex;gap:24px;margin-top:40px;align-items:flex-start;flex-wrap:wrap">
+    <div style="display:grid;grid-template-columns:repeat(2,280px);gap:24px;flex:none">
+      <div style="width:280px;height:280px;background:#fff;border:1px solid #E3EAEF;border-radius:8px;padding:24px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between">
+        <img src="assets/lockup-h-black.svg" alt="" style="height:11px;width:auto;align-self:flex-start">
+        <div style="font-size:23px;font-weight:600;line-height:1.3;text-wrap:pretty">Bridges,<br>not barriers.</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#0080BC;font-weight:600">Insights</span>
+          <span style="font-size:10px;color:#AFC1CD">@konosaki.co</span>
+        </div>
+      </div>
+      <div style="width:280px;height:280px;background:#0080BC;border-radius:8px;padding:24px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between">
+        <img src="assets/symbol.svg" alt="" style="height:24px;width:auto;align-self:flex-end">
+        <div>
+          <div style="font-size:58px;font-weight:700;color:#fff;line-height:1">73%</div>
+          <div style="font-size:12px;line-height:1.55;color:rgba(255,255,255,0.85);margin-top:8px">of global teams say culture gaps slow down delivery.</div>
+        </div>
+        <span style="font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#D3E78E;font-weight:600">Data point</span>
+      </div>
+      <div style="width:280px;height:280px;background:#000;border-radius:8px;padding:24px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between">
+        <span style="align-self:flex-start;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;background:#D3E78E;color:#163E51;padding:5px 10px;border-radius:3px">Webinar</span>
+        <div style="font-size:20px;font-weight:600;color:#fff;line-height:1.35">Entering the Japanese market</div>
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <span style="font-size:11px;color:#74C2FA">Aug 28 · Online</span>
+          <img src="assets/wordmark-white.svg" alt="" style="height:9px;width:auto">
+        </div>
+      </div>
+      <div style="width:280px;height:280px;border:1px dashed #D4DEE6;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;box-sizing:border-box">
+        <span style="font-family:ui-monospace,monospace;font-size:11px;color:#AFC1CD;line-height:1.7">photo post master —<br>drop imagery, lockup<br>bottom-left in white</span>
+      </div>
+    </div>
+    <div style="width:200px;height:356px;background:#163E51;border-radius:12px;padding:22px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;flex:none">
+      <img src="assets/symbol.svg" alt="" style="height:26px;width:auto;align-self:center;margin-top:12px">
+      <div style="text-align:center">
+        <div style="font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#74C2FA">Story</div>
+        <div style="font-size:19px;font-weight:600;color:#fff;line-height:1.35;margin-top:8px">Your next market is closer than you think.</div>
+      </div>
+      <span style="align-self:center;font-size:11px;font-weight:600;color:#163E51;background:#D3E78E;border-radius:99px;padding:8px 20px">Learn more</span>
+    </div>
+  </div>
+  <div style="margin-top:24px">
+    <sc-if value="{{ bannerNavy }}" hint-placeholder-val="{{ true }}">
+      <div style="max-width:800px;aspect-ratio:4/1;background:#163E51;border-radius:8px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 48px;box-sizing:border-box">
+        <img src="assets/symbol.svg" alt="" style="position:absolute;right:-30px;top:-36px;height:260px;width:auto">
+        <img src="assets/wordmark-white.svg" alt="KONOSAKI" style="height:24px;width:auto;align-self:flex-start">
+        <div style="font-size:13px;color:#AFC1CD">Bilingual consulting for cross-border success</div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ bannerBlack }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width:800px;aspect-ratio:4/1;background:#000;border-radius:8px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:10px;padding:0 48px;box-sizing:border-box">
+        <img src="assets/symbol.svg" alt="" style="position:absolute;right:-30px;top:-36px;height:260px;width:auto">
+        <img src="assets/wordmark-white.svg" alt="KONOSAKI" style="height:24px;width:auto;align-self:flex-start">
+        <div style="font-size:13px;color:#AFC1CD">Bilingual consulting for cross-border success</div>
+      </div>
+    </sc-if>
+    <div style="font-size:12px;color:#AFC1CD;margin-top:10px">LinkedIn banner · 1584 × 396</div>
+  </div>
+</div>
+
+<div data-screen-label="09 Stationery" style="max-width:1120px;margin:0 auto;padding:110px 56px 120px;box-sizing:border-box">
+  <div style="display:flex;align-items:baseline;gap:18px">
+    <span style="font-size:13px;font-weight:600;letter-spacing:0.2em;color:#0080BC">09</span>
+    <h2 style="margin:0;font-size:34px;font-weight:600">Stationery</h2>
+    <sc-if value="{{ jp }}" hint-placeholder-val="{{ false }}"><span style="font-size:13px;color:#AFC1CD">ステーショナリー</span></sc-if>
+  </div>
+  <div style="display:flex;gap:48px;margin-top:40px;align-items:flex-start;flex-wrap:wrap">
+    <div style="width:360px;flex:none;background:#F4F7F9;border-radius:12px;padding:40px;display:flex;justify-content:center">
+      <div style="width:300px;aspect-ratio:210/297;background:#fff;box-shadow:0 14px 34px rgba(22,62,81,0.16);padding:26px 28px;box-sizing:border-box;display:flex;flex-direction:column">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start">
+          <img src="assets/lockup-h-black.svg" alt="" style="height:13px;width:auto">
+          <div style="text-align:right;font-size:6.5px;line-height:1.7;color:#AFC1CD">Konosaki LLC<br>Tokyo, Japan<br>konosaki.co</div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:44px">
+          <span style="height:5px;width:38%;background:#E3EAEF;border-radius:2px"></span>
+          <span style="height:5px;width:92%;background:#EEF3F6;border-radius:2px;margin-top:10px"></span>
+          <span style="height:5px;width:88%;background:#EEF3F6;border-radius:2px"></span>
+          <span style="height:5px;width:94%;background:#EEF3F6;border-radius:2px"></span>
+          <span style="height:5px;width:60%;background:#EEF3F6;border-radius:2px"></span>
+          <span style="height:5px;width:90%;background:#EEF3F6;border-radius:2px;margin-top:14px"></span>
+          <span style="height:5px;width:84%;background:#EEF3F6;border-radius:2px"></span>
+          <span style="height:5px;width:42%;background:#EEF3F6;border-radius:2px"></span>
+        </div>
+        <div style="margin-top:auto;border-top:1px solid #E3EAEF;padding-top:8px;display:flex;justify-content:space-between;font-size:6.5px;color:#AFC1CD">
+          <span>sakura.tanida@konosaki.co</span><span>+81 (0)3-1234-5678</span><span>konosaki.co</span>
+        </div>
+      </div>
+    </div>
+    <div style="flex:1;min-width:320px;display:flex;flex-direction:column;gap:16px">
+      <span style="font-size:12px;letter-spacing:0.12em;text-transform:uppercase;color:#0F5474">Email signature</span>
+      <div style="border:1px solid #E3EAEF;border-radius:8px;padding:24px 28px;display:flex;gap:20px;align-items:center;max-width:480px">
+        <img src="assets/symbol.svg" alt="" style="height:46px;width:auto;flex:none">
+        <span style="width:1px;align-self:stretch;background:#E3EAEF"></span>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span style="font-size:15px;font-weight:600">Sakura Tanida</span>
+          <span style="font-size:12px;color:#0F5474">CEO, Konosaki LLC</span>
+          <span style="font-size:12px;margin-top:8px"><a href="mailto:sakura.tanida@konosaki.co">sakura.tanida@konosaki.co</a> · +81 (0)3-1234-5678</span>
+          <span style="font-size:12px"><a href="https://konosaki-co.vercel.app/">konosaki.co</a></span>
+        </div>
+      </div>
+      <p style="font-size:14px;line-height:1.7;color:#0F5474;max-width:440px;margin:8px 0 0">Letterhead follows A4 with the lockup top-left and a single hairline footer. The signature keeps the symbol at 46&nbsp;px with one divider — no banners, no imagery.</p>
+    </div>
+  </div>
+</div>
+
+<div data-screen-label="Footer" style="background:#000;padding:56px 64px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+  <img src="assets/symbol.svg" alt="" style="height:34px;width:auto">
+  <span style="font-size:12px;color:#AFC1CD">© 2026 Konosaki LLC · Brand Guidelines</span>
+  <a href="mailto:sakura.tanida@konosaki.co" style="font-size:12px;color:#74C2FA">sakura.tanida@konosaki.co</a>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;jpCaptions&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Language&quot;},&quot;banner&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;navy&quot;,&quot;options&quot;:[&quot;navy&quot;,&quot;black&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Social&quot;}}">
+class Component extends DCLogic {
+  renderVals() {
+    const banner = this.props.banner ?? 'navy';
+    return {
+      jp: this.props.jpCaptions ?? false,
+      bannerNavy: banner === 'navy',
+      bannerBlack: banner === 'black',
+      core: [
+        { name: 'Konosaki Blue', hex: '#0080BC', t: '#FFFFFF', line: '#0080BC' },
+        { name: 'Sky', hex: '#74C2FA', t: '#163E51', line: '#74C2FA' },
+        { name: 'Spring', hex: '#D3E78E', t: '#163E51', line: '#D3E78E' },
+        { name: 'Deep Harbor', hex: '#163E51', t: '#FFFFFF', line: '#163E51' }
+      ],
+      extended: [
+        { name: 'Ocean', hex: '#0F5474', t: '#FFFFFF', line: '#0F5474' },
+        { name: 'Mist', hex: '#AFC1CD', t: '#163E51', line: '#AFC1CD' },
+        { name: 'Cloud', hex: '#D4DEE6', t: '#163E51', line: '#D4DEE6' },
+        { name: 'Sage', hex: '#DEE3D3', t: '#163E51', line: '#DEE3D3' },
+        { name: 'Moss', hex: '#B0B994', t: '#163E51', line: '#B0B994' },
+        { name: 'Olive', hex: '#646536', t: '#FFFFFF', line: '#646536' },
+        { name: 'Blossom', hex: '#E8AFAF', t: '#163E51', line: '#E8AFAF' },
+        { name: 'Paper', hex: '#FFF9ED', t: '#163E51', line: '#E3EAEF' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

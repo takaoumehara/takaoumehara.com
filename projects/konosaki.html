@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Konosaki — Bilingual Consulting Brand & Website | Takao Umehara</title>
+  <meta name="description" content="Konosaki — a complete brand identity and bilingual website for a cross-border consulting firm. Identity system, guidelines, and live site designed and built AI-assisted through Creativity Is Everywhere LLC.">
+  <meta property="og:title" content="Konosaki — Bilingual Consulting Brand & Website | Takao Umehara">
+  <meta property="og:description" content="Brand identity, guidelines, and bilingual website for Konosaki — a cross-border consulting firm connecting Japanese and global businesses.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <style>
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Bold.woff2') format('woff2');
+      font-weight: 700;
+      font-display: swap;
+    }
+
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      --press-ms: 760ms;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-block; padding: 13px 20px;
+      background: var(--ink); color: #fff;
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--ink);
+      transition: background 180ms ease;
+    }
+    .btn-primary:hover { background: #2a2a2a; }
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 6px; padding: 13px 20px;
+      background: transparent; color: var(--ink);
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Hero ─── */
+    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; background: #0a0a0a; }
+    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center top; }
+    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(10,10,10,0.62) 0%,rgba(10,10,10,0.08) 42%,transparent 62%); }
+    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
+    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+
+    /* ─── Body ─── */
+    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
+    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
+    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+    .project-aside-stat { margin-bottom: 24px; }
+    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
+    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
+    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+    .project-section { margin-bottom: 64px; }
+
+    /* ─── Breadcrumb ─── */
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
+
+    /* ─── Brand attributes ─── */
+    .brand-attributes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 64px; }
+    .brand-attr { padding: 28px 24px; border: 1px solid var(--line); }
+    .brand-attr-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
+    .brand-attr-title { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .brand-attr-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.5; }
+
+    /* ─── Color palette ─── */
+    .color-palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+    .color-swatch { border-radius: 4px; overflow: hidden; }
+    .color-swatch-top { height: 100px; }
+    .color-swatch-bottom { padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-top: none; }
+    .color-name { font-size: 13px; font-weight: 600; }
+    .color-hex { font-size: 11px; color: var(--ink-dim); margin-top: 2px; font-family: ui-monospace, monospace; }
+
+    /* ─── Extended palette ─── */
+    .color-palette.extended { grid-template-columns: repeat(4, 1fr); }
+    .color-palette.extended .color-swatch-top { height: 70px; }
+    .color-palette.extended .color-name { font-size: 12px; }
+    .color-palette.extended .color-hex { font-size: 10px; }
+
+    /* ─── Typography specimen ─── */
+    .typo-spec { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4px; margin-bottom: 4px; }
+    .typo-spec-card { border: 1px solid var(--line); background: #fff; padding: 36px; display: flex; flex-direction: column; gap: 24px; }
+    .typo-spec-big { font-size: clamp(72px, 10vw, 110px); font-weight: 600; line-height: 1; letter-spacing: -0.03em; font-family: var(--ff); }
+    .typo-spec-name { font-size: 16px; font-weight: 600; }
+    .typo-spec-desc { font-size: 13px; line-height: 1.6; color: var(--ink-mid); margin-top: 6px; }
+    .typo-spec-charset { font-size: 12px; color: var(--ink-dim); margin-top: 12px; line-height: 1.6; letter-spacing: 0.03em; word-break: break-all; }
+    .typo-row { display: flex; align-items: baseline; gap: 20px; padding: 6px 0; }
+    .typo-row-label { font-size: 10px; color: var(--ink-dim); width: 120px; flex: none; letter-spacing: 0.08em; text-transform: uppercase; }
+    .typo-row-text { font-family: var(--ff); }
+
+    /* ─── Business card mockup ─── */
+    .card-mockup-wrap { background: #f4f7f9; padding: 64px; display: flex; flex-wrap: wrap; gap: 48px; justify-content: center; }
+    .biz-card { border-radius: 6px; box-shadow: 0 18px 40px rgba(22,62,81,0.22); flex: none; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
+    .biz-card.front { width: 364px; height: 220px; background: #000; }
+    .biz-card.back { width: 364px; height: 220px; background: #fff; padding: 26px 28px; flex-direction: column; justify-content: space-between; align-items: stretch; }
+    .biz-card.back .top { display: flex; justify-content: space-between; align-items: flex-start; }
+    .biz-card.back .bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
+    .biz-card.back .name { font-size: 17px; font-weight: 600; }
+    .biz-card.back .role { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #0080BC; margin-top: 3px; }
+    .biz-card.back .info { text-align: right; font-size: 10px; line-height: 1.75; color: #0F5474; }
+
+    /* ─── Social media mockups ─── */
+    .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
+    .social-post { aspect-ratio: 1; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
+    .social-post.white { background: #fff; border: 1px solid var(--line); }
+    .social-post.blue { background: #0080BC; }
+    .social-post.black { background: #000; }
+    .social-post.navy { background: #163E51; }
+
+    /* ─── Stationery mockup ─── */
+    .stationery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+
+    @media (max-width: 900px) {
+      .typo-spec { grid-template-columns: 1fr; }
+      .social-grid { grid-template-columns: 1fr 1fr; }
+      .stationery-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .social-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Lightbox ─── */
+    .g-cell img { cursor: zoom-in; }
+    .lightbox {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(10,10,10,0.93);
+      display: none; align-items: center; justify-content: center;
+      padding: 4vh 4vw; cursor: zoom-out;
+    }
+    .lightbox.is-open { display: flex; }
+    .lightbox img {
+      max-width: 100%; max-height: 100%; object-fit: contain;
+      border-radius: 3px; box-shadow: 0 30px 90px rgba(0,0,0,0.55);
+      animation: lb-in 220ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .lightbox-hint {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.55);
+    }
+    @keyframes lb-in { from { opacity: 0; transform: scale(0.965); } to { opacity: 1; transform: scale(1); } }
+
+    /* ─── Gallery ─── */
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-cell { overflow: hidden; background: #f5f3f0; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+    .g-cell.slide { background: white; aspect-ratio: 16/9; }
+    .g-cell.slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
+
+    /* ─── Live template embeds (scaled HTML slides) ─── */
+    .tpl-slide, .tpl-card { position: relative; overflow: hidden; }
+    .tpl-slide { aspect-ratio: 16/9; background: #fff; border-radius: 2px; }
+    .tpl-card { aspect-ratio: 1080/1350; border-radius: 6px; box-shadow: 0 10px 26px rgba(22,62,81,0.16); }
+    .tpl-inner {
+      position: absolute; top: 0; left: 0;
+      transform-origin: top left;
+      font-family: var(--ff); -webkit-font-smoothing: antialiased;
+    }
+    .tpl-slide .tpl-inner { width: 1920px; height: 1080px; }
+    .tpl-card .tpl-inner { width: 1080px; height: 1350px; }
+    .tpl-strip { display: flex; gap: 20px; overflow-x: auto; padding: 8px 2px 20px; }
+    .tpl-strip .tpl-card { flex: 0 0 250px; }
+    html.lang-jp .tpl-inner { font-family: var(--ff); }
+
+    /* ─── Section label ─── */
+    .section-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+
+    /* ─── Nav project ─── */
+    .nav-project { display: flex; justify-content: space-between; align-items: center; padding: 32px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
+    .nav-project a { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; display: flex; align-items: center; gap: 8px; }
+    .nav-project a:hover { color: var(--ink); }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94); backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-radius: 6px 0 0 6px;
+    }
+    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .project-overview { grid-template-columns: 1fr; gap: 40px; }
+      .brand-attributes { grid-template-columns: 1fr; }
+      .color-palette { grid-template-columns: 1fr 1fr; }
+      .g-row.r3 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .project-hero-content { padding: 32px 20px; }
+      .project-body { padding: 40px 20px 60px; }
+      .breadcrumb { padding: 16px 20px; }
+      .color-palette { grid-template-columns: 1fr; }
+      .g-row.r2, .g-row.r3 { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+                  transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Image Fade-In ─── */
+    .g-cell img {
+      opacity: 0;
+      transition: opacity 400ms ease;
+    }
+    .g-cell img.loaded {
+      opacity: 1;
+    }
+
+    /* ─── Gallery Hover ─── */
+    .g-cell {
+      border-radius: 2px;
+    }
+    .g-cell img {
+      transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .g-cell:hover img.loaded {
+      transform: scale(1.008);
+    }
+
+    /* ─── Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .g-cell img { opacity: 1 !important; transition: none !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ── -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html" class="is-active" aria-current="page">Brand & Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="../brand.html">Brand & Visual</a>
+    <span>/</span>
+    <a href="#">Konosaki</a>
+  </div>
+
+  <!-- ── Hero ── -->
+  <section class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Brand Identity</span>
+        <span class="project-hero-tag">Website</span>
+        <span class="project-hero-tag">AI-Assisted</span>
+      </div>
+      <h1 class="project-hero-title">
+        <span class="t-en">Konosaki — Cross-Border Consulting Brand</span>
+        <span class="t-jp">Konosaki — 越境コンサルティングのブランド構築</span>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">Konosaki LLC</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Design & Build (Creativity Is Everywhere LLC)</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Live Site</span>
+          <span class="project-meta-value">konosaki-co.vercel.app</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Body ── -->
+  <main class="project-body">
+
+    <!-- ── Overview ── -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">1 idea</div>
+          <div class="project-aside-desc">
+            <span class="t-en">A bridge — across languages, cultures, and markets</span>
+            <span class="t-jp">架け橋 — 言語、文化、市場を越えて</span>
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top: 32px;">
+          <span class="t-en">Scope</span>
+          <span class="t-jp">スコープ</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Brand Strategy & Identity</span><span class="t-jp">ブランド戦略・アイデンティティ</span></li>
+          <li><span class="t-en">Logo & Symbol Design</span><span class="t-jp">ロゴ・シンボルデザイン</span></li>
+          <li><span class="t-en">Color & Typography System</span><span class="t-jp">カラー・タイポグラフィシステム</span></li>
+          <li><span class="t-en">Brand Guidelines</span><span class="t-jp">ブランドガイドライン</span></li>
+          <li><span class="t-en">Bilingual Website (Design & Build)</span><span class="t-jp">バイリンガルウェブサイト（設計・構築）</span></li>
+          <li><span class="t-en">Business Cards & Stationery</span><span class="t-jp">名刺・ステーショナリー</span></li>
+          <li><span class="t-en">Presentation Templates</span><span class="t-jp">プレゼンテーションテンプレート</span></li>
+          <li><span class="t-en">Social Media Templates</span><span class="t-jp">ソーシャルメディアテンプレート</span></li>
+        </ul>
+
+        <div style="margin-top: 32px;">
+          <a href="https://konosaki-co.vercel.app/" target="_blank" rel="noopener" class="btn-secondary">
+            <span class="t-en">Visit Live Site</span>
+            <span class="t-jp">サイトを見る</span>
+            &#8599;
+          </a>
+        </div>
+      </aside>
+
+      <div>
+        <h2 class="project-section-title">
+          <span class="t-en">The Brand</span>
+          <span class="t-jp">ブランドについて</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">Konosaki is a bilingual consulting partner connecting Japanese and global businesses. The identity is built on a single idea — <strong>a bridge</strong>: a clear, confident path across languages, cultures, and markets. I designed and built the complete brand system &mdash; from strategy and logo to guidelines, website, and collateral &mdash; AI-assisted, through Creativity Is Everywhere LLC.</span>
+          <span class="t-jp is-block">Konosaki（このさき）は、日本企業とグローバル企業をつなぐバイリンガルのコンサルティングパートナーです。アイデンティティは一つの考え — <strong>「架け橋」</strong> — を核に構築しました。言語、文化、市場を越える、明確で自信に満ちた道。Creativity Is Everywhere LLC として、戦略・ロゴからガイドライン、ウェブサイト、コラテラルまで、AI を活用して設計・構築しました。</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">The Logo</span>
+          <span class="t-jp">ロゴ</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">The primary lockup places the symbol at the heart of the name &mdash; the bridge sits between <em>kono</em> ("this") and <em>saki</em> ("ahead"), literally connecting the present to what comes next. The symbol always leans forward, suggesting motion across borders.</span>
+          <span class="t-jp is-block">プライマリーロックアップは、シンボルを名前の中心に配置します — <em>「この」</em>（this）と<em>「さき」</em>（ahead）の間に架け橋があり、文字通り「現在」と「次」をつないでいます。シンボルは常に前を向き、国境を越える動きを暗示しています。</span>
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          <span class="t-en">The Website</span>
+          <span class="t-jp">ウェブサイト</span>
+        </h2>
+        <p class="project-text">
+          <span class="t-en">The identity lives at <a href="https://konosaki-co.vercel.app/" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">konosaki-co.vercel.app</a>. A bilingual site with parallax storytelling and seamless page transitions &mdash; designed and built to demonstrate the brand system in motion. Every interaction reinforces the "bridge" concept: smooth crossings between Japanese and English, between sections, between ideas.</span>
+          <span class="t-jp is-block">アイデンティティは <a href="https://konosaki-co.vercel.app/" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">konosaki-co.vercel.app</a> で公開中です。パララックスによるストーリーテリングとシームレスなページ遷移を備えたバイリンガルサイト — ブランドシステムが動きの中でどう機能するかを示すために設計・構築しました。すべてのインタラクションが「架け橋」の概念を強化しています。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Brand Attributes ── -->
+    <div class="project-section reveal-on-scroll">
+      <h2 class="project-section-title">
+        <span class="t-en">Brand Attributes</span>
+        <span class="t-jp">ブランド属性</span>
+      </h2>
+      <div class="brand-attributes">
+        <div class="brand-attr">
+          <div class="brand-attr-label">01</div>
+          <div class="brand-attr-title">
+            <span class="t-en">Trusted</span>
+            <span class="t-jp">信頼</span>
+          </div>
+          <div class="brand-attr-desc">
+            <span class="t-en">Calm, precise, and professional — a partner, not a vendor.</span>
+            <span class="t-jp">落ち着き、正確で、プロフェッショナル — 業者ではなくパートナー。</span>
+          </div>
+        </div>
+        <div class="brand-attr">
+          <div class="brand-attr-label">02</div>
+          <div class="brand-attr-title">
+            <span class="t-en">Modern</span>
+            <span class="t-jp">モダン</span>
+          </div>
+          <div class="brand-attr-desc">
+            <span class="t-en">Clean geometry and generous space over ornament.</span>
+            <span class="t-jp">装飾よりも、クリーンな幾何学とゆとりある空間。</span>
+          </div>
+        </div>
+        <div class="brand-attr">
+          <div class="brand-attr-label">03</div>
+          <div class="brand-attr-title">
+            <span class="t-en">Forward</span>
+            <span class="t-jp">前進</span>
+          </div>
+          <div class="brand-attr-desc">
+            <span class="t-en">The mark always leans ahead — motion across borders.</span>
+            <span class="t-jp">マークは常に前を向く — 国境を越える動き。</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════ -->
+    <!-- ── Gallery Sections ── -->
+    <!-- ════════════════════════════════════════════════ -->
+
+    <div class="gallery reveal-on-scroll">
+
+      <!-- ── Logo System ── -->
+      <p class="gallery-label">
+        <span class="t-en">Logo System</span>
+        <span class="t-jp">ロゴシステム</span>
+      </p>
+
+      <div class="g-row r2">
+        <div class="g-cell brand" style="display:flex; align-items:center; justify-content:center; padding:48px;"><img src="../assets/konosaki/Konosaki-brand-extension/assets/lockup-h-black.svg" alt="Konosaki primary lockup on light background" loading="lazy"></div>
+        <div class="g-cell dark" style="display:flex; align-items:center; justify-content:center; padding:48px;"><img src="../assets/konosaki/Konosaki-brand-extension/assets/lockup-h-white.svg" alt="Konosaki primary lockup on dark background" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell brand" style="display:flex; align-items:center; justify-content:center; padding:40px;"><img src="../assets/konosaki/Konosaki-brand-extension/assets/symbol.svg" alt="Konosaki symbol — the bridge mark" style="height:110px; width:auto;" loading="lazy"></div>
+        <div class="g-cell brand" style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; padding:40px;"><img src="../assets/konosaki/Konosaki-brand-extension/assets/symbol.svg" alt="" style="height:80px; width:auto;"><img src="../assets/konosaki/Konosaki-brand-extension/assets/wordmark-black.svg" alt="KONOSAKI" style="width:150px;"></div>
+        <div class="g-cell brand" style="display:flex; align-items:center; justify-content:center; padding:40px;"><img src="../assets/konosaki/Konosaki-brand-extension/assets/wordmark-black.svg" alt="Konosaki wordmark" style="width:100%; max-width:200px;" loading="lazy"></div>
+      </div>
+
+      <!-- ── Website ── -->
+      <p class="gallery-label">
+        <span class="t-en">Website — konosaki.co</span>
+        <span class="t-jp">ウェブサイト — konosaki.co</span>
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell ui"><img src="../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png" alt="Konosaki homepage hero — parallax bridge concept" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell ui"><img src="../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.36.png" alt="Konosaki services page" loading="lazy"></div>
+        <div class="g-cell ui"><img src="../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.45.png" alt="Konosaki insights page" loading="lazy"></div>
+      </div>
+
+      <!-- ── Color System ── -->
+      <p class="gallery-label">
+        <span class="t-en">Color System</span>
+        <span class="t-jp">カラーシステム</span>
+      </p>
+
+      <div class="color-palette">
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#0080BC;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Konosaki Blue</div>
+            <div class="color-hex">#0080BC</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#74C2FA;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Sky</div>
+            <div class="color-hex">#74C2FA</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#D3E78E;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Spring</div>
+            <div class="color-hex">#D3E78E</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#163E51;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Deep Harbor</div>
+            <div class="color-hex">#163E51</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Extended Color Palette ── -->
+      <p class="gallery-label">
+        <span class="t-en">Extended Color Palette</span>
+        <span class="t-jp">拡張カラーパレット</span>
+      </p>
+
+      <div class="color-palette extended">
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#0F5474;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Ocean</div>
+            <div class="color-hex">#0F5474</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#AFC1CD;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Mist</div>
+            <div class="color-hex">#AFC1CD</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#D4DEE6;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Cloud</div>
+            <div class="color-hex">#D4DEE6</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#DEE3D3;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Sage</div>
+            <div class="color-hex">#DEE3D3</div>
+          </div>
+        </div>
+      </div>
+      <div class="color-palette extended">
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#B0B994;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Moss</div>
+            <div class="color-hex">#B0B994</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#646536;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Olive</div>
+            <div class="color-hex">#646536</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#E8AFAF;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Blossom</div>
+            <div class="color-hex">#E8AFAF</div>
+          </div>
+        </div>
+        <div class="color-swatch">
+          <div class="color-swatch-top" style="background:#FFF9ED;"></div>
+          <div class="color-swatch-bottom">
+            <div class="color-name">Paper</div>
+            <div class="color-hex">#FFF9ED</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Typography ── -->
+      <p class="gallery-label">
+        <span class="t-en">Typography</span>
+        <span class="t-jp">タイポグラフィ</span>
+      </p>
+
+      <div class="typo-spec">
+        <div class="typo-spec-card">
+          <div class="typo-spec-big">Aa</div>
+          <div>
+            <div class="typo-spec-name">Geist</div>
+            <p class="typo-spec-desc">Geometric sans matching the circular forms of the wordmark. Japanese text is set in Noto Sans JP.</p>
+            <div class="typo-spec-charset">ABCDEFGHIJKLMNOPQRSTUVWXYZ<br>abcdefghijklmnopqrstuvwxyz 0123456789</div>
+          </div>
+        </div>
+        <div class="typo-spec-card">
+          <div class="typo-row">
+            <span class="typo-row-label">Display · 600 · 48</span>
+            <span class="typo-row-text" style="font-size:34px; font-weight:600; line-height:1.1;">Make the crossing</span>
+          </div>
+          <div class="typo-row">
+            <span class="typo-row-label">Heading · 600 · 24</span>
+            <span class="typo-row-text" style="font-size:22px; font-weight:600;">Bilingual by design</span>
+          </div>
+          <div class="typo-row">
+            <span class="typo-row-label">Body · 400 · 15</span>
+            <span class="typo-row-text" style="font-size:15px; line-height:1.6; max-width:380px;">We help companies localize and globalize by removing the barriers of language and culture.</span>
+          </div>
+          <div class="typo-row">
+            <span class="typo-row-label">Caption · 500 · 12</span>
+            <span class="typo-row-text" style="font-size:12px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#0080BC;">Cross-border consulting</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Business Cards ── -->
+      <p class="gallery-label">
+        <span class="t-en">Business Cards</span>
+        <span class="t-jp">名刺</span>
+      </p>
+      <p class="project-text" style="font-size:13px; color:var(--ink-dim); margin-bottom:16px;">
+        <span class="t-en">Japanese standard 91 × 55 mm. Front carries only the lockup; all information lives on the back.</span>
+        <span class="t-jp is-block">日本標準サイズ 91×55mm。表面はロックアップのみ、情報はすべて裏面に。</span>
+      </p>
+
+      <div class="card-mockup-wrap">
+        <div class="biz-card front">
+          <img src="../assets/konosaki/Konosaki-brand-extension/assets/lockup-h-white.svg" alt="Business card front — Konosaki lockup" style="width:230px;">
+        </div>
+        <div class="biz-card back">
+          <div class="top">
+            <img src="../assets/konosaki/Konosaki-brand-extension/assets/symbol.svg" alt="" style="height:30px; width:auto;">
+          </div>
+          <div class="bottom">
+            <div>
+              <div class="name">Sakura Tanida</div>
+              <div class="role">CEO · Konosaki LLC</div>
+            </div>
+            <div class="info">
+              sakura.tanida@konosaki.co<br>+81 (0)3-1234-5678<br>konosaki.co
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Social Media ── -->
+      <p class="gallery-label">
+        <span class="t-en">Social Media Templates</span>
+        <span class="t-jp">ソーシャルメディアテンプレート</span>
+      </p>
+      <p class="project-text" style="font-size:13px; color:var(--ink-dim); margin-bottom:16px;">
+        <span class="t-en">Three Instagram post masters — insight, data, announcement. One background color per post, always the lockup or symbol, never both.</span>
+        <span class="t-jp is-block">Instagram投稿マスター3種 — インサイト、データ、アナウンス。1投稿につき背景色1色、ロックアップまたはシンボルのいずれかを使用。</span>
+      </p>
+
+      <div class="social-grid">
+        <div class="social-post white">
+          <img src="../assets/konosaki/Konosaki-brand-extension/assets/lockup-h-black.svg" alt="" style="height:11px; width:auto; align-self:flex-start;">
+          <div style="font-size:23px; font-weight:600; line-height:1.3; color:#163E51;">Bridges,<br>not barriers.</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#0080BC; font-weight:600;">Insights</span>
+            <span style="font-size:10px; color:#AFC1CD;">@konosaki.co</span>
+          </div>
+        </div>
+        <div class="social-post blue">
+          <img src="../assets/konosaki/Konosaki-brand-extension/assets/symbol.svg" alt="" style="height:24px; width:auto; align-self:flex-end;">
+          <div>
+            <div style="font-size:58px; font-weight:700; color:#fff; line-height:1;">73%</div>
+            <div style="font-size:12px; line-height:1.55; color:rgba(255,255,255,0.85); margin-top:8px;">of global teams say culture gaps slow down delivery.</div>
+          </div>
+          <span style="font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:#D3E78E; font-weight:600;">Data point</span>
+        </div>
+        <div class="social-post black">
+          <span style="align-self:flex-start; font-size:10px; letter-spacing:0.14em; text-transform:uppercase; font-weight:600; background:#D3E78E; color:#163E51; padding:5px 10px; border-radius:3px;">Webinar</span>
+          <div style="font-size:20px; font-weight:600; color:#fff; line-height:1.35;">Entering the Japanese market</div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:11px; color:#74C2FA;">Aug 28 · Online</span>
+            <img src="../assets/konosaki/Konosaki-brand-extension/assets/wordmark-white.svg" alt="" style="height:9px; width:auto;">
+          </div>
+        </div>
+        <div class="social-post navy">
+          <img src="../assets/konosaki/Konosaki-brand-extension/assets/symbol.svg" alt="" style="height:26px; width:auto; align-self:center; margin-top:12px;">
+          <div style="text-align:center;">
+            <div style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:#74C2FA;">Story</div>
+            <div style="font-size:19px; font-weight:600; color:#fff; line-height:1.35; margin-top:8px;">Your next market is closer than you think.</div>
+          </div>
+          <span style="align-self:center; font-size:11px; font-weight:600; color:#163E51; background:#D3E78E; border-radius:99px; padding:8px 20px;">Learn more</span>
+        </div>
+      </div>
+
+      <!-- ── Stationery & Email Signature ── -->
+      <p class="gallery-label">
+        <span class="t-en">Stationery & Email Signature</span>
+        <span class="t-jp">ステーショナリー・メール署名</span>
+      </p>
+      <p class="project-text" style="font-size:13px; color:var(--ink-dim); margin-bottom:16px;">
+        <span class="t-en">Letterhead follows A4 with the lockup top-left and a single hairline footer. The signature keeps the symbol at 46&nbsp;px with one divider — no banners, no imagery.</span>
+        <span class="t-jp is-block">レターヘッドはA4、左上にロックアップ、シングルヘアラインフッター。署名はシンボル46px + 1本の仕切り — バナーや画像はなし。</span>
+      </p>
+
+      <div class="stationery-grid">
+        <div class="g-cell brand" style="background:#F4F7F9; padding:40px; display:flex; justify-content:center;">
+          <div style="width:100%; max-width:300px; aspect-ratio:210/297; background:#fff; box-shadow:0 14px 34px rgba(22,62,81,0.16); padding:26px 28px; box-sizing:border-box; display:flex; flex-direction:column;">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <img src="../assets/konosaki/Konosaki-brand-extension/assets/lockup-h-black.svg" alt="" style="height:13px; width:auto;">
+              <div style="text-align:right; font-size:6.5px; line-height:1.7; color:#AFC1CD;">Konosaki LLC<br>Tokyo, Japan<br>konosaki.co</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:8px; margin-top:44px;">
+              <span style="height:5px; width:38%; background:#E3EAEF; border-radius:2px;"></span>
+              <span style="height:5px; width:92%; background:#EEF3F6; border-radius:2px; margin-top:10px;"></span>
+              <span style="height:5px; width:88%; background:#EEF3F6; border-radius:2px;"></span>
+              <span style="height:5px; width:94%; background:#EEF3F6; border-radius:2px;"></span>
+              <span style="height:5px; width:60%; background:#EEF3F6; border-radius:2px;"></span>
+              <span style="height:5px; width:90%; background:#EEF3F6; border-radius:2px; margin-top:14px;"></span>
+              <span style="height:5px; width:84%; background:#EEF3F6; border-radius:2px;"></span>
+              <span style="height:5px; width:42%; background:#EEF3F6; border-radius:2px;"></span>
+            </div>
+            <div style="margin-top:auto; border-top:1px solid #E3EAEF; padding-top:8px; display:flex; justify-content:space-between; font-size:6.5px; color:#AFC1CD;">
+              <span>sakura.tanida@konosaki.co</span><span>+81 (0)3-1234-5678</span><span>konosaki.co</span>
+            </div>
+          </div>
+        </div>
+        <div class="g-cell brand" style="padding:40px; display:flex; flex-direction:column; justify-content:center; gap:16px;">
+          <span style="font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#0F5474;">Email signature</span>
+          <div style="border:1px solid #E3EAEF; border-radius:8px; padding:24px 28px; display:flex; gap:20px; align-items:center; max-width:480px;">
+            <img src="../assets/konosaki/Konosaki-brand-extension/assets/symbol.svg" alt="" style="height:46px; width:auto; flex:none;">
+            <span style="width:1px; align-self:stretch; background:#E3EAEF;"></span>
+            <div style="display:flex; flex-direction:column; gap:2px;">
+              <span style="font-size:15px; font-weight:600;">Sakura Tanida</span>
+              <span style="font-size:12px; color:#0F5474;">CEO, Konosaki LLC</span>
+              <span style="font-size:12px; margin-top:8px;"><a href="mailto:sakura.tanida@konosaki.co" style="color:#0080BC; text-decoration:none;">sakura.tanida@konosaki.co</a> · +81 (0)3-1234-5678</span>
+              <span style="font-size:12px;"><a href="https://konosaki-co.vercel.app/" style="color:#0080BC; text-decoration:none;">konosaki.co</a></span>
+            </div>
+          </div>
+          <p style="font-size:14px; line-height:1.7; color:#0F5474; max-width:440px;">Letterhead follows A4 with the lockup top-left and a single hairline footer. The signature keeps the symbol at 46&nbsp;px with one divider — no banners, no imagery.</p>
+        </div>
+      </div>
+
+      <!-- ── Presentation Templates ── -->
+      <p class="gallery-label">
+        <span class="t-en">Presentation Templates</span>
+        <span class="t-jp">プレゼンテーションテンプレート</span>
+      </p>
+      <p class="project-text" style="font-size:13px; color:var(--ink-dim); margin-bottom:16px;">
+        <span class="t-en">A 12-master business deck set entirely in Geist — cover, agenda, section dividers, content, data, process, comparison, quote, team, and closing. One accent color per slide, always from the brand palette.</span>
+        <span class="t-jp is-block">Geist で組んだ12種のビジネススライドマスター — 表紙、アジェンダ、セクション区切り、本文、データ、プロセス、比較、引用、チーム、クロージング。1スライドにつきアクセント1色、常にブランドパレットから。</span>
+      </p>
+
+      <div class="g-row r2">
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#0F1E28;display:flex;flex-direction:column;justify-content:space-between;padding:88px 96px;position:relative;overflow:hidden">
+          <div style="position:absolute;right:-160px;bottom:-160px;width:640px;height:640px;border:2px solid rgba(116,194,250,0.18);border-radius:50%"></div>
+          <div style="position:absolute;right:-40px;bottom:-40px;width:400px;height:400px;border:2px solid rgba(116,194,250,0.12);border-radius:50%"></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;position:relative">
+            <img src="../assets/konosaki/assets/wordmark-white.svg" alt="KONOSAKI" style="height:26px;width:auto">
+            <span style="font-size:14px;letter-spacing:0.2em;color:#74C2FA">CAPABILITY OVERVIEW</span>
+          </div>
+          <div style="position:relative">
+            <div style="width:64px;height:4px;background:#74C2FA;margin-bottom:32px"></div>
+            <div style="font-size:82px;font-weight:700;color:#fff;line-height:1.06;max-width:1240px;text-wrap:balance">Cross-border project management, mastered.</div>
+            <p style="margin:28px 0 0;font-size:24px;color:#AFC1CD;max-width:820px">One bilingual partner for every stage of the crossing between Japan and the world.</p>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;position:relative;font-size:15px;color:#AFC1CD">
+            <span>Konosaki LLC · Sakura Tanida</span>
+            <span>2026</span>
+          </div>
+        </div></div>
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#fff;display:flex;flex-direction:column;padding:88px 96px">
+          <div style="display:flex;align-items:center;gap:16px">
+            <span style="font-size:13px;font-weight:600;letter-spacing:0.18em;color:#0080BC">AGENDA</span>
+            <span style="flex:1;height:1px;background:#E3EAEF"></span>
+          </div>
+          <div style="margin:26px 0 0;font-size:52px;font-weight:600;color:#163E51">What we&rsquo;ll cover</div>
+          <div style="display:flex;flex-direction:column;margin-top:52px;flex:1">
+            <div style="display:flex;align-items:baseline;gap:36px;padding:26px 0;border-top:1px solid #E3EAEF"><span style="font-size:22px;font-weight:700;color:#74C2FA;width:56px">01</span><span style="font-size:30px;font-weight:500;color:#163E51">The market opportunity</span></div>
+            <div style="display:flex;align-items:baseline;gap:36px;padding:26px 0;border-top:1px solid #E3EAEF"><span style="font-size:22px;font-weight:700;color:#74C2FA;width:56px">02</span><span style="font-size:30px;font-weight:500;color:#163E51">How we work</span></div>
+            <div style="display:flex;align-items:baseline;gap:36px;padding:26px 0;border-top:1px solid #E3EAEF"><span style="font-size:22px;font-weight:700;color:#74C2FA;width:56px">03</span><span style="font-size:30px;font-weight:500;color:#163E51">Proof &amp; results</span></div>
+            <div style="display:flex;align-items:baseline;gap:36px;padding:26px 0;border-top:1px solid #E3EAEF;border-bottom:1px solid #E3EAEF"><span style="font-size:22px;font-weight:700;color:#74C2FA;width:56px">04</span><span style="font-size:30px;font-weight:500;color:#163E51">Next steps</span></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><img src="../assets/konosaki/assets/lockup-h-black.svg" alt="" style="height:14px;width:auto"><span style="font-size:13px;color:#AFC1CD">02</span></div>
+        </div></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#0080BC;display:flex;flex-direction:column;justify-content:center;padding:96px;position:relative;overflow:hidden">
+          <div style="position:absolute;right:-120px;top:-120px;width:520px;height:520px;background:rgba(255,255,255,0.08);border-radius:50%"></div>
+          <span style="font-size:120px;font-weight:700;color:rgba(255,255,255,0.22);line-height:1">01</span>
+          <div style="font-size:15px;letter-spacing:0.2em;color:#D3E78E;margin-top:24px">SECTION</div>
+          <div style="margin:12px 0 0;font-size:66px;font-weight:600;color:#fff;max-width:1100px">The market opportunity</div>
+        </div></div>
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#fff;display:flex;flex-direction:column;padding:88px 96px">
+          <div style="display:flex;align-items:center;gap:16px"><span style="font-size:13px;font-weight:600;letter-spacing:0.18em;color:#0080BC">MARKET ENTRY</span><span style="flex:1;height:1px;background:#E3EAEF"></span></div>
+          <div style="margin:26px 0 0;font-size:48px;font-weight:600;color:#163E51">Why Japan, why now</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;margin-top:60px;flex:1">
+            <div style="display:flex;flex-direction:column;gap:28px">
+              <div style="display:flex;gap:18px"><span style="width:10px;height:10px;background:#0080BC;border-radius:50%;flex:none;margin-top:9px"></span><p style="margin:0;font-size:24px;line-height:1.5;color:#163E51">M&amp;A involving Japanese firms keeps accelerating year over year.</p></div>
+              <div style="display:flex;gap:18px"><span style="width:10px;height:10px;background:#0080BC;border-radius:50%;flex:none;margin-top:9px"></span><p style="margin:0;font-size:24px;line-height:1.5;color:#163E51">Bilingual PMs close the gap between HQ and subsidiary teams.</p></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:28px">
+              <div style="display:flex;gap:18px"><span style="width:10px;height:10px;background:#74C2FA;border-radius:50%;flex:none;margin-top:9px"></span><p style="margin:0;font-size:24px;line-height:1.5;color:#163E51">Culture-aware delivery reduces project risk on both sides.</p></div>
+              <div style="display:flex;gap:18px"><span style="width:10px;height:10px;background:#74C2FA;border-radius:50%;flex:none;margin-top:9px"></span><p style="margin:0;font-size:24px;line-height:1.5;color:#163E51">One partner covers the whole crossing, start to finish.</p></div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><img src="../assets/konosaki/assets/lockup-h-black.svg" alt="" style="height:14px;width:auto"><span style="font-size:13px;color:#AFC1CD">04</span></div>
+        </div></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#F4F7F9;display:flex;flex-direction:column;padding:88px 96px">
+          <div style="display:flex;align-items:center;gap:16px"><span style="font-size:13px;font-weight:600;letter-spacing:0.18em;color:#0080BC">WHAT WE DO</span><span style="flex:1;height:1px;background:#DCE5EA"></span></div>
+          <div style="margin:26px 0 0;font-size:48px;font-weight:600;color:#163E51">Three ways we help</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:28px;margin-top:60px;flex:1">
+            <div style="background:#fff;border-radius:14px;padding:44px;display:flex;flex-direction:column;gap:20px">
+              <span style="font-size:15px;font-weight:700;color:#0080BC">01</span>
+              <div style="font-size:28px;font-weight:600;color:#163E51">Market entry</div>
+              <p style="margin:0;font-size:19px;line-height:1.55;color:#0F5474">Landing strategy, partner search, and local setup with bilingual oversight.</p>
+            </div>
+            <div style="background:#fff;border-radius:14px;padding:44px;display:flex;flex-direction:column;gap:20px">
+              <span style="font-size:15px;font-weight:700;color:#0080BC">02</span>
+              <div style="font-size:28px;font-weight:600;color:#163E51">Project delivery</div>
+              <p style="margin:0;font-size:19px;line-height:1.55;color:#0F5474">End-to-end PMO keeping HQ and local teams aligned through every phase.</p>
+            </div>
+            <div style="background:#fff;border-radius:14px;padding:44px;display:flex;flex-direction:column;gap:20px">
+              <span style="font-size:15px;font-weight:700;color:#0080BC">03</span>
+              <div style="font-size:28px;font-weight:600;color:#163E51">Ongoing advisory</div>
+              <p style="margin:0;font-size:19px;line-height:1.55;color:#0F5474">Culture-aware guidance so decisions keep moving after go-live.</p>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><img src="../assets/konosaki/assets/lockup-h-black.svg" alt="" style="height:14px;width:auto"><span style="font-size:13px;color:#AFC1CD">05</span></div>
+        </div></div>
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#163E51;display:flex;flex-direction:column;justify-content:center;padding:96px">
+          <div style="font-size:220px;font-weight:700;color:#D3E78E;line-height:1">14.7%</div>
+          <p style="font-size:28px;line-height:1.5;color:#fff;max-width:900px;margin:32px 0 0">annual growth in cross-border M&amp;A involving Japanese companies — and rising.</p>
+          <span style="font-size:14px;color:#AFC1CD;margin-top:28px">Source: RECOF Corporation</span>
+        </div></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#fff;display:flex;flex-direction:column;padding:88px 96px">
+          <div style="display:flex;align-items:center;gap:16px"><span style="font-size:13px;font-weight:600;letter-spacing:0.18em;color:#0080BC">RESULTS</span><span style="flex:1;height:1px;background:#E3EAEF"></span></div>
+          <div style="margin:26px 0 0;font-size:48px;font-weight:600;color:#163E51">Impact for our clients</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:56px;margin-top:64px;flex:1;align-content:center">
+            <div style="border-left:4px solid #0080BC;padding-left:32px"><div style="font-size:88px;font-weight:700;color:#163E51;line-height:1">40%</div><p style="margin:12px 0 0;font-size:21px;line-height:1.5;color:#0F5474">faster decision cycles between HQ and local teams.</p></div>
+            <div style="border-left:4px solid #74C2FA;padding-left:32px"><div style="font-size:88px;font-weight:700;color:#163E51;line-height:1">12+</div><p style="margin:12px 0 0;font-size:21px;line-height:1.5;color:#0F5474">cross-border programs delivered end to end.</p></div>
+            <div style="border-left:4px solid #9AB84A;padding-left:32px"><div style="font-size:88px;font-weight:700;color:#163E51;line-height:1">98%</div><p style="margin:12px 0 0;font-size:21px;line-height:1.5;color:#0F5474">client retention across engagements.</p></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><img src="../assets/konosaki/assets/lockup-h-black.svg" alt="" style="height:14px;width:auto"><span style="font-size:13px;color:#AFC1CD">07</span></div>
+        </div></div>
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#fff;display:flex;flex-direction:column;padding:88px 96px">
+          <div style="display:flex;align-items:center;gap:16px"><span style="font-size:13px;font-weight:600;letter-spacing:0.18em;color:#0080BC">HOW WE WORK</span><span style="flex:1;height:1px;background:#E3EAEF"></span></div>
+          <div style="margin:26px 0 0;font-size:48px;font-weight:600;color:#163E51">A four-step engagement</div>
+          <div style="display:flex;align-items:flex-start;margin-top:80px;flex:1">
+            <div style="flex:1;display:flex;flex-direction:column;gap:24px;padding-right:24px"><div style="display:flex;align-items:center"><span style="width:20px;height:20px;border-radius:50%;background:#0080BC;flex:none"></span><span style="flex:1;height:2px;background:#0080BC"></span></div><div><div style="font-size:26px;font-weight:600;color:#163E51">Discover</div><p style="margin:12px 0 0;font-size:19px;line-height:1.5;color:#0F5474">Map goals, stakeholders, and risks on both sides.</p></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:24px;padding-right:24px"><div style="display:flex;align-items:center"><span style="width:20px;height:20px;border-radius:50%;background:#0080BC;flex:none"></span><span style="flex:1;height:2px;background:#0080BC"></span></div><div><div style="font-size:26px;font-weight:600;color:#163E51">Align</div><p style="margin:12px 0 0;font-size:19px;line-height:1.5;color:#0F5474">Set one plan, shared language, and clear ownership.</p></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:24px;padding-right:24px"><div style="display:flex;align-items:center"><span style="width:20px;height:20px;border-radius:50%;background:#74C2FA;flex:none"></span><span style="flex:1;height:2px;background:#74C2FA"></span></div><div><div style="font-size:26px;font-weight:600;color:#163E51">Deliver</div><p style="margin:12px 0 0;font-size:19px;line-height:1.5;color:#0F5474">Run the program with bilingual PMO oversight.</p></div></div>
+            <div style="flex:1;display:flex;flex-direction:column;gap:24px"><div style="display:flex;align-items:center"><span style="width:20px;height:20px;border-radius:50%;background:#9AB84A;flex:none"></span></div><div><div style="font-size:26px;font-weight:600;color:#163E51">Sustain</div><p style="margin:12px 0 0;font-size:19px;line-height:1.5;color:#0F5474">Advisory support so momentum holds after go-live.</p></div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><img src="../assets/konosaki/assets/lockup-h-black.svg" alt="" style="height:14px;width:auto"><span style="font-size:13px;color:#AFC1CD">08</span></div>
+        </div></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#fff;display:flex;flex-direction:column;padding:88px 96px">
+          <div style="font-size:48px;font-weight:600;color:#163E51">Without Konosaki / With Konosaki</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;margin-top:52px;flex:1;border-radius:14px;overflow:hidden">
+            <div style="background:#F4F7F9;padding:56px;display:flex;flex-direction:column;gap:24px"><span style="font-size:14px;letter-spacing:0.14em;color:#AFC1CD;font-weight:600">TODAY</span><p style="font-size:24px;line-height:1.6;color:#0F5474;margin:0">Fragmented vendors. Slow decisions. Messages lost in translation.</p></div>
+            <div style="background:#0080BC;padding:56px;display:flex;flex-direction:column;gap:24px"><span style="font-size:14px;letter-spacing:0.14em;color:#D3E78E;font-weight:600">WITH KONOSAKI</span><p style="font-size:24px;line-height:1.6;color:#fff;margin:0">One bilingual partner. Faster alignment. Nothing gets lost crossing the border.</p></div>
+          </div>
+        </div></div>
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#F4F7F9;display:flex;flex-direction:column;justify-content:center;padding:96px">
+          <span style="font-size:100px;color:#74C2FA;line-height:0.9;font-weight:700">&ldquo;</span>
+          <p style="font-size:42px;font-weight:500;line-height:1.4;color:#163E51;max-width:1300px;margin:8px 0 0;text-wrap:pretty">Sakura and her team guided us through complex IT and business process reengineering, and kept us updated on potential risks. A game-changer for us.</p>
+          <div style="display:flex;align-items:center;gap:16px;margin-top:48px"><span style="width:48px;height:2px;background:#0080BC"></span><span style="font-size:16px;color:#0F5474">Director of IT Operations, Global Food &amp; Beverage Company</span></div>
+        </div></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#fff;display:flex;flex-direction:column;padding:88px 96px">
+          <div style="display:flex;align-items:center;gap:16px"><span style="font-size:13px;font-weight:600;letter-spacing:0.18em;color:#0080BC">TEAM</span><span style="flex:1;height:1px;background:#E3EAEF"></span></div>
+          <div style="margin:26px 0 0;font-size:48px;font-weight:600;color:#163E51">The people on your side</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:56px;flex:1">
+            <div style="display:flex;flex-direction:column;gap:20px"><div style="aspect-ratio:1/1;border-radius:14px;background:#F4F7F9;display:flex;align-items:center;justify-content:center"><span style="font-size:15px;letter-spacing:0.14em;text-transform:uppercase;color:#AFC1CD">Headshot</span></div><div><div style="font-size:24px;font-weight:600;color:#163E51">Sakura Tanida</div><p style="margin:6px 0 0;font-size:18px;color:#0F5474">Founder &amp; CEO</p></div></div>
+            <div style="display:flex;flex-direction:column;gap:20px"><div style="aspect-ratio:1/1;border-radius:14px;background:#F4F7F9;display:flex;align-items:center;justify-content:center"><span style="font-size:15px;letter-spacing:0.14em;text-transform:uppercase;color:#AFC1CD">Headshot</span></div><div><div style="font-size:24px;font-weight:600;color:#163E51">Name Surname</div><p style="margin:6px 0 0;font-size:18px;color:#0F5474">Lead Project Manager</p></div></div>
+            <div style="display:flex;flex-direction:column;gap:20px"><div style="aspect-ratio:1/1;border-radius:14px;background:#F4F7F9;display:flex;align-items:center;justify-content:center"><span style="font-size:15px;letter-spacing:0.14em;text-transform:uppercase;color:#AFC1CD">Headshot</span></div><div><div style="font-size:24px;font-weight:600;color:#163E51">Name Surname</div><p style="margin:6px 0 0;font-size:18px;color:#0F5474">Advisory Partner</p></div></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center"><img src="../assets/konosaki/assets/lockup-h-black.svg" alt="" style="height:14px;width:auto"><span style="font-size:13px;color:#AFC1CD">11</span></div>
+        </div></div>
+        <div class="tpl-slide"><div class="tpl-inner" data-w="1920" style="background:#0F1E28;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:40px;padding:96px;text-align:center">
+          <img src="../assets/konosaki/assets/symbol.svg" alt="" style="height:104px;width:auto">
+          <div style="font-size:56px;font-weight:600;color:#fff">Let&rsquo;s make the crossing.</div>
+          <div style="display:flex;gap:32px;font-size:18px;color:#AFC1CD"><span>sakura.tanida@konosaki.co</span><span>·</span><span>konosaki.co</span></div>
+        </div></div>
+      </div>
+
+      <!-- ── LinkedIn Carousel Templates ── -->
+      <p class="gallery-label">
+        <span class="t-en">LinkedIn Carousel Templates</span>
+        <span class="t-jp">LinkedInカルーセルテンプレート</span>
+      </p>
+      <p class="project-text" style="font-size:13px; color:var(--ink-dim); margin-bottom:16px;">
+        <span class="t-en">1080 × 1350 carousel frames set in Geist — a small wordmark pinned top-left, stacked statement lines in tints of one hue landing on the accent, and the same footer on every frame.</span>
+        <span class="t-jp is-block">Geist で組んだ 1080×1350 のカルーセルフレーム。左上に小さなワードマーク、1色の濃淡で重ねたステートメントがアクセントカラーに着地し、フッターは全フレーム共通。</span>
+      </p>
+
+      <div class="tpl-strip">
+        <div class="tpl-card"><div class="tpl-inner" data-w="1080" style="background:#D6E1EA;display:flex;flex-direction:column;justify-content:space-between;padding:80px">
+          <img src="../assets/konosaki/assets/lockup-h-black.svg" alt="" style="height:40px;width:auto;align-self:flex-start">
+          <div style="font-size:92px;font-weight:700;line-height:1.06;text-wrap:balance">
+            <span style="color:#163E51">Value is subjective.<br>Value is super.</span><br><span style="color:#0080BC">Value is somewhere.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;font-size:26px;line-height:1.45;color:#163E51">
+            <div>Brought to you by <b style="font-weight:700">konosaki.co</b><br>2023 Konosaki, LLC</div>
+            <div>Sakura Tanida<br>sakura@konosaki.co</div>
+          </div>
+        </div></div>
+        <div class="tpl-card"><div class="tpl-inner" data-w="1080" style="background:#0080BC;display:flex;flex-direction:column;justify-content:space-between;padding:80px">
+          <img src="../assets/konosaki/assets/lockup-h-white.svg" alt="" style="height:40px;width:auto;align-self:flex-start">
+          <div style="font-size:92px;font-weight:700;line-height:1.06;text-wrap:balance">
+            <span style="color:#fff">Value is subjective.</span><br><span style="color:#163E51">Value is contextual.</span><br><span style="color:#D6E1EA">Value is nowhere.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;font-size:26px;line-height:1.45;color:rgba(255,255,255,0.9)">
+            <div>Brought to you by <b style="font-weight:700">konosaki.co</b><br>2023 Konosaki, LLC</div>
+            <div>Sakura Tanida<br>sakura@konosaki.co</div>
+          </div>
+        </div></div>
+        <div class="tpl-card"><div class="tpl-inner" data-w="1080" style="background:#163E51;display:flex;flex-direction:column;justify-content:space-between;padding:80px">
+          <img src="../assets/konosaki/assets/lockup-h-white.svg" alt="" style="height:40px;width:auto;align-self:flex-start">
+          <div style="font-size:80px;font-weight:700;line-height:1.1;text-wrap:balance">
+            <span style="color:#fff">Value is subjective.</span><br><span style="color:#DCE7D6">Value is in you.</span><br><span style="color:#AEC48E">Value is contextual.</span><br><span style="color:#9AB84A">Value is relative.</span><br><span style="color:#D3E78E">Value is unlimited.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;font-size:26px;line-height:1.45;color:rgba(255,255,255,0.9)">
+            <div>Brought to you by <b style="font-weight:700">konosaki.co</b><br>2023 Konosaki, LLC</div>
+            <div>Sakura Tanida<br>sakura@konosaki.co</div>
+          </div>
+        </div></div>
+        <div class="tpl-card"><div class="tpl-inner" data-w="1080" style="background:#163E51;display:flex;flex-direction:column;justify-content:space-between;padding:80px">
+          <img src="../assets/konosaki/assets/lockup-h-white.svg" alt="" style="height:40px;width:auto;align-self:flex-start">
+          <div style="font-size:150px;font-weight:700;line-height:1.02;text-wrap:balance">
+            <span style="color:#fff">Time.</span><br><span style="color:#fff">Prime.</span><br><span style="color:#D3E78E">Chime.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;font-size:26px;line-height:1.45;color:rgba(255,255,255,0.9)">
+            <div>Brought to you by <b style="font-weight:700">konosaki.co</b><br>2023 Konosaki, LLC</div>
+            <div>Sakura Tanida<br>sakura@konosaki.co</div>
+          </div>
+        </div></div>
+        <div class="tpl-card"><div class="tpl-inner" data-w="1080" style="background:#FBF3E4;display:flex;flex-direction:column;justify-content:space-between;padding:80px">
+          <img src="../assets/konosaki/assets/lockup-h-black.svg" alt="" style="height:40px;width:auto;align-self:flex-start">
+          <div style="font-size:88px;font-weight:700;line-height:1.08;text-wrap:balance">
+            <span style="color:#0080BC">Value is subjective.</span><br><span style="color:#163E51">Value is relative.</span><br><span style="color:#163E51">Value is contextual.</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-end;font-size:26px;line-height:1.45;color:#163E51">
+            <div>Brought to you by <b style="font-weight:700">konosaki.co</b><br>2023 Konosaki, LLC</div>
+            <div>Sakura Tanida<br>sakura@konosaki.co</div>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+
+    <!-- ── Project Details ── -->
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Deliverables</span>
+          <span class="t-jp">成果物</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">Brand Strategy & Identity</span><span class="t-jp">ブランド戦略・アイデンティティ</span></li>
+          <li><span class="t-en">Brand Guidelines</span><span class="t-jp">ブランドガイドライン</span></li>
+          <li><span class="t-en">Bilingual Website</span><span class="t-jp">バイリンガルウェブサイト</span></li>
+          <li><span class="t-en">Business Cards</span><span class="t-jp">名刺</span></li>
+          <li><span class="t-en">Presentation System</span><span class="t-jp">プレゼンテーションシステム</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">Tools</span>
+          <span class="t-jp">ツール</span>
+        </p>
+        <ul class="project-deliverables">
+          <li><span class="t-en">AI-Assisted Design</span><span class="t-jp">AI支援デザイン</span></li>
+          <li><span class="t-en">Figma</span><span class="t-jp">Figma</span></li>
+          <li><span class="t-en">Next.js / React</span><span class="t-jp">Next.js / React</span></li>
+          <li><span class="t-jp">Vercel（ホスティング）</span></li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          <span class="t-en">About</span>
+          <span class="t-jp">概要</span>
+        </p>
+        <p class="project-text" style="font-size: 13px;">
+          <span class="t-en">Complete brand identity and bilingual website for Konosaki LLC, a cross-border consulting firm. Designed and built AI-assisted through Creativity Is Everywhere LLC.</span>
+          <span class="t-jp is-block">越境コンサルティング企業 Konosaki LLC のための、ブランドアイデンティティおよびバイリンガルウェブサイト。Creativity Is Everywhere LLC として、AI を活用して設計・構築。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Nav (prev/next) ── -->
+    <div class="nav-project">
+      <a href="../brand.html">&#8592; <span class="t-en">All Brand & Visual</span><span class="t-jp">ブランド＆ビジュアルへ</span></a>
+      <a href="odell-education.html"><span class="t-en">Next: Odell Education</span><span class="t-jp">次：Odell Education</span> &#8594;</a>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          <span class="t-en">Freelance & consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて</span>
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand & Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <!-- ── Lang switch ── -->
+  <div class="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">&middot;</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    });
+
+// ── Scroll Reveal ──
+(() => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+})();
+
+// ── Image Fade-In ──
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load', () => img.classList.add('loaded'));
+});
+
+// ── Template slide scaling ──
+(() => {
+  const fit = (el) => {
+    const inner = el.querySelector('.tpl-inner');
+    if (!inner) return;
+    inner.style.transform = `scale(${el.clientWidth / parseFloat(inner.dataset.w || 1920)})`;
+  };
+  const els = document.querySelectorAll('.tpl-slide, .tpl-card');
+  const ro = new ResizeObserver(entries => entries.forEach(e => fit(e.target)));
+  els.forEach(el => { fit(el); ro.observe(el); });
+})();
+
+  // ── Mobile Nav ──
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+
+  // ── Lightbox ──
+  (() => {
+    const box = document.createElement('div');
+    box.className = 'lightbox';
+    box.innerHTML = '<img alt=""><span class="lightbox-hint">Click / Esc to close</span>';
+    document.body.appendChild(box);
+    const big = box.querySelector('img');
+    const close = () => { box.classList.remove('is-open'); big.src = ''; };
+    box.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+    document.querySelectorAll('.g-cell img').forEach(img => {
+      img.addEventListener('click', () => {
+        big.src = img.currentSrc || img.src;
+        big.alt = img.alt || '';
+        box.classList.add('is-open');
+      });
+    });
+  })();
+  </script>
+
+</body>
+</html>

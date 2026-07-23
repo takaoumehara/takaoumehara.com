@@ -164,20 +164,36 @@ test('AI Tools page tells three bilingual tool stories with the right ids', () =
   assertPair(html, 'AI Tools — open source, designed &amp; built by Takao', 'AI Tools — オープンソース · Takaoが設計・実装', 'AI Tools page eyebrow');
 });
 
-test('AI Tools page CTAs use the three exact GitHub URLs with safe, descriptive external-link attributes', () => {
+test('AI Tools index cards link to internal project detail pages, not straight to GitHub', () => {
   const html = read('ai-tools.html');
-  const ctas = anchors(html).filter((tag) => hasClass(tag, 'story-cta') && /github\.com/i.test(attr(tag, 'href') ?? ''));
+  const cards = [...html.matchAll(openWithClass('article', 'work-card'))].map((m) => m[0]);
   const expected = [
-    ['https://github.com/takaoumehara/snap-pair-core', 'Snap Pair'],
-    ['https://github.com/takaoumehara/failforward', 'failforward'],
-    ['https://github.com/takaoumehara/cross-model-handoff', 'cross-model-handoff'],
+    ['snap-pair', 'projects/snap-pair.html'],
+    ['failforward', 'projects/failforward.html'],
+    ['cross-model-handoff', 'projects/cross-model-handoff.html'],
   ];
-  assert.equal(ctas.length, 3, 'AI Tools page needs three GitHub story CTAs');
-  for (const [url, label] of expected) {
-    const tag = ctas.find((candidate) => attr(candidate, 'href') === url);
-    assert.ok(tag, `missing ${url} CTA`);
-    assert.equal(attr(tag, 'target'), '_blank', `${label}: CTA must open a new tab`);
-    assert.match(attr(tag, 'rel') ?? '', /\bnoopener\b/, `${label}: CTA needs rel=noopener`);
+  for (const [id, href] of expected) {
+    const card = html.match(new RegExp(`<article\\b[^>]*\\bid\\s*=\\s*["']${escape(id)}["'][^>]*>`, 'i'))?.[0];
+    assert.ok(card, `ai-tools.html needs a #${id} card`);
+    assert.equal(attr(card, 'data-href'), href, `${id} card must link to ${href}`);
+    assert.equal(attr(card, 'data-external'), undefined, `${id} card must not be marked external (it's an internal project page)`);
+  }
+});
+
+test('each AI Tools project detail page exists with its GitHub CTA and a link back to AI Tools', () => {
+  const expected = [
+    ['projects/snap-pair.html', 'https://github.com/takaoumehara/snap-pair-core', 'Snap Pair'],
+    ['projects/failforward.html', 'https://github.com/takaoumehara/failforward', 'failforward'],
+    ['projects/cross-model-handoff.html', 'https://github.com/takaoumehara/cross-model-handoff', 'cross-model-handoff'],
+  ];
+  for (const [page, githubUrl, label] of expected) {
+    assert.ok(existsSync(join(v3, page)), `${page} must exist`);
+    const html = read(page);
+    const cta = anchors(html).find((tag) => attr(tag, 'href') === githubUrl);
+    assert.ok(cta, `${label}: missing GitHub CTA linking ${githubUrl}`);
+    assert.equal(attr(cta, 'target'), '_blank', `${label}: CTA must open a new tab`);
+    assert.match(attr(cta, 'rel') ?? '', /\bnoopener\b/, `${label}: CTA needs rel=noopener`);
+    assert.match(html, /<a[^>]+href="\.\.\/ai-tools\.html"/, `${label}: page must link back to AI Tools`);
   }
 });
 
@@ -230,14 +246,29 @@ test('Agentic UX page no longer lists failforward, cross-model-handoff, or Konos
 
 // ── Brand & Visual page (brand.html) ──
 
-test('Brand & Visual page exists with the Konosaki card linking to konosaki.co', () => {
+test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', () => {
   assert.ok(existsSync(join(v3, 'brand.html')), 'v3/brand.html must exist');
   const html = read('brand.html');
   assert.match(html, /<title>\s*Brand &amp; Visual — Takao Umehara\s*<\/title>/);
   assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 12, 'Brand & Visual page needs twelve cards');
-  const konosaki = html.match(/<article\b[^>]*\bdata-href\s*=\s*["']https:\/\/konosaki\.co\/?["'][^>]*>[\s\S]*?<\/article>/i)?.[0];
-  assert.ok(konosaki, 'Brand & Visual page needs a Konosaki card linking to konosaki.co');
+  const konosaki = html.match(/<article\b[^>]*\bdata-href\s*=\s*["']https:\/\/konosaki-co\.vercel\.app\/?["'][^>]*>[\s\S]*?<\/article>/i)?.[0];
+  assert.ok(konosaki, 'Brand & Visual page needs a Konosaki card linking to konosaki-co.vercel.app');
   assert.match(konosaki, /Konosaki/);
+  assert.match(konosaki, /assets\/konosaki\/KONOSAKI-logo\/KONOSAKI_WEWORK-VERTICAL\.svg/);
+});
+
+test('AI index pages expose thumbnail-led work-card grids', () => {
+  const expectations = [
+    ['ai-products.html', 11],
+    ['ai-tools.html', 3],
+  ];
+
+  for (const [page, expectedCount] of expectations) {
+    const html = read(page);
+    assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bwork-grid\b[^"']*["']/i, `${page} needs a work-grid`);
+    assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, expectedCount, `${page} needs ${expectedCount} work cards`);
+    assert.match(html, /class=["'][^"']*\bcard-image\b[^"']*["']/i, `${page} needs card thumbnails`);
+  }
 });
 
 // ── Product Design page (work.html) ──

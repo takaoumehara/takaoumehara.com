@@ -129,6 +129,30 @@
       margin: 0 auto;
     }
 
+    .about-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
+      gap: clamp(32px, 6vw, 84px);
+      align-items: end;
+    }
+
+    .about-portrait {
+      width: min(100%, 360px);
+      aspect-ratio: 4 / 5;
+      justify-self: end;
+      margin: 0;
+      overflow: hidden;
+      background: #d6d0c5;
+    }
+
+    .about-portrait img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
     .hero-kicker {
       margin-bottom: 20px;
     }
@@ -500,6 +524,18 @@
       .timeline-right { padding-left: 0; }
     }
 
+    @media (max-width: 760px) {
+      .about-hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .about-portrait {
+        width: min(100%, 420px);
+        justify-self: start;
+      }
+    }
+
     @media (max-width: 600px) {
       .site-nav { padding: 16px 20px; }
       .hero { padding: 64px 20px 56px; }
@@ -560,18 +596,25 @@
 
   <!-- ── Hero ── -->
   <section class="hero">
-    <div class="hero-kicker eyebrow">
-      <span class="t-en">About</span>
-      <span class="t-jp">私について</span>
+    <div class="about-hero-grid">
+      <div class="about-hero-copy">
+        <div class="hero-kicker eyebrow">
+          <span class="t-en">About</span>
+          <span class="t-jp">私について</span>
+        </div>
+        <h1 class="hero-headline">
+          <span class="t-en">Product designer, innovation strategist, and creative thinker based in New York City.</span>
+          <span class="t-jp">ニューヨーク在住のプロダクトデザイナー、イノベーション・ストラテジスト。</span>
+        </h1>
+        <p class="hero-desc">
+          <span class="t-en">Throughout my career, I have consistently taken on key leadership roles such as Product Design Lead, UX Lead, and Senior Product Designer. My approach combines strategic vision with hands-on design skills to create products that resonate with users and meet business goals.</span>
+          <span class="t-jp is-block">これまでのキャリアを通じて、プロダクトデザインリード、UXリード、シニアプロダクトデザイナーとして重要なリーダーシップポジションを担ってきました。戦略的なビジョンと実践的なデザインスキルを組み合わせ、ユーザーに響き、ビジネス目標を達成するプロダクトを生み出しています。</span>
+        </p>
+      </div>
+      <figure class="about-portrait">
+        <img src="assets/about/TakaoUmehara_passport.png" alt="Takao Umehara" width="1024" height="1024">
+      </figure>
     </div>
-    <h1 class="hero-headline">
-      <span class="t-en">Product designer, innovation strategist, and creative thinker based in New York City.</span>
-      <span class="t-jp">ニューヨーク在住のプロダクトデザイナー、イノベーション・ストラテジスト。</span>
-    </h1>
-    <p class="hero-desc">
-      <span class="t-en">Throughout my career, I have consistently taken on key leadership roles such as Product Design Lead, UX Lead, and Senior Product Designer. My approach combines strategic vision with hands-on design skills to create products that resonate with users and meet business goals.</span>
-      <span class="t-jp is-block">これまでのキャリアを通じて、プロダクトデザインリード、UXリード、シニアプロダクトデザイナーとして重要なリーダーシップポジションを担ってきました。戦略的なビジョンと実践的なデザインスキルを組み合わせ、ユーザーに響き、ビジネス目標を達成するプロダクトを生み出しています。</span>
-    </p>
   </section>
 
   <!-- ── Highlights ── -->
@@ -812,7 +855,7 @@
       <div>
         <div class="footer-logo">Takao Umehara</div>
         <div class="footer-llc">
-          <span class="t-en">Freelance &amp; consulting work accepted through <strong>Creativity Is Everywhere LLC</strong></span>
+          <span class="t-en">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></span>
           <span class="t-jp is-block">フリーランス・コンサルティング業務は<strong>Creativity Is Everywhere LLC</strong>を通じて受け付けています</span>
         </div>
       </div>

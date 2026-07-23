@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Snap Pair — Takao Umehara</title>
+  <meta name="description" content="Snap Pair — a React + Firebase realtime pairing layer that lets every phone in the room join an app in one scan. Open source, with a Claude skill for safe integrations.">
+  <meta property="og:title" content="Snap Pair — Takao Umehara">
+  <meta property="og:description" content="Every phone in the room joins your app in one scan. A React + Firebase pairing layer, open source.">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      --a-blue: #2563eb;
+      --a-orange: #f97316;
+      --a-violet: #7c3aed;
+      --m-tint: var(--a-blue);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { min-height: 100vh; color: var(--ink); background: var(--bg); font-family: var(--ff); }
+
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: rgba(255,255,255,0.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: var(--ink); line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .nav-logo-tag { color: var(--ink-dim); font-size: 10.5px; font-weight: 400; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { color: var(--ink-mid); font-size: 13px; letter-spacing: 0.01em; text-decoration: none; transition: color 160ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; appearance: none; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(255,255,255,0.94); border-top: 1px solid rgba(18,18,18,0.07); border-bottom: 1px solid rgba(18,18,18,0.07); border-left: 1px solid var(--border); border-radius: 6px 0 0 6px; writing-mode: vertical-rl; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .lang-btn { padding: 0; appearance: none; background: none; border: none; color: var(--ink-dim); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { color: rgba(18,18,18,0.18); font-size: 9px; }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18, 18, 18, 0.28); margin: 0 8px; }
+
+    /* ═══ Slide deck ═══ */
+    .deck { max-width: 1240px; margin: 0 auto; padding: 8px 20px 8px; }
+    .wds-slide { margin-bottom: 2px; }
+    .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
+    .wds-kick { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
+    html.lang-jp .wds-serif { line-height: 1.2; letter-spacing: -0.01em; }
+    html.lang-jp .wds-serif em { white-space: nowrap; }
+
+    .wds-hero { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6.5vw, 96px) clamp(28px, 5vw, 78px); }
+    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(37,99,235,0.26), transparent 62%); pointer-events: none; }
+    .wds-hero > * { position: relative; z-index: 1; }
+    .wds-hero .wds-kick { color: rgba(255,255,255,0.5); }
+    .wds-hero h1 { font-size: clamp(40px, 6.6vw, 84px); max-width: 15ch; }
+    .wds-hero h1 em { font-style: italic; color: #60a5fa; }
+    .wds-hero-lead { font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.72; color: rgba(255,255,255,0.66); max-width: 60ch; margin-top: 30px; }
+    .wds-hero-lead strong { color: #fff; font-weight: 600; }
+
+    .tool-statement { position: relative; overflow: hidden; color: #fff; padding: clamp(46px, 6.5vw, 92px) clamp(28px, 5vw, 78px); }
+    .tool-statement .wds-kick { color: rgba(255,255,255,0.62); }
+    .tool-statement h2 { font-size: clamp(34px, 5vw, 66px); max-width: 17ch; }
+    .tool-statement h2 em { font-style: italic; color: #f8f3e7; }
+    .tool-statement.st-blue { background: var(--a-blue); }
+
+    .wds-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
+    .wds-chip { padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
+    .wds-chip b { font-weight: 600; color: #fff; }
+
+    .tool-mech { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .mech-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(220px, 0.75fr); gap: clamp(36px, 5vw, 84px); align-items: center; }
+    .tool-mech h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
+    .mech-lead { font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.72; color: var(--ink-mid); max-width: 62ch; }
+    .mech-lead strong { color: var(--ink); font-weight: 600; }
+    .mech-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 28px; }
+    .mech-fact { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--m-tint); padding: 16px 16px 18px; }
+    .mech-fact-l { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 7px; }
+    .mech-fact-v { font-size: 13px; line-height: 1.55; color: var(--ink-mid); }
+    .mech-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .story-cta { display: inline-block; padding: 13px 18px; border: 1px solid var(--ink); color: var(--ink); font-size: 11px; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
+    .story-cta:hover { background: var(--ink); color: #fff; }
+    .story-cta--ghost { border-color: var(--border); }
+    .story-cta--ghost:hover { background: transparent; color: var(--ink); border-color: rgba(18,18,18,0.34); }
+    .wds-hero .story-cta { border-color: rgba(255,255,255,0.4); color: #fff; }
+    .wds-hero .story-cta:hover { background: #fff; color: #0d0d0f; }
+
+    .mech-rail { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(18,18,18,0.12); }
+    .mech-rail-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
+    .rail-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2px; }
+    .rail-item { display: block; padding: 20px 22px; background: #fff; border: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color 180ms ease; }
+    a.rail-item:hover { border-color: rgba(18,18,18,0.32); }
+    .rail-item-status { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--a-blue); font-weight: 600; margin-bottom: 8px; }
+    .rail-item-status.is-soon { color: var(--ink-dim); }
+    .rail-item-name { font-size: 15px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 6px; }
+    .rail-item-desc { font-size: 12.5px; line-height: 1.55; color: var(--ink-dim); }
+
+    .mech-figure { display: flex; justify-content: center; }
+    .diagram { width: min(100%, 330px); height: auto; overflow: visible; }
+    .diagram .ink { fill: none; stroke: var(--ink); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .diagram .tint { fill: none; stroke: var(--m-tint); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .diagram .tint-fill { fill: var(--m-tint); stroke: none; }
+    .diagram .faint { fill: none; stroke: rgba(18,18,18,0.25); stroke-width: 1.5; stroke-dasharray: 3 5; stroke-linecap: round; }
+    .diagram text { font-family: var(--ff); font-size: 6.5px; letter-spacing: 0.12em; fill: var(--ink-dim); text-transform: uppercase; }
+    .diagram .draw { stroke-dasharray: 340; stroke-dashoffset: 340; transition: stroke-dashoffset 1100ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .is-visible .diagram .draw { stroke-dashoffset: 0; }
+    .is-visible .diagram .draw.d2 { transition-delay: 260ms; }
+    .diagram .dot { opacity: 0; }
+    .is-visible .diagram .dot { opacity: 1; animation: travel-pair 2.8s cubic-bezier(0.45, 0, 0.55, 1) 900ms infinite; }
+    @keyframes travel-pair { 0%, 12% { transform: translate(0, 0); } 55%, 70% { transform: translate(56px, 14px); } 100% { transform: translate(0, 0); } }
+    @keyframes pulse-ring { 0% { transform: scale(0.6); opacity: 0.9; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
+    .diagram .pulse { transform-origin: center; transform-box: fill-box; opacity: 0; }
+    .is-visible .diagram .pulse { animation: pulse-ring 2.8s ease-out 1200ms infinite; }
+
+    .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1240px; margin: 0 auto; padding: 48px 20px 64px; }
+    .project-nav-link { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .project-nav-link:hover { color: var(--ink); }
+
+    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22,0.84,0.22,1), transform 600ms cubic-bezier(0.22,0.84,0.22,1); }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    .story-cta:focus-visible, .rail-item:focus-visible,
+    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible, .nav-toggle:focus-visible, .project-nav-link:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .footer-llc { margin-top: 5px; color: var(--ink-dim); font-size: 11px; }
+    .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+    .footer-links a { color: var(--ink-dim); font-size: 12px; text-decoration: none; }
+
+    @media (max-width: 900px) {
+      .mech-grid { grid-template-columns: 1fr; gap: 36px; }
+      .mech-figure { justify-content: flex-start; }
+      .diagram { width: min(72%, 280px); }
+      .mech-facts { grid-template-columns: 1fr; }
+      .rail-items { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 767px) {
+      .nav-toggle { display: block; }
+      .nav-links { position: absolute; top: 100%; right: 0; left: 0; display: none; flex-direction: column; gap: 0; padding: 0; background: rgba(255,255,255,0.97); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+      .site-nav { padding: 16px 20px; }
+      .deck { padding: 8px 12px 8px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .diagram .draw { stroke-dashoffset: 0 !important; transition: none !important; }
+      .diagram .dot, .diagram .pulse { animation: none !important; opacity: 1 !important; }
+      .story-cta, .rail-item, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a href="../index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="lang-switch" id="lang-switch" aria-label="Language"><button class="lang-btn is-active" type="button" data-lang="en">EN</button><span class="lang-sep" aria-hidden="true">|</span><button class="lang-btn" type="button" data-lang="jp">JP</button></div>
+
+  <div class="breadcrumb">
+    <a href="../ai-tools.html">AI Tools</a>
+    <span>/</span>
+    <a href="#">Snap Pair</a>
+  </div>
+
+  <main class="deck">
+
+    <!-- ═══ Slide 1 · Hero (dark, blue glow) ═══ -->
+    <header class="wds-hero wds-slide reveal-on-scroll">
+      <p class="wds-kick"><span class="t-en">Realtime Library · Claude Skill · React + Firebase</span><span class="t-jp">リアルタイムライブラリ · Claude スキル · React + Firebase</span></p>
+      <h1 class="wds-serif"><span class="t-en">Every phone in the room joins your app in <em>one scan</em>.</span><span class="t-jp is-block">その場のスマホが、<em>ワンスキャン</em>でアプリの一部になる。</span></h1>
+      <p class="wds-hero-lead"><span class="t-en"><strong>Snap Pair</strong> is a React + Firebase realtime pairing layer: QR or six-character code, presence heartbeat, room capacity, and security rules included. It ships with a Claude skill that writes safe integrations for you — so an agent can add multi-device play to any app.</span><span class="t-jp is-block"><strong>Snap Pair</strong> は React + Firebase のリアルタイムペアリング層。QR または 6 文字コード、プレゼンスハートビート、定員管理、セキュリティルールまで同梱しています。安全な統合コードを生成する Claude スキル付きで、エージェントがどのアプリにもマルチデバイス機能を組み込めます。</span></p>
+      <div class="wds-chips">
+        <span class="wds-chip"><span class="t-en">Realtime Library</span><span class="t-jp">リアルタイムライブラリ</span></span>
+        <span class="wds-chip">Claude Skill</span>
+        <span class="wds-chip">React + Firebase</span>
+        <span class="wds-chip">MIT</span>
+      </div>
+      <div class="mech-ctas">
+        <a class="story-cta" href="https://github.com/takaoumehara/snap-pair-core" target="_blank" rel="noopener" aria-label="View Snap Pair on GitHub (opens in a new tab)">GitHub ↗</a>
+        <a class="story-cta" href="amazon-firetv.html"><span class="t-en">See it live — Fire TV demo →</span><span class="t-jp">実物を見る — Fire TV デモ →</span></a>
+      </div>
+    </header>
+
+    <!-- ═══ Slide 2 · Mechanism + Built with Snap Pair (cream) ═══ -->
+    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="Snap Pair details">
+      <div class="mech-grid">
+        <div>
+          <h3><span class="t-en">Pairing, presence, and security — already solved.</span><span class="t-jp is-block">ペアリングも、プレゼンスも、セキュリティも、解決済み。</span></h3>
+          <p class="mech-lead"><span class="t-en">Safe, temporary multi-device experiences repeatedly need the same difficult foundation: pairing, presence, shared state, room capacity, and authorization. Snap Pair packages a React hook plus Firebase Auth, callable Cloud Functions, Realtime Database rules, cleanup, tests, and a one-file Lite example — so you build the experience, not the plumbing.</span><span class="t-jp is-block">安全で一時的なマルチデバイス体験には、毎回同じ難しい基盤が必要になります — ペアリング、プレゼンス、共有状態、定員管理、認可。Snap Pair は React hook、Firebase Auth、callable Cloud Functions、Realtime Database のセキュリティルール、クリーンアップ、テスト、1 ファイルの Lite サンプルまでをパッケージ化。配管ではなく、体験そのものを作ることに集中できます。</span></p>
+          <div class="mech-facts">
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Pairing</span><span class="t-jp">ペアリング</span></div><div class="mech-fact-v"><span class="t-en">QR or 6-character code</span><span class="t-jp">QR または 6 文字コード</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Scale</span><span class="t-jp">スケール</span></div><div class="mech-fact-v"><span class="t-en">Rooms up to 300 devices</span><span class="t-jp">1 ルーム最大 300 台</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Install</span><span class="t-jp">導入</span></div><div class="mech-fact-v"><span class="t-en">No app download needed</span><span class="t-jp">アプリのダウンロード不要</span></div></div>
+          </div>
+          <div class="mech-ctas">
+            <a class="story-cta" href="https://github.com/takaoumehara/snap-pair-core" target="_blank" rel="noopener" aria-label="View Snap Pair on GitHub (opens in a new tab)">GitHub ↗</a>
+          </div>
+        </div>
+        <div class="mech-figure" aria-hidden="true">
+          <svg class="diagram" viewBox="0 0 160 120" role="img">
+            <rect class="ink draw" x="8" y="22" width="78" height="52" rx="3"/>
+            <path class="ink draw" d="M38 82 h18 M47 74 v8"/>
+            <path class="tint draw d2" d="M20 34 h10 M20 34 v10 M64 34 h10 M74 34 v10 M20 52 v10 M20 62 h10 M74 52 v10 M64 62 h10"/>
+            <rect class="ink draw d2" x="120" y="38" width="26" height="48" rx="5"/>
+            <path class="ink draw d2" d="M129 80 h8"/>
+            <path class="faint" d="M90 48 C 102 40, 110 40, 118 46"/>
+            <circle class="tint-fill dot" cx="90" cy="46" r="3"/>
+            <circle class="tint pulse" cx="133" cy="58" r="9"/>
+            <text x="8" y="104">TV</text>
+            <text x="118" y="104">PHONE</text>
+          </svg>
+        </div>
+      </div>
+      <div class="mech-rail">
+        <p class="mech-rail-label"><span class="t-en">Built with Snap Pair</span><span class="t-jp">Snap Pair で作られたもの</span></p>
+        <div class="rail-items">
+          <a class="rail-item" href="marubatsu.html">
+            <div class="rail-item-status"><span class="t-en">Shipped</span><span class="t-jp">公開済み</span></div>
+            <div class="rail-item-name">Marubatsu Arena</div>
+            <div class="rail-item-desc"><span class="t-en">The game that started it all — its QR/code online match is where this pairing layer was first proven out.</span><span class="t-jp is-block">すべての始まりとなったゲーム。オンライン対戦の QR／コードは、このペアリング層が最初に実証された場所。</span></div>
+          </a>
+          <a class="rail-item" href="amazon-firetv.html">
+            <div class="rail-item-status"><span class="t-en">Live prototype</span><span class="t-jp">公開中のプロトタイプ</span></div>
+            <div class="rail-item-name">Amazon Shopping on Fire TV</div>
+            <div class="rail-item-desc"><span class="t-en">Your phone becomes the TV remote, keyboard, and Alexa mic.</span><span class="t-jp is-block">スマホが TV のリモコン・キーボード・Alexa マイクになる。</span></div>
+          </a>
+          <div class="rail-item">
+            <div class="rail-item-status is-soon"><span class="t-en">Coming soon</span><span class="t-jp">近日公開</span></div>
+            <div class="rail-item-name">TypeSpace</div>
+            <div class="rail-item-desc"><span class="t-en">A shared typographic space every phone can write into.</span><span class="t-jp is-block">全員のスマホから書き込めるタイポグラフィ空間。</span></div>
+          </div>
+          <div class="rail-item">
+            <div class="rail-item-status is-soon"><span class="t-en">Coming soon</span><span class="t-jp">近日公開</span></div>
+            <div class="rail-item-name"><span class="t-en">Multiplayer card game</span><span class="t-jp">マルチプレイヤーカードゲーム</span></div>
+            <div class="rail-item-desc"><span class="t-en">Phones as hands, one screen as the table.</span><span class="t-jp is-block">スマホが手札に、ひとつの画面がテーブルになる。</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 3 · Closing (vivid blue) ═══ -->
+    <section class="tool-statement st-blue wds-slide reveal-on-scroll">
+      <p class="wds-kick"><span class="t-en">Why it matters</span><span class="t-jp">なぜ重要か</span></p>
+      <h2 class="wds-serif"><span class="t-en">Built once. Reused <em>everywhere multi-device matters</em>.</span><span class="t-jp is-block">一度作り、<em>複数デバイスが関わる場所すべて</em>で再利用する。</span></h2>
+      <div class="mech-ctas">
+        <a class="story-cta" href="../ai-products.html"><span class="t-en">See Agentic UX →</span><span class="t-jp">Agentic UX を見る →</span></a>
+        <a class="story-cta" href="../ai-tools.html"><span class="t-en">Explore other AI Tools →</span><span class="t-jp">他の AI Tools を見る →</span></a>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="project-nav">
+    <a href="../ai-tools.html" class="project-nav-link"><span class="t-en">&larr; AI Tools</span><span class="t-jp">&larr; AI Tools</span></a>
+    <a href="failforward.html" class="project-nav-link"><span class="t-en">Next: failforward &rarr;</span><span class="t-jp">次へ: failforward &rarr;</span></a>
+  </div>
+
+  <footer class="site-footer">
+    <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div></div>
+    <ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="../ai-products.html">Agentic UX</a></li><li><a href="../work.html">Product Design</a></li><li><a href="../brand.html">Brand &amp; Visual</a></li><li><a href="../about.html">About</a></li><li><a href="../contact.html">Contact</a></li></ul>
+  </footer>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      html.lang = lang === "jp" ? "ja" : "en";
+      btns.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((button) => button.addEventListener("click", () => setLang(button.dataset.lang)));
+  })();
+
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (!toggle || !links) return;
+    toggle.addEventListener('click', () => {
+      const open = !links.classList.contains('is-open');
+      toggle.classList.toggle('is-open', open);
+      links.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    links.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+      toggle.classList.remove('is-open');
+      links.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }));
+  })();
+
+  (() => {
+    const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    }), { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal-on-scroll').forEach((el) => io.observe(el));
+  })();
+  </script>
+</body>
+</html>
