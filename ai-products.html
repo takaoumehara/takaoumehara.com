@@ -485,6 +485,101 @@
       .lab-card::before { transition: none !important; }
     }
   </style>
+
+  <style>
+    /* ─── Snap Pair connective tag ─── */
+    .pill--snap {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      color: #1d4ed8;
+      border-color: rgba(37,99,235,0.34);
+      background: rgba(37,99,235,0.06);
+    }
+    .pill--snap::before {
+      content: "";
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.14);
+    }
+
+    /* ─── New project card-art gradients ─── */
+    .card-art--rakugaki {
+      background:
+        radial-gradient(circle at 22% 78%, rgba(255,255,255,0.30) 0 1.4%, transparent 2%),
+        radial-gradient(circle at 78% 30%, rgba(255,255,255,0.22) 0 1%, transparent 1.6%),
+        linear-gradient(140deg, #16104a, #7b2ff2 46%, #ff4f9a);
+    }
+    .card-art--koebaku {
+      background:
+        radial-gradient(circle at 50% 116%, rgba(255,209,120,0.55), transparent 46%),
+        linear-gradient(140deg, #2b0f14, #e23b4e 48%, #ffb347);
+    }
+
+    /* ─── Werewolf: character on a dark reveal ─── */
+    .card-img-bg--werewolf {
+      position: relative;
+      background-color: #0b0c10;
+      background-size: contain;
+      background-position: center 44%;
+      background-repeat: no-repeat;
+    }
+    .card-img-bg--werewolf::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 34%, rgba(126,200,235,0.32), transparent 58%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── Snap Pair showcase section ─── */
+    .snap-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 8px 32px 40px;
+    }
+    .snap-head {
+      border-top: 1px solid var(--line);
+      padding: 44px 0 26px;
+      max-width: 760px;
+    }
+    .snap-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #1d4ed8;
+      margin-bottom: 14px;
+    }
+    .snap-eyebrow::before {
+      content: "";
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #7fb7ff);
+    }
+    .snap-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(30px, 4vw, 46px);
+      font-weight: 400;
+      letter-spacing: -0.03em;
+      line-height: 0.96;
+      margin-bottom: 14px;
+    }
+    .snap-sub {
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--ink-mid);
+    }
+    html.lang-jp .snap-title { line-height: 1.18; }
+
+    @media (max-width: 600px) {
+      .snap-section { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -521,7 +616,7 @@
         <span class="t-jp">Agentic UX</span>
       </h1>
     </div>
-    <div class="page-count">11 products</div>
+    <div class="page-count">14 products</div>
   </div>
 
   <p class="lab-intro">
@@ -538,18 +633,18 @@
       </article>
 
       <article class="work-card" tabindex="0" data-href="projects/verizon-ai-agents.html">
-        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/verizon-ai-agents/hero-workflow-agents.jpg'); background-position:center;"></div></div>
+        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/verizon-ai-agents/hero-agents-network.jpg'); background-position:center;"></div></div>
         <div class="card-body"><div class="chips"><span class="pill">Enterprise</span><span class="pill">Shipped</span></div><h2 class="card-title">Verizon AI Workflow</h2><p class="card-desc"><span class="t-en">A 10-agent fleet changing how 42 designers work across six brands.</span><span class="t-jp is-block">42 名・6 ブランドのデザイン組織の働き方を変えた、10 エージェントの艦隊。</span></p></div>
         <div class="card-footer"><span class="card-meta">Agent fleet · Design Ops</span><span class="card-meta card-meta--link">Case study →</span></div>
       </article>
 
       <article class="work-card" tabindex="0" data-href="projects/amazon-firetv.html">
-        <div class="card-image"><div class="card-art card-art--snap"><span class="card-art-label">Fire TV</span><span class="card-art-note">Voice · D-pad · phone</span></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Live prototype</span><span class="pill">Agentic UX</span></div><h2 class="card-title">Amazon Shopping on Fire TV</h2><p class="card-desc"><span class="t-en">Agentic commerce for the living room — D-pad, Alexa voice, and a phone remote.</span><span class="t-jp is-block">D-pad、Alexa 音声、スマホのリモコンでつくる、リビングルームのエージェンティック・コマース。</span></p></div>
+        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/amazon-firetv/hero.jpg');"></div></div>
+        <div class="card-body"><div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Agentic UX</span></div><h2 class="card-title">Amazon Shopping on Fire TV</h2><p class="card-desc"><span class="t-en">Agentic commerce for the living room — D-pad, Alexa voice, and a phone remote.</span><span class="t-jp is-block">D-pad、Alexa 音声、スマホのリモコンでつくる、リビングルームのエージェンティック・コマース。</span></p></div>
         <div class="card-footer"><span class="card-meta">10-foot UI · Voice UX · Snap Pair</span><span class="card-meta card-meta--link">Prototype →</span></div>
       </article>
 
-      <article class="work-card"><div class="card-image"><div class="card-art card-art--arena"><span class="card-art-label">○ ×<br>Arena</span><span class="card-art-note">Realtime multiplayer</span></div></div><div class="card-body"><div class="chips"><span class="pill">Shipped</span><span class="pill">Game</span></div><h2 class="card-title">Marubatsu Arena</h2><p class="card-desc"><span class="t-en">Real-time online tic-tac-toe with an AI opponent.</span><span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span></p></div><div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span></div></article>
+      <article class="work-card" tabindex="0" data-href="projects/marubatsu.html"><div class="card-image"><div class="card-img-bg" style="background-image:url('assets/marubatsu/hero.jpg');"></div></div><div class="card-body"><div class="chips"><span class="pill">Shipped</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div><h2 class="card-title">Marubatsu 2.0</h2><p class="card-desc"><span class="t-en">Real-time online tic-tac-toe with an AI opponent.</span><span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span></p></div><div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span><span class="card-meta card-meta--link">Case study →</span></div></article>
 
       <article class="work-card"><div class="card-image"><div class="card-art card-art--brain"><span class="card-art-label">Brain<br>Manual</span><span class="card-art-note">Personalized self-check</span></div></div><div class="card-body"><div class="chips"><span class="pill">Near launch</span><span class="pill">AI app</span></div><h2 class="card-title">MyBrainSpec</h2><p class="card-desc"><span class="t-en">A quick cognitive self-check that creates a personalized BrainManual.</span><span class="t-jp is-block">認知セルフチェックから、あなただけの「ブレインマニュアル」を生成。</span></p></div><div class="card-footer"><span class="card-meta">React/Vite · Firebase · Gemini</span></div></article>
 
@@ -559,7 +654,7 @@
 
       <article class="work-card"><div class="card-image"><div class="card-art card-art--insta"><span class="card-art-label">Insta<br>Link</span><span class="card-art-note">AI extraction</span></div></div><div class="card-body"><div class="chips"><span class="pill">Prototype</span><span class="pill">AI app</span></div><h2 class="card-title">InstaLink</h2><p class="card-desc"><span class="t-en">A link-in-bio tool for promo codes and events, with AI extraction.</span><span class="t-jp is-block">プロモコードやイベント向けのリンク・イン・バイオ。AI 抽出付き。</span></p></div><div class="card-footer"><span class="card-meta">React 19 · Gemini · Serverless</span></div></article>
 
-      <article class="work-card"><div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div><div class="card-body"><div class="chips"><span class="pill">Prototype</span><span class="pill">WebGL</span></div><h2 class="card-title">Typespace</h2><p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。</span></p></div><div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span></div></article>
+      <article class="work-card"><div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div><div class="card-body"><div class="chips"><span class="pill">Prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">WebGL</span></div><h2 class="card-title">Typespace</h2><p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。</span></p></div><div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span></div></article>
 
       <article class="work-card"><div class="card-image"><div class="card-art card-art--emoji"><span class="card-art-label">Emoji<br>Drop</span><span class="card-art-note">Arcade rescue shooter</span></div></div><div class="card-body"><div class="chips"><span class="pill">Prototype</span><span class="pill">Game</span></div><h2 class="card-title">EmojiDrop</h2><p class="card-desc"><span class="t-en">An emoji-only arcade rescue shooter with combos and fever.</span><span class="t-jp is-block">絵文字だけで遊ぶ、コンボとフィーバー搭載のアーケード救出シューター。</span></p></div><div class="card-footer"><span class="card-meta">HTML5 Canvas · single-file</span></div></article>
 
@@ -653,6 +748,7 @@
           </p>
           <div class="lab-foot">
             <span class="lab-stack">Next.js 16 · Firebase RTDB · Gemini</span>
+            <a class="lab-link" href="projects/marubatsu.html">Case study →</a>
           </div>
         </article>
 
@@ -784,6 +880,56 @@
 
   </div><!-- /lab-wrap -->
 
+  <!-- ── Snap Pair showcase ── -->
+  <section class="snap-section" aria-labelledby="snap-title">
+    <div class="snap-head">
+      <div class="snap-eyebrow"><span class="t-en">Snap Pair · Multi-device platform</span><span class="t-jp">Snap Pair · マルチデバイス基盤</span></div>
+      <h2 class="snap-title" id="snap-title">
+        <span class="t-en">Built with Snap Pair</span>
+        <span class="t-jp">Snap Pair でつくる</span>
+      </h2>
+      <p class="snap-sub">
+        <span class="t-en">One screen, many phones, no app install. Scan a QR code and every device in the room joins one live, synchronized session — the pairing layer behind the tagged projects above, now powering a family of playful builds.</span>
+        <span class="t-jp is-block">ひとつの画面に、みんなのスマホ。アプリのインストールは不要です。QR コードを読み取れば、その場のすべての端末がひとつのライブ・セッションに参加します。上でタグの付いたプロジェクトを支えるペアリング基盤が、いま遊び心あるプロダクト群を動かしています。</span>
+      </p>
+    </div>
+
+    <div class="work-grid" aria-label="Snap Pair projects">
+
+      <article class="work-card">
+        <div class="card-image"><div class="card-art card-art--rakugaki"><span class="card-art-label">Rakugaki<br>Jam</span><span class="card-art-note">Phone → wall VJ</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">VJ</span></div>
+          <h2 class="card-title">Rakugaki Jam</h2>
+          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホで落書きして、みんなの壁画面へ投げ込む。観客みんなで描く、ライブな VJ ジャム。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · Firebase RTDB · Canvas</span></div>
+      </article>
+
+      <article class="work-card">
+        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/koebaku/hero.jpg');"></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Voice</span></div>
+          <h2 class="card-title">Koe Baku <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">声爆</span></h2>
+          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — a QR-join VJ, measured on-device, no audio ever leaves the phone.</span><span class="t-jp is-block">叫べば、声が漫画の擬音になって画面で弾ける。QR で参加する VJ。判定は端末内で完結し、音声は外に出ません。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · Web Audio · Canvas</span></div>
+      </article>
+
+      <article class="work-card">
+        <div class="card-image"><div class="card-img-bg card-img-bg--werewolf" style="background-image:url('assets/werewolf/ghost-wolf.png');"></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
+          <h2 class="card-title">Werewolf Card Game</h2>
+          <p class="card-desc"><span class="t-en">A digital Werewolf (Mafia) party game — hand-illustrated role cards dealt to each player's phone, one table on the big screen.</span><span class="t-jp is-block">デジタル版の人狼ゲーム。手描きの役職カードが各プレイヤーのスマホに配られ、卓は大画面にひとつ。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · 27 illustrated roles</span></div>
+      </article>
+
+    </div>
+  </section>
+
+
   <!-- ── CTA ── -->
   <section class="lab-cta">
     <h2 class="lab-cta-title">
@@ -805,7 +951,7 @@
     style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
     <div>
       <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
-      <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">Freelance &amp; consulting through <strong
+      <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">Design &amp; consulting through <strong
           style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></div>
     </div>
     <div style="display:flex; gap:20px; list-style:none; flex-wrap:wrap;">

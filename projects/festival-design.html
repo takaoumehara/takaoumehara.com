@@ -352,11 +352,15 @@
     @media (max-width: 700px) { .game-card { grid-template-columns: 1fr; } }
 
     /* ─── Game Video Embed ─── */
-    .game-video-wrap { grid-column: 1 / -1; padding-top: 4px; }
+    .game-video-row { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px; padding-top: 4px; }
+    .game-video-wrap { padding-top: 4px; }
+    .game-video-wrap.wide { flex: 1 1 360px; }
+    .game-video-wrap.narrow { flex: 0 0 auto; }
     .game-video-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 4px 0 10px; }
     .game-video { position: relative; width: 100%; max-width: 640px; aspect-ratio: 16/9; border-radius: 2px; overflow: hidden; background: #111; margin-bottom: 12px; }
     .game-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
     .game-video video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+    .game-video.portrait { width: 220px; max-width: 100%; aspect-ratio: 9/16; }
     .video-link { display: inline-block; font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; border: 1px solid var(--border); padding: 8px 14px; transition: border-color 180ms ease, color 180ms ease; }
     .video-link:hover { border-color: rgba(18,18,18,0.3); color: var(--ink); }
 
@@ -364,7 +368,7 @@
     .cta-consult { padding: 56px 0; margin: 8px 0 64px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
     .cta-consult .project-section-title { max-width: 640px; margin: 0 auto 14px; }
     .cta-consult .project-text { max-width: 520px; margin: 0 auto 28px; }
-    @media (max-width: 700px) { .game-video { max-width: 100%; } }
+    @media (max-width: 700px) { .game-video { max-width: 100%; } .game-video-row { gap: 20px; } .game-video.portrait { width: 180px; } }
 
     /* ─── Tools tags ─── */
     .tools-list { display:flex; gap:8px; flex-wrap:wrap; }
@@ -836,26 +840,28 @@
         <div class="game-cell photo">
           <img src="../assets/festival-design/ぐるぐるターゲットAIreplaced.jpg" alt="Guru-guru Target — in action" loading="lazy">
         </div>
-        <div class="game-video-wrap">
-          <p class="game-video-label">
-            <span class="t-en">Live Clip &mdash; Playing the Game</span>
-            <span class="t-jp">実際にプレイする様子</span>
-          </p>
-          <div class="game-video">
-            <video muted loop playsinline autoplay preload="metadata" poster="../assets/festival-design/korinto-clip-poster.jpg" aria-label="Guru-guru Target gameplay clip">
-              <source src="../assets/festival-design/korinto-clip.mp4" type="video/mp4">
-            </video>
+        <div class="game-video-row">
+          <div class="game-video-wrap wide">
+            <p class="game-video-label">
+              <span class="t-en">Live Clip &mdash; Playing the Game</span>
+              <span class="t-jp">実際にプレイする様子</span>
+            </p>
+            <div class="game-video">
+              <video muted loop playsinline autoplay preload="metadata" poster="../assets/festival-design/korinto-clip-poster.jpg" aria-label="Guru-guru Target gameplay clip">
+                <source src="../assets/festival-design/korinto-clip.mp4" type="video/mp4">
+              </video>
+            </div>
           </div>
-        </div>
-        <div class="game-video-wrap">
-          <p class="game-video-label">
-            <span class="t-en">Rotating Target Game — Making Of</span>
-            <span class="t-jp">回転ターゲットゲーム制作の様子</span>
-          </p>
-          <div class="game-video">
-            <video controls playsinline preload="metadata" aria-label="Rotating Target Game making of">
-              <source src="https://res.cloudinary.com/z3qdmts8/video/upload/v1784751363/Rotating_target_game_making_sdct7e.mp4" type="video/mp4">
-            </video>
+          <div class="game-video-wrap narrow">
+            <p class="game-video-label">
+              <span class="t-en">Making Of</span>
+              <span class="t-jp">制作の様子</span>
+            </p>
+            <div class="game-video portrait">
+              <video controls playsinline preload="metadata" aria-label="Rotating Target Game making of">
+                <source src="https://res.cloudinary.com/z3qdmts8/video/upload/v1784751363/Rotating_target_game_making_sdct7e.mp4" type="video/mp4">
+              </video>
+            </div>
           </div>
         </div>
       </div>
@@ -1016,7 +1022,7 @@
       <div>
         <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
         <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
-          <span class="t-en">Freelance &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
+          <span class="t-en">Design &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
           <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて</span>
         </div>
       </div>
