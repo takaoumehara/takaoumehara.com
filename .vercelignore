@@ -1,14 +1,15 @@
-.DS_Store
-test-results/
-playwright-report/
+# Build/dev artifacts — not part of the deployed site
+.git
+node_modules
+tests
+test-results
+playwright-report
+docs
+.handoff
+.claude
 
-# Secrets — never commit
-kieai-apikey.md
-*.apikey
-.env
-.env.*
-
-# Unreferenced raw source footage (not linked from any page; too large for GitHub without LFS)
+# Unreferenced raw source footage (not linked from any page).
+# Several exceed Vercel's 100 MB per-file limit; mirrors .gitignore.
 assets/cli-studios/Before_CLI-orginal.mp4
 assets/cli-studios/After_CLI-newdesign.mp4
 assets/ela-quests/QUEST-Video_Introducing_Far_From_Home.mp4
@@ -22,5 +23,3 @@ assets/tmobile/Journey-animation.mp4
 assets/unbound/UnboundUX8.mp4
 assets/xq-canvas/XQ_CANVAS.mp4
 assets/xq-directory/XQ_DIRECTORY.mp4
-.vercel
-.env*
