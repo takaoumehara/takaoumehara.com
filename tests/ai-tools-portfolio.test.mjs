@@ -136,15 +136,15 @@ test('homepage Agentic UX section presents the three flagship items', () => {
   assertNoUnsupportedClaims(section, 'homepage Agentic UX section');
 });
 
-test('homepage AI Tools section presents three project rows in order', () => {
+test('homepage AI Tools section presents six project rows in order', () => {
   const html = read('index.html');
   const section = html.match(/<section\b[^>]*\bid\s*=\s*["']ai-tools["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
-  assert.equal([...section.matchAll(openWithClass('article', 'tools-row'))].length, 3, 'AI Tools needs three project rows');
+  assert.equal([...section.matchAll(openWithClass('article', 'tools-row'))].length, 6, 'AI Tools needs six project rows');
   const names = [...section.matchAll(/<h3\b[^>]*\bclass\s*=\s*["']tools-name["'][^>]*>([\s\S]*?)<\/h3>/gi)].map((m) => m[1].trim());
-  assert.deepEqual(names, ['Snap Pair', 'failforward', 'cross-model-handoff'], 'AI Tools rows must list Snap Pair, failforward, cross-model-handoff in order');
-  assert.match(section, /href\s*=\s*["']ai-tools\.html#snap-pair["']/);
-  assert.match(section, /href\s*=\s*["']ai-tools\.html#failforward["']/);
-  assert.match(section, /href\s*=\s*["']ai-tools\.html#cross-model-handoff["']/);
+  assert.deepEqual(names, ['Snap Pair', 'failforward', 'cross-model-handoff', 'superforge', 'interactive-experience-skills', 'multilingual-readme'], 'AI Tools rows must list the runtime tools first, then the skills, in order');
+  for (const anchor of ['snap-pair', 'failforward', 'cross-model-handoff', 'superforge', 'interactive-experience-skills', 'multilingual-readme']) {
+    assert.match(section, new RegExp(`href\\s*=\\s*["']ai-tools\\.html#${escape(anchor)}["']`), `homepage row must link ai-tools.html#${anchor}`);
+  }
   assertPair(section, 'View project →', 'プロジェクトを見る →', 'homepage AI Tools project CTAs');
   assertPair(section, 'Explore AI tools →', 'AI Tools を見る →', 'homepage AI Tools section CTA');
   assertNoUnsupportedClaims(section, 'homepage AI Tools section');
@@ -152,12 +152,12 @@ test('homepage AI Tools section presents three project rows in order', () => {
 
 // ── AI Tools dedicated page (ai-tools.html) ──
 
-test('AI Tools page tells three bilingual tool stories with the right ids', () => {
+test('AI Tools page tells six bilingual tool stories with the right ids', () => {
   assert.ok(existsSync(join(v3, 'ai-tools.html')), 'v3/ai-tools.html must exist');
   const html = read('ai-tools.html');
   assert.match(html, /<title>\s*AI Tools — Takao Umehara\s*<\/title>/);
   assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, 'AI Tools page needs exactly one h1');
-  for (const id of ['snap-pair', 'failforward', 'cross-model-handoff']) {
+  for (const id of ['snap-pair', 'failforward', 'cross-model-handoff', 'superforge', 'interactive-experience-skills', 'multilingual-readme']) {
     assert.match(html, new RegExp(`\\bid\\s*=\\s*["']${escape(id)}["']`), `ai-tools.html must have an anchor id="${id}"`);
   }
   assert.match(html, /\bid\s*=\s*["']snap-pair-core["']/, 'ai-tools.html must keep the legacy #snap-pair-core anchor for existing links');
@@ -166,11 +166,13 @@ test('AI Tools page tells three bilingual tool stories with the right ids', () =
 
 test('AI Tools index cards link to internal project detail pages, not straight to GitHub', () => {
   const html = read('ai-tools.html');
-  const cards = [...html.matchAll(openWithClass('article', 'work-card'))].map((m) => m[0]);
   const expected = [
     ['snap-pair', 'projects/snap-pair.html'],
     ['failforward', 'projects/failforward.html'],
     ['cross-model-handoff', 'projects/cross-model-handoff.html'],
+    ['superforge', 'projects/superforge.html'],
+    ['interactive-experience-skills', 'projects/interactive-experience-skills.html'],
+    ['multilingual-readme', 'projects/multilingual-readme.html'],
   ];
   for (const [id, href] of expected) {
     const card = html.match(new RegExp(`<article\\b[^>]*\\bid\\s*=\\s*["']${escape(id)}["'][^>]*>`, 'i'))?.[0];
@@ -182,9 +184,12 @@ test('AI Tools index cards link to internal project detail pages, not straight t
 
 test('each AI Tools project detail page exists with its GitHub CTA and a link back to AI Tools', () => {
   const expected = [
-    ['projects/snap-pair.html', 'https://github.com/takaoumehara/snap-pair-core', 'Snap Pair'],
-    ['projects/failforward.html', 'https://github.com/takaoumehara/failforward', 'failforward'],
+    ['projects/snap-pair.html', 'https://github.com/takaoumehara/snap-pair-skill', 'Snap Pair'],
+    ['projects/failforward.html', 'https://github.com/takaoumehara/failforward-skill', 'failforward'],
     ['projects/cross-model-handoff.html', 'https://github.com/takaoumehara/cross-model-handoff', 'cross-model-handoff'],
+    ['projects/superforge.html', 'https://github.com/takaoumehara/superforge-skill', 'superforge'],
+    ['projects/interactive-experience-skills.html', 'https://github.com/takaoumehara/interactive-experience-skills', 'interactive-experience-skills'],
+    ['projects/multilingual-readme.html', 'https://github.com/takaoumehara/multilingual-readme-skill', 'multilingual-readme'],
   ];
   for (const [page, githubUrl, label] of expected) {
     assert.ok(existsSync(join(v3, page)), `${page} must exist`);
@@ -260,7 +265,7 @@ test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', ()
 test('AI index pages expose thumbnail-led work-card grids', () => {
   const expectations = [
     ['ai-products.html', 11],
-    ['ai-tools.html', 3],
+    ['ai-tools.html', 6],
   ];
 
   for (const [page, expectedCount] of expectations) {

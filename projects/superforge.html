@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <title>cross-model-handoff — Takao Umehara</title>
-  <meta name="description" content="cross-model-handoff — a lightweight note-and-passphrase protocol for moving active AI coding work between tools without losing context.">
-  <meta property="og:title" content="cross-model-handoff — Takao Umehara">
-  <meta property="og:description" content="Switch AI tools mid-task. Keep the whole context. Open source.">
+  <title>superforge — Takao Umehara</title>
+  <meta name="description" content="superforge — eleven Claude Code skills that take one sentence from idea to pre-launch check, routing each subtask to a model that fits and leaving every decision in a file.">
+  <meta property="og:title" content="superforge — Takao Umehara">
+  <meta property="og:description" content="Say what you want to build in one sentence. Eleven skills take it from there.">
   <meta property="og:type" content="article">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,8 @@
       --a-blue: #2563eb;
       --a-orange: #f97316;
       --a-violet: #7c3aed;
-      --m-tint: var(--a-violet);
+      --a-tool: #a16207;
+      --m-tint: var(--a-tool);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -68,6 +69,7 @@
     .breadcrumb a:hover { color: var(--ink); }
     .breadcrumb span { font-size: 12px; color: rgba(18, 18, 18, 0.28); margin: 0 8px; }
 
+    /* ═══ Slide deck ═══ */
     .deck { max-width: 1240px; margin: 0 auto; padding: 8px 20px 8px; }
     .wds-slide { margin-bottom: 2px; }
     .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
@@ -76,11 +78,11 @@
     html.lang-jp .wds-serif em { white-space: nowrap; }
 
     .wds-hero { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6.5vw, 96px) clamp(28px, 5vw, 78px); }
-    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(124,58,237,0.24), transparent 62%); pointer-events: none; }
+    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(234,179,8,0.26), transparent 62%); pointer-events: none; }
     .wds-hero > * { position: relative; z-index: 1; }
     .wds-hero .wds-kick { color: rgba(255,255,255,0.5); }
     .wds-hero h1 { font-size: clamp(40px, 6.6vw, 84px); max-width: 15ch; }
-    .wds-hero h1 em { font-style: italic; color: #a78bfa; }
+    .wds-hero h1 em { font-style: italic; color: #fbbf24; }
     .wds-hero-lead { font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.72; color: rgba(255,255,255,0.66); max-width: 60ch; margin-top: 30px; }
     .wds-hero-lead strong { color: #fff; font-weight: 600; }
     .wds-hero-lead code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: rgba(255,255,255,0.12); padding: 1px 5px; }
@@ -89,7 +91,7 @@
     .tool-statement .wds-kick { color: rgba(255,255,255,0.62); }
     .tool-statement h2 { font-size: clamp(34px, 5vw, 66px); max-width: 17ch; }
     .tool-statement h2 em { font-style: italic; color: #f8f3e7; }
-    .tool-statement.st-violet { background: var(--a-violet); }
+    .tool-statement.st-gold { background: var(--a-tool); }
 
     .wds-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
     .wds-chip { padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
@@ -108,21 +110,37 @@
     .mech-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
     .story-cta { display: inline-block; padding: 13px 18px; border: 1px solid var(--ink); color: var(--ink); font-size: 11px; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
     .story-cta:hover { background: var(--ink); color: #fff; }
+    .story-cta--ghost { border-color: var(--border); }
+    .story-cta--ghost:hover { background: transparent; color: var(--ink); border-color: rgba(18,18,18,0.34); }
     .wds-hero .story-cta { border-color: rgba(255,255,255,0.4); color: #fff; }
     .wds-hero .story-cta:hover { background: #fff; color: #0d0d0f; }
+
+    .mech-rail { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(18,18,18,0.12); }
+    .mech-rail-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
+    .rail-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2px; }
+    .rail-item { display: block; padding: 20px 22px; background: #fff; border: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color 180ms ease; }
+    a.rail-item:hover { border-color: rgba(18,18,18,0.32); }
+    .rail-item-status { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--a-tool); font-weight: 600; margin-bottom: 8px; }
+    .rail-item-status.is-soon { color: var(--ink-dim); }
+    .rail-item-name { font-size: 15px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 6px; }
+    .rail-item-desc { font-size: 12.5px; line-height: 1.55; color: var(--ink-dim); }
 
     .mech-figure { display: flex; justify-content: center; }
     .diagram { width: min(100%, 330px); height: auto; overflow: visible; }
     .diagram .ink { fill: none; stroke: var(--ink); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
     .diagram .tint { fill: none; stroke: var(--m-tint); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .diagram .tint-fill { fill: var(--m-tint); stroke: none; }
     .diagram .faint { fill: none; stroke: rgba(18,18,18,0.25); stroke-width: 1.5; stroke-dasharray: 3 5; stroke-linecap: round; }
     .diagram text { font-family: var(--ff); font-size: 6.5px; letter-spacing: 0.12em; fill: var(--ink-dim); text-transform: uppercase; }
     .diagram .draw { stroke-dasharray: 340; stroke-dashoffset: 340; transition: stroke-dashoffset 1100ms cubic-bezier(0.22, 0.84, 0.22, 1); }
     .is-visible .diagram .draw { stroke-dashoffset: 0; }
     .is-visible .diagram .draw.d2 { transition-delay: 260ms; }
     .diagram .dot { opacity: 0; }
-    .is-visible .diagram .dot { opacity: 1; animation: travel-note 2.8s cubic-bezier(0.45, 0, 0.55, 1) 900ms infinite; }
-    @keyframes travel-note { 0%, 10% { transform: translate(0, 0); opacity: 1; } 60%, 74% { transform: translate(52px, 0); opacity: 1; } 82% { opacity: 0; } 90% { transform: translate(0, 0); opacity: 0; } 100% { opacity: 1; } }
+    .is-visible .diagram .dot { opacity: 1; animation: travel-pair 2.8s cubic-bezier(0.45, 0, 0.55, 1) 900ms infinite; }
+    @keyframes travel-pair { 0%, 12% { transform: translate(0, 0); } 55%, 70% { transform: translate(56px, 14px); } 100% { transform: translate(0, 0); } }
+    @keyframes pulse-ring { 0% { transform: scale(0.6); opacity: 0.9; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
+    .diagram .pulse { transform-origin: center; transform-box: fill-box; opacity: 0; }
+    .is-visible .diagram .pulse { animation: pulse-ring 2.8s ease-out 1200ms infinite; }
 
     .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1240px; margin: 0 auto; padding: 48px 20px 64px; }
     .project-nav-link { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
@@ -131,7 +149,7 @@
     .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22,0.84,0.22,1), transform 600ms cubic-bezier(0.22,0.84,0.22,1); }
     .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
 
-    .story-cta:focus-visible,
+    .story-cta:focus-visible, .rail-item:focus-visible,
     .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible, .nav-toggle:focus-visible, .project-nav-link:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
     .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
@@ -145,6 +163,7 @@
       .mech-figure { justify-content: flex-start; }
       .diagram { width: min(72%, 280px); }
       .mech-facts { grid-template-columns: 1fr; }
+      .rail-items { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 767px) {
@@ -161,8 +180,8 @@
       html { scroll-behavior: auto; }
       .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
       .diagram .draw { stroke-dashoffset: 0 !important; transition: none !important; }
-      .diagram .dot { animation: none !important; opacity: 1 !important; }
-      .story-cta, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
+      .diagram .dot, .diagram .pulse { animation: none !important; opacity: 1 !important; }
+      .story-cta, .rail-item, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
   </style>
 </head>
@@ -185,72 +204,98 @@
   <div class="breadcrumb">
     <a href="../ai-tools.html">AI Tools</a>
     <span>/</span>
-    <a href="#">cross-model-handoff</a>
+    <a href="#">superforge</a>
   </div>
 
   <main class="deck">
 
-    <!-- ═══ Slide 1 · Hero (dark, violet glow) ═══ -->
+    <!-- ═══ Slide 1 · Hero (dark, gold glow) ═══ -->
     <header class="wds-hero wds-slide reveal-on-scroll">
-      <p class="wds-kick"><span class="t-en">Claude Code Plugin · Skill System · Codex · Gemini · Cursor ready</span><span class="t-jp">Claude Code プラグイン · スキルシステム · Codex · Gemini · Cursor 対応</span></p>
-      <h1 class="wds-serif"><span class="t-en">Switch AI tools mid-task. Keep the <em>whole context</em>.</span><span class="t-jp is-block">AIツールを途中で乗り換えても、<em>文脈はそのまま</em>。</span></h1>
-      <p class="wds-hero-lead"><span class="t-en"><strong>cross-model-handoff</strong> is a lightweight handoff protocol: one <code>.handoff/</code> note and a memorable passphrase carry running work between Claude Code, Codex, Gemini CLI, Antigravity, and Cursor — no re-explaining, no lost state.</span><span class="t-jp is-block"><strong>cross-model-handoff</strong> は軽量な引き継ぎプロトコルです。<code>.handoff/</code> のメモひとつと覚えやすいパスフレーズで、Claude Code・Codex・Gemini CLI・Antigravity・Cursor の間を、説明し直しも状態の喪失もなく行き来できます。</span></p>
+      <p class="wds-kick"><span class="t-en">Skill System · 11 Claude Code Skills · Model Routing</span><span class="t-jp">スキルシステム · 11 の Claude Code スキル · モデル割り当て</span></p>
+      <h1 class="wds-serif"><span class="t-en">Say what you want to build. <em>Eleven skills</em> take it from there.</span><span class="t-jp is-block">作りたいものを一文で。あとは<em>11 のスキル</em>が運ぶ。</span></h1>
+      <p class="wds-hero-lead"><span class="t-en"><strong>superforge</strong> is the front desk of a workshop. One sentence in, and it does three things: picks which of eleven skills takes the job, picks a model that matches the difficulty so a bulk rename is never billed like an architecture decision, and makes sure the result lands in a file — so <code>/clear</code>, a model switch, or a week away costs you nothing.</span><span class="t-jp is-block"><strong>superforge</strong> は工房の受付です。一文を渡すと、3 つのことをします。11 のスキルのどれが担当するかを決め、難易度に見合ったモデルを割り当て（一括リネームがアーキテクチャ判断と同じ単価にならないように）、結果を必ずファイルに残します。だから <code>/clear</code> も、モデルの切り替えも、一週間の中断も、何も失いません。</span></p>
       <div class="wds-chips">
-        <span class="wds-chip">Claude Code Plugin</span>
-        <span class="wds-chip"><span class="t-en">Skill System</span><span class="t-jp">スキルシステム</span></span>
-        <span class="wds-chip">Codex · Gemini · Cursor <span class="t-en">ready</span><span class="t-jp">対応</span></span>
+        <span class="wds-chip"><span class="t-en">Claude Code Skills</span><span class="t-jp">Claude Code スキル</span></span>
+        <span class="wds-chip"><span class="t-en">11 skills</span><span class="t-jp">11 スキル</span></span>
+        <span class="wds-chip">Codex · Gemini · Kimi <span class="t-en">ready</span><span class="t-jp">対応</span></span>
         <span class="wds-chip">MIT</span>
       </div>
       <div class="mech-ctas">
-        <a class="story-cta" href="https://github.com/takaoumehara/cross-model-handoff" target="_blank" rel="noopener" aria-label="View cross-model-handoff on GitHub (opens in a new tab)">GitHub ↗</a>
+        <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
       </div>
     </header>
 
-    <!-- ═══ Slide 2 · Mechanism (cream) ═══ -->
-    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="cross-model-handoff details">
+    <!-- ═══ Slide 2 · Mechanism + the eleven skills (cream) ═══ -->
+    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="superforge details">
       <div class="mech-grid">
         <div>
-          <h3><span class="t-en">One note and a passphrase carry the work.</span><span class="t-jp is-block">メモひとつとパスフレーズが、作業を運ぶ。</span></h3>
-          <p class="mech-lead"><span class="t-en">Switching AI coding tools, or clearing context, usually forces people to explain the work again and loses running state that source control can't capture. cross-model-handoff writes a single <code>.handoff/</code> note plus an <code>AGENTS.md</code> convention file that any tool reading project instructions can pick up — carried forward by a short, memorable passphrase instead of a long prompt.</span><span class="t-jp is-block">AI コーディングツールを切り替えたり、コンテキストを消去したりするたびに、通常は作業の背景を説明し直し、ソース管理では残せない実行中の状態まで失ってしまいます。cross-model-handoff は、プロジェクト指示を読むどのツールでも拾える <code>.handoff/</code> メモと <code>AGENTS.md</code> 規約ファイルをひとつ書き出します。長いプロンプトの代わりに、短く覚えやすいパスフレーズで引き継がれます。</span></p>
+          <h3><span class="t-en">Who takes it, what it runs on, where it gets written down.</span><span class="t-jp is-block">誰が担当し、何で動かし、どこに書き残すか。</span></h3>
+          <p class="mech-lead"><span class="t-en">Left alone, every subtask runs on the same expensive model and every decision dies with the conversation. superforge sorts each subtask into one of four tiers before starting and assigns a model to match — including the bottom tier, bulk text work that never touches the repository, which goes to the local <code>gemini</code> CLI and consumes no Anthropic usage at all. Then every skill writes a file under <code>docs/</code> before it reports back: decide the design and you get <code>docs/design.md</code>, decide the pricing and you get <code>docs/business-model.md</code>.</span><span class="t-jp is-block">放っておくと、すべてのサブタスクが同じ高価なモデルで走り、決めたことは会話とともに消えます。superforge は開始前に各サブタスクを 4 段階に仕分けし、それぞれにモデルを割り当てます。最下段の「大量テキスト処理」（リポジトリに触れない翻訳・要約・バリエーション生成）はローカルの <code>gemini</code> CLI に回るため、Anthropic の利用量をまったく消費しません。そして各スキルは報告の前に必ず <code>docs/</code> にファイルを書きます。設計を決めれば <code>docs/design.md</code>、価格を決めれば <code>docs/business-model.md</code> が残ります。</span></p>
           <div class="mech-facts">
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Carrier</span><span class="t-jp">媒体</span></div><div class="mech-fact-v"><span class="t-en">.handoff/ note + passphrase</span><span class="t-jp">.handoff/ メモ + パスフレーズ</span></div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Tools</span><span class="t-jp">対応</span></div><div class="mech-fact-v">Claude Code · Codex · Gemini · Cursor</div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Docs</span><span class="t-jp">文書</span></div><div class="mech-fact-v"><span class="t-en">5 languages · MIT</span><span class="t-jp">5 言語 · MIT</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Skills</span><span class="t-jp">スキル</span></div><div class="mech-fact-v"><span class="t-en">11 across think · build · prove · ship</span><span class="t-jp">11（思考・制作・検証・出荷）</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Routing</span><span class="t-jp">割り当て</span></div><div class="mech-fact-v"><span class="t-en">Four tiers, one model each</span><span class="t-jp">4 段階、それぞれにモデル</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Output</span><span class="t-jp">出力</span></div><div class="mech-fact-v"><span class="t-en">Every run leaves a file in docs/</span><span class="t-jp">実行ごとに docs/ へ 1 ファイル</span></div></div>
           </div>
           <div class="mech-ctas">
-            <a class="story-cta" href="https://github.com/takaoumehara/cross-model-handoff" target="_blank" rel="noopener" aria-label="View cross-model-handoff on GitHub (opens in a new tab)">GitHub ↗</a>
+            <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
           </div>
         </div>
         <div class="mech-figure" aria-hidden="true">
           <svg class="diagram" viewBox="0 0 160 120" role="img">
-            <rect class="ink draw" x="12" y="36" width="44" height="44" rx="8"/>
-            <circle class="ink draw d2" cx="126" cy="58" r="23"/>
-            <path class="faint" d="M62 58 h56"/>
-            <g class="dot">
-              <rect class="tint" x="60" y="50" width="14" height="17" rx="2"/>
-              <path class="tint" d="M63 56 h8 M63 61 h8"/>
-            </g>
-            <text x="12" y="98">TOOL A</text>
-            <text x="106" y="98">TOOL B</text>
+            <path class="faint" d="M6 52 h22"/>
+            <rect class="ink draw" x="30" y="38" width="42" height="28" rx="4"/>
+            <path class="tint draw d2" d="M72 52 h14 M86 16 v76 M86 16 h18 M86 40 h18 M86 64 h18 M86 92 h18"/>
+            <rect class="ink draw d3" x="106" y="8" width="34" height="16" rx="3"/>
+            <rect class="ink draw d3" x="106" y="32" width="34" height="16" rx="3"/>
+            <rect class="ink draw d3" x="106" y="56" width="34" height="16" rx="3"/>
+            <rect class="ink draw d3" x="106" y="84" width="34" height="16" rx="3"/>
+            <circle class="tint pulse" cx="51" cy="52" r="11"/>
+            <text x="30" y="80">FRONT DESK</text>
+            <text x="106" y="114">11 SKILLS</text>
           </svg>
+        </div>
+      </div>
+      <div class="mech-rail">
+        <p class="mech-rail-label"><span class="t-en">The eleven skills</span><span class="t-jp">11 のスキル</span></p>
+        <div class="rail-items">
+          <div class="rail-item">
+            <div class="rail-item-status"><span class="t-en">Think</span><span class="t-jp">考える</span></div>
+            <div class="rail-item-name">brain · biz · brand</div>
+            <div class="rail-item-desc"><span class="t-en">An idea that isn't the obvious one, a price with a place to put the paywall, and a name, colour and tone.</span><span class="t-jp is-block">当たり前でない発想、ペイウォールの置き場所まで決めた価格、そして名前・色・トーン。</span></div>
+          </div>
+          <div class="rail-item">
+            <div class="rail-item-status"><span class="t-en">Build</span><span class="t-jp">作る</span></div>
+            <div class="rail-item-name">ui · dev</div>
+            <div class="rail-item-desc"><span class="t-en">Interface design with a style guide a human can open and check, then implementation split across agents on fitting models.</span><span class="t-jp is-block">人が開いて確認できるスタイルガイド付きの UI 設計と、適したモデルのエージェントに分けた実装。</span></div>
+          </div>
+          <div class="rail-item">
+            <div class="rail-item-status"><span class="t-en">Prove</span><span class="t-jp">確かめる</span></div>
+            <div class="rail-item-name">test · debug</div>
+            <div class="rail-item-desc"><span class="t-en">Write the test first — Web, iOS, Android — and find the cause of a bug instead of patching over it.</span><span class="t-jp is-block">先にテストを書く（Web / iOS / Android）。バグは覆い隠さず、原因を突き止める。</span></div>
+          </div>
+          <div class="rail-item">
+            <div class="rail-item-status"><span class="t-en">Ship</span><span class="t-jp">出す</span></div>
+            <div class="rail-item-name">roast · verify · handoff</div>
+            <div class="rail-item-desc"><span class="t-en">Have the flaws named before users find them, attach evidence to "it's done", and hand off cleanly before clearing a session.</span><span class="t-jp is-block">ユーザーより先に欠点を名指しし、「完了」に証拠を添え、セッションを消す前にきれいに引き継ぐ。</span></div>
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══ Slide 3 · Closing (vivid violet) ═══ -->
-    <section class="tool-statement st-violet wds-slide reveal-on-scroll">
+    <!-- ═══ Slide 3 · Closing (vivid gold) ═══ -->
+    <section class="tool-statement st-gold wds-slide reveal-on-scroll">
       <p class="wds-kick"><span class="t-en">Why it matters</span><span class="t-jp">なぜ重要か</span></p>
-      <h2 class="wds-serif"><span class="t-en">The protocol that keeps <em>every project moving</em>.</span><span class="t-jp is-block"><em>すべてのプロジェクトを止めない</em>プロトコル。</span></h2>
+      <h2 class="wds-serif"><span class="t-en">Eleven skills, one entrance, and <em>nothing lost between sessions</em>.</span><span class="t-jp is-block">11 のスキル、入口はひとつ。セッションをまたいでも<em>何も失わない</em>。</span></h2>
       <div class="mech-ctas">
-        <a class="story-cta" href="../ai-tools.html"><span class="t-en">Back to AI Tools →</span><span class="t-jp">AI Tools に戻る →</span></a>
+        <a class="story-cta" href="../ai-tools.html"><span class="t-en">Explore other AI Tools →</span><span class="t-jp">他の AI Tools を見る →</span></a>
       </div>
     </section>
 
   </main>
 
   <div class="project-nav">
-    <a href="failforward.html" class="project-nav-link"><span class="t-en">&larr; failforward</span><span class="t-jp">&larr; failforward</span></a>
-    <a href="superforge.html" class="project-nav-link"><span class="t-en">Next: superforge &rarr;</span><span class="t-jp">次へ: superforge &rarr;</span></a>
+    <a href="cross-model-handoff.html" class="project-nav-link"><span class="t-en">&larr; cross-model-handoff</span><span class="t-jp">&larr; cross-model-handoff</span></a>
+    <a href="interactive-experience-skills.html" class="project-nav-link"><span class="t-en">Next: interactive-experience-skills &rarr;</span><span class="t-jp">次へ: interactive-experience-skills &rarr;</span></a>
   </div>
 
   <footer class="site-footer">
