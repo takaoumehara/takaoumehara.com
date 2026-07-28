@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>Takao Umehara — Product Designer & Innovation Strategist</title>
-  <meta name="description" content="Takao Umehara — NYC-based product designer and innovation strategist. Product design, creative direction, and AI products through Creativity Is Everywhere LLC.">
-  <meta property="og:title" content="Takao Umehara — Product Designer & Innovation Strategist">
-  <meta property="og:description" content="NYC-based product designer and innovation strategist. Product design, creative direction, and AI products through Creativity Is Everywhere LLC.">
+  <title>Takao Umehara — Agentic UX &amp; AI Product Designer, NYC</title>
+  <meta name="description" content="Takao Umehara — NYC-based Agentic UX designer. I design how humans and AI agents share work: intentfirst.ai research, a 10-agent fleet inside Verizon's design org, and living AI prototypes — grounded in 20 years shipping products for Amplify, Coca-Cola, and T-Mobile.">
+  <meta property="og:title" content="Takao Umehara — Agentic UX &amp; AI Product Designer, NYC">
+  <meta property="og:description" content="Designing how humans and AI agents share work — framework research, an enterprise agent fleet, and living AI prototypes.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <meta property="og:image" content="assets/verizon-ai-agents/hero-agents-network.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -944,6 +944,43 @@
       flex-shrink: 0;
     }
 
+    /* ─── Closing CTA ─── */
+    .closing-cta {
+      border-top: 1px solid var(--line);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 32px 96px;
+      text-align: center;
+    }
+
+    .closing-cta-title {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(28px, 3.4vw, 44px);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.04;
+      margin-bottom: 18px;
+    }
+
+    .closing-cta-desc {
+      font-size: 16px;
+      line-height: 1.66;
+      color: var(--ink-mid);
+      max-width: 560px;
+      margin: 0 auto 32px;
+    }
+
+    .closing-cta-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      .closing-cta { padding: 56px 20px 72px; }
+    }
+
     /* ─── Footer ─── */
     .site-footer {
       border-top: 1px solid var(--line);
@@ -965,8 +1002,9 @@
 
     .footer-links {
       display: flex;
-      gap: 24px;
+      gap: 16px 24px;
       list-style: none;
+      flex-wrap: wrap;
     }
 
     .footer-links a {
@@ -1075,7 +1113,11 @@
       .work-card.is-featured { grid-column: span 1; grid-template-rows: 260px auto auto; }
       .ai-grid { grid-template-columns: 1fr; }
       .site-nav { padding: 16px 20px; }
-      .hero { padding: 64px 20px 56px; }
+      .hero { padding: 48px 20px 40px; }
+      .hero-headline { font-size: clamp(38px, 10.5vw, 92px); margin-bottom: 24px; }
+      .hero-body { gap: 20px; }
+      .hero-positioning { font-size: 14px; padding-top: 0; border-top: 0; }
+      .hero-cta { margin-top: 24px; }
       .section-head, .initiatives-grid, .capabilities-grid, .ai-grid, .ai-intro { padding: 0 20px; }
     }
 
@@ -1648,6 +1690,22 @@
     </div>
   </section>
 
+  <!-- ── Closing CTA ── -->
+  <section class="closing-cta">
+    <h2 class="closing-cta-title">
+      <span class="t-en">Have an AI product or project in mind?</span>
+      <span class="t-jp">つくりたい AI プロダクトやプロジェクトはありますか？</span>
+    </h2>
+    <p class="closing-cta-desc">
+      <span class="t-en">From Agentic UX research to enterprise AI workflows and shipped product design, I take on new work through Creativity Is Everywhere LLC. Let's talk about what you're building.</span>
+      <span class="t-jp is-block">Agentic UX の研究からエンタープライズの AI ワークフロー、プロダクトデザインの実装まで、Creativity Is Everywhere LLC を通じて新しいお仕事を承っています。まずはお気軽にご相談ください。</span>
+    </p>
+    <div class="closing-cta-actions">
+      <a href="contact.html" class="btn-primary"><span class="t-en">Start a conversation →</span><span class="t-jp">相談する →</span></a>
+      <a href="ai-products.html" class="btn-secondary"><span class="t-en">See Agentic UX work</span><span class="t-jp">Agentic UX を見る</span></a>
+    </div>
+  </section>
+
   <!-- ── Lang Switch ── -->
   <div class="lang-switch" id="lang-switch">
     <button class="lang-btn is-active" data-lang="en">EN</button>
@@ -1663,10 +1721,14 @@
         <div class="footer-llc">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div>
       </div>
       <ul class="footer-links">
+        <li><a href="ai-products.html">Agentic UX</a></li>
+        <li><a href="ai-tools.html">AI Tools</a></li>
+        <li><a href="work.html">Product Design</a></li>
+        <li><a href="brand.html">Brand &amp; Visual</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="contact.html">Contact</a></li>
         <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
-        
         <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
-        <li><a href="intentfirst.html">intentfirst.ai</a></li>
       </ul>
       <div class="footer-copy">New York City</div>
     </div>

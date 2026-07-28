@@ -227,19 +227,15 @@ test('AI Tools page mobile toggle exposes state, control, and collapses stories 
 
 // ── Agentic UX page (ai-products.html) ──
 
-test('Agentic UX page presents Flagship, Agent Products, and Lab & Play tiers with eleven items', () => {
+test('Agentic UX page presents the thumbnail-led grid with fourteen items, no duplicate legacy tier markup', () => {
   const html = read('ai-products.html');
   assert.match(html, /<title>\s*Agentic UX — Takao Umehara\s*<\/title>/);
-  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*11 products\s*<\/div>/i);
-  assert.equal([...html.matchAll(openWithClass('article', 'lab-card'))].length, 11, 'Agentic UX page needs eleven product cards');
-  assert.match(html, /<section\b[^>]*\bclass\s*=\s*["'][^"']*\blab-group flagship\b[^"']*["']/);
-  assert.match(html, /<section\b[^>]*\bclass\s*=\s*["'][^"']*\blab-group agents\b[^"']*["']/);
-  assertPair(html, 'Flagship', 'フラッグシップ', 'Agentic UX Flagship tier label');
-  assertPair(html, 'Agent Products', 'エージェント・プロダクト', 'Agentic UX Agent Products tier label');
-  assertPair(html, 'Lab &amp; Play', 'ラボ＆プレイ', 'Agentic UX Lab & Play tier label');
-  assert.match(html, /<h3\b[^>]*\bclass\s*=\s*["']lab-name["'][^>]*>\s*intentfirst\.ai\s*<\/h3>/);
-  assert.match(html, /<h3\b[^>]*\bclass\s*=\s*["']lab-name["'][^>]*>\s*Verizon AI Workflow\s*<\/h3>/);
-  assert.match(html, /<h3\b[^>]*\bclass\s*=\s*["']lab-name["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h3>/);
+  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*14 products\s*<\/div>/i);
+  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 14, 'Agentic UX page needs fourteen work cards');
+  assert.equal(html.includes('legacy-ai-products'), false, 'the old lab-group/lab-card tier block must not be duplicated back in');
+  assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*intentfirst\.ai\s*<\/h2>/);
+  assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Verizon AI Workflow\s*<\/h2>/);
+  assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h2>/);
 });
 
 test('Agentic UX page no longer lists failforward, cross-model-handoff, or Konosaki', () => {
@@ -264,7 +260,7 @@ test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', ()
 
 test('AI index pages expose thumbnail-led work-card grids', () => {
   const expectations = [
-    ['ai-products.html', 11],
+    ['ai-products.html', 14],
     ['ai-tools.html', 6],
   ];
 
