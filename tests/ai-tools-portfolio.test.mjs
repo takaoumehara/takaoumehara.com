@@ -141,8 +141,8 @@ test('homepage AI Tools section presents six project rows in order', () => {
   const section = html.match(/<section\b[^>]*\bid\s*=\s*["']ai-tools["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
   assert.equal([...section.matchAll(openWithClass('article', 'tools-row'))].length, 6, 'AI Tools needs six project rows');
   const names = [...section.matchAll(/<h3\b[^>]*\bclass\s*=\s*["']tools-name["'][^>]*>([\s\S]*?)<\/h3>/gi)].map((m) => m[1].trim());
-  assert.deepEqual(names, ['Snap Pair', 'failforward', 'cross-model-handoff', 'superforge', 'interactive-experience-skills', 'multilingual-readme'], 'AI Tools rows must list the runtime tools first, then the skills, in order');
-  for (const anchor of ['snap-pair', 'failforward', 'cross-model-handoff', 'superforge', 'interactive-experience-skills', 'multilingual-readme']) {
+  assert.deepEqual(names, ['Snap Pair', 'superforge', 'cross-model-handoff', 'failforward', 'multilingual-readme', 'interactive-experience-skills'], 'AI Tools rows must lead with Snap Pair and superforge, the two flagships, then the rest');
+  for (const anchor of ['snap-pair', 'superforge', 'cross-model-handoff', 'failforward', 'multilingual-readme', 'interactive-experience-skills']) {
     assert.match(section, new RegExp(`href\\s*=\\s*["']ai-tools\\.html#${escape(anchor)}["']`), `homepage row must link ai-tools.html#${anchor}`);
   }
   assertPair(section, 'View project →', 'プロジェクトを見る →', 'homepage AI Tools project CTAs');
@@ -227,19 +227,18 @@ test('AI Tools page mobile toggle exposes state, control, and collapses stories 
 
 // ── Agentic UX page (ai-products.html) ──
 
-test('Agentic UX page presents Flagship, Agent Products, and Lab & Play tiers with eleven items', () => {
+test('Agentic UX page presents a curated products grid plus an Interactive Experience showcase', () => {
   const html = read('ai-products.html');
   assert.match(html, /<title>\s*Agentic UX — Takao Umehara\s*<\/title>/);
-  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*11 products\s*<\/div>/i);
-  assert.equal([...html.matchAll(openWithClass('article', 'lab-card'))].length, 11, 'Agentic UX page needs eleven product cards');
-  assert.match(html, /<section\b[^>]*\bclass\s*=\s*["'][^"']*\blab-group flagship\b[^"']*["']/);
-  assert.match(html, /<section\b[^>]*\bclass\s*=\s*["'][^"']*\blab-group agents\b[^"']*["']/);
-  assertPair(html, 'Flagship', 'フラッグシップ', 'Agentic UX Flagship tier label');
-  assertPair(html, 'Agent Products', 'エージェント・プロダクト', 'Agentic UX Agent Products tier label');
-  assertPair(html, 'Lab &amp; Play', 'ラボ＆プレイ', 'Agentic UX Lab & Play tier label');
-  assert.match(html, /<h3\b[^>]*\bclass\s*=\s*["']lab-name["'][^>]*>\s*intentfirst\.ai\s*<\/h3>/);
-  assert.match(html, /<h3\b[^>]*\bclass\s*=\s*["']lab-name["'][^>]*>\s*Verizon AI Workflow\s*<\/h3>/);
-  assert.match(html, /<h3\b[^>]*\bclass\s*=\s*["']lab-name["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h3>/);
+  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*12 products\s*<\/div>/i);
+  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 12, 'Agentic UX page needs twelve work cards (6 products + 6 Interactive Experience)');
+  assertPair(html, 'Interactive Experience', 'Interactive Experience', 'Agentic UX Interactive Experience section title');
+  assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*intentfirst\.ai\s*<\/h2>/);
+  assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Verizon AI Workflow\s*<\/h2>/);
+  assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h2>/);
+  assert.equal(html.includes('BreakBias Studio'), false, 'BreakBias Studio must be removed — absorbed into superforge');
+  assert.equal(html.includes('Ren UX Guard'), false, 'Ren UX Guard must be removed — absorbed into cross-model-handoff');
+  assert.match(html, /mypick\.link/, 'InstaLink must be renamed to mypick.link');
 });
 
 test('Agentic UX page no longer lists failforward, cross-model-handoff, or Konosaki', () => {
@@ -264,7 +263,7 @@ test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', ()
 
 test('AI index pages expose thumbnail-led work-card grids', () => {
   const expectations = [
-    ['ai-products.html', 11],
+    ['ai-products.html', 12],
     ['ai-tools.html', 6],
   ];
 

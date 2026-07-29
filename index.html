@@ -690,6 +690,27 @@
     .tools-row:hover::before,
     .tools-row:focus-within::before { transform: scaleX(1); }
 
+    .tools-primary {
+      display: flex;
+      gap: 22px;
+      align-items: flex-start;
+    }
+
+    .tools-swatch {
+      flex: 0 0 46px;
+      width: 46px;
+      height: 46px;
+      margin-top: 3px;
+      border-radius: 11px;
+    }
+
+    .tools-swatch--snap { background: linear-gradient(140deg, #123b82, #2563eb 55%, #7fb7ff); }
+    .tools-swatch--superforge { background: radial-gradient(circle at 74% 26%, rgba(253,224,71,0.34), transparent 44%), linear-gradient(140deg, #13161f, #8a6a12 48%, #fde047); }
+    .tools-swatch--handoff { background: linear-gradient(140deg, #2d1a51, #7042b8 55%, #b9a2ed); }
+    .tools-swatch--fail { background: linear-gradient(140deg, #4b2217, #d6572a 54%, #f7b74c); }
+    .tools-swatch--readme { background: linear-gradient(140deg, #2a0e22, #be185d 52%, #fbcfe8); }
+    .tools-swatch--motionskills { background: radial-gradient(ellipse at 50% 118%, rgba(94,234,212,0.46), transparent 54%), linear-gradient(140deg, #05191e, #0d7c74 46%, #7dd3fc); }
+
     .tools-index {
       margin-bottom: 22px;
       font-size: 10px;
@@ -1276,12 +1297,15 @@
     <div class="tools-list">
       <article class="tools-row">
         <div class="tools-primary">
-          <p class="tools-index" aria-hidden="true">01</p>
-          <h3 class="tools-name">Snap Pair</h3>
-          <p class="tools-outcome">
-            <span class="t-en">Every phone in the room joins your app in one scan.</span>
-            <span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる。</span>
-          </p>
+          <div class="tools-swatch tools-swatch--snap" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">01</p>
+            <h3 class="tools-name">Snap Pair</h3>
+            <p class="tools-outcome">
+              <span class="t-en">Every phone in the room joins your app in one scan.</span>
+              <span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる。</span>
+            </p>
+          </div>
         </div>
         <div class="tools-meta">
           <p class="tools-classification">Realtime library · React + Firebase · Claude skill</p>
@@ -1294,17 +1318,20 @@
 
       <article class="tools-row">
         <div class="tools-primary">
-          <p class="tools-index" aria-hidden="true">02</p>
-          <h3 class="tools-name">failforward</h3>
-          <p class="tools-outcome">
-            <span class="t-en">Your coding agent stops repeating yesterday's mistakes.</span>
-            <span class="t-jp is-block">エージェントが、昨日と同じ失敗を繰り返さなくなる。</span>
-          </p>
+          <div class="tools-swatch tools-swatch--superforge" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">02</p>
+            <h3 class="tools-name">superforge</h3>
+            <p class="tools-outcome">
+              <span class="t-en">One sentence in. Twelve skills take it from idea to ship.</span>
+              <span class="t-jp is-block">一文を渡せば、12 のスキルが着想から公開まで運ぶ。</span>
+            </p>
+          </div>
         </div>
         <div class="tools-meta">
-          <p class="tools-classification">CLI · Claude Code skill + hook · Codex / Gemini ready</p>
-          <p class="tools-stack">Python stdlib · Markdown store · MIT</p>
-          <a href="ai-tools.html#failforward" class="tools-link">
+          <p class="tools-classification">Skill system · 12 Claude Code skills · Model routing</p>
+          <p class="tools-stack">Codex / Gemini / Kimi mapping · docs/ output · MIT</p>
+          <a href="ai-tools.html#superforge" class="tools-link">
             <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
           </a>
         </div>
@@ -1312,12 +1339,15 @@
 
       <article class="tools-row">
         <div class="tools-primary">
-          <p class="tools-index" aria-hidden="true">03</p>
-          <h3 class="tools-name">cross-model-handoff</h3>
-          <p class="tools-outcome">
-            <span class="t-en">Switch AI tools mid-task. Keep the whole context.</span>
-            <span class="t-jp is-block">AI ツールを途中で乗り換えても、文脈はそのまま。</span>
-          </p>
+          <div class="tools-swatch tools-swatch--handoff" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">03</p>
+            <h3 class="tools-name">cross-model-handoff</h3>
+            <p class="tools-outcome">
+              <span class="t-en">Switch AI tools mid-task. Keep the whole context.</span>
+              <span class="t-jp is-block">AI ツールを途中で乗り換えても、文脈はそのまま。</span>
+            </p>
+          </div>
         </div>
         <div class="tools-meta">
           <p class="tools-classification">Claude Code plugin · Skill system · Codex / Gemini / Cursor</p>
@@ -1330,17 +1360,20 @@
 
       <article class="tools-row">
         <div class="tools-primary">
-          <p class="tools-index" aria-hidden="true">04</p>
-          <h3 class="tools-name">superforge</h3>
-          <p class="tools-outcome">
-            <span class="t-en">One sentence in. Eleven skills take it from idea to ship.</span>
-            <span class="t-jp is-block">一文を渡せば、11 のスキルが着想から公開まで運ぶ。</span>
-          </p>
+          <div class="tools-swatch tools-swatch--fail" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">04</p>
+            <h3 class="tools-name">failforward</h3>
+            <p class="tools-outcome">
+              <span class="t-en">Your coding agent stops repeating yesterday's mistakes.</span>
+              <span class="t-jp is-block">エージェントが、昨日と同じ失敗を繰り返さなくなる。</span>
+            </p>
+          </div>
         </div>
         <div class="tools-meta">
-          <p class="tools-classification">Skill system · 11 Claude Code skills · Model routing</p>
-          <p class="tools-stack">Codex / Gemini / Kimi mapping · docs/ output · MIT</p>
-          <a href="ai-tools.html#superforge" class="tools-link">
+          <p class="tools-classification">CLI · Claude Code skill + hook · Codex / Gemini ready</p>
+          <p class="tools-stack">Python stdlib · Markdown store · MIT</p>
+          <a href="ai-tools.html#failforward" class="tools-link">
             <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
           </a>
         </div>
@@ -1348,35 +1381,41 @@
 
       <article class="tools-row">
         <div class="tools-primary">
-          <p class="tools-index" aria-hidden="true">05</p>
-          <h3 class="tools-name">interactive-experience-skills</h3>
-          <p class="tools-outcome">
-            <span class="t-en">Settle artwork-or-tool first, then answer in lumens and milliseconds.</span>
-            <span class="t-jp is-block">作品か道具かを先に決め、そのあとルーメンとミリ秒で答える。</span>
-          </p>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">3 Claude Code skills · Camera &amp; sensors · Human movement</p>
-          <p class="tools-stack">Director + 2 specialists · 2 commands · MIT</p>
-          <a href="ai-tools.html#interactive-experience-skills" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <p class="tools-index" aria-hidden="true">06</p>
-          <h3 class="tools-name">multilingual-readme</h3>
-          <p class="tools-outcome">
-            <span class="t-en">A README a stranger understands in ten seconds — in five languages.</span>
-            <span class="t-jp is-block">初めて見た人が 10 秒で分かる README を、5 言語で。</span>
-          </p>
+          <div class="tools-swatch tools-swatch--readme" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">05</p>
+            <h3 class="tools-name">multilingual-readme</h3>
+            <p class="tools-outcome">
+              <span class="t-en">A README a stranger understands in ten seconds — technical or not.</span>
+              <span class="t-jp is-block">初めて見た人が 10 秒で分かる README を、技術者かどうかを問わず。</span>
+            </p>
+          </div>
         </div>
         <div class="tools-meta">
           <p class="tools-classification">Claude Code skill · EN · 日本語 · 简体中文 · Español · 한국어</p>
           <p class="tools-stack">Source inspection · check_readme.py · MIT</p>
           <a href="ai-tools.html#multilingual-readme" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tools-row">
+        <div class="tools-primary">
+          <div class="tools-swatch tools-swatch--motionskills" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">06</p>
+            <h3 class="tools-name">interactive-experience-skills</h3>
+            <p class="tools-outcome">
+              <span class="t-en">Settle artwork-or-tool first, then answer in lumens and milliseconds.</span>
+              <span class="t-jp is-block">作品か道具かを先に決め、そのあとルーメンとミリ秒で答える。</span>
+            </p>
+          </div>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">3 Claude Code skills · Camera &amp; sensors · Human movement</p>
+          <p class="tools-stack">Director + 2 specialists · 2 commands · MIT</p>
+          <a href="ai-tools.html#interactive-experience-skills" class="tools-link">
             <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
           </a>
         </div>
@@ -1664,7 +1703,7 @@
       </div>
       <ul class="footer-links">
         <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
-        
+        <li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li>
         <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
         <li><a href="intentfirst.html">intentfirst.ai</a></li>
       </ul>
