@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
     @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
@@ -47,6 +47,7 @@
       --surface: rgba(255,255,255,0.92);
       --shadow: 0 18px 42px rgba(18,18,18,0.04);
       --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
       /* 5-3C'02 Rich palette */
       --angle: 102deg;
       --a1: hsla(198 82% 72% / 0.44);
@@ -349,6 +350,12 @@
     html.lang-jp .t-en { display:none; }
     html.lang-jp .t-jp { display:inline; }
     html.lang-jp .t-jp.is-block { display:block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    /* ─── Focus visible ─── */
+    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible,
+    .nav-toggle:focus-visible, .breadcrumb a:focus-visible, .nav-project a:focus-visible,
+    .view-switch button:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
     /* ─── Hero / gallery image ─── */
     .g-cell { overflow:hidden; background:#f5f3f0; border-radius:2px; }
@@ -467,7 +474,7 @@
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </nav>
 
   <!-- ── Breadcrumb ── -->
@@ -1866,6 +1873,7 @@
     const saved = localStorage.getItem('tu-lang') || 'en';
     const setLang = (lang) => {
       html.classList.toggle('lang-jp', lang === 'jp');
+      html.lang = lang === 'jp' ? 'ja' : 'en';
       btns.forEach((b) => b.classList.toggle('is-active', b.dataset.lang === lang));
       localStorage.setItem('tu-lang', lang);
     };
@@ -1888,8 +1896,10 @@
     const links = document.querySelector('.nav-links');
     if (toggle && links) {
       toggle.addEventListener('click', () => {
-        toggle.classList.toggle('is-open');
-        links.classList.toggle('is-open');
+        const open = !links.classList.contains('is-open');
+        toggle.classList.toggle('is-open', open);
+        links.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
       });
     }
   })();
