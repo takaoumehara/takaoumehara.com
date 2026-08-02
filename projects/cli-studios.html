@@ -131,16 +131,16 @@
     html.lang-jp .wds-serif em { white-space: nowrap; }
 
     /* ─── Breadcrumb ─── */
-    .breadcrumb { padding: 20px 32px; max-width: 1240px; margin: 0 auto; }
-    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb { padding: 20px 32px; max-width: 1360px; margin: 0 auto; }
+    .breadcrumb a { font-size: clamp(12px, 0.88vw, 13.5px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
     .breadcrumb a:hover { color: var(--ink); }
-    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
+    .breadcrumb span { font-size: clamp(12px, 0.88vw, 13.5px); color: rgba(18,18,18,0.28); margin: 0 8px; }
 
     /* ═══ Slide deck (wds-*) ═══ */
-    .deck { max-width: 1240px; margin: 0 auto; padding: 0 20px 8px; }
+    .deck { max-width: 1360px; margin: 0 auto; padding: 0 20px 8px; }
     .wds-slide { margin-bottom: 2px; }
     .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
-    .wds-kick { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
+    .wds-kick { font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
 
     /* Hero — real UI art under a dark scrim, blue glow */
     .wds-hero {
@@ -163,22 +163,22 @@
     .wds-hero .wds-kick { color: rgba(255,255,255,0.55); }
     .wds-hero h1 { font-size: clamp(38px, 6.4vw, 82px); max-width: 16ch; }
     .wds-hero h1 em { font-style: italic; color: var(--acc-tint); }
-    .wds-hero-lead { font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.72; color: rgba(255,255,255,0.68); max-width: 62ch; margin-top: 28px; }
+    .wds-hero-lead { font-size: clamp(15.5px, 1.25vw, 21px); line-height: 1.68; color: rgba(255,255,255,0.7); max-width: 62ch; margin-top: 28px; }
     .wds-hero-lead strong { color: #fff; font-weight: 600; }
 
     .wds-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
-    .wds-chip { padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
+    .wds-chip { padding: 7px 13px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: clamp(10.5px, 0.78vw, 12.5px); }
     .wds-hero-meta { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 34px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.14); }
     .wds-hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
-    .wds-hero-meta-l { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.44); }
-    .wds-hero-meta-v { font-size: 13px; color: rgba(255,255,255,0.88); }
+    .wds-hero-meta-l { font-size: clamp(10px, 0.72vw, 11.5px); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.46); }
+    .wds-hero-meta-v { font-size: clamp(13px, 1vw, 16px); color: rgba(255,255,255,0.88); }
 
     /* Video pair — dark slide */
     .wds-video { background: #111; color: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
     .wds-video .wds-kick { color: rgba(255,255,255,0.5); margin-bottom: 10px; }
     .wds-video h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; margin-bottom: 26px; }
     .video-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; margin: 0 auto; }
-    .video-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); margin-bottom: 10px; text-align: center; }
+    .video-label { font-size: clamp(11px, 0.8vw, 13px); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-align: center; }
     .video-frame { position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 4px; overflow: hidden; background: #000; }
     .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
@@ -187,11 +187,11 @@
     .wds-world { padding: clamp(30px, 4vw, 54px) clamp(24px, 3vw, 44px); }
     .wds-world--before { background: #161619; color: #fff; }
     .wds-world--after { background: var(--acc); color: #fff; }
-    .wds-world-tag { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px; }
+    .wds-world-tag { font-size: clamp(10px, 0.78vw, 12.5px); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px; }
     .wds-world--before .wds-world-tag { color: rgba(255,255,255,0.42); }
     .wds-world--after .wds-world-tag { color: rgba(255,255,255,0.72); }
     .wds-world h4 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.7vw, 34px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 16px; }
-    .wds-world p { font-size: 14px; line-height: 1.64; margin-bottom: 20px; max-width: 42ch; }
+    .wds-world p { font-size: clamp(14.5px, 1.08vw, 18px); line-height: 1.66; margin-bottom: 22px; max-width: 44ch; }
     .wds-world--before p { color: rgba(255,255,255,0.58); }
     .wds-world--after p { color: rgba(255,255,255,0.86); }
     .wds-world .wds-chips { margin-top: 0; }
@@ -226,20 +226,20 @@
     .wds-statement .wds-kick { color: rgba(255,255,255,0.5); }
     .wds-statement h3 { font-size: clamp(32px, 4.8vw, 62px); max-width: 17ch; }
     .wds-statement h3 em { font-style: italic; color: var(--acc-tint); }
-    .wds-statement-lead { font-size: clamp(14.5px, 1.45vw, 17px); line-height: 1.72; color: rgba(255,255,255,0.66); max-width: 62ch; margin-top: 26px; }
+    .wds-statement-lead { font-size: clamp(15.5px, 1.22vw, 20px); line-height: 1.68; color: rgba(255,255,255,0.7); max-width: 62ch; margin-top: 26px; }
     .wds-statement-lead strong { color: #fff; font-weight: 600; }
 
     /* Five fixes — cream slide with before→after cards */
     .wds-fixes { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
     .wds-fixes h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 16px; }
-    .wds-fixes-lead { font-size: clamp(14px, 1.35vw, 16px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .wds-fixes-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
     .fix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 30px; }
     .fix-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
-    .fix-card { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: 24px 22px 26px; }
-    .fix-num { font-family: "DM Serif Display", Georgia, serif; font-size: 26px; line-height: 1; letter-spacing: -0.03em; color: var(--acc); margin-bottom: 12px; }
-    .fix-before { font-size: 13px; color: var(--ink-dim); margin-bottom: 8px; }
-    .fix-arrow { font-size: 16px; color: rgba(18,18,18,0.22); margin-bottom: 8px; }
-    .fix-after { font-size: 14.5px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.45; color: var(--ink); }
+    .fix-card { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: clamp(24px, 2vw, 34px) clamp(22px, 1.9vw, 32px) clamp(26px, 2.2vw, 36px); }
+    .fix-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(26px, 2.1vw, 34px); line-height: 1; letter-spacing: -0.03em; color: var(--acc); margin-bottom: 14px; }
+    .fix-before { font-size: clamp(13px, 0.98vw, 16px); color: var(--ink-dim); margin-bottom: 9px; }
+    .fix-arrow { font-size: 17px; color: rgba(18,18,18,0.22); margin-bottom: 9px; }
+    .fix-after { font-size: clamp(15px, 1.15vw, 19px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.5; color: var(--ink); }
     @media (max-width: 700px) { .fix-grid { grid-template-columns: 1fr; } }
 
     /* Evidence gallery slides */
@@ -250,10 +250,10 @@
     .wds-evidence.is-dark .wds-kick { color: rgba(255,255,255,0.5); }
     .wds-evidence.is-cream .wds-kick { color: var(--acc); }
     .wds-evidence h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
-    .wds-evidence-lead { font-size: clamp(14px, 1.35vw, 16px); line-height: 1.7; max-width: 64ch; margin-bottom: 28px; }
+    .wds-evidence-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; max-width: 64ch; margin-bottom: 28px; }
     .wds-evidence.is-dark .wds-evidence-lead { color: rgba(255,255,255,0.62); }
     .wds-evidence.is-cream .wds-evidence-lead { color: var(--ink-mid); }
-    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; margin: 34px 0 12px; }
+    .gallery-label { font-size: clamp(11px, 0.82vw, 13.5px); letter-spacing: 0.14em; text-transform: uppercase; margin: 34px 0 12px; }
     .wds-evidence.is-dark .gallery-label { color: rgba(255,255,255,0.48); }
     .wds-evidence.is-cream .gallery-label { color: var(--ink-dim); }
     .gallery-label:first-of-type { margin-top: 0; }
@@ -279,16 +279,16 @@
     /* Proof — cream slide, the numbers (once on the page) */
     .wds-proof { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
     .wds-proof h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 16px; }
-    .wds-proof-lead { font-size: clamp(14px, 1.35vw, 16px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .wds-proof-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
     .proof-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 28px; }
-    .proof-stat { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: 20px 20px 22px; }
-    .proof-stat-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.03em; color: var(--ink); margin-bottom: 6px; }
-    .proof-stat-label { font-size: 12.5px; line-height: 1.5; color: var(--ink-mid); }
+    .proof-stat { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: clamp(22px, 1.8vw, 32px) clamp(20px, 1.7vw, 30px) clamp(24px, 2vw, 34px); }
+    .proof-stat-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(30px, 3.2vw, 44px); letter-spacing: -0.03em; color: var(--ink); margin-bottom: 8px; }
+    .proof-stat-label { font-size: clamp(13px, 1vw, 16.5px); line-height: 1.55; color: var(--ink-mid); }
     @media (max-width: 700px) { .proof-stats { grid-template-columns: 1fr; } }
 
     /* Tools & methods row inside proof */
     .tools-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--border); }
-    .tool-tag { font-size: 12px; color: var(--ink-mid); border: 1px solid var(--border); background: #fff; padding: 8px 14px; }
+    .tool-tag { font-size: clamp(12.5px, 0.92vw, 15px); color: var(--ink-mid); border: 1px solid var(--border); background: #fff; padding: 9px 15px; }
 
     /* Closing — vivid blue */
     .wds-closing { position: relative; overflow: hidden; color: #fff; padding: clamp(46px, 6.5vw, 92px) clamp(28px, 5vw, 78px); background: var(--acc); }
@@ -296,16 +296,16 @@
     .wds-closing h2 { font-size: clamp(32px, 4.6vw, 60px); max-width: 18ch; }
     .wds-closing h2 em { font-style: italic; color: #f4efe4; }
     .closing-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
-    .story-cta { display: inline-block; padding: 13px 18px; border: 1px solid rgba(255,255,255,0.5); color: #fff; font-size: 11px; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
+    .story-cta { display: inline-block; padding: 14px 20px; border: 1px solid rgba(255,255,255,0.5); color: #fff; font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
     .story-cta:hover { background: #fff; color: var(--acc); }
 
     /* Prev / next */
-    .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1240px; margin: 0 auto; padding: 48px 20px 64px; }
-    .project-nav-link { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1360px; margin: 0 auto; padding: 48px 20px 64px; }
+    .project-nav-link { font-size: clamp(12px, 0.9vw, 14px); letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
     .project-nav-link:hover { color: var(--ink); }
 
     /* Footer */
-    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
+    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1360px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
     .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
     .footer-llc { margin-top: 5px; color: var(--ink-dim); font-size: 11px; }
     .footer-llc strong { color: var(--ink-mid); font-weight: 500; }
@@ -340,6 +340,139 @@
       .video-compare { grid-template-columns: 1fr; max-width: 320px; }
     }
   </style>
+
+  <style data-deck>
+    /* ═══ View modes: scroll (default) | deck-v ═══
+       Every rule is scoped under html[data-view="deck-v"]; the .deck-slide marker
+       carries no default styling, so scroll mode is exactly what was authored.
+       deck-h is deliberately not offered here — this page's evidence panels
+       (a 13-page design system, five before/after composites) are taller than any
+       screen, and a horizontal track would hide half of each behind an internal
+       scrollbar. See docs/portfolio-template-system.md §2-5. */
+
+    .view-switch {
+      position: fixed; right: 14px; bottom: 150px; z-index: 120;
+      display: flex; flex-direction: column; gap: 2px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 11px; padding: 4px;
+      box-shadow: 0 12px 34px rgba(18,18,18,0.12);
+    }
+    .view-switch button {
+      appearance: none; border: none; background: none; cursor: pointer;
+      font-family: var(--ff); font-size: 10.5px; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--ink-dim);
+      padding: 8px 12px; border-radius: 8px;
+      display: flex; align-items: center; gap: 8px; white-space: nowrap;
+      transition: background 140ms ease, color 140ms ease;
+    }
+    .view-switch button:hover { color: var(--ink); }
+    .view-switch button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .view-switch .vs-i { font-size: 13px; line-height: 1; width: 14px; text-align: center; }
+
+    .deck-progress { position: fixed; left: 0; top: 0; right: 0; height: 3px; z-index: 121; background: rgba(18,18,18,0.10); display: none; }
+    .deck-progress i { display: block; height: 100%; width: 0; background: var(--acc); transition: width 260ms cubic-bezier(0.22,0.84,0.22,1); }
+    .deck-count {
+      position: fixed; right: 14px; bottom: 20px; z-index: 120; display: none;
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.1em; font-variant-numeric: tabular-nums;
+      color: var(--ink-mid); background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 20px; padding: 7px 14px;
+    }
+    .deck-hint {
+      position: fixed; right: 14px; bottom: 58px; z-index: 120; display: none;
+      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-dim); background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border); border-radius: 20px; padding: 7px 15px;
+      transition: opacity 400ms ease;
+    }
+    .deck-hint kbd { font-family: var(--ff); font-weight: 600; color: var(--ink); }
+    html[data-view="deck-v"] .deck-progress,
+    html[data-view="deck-v"] .deck-count,
+    html[data-view="deck-v"] .deck-hint { display: block; }
+    .deck-hint.is-gone { opacity: 0; pointer-events: none; }
+
+    /* ── deck-v ── */
+    html[data-view="deck-v"] { scroll-snap-type: y mandatory; }
+    html[data-view="deck-v"] .reveal-on-scroll { opacity: 1 !important; transform: none !important; }
+
+    /* Strip the page chrome: a deck is not a document */
+    html[data-view="deck-v"] .site-nav,
+    html[data-view="deck-v"] .breadcrumb,
+    html[data-view="deck-v"] .site-footer,
+    html[data-view="deck-v"] .project-nav { display: none; }
+
+    /* Full-bleed the field — the single biggest reason deck-v read as a scrolling page */
+    html[data-view="deck-v"] .deck { max-width: none; margin: 0; padding: 0; }
+    html[data-view="deck-v"] .wds-slide { margin-bottom: 0; }
+
+    html[data-view="deck-v"] .deck-slide {
+      scroll-snap-align: start; scroll-snap-stop: always;
+      min-height: 100vh; min-height: 100dvh;
+      padding-inline: clamp(32px, 6vw, 130px);
+      display: flex; flex-direction: column; justify-content: safe center;
+    }
+    /* Grid-based panels are ALSO .deck-slide — restore grid or the columns collapse.
+       A two-worlds slide is a colour field: its panels fill the stage edge to edge
+       rather than floating as a band in the middle of it. */
+    html[data-view="deck-v"] .deck-slide.wds-worlds {
+      display: grid; grid-template-rows: 1fr; align-content: stretch;
+      padding-inline: 0; padding-block: 0;
+    }
+    html[data-view="deck-v"] .wds-world { display: flex; flex-direction: column; justify-content: center; }
+    /* Evidence panels run taller than a screen by design: start at the top and let them scroll */
+    html[data-view="deck-v"] .deck-slide.wds-evidence { justify-content: flex-start; padding-block: clamp(56px, 9vh, 110px); }
+
+    /* A slide carries more type than a page section — but a slide also has a
+       fixed height, so every size is capped against the viewport's height too.
+       Without the vh cap the headline overflows the stage on a 900px laptop. */
+    html[data-view="deck-v"] .deck-slide { padding-block: clamp(36px, 5.5vh, 76px); }
+    html[data-view="deck-v"] .wds-hero h1 { font-size: min(clamp(44px, 7vw, 104px), 8.4vh); }
+    html[data-view="deck-v"] .wds-statement h3 { font-size: min(clamp(38px, 5.6vw, 78px), 9vh); }
+    html[data-view="deck-v"] .wds-closing h2 { font-size: min(clamp(38px, 5.4vw, 74px), 9vh); }
+    html[data-view="deck-v"] .wds-fixes h2,
+    html[data-view="deck-v"] .wds-proof h2,
+    html[data-view="deck-v"] .wds-evidence h2,
+    html[data-view="deck-v"] .wds-video h2 { font-size: min(clamp(32px, 4.4vw, 58px), 6.6vh); }
+    html[data-view="deck-v"] .wds-statement-lead { font-size: min(clamp(16px, 1.4vw, 23px), 2.5vh); }
+    html[data-view="deck-v"] .wds-hero-lead { font-size: min(clamp(15.5px, 1.25vw, 21px), 2.3vh); margin-top: 3vh; }
+    html[data-view="deck-v"] .wds-hero .wds-chips { margin-top: 2.6vh; }
+    html[data-view="deck-v"] .wds-hero-meta { margin-top: 3vh; padding-top: 2.4vh; }
+    /* The video pair is sized by the stage's HEIGHT — a 9:16 frame constrained by
+       width alone either overflows a short laptop or shrinks to a stamp */
+    html[data-view="deck-v"] .video-compare { max-width: none; justify-items: center; margin-top: 2vh; }
+    html[data-view="deck-v"] .video-frame { height: min(54vh, 560px); width: auto; }
+    /* Dense grids compress to fit rather than hide half a slide behind a scrollbar */
+    html[data-view="deck-v"] .wds-fixes-lead,
+    html[data-view="deck-v"] .wds-proof-lead { font-size: min(clamp(15px, 1.15vw, 19px), 2.1vh); }
+    html[data-view="deck-v"] .fix-grid { margin-top: 2.6vh; }
+    html[data-view="deck-v"] .fix-card { padding: clamp(16px, 2.1vh, 28px) clamp(18px, 1.6vw, 28px); }
+    html[data-view="deck-v"] .fix-num { font-size: min(clamp(26px, 2.1vw, 34px), 3.6vh); margin-bottom: 1vh; }
+    html[data-view="deck-v"] .fix-before { font-size: min(clamp(13px, 0.98vw, 16px), 1.8vh); margin-bottom: 0.7vh; }
+    html[data-view="deck-v"] .fix-arrow { margin-bottom: 0.7vh; }
+    html[data-view="deck-v"] .fix-after { font-size: min(clamp(15px, 1.15vw, 19px), 2.1vh); }
+    html[data-view="deck-v"] .proof-stats { margin-top: 2.8vh; }
+    html[data-view="deck-v"] .proof-stat { padding: clamp(18px, 2.4vh, 32px) clamp(18px, 1.6vw, 30px); }
+    html[data-view="deck-v"] .proof-stat-num { font-size: min(clamp(30px, 3.2vw, 44px), 5vh); }
+    html[data-view="deck-v"] .proof-stat-label { font-size: min(clamp(13px, 1vw, 16.5px), 1.9vh); }
+    html[data-view="deck-v"] .tools-list { margin-top: 2.4vh; padding-top: 2vh; }
+
+    /* Entrance beat — applied only when the engine marks a slide live, so a
+       failed script can never leave content invisible */
+    @keyframes deck-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    html[data-view="deck-v"] .deck-slide.is-live > * { animation: deck-in 560ms cubic-bezier(0.22,0.84,0.22,1) both; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(2) { animation-delay: 70ms; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(3) { animation-delay: 130ms; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(n+4) { animation-delay: 180ms; }
+
+    /* Decks are a desktop-and-motion affordance only */
+    @media (max-width: 768px) { .view-switch [data-viewbtn="deck-v"] { opacity: 0.4; pointer-events: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html[data-view="deck-v"] .deck-slide.is-live > * { animation: none !important; }
+      .view-switch [data-viewbtn="deck-v"] { opacity: 0.4; pointer-events: none; }
+    }
+  </style>
 </head>
 <body>
 
@@ -372,7 +505,7 @@
   <main class="deck">
 
     <!-- ═══ Slide 1 · Hero (dark, blue glow, real UI art) ═══ -->
-    <header class="wds-hero wds-slide reveal-on-scroll">
+    <header class="wds-hero wds-slide deck-slide reveal-on-scroll">
       <p class="wds-kick">
         <span class="t-en">CLI Studios · Product Design · 2024</span>
         <span class="t-jp">CLI Studios · プロダクトデザイン · 2024</span>
@@ -407,7 +540,7 @@
     </header>
 
     <!-- ═══ Slide 2 · Before & After videos (dark) ═══ -->
-    <section class="wds-video wds-slide reveal-on-scroll" aria-label="Before and after videos">
+    <section class="wds-video wds-slide deck-slide reveal-on-scroll" aria-label="Before and after videos">
       <p class="wds-kick">
         <span class="t-en">Watch the shift</span>
         <span class="t-jp">動きで見る変化</span>
@@ -433,7 +566,7 @@
     </section>
 
     <!-- ═══ Slide 3 · Two worlds — the tension ═══ -->
-    <section class="wds-worlds wds-slide reveal-on-scroll" aria-label="The tension">
+    <section class="wds-worlds wds-slide deck-slide reveal-on-scroll" aria-label="The tension">
       <div class="wds-world wds-world--before">
         <div class="wds-world-tag">
           <span class="t-en">Where it started</span>
@@ -482,7 +615,7 @@
     </section>
 
     <!-- ═══ Slide 4 · Approach statement (dark) ═══ -->
-    <section class="wds-statement wds-slide reveal-on-scroll" aria-label="My approach">
+    <section class="wds-statement wds-slide deck-slide reveal-on-scroll" aria-label="My approach">
       <p class="wds-kick">
         <span class="t-en">My approach</span>
         <span class="t-jp">アプローチ</span>
@@ -498,7 +631,7 @@
     </section>
 
     <!-- ═══ Slide 5 · Five fixes (cream) ═══ -->
-    <section class="wds-fixes wds-slide reveal-on-scroll" aria-label="Five problems solved">
+    <section class="wds-fixes wds-slide deck-slide reveal-on-scroll" aria-label="Five problems solved">
       <h2 class="wds-serif">
         <span class="t-en">Five problems. Five fixes.</span>
         <span class="t-jp is-block">5つの問題に、5つの答え。</span>
@@ -542,7 +675,7 @@
     </section>
 
     <!-- ═══ Slide 6 · Evidence — heuristic analysis (dark) ═══ -->
-    <section class="wds-evidence is-dark wds-slide reveal-on-scroll" aria-label="Heuristic analysis evidence">
+    <section class="wds-evidence is-dark wds-slide deck-slide reveal-on-scroll" aria-label="Heuristic analysis evidence">
       <p class="wds-kick">
         <span class="t-en">Evidence · Research</span>
         <span class="t-jp">証拠 · リサーチ</span>
@@ -589,7 +722,7 @@
     </section>
 
     <!-- ═══ Slide 7 · Evidence — redesigned screens (cream) ═══ -->
-    <section class="wds-evidence is-cream wds-slide reveal-on-scroll" aria-label="Redesigned screens evidence">
+    <section class="wds-evidence is-cream wds-slide deck-slide reveal-on-scroll" aria-label="Redesigned screens evidence">
       <p class="wds-kick">
         <span class="t-en">Evidence · Screens</span>
         <span class="t-jp">証拠 · スクリーン</span>
@@ -620,7 +753,7 @@
     </section>
 
     <!-- ═══ Slide 8 · Evidence — design system (dark) ═══ -->
-    <section class="wds-evidence is-dark wds-slide reveal-on-scroll" aria-label="Design system evidence">
+    <section class="wds-evidence is-dark wds-slide deck-slide reveal-on-scroll" aria-label="Design system evidence">
       <p class="wds-kick">
         <span class="t-en">Evidence · Design System</span>
         <span class="t-jp">証拠 · デザインシステム</span>
@@ -659,7 +792,7 @@
     </section>
 
     <!-- ═══ Slide 9 · Proof (cream) ═══ -->
-    <section class="wds-proof wds-slide reveal-on-scroll" aria-label="Outcomes">
+    <section class="wds-proof wds-slide deck-slide reveal-on-scroll" aria-label="Outcomes">
       <p class="wds-kick" style="color: var(--acc); margin-bottom: 10px;">
         <span class="t-en">Outcomes</span>
         <span class="t-jp">成果</span>
@@ -701,7 +834,7 @@
     </section>
 
     <!-- ═══ Slide 10 · Closing (vivid blue) ═══ -->
-    <section class="wds-closing wds-slide reveal-on-scroll" aria-label="Closing">
+    <section class="wds-closing wds-slide deck-slide reveal-on-scroll" aria-label="Closing">
       <p class="wds-kick">
         <span class="t-en">The takeaway</span>
         <span class="t-jp">この仕事から</span>
@@ -752,6 +885,18 @@
     </ul>
     <div class="footer-loc">New York City</div>
   </footer>
+
+  <!-- ── View mode ── -->
+  <div class="view-switch" role="group" aria-label="View mode">
+    <button type="button" data-viewbtn="scroll" aria-pressed="true"><span class="vs-i" aria-hidden="true">&#8801;</span><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></button>
+    <button type="button" data-viewbtn="deck-v" aria-pressed="false"><span class="vs-i" aria-hidden="true">&#8595;</span><span class="t-en">Slides</span><span class="t-jp">スライド</span></button>
+  </div>
+  <div class="deck-progress" aria-hidden="true"><i></i></div>
+  <div class="deck-count" aria-live="polite">1 / 1</div>
+  <div class="deck-hint" id="deck-hint" aria-hidden="true">
+    <span class="t-en"><kbd>Space</kbd> or <kbd>&darr;</kbd> to advance</span>
+    <span class="t-jp"><kbd>Space</kbd> または <kbd>&darr;</kbd> で次へ</span>
+  </div>
 
   <div class="lang-switch" id="lang-switch" aria-label="Language">
     <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
@@ -814,6 +959,109 @@
         });
       }
     })();
+  </script>
+
+  <script data-deck>
+  // View-mode engine: scroll | deck-v. Keyed only off html[data-view] + .deck-slide.
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll('[data-viewbtn]')];
+    const bar = document.querySelector('.deck-progress i');
+    const count = document.querySelector('.deck-count');
+    const hint = document.getElementById('deck-hint');
+    const mqMobile = window.matchMedia('(max-width: 768px)');
+    const mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const slides = () => [...document.querySelectorAll('.deck-slide')];
+    const allowDeck = () => !(mqMobile.matches || mqMotion.matches);
+    let cur = 0, advanced = false;
+
+    const setBtns = (v) => btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewbtn === v)));
+
+    const markLive = () => {
+      const s = slides();
+      s.forEach((el, i) => { if (i !== cur) el.classList.remove('is-live'); });
+      const el = s[cur];
+      if (el && !el.classList.contains('is-live')) {
+        void el.offsetWidth;           // restart the entrance when returning to a slide
+        el.classList.add('is-live');
+      }
+    };
+
+    const update = () => {
+      const n = slides().length || 1;
+      if (bar) bar.style.width = ((cur + 1) / n * 100) + '%';
+      if (count) count.textContent = (cur + 1) + ' / ' + n;
+      if (html.dataset.view === 'deck-v') markLive();
+    };
+
+    const idxFromScroll = () => {
+      const s = slides();
+      if (!s.length) return 0;
+      let best = 0, bestD = Infinity;
+      s.forEach((el, i) => {
+        const d = Math.abs(el.getBoundingClientRect().top);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      return best;
+    };
+
+    const goto = (i, behavior) => {
+      const s = slides();
+      if (!s.length) return;
+      cur = Math.max(0, Math.min(i, s.length - 1));
+      s[cur].scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
+      update();
+    };
+
+    const setView = (v) => {
+      if (v !== 'scroll' && !allowDeck()) v = 'scroll';
+      html.dataset.view = v;
+      setBtns(v);
+      localStorage.setItem('tu-view', v);
+      if (v === 'scroll') {
+        slides().forEach(el => el.classList.remove('is-live'));
+        if (hint) hint.classList.remove('is-gone');
+        advanced = false;
+      } else {
+        requestAnimationFrame(() => goto(cur, 'auto'));
+      }
+      update();
+    };
+
+    btns.forEach(b => b.addEventListener('click', () => setView(b.dataset.viewbtn)));
+
+    const FWD = new Set([' ', 'Spacebar', 'ArrowDown', 'ArrowRight', 'PageDown']);
+    const BACK = new Set(['ArrowUp', 'ArrowLeft', 'PageUp']);
+    window.addEventListener('keydown', (e) => {
+      if (html.dataset.view !== 'deck-v') return;
+      const ae = document.activeElement;
+      if (ae && ae.matches && ae.matches('input,textarea,select,[contenteditable="true"]')) return;
+      if ((e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') && ae && ae.matches && ae.matches('button,a,[role="button"]')) return;
+      if (FWD.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur + 1); }
+      else if (BACK.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur - 1); }
+      else if (e.key === 'Home') { e.preventDefault(); goto(0); }
+      else if (e.key === 'End') { e.preventDefault(); goto(slides().length - 1); }
+      else return;
+      if (!advanced && hint) { advanced = true; hint.classList.add('is-gone'); }
+    });
+
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        if (html.dataset.view === 'deck-v') { cur = idxFromScroll(); update(); }
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => { if (html.dataset.view === 'deck-v') goto(cur, 'auto'); });
+    [mqMobile, mqMotion].forEach(mq => mq.addEventListener('change', () => {
+      if (!allowDeck() && html.dataset.view !== 'scroll') setView('scroll');
+    }));
+
+    const saved = localStorage.getItem('tu-view') || 'scroll';
+    setView(allowDeck() ? saved : 'scroll');
+  })();
   </script>
 
 </body>

@@ -48,6 +48,14 @@
       --shadow: 0 18px 42px rgba(18,18,18,0.04);
       --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
       --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      /* Panel tones — deeper, lower-chroma versions of the accent hues.
+         Large full-bleed fills use these; small accents (dots, rules, type)
+         keep the full-chroma hue so saturation reads as deliberate. */
+      --p-violet: #57359b;
+      --p-blue: #1f4a9c;
+      --p-orange: #c9620e;
+      --p-green: #16783c;
+      --p-amber: #cf7d10;
       /* 5-3C'02 Rich palette */
       --angle: 102deg;
       --a1: hsla(198 82% 72% / 0.44);
@@ -195,10 +203,10 @@
     .wf-step.is-light { background:#f5f3f0; color:var(--ink-mid); }
     .wf-agent-bar { display:flex; gap:2px; margin-bottom:2px; }
     .wf-agent-label { padding:10px 16px; font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#fff; display:flex; align-items:center; }
-    .wf-bar-orange { background:#f97316; flex:1; }
-    .wf-bar-green { background:#16a34a; }
-    .wf-bar-blue { background:#2563eb; flex:1.5; }
-    .wf-bar-yellow { background:#eab308; color:#121212; }
+    .wf-bar-orange { background:var(--p-orange); flex:1; }
+    .wf-bar-green { background:var(--p-green); }
+    .wf-bar-blue { background:var(--p-blue); flex:1.5; }
+    .wf-bar-yellow { background:var(--p-amber); color:#fff; }
     .wf-tools-bar { display:flex; gap:2px; margin-bottom:16px; }
     .wf-tool { padding:8px 16px; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); border:1px solid var(--line); flex:1; text-align:center; }
 
@@ -925,14 +933,14 @@
       .mb-source .mb-tag { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.72; margin-bottom:12px; }
       .mb-source h5 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(21px,2.5vw,32px); letter-spacing:-0.02em; line-height:1.04; margin-bottom:12px; }
       .mb-source p { font-size:13px; line-height:1.6; opacity:0.86; max-width:36ch; }
-      .mb-source--brand { background:#7c3aed; }
-      .mb-source--research { background:#2563eb; }
+      .mb-source--brand { background:var(--p-violet); }
+      .mb-source--research { background:var(--p-blue); }
       .mb-join { display:flex; align-items:center; justify-content:center; gap:12px; padding:13px; background:#161619; color:rgba(255,255,255,0.6); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; }
       .mb-join::before, .mb-join::after { content:"\2193"; font-size:15px; opacity:0.8; }
-      .mb-hub { background:#f97316; color:#181008; padding:clamp(34px,4.6vw,66px) clamp(26px,3vw,52px); }
-      .mb-hub .mb-tag { font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(24,16,8,0.6); margin-bottom:16px; }
+      .mb-hub { background:var(--p-orange); color:#fff; padding:clamp(34px,4.6vw,66px) clamp(26px,3vw,52px); }
+      .mb-hub .mb-tag { font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.72); margin-bottom:16px; }
       .mb-hub h4 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(30px,4.6vw,62px); letter-spacing:-0.03em; line-height:0.98; max-width:15ch; }
-      .mb-hub p { font-size:clamp(14px,1.4vw,16.5px); line-height:1.68; color:rgba(24,16,8,0.82); max-width:56ch; margin-top:18px; }
+      .mb-hub p { font-size:clamp(14px,1.4vw,16.5px); line-height:1.68; color:rgba(255,255,255,0.88); max-width:56ch; margin-top:18px; }
       .mb-out { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
       .mb-out-item { background:rgba(255,255,255,0.72); border:1px solid var(--line); padding:24px 20px; border-top:3px solid #f97316; }
       .mb-out-item h6 { font-size:13px; font-weight:600; letter-spacing:-0.01em; margin-bottom:8px; }
@@ -1103,17 +1111,17 @@
           </div>
         </div>
         <div class="jc-layers">
-          <div class="jc-layer" style="background:#16a34a;">
+          <div class="jc-layer" style="background:var(--p-green);">
             <div class="jc-layer-n"><span class="t-en">Layer 01</span><span class="t-jp">層 01</span></div>
             <div class="jc-layer-t"><span class="t-en">Data</span><span class="t-jp">データ</span></div>
             <div class="jc-layer-d"><span class="t-en">Invalid inputs, massive lists, empty states, special characters.</span><span class="t-jp is-block">不正な入力、大量のリスト、空状態、特殊文字。</span></div>
           </div>
-          <div class="jc-layer" style="background:#2563eb;">
+          <div class="jc-layer" style="background:var(--p-blue);">
             <div class="jc-layer-n"><span class="t-en">Layer 02</span><span class="t-jp">層 02</span></div>
             <div class="jc-layer-t"><span class="t-en">System</span><span class="t-jp">システム</span></div>
             <div class="jc-layer-d"><span class="t-en">Latency, timeouts, offline modes, double-clicks.</span><span class="t-jp is-block">レイテンシー、タイムアウト、オフライン、ダブルクリック。</span></div>
           </div>
-          <div class="jc-layer" style="background:#7c3aed;">
+          <div class="jc-layer" style="background:var(--p-violet);">
             <div class="jc-layer-n"><span class="t-en">Layer 03</span><span class="t-jp">層 03</span></div>
             <div class="jc-layer-t"><span class="t-en">User State</span><span class="t-jp">ユーザー状態</span></div>
             <div class="jc-layer-d"><span class="t-en">Guest vs. logged-in, suspended accounts, permissions.</span><span class="t-jp is-block">ゲストとログイン済み、停止中アカウント、権限。</span></div>
@@ -1167,7 +1175,7 @@
       .sl-file-n { font-family:"DM Serif Display",Georgia,serif; font-size:19px; color:#2563eb; line-height:1; flex-shrink:0; }
       .sl-file-t { font-size:14px; font-weight:600; letter-spacing:-0.01em; margin-bottom:3px; }
       .sl-file-d { font-size:12px; color:var(--ink-mid); line-height:1.5; }
-      .sl-bridge { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:#f59400; color:#141414; padding:0 clamp(16px,2vw,26px); min-width:84px; text-align:center; }
+      .sl-bridge { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:var(--p-amber); color:#141414; padding:0 clamp(16px,2vw,26px); min-width:84px; text-align:center; }
       .sl-bridge-arrow { font-size:30px; line-height:1; }
       .sl-bridge-label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; }
       .sl-hub { background:#161619; color:#fff; padding:clamp(30px,3.4vw,48px) clamp(26px,3vw,42px); }
@@ -1179,7 +1187,7 @@
       .sl-l3-d { font-size:11px; color:rgba(255,255,255,0.55); }
       .sl-fw { display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin-top:2px; background:rgba(255,255,255,0.72); border:1px solid var(--line); padding:24px clamp(24px,2.6vw,38px); }
       .sl-fw-tag { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:#2563eb; font-weight:600; flex-shrink:0; }
-      .wds-world.sl-now { background:#2563eb; color:#fff; }
+      .wds-world.sl-now { background:var(--p-blue); color:#fff; }
       .wds-world.sl-now .wds-world-tag { color:rgba(255,255,255,0.72); }
       .wds-world.sl-now h4 { color:#fff; }
       .wds-world.sl-now p { color:rgba(255,255,255,0.84); }
@@ -1405,7 +1413,7 @@
       .wds-chip { font-size:11.5px; letter-spacing:0.01em; padding:6px 12px; border-radius:20px; }
       .wds-world--eng .wds-chip { border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.82); }
       .wds-world--des .wds-chip { border:1px solid var(--border); color:var(--ink-mid); background:rgba(255,255,255,0.6); }
-      .wds-bridge { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; background:#f59400; color:#141414; padding:0 clamp(16px,2vw,28px); min-width:96px; text-align:center; }
+      .wds-bridge { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; background:var(--p-amber); color:#141414; padding:0 clamp(16px,2vw,28px); min-width:96px; text-align:center; }
       .wds-bridge-arrow { font-size:32px; line-height:1; }
       .wds-bridge-label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; }
 
