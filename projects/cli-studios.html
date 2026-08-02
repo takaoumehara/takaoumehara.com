@@ -99,27 +99,7 @@
       .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
     }
 
-    /* ─── Lang switch ─── */
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      writing-mode: vertical-rl;
-      display: flex; align-items: center; gap: 5px;
-      padding: 16px 9px;
-      background: rgba(255,255,255,0.94);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border-left: 1px solid rgba(18,18,18,0.10);
-      border-top: 1px solid rgba(18,18,18,0.07);
-      border-bottom: 1px solid rgba(18,18,18,0.07);
-      border-radius: 6px 0 0 6px;
-    }
-    .lang-btn {
-      appearance: none; background: none; border: none;
-      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
-      text-transform: uppercase; cursor: pointer;
-      color: var(--ink-dim); padding: 0; transition: color 160ms ease;
-    }
-    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
-    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    /* Language buttons live in the .page-controls cluster (see the deck stylesheet) */
 
     /* ─── Bilingual ─── */
     .t-jp { display: none; }
@@ -350,48 +330,62 @@
        screen, and a horizontal track would hide half of each behind an internal
        scrollbar. See docs/portfolio-template-system.md §2-5. */
 
-    .view-switch {
-      position: fixed; right: 14px; bottom: 150px; z-index: 120;
-      display: flex; flex-direction: column; gap: 2px;
-      background: rgba(255,255,255,0.95);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border: 1px solid var(--border); border-radius: 11px; padding: 4px;
-      box-shadow: 0 12px 34px rgba(18,18,18,0.12);
+    /* ─── Page controls: one cluster, not four floats ───
+       Language and view mode are both "how you look at this page", so they live
+       in a single object at one corner. Quietness comes from size, hairlines and
+       restraint — never from lowering opacity, which would drop the labels below
+       the WCAG contrast floor. Deck readouts sit at the opposite corner so the
+       right edge only ever carries one thing. */
+    .page-controls {
+      position: fixed; right: 14px; bottom: 16px; z-index: 120;
+      display: flex; flex-direction: column; gap: 2px; padding: 4px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border); border-radius: 12px;
+      transition: border-color 200ms ease, background 200ms ease;
     }
-    .view-switch button {
+    .page-controls:hover, .page-controls:focus-within {
+      background: rgba(255,255,255,0.97); border-color: rgba(18,18,18,0.2);
+    }
+    .pc-group { display: flex; gap: 2px; }
+    .pc-view { flex-direction: column; }
+    .pc-rule { height: 1px; background: var(--line); margin: 3px 5px; }
+    .page-controls button {
       appearance: none; border: none; background: none; cursor: pointer;
-      font-family: var(--ff); font-size: 10.5px; letter-spacing: 0.07em;
-      text-transform: uppercase; color: var(--ink-dim);
-      padding: 8px 12px; border-radius: 8px;
-      display: flex; align-items: center; gap: 8px; white-space: nowrap;
+      font-family: var(--ff); font-size: 10.5px; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--ink-mid);
+      padding: 7px 11px; border-radius: 8px;
+      display: flex; align-items: center; gap: 7px; white-space: nowrap;
       transition: background 140ms ease, color 140ms ease;
     }
-    .view-switch button:hover { color: var(--ink); }
-    .view-switch button[aria-pressed="true"] { background: var(--ink); color: #fff; }
-    .view-switch .vs-i { font-size: 13px; line-height: 1; width: 14px; text-align: center; }
+    .pc-lang button { flex: 1; justify-content: center; padding: 6px 12px; }
+    .page-controls button:hover { color: var(--ink); background: rgba(18,18,18,0.05); }
+    .page-controls button.is-active,
+    .page-controls button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .page-controls .pc-i { font-size: 12px; line-height: 1; width: 13px; text-align: center; }
+
+    /* The slide readout and the keyboard hint live inside the same cluster, so
+       exactly one object ever floats over the work. Only the progress bar sits
+       apart — it belongs to the top edge and reads as ambient, not as a widget. */
+    .deck-count, .deck-hint { display: none; }
+    .deck-count {
+      font-size: 10.5px; letter-spacing: 0.12em; font-variant-numeric: tabular-nums;
+      color: var(--ink-dim); text-align: center; padding: 5px 4px 6px;
+    }
+    .deck-hint {
+      font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-dim); text-align: center; padding: 6px 4px 3px;
+      border-top: 1px solid var(--line); margin-top: 3px;
+      transition: opacity 400ms ease;
+    }
+    .deck-hint kbd { font-family: var(--ff); font-weight: 600; color: var(--ink-mid); }
+    .deck-hint.is-gone { display: none; }
+    html[data-view="deck-v"] .deck-count,
+    html[data-view="deck-v"] .deck-hint:not(.is-gone) { display: block; }
 
     .deck-progress { position: fixed; left: 0; top: 0; right: 0; height: 3px; z-index: 121; background: rgba(18,18,18,0.10); display: none; }
     .deck-progress i { display: block; height: 100%; width: 0; background: var(--acc); transition: width 260ms cubic-bezier(0.22,0.84,0.22,1); }
-    .deck-count {
-      position: fixed; right: 14px; bottom: 20px; z-index: 120; display: none;
-      font-family: var(--ff); font-size: 12px; letter-spacing: 0.1em; font-variant-numeric: tabular-nums;
-      color: var(--ink-mid); background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border: 1px solid var(--border); border-radius: 20px; padding: 7px 14px;
-    }
-    .deck-hint {
-      position: fixed; right: 14px; bottom: 58px; z-index: 120; display: none;
-      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--ink-dim); background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border: 1px solid var(--border); border-radius: 20px; padding: 7px 15px;
-      transition: opacity 400ms ease;
-    }
-    .deck-hint kbd { font-family: var(--ff); font-weight: 600; color: var(--ink); }
-    html[data-view="deck-v"] .deck-progress,
-    html[data-view="deck-v"] .deck-count,
-    html[data-view="deck-v"] .deck-hint { display: block; }
-    .deck-hint.is-gone { opacity: 0; pointer-events: none; }
+    html[data-view="deck-v"] .deck-progress { display: block; }
 
     /* ── deck-v ── */
     html[data-view="deck-v"] { scroll-snap-type: y mandatory; }
@@ -466,11 +460,13 @@
     html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(3) { animation-delay: 130ms; }
     html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(n+4) { animation-delay: 180ms; }
 
-    /* Decks are a desktop-and-motion affordance only */
-    @media (max-width: 768px) { .view-switch [data-viewbtn="deck-v"] { opacity: 0.4; pointer-events: none; } }
+    /* Decks are a desktop-and-motion affordance only. Where they can't run,
+       remove the control rather than dimming it — a disabled button people
+       can still see is a distraction that answers nothing. */
+    @media (max-width: 768px) { .pc-view, .pc-rule { display: none; } }
     @media (prefers-reduced-motion: reduce) {
       html[data-view="deck-v"] .deck-slide.is-live > * { animation: none !important; }
-      .view-switch [data-viewbtn="deck-v"] { opacity: 0.4; pointer-events: none; }
+      .pc-view, .pc-rule { display: none; }
     }
   </style>
 </head>
@@ -886,23 +882,24 @@
     <div class="footer-loc">New York City</div>
   </footer>
 
-  <!-- ── View mode ── -->
-  <div class="view-switch" role="group" aria-label="View mode">
-    <button type="button" data-viewbtn="scroll" aria-pressed="true"><span class="vs-i" aria-hidden="true">&#8801;</span><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></button>
-    <button type="button" data-viewbtn="deck-v" aria-pressed="false"><span class="vs-i" aria-hidden="true">&#8595;</span><span class="t-en">Slides</span><span class="t-jp">スライド</span></button>
+  <!-- ── Page controls: language, view mode, and the deck readout in one cluster ── -->
+  <div class="page-controls">
+    <div class="deck-count" aria-live="polite">1 / 1</div>
+    <div class="pc-group pc-lang" role="group" aria-label="Language">
+      <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
+      <button class="lang-btn" type="button" data-lang="jp">JP</button>
+    </div>
+    <div class="pc-rule" aria-hidden="true"></div>
+    <div class="pc-group pc-view" role="group" aria-label="View mode">
+      <button type="button" data-viewbtn="scroll" aria-pressed="true"><span class="pc-i" aria-hidden="true">&#8801;</span><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></button>
+      <button type="button" data-viewbtn="deck-v" aria-pressed="false"><span class="pc-i" aria-hidden="true">&#8595;</span><span class="t-en">Slides</span><span class="t-jp">スライド</span></button>
+    </div>
+    <div class="deck-hint" id="deck-hint" aria-hidden="true">
+      <span class="t-en"><kbd>Space</kbd> to advance</span>
+      <span class="t-jp"><kbd>Space</kbd> で次へ</span>
+    </div>
   </div>
   <div class="deck-progress" aria-hidden="true"><i></i></div>
-  <div class="deck-count" aria-live="polite">1 / 1</div>
-  <div class="deck-hint" id="deck-hint" aria-hidden="true">
-    <span class="t-en"><kbd>Space</kbd> or <kbd>&darr;</kbd> to advance</span>
-    <span class="t-jp"><kbd>Space</kbd> または <kbd>&darr;</kbd> で次へ</span>
-  </div>
-
-  <div class="lang-switch" id="lang-switch" aria-label="Language">
-    <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
-    <span class="lang-sep" aria-hidden="true">|</span>
-    <button class="lang-btn" type="button" data-lang="jp">JP</button>
-  </div>
 
   <script>
     // Language toggle

@@ -350,7 +350,7 @@
     }
 
     /* ─── Lang switch ─── */
-    .lang-switch { position:fixed; right:0; bottom:80px; z-index:100; writing-mode:vertical-rl; display:flex; align-items:center; gap:5px; padding:16px 9px; background:rgba(255,255,255,0.94); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-left:1px solid rgba(18,18,18,0.10); border-radius:6px 0 0 6px; }
+    /* Language buttons live in the .page-controls cluster below */
     .lang-btn { appearance:none; background:none; border:none; font-family:var(--ff); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; color:var(--ink-dim); padding:0; transition:color 160ms ease; }
     .lang-btn.is-active { color:var(--ink); font-weight:600; }
     .lang-sep { font-size:9px; color:rgba(18,18,18,0.18); }
@@ -363,7 +363,7 @@
     /* ─── Focus visible ─── */
     .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible,
     .nav-toggle:focus-visible, .breadcrumb a:focus-visible, .nav-project a:focus-visible,
-    .view-switch button:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+    .page-controls button:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
     /* ─── Hero / gallery image ─── */
     .g-cell { overflow:hidden; background:#f5f3f0; border-radius:2px; }
@@ -383,22 +383,67 @@
        All deck rules are scoped under html[data-view="deck-*"]; the .deck-slide /
        .deck-section markers carry NO default rules, so scroll mode is untouched. */
 
-    /* switcher + progress (a small module, visible in all modes) */
-    .view-switch { position:fixed; right:14px; bottom:150px; z-index:120; display:flex; flex-direction:column; gap:2px; background:rgba(255,255,255,0.95); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid var(--border); border-radius:11px; padding:4px; box-shadow:0 12px 34px rgba(18,18,18,0.12); }
-    .view-switch button { appearance:none; border:none; background:none; cursor:pointer; font-family:var(--ff); font-size:10.5px; letter-spacing:0.07em; text-transform:uppercase; color:var(--ink-dim); padding:8px 12px; border-radius:8px; display:flex; align-items:center; gap:8px; white-space:nowrap; transition:background 140ms ease, color 140ms ease; }
-    .view-switch button:hover { color:var(--ink); }
-    .view-switch button[aria-pressed="true"] { background:var(--ink); color:#fff; }
-    .view-switch .vs-i { font-size:13px; line-height:1; width:14px; text-align:center; }
-    .deck-progress { position:fixed; left:0; top:0; right:0; height:3px; z-index:121; background:rgba(18,18,18,0.06); display:none; }
-    .deck-progress i { display:block; height:100%; width:0; background:#f97316; transition:width 240ms cubic-bezier(0.22,0.84,0.22,1); }
-    .deck-count { position:fixed; left:14px; bottom:22px; z-index:120; font-family:var(--ff); font-size:12px; letter-spacing:0.08em; color:var(--ink-mid); background:rgba(255,255,255,0.92); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid var(--border); border-radius:20px; padding:6px 13px; display:none; }
-    html[data-view^="deck"] .deck-progress, html[data-view^="deck"] .deck-count { display:block; }
+    /* ─── Page controls: one cluster, not four floats ───
+       Language, view mode and the deck readout are all "how you look at this page",
+       so they live in a single object at one corner. Quietness comes from size and
+       hairlines — never from lowering opacity, which would drop the labels below the
+       WCAG contrast floor. Only the progress bar sits apart, on the top edge. */
+    .page-controls { position:fixed; right:14px; bottom:16px; z-index:120; display:flex; flex-direction:column; gap:2px; padding:4px; background:rgba(255,255,255,0.9); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid var(--border); border-radius:12px; transition:border-color 200ms ease, background 200ms ease; }
+    .page-controls:hover, .page-controls:focus-within { background:rgba(255,255,255,0.97); border-color:rgba(18,18,18,0.2); }
+    .pc-group { display:flex; gap:2px; }
+    .pc-view { flex-direction:column; }
+    .pc-rule { height:1px; background:var(--line); margin:3px 5px; }
+    .page-controls button { appearance:none; border:none; background:none; cursor:pointer; font-family:var(--ff); font-size:10.5px; letter-spacing:0.09em; text-transform:uppercase; color:var(--ink-mid); padding:7px 11px; border-radius:8px; display:flex; align-items:center; gap:7px; white-space:nowrap; transition:background 140ms ease, color 140ms ease; }
+    .pc-lang button { flex:1; justify-content:center; padding:6px 12px; }
+    .page-controls button:hover { color:var(--ink); background:rgba(18,18,18,0.05); }
+    .page-controls button.is-active, .page-controls button[aria-pressed="true"] { background:var(--ink); color:#fff; }
+    .page-controls .pc-i { font-size:12px; line-height:1; width:13px; text-align:center; }
+    .deck-count, .deck-hint { display:none; }
+    .deck-count { font-size:10.5px; letter-spacing:0.12em; font-variant-numeric:tabular-nums; color:var(--ink-dim); text-align:center; padding:5px 4px 6px; }
+    .deck-hint { font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-align:center; padding:6px 4px 3px; border-top:1px solid var(--line); margin-top:3px; }
+    .deck-hint kbd { font-family:var(--ff); font-weight:600; color:var(--ink-mid); }
+    .deck-hint.is-gone { display:none; }
+    html[data-view^="deck"] .deck-count, html[data-view^="deck"] .deck-hint:not(.is-gone) { display:block; }
+    .deck-progress { position:fixed; left:0; top:0; right:0; height:3px; z-index:121; background:rgba(18,18,18,0.10); display:none; }
+    .deck-progress i { display:block; height:100%; width:0; background:var(--p-orange); transition:width 240ms cubic-bezier(0.22,0.84,0.22,1); }
+    html[data-view^="deck"] .deck-progress { display:block; }
     html[data-view^="deck"] .reveal-on-scroll { opacity:1 !important; transform:none !important; }
     html[data-view^="deck"] .notice-box, html[data-view^="deck"] .nav-project { display:none; }
 
-    /* ── deck-v: vertical snap; Space/↓ advances one panel ── */
-    html[data-view="deck-v"] { scroll-snap-type:y mandatory; scroll-padding-top:54px; }
-    html[data-view="deck-v"] .deck-slide { scroll-snap-align:start; scroll-snap-stop:always; min-height:100vh; box-sizing:border-box; }
+    /* ── deck-v: vertical snap; Space/↓ advances one panel ──
+       Snap mechanics alone give a page that stops in convenient places, not a deck.
+       The framing rules below are what make it read as slides. */
+    html[data-view="deck-v"] { scroll-snap-type:y mandatory; }
+    html[data-view="deck-v"] .deck-slide { scroll-snap-align:start; scroll-snap-stop:always; min-height:100vh; min-height:100dvh; box-sizing:border-box; }
+
+    /* 1 · strip the page chrome — a deck is not a document */
+    html[data-view="deck-v"] .site-nav,
+    html[data-view="deck-v"] .site-footer,
+    html[data-view="deck-v"] .toc-rail { display:none; }
+    /* 2 · full-bleed the stage: the container's max-width is what makes a slide read as a section */
+    html[data-view="deck-v"] .project-body { max-width:none; margin:0; padding:0; }
+    html[data-view="deck-v"] .deck-section { display:contents; }
+    /* 3 · centre the content, with side gutters off the raw edge */
+    html[data-view="deck-v"] .deck-slide { display:flex; flex-direction:column; justify-content:safe center; padding:clamp(36px,5.5vh,76px) clamp(32px,6vw,120px); }
+    /* grid/flex-row panels are ALSO .deck-slide — restore their display or the columns collapse */
+    html[data-view="deck-v"] .deck-slide:is(.wds-worlds,.wds-moves,.wds-tech,.wds-agents,.sl-intake) { display:grid; align-content:safe center; }
+    html[data-view="deck-v"] .deck-slide.sl-fw { display:flex; flex-flow:row wrap; align-items:baseline; align-content:safe center; }
+    /* colour-field panels fill the stage rather than floating as a band inside it */
+    html[data-view="deck-v"] .deck-slide:is(.wds-worlds,.sl-intake) { grid-template-rows:1fr; align-content:stretch; padding-inline:0; padding-block:0; }
+    html[data-view="deck-v"] :is(.wds-tech-item,.jc-trap-card,.jc-layer,.mb-source,.mb-hub,.mb-out-item,.wds-world,.wds-move) { display:flex; flex-direction:column; justify-content:center; }
+    /* 4 · cap promoted type against viewport HEIGHT — a real browser's inner height is
+       ~813px on a "900px" window, and vw-only sizing overflows every laptop */
+    html[data-view="deck-v"] .wds-head .wds-head-title { font-size:min(clamp(48px,7.5vw,104px), 11vh); line-height:0.94; }
+    html[data-view="deck-v"] .wds-hero h3 { font-size:min(clamp(34px,5vw,68px), 8.4vh); }
+    html[data-view="deck-v"] .wds-hero-lead { font-size:min(clamp(15px,1.4vw,19px), 2.3vh); }
+    html[data-view="deck-v"] .tool-statement h2 { font-size:min(clamp(34px,5vw,66px), 9vh); }
+    html[data-view="deck-v"] .big-statement h2 { font-size:min(clamp(30px,4.4vw,58px), 8vh); }
+    /* 5 · give the advance a beat; keyframed off a class so a failed script can't blank the page */
+    @keyframes deck-in { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+    html[data-view="deck-v"] .deck-slide.is-live > * { animation:deck-in 560ms cubic-bezier(0.22,0.84,0.22,1) both; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(2) { animation-delay:70ms; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(3) { animation-delay:130ms; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(n+4) { animation-delay:180ms; }
 
     /* ── deck-h: horizontal track via display:contents flatten + native x-snap ── */
     html[data-view="deck-h"], html[data-view="deck-h"] body { overflow:hidden; }
@@ -443,7 +488,10 @@
     html[data-view="deck-h"] .wds-head .wds-head-title { font-size:clamp(66px,11.5vw,158px); line-height:0.92; }
     html[data-view="deck-h"] .wds-head .wds-head-role { font-size:clamp(14px,1.5vw,18px); margin-top:clamp(18px,2.6vh,30px); }
 
-    @media (max-width:768px) { .view-switch [data-viewbtn="deck-v"], .view-switch [data-viewbtn="deck-h"] { opacity:0.4; pointer-events:none; } }
+    /* Where decks can't run, remove the control rather than dimming it — a disabled
+       button people can still see is a distraction that answers nothing. */
+    @media (max-width:768px) { .pc-view, .pc-rule { display:none; } }
+    @media (prefers-reduced-motion:reduce) { .pc-view, .pc-rule { display:none; } html[data-view="deck-v"] .deck-slide.is-live > * { animation:none !important; } }
   </style>
   <style data-toc>
     /* ═══ Section jump-nav: left "you-are-here" scroll-spy rail (auto-generated) ═══ */
@@ -1839,21 +1887,25 @@
 
   </main>
 
-  <!-- ── Language Switch ── -->
-  <div class="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
-
-  <!-- ── View mode switcher ── -->
-  <div class="view-switch" role="group" aria-label="View mode">
-    <button data-viewbtn="scroll" aria-pressed="true"><span class="vs-i">&#8801;</span><span>Scroll</span></button>
-    <button data-viewbtn="deck-v" aria-pressed="false"><span class="vs-i">&#8595;</span><span>Slides</span></button>
-    <button data-viewbtn="deck-h" aria-pressed="false"><span class="vs-i">&#8594;</span><span>Deck</span></button>
+  <!-- ── Page controls: language, view mode, and the deck readout in one cluster ── -->
+  <div class="page-controls">
+    <div class="deck-count" aria-live="polite">1 / 1</div>
+    <div class="pc-group pc-lang" role="group" aria-label="Language">
+      <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
+      <button class="lang-btn" type="button" data-lang="jp">JP</button>
+    </div>
+    <div class="pc-rule" aria-hidden="true"></div>
+    <div class="pc-group pc-view" role="group" aria-label="View mode">
+      <button type="button" data-viewbtn="scroll" aria-pressed="true"><span class="pc-i" aria-hidden="true">&#8801;</span><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></button>
+      <button type="button" data-viewbtn="deck-v" aria-pressed="false"><span class="pc-i" aria-hidden="true">&#8595;</span><span class="t-en">Slides</span><span class="t-jp">スライド</span></button>
+      <button type="button" data-viewbtn="deck-h" aria-pressed="false"><span class="pc-i" aria-hidden="true">&#8594;</span><span class="t-en">Deck</span><span class="t-jp">デッキ</span></button>
+    </div>
+    <div class="deck-hint" id="deck-hint" aria-hidden="true">
+      <span class="t-en"><kbd>Space</kbd> to advance</span>
+      <span class="t-jp"><kbd>Space</kbd> で次へ</span>
+    </div>
   </div>
   <div class="deck-progress" aria-hidden="true"><i></i></div>
-  <div class="deck-count" aria-live="polite">1 / 1</div>
 
   <!-- ── Section jump-nav rail (auto-populated) ── -->
   <nav class="toc-rail" aria-label="Sections"><ul class="toc-list"></ul></nav>
@@ -1920,17 +1972,26 @@
     const btns = [...document.querySelectorAll('[data-viewbtn]')];
     const bar = document.querySelector('.deck-progress i');
     const count = document.querySelector('.deck-count');
+    const hint = document.getElementById('deck-hint');
     const mqMobile = window.matchMedia('(max-width:768px)');
     const mqMotion = window.matchMedia('(prefers-reduced-motion:reduce)');
     const slides = () => [...document.querySelectorAll('.deck-slide')];
     const allowDeck = () => !(mqMobile.matches || mqMotion.matches);
-    let cur = 0;
+    let cur = 0, advanced = false;
 
     const setBtns = (v) => btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewbtn === v)));
+    // Mark the current slide live so its content replays the entrance beat
+    const markLive = () => {
+      const s = slides();
+      s.forEach((el, i) => { if (i !== cur) el.classList.remove('is-live'); });
+      const el = s[cur];
+      if (el && !el.classList.contains('is-live')) { void el.offsetWidth; el.classList.add('is-live'); }
+    };
     const updateProgress = () => {
       const n = slides().length || 1;
       if (bar) bar.style.width = ((cur + 1) / n * 100) + '%';
       if (count) count.textContent = (cur + 1) + ' / ' + n;
+      if (html.dataset.view === 'deck-v') markLive();
     };
     const idxFromScroll = () => {
       const s = slides(); if (!s.length) return 0;
@@ -1954,7 +2015,13 @@
       html.dataset.view = v;
       setBtns(v);
       localStorage.setItem('tu-view', v);
-      if (v !== 'scroll') requestAnimationFrame(() => goto(cur, 'auto'));
+      if (v === 'scroll') {
+        slides().forEach(el => el.classList.remove('is-live'));
+        if (hint) hint.classList.remove('is-gone');
+        advanced = false;
+      } else {
+        requestAnimationFrame(() => goto(cur, 'auto'));
+      }
       updateProgress();
     };
 
@@ -1972,6 +2039,8 @@
       else if (BACK.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur - 1); }
       else if (e.key === 'Home') { e.preventDefault(); goto(0); }
       else if (e.key === 'End') { e.preventDefault(); goto(slides().length - 1); }
+      else return;
+      if (!advanced && hint) { advanced = true; hint.classList.add('is-gone'); }
     });
 
     let raf = 0;
