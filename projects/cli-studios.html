@@ -210,8 +210,6 @@
     .wds-statement-lead strong { color: #fff; font-weight: 600; }
 
     /* Five fixes — cream slide with before→after cards */
-    .wds-fixes { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
-    .wds-fixes h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 16px; }
     .wds-fixes-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
     .fix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 30px; }
     .fix-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
@@ -255,6 +253,66 @@
     .g-cell img { opacity: 0; transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
     .g-cell img.loaded { opacity: 1; }
     .g-cell:hover img.loaded { transform: scale(1.008); }
+
+    /* Structure — the architecture itself, before and after (cream).
+       The Tension slide states the problem in words; this one shows its shape.
+       CSS-only diagram: an image would go stale the moment the IA is described
+       differently, and this is the one slide that must stay true to the text. */
+    .wds-structure { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-structure .wds-kick { color: var(--acc); margin-bottom: 10px; }
+    .wds-structure h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
+    .wds-structure-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .ia-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 30px; }
+    .ia-panel { background: #fff; border: 1px solid var(--line); padding: clamp(22px, 2vw, 34px); }
+    .ia-panel--after { border-top: 3px solid var(--acc); }
+    .ia-tag { font-size: clamp(10.5px, 0.8vw, 12.5px); letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 18px; }
+    .ia-panel--after .ia-tag { color: var(--acc); }
+    .ia-node { font-size: clamp(13.5px, 1.02vw, 17px); line-height: 1.5; color: var(--ink); padding: 8px 0; }
+    .ia-sub { margin-left: 14px; padding-left: 16px; border-left: 1px solid var(--border); }
+    .ia-modal { display: inline-block; font-size: clamp(9.5px, 0.72vw, 11px); letter-spacing: 0.1em; text-transform: uppercase; color: #a8412f; border: 1px solid rgba(168,65,47,0.34); padding: 2px 7px; margin-left: 8px; }
+    .ia-dead { font-size: clamp(12.5px, 0.95vw, 15.5px); color: #a8412f; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .ia-secs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .ia-sec { border: 1px solid var(--border); padding: 13px 15px; }
+    .ia-sec-name { font-size: clamp(13.5px, 1.02vw, 17px); color: var(--ink); }
+    .ia-sec-note { font-size: clamp(11.5px, 0.86vw, 14px); color: var(--ink-dim); margin-top: 4px; line-height: 1.45; }
+    .ia-flat { font-size: clamp(12.5px, 0.95vw, 15.5px); color: var(--acc); margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    @media (max-width: 760px) { .ia-pair { grid-template-columns: 1fr; } }
+
+    /* Craft — the judgment layer: what was rejected, and why.
+       Where a project used AI this slide carries the AI collaboration instead.
+       This one did not (2024, Figma only, solo) — which is precisely what it says. */
+    .wds-craft { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6vw, 88px) clamp(28px, 5vw, 78px); }
+    .wds-craft::after {
+      content: "";
+      position: absolute; right: -12%; top: -45%;
+      width: 58%; height: 160%;
+      background: radial-gradient(ellipse at center, rgba(96,165,250,0.16), transparent 64%);
+      pointer-events: none;
+    }
+    .wds-craft > * { position: relative; z-index: 1; }
+    .wds-craft .wds-kick { color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+    .wds-craft h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(28px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.06; max-width: 21ch; margin-bottom: 16px; }
+    .wds-craft h2 em { font-style: italic; color: var(--acc-tint); }
+    .wds-craft-lead { font-size: clamp(15px, 1.18vw, 19.5px); line-height: 1.7; color: rgba(255,255,255,0.7); max-width: 64ch; }
+    .wds-craft-lead strong { color: #fff; font-weight: 600; }
+    .craft-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 32px; }
+    .craft-card { background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.11); border-top: 3px solid var(--acc-tint); padding: clamp(20px, 1.8vw, 30px); }
+    .craft-label { font-size: clamp(10.5px, 0.78vw, 12.5px); letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 12px; }
+    .craft-title { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.4; color: #fff; margin-bottom: 10px; }
+    .craft-why { font-size: clamp(13px, 1vw, 16.5px); line-height: 1.6; color: rgba(255,255,255,0.64); }
+    @media (max-width: 860px) { .craft-grid { grid-template-columns: 1fr; } }
+
+    /* Retrospective — what is still open. Sits between Proof and Closing so the
+       closing line reads as a conclusion rather than as a claim of completeness. */
+    .wds-retro { background: #fff; border-top: 1px solid var(--line); padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-retro .wds-kick { color: var(--ink-dim); margin-bottom: 10px; }
+    .wds-retro h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 14px; }
+    .wds-retro-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .retro-list { display: grid; gap: 2px; margin-top: 28px; }
+    .retro-item { display: grid; grid-template-columns: auto 1fr; gap: clamp(16px, 1.8vw, 30px); align-items: start; background: #f4efe4; padding: clamp(20px, 1.9vw, 30px) clamp(20px, 1.8vw, 30px); }
+    .retro-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(20px, 1.8vw, 28px); color: var(--acc); line-height: 1; }
+    .retro-title { font-size: clamp(15.5px, 1.2vw, 20px); line-height: 1.4; color: var(--ink); margin-bottom: 8px; }
+    .retro-body { font-size: clamp(13.5px, 1.02vw, 17px); line-height: 1.62; color: var(--ink-mid); max-width: 78ch; }
 
     /* Proof — cream slide, the numbers (once on the page) */
     .wds-proof { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
@@ -425,9 +483,11 @@
     html[data-view="deck-v"] .wds-hero h1 { font-size: min(clamp(44px, 7vw, 104px), 8.4vh); }
     html[data-view="deck-v"] .wds-statement h3 { font-size: min(clamp(38px, 5.6vw, 78px), 9vh); }
     html[data-view="deck-v"] .wds-closing h2 { font-size: min(clamp(38px, 5.4vw, 74px), 9vh); }
-    html[data-view="deck-v"] .wds-fixes h2,
     html[data-view="deck-v"] .wds-proof h2,
     html[data-view="deck-v"] .wds-evidence h2,
+    html[data-view="deck-v"] .wds-structure h2,
+    html[data-view="deck-v"] .wds-craft h2,
+    html[data-view="deck-v"] .wds-retro h2,
     html[data-view="deck-v"] .wds-video h2 { font-size: min(clamp(32px, 4.4vw, 58px), 6.6vh); }
     html[data-view="deck-v"] .wds-statement-lead { font-size: min(clamp(16px, 1.4vw, 23px), 2.5vh); }
     html[data-view="deck-v"] .wds-hero-lead { font-size: min(clamp(15.5px, 1.25vw, 21px), 2.3vh); margin-top: 3vh; }
@@ -439,7 +499,19 @@
     html[data-view="deck-v"] .video-frame { height: min(54vh, 560px); width: auto; }
     /* Dense grids compress to fit rather than hide half a slide behind a scrollbar */
     html[data-view="deck-v"] .wds-fixes-lead,
+    html[data-view="deck-v"] .wds-structure-lead,
+    html[data-view="deck-v"] .wds-craft-lead,
+    html[data-view="deck-v"] .wds-retro-lead,
     html[data-view="deck-v"] .wds-proof-lead { font-size: min(clamp(15px, 1.15vw, 19px), 2.1vh); }
+    html[data-view="deck-v"] .ia-pair,
+    html[data-view="deck-v"] .craft-grid,
+    html[data-view="deck-v"] .retro-list { margin-top: 2.8vh; }
+    html[data-view="deck-v"] .ia-panel { padding: clamp(18px, 2.4vh, 34px) clamp(18px, 1.6vw, 32px); }
+    html[data-view="deck-v"] .ia-node { padding: 0.8vh 0; font-size: min(clamp(13.5px, 1.02vw, 17px), 2vh); }
+    html[data-view="deck-v"] .craft-card { padding: clamp(16px, 2.2vh, 30px) clamp(18px, 1.6vw, 30px); }
+    html[data-view="deck-v"] .craft-why { font-size: min(clamp(13px, 1vw, 16.5px), 1.9vh); }
+    html[data-view="deck-v"] .retro-item { padding: clamp(14px, 2vh, 30px) clamp(18px, 1.7vw, 30px); }
+    html[data-view="deck-v"] .retro-body { font-size: min(clamp(13.5px, 1.02vw, 17px), 1.95vh); }
     html[data-view="deck-v"] .fix-grid { margin-top: 2.6vh; }
     html[data-view="deck-v"] .fix-card { padding: clamp(16px, 2.1vh, 28px) clamp(18px, 1.6vw, 28px); }
     html[data-view="deck-v"] .fix-num { font-size: min(clamp(26px, 2.1vw, 34px), 3.6vh); margin-bottom: 1vh; }
@@ -626,15 +698,74 @@
       </p>
     </section>
 
-    <!-- ═══ Slide 5 · Five fixes (cream) ═══ -->
-    <section class="wds-fixes wds-slide deck-slide reveal-on-scroll" aria-label="Five problems solved">
+    <!-- ═══ Slide 5 · Structure — the IA itself, then the five fixes it produced (cream) ═══ -->
+    <section class="wds-structure wds-slide deck-slide reveal-on-scroll" aria-label="Information architecture, before and after">
+      <p class="wds-kick">
+        <span class="t-en">The architecture</span>
+        <span class="t-jp">情報アーキテクチャ</span>
+      </p>
       <h2 class="wds-serif">
-        <span class="t-en">Five problems. Five fixes.</span>
-        <span class="t-jp is-block">5つの問題に、5つの答え。</span>
+        <span class="t-en">Five problems. One structure.</span>
+        <span class="t-jp is-block">5つの問題に、ひとつの構造。</span>
       </h2>
-      <p class="wds-fixes-lead">
-        <span class="t-en">Each fix follows from the same structural decision — once the architecture held, the rest fell into place.</span>
-        <span class="t-jp is-block">どの解決策も、同じ構造上の決定から導かれている。アーキテクチャが定まれば、残りは自然に収まった。</span>
+      <p class="wds-structure-lead">
+        <span class="t-en">The old app had no top level worth navigating — every content type opened another modal on top of the last, so depth replaced structure and there was no reliable way back. The rebuild gave it four peer sections and named them the way users already think.</span>
+        <span class="t-jp is-block">旧アプリには、たどる価値のある最上位が無かった。どのコンテンツもモーダルの上にモーダルを重ねて開くため、構造の代わりに深さだけが増え、確実に戻る道が無かった。再構築では4つの対等なセクションを置き、ユーザーが既に使っている言葉で名前を付けた。</span>
+      </p>
+      <div class="ia-pair">
+        <div class="ia-panel">
+          <div class="ia-tag">
+            <span class="t-en">Before — depth instead of structure</span>
+            <span class="t-jp">再設計前 — 構造ではなく深さ</span>
+          </div>
+          <div class="ia-node">Home</div>
+          <div class="ia-sub">
+            <div class="ia-node">Courses<span class="ia-modal">modal</span></div>
+            <div class="ia-sub">
+              <div class="ia-node"><span class="t-en">Course detail</span><span class="t-jp">コース詳細</span><span class="ia-modal">modal</span></div>
+              <div class="ia-sub">
+                <div class="ia-node"><span class="t-en">Video player</span><span class="t-jp">再生画面</span><span class="ia-modal">modal</span></div>
+              </div>
+            </div>
+            <div class="ia-node">Collections<span class="ia-modal">modal</span></div>
+          </div>
+          <div class="ia-dead">
+            <span class="t-en">Three layers deep, with no consistent way back — and "Courses" and "Collections" looked identical on the way in.</span>
+            <span class="t-jp is-block">3層の深さに対して、一貫した戻り道が無い。しかも入口では「Courses」と「Collections」が見分けられない。</span>
+          </div>
+        </div>
+        <div class="ia-panel ia-panel--after">
+          <div class="ia-tag">
+            <span class="t-en">After — four peer sections</span>
+            <span class="t-jp">再設計後 — 4つの対等なセクション</span>
+          </div>
+          <div class="ia-secs">
+            <div class="ia-sec">
+              <div class="ia-sec-name">Home</div>
+              <div class="ia-sec-note"><span class="t-en">Where you left off</span><span class="t-jp">続きから</span></div>
+            </div>
+            <div class="ia-sec">
+              <div class="ia-sec-name">Discover</div>
+              <div class="ia-sec-note"><span class="t-en">Browsing, not searching</span><span class="t-jp">探すのではなく、出会う</span></div>
+            </div>
+            <div class="ia-sec">
+              <div class="ia-sec-name">Library</div>
+              <div class="ia-sec-note"><span class="t-en">Learning Paths — sequential</span><span class="t-jp">ラーニングパス — 順序あり</span></div>
+            </div>
+            <div class="ia-sec">
+              <div class="ia-sec-name">My Pick</div>
+              <div class="ia-sec-note"><span class="t-en">Playlists — curated</span><span class="t-jp">プレイリスト — キュレーション</span></div>
+            </div>
+          </div>
+          <div class="ia-flat">
+            <span class="t-en">Full-page views throughout. Every screen has a parent, so back always means something.</span>
+            <span class="t-jp is-block">全面をフルページビューに。どの画面にも親があるので、「戻る」が常に意味を持つ。</span>
+          </div>
+        </div>
+      </div>
+      <p class="wds-fixes-lead" style="margin-top: clamp(30px, 3vw, 46px);">
+        <span class="t-en">Every one of the five problems dissolves out of that single decision — once the architecture held, the rest fell into place.</span>
+        <span class="t-jp is-block">5つの問題はすべて、この一つの決定から解けていく。アーキテクチャが定まれば、残りは自然に収まった。</span>
       </p>
       <div class="fix-grid">
         <div class="fix-card">
@@ -787,7 +918,67 @@
       </div>
     </section>
 
-    <!-- ═══ Slide 9 · Proof (cream) ═══ -->
+    <!-- ═══ Slide 9 · Craft — the judgment, and what was rejected (dark) ═══ -->
+    <section class="wds-craft wds-slide deck-slide reveal-on-scroll" aria-label="Craft and rejected alternatives">
+      <p class="wds-kick">
+        <span class="t-en">Craft &middot; 2024</span>
+        <span class="t-jp">クラフト &middot; 2024</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">No AI in the room. Just Figma, and <em>reasons</em>.</span>
+        <span class="t-jp is-block">AIはまだ無かった。あったのはFigmaと、<em>理由</em>だけ。</span>
+      </h2>
+      <p class="wds-craft-lead">
+        <span class="t-en">This was a solo engagement in 2024, before generative tools reached this kind of work. There was no model to generate a hundred directions and no team to argue with, so <strong>every decision had to carry its own justification</strong> — including the ones I decided not to take. Those are the more useful ones.</span>
+        <span class="t-jp is-block">2024年、この種の仕事に生成AIが届く前の単独案件だった。100案を出すモデルも、議論する相手もいない。だから<strong>すべての判断が、自前の根拠を持つ必要があった</strong>。採用しなかった判断も含めて。むしろ後者のほうが、読む価値がある。</span>
+      </p>
+      <div class="craft-grid">
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Rejected 01</span>
+            <span class="t-jp">選ばなかった案 01</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">A visual refresh</span>
+            <span class="t-jp">見た目のリフレッシュ</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">The fastest route to something that looks like progress. But all five problems traced to the architecture, so a surface pass would have returned every one of them on a different screen.</span>
+            <span class="t-jp is-block">最短で「進んでいるように見える」道。だが5つの問題はすべて構造に行き着くので、表層だけ直せば、同じ問題が別の画面で戻ってくる。</span>
+          </div>
+        </div>
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Rejected 02</span>
+            <span class="t-jp">選ばなかった案 02</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">Improving the modals</span>
+            <span class="t-jp">モーダルを改善する</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">The option that breaks nothing already built. But the modals were the cause, not the symptom — improved modals are still modals, and the depth stays exactly where it was.</span>
+            <span class="t-jp is-block">既存の作りを壊さずに済む案。しかしモーダルは症状ではなく原因だった。改善されたモーダルもモーダルであり、深さはそのまま残る。</span>
+          </div>
+        </div>
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Rejected 03</span>
+            <span class="t-jp">選ばなかった案 03</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">Five problems, five separate fixes</span>
+            <span class="t-jp">5つの問題を、5つ別々に直す</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">Defensible, and it would have closed every ticket. It would also have produced five unrelated patches — no single decision running through them, and no design system at the end of it.</span>
+            <span class="t-jp is-block">筋は通るし、チケットは全部閉じられる。ただし出来上がるのは無関係な5つのパッチで、それらを貫く1本の判断も、最後に残るデザインシステムも生まれない。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 10 · Proof (cream) ═══ -->
     <section class="wds-proof wds-slide deck-slide reveal-on-scroll" aria-label="Outcomes">
       <p class="wds-kick" style="color: var(--acc); margin-bottom: 10px;">
         <span class="t-en">Outcomes</span>
@@ -829,7 +1020,64 @@
       </div>
     </section>
 
-    <!-- ═══ Slide 10 · Closing (vivid blue) ═══ -->
+    <!-- ═══ Slide 11 · Retrospective — what is still open (white) ═══ -->
+    <section class="wds-retro wds-slide deck-slide reveal-on-scroll" aria-label="Retrospective">
+      <p class="wds-kick">
+        <span class="t-en">Retrospective</span>
+        <span class="t-jp">振り返り</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">What I'd still argue with.</span>
+        <span class="t-jp is-block">まだ自分と議論が残っている点。</span>
+      </h2>
+      <p class="wds-retro-lead">
+        <span class="t-en">Three things this project did not settle. They don't belong in the outcomes column, which is exactly why they're worth writing down.</span>
+        <span class="t-jp is-block">この仕事で決着しなかったことが3つある。成果の欄には書けない。だからこそ書き残す価値がある。</span>
+      </p>
+      <div class="retro-list">
+        <div class="retro-item">
+          <div class="retro-num">01</div>
+          <div>
+            <div class="retro-title">
+              <span class="t-en">The 25% is still a projection.</span>
+              <span class="t-jp is-block">25%は、まだ見込みのままだ。</span>
+            </div>
+            <div class="retro-body">
+              <span class="t-en">A design system's return only becomes a measurement once the next build actually runs against it. I'm showing a projected number in an outcomes column, and I know what that's worth compared to a measured one.</span>
+              <span class="t-jp is-block">デザインシステムの投資対効果は、次のビルドが実際にそれを使って初めて実測になる。成果の欄に見込み値を置いているわけで、実測値と比べたときの重みの違いは自覚している。</span>
+            </div>
+          </div>
+        </div>
+        <div class="retro-item">
+          <div class="retro-num">02</div>
+          <div>
+            <div class="retro-title">
+              <span class="t-en">Structure-first gives you nothing to look at, early.</span>
+              <span class="t-jp is-block">構造から入ると、序盤に見せられる画面が出てこない。</span>
+            </div>
+            <div class="retro-body">
+              <span class="t-en">Rebuilding the architecture before touching the surface means weeks with no screens to show. This engagement had room for that. I don't yet have a good answer for how to win the same argument somewhere that doesn't.</span>
+              <span class="t-jp is-block">表層に触れる前にアーキテクチャを組み直すということは、見せる画面が無い期間を数週間つくるということだ。今回はそれが許される進め方だった。許されない現場で同じ判断をどう通すかには、まだ良い答えを持っていない。</span>
+            </div>
+          </div>
+        </div>
+        <div class="retro-item">
+          <div class="retro-num">03</div>
+          <div>
+            <div class="retro-title">
+              <span class="t-en">A system only becomes a system when someone uses it.</span>
+              <span class="t-jp is-block">システムは、使われて初めてシステムになる。</span>
+            </div>
+            <div class="retro-body">
+              <span class="t-en">Thirteen pages and 125+ components are a document until the next build reaches for them. Adoption happens after handoff, which is where it leaves my hands — and designing for that handoff is a separate problem I'd take more seriously now.</span>
+              <span class="t-jp is-block">13ページと125以上のコンポーネントは、次のビルドが手を伸ばすまではドキュメントでしかない。採用が起きるのは納品の後、つまり自分の手を離れた場所だ。その引き渡しをどう設計するかは別の問題で、今ならもっと真剣に扱う。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 12 · Closing (vivid blue) ═══ -->
     <section class="wds-closing wds-slide deck-slide reveal-on-scroll" aria-label="Closing">
       <p class="wds-kick">
         <span class="t-en">The takeaway</span>
