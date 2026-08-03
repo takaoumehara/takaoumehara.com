@@ -1151,9 +1151,16 @@
           codeLoaded = true;
           codeEl.textContent = 'Loading source…';
           fetch(src)
-            .then(r => r.text())
+            .then(r => {
+              if (!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+              return r.text();
+            })
             .then(txt => { codeEl.textContent = txt; })
-            .catch(() => { codeEl.textContent = 'Could not load source in the frame. Use “Open Full Screen” and view the page source.'; });
+            .catch(err => {
+              console.error('[proto] source view failed for', src, err);
+              codeLoaded = false; // allow a retry on the next switch to the code view
+              codeEl.textContent = 'Could not load source in the frame. Use “Open Full Screen” and view the page source.';
+            });
         };
 
         // Default to mobile (iPhone frame)

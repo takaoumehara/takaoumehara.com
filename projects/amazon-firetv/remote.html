@@ -429,16 +429,17 @@
     db = firebase.database();
     auth = firebase.auth();
     
-    return new Promise((resolve) => {
-      let resolved = false;
+    return new Promise((resolve, reject) => {
+      let settled = false;
       auth.onAuthStateChanged((user) => {
-        if (user && !resolved) {
-          resolved = true;
+        if (user && !settled) {
+          settled = true;
           uid = user.uid;
           resolve();
         }
-      });
-      auth.signInAnonymously();
+      }, (e) => { if (!settled) { settled = true; reject(e); } });
+      // Without this the promise would hang forever on a sign-in failure
+      auth.signInAnonymously().catch(e => { if (!settled) { settled = true; reject(e); } });
     });
   }
 
@@ -469,14 +470,17 @@
       playerRef = db.ref(`rooms/${roomId}/players/${uid}`);
       const now = Date.now();
       await playerRef.set({ id: uid, name: deviceName, role: 'participant', connected: true, joinedAt: now, lastSeenAt: now });
-      playerRef.onDisconnect().update({ connected: false, lastSeenAt: firebase.database.ServerValue.TIMESTAMP });
+      playerRef.onDisconnect().update({ connected: false, lastSeenAt: firebase.database.ServerValue.TIMESTAMP })
+        .catch(err => console.warn('[remote] presence onDisconnect not registered', err));
       inputRef = db.ref(`rooms/${roomId}/state/input/${uid}`);
       subscribe(roomId);
 
       setConnected(true, 'Connected');
       buzz(30); toastr('🎉 You are the remote now');
       clearInterval(hbTimer);
-      hbTimer = setInterval(() => playerRef.update({ lastSeenAt: Date.now() }), 20000);
+      hbTimer = setInterval(() => {
+        playerRef.update({ lastSeenAt: Date.now() }).catch(err => console.warn('[remote] heartbeat failed', err));
+      }, 20000);
     } catch (e) {
       console.error(e);
       const msg = String(e.message);
@@ -492,13 +496,21 @@
       setConnected(true, 'Local demo');
       bc.postMessage({ type: 'join', name: deviceName + ' (local tab)' });
       toastr('Local mode (Firebase not configured): controlling a TV tab on this device');
-    } catch (e) {}
+    } catch (e) {
+      console.error('[remote] local demo mode unavailable', e);
+      bc = null;
+      setConnected(false);
+      $('#joinErr').textContent = 'This browser can’t run the local demo. Configure firebase-config.js to pair with a TV.';
+    }
   }
 
   function subscribe(roomId) {
     if (ctxRef) ctxRef.off();
     ctxRef = db.ref(`rooms/${roomId}/state/context`);
-    ctxRef.on('value', s => { const v = s.val(); if (v) onContext(v); });
+    ctxRef.on('value', s => { const v = s.val(); if (v) onContext(v); }, err => {
+      console.error('[remote] screen context subscription failed', err);
+      toastr('Lost the TV’s screen updates — check your network');
+    });
   }
 
   /* TV went away (reload/restart) — return to the join screen for the new code */
@@ -527,10 +539,16 @@
     if (!inputRef) return;
     try {
       await inputRef.set({ ...event, ts: Date.now() });   // ts guarantees repeated identical inputs still deliver
-    } catch (e) { toastr('Connection lost — check your network'); }
+    } catch (e) {
+      console.warn('[remote] input send failed', e);
+      toastr('Connection lost — check your network');
+    }
   }
   window.addEventListener('pagehide', () => {
-    if (playerRef) { try { playerRef.update({ connected: false }); } catch (e) {} }
+    if (playerRef) {
+      // Best effort on unload — presence also self-heals via onDisconnect
+      try { playerRef.update({ connected: false }).catch(() => {}); } catch (e) {}
+    }
   });
 
   /* ---------------- controls ---------------- */

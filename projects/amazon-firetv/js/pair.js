@@ -41,7 +41,7 @@ const Pair = (() => {
         box.innerHTML = qr.createImgTag(4, 8);
         return;
       }
-    } catch (e) { /* fall through */ }
+    } catch (e) { console.warn('[pair] QR render failed — showing the URL as text', e); }
     box.innerHTML = `<div style="color:#111;font-size:.62rem;word-break:break-all;padding:.4rem;font-weight:600">${text}</div>`;
   }
 
@@ -93,8 +93,11 @@ const Pair = (() => {
 
     // presence: if the TV drops, mark it disconnected
     const hostRef = db.ref(`rooms/${roomId}/players/${uid}`);
-    hostRef.onDisconnect().update({ connected: false, lastSeenAt: firebase.database.ServerValue.TIMESTAMP });
-    hbTimer = setInterval(() => hostRef.update({ lastSeenAt: Date.now() }), 25000);
+    hostRef.onDisconnect().update({ connected: false, lastSeenAt: firebase.database.ServerValue.TIMESTAMP })
+      .catch(e => console.warn('[pair] presence onDisconnect not registered — remotes may not see the TV drop', e));
+    hbTimer = setInterval(() => {
+      hostRef.update({ lastSeenAt: Date.now() }).catch(e => console.warn('[pair] heartbeat failed', e));
+    }, 25000);
 
     const remoteUrl = `${location.origin}/remote.html?code=${code}`;
     qrInto('pairQr', remoteUrl);
@@ -111,19 +114,24 @@ const Pair = (() => {
 
   /* ---- subscribe to remote input + player presence ---- */
   function subscribe() {
+    const onSubError = (what) => (e) => {
+      console.error(`[pair] ${what} subscription failed — remote input will not arrive`, e);
+      if (window.App && App.toast) App.toast('Remote link lost', 'Reload the TV app to pair again', true);
+    };
+
     refs.input = db.ref(`rooms/${room.roomId}/state/input`);
-    refs.input.on('child_added',   s => onInput(s.val()));
-    refs.input.on('child_changed', s => onInput(s.val()));
+    refs.input.on('child_added',   s => onInput(s.val()), onSubError('input'));
+    refs.input.on('child_changed', s => onInput(s.val()), onSubError('input'));
 
     refs.players = db.ref(`rooms/${room.roomId}/players`);
     refs.players.on('child_added', s => {
       const p = s.val(); if (!p || p.role === 'host') return;
       if (p.connected !== false) { connected++; onJoin(p); }
-    });
+    }, onSubError('players'));
     refs.players.on('child_changed', s => {
       const p = s.val(); if (!p || p.role === 'host') return;
       if (p.connected === false) { connected = Math.max(0, connected - 1); onLeave(p); }
-    });
+    }, onSubError('players'));
   }
 
   function onJoin(p) {
@@ -164,8 +172,12 @@ const Pair = (() => {
   /* ---- host → remotes context (screen name shown on phone) ---- */
   function sendContext(screen, detail) {
     const payload = { type: 'context', screen, detail, cart: App.state.cart.reduce((a, i) => a + i.qty, 0), ts: Date.now() };
-    if (db && room) db.ref(`rooms/${room.roomId}/state/context`).set(payload).catch(() => {});
-    else if (bc) bc.postMessage(payload);
+    if (db && room) {
+      db.ref(`rooms/${room.roomId}/state/context`).set(payload)
+        .catch(e => console.warn('[pair] context sync failed — the phone may show a stale screen', e));
+    } else if (bc) {
+      try { bc.postMessage(payload); } catch (e) { console.warn('[pair] context broadcast failed', e); }
+    }
   }
 
   /* ---- BroadcastChannel fallback (same-device demo, no Firebase) ---- */
@@ -179,7 +191,13 @@ const Pair = (() => {
       setCodeText('LOCAL MODE');
       const sub = document.querySelector('#pairPop .pair-sub');
       if (sub) sub.innerHTML = 'Firebase not configured. Open <b>remote.html</b> in another tab of this computer (demo), or fill in <b>app/firebase-config.js</b> for real phone pairing.';
-    } catch (e) {}
+    } catch (e) {
+      console.error('[pair] local fallback unavailable — phone pairing is disabled', e);
+      setCodeText('UNAVAILABLE');
+      const sub = document.querySelector('#pairPop .pair-sub');
+      if (sub) sub.textContent = 'Pairing is unavailable in this browser. Use the on-screen remote instead.';
+      return;
+    }
     // still listen for local joins via BroadcastChannel
     if (bc) bc.onmessage = ev => {
       const m = ev.data;

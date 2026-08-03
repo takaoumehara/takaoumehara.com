@@ -1,9 +1,19 @@
 /* Fire TV-style navigation sounds via WebAudio (subtle, synthesized). */
 const SFX = (() => {
   let ctx = null;
+  let unsupported = false;
   const ensure = () => {
-    if (!ctx) { try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { /* no audio */ } }
-    if (ctx && ctx.state === 'suspended') ctx.resume();
+    if (!ctx && !unsupported) {
+      try {
+        ctx = new (window.AudioContext || window.webkitAudioContext)();
+      } catch (e) {
+        unsupported = true; // report once; the app stays usable without sound
+        console.info('[sfx] WebAudio unavailable — navigation sounds disabled', e.message);
+      }
+    }
+    if (ctx && ctx.state === 'suspended') {
+      ctx.resume().catch(e => console.info('[sfx] could not resume audio context', e.message));
+    }
     return ctx;
   };
   // Unlock on first interaction

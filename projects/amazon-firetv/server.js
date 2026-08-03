@@ -192,9 +192,20 @@ function sse(res) {
   });
   res.write(':ok\n\n');
 }
+/* Writes to every stream in the set, dropping (and reporting) the ones that
+   have gone away so dead responses don't accumulate. */
+function writeAll(streamSet, line, what) {
+  for (const res of streamSet) {
+    try {
+      res.write(line);
+    } catch (e) {
+      streamSet.delete(res);
+      console.warn(`[sse] dropping stream after failed ${what}:`, e.message);
+    }
+  }
+}
 function push(streamSet, data) {
-  const line = `data: ${JSON.stringify(data)}\n\n`;
-  for (const res of streamSet) { try { res.write(line); } catch (e) {} }
+  writeAll(streamSet, `data: ${JSON.stringify(data)}\n\n`, 'push');
 }
 
 /* keepalive + presence sweep */
@@ -202,7 +213,7 @@ setInterval(() => {
   const now = Date.now();
   for (const [roomId, room] of rooms) {
     for (const set of [room.tvStreams, room.remoteStreams]) {
-      for (const res of set) { try { res.write(':ka\n\n'); } catch (e) {} }
+      writeAll(set, ':ka\n\n', 'keepalive');
     }
     for (const [pid, p] of room.players) {
       if (now - p.lastSeenAt > 45000) {
@@ -218,15 +229,32 @@ setInterval(() => {
   }
 }, 15000);
 
+/* Request failures the client is responsible for: reported as-is instead of
+   being flattened into a 500 (or, worse, silently ignored). */
+class RequestError extends Error {
+  constructor(status, code) { super(code); this.status = status; this.code = code; }
+}
+
 function readBody(req) {
   return new Promise((resolve, reject) => {
     let data = '';
-    req.on('data', c => { data += c; if (data.length > 64 * 1024) { reject(new Error('too big')); req.destroy(); } });
-    req.on('end', () => { try { resolve(data ? JSON.parse(data) : {}); } catch (e) { resolve({}); } });
+    req.on('data', c => {
+      data += c;
+      // pause rather than destroy so the 413 actually reaches the client
+      if (data.length > 64 * 1024) { req.pause(); reject(new RequestError(413, 'body_too_large')); }
+    });
+    req.on('end', () => {
+      if (!data) return resolve({});
+      try { resolve(JSON.parse(data)); } catch (e) { reject(new RequestError(400, 'bad_json')); }
+    });
     req.on('error', reject);
   });
 }
-const json = (res, code, obj) => { res.writeHead(code, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(obj)); };
+const json = (res, code, obj) => {
+  if (res.writableEnded || res.headersSent) return;
+  res.writeHead(code, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify(obj));
+};
 
 /* ---------------- server ---------------- */
 const server = http.createServer(async (req, res) => {
@@ -258,6 +286,7 @@ const server = http.createServer(async (req, res) => {
           ttsCache.set(key, audio);
           return send(audio, 'audio/mpeg');
         } catch (e) {
+          console.warn('[tts] polly failed:', e.message);
           return json(res, 502, { error: 'polly_failed', detail: String(e.message).slice(0, 160) });
         }
       }
@@ -271,6 +300,7 @@ const server = http.createServer(async (req, res) => {
         ttsCache.set(key, audio);
         return send(audio, 'audio/wav');
       } catch (e) {
+        console.warn('[tts] gemini failed:', e.message);
         return json(res, 502, { error: 'gemini_failed', detail: String(e.message).slice(0, 200) });
       }
     }
@@ -366,6 +396,8 @@ const server = http.createServer(async (req, res) => {
       return json(res, 404, { error: 'gone' });
     }
   } catch (e) {
+    if (e instanceof RequestError) return json(res, e.status, { error: e.code });
+    console.error(`[api] ${req.method} ${p} failed:`, e);
     return json(res, 500, { error: 'server_error' });
   }
 
@@ -375,11 +407,27 @@ const server = http.createServer(async (req, res) => {
   const abs = path.join(ROOT, file);
   if (!abs.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
   fs.readFile(abs, (err, data) => {
-    if (err) { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('Not found'); }
+    if (err) {
+      const missing = err.code === 'ENOENT' || err.code === 'EISDIR';
+      if (!missing) console.error(`[static] ${file} failed:`, err);
+      res.writeHead(missing ? 404 : 500, { 'Content-Type': 'text/plain' });
+      return res.end(missing ? 'Not found' : 'Internal error');
+    }
     res.writeHead(200, { 'Content-Type': MIME[path.extname(abs)] || 'application/octet-stream' });
     res.end(data);
   });
 });
+
+server.on('error', e => {
+  if (e.code === 'EADDRINUSE') console.error(`  port ${PORT} is already in use — set PORT=<other> and retry.`);
+  else console.error('  server error:', e);
+  process.exit(1);
+});
+
+/* Async failures outside a request (timers, SSE writes) would otherwise be
+   lost or take the process down without explanation. */
+process.on('unhandledRejection', e => console.error('[unhandledRejection]', e));
+process.on('uncaughtException', e => { console.error('[uncaughtException]', e); process.exit(1); });
 
 server.listen(PORT, () => {
   const ip = lanIP();
