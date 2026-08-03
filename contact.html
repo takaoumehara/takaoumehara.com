@@ -573,39 +573,7 @@
     </div>
   </footer>
 
-  <script>
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll(".lang-btn")];
-    const saved = localStorage.getItem("tu-lang") || "en";
-    const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
-      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-      localStorage.setItem("tu-lang", lang);
-    };
-    setLang(saved);
-    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
-  })();
-  
-  // ── Mobile Nav ──
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
-      toggle.addEventListener('click', () => {
-        toggle.classList.toggle('is-open');
-        links.classList.toggle('is-open');
-      });
-      // Close on link click
-      links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          toggle.classList.remove('is-open');
-          links.classList.remove('is-open');
-        });
-      });
-    }
-  })();
-  </script>
+  <script src="assets/site-ui.js" defer></script>
 
 </body>
 </html>

@@ -302,47 +302,6 @@
     <ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="../ai-products.html">Agentic UX</a></li><li><a href="../work.html">Product Design</a></li><li><a href="../brand.html">Brand &amp; Visual</a></li><li><a href="../about.html">About</a></li><li><a href="../contact.html">Contact</a></li></ul>
   </footer>
 
-  <script>
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll(".lang-btn")];
-    const saved = localStorage.getItem("tu-lang") || "en";
-    const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
-      html.lang = lang === "jp" ? "ja" : "en";
-      btns.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
-      localStorage.setItem("tu-lang", lang);
-    };
-    setLang(saved);
-    btns.forEach((button) => button.addEventListener("click", () => setLang(button.dataset.lang)));
-  })();
-
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (!toggle || !links) return;
-    toggle.addEventListener('click', () => {
-      const open = !links.classList.contains('is-open');
-      toggle.classList.toggle('is-open', open);
-      links.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-    links.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
-      toggle.classList.remove('is-open');
-      links.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-    }));
-  })();
-
-  (() => {
-    const io = new IntersectionObserver((entries) => entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        io.unobserve(entry.target);
-      }
-    }), { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    document.querySelectorAll('.reveal-on-scroll').forEach((el) => io.observe(el));
-  })();
-  </script>
+  <script src="../assets/site-ui.js" defer></script>
 </body>
 </html>

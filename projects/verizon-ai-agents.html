@@ -1925,47 +1925,8 @@
     </div>
   </footer>
 
+    <script src="../assets/site-ui.js" defer></script>
   <script>
-  // Language toggle
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll('.lang-btn')];
-    const saved = localStorage.getItem('tu-lang') || 'en';
-    const setLang = (lang) => {
-      html.classList.toggle('lang-jp', lang === 'jp');
-      html.lang = lang === 'jp' ? 'ja' : 'en';
-      btns.forEach((b) => b.classList.toggle('is-active', b.dataset.lang === lang));
-      localStorage.setItem('tu-lang', lang);
-    };
-    setLang(saved);
-    btns.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
-  })();
-
-  // Scroll reveal
-  (() => {
-    const items = document.querySelectorAll('.reveal-on-scroll');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); observer.unobserve(e.target); } });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    items.forEach(el => observer.observe(el));
-  })();
-
-  // Mobile menu
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
-      toggle.addEventListener('click', () => {
-        const open = !links.classList.contains('is-open');
-        toggle.classList.toggle('is-open', open);
-        links.classList.toggle('is-open', open);
-        toggle.setAttribute('aria-expanded', String(open));
-      });
-    }
-  })();
-  </script>
-
-  <script data-deck>
   // View-mode engine: scroll | deck-v | deck-h. Keyed only off html[data-view] + .deck-slide.
   (() => {
     const html = document.documentElement;
@@ -2060,9 +2021,6 @@
     const saved = localStorage.getItem('tu-view') || 'scroll';
     setView(allowDeck() ? saved : 'scroll');
   })();
-  </script>
-
-  <script data-toc>
   // Auto-generated section jump-nav + scroll-spy. Reusable: scans headers, no hand-authored list.
   (() => {
     const main = document.querySelector('main.project-body');
