@@ -23,6 +23,10 @@ const ROOT = __dirname;
 const CODE_ALPHABET = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // font-safe (snap-pair)
 const CODE_TTL_MS = 10 * 60 * 1000;   // pairing code validity
 const MAX_PLAYERS = 8;
+const MAX_ROOMS = 200;                // hard cap so room creation can't exhaust memory
+const ROOMS_PER_IP_PER_MIN = 10;      // room-creation budget per client
+const TTS_PER_IP_PER_MIN = 20;        // cloud-TTS budget per client
+const TTS_GLOBAL_PER_MIN = 120;       // cloud-TTS budget across all clients
 
 /* ---------------- Amazon Polly TTS (optional) ----------------
    Enabled only when AWS credentials are present in the environment:
@@ -166,6 +170,30 @@ const MIME = {
 const rooms = new Map();
 const codes = new Map(); // code → roomId
 
+/* ---------------- abuse limits ----------------
+   The relay is LAN-facing and the cloud TTS endpoints spend real money per
+   call, so every unauthenticated entry point gets a fixed-window budget. */
+const buckets = new Map(); // `${name}|${key}` → { count, windowStart }
+function overLimit(name, key, limit, windowMs = 60000) {
+  const id = `${name}|${key}`;
+  const now = Date.now();
+  const b = buckets.get(id);
+  if (!b || now - b.windowStart >= windowMs) { buckets.set(id, { count: 1, windowStart: now }); return false; }
+  b.count += 1;
+  return b.count > limit;
+}
+function clientIP(req) {
+  return req.socket.remoteAddress || 'unknown';
+}
+
+/* Constant-time token compare — avoids leaking tokens through response timing. */
+function tokenEquals(a, b) {
+  if (typeof a !== 'string' || typeof b !== 'string') return false;
+  const ba = Buffer.from(a), bb = Buffer.from(b);
+  if (ba.length !== bb.length) return false;
+  return crypto.timingSafeEqual(ba, bb);
+}
+
 function newCode() {
   let c = '';
   const bytes = crypto.randomBytes(6);
@@ -216,6 +244,7 @@ setInterval(() => {
       rooms.delete(roomId);
     }
   }
+  for (const [id, b] of buckets) if (now - b.windowStart > 5 * 60 * 1000) buckets.delete(id);
 }, 15000);
 
 function readBody(req) {
@@ -244,6 +273,9 @@ const server = http.createServer(async (req, res) => {
     // Cloud TTS synthesis → returns audio; 501 when neither is configured so client falls back
     if (p === '/api/tts' && req.method === 'GET') {
       if (!POLLY.enabled && !GEMINI.enabled) return json(res, 501, { enabled: false });
+      if (overLimit('tts-ip', clientIP(req), TTS_PER_IP_PER_MIN) || overLimit('tts', 'global', TTS_GLOBAL_PER_MIN)) {
+        return json(res, 429, { error: 'rate_limited' });
+      }
       const text = (url.searchParams.get('text') || '').slice(0, 1500).trim();
       if (!text) return json(res, 400, { error: 'no_text' });
       const send = (buf, mime) => { res.writeHead(200, { 'Content-Type': mime, 'Cache-Control': 'public, max-age=86400', 'Content-Length': buf.length }); res.end(buf); };
@@ -258,11 +290,12 @@ const server = http.createServer(async (req, res) => {
           ttsCache.set(key, audio);
           return send(audio, 'audio/mpeg');
         } catch (e) {
-          return json(res, 502, { error: 'polly_failed', detail: String(e.message).slice(0, 160) });
+          console.warn('[tts] polly failed:', e.message);
+          return json(res, 502, { error: 'polly_failed' });
         }
       }
 
-      const voice = url.searchParams.get('voice') || GEMINI.voice;
+      const voice = (url.searchParams.get('voice') || '').replace(/[^A-Za-z]/g, '') || GEMINI.voice;
       const key = `gemini|${voice}|${GEMINI.model}|${text}`;
       if (ttsCache.has(key)) return send(ttsCache.get(key), 'audio/wav');
       try {
@@ -271,12 +304,15 @@ const server = http.createServer(async (req, res) => {
         ttsCache.set(key, audio);
         return send(audio, 'audio/wav');
       } catch (e) {
-        return json(res, 502, { error: 'gemini_failed', detail: String(e.message).slice(0, 200) });
+        console.warn('[tts] gemini failed:', e.message);
+        return json(res, 502, { error: 'gemini_failed' });
       }
     }
 
     // TV creates a room (host)
     if (p === '/api/rooms' && req.method === 'POST') {
+      if (rooms.size >= MAX_ROOMS) return json(res, 503, { error: 'busy' });
+      if (overLimit('rooms-ip', clientIP(req), ROOMS_PER_IP_PER_MIN)) return json(res, 429, { error: 'rate_limited' });
       const roomId = crypto.randomUUID();
       const code = newCode();
       const hostToken = crypto.randomBytes(16).toString('hex');
@@ -314,8 +350,8 @@ const server = http.createServer(async (req, res) => {
       const room = rooms.get(evM[1]);
       if (!room) return json(res, 404, { error: 'no_room' });
       const token = url.searchParams.get('token');
-      const isHost = token === room.hostToken;
-      const player = [...room.players.values()].find(pl => pl.token === token);
+      const isHost = tokenEquals(token, room.hostToken);
+      const player = [...room.players.values()].find(pl => tokenEquals(pl.token, token));
       if (!isHost && !player) return json(res, 403, { error: 'forbidden' });
       sse(res);
       const set = isHost ? room.tvStreams : room.remoteStreams;
@@ -332,7 +368,7 @@ const server = http.createServer(async (req, res) => {
       if (!room) return json(res, 404, { error: 'no_room' });
       const body = await readBody(req);
       const player = room.players.get(body.playerId);
-      if (!player || player.token !== body.token) return json(res, 403, { error: 'forbidden' });
+      if (!player || !tokenEquals(player.token, body.token)) return json(res, 403, { error: 'forbidden' });
       player.lastSeenAt = Date.now();
       const evt = body.event || {};
       if (!['key', 'voice', 'text', 'leave'].includes(evt.type)) return json(res, 400, { error: 'bad_event' });
@@ -351,7 +387,7 @@ const server = http.createServer(async (req, res) => {
       const room = rooms.get(stM[1]);
       if (!room) return json(res, 404, { error: 'no_room' });
       const body = await readBody(req);
-      if (body.token !== room.hostToken) return json(res, 403, { error: 'forbidden' });
+      if (!tokenEquals(body.token, room.hostToken)) return json(res, 403, { error: 'forbidden' });
       room.lastState = body.state;
       push(room.remoteStreams, body.state);
       return json(res, 200, { ok: true });
@@ -362,7 +398,7 @@ const server = http.createServer(async (req, res) => {
       const body = await readBody(req);
       const room = rooms.get(body.roomId);
       const player = room && room.players.get(body.playerId);
-      if (player && player.token === body.token) { player.lastSeenAt = Date.now(); return json(res, 200, { ok: true }); }
+      if (player && tokenEquals(player.token, body.token)) { player.lastSeenAt = Date.now(); return json(res, 200, { ok: true }); }
       return json(res, 404, { error: 'gone' });
     }
   } catch (e) {
@@ -373,10 +409,15 @@ const server = http.createServer(async (req, res) => {
   let file = p === '/' ? '/index.html' : decodeURIComponent(p);
   file = path.normalize(file).replace(/^(\.\.[/\\])+/, '');
   const abs = path.join(ROOT, file);
-  if (!abs.startsWith(ROOT)) { res.writeHead(403); return res.end(); }
+  if (abs !== ROOT && !abs.startsWith(ROOT + path.sep)) { res.writeHead(403); return res.end(); }
   fs.readFile(abs, (err, data) => {
     if (err) { res.writeHead(404, { 'Content-Type': 'text/plain' }); return res.end('Not found'); }
-    res.writeHead(200, { 'Content-Type': MIME[path.extname(abs)] || 'application/octet-stream' });
+    res.writeHead(200, {
+      'Content-Type': MIME[path.extname(abs)] || 'application/octet-stream',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'SAMEORIGIN',
+      'Referrer-Policy': 'no-referrer',
+    });
     res.end(data);
   });
 });
