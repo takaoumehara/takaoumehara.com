@@ -12,9 +12,9 @@
   <meta property="og:image" content="../assets/cli-studios/CLI_UI_Screens.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+
   <style>
     @font-face {
       font-family: 'Geist Sans';
@@ -35,10 +35,43 @@
       font-display: swap;
     }
 
-    /* ─── Mobile Menu ─── */
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      /* Project accent: blue (Product Design) */
+      --acc: #2563eb;
+      --acc-tint: #60a5fa;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--ff); color: var(--ink); background: var(--bg); min-height: 100vh; }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+
     .nav-toggle {
-      display: none;
-      appearance: none; background: none; border: none; cursor: pointer;
+      display: none; appearance: none; background: none; border: none; cursor: pointer;
       width: 28px; height: 20px; position: relative; padding: 0;
     }
     .nav-toggle span {
@@ -65,254 +98,453 @@
       .nav-links li { border-top: 1px solid var(--line); }
       .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
     }
-  </style>  <style>
-    /* ─── Tokens ─── */
-    :root {
-      --bg: #fbfaf7;
-      --ink: #121212;
-      --ink-mid: #4c4841;
-      --ink-dim: #79746d;
-      --line: rgba(18,18,18,0.08);
-      --border: rgba(18,18,18,0.10);
-      --surface: rgba(255,255,255,0.92);
-      --shadow: 0 18px 42px rgba(18,18,18,0.04);
-      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
-      --angle: 102deg;
-      --a1: hsla(198 82% 72% / 0.44);
-      --a2: hsla(248 74% 80% / 0.36);
-      --a3: hsla(324 72% 81% / 0.40);
-      --a4: hsla(36 80% 78% / 0.34);
-      --t1: hsl(198 58% 56%);
-      --t2: hsl(248 58% 70%);
-      --t3: hsl(324 60% 72%);
-      --t4: hsl(36 58% 62%);
-      --hover-angle: 98deg;
-      --bar-width: 70%;
-    }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--ff);
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
-        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
-        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-      min-height: 100vh;
-    }
-
-    .eyebrow, .kicker, .meta, .small, .pill {
-      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim);
-    }
-
-    /* ─── Nav ─── */
-    .site-nav {
-      position: sticky; top: 0; z-index: 40;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 32px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
-    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
-    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
-
-    /* ─── Lang switch ─── */
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      writing-mode: vertical-rl;
-      display: flex; align-items: center; gap: 5px;
-      padding: 16px 9px;
-      background: rgba(255,255,255,0.94);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      border-left: 1px solid rgba(18,18,18,0.10);
-      border-top: 1px solid rgba(18,18,18,0.07);
-      border-bottom: 1px solid rgba(18,18,18,0.07);
-      border-radius: 6px 0 0 6px;
-    }
-    .lang-btn {
-      appearance: none; background: none; border: none;
-      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
-      text-transform: uppercase; cursor: pointer;
-      color: var(--ink-dim); padding: 0; transition: color 160ms ease;
-    }
-    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
-    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    /* Language buttons live in the .page-controls cluster (see the deck stylesheet) */
 
     /* ─── Bilingual ─── */
     .t-jp { display: none; }
     html.lang-jp .t-en { display: none; }
     html.lang-jp .t-jp { display: inline; }
     html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+    html.lang-jp .wds-serif { line-height: 1.22; letter-spacing: -0.01em; }
+    html.lang-jp .wds-serif em { white-space: nowrap; }
 
-    /* ─── Reduced motion ─── */
-    @media (prefers-reduced-motion: reduce) {
-      .rr > .inner  { animation: none !important; opacity: 1 !important; clip-path: inset(0 0 0 0) !important; transform: none !important; }
-      .rr > .cover  { animation: none !important; opacity: 0 !important; }
+    /* ─── Breadcrumb ─── */
+    .breadcrumb { padding: 20px 32px; max-width: 1360px; margin: 0 auto; }
+    .breadcrumb a { font-size: clamp(12px, 0.88vw, 13.5px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: clamp(12px, 0.88vw, 13.5px); color: rgba(18,18,18,0.28); margin: 0 8px; }
+
+    /* ═══ Slide deck (wds-*) ═══ */
+    .deck { max-width: 1360px; margin: 0 auto; padding: 0 20px 8px; }
+    .wds-slide { margin-bottom: 2px; }
+    .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
+    .wds-kick { font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
+
+    /* Hero — real UI art under a dark scrim, blue glow */
+    .wds-hero {
+      position: relative; overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(10,12,16,0.88) 0%, rgba(10,12,16,0.93) 55%, #0d0d0f 100%),
+        url('../assets/cli-studios/CLI_UI_Screens.png') center/cover no-repeat,
+        #0d0d0f;
+      color: #fff;
+      padding: clamp(46px, 6.5vw, 96px) clamp(28px, 5vw, 78px);
+    }
+    .wds-hero::after {
+      content: "";
+      position: absolute; right: -6%; top: -34%;
+      width: 58%; height: 168%;
+      background: radial-gradient(ellipse at center, rgba(96,165,250,0.28), transparent 62%);
+      pointer-events: none;
+    }
+    .wds-hero > * { position: relative; z-index: 1; }
+    .wds-hero .wds-kick { color: rgba(255,255,255,0.55); }
+    .wds-hero h1 { font-size: clamp(38px, 6.4vw, 82px); max-width: 16ch; }
+    .wds-hero h1 em { font-style: italic; color: var(--acc-tint); }
+    .wds-hero-lead { font-size: clamp(15.5px, 1.25vw, 21px); line-height: 1.68; color: rgba(255,255,255,0.7); max-width: 62ch; margin-top: 28px; }
+    .wds-hero-lead strong { color: #fff; font-weight: 600; }
+
+    .wds-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
+    .wds-chip { padding: 7px 13px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: clamp(10.5px, 0.78vw, 12.5px); }
+    .wds-hero-meta { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 34px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.14); }
+    .wds-hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .wds-hero-meta-l { font-size: clamp(10px, 0.72vw, 11.5px); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.46); }
+    .wds-hero-meta-v { font-size: clamp(13px, 1vw, 16px); color: rgba(255,255,255,0.88); }
+
+    /* Video pair — dark slide */
+    .wds-video { background: #111; color: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-video .wds-kick { color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+    .wds-video h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; margin-bottom: 26px; }
+    .video-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; margin: 0 auto; }
+    .video-label { font-size: clamp(11px, 0.8vw, 13px); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-align: center; }
+    .video-frame { position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 4px; overflow: hidden; background: #000; }
+    .video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+    /* Two worlds — the tension */
+    .wds-worlds { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2px; align-items: stretch; }
+    .wds-world { padding: clamp(30px, 4vw, 54px) clamp(24px, 3vw, 44px); }
+    .wds-world--before { background: #161619; color: #fff; }
+    .wds-world--after { background: var(--acc); color: #fff; }
+    .wds-world-tag { font-size: clamp(10px, 0.78vw, 12.5px); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px; }
+    .wds-world--before .wds-world-tag { color: rgba(255,255,255,0.42); }
+    .wds-world--after .wds-world-tag { color: rgba(255,255,255,0.72); }
+    .wds-world h4 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.7vw, 34px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 16px; }
+    .wds-world p { font-size: clamp(14.5px, 1.08vw, 18px); line-height: 1.66; margin-bottom: 22px; max-width: 44ch; }
+    .wds-world--before p { color: rgba(255,255,255,0.58); }
+    .wds-world--after p { color: rgba(255,255,255,0.86); }
+    .wds-world .wds-chips { margin-top: 0; }
+    .wds-world--before .wds-chip { border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.82); }
+    .wds-world--after .wds-chip { border-color: rgba(255,255,255,0.34); color: #fff; }
+    .wds-bridge {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+      background: #0d0d0f; color: var(--acc-tint); padding: 0 clamp(16px, 2vw, 28px); min-width: 96px; text-align: center;
+    }
+    .wds-bridge-arrow { font-size: 30px; line-height: 1; }
+    .wds-bridge-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.7); }
+    @media (max-width: 820px) {
+      .wds-worlds { grid-template-columns: 1fr; }
+      .wds-bridge { flex-direction: row; padding: 16px; }
+      .wds-bridge-arrow { transform: rotate(90deg); }
     }
 
-    /* ─── Responsive ─── */
-    @media (max-width: 900px) {
-      .project-overview { grid-template-columns: 1fr; gap: 40px; }
-      .outcomes-grid { grid-template-columns: 1fr; }
-      .problems-grid { grid-template-columns: 1fr; }
+    /* Approach statement — dark hero variant */
+    .wds-statement {
+      position: relative; overflow: hidden;
+      background: #0d0d0f; color: #fff;
+      padding: clamp(46px, 6vw, 88px) clamp(28px, 5vw, 78px);
     }
-    @media (max-width: 600px) {
-      .site-nav { padding: 16px 20px; }
-      .project-body { padding: 40px 20px 60px; }
-      .project-hero-content { padding: 32px 20px; }
-      .project-nav { flex-direction: column; gap: 12px; }
-      .video-compare { grid-template-columns: 1fr !important; max-width: 320px !important; }
+    .wds-statement::after {
+      content: "";
+      position: absolute; left: -10%; bottom: -40%;
+      width: 55%; height: 150%;
+      background: radial-gradient(ellipse at center, rgba(96,165,250,0.18), transparent 62%);
+      pointer-events: none;
     }
+    .wds-statement > * { position: relative; z-index: 1; }
+    .wds-statement .wds-kick { color: rgba(255,255,255,0.5); }
+    .wds-statement h3 { font-size: clamp(32px, 4.8vw, 62px); max-width: 17ch; }
+    .wds-statement h3 em { font-style: italic; color: var(--acc-tint); }
+    .wds-statement-lead { font-size: clamp(15.5px, 1.22vw, 20px); line-height: 1.68; color: rgba(255,255,255,0.7); max-width: 62ch; margin-top: 26px; }
+    .wds-statement-lead strong { color: #fff; font-weight: 600; }
 
-    /* ─── Project-detail styles ─── */
-    .project-hero {
-      position: relative; min-height: 480px; overflow: hidden;
-      display: flex; align-items: flex-end;
-    }
-    .project-hero-img {
-      position: absolute; inset: 0;
-      background-size: cover; background-position: center;
-    }
-    .project-hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(0deg, rgba(18,18,18,0.72) 0%, rgba(18,18,18,0.18) 60%, transparent 100%);
-    }
-    .project-hero-content {
-      position: relative; z-index: 2; padding: 48px 32px;
-      max-width: 1200px; margin: 0 auto; width: 100%;
-    }
-    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .project-hero-tag {
-      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24);
-      padding: 5px 9px;
-    }
-    .project-hero-title {
-      font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px, 5vw, 64px); font-weight: 400; letter-spacing: -0.03em;
-      line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px;
-    }
-    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
-    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
-    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
-    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+    /* Five fixes — cream slide with before→after cards */
+    .wds-fixes-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .fix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 30px; }
+    .fix-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+    .fix-card { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: clamp(24px, 2vw, 34px) clamp(22px, 1.9vw, 32px) clamp(26px, 2.2vw, 36px); }
+    .fix-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(26px, 2.1vw, 34px); line-height: 1; letter-spacing: -0.03em; color: var(--acc); margin-bottom: 14px; }
+    .fix-before { font-size: clamp(13px, 0.98vw, 16px); color: var(--ink-dim); margin-bottom: 9px; }
+    .fix-arrow { font-size: 17px; color: rgba(18,18,18,0.22); margin-bottom: 9px; }
+    .fix-after { font-size: clamp(15px, 1.15vw, 19px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.5; color: var(--ink); }
+    @media (max-width: 700px) { .fix-grid { grid-template-columns: 1fr; } }
 
-    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
-    .project-overview {
-      display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px;
-      margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line);
-    }
-    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
-    .project-aside-stat { margin-bottom: 24px; }
-    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
-    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
-    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px, 2.4vw, 30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
-    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
-    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
-    .project-deliverables li::before { content: "—"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+    /* Evidence gallery slides */
+    .wds-evidence { padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-evidence.is-dark { background: #111; color: #fff; }
+    .wds-evidence.is-cream { background: #f4efe4; }
+    .wds-evidence .wds-kick { margin-bottom: 10px; }
+    .wds-evidence.is-dark .wds-kick { color: rgba(255,255,255,0.5); }
+    .wds-evidence.is-cream .wds-kick { color: var(--acc); }
+    .wds-evidence h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
+    .wds-evidence-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; max-width: 64ch; margin-bottom: 28px; }
+    .wds-evidence.is-dark .wds-evidence-lead { color: rgba(255,255,255,0.62); }
+    .wds-evidence.is-cream .wds-evidence-lead { color: var(--ink-mid); }
+    .gallery-label { font-size: clamp(11px, 0.82vw, 13.5px); letter-spacing: 0.14em; text-transform: uppercase; margin: 34px 0 12px; }
+    .wds-evidence.is-dark .gallery-label { color: rgba(255,255,255,0.48); }
+    .wds-evidence.is-cream .gallery-label { color: var(--ink-dim); }
+    .gallery-label:first-of-type { margin-top: 0; }
 
-    .outcomes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 64px; }
-    .outcome-block { padding: 28px 24px; border: 1px solid var(--line); }
-    .outcome-num { font-size: 36px; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 6px; }
-    .outcome-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
-
-    .project-nav { display: flex; justify-content: space-between; gap: 20px; padding-top: 48px; border-top: 1px solid var(--line); }
-    .project-nav-link { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
-    .project-nav-link:hover { color: var(--ink); }
-
-    /* Problems grid */
-    .problems-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 64px; }
-    .problem-block { padding: 28px 24px; border: 1px solid var(--line); }
-    .problem-num { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
-    .problem-before { font-size: 14px; color: var(--ink-dim); margin-bottom: 8px; }
-    .problem-arrow { font-size: 18px; color: rgba(18,18,18,0.2); margin-bottom: 8px; }
-    .problem-after { font-size: 15px; font-weight: 600; letter-spacing: -0.02em; color: var(--ink); }
-
-    /* Tools */
-    .tools-list { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 64px; }
-    .tool-tag { font-size: 12px; color: var(--ink-mid); border: 1px solid var(--line); padding: 8px 14px; }
-
-    /* ─── Gallery ─── */
-    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
-    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
     .g-row { display: grid; gap: 4px; }
     .g-row + .g-row { margin-top: 4px; }
     .g-row.r1 { grid-template-columns: 1fr; }
     .g-row.r2 { grid-template-columns: 1fr 1fr; }
     .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
-    .g-row.r21 { grid-template-columns: 2fr 1fr; }
-    .g-row.r12 { grid-template-columns: 1fr 2fr; }
-    .g-cell { overflow: hidden; background: #f5f3f0; }
-    /* ui: aspect-ratio container for UI screenshots with neutral bg */
-    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
-    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    /* dark: black-background screenshots — no forced ratio, no grey border */
-    .g-cell.dark { background: #111; }
+    .g-cell { overflow: hidden; background: #f5f3f0; border-radius: 2px; }
+    .g-cell.dark { background: #0a0a0a; }
     .g-cell.dark img { width: 100%; height: auto; display: block; }
-    /* natural: light bg, natural ratio (diagrams, sketches, any mixed) */
-    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural { background: #faf8f5; }
     .g-cell.natural img { width: 100%; height: auto; display: block; }
-    /* diagram: replaces old diagram class — now uses natural ratio, white bg */
-    .g-cell.diagram { background: white; }
-    .g-cell.diagram img { width: 100%; height: auto; display: block; }
-    /* photo: cover crop for photography */
-    .g-cell.photo { aspect-ratio: 4/3; }
-    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    /* brand: identity assets, white bg */
     .g-cell.brand { background: white; }
     .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
-    @media (max-width: 700px) { .g-row.r3 { grid-template-columns: 1fr 1fr; } .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; } }
+    @media (max-width: 700px) { .g-row.r3 { grid-template-columns: 1fr 1fr; } }
 
-/* ─── Scroll Reveal ─── */
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
-              transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
-}
-.reveal-on-scroll.is-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+    .g-cell img { opacity: 0; transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .g-cell img.loaded { opacity: 1; }
+    .g-cell:hover img.loaded { transform: scale(1.008); }
 
-/* ─── Image Fade-In ─── */
-.g-cell img {
-  opacity: 0;
-  transition: opacity 400ms ease;
-}
-.g-cell img.loaded {
-  opacity: 1;
-}
+    /* Structure — the architecture itself, before and after (cream).
+       The Tension slide states the problem in words; this one shows its shape.
+       CSS-only diagram: an image would go stale the moment the IA is described
+       differently, and this is the one slide that must stay true to the text. */
+    .wds-structure { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-structure .wds-kick { color: var(--acc); margin-bottom: 10px; }
+    .wds-structure h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
+    .wds-structure-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .ia-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 30px; }
+    .ia-panel { background: #fff; border: 1px solid var(--line); padding: clamp(22px, 2vw, 34px); }
+    .ia-panel--after { border-top: 3px solid var(--acc); }
+    .ia-tag { font-size: clamp(10.5px, 0.8vw, 12.5px); letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 18px; }
+    .ia-panel--after .ia-tag { color: var(--acc); }
+    .ia-node { font-size: clamp(13.5px, 1.02vw, 17px); line-height: 1.5; color: var(--ink); padding: 8px 0; }
+    .ia-sub { margin-left: 14px; padding-left: 16px; border-left: 1px solid var(--border); }
+    .ia-modal { display: inline-block; font-size: clamp(9.5px, 0.72vw, 11px); letter-spacing: 0.1em; text-transform: uppercase; color: #a8412f; border: 1px solid rgba(168,65,47,0.34); padding: 2px 7px; margin-left: 8px; }
+    .ia-dead { font-size: clamp(12.5px, 0.95vw, 15.5px); color: #a8412f; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .ia-secs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    .ia-sec { border: 1px solid var(--border); padding: 13px 15px; }
+    .ia-sec-name { font-size: clamp(13.5px, 1.02vw, 17px); color: var(--ink); }
+    .ia-sec-note { font-size: clamp(11.5px, 0.86vw, 14px); color: var(--ink-dim); margin-top: 4px; line-height: 1.45; }
+    .ia-flat { font-size: clamp(12.5px, 0.95vw, 15.5px); color: var(--acc); margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    @media (max-width: 760px) { .ia-pair { grid-template-columns: 1fr; } }
 
-/* ─── Gallery Hover ─── */
-.g-cell {
-  border-radius: 2px;
-}
-.g-cell img {
-  transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
-}
-.g-cell:hover img.loaded {
-  transform: scale(1.008);
-}
+    /* Craft — the judgment layer: what was rejected, and why.
+       Where a project used AI this slide carries the AI collaboration instead.
+       This one did not (2024, Figma only, solo) — which is precisely what it says. */
+    .wds-craft { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6vw, 88px) clamp(28px, 5vw, 78px); }
+    .wds-craft::after {
+      content: "";
+      position: absolute; right: -12%; top: -45%;
+      width: 58%; height: 160%;
+      background: radial-gradient(ellipse at center, rgba(96,165,250,0.16), transparent 64%);
+      pointer-events: none;
+    }
+    .wds-craft > * { position: relative; z-index: 1; }
+    .wds-craft .wds-kick { color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+    .wds-craft h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(28px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.06; max-width: 21ch; margin-bottom: 16px; }
+    .wds-craft h2 em { font-style: italic; color: var(--acc-tint); }
+    .wds-craft-lead { font-size: clamp(15px, 1.18vw, 19.5px); line-height: 1.7; color: rgba(255,255,255,0.7); max-width: 64ch; }
+    .wds-craft-lead strong { color: #fff; font-weight: 600; }
+    .craft-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 32px; }
+    .craft-card { background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.11); border-top: 3px solid var(--acc-tint); padding: clamp(20px, 1.8vw, 30px); }
+    .craft-label { font-size: clamp(10.5px, 0.78vw, 12.5px); letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 12px; }
+    .craft-title { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.4; color: #fff; margin-bottom: 10px; }
+    .craft-why { font-size: clamp(13px, 1vw, 16.5px); line-height: 1.6; color: rgba(255,255,255,0.64); }
+    @media (max-width: 860px) { .craft-grid { grid-template-columns: 1fr; } }
 
-/* ─── Reduced Motion ─── */
-@media (prefers-reduced-motion: reduce) {
-  .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
-  .g-cell img { opacity: 1 !important; transition: none !important; }
-  .g-cell:hover img { transform: none !important; }
-}
+    /* Retrospective — what is still open. Sits between Proof and Closing so the
+       closing line reads as a conclusion rather than as a claim of completeness. */
+    .wds-retro { background: #fff; border-top: 1px solid var(--line); padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-retro .wds-kick { color: var(--ink-dim); margin-bottom: 10px; }
+    .wds-retro h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 14px; }
+    .wds-retro-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .retro-list { display: grid; gap: 2px; margin-top: 28px; }
+    .retro-item { display: grid; grid-template-columns: auto 1fr; gap: clamp(16px, 1.8vw, 30px); align-items: start; background: #f4efe4; padding: clamp(20px, 1.9vw, 30px) clamp(20px, 1.8vw, 30px); }
+    .retro-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(20px, 1.8vw, 28px); color: var(--acc); line-height: 1; }
+    .retro-title { font-size: clamp(15.5px, 1.2vw, 20px); line-height: 1.4; color: var(--ink); margin-bottom: 8px; }
+    .retro-body { font-size: clamp(13.5px, 1.02vw, 17px); line-height: 1.62; color: var(--ink-mid); max-width: 78ch; }
+
+    /* Proof — cream slide, the numbers (once on the page) */
+    .wds-proof { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-proof h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 16px; }
+    .wds-proof-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .proof-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 28px; }
+    .proof-stat { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: clamp(22px, 1.8vw, 32px) clamp(20px, 1.7vw, 30px) clamp(24px, 2vw, 34px); }
+    .proof-stat-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(30px, 3.2vw, 44px); letter-spacing: -0.03em; color: var(--ink); margin-bottom: 8px; }
+    .proof-stat-label { font-size: clamp(13px, 1vw, 16.5px); line-height: 1.55; color: var(--ink-mid); }
+    @media (max-width: 700px) { .proof-stats { grid-template-columns: 1fr; } }
+
+    /* Tools & methods row inside proof */
+    .tools-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--border); }
+    .tool-tag { font-size: clamp(12.5px, 0.92vw, 15px); color: var(--ink-mid); border: 1px solid var(--border); background: #fff; padding: 9px 15px; }
+
+    /* Closing — vivid blue */
+    .wds-closing { position: relative; overflow: hidden; color: #fff; padding: clamp(46px, 6.5vw, 92px) clamp(28px, 5vw, 78px); background: var(--acc); }
+    .wds-closing .wds-kick { color: rgba(255,255,255,0.68); }
+    .wds-closing h2 { font-size: clamp(32px, 4.6vw, 60px); max-width: 18ch; }
+    .wds-closing h2 em { font-style: italic; color: #f4efe4; }
+    .closing-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .story-cta { display: inline-block; padding: 14px 20px; border: 1px solid rgba(255,255,255,0.5); color: #fff; font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
+    .story-cta:hover { background: #fff; color: var(--acc); }
+
+    /* Prev / next */
+    .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1360px; margin: 0 auto; padding: 48px 20px 64px; }
+    .project-nav-link { font-size: clamp(12px, 0.9vw, 14px); letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .project-nav-link:hover { color: var(--ink); }
+
+    /* Footer */
+    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1360px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .footer-llc { margin-top: 5px; color: var(--ink-dim); font-size: 11px; }
+    .footer-llc strong { color: var(--ink-mid); font-weight: 500; }
+    .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+    .footer-links a { color: var(--ink-dim); font-size: 12px; text-decoration: none; }
+    .footer-loc { font-size: 12px; color: var(--ink-dim); }
+
+    /* Focus visible */
+    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible,
+    .nav-toggle:focus-visible, .breadcrumb a:focus-visible, .project-nav-link:focus-visible,
+    .story-cta:focus-visible, .footer-links a:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    /* Scroll reveal */
+    .reveal-on-scroll {
+      opacity: 0; transform: translateY(16px);
+      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .g-cell img { opacity: 1 !important; transition: none !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .breadcrumb { padding: 16px 20px; }
+      .deck { padding: 0 12px 8px; }
+      .project-nav { flex-direction: column; gap: 12px; }
+      .video-compare { grid-template-columns: 1fr; max-width: 320px; }
+    }
+  </style>
+
+  <style data-deck>
+    /* ═══ View modes: scroll (default) | deck-v ═══
+       Every rule is scoped under html[data-view="deck-v"]; the .deck-slide marker
+       carries no default styling, so scroll mode is exactly what was authored.
+       deck-h is deliberately not offered here — this page's evidence panels
+       (a 13-page design system, five before/after composites) are taller than any
+       screen, and a horizontal track would hide half of each behind an internal
+       scrollbar. See docs/portfolio-template-system.md §2-5. */
+
+    /* ─── Page controls: one cluster, not four floats ───
+       Language and view mode are both "how you look at this page", so they live
+       in a single object at one corner. Quietness comes from size, hairlines and
+       restraint — never from lowering opacity, which would drop the labels below
+       the WCAG contrast floor. Deck readouts sit at the opposite corner so the
+       right edge only ever carries one thing. */
+    .page-controls {
+      position: fixed; right: 14px; bottom: 16px; z-index: 120;
+      display: flex; flex-direction: column; gap: 2px; padding: 4px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border); border-radius: 12px;
+      transition: border-color 200ms ease, background 200ms ease;
+    }
+    .page-controls:hover, .page-controls:focus-within {
+      background: rgba(255,255,255,0.97); border-color: rgba(18,18,18,0.2);
+    }
+    .pc-group { display: flex; gap: 2px; }
+    .pc-view { flex-direction: column; }
+    .pc-rule { height: 1px; background: var(--line); margin: 3px 5px; }
+    .page-controls button {
+      appearance: none; border: none; background: none; cursor: pointer;
+      font-family: var(--ff); font-size: 10.5px; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--ink-mid);
+      padding: 7px 11px; border-radius: 8px;
+      display: flex; align-items: center; gap: 7px; white-space: nowrap;
+      transition: background 140ms ease, color 140ms ease;
+    }
+    .pc-lang button { flex: 1; justify-content: center; padding: 6px 12px; }
+    .page-controls button:hover { color: var(--ink); background: rgba(18,18,18,0.05); }
+    .page-controls button.is-active,
+    .page-controls button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .page-controls .pc-i { font-size: 12px; line-height: 1; width: 13px; text-align: center; }
+
+    /* The slide readout and the keyboard hint live inside the same cluster, so
+       exactly one object ever floats over the work. Only the progress bar sits
+       apart — it belongs to the top edge and reads as ambient, not as a widget. */
+    .deck-count, .deck-hint { display: none; }
+    .deck-count {
+      font-size: 10.5px; letter-spacing: 0.12em; font-variant-numeric: tabular-nums;
+      color: var(--ink-dim); text-align: center; padding: 5px 4px 6px;
+    }
+    .deck-hint {
+      font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ink-dim); text-align: center; padding: 6px 4px 3px;
+      border-top: 1px solid var(--line); margin-top: 3px;
+      transition: opacity 400ms ease;
+    }
+    .deck-hint kbd { font-family: var(--ff); font-weight: 600; color: var(--ink-mid); }
+    .deck-hint.is-gone { display: none; }
+    html[data-view="deck-v"] .deck-count,
+    html[data-view="deck-v"] .deck-hint:not(.is-gone) { display: block; }
+
+    .deck-progress { position: fixed; left: 0; top: 0; right: 0; height: 3px; z-index: 121; background: rgba(18,18,18,0.10); display: none; }
+    .deck-progress i { display: block; height: 100%; width: 0; background: var(--acc); transition: width 260ms cubic-bezier(0.22,0.84,0.22,1); }
+    html[data-view="deck-v"] .deck-progress { display: block; }
+
+    /* ── deck-v ── */
+    html[data-view="deck-v"] { scroll-snap-type: y mandatory; }
+    html[data-view="deck-v"] .reveal-on-scroll { opacity: 1 !important; transform: none !important; }
+
+    /* Strip the page chrome: a deck is not a document */
+    html[data-view="deck-v"] .site-nav,
+    html[data-view="deck-v"] .breadcrumb,
+    html[data-view="deck-v"] .site-footer,
+    html[data-view="deck-v"] .project-nav { display: none; }
+
+    /* Full-bleed the field — the single biggest reason deck-v read as a scrolling page */
+    html[data-view="deck-v"] .deck { max-width: none; margin: 0; padding: 0; }
+    html[data-view="deck-v"] .wds-slide { margin-bottom: 0; }
+
+    html[data-view="deck-v"] .deck-slide {
+      scroll-snap-align: start; scroll-snap-stop: always;
+      min-height: 100vh; min-height: 100dvh;
+      padding-inline: clamp(32px, 6vw, 130px);
+      display: flex; flex-direction: column; justify-content: safe center;
+    }
+    /* Grid-based panels are ALSO .deck-slide — restore grid or the columns collapse.
+       A two-worlds slide is a colour field: its panels fill the stage edge to edge
+       rather than floating as a band in the middle of it. */
+    html[data-view="deck-v"] .deck-slide.wds-worlds {
+      display: grid; grid-template-rows: 1fr; align-content: stretch;
+      padding-inline: 0; padding-block: 0;
+    }
+    html[data-view="deck-v"] .wds-world { display: flex; flex-direction: column; justify-content: center; }
+    /* Evidence panels run taller than a screen by design: start at the top and let them scroll */
+    html[data-view="deck-v"] .deck-slide.wds-evidence { justify-content: flex-start; padding-block: clamp(56px, 9vh, 110px); }
+
+    /* A slide carries more type than a page section — but a slide also has a
+       fixed height, so every size is capped against the viewport's height too.
+       Without the vh cap the headline overflows the stage on a 900px laptop. */
+    html[data-view="deck-v"] .deck-slide { padding-block: clamp(36px, 5.5vh, 76px); }
+    html[data-view="deck-v"] .wds-hero h1 { font-size: min(clamp(44px, 7vw, 104px), 8.4vh); }
+    html[data-view="deck-v"] .wds-statement h3 { font-size: min(clamp(38px, 5.6vw, 78px), 9vh); }
+    html[data-view="deck-v"] .wds-closing h2 { font-size: min(clamp(38px, 5.4vw, 74px), 9vh); }
+    html[data-view="deck-v"] .wds-proof h2,
+    html[data-view="deck-v"] .wds-evidence h2,
+    html[data-view="deck-v"] .wds-structure h2,
+    html[data-view="deck-v"] .wds-craft h2,
+    html[data-view="deck-v"] .wds-retro h2,
+    html[data-view="deck-v"] .wds-video h2 { font-size: min(clamp(32px, 4.4vw, 58px), 6.6vh); }
+    html[data-view="deck-v"] .wds-statement-lead { font-size: min(clamp(16px, 1.4vw, 23px), 2.5vh); }
+    html[data-view="deck-v"] .wds-hero-lead { font-size: min(clamp(15.5px, 1.25vw, 21px), 2.3vh); margin-top: 3vh; }
+    html[data-view="deck-v"] .wds-hero .wds-chips { margin-top: 2.6vh; }
+    html[data-view="deck-v"] .wds-hero-meta { margin-top: 3vh; padding-top: 2.4vh; }
+    /* The video pair is sized by the stage's HEIGHT — a 9:16 frame constrained by
+       width alone either overflows a short laptop or shrinks to a stamp */
+    html[data-view="deck-v"] .video-compare { max-width: none; justify-items: center; margin-top: 2vh; }
+    html[data-view="deck-v"] .video-frame { height: min(54vh, 560px); width: auto; }
+    /* Dense grids compress to fit rather than hide half a slide behind a scrollbar */
+    html[data-view="deck-v"] .wds-fixes-lead,
+    html[data-view="deck-v"] .wds-structure-lead,
+    html[data-view="deck-v"] .wds-craft-lead,
+    html[data-view="deck-v"] .wds-retro-lead,
+    html[data-view="deck-v"] .wds-proof-lead { font-size: min(clamp(15px, 1.15vw, 19px), 2.1vh); }
+    html[data-view="deck-v"] .ia-pair,
+    html[data-view="deck-v"] .craft-grid,
+    html[data-view="deck-v"] .retro-list { margin-top: 2.8vh; }
+    html[data-view="deck-v"] .ia-panel { padding: clamp(18px, 2.4vh, 34px) clamp(18px, 1.6vw, 32px); }
+    html[data-view="deck-v"] .ia-node { padding: 0.8vh 0; font-size: min(clamp(13.5px, 1.02vw, 17px), 2vh); }
+    html[data-view="deck-v"] .craft-card { padding: clamp(16px, 2.2vh, 30px) clamp(18px, 1.6vw, 30px); }
+    html[data-view="deck-v"] .craft-why { font-size: min(clamp(13px, 1vw, 16.5px), 1.9vh); }
+    html[data-view="deck-v"] .retro-item { padding: clamp(14px, 2vh, 30px) clamp(18px, 1.7vw, 30px); }
+    html[data-view="deck-v"] .retro-body { font-size: min(clamp(13.5px, 1.02vw, 17px), 1.95vh); }
+    html[data-view="deck-v"] .fix-grid { margin-top: 2.6vh; }
+    html[data-view="deck-v"] .fix-card { padding: clamp(16px, 2.1vh, 28px) clamp(18px, 1.6vw, 28px); }
+    html[data-view="deck-v"] .fix-num { font-size: min(clamp(26px, 2.1vw, 34px), 3.6vh); margin-bottom: 1vh; }
+    html[data-view="deck-v"] .fix-before { font-size: min(clamp(13px, 0.98vw, 16px), 1.8vh); margin-bottom: 0.7vh; }
+    html[data-view="deck-v"] .fix-arrow { margin-bottom: 0.7vh; }
+    html[data-view="deck-v"] .fix-after { font-size: min(clamp(15px, 1.15vw, 19px), 2.1vh); }
+    html[data-view="deck-v"] .proof-stats { margin-top: 2.8vh; }
+    html[data-view="deck-v"] .proof-stat { padding: clamp(18px, 2.4vh, 32px) clamp(18px, 1.6vw, 30px); }
+    html[data-view="deck-v"] .proof-stat-num { font-size: min(clamp(30px, 3.2vw, 44px), 5vh); }
+    html[data-view="deck-v"] .proof-stat-label { font-size: min(clamp(13px, 1vw, 16.5px), 1.9vh); }
+    html[data-view="deck-v"] .tools-list { margin-top: 2.4vh; padding-top: 2vh; }
+
+    /* Entrance beat — applied only when the engine marks a slide live, so a
+       failed script can never leave content invisible */
+    @keyframes deck-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    html[data-view="deck-v"] .deck-slide.is-live > * { animation: deck-in 560ms cubic-bezier(0.22,0.84,0.22,1) both; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(2) { animation-delay: 70ms; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(3) { animation-delay: 130ms; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(n+4) { animation-delay: 180ms; }
+
+    /* Decks are a desktop-and-motion affordance only. Where they can't run,
+       remove the control rather than dimming it — a disabled button people
+       can still see is a distraction that answers nothing. */
+    @media (max-width: 768px) { .pc-view, .pc-rule { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html[data-view="deck-v"] .deck-slide.is-live > * { animation: none !important; }
+      .pc-view, .pc-rule { display: none; }
+    }
   </style>
 </head>
 <body>
 
-  <nav class="site-nav">
+  <nav class="site-nav" aria-label="Primary navigation">
     <a href="../index.html" class="nav-logo">
       <span class="nav-logo-name">Takao Umehara</span>
       <span class="nav-logo-tag">creativity is everywhere</span>
@@ -325,462 +557,607 @@
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- Hero -->
-  <section class="project-hero">
-    <div class="project-hero-img" style="background-image: url('../assets/cli-studios/CLI_UI_Screens.png');"></div>
-    <div class="project-hero-overlay"></div>
-    <div class="project-hero-content">
-      <div class="project-hero-tags">
-        <span class="project-hero-tag">App Design</span>
-        <span class="project-hero-tag">Design System</span>
-        <span class="project-hero-tag">Mobile UX</span>
-      </div>
-      <h1 class="project-hero-title">
-        <span class="t-en">CLI Studios App Redesign</span>
-        <span class="t-jp">CLI Studiosアプリ再設計</span>
-      </h1>
-      <div class="project-hero-meta">
-        <div class="project-meta-item">
-          <span class="project-meta-label">Client</span>
-          <span class="project-meta-value">CLI Studios</span>
-        </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Role</span>
-          <span class="project-meta-value">Lead Product Designer</span>
-        </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Year</span>
-          <span class="project-meta-value">2024</span>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="../work.html">Product Design</a>
+    <span>/</span>
+    <a href="#">
+      <span class="t-en">CLI Studios App Redesign</span>
+      <span class="t-jp">CLI Studiosアプリ再設計</span>
+    </a>
+  </div>
 
-  <!-- Before & After Video Comparison — full-bleed black -->
-  <section class="reveal-on-scroll" style="background: #111; width: 100%; padding: 64px 32px 72px;">
-    <div style="max-width: 1200px; margin: 0 auto;">
-      <h2 class="project-section-title" style="color: #fff;">
-        <span class="t-en">Before &amp; After</span>
-        <span class="t-jp">ビフォー＆アフター</span>
-      </h2>
-      <p class="gallery-label" style="color: rgba(255,255,255,0.48);">
-        <span class="t-en">Side by Side Comparison</span>
-        <span class="t-jp">並列比較</span>
+  <main class="deck">
+
+    <!-- ═══ Slide 1 · Hero (dark, blue glow, real UI art) ═══ -->
+    <header class="wds-hero wds-slide deck-slide reveal-on-scroll">
+      <p class="wds-kick">
+        <span class="t-en">CLI Studios · Product Design · 2024</span>
+        <span class="t-jp">CLI Studios · プロダクトデザイン · 2024</span>
       </p>
-      <div class="video-compare" style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 960px; margin: 0 auto;">
+      <h1 class="wds-serif">
+        <span class="t-en">Five usability problems. One root cause. A redesign that started with <em>structure</em>.</span>
+        <span class="t-jp is-block">5つの使いにくさ。根本原因はひとつ。<em>構造</em>から始めた再設計。</span>
+      </h1>
+      <p class="wds-hero-lead">
+        <span class="t-en">CLI Studios' dance-education app had collapsed under its own modals — users couldn't tell content types apart, navigate confidently, or recover from wrong turns. I rebuilt the information architecture first, then the surface: a unified design system projected to cut development time by <strong>25%</strong>.</span>
+        <span class="t-jp is-block">CLI Studiosのダンス教育アプリは、モーダル画面の過剰使用によって崩壊しかけていた。ユーザーはコンテンツの種類を区別できず、迷わず移動することも、間違えたときに戻ることもできなかった。私はまず情報アーキテクチャを再構築し、その上に表層を作り直した。統合デザインシステムにより、開発時間を<strong>25%削減（見込み）</strong>。</span>
+      </p>
+      <div class="wds-chips">
+        <span class="wds-chip"><span class="t-en">App Design</span><span class="t-jp">アプリデザイン</span></span>
+        <span class="wds-chip"><span class="t-en">Design System</span><span class="t-jp">デザインシステム</span></span>
+        <span class="wds-chip"><span class="t-en">Mobile UX</span><span class="t-jp">モバイルUX</span></span>
+      </div>
+      <div class="wds-hero-meta">
+        <div class="wds-hero-meta-item">
+          <span class="wds-hero-meta-l"><span class="t-en">Client</span><span class="t-jp">クライアント</span></span>
+          <span class="wds-hero-meta-v">CLI Studios</span>
+        </div>
+        <div class="wds-hero-meta-item">
+          <span class="wds-hero-meta-l"><span class="t-en">Role</span><span class="t-jp">役割</span></span>
+          <span class="wds-hero-meta-v"><span class="t-en">Lead Product Designer</span><span class="t-jp">リード・プロダクトデザイナー</span></span>
+        </div>
+        <div class="wds-hero-meta-item">
+          <span class="wds-hero-meta-l"><span class="t-en">Year</span><span class="t-jp">年</span></span>
+          <span class="wds-hero-meta-v">2024</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══ Slide 2 · Before & After videos (dark) ═══ -->
+    <section class="wds-video wds-slide deck-slide reveal-on-scroll" aria-label="Before and after videos">
+      <p class="wds-kick">
+        <span class="t-en">Watch the shift</span>
+        <span class="t-jp">動きで見る変化</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Before &amp; after, side by side.</span>
+        <span class="t-jp is-block">ビフォーとアフターを、並べて。</span>
+      </h2>
+      <div class="video-compare">
         <div>
-          <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); margin-bottom: 10px; text-align: center;">
-            <span class="t-en">Before</span>
-            <span class="t-jp">ビフォー</span>
-          </div>
-          <div style="position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 4px; overflow: hidden; background: #000;">
-            <iframe src="https://www.youtube.com/embed/R19i8pe5X7A?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&color=white&controls=1&disablekb=0&playsinline=1" title="CLI Studios — Before" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+          <div class="video-label"><span class="t-en">Before</span><span class="t-jp">ビフォー</span></div>
+          <div class="video-frame">
+            <iframe src="https://www.youtube.com/embed/R19i8pe5X7A?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&color=white&controls=1&disablekb=0&playsinline=1" title="CLI Studios — Before" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
         <div>
-          <div style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); margin-bottom: 10px; text-align: center;">
-            <span class="t-en">After</span>
-            <span class="t-jp">アフター</span>
-          </div>
-          <div style="position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 4px; overflow: hidden; background: #000;">
-            <iframe src="https://www.youtube.com/embed/3b33QzoILPc?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&color=white&controls=1&disablekb=0&playsinline=1" title="CLI Studios — After" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
+          <div class="video-label"><span class="t-en">After</span><span class="t-jp">アフター</span></div>
+          <div class="video-frame">
+            <iframe src="https://www.youtube.com/embed/3b33QzoILPc?modestbranding=1&rel=0&showinfo=0&iv_load_policy=3&color=white&controls=1&disablekb=0&playsinline=1" title="CLI Studios — After" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Body -->
-  <main class="project-body">
-
-    <!-- Overview -->
-    <div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label">
-          <span class="t-en">Outcomes</span>
-          <span class="t-jp">成果</span>
+    <!-- ═══ Slide 3 · Two worlds — the tension ═══ -->
+    <section class="wds-worlds wds-slide deck-slide reveal-on-scroll" aria-label="The tension">
+      <div class="wds-world wds-world--before">
+        <div class="wds-world-tag">
+          <span class="t-en">Where it started</span>
+          <span class="t-jp">出発点</span>
+        </div>
+        <h4>
+          <span class="t-en">An app eaten by its modals</span>
+          <span class="t-jp">モーダルに侵食されたアプリ</span>
+        </h4>
+        <p>
+          <span class="t-en">Five distinct usability problems all traced back to one root cause: an over-reliance on modal views had collapsed the information architecture. Users couldn't distinguish content types, navigate confidently, or recover from wrong turns.</span>
+          <span class="t-jp is-block">5つの使いやすさの問題は、すべてひとつの根本原因に行き着いた。モーダル画面への過剰依存が情報アーキテクチャを崩壊させていたのだ。ユーザーはコンテンツの種類を区別できず、自信を持って移動できず、間違えても戻れなかった。</span>
         </p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">25%</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Projected dev time savings via unified design system</span>
-            <span class="t-jp">統合デザインシステムによる開発時間削減（見込み）</span>
-          </div>
+        <div class="wds-chips">
+          <span class="wds-chip"><span class="t-en">Modal overload</span><span class="t-jp">モーダル過多</span></span>
+          <span class="wds-chip"><span class="t-en">Broken IA</span><span class="t-jp">崩れたIA</span></span>
+          <span class="wds-chip"><span class="t-en">No way back</span><span class="t-jp">戻れない</span></span>
         </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">5</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Structural usability issues identified &amp; resolved</span>
-            <span class="t-jp">構造的な使いやすさの問題を特定し解決</span>
-          </div>
+      </div>
+      <div class="wds-bridge" aria-hidden="true">
+        <div class="wds-bridge-arrow">&rarr;</div>
+        <div class="wds-bridge-label">
+          <span class="t-en">rebuilt</span>
+          <span class="t-jp">再構築</span>
         </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">13</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Pages of design system documentation delivered</span>
-            <span class="t-jp">デザインシステム資料を納品</span>
-          </div>
+      </div>
+      <div class="wds-world wds-world--after">
+        <div class="wds-world-tag">
+          <span class="t-en">What it became</span>
+          <span class="t-jp">再設計後の姿</span>
         </div>
-      </aside>
-      <div>
-        <h2 class="project-section-title reveal-on-scroll">
-          <span class="t-en">The Tension</span>
-          <span class="t-jp">問題の核心</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">CLI Studios' app had five distinct usability problems — but they all traced back to one root cause: an over-reliance on modal views had collapsed the information architecture. Users couldn't distinguish content types, navigate confidently, or recover from wrong turns. The app needed a complete structural rethink, not a visual refresh.</span>
-          <span class="t-jp is-block">CLI Studiosのアプリには5つの使いやすさの問題があったが、すべてに共通する根本原因が一つあった：モーダル画面への過剰依存が情報アーキテクチャを崩壊させていた。ユーザーはコンテンツタイプを区別できず、自信を持ってナビゲートできず、間違えたときに戻れなかった。必要だったのは見た目のリフレッシュではなく、構造の全面的な再設計だった。</span>
+        <h4>
+          <span class="t-en">A structure users can trust</span>
+          <span class="t-jp">信頼できる構造</span>
+        </h4>
+        <p>
+          <span class="t-en">Four clear sections. Full-page views instead of modals. Consistent back navigation throughout. Distinct card designs per content type — a structural rethink, not a visual refresh.</span>
+          <span class="t-jp is-block">4つの明確なセクション。モーダルの代わりにフルページビュー。全体を貫く一貫した戻るナビゲーション。コンテンツタイプごとに異なるカードデザイン。見た目のリフレッシュではなく、構造の再考。</span>
         </p>
-        <h2 class="project-section-title reveal-on-scroll" style="margin-top: 40px;">
-          <span class="t-en">My Approach</span>
-          <span class="t-jp">アプローチ</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">I led with a heuristic evaluation against Nielsen's 10 principles, then user interviews to validate findings. The key insight: every problem was a symptom of the same architectural flaw. I made the decision to eliminate modals entirely — replacing them with full-page views and consistent back navigation — before addressing visual clarity. Structure first, then surface.</span>
-          <span class="t-jp is-block">Nielsen's 10原則に基づくヒューリスティック評価を行い、ユーザーインタビューで知見を検証した。主要なインサイト：すべての問題が同一のアーキテクチャ的欠陥の症状だった。視覚的な明確さの前に、モーダルを完全に廃止し、フルページビューと一貫したバックナビゲーションに置き換えるという意思決定を行った。構造が先、表面は後。</span>
-        </p>
-        <h2 class="project-section-title reveal-on-scroll" style="margin-top: 40px;">
-          <span class="t-en">Tools &amp; Methods</span>
-          <span class="t-jp">ツール＆手法</span>
-        </h2>
-        <div class="tools-list">
-          <span class="tool-tag">Figma</span>
-          <span class="tool-tag"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
-          <span class="tool-tag"><span class="t-en">Design System</span><span class="t-jp">デザインシステム</span></span>
-          <span class="tool-tag"><span class="t-en">Heuristic Evaluation</span><span class="t-jp">ヒューリスティック評価</span></span>
-          <span class="tool-tag"><span class="t-en">User Interviews</span><span class="t-jp">ユーザーインタビュー</span></span>
+        <div class="wds-chips">
+          <span class="wds-chip"><span class="t-en">4 sections</span><span class="t-jp">4セクション</span></span>
+          <span class="wds-chip"><span class="t-en">Full-page views</span><span class="t-jp">フルページビュー</span></span>
+          <span class="wds-chip"><span class="t-en">Design system</span><span class="t-jp">デザインシステム</span></span>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Outcomes -->
-    <h2 class="project-section-title reveal-on-scroll">
-      <span class="t-en">Outcomes</span>
-      <span class="t-jp">成果</span>
-    </h2>
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block">
-        <div class="outcome-num">25%</div>
-        <div class="outcome-label">
-          <span class="t-en">Projected reduction in dev time — design system enables component reuse across future builds</span>
-          <span class="t-jp">デザインシステムのコンポーネント再利用により将来の開発時間を25%削減（見込み）</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">5</div>
-        <div class="outcome-label">
-          <span class="t-en">Root structural problems solved — IA rebuilt, modals eliminated, navigation simplified</span>
-          <span class="t-jp">根本的な構造問題を解決 — IA再構築、モーダル廃止、ナビゲーション簡素化</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">13<span style="font-size:20px;font-weight:400;letter-spacing:0;"> pg</span></div>
-        <div class="outcome-label">
-          <span class="t-en">Design system documentation — 125+ components, interaction patterns, and accessibility specs</span>
-          <span class="t-jp">デザインシステム資料 — 125以上のコンポーネント、インタラクションパターン、アクセシビリティ仕様</span>
-        </div>
-      </div>
-    </div>
+    <!-- ═══ Slide 4 · Approach statement (dark) ═══ -->
+    <section class="wds-statement wds-slide deck-slide reveal-on-scroll" aria-label="My approach">
+      <p class="wds-kick">
+        <span class="t-en">My approach</span>
+        <span class="t-jp">アプローチ</span>
+      </p>
+      <h3 class="wds-serif">
+        <span class="t-en">Structure first, <em>then surface</em>.</span>
+        <span class="t-jp is-block">構造が先、<em>表面は後</em>。</span>
+      </h3>
+      <p class="wds-statement-lead">
+        <span class="t-en">I led with a heuristic evaluation against Nielsen's 10 principles, then user interviews to validate the findings. The key insight: every problem was a symptom of the same architectural flaw. So I made the call to <strong>eliminate modals entirely</strong> — replacing them with full-page views and consistent back navigation — before touching visual clarity.</span>
+        <span class="t-jp is-block">まずNielsenの10原則に基づくヒューリスティック評価を行い、ユーザーインタビューで検証した。重要な洞察は、すべての問題が同一のアーキテクチャ的欠陥の症状だったこと。だから視覚的な調整に手をつける前に、<strong>モーダルを完全に廃止する</strong>という意思決定を下し、フルページビューと一貫した戻るナビゲーションに置き換えた。</span>
+      </p>
+    </section>
 
-    <!-- Heuristic process -->
-    <h2 class="project-section-title reveal-on-scroll">
-      <span class="t-en">Heuristic Analysis</span>
-      <span class="t-jp">ヒューリスティック分析</span>
-    </h2>
+    <!-- ═══ Slide 5 · Structure — the IA itself, then the five fixes it produced (cream) ═══ -->
+    <section class="wds-structure wds-slide deck-slide reveal-on-scroll" aria-label="Information architecture, before and after">
+      <p class="wds-kick">
+        <span class="t-en">The architecture</span>
+        <span class="t-jp">情報アーキテクチャ</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Five problems. One structure.</span>
+        <span class="t-jp is-block">5つの問題に、ひとつの構造。</span>
+      </h2>
+      <p class="wds-structure-lead">
+        <span class="t-en">The old app had no top level worth navigating — every content type opened another modal on top of the last, so depth replaced structure and there was no reliable way back. The rebuild gave it four peer sections and named them the way users already think.</span>
+        <span class="t-jp is-block">旧アプリには、たどる価値のある最上位が無かった。どのコンテンツもモーダルの上にモーダルを重ねて開くため、構造の代わりに深さだけが増え、確実に戻る道が無かった。再構築では4つの対等なセクションを置き、ユーザーが既に使っている言葉で名前を付けた。</span>
+      </p>
+      <div class="ia-pair">
+        <div class="ia-panel">
+          <div class="ia-tag">
+            <span class="t-en">Before — depth instead of structure</span>
+            <span class="t-jp">再設計前 — 構造ではなく深さ</span>
+          </div>
+          <div class="ia-node">Home</div>
+          <div class="ia-sub">
+            <div class="ia-node">Courses<span class="ia-modal">modal</span></div>
+            <div class="ia-sub">
+              <div class="ia-node"><span class="t-en">Course detail</span><span class="t-jp">コース詳細</span><span class="ia-modal">modal</span></div>
+              <div class="ia-sub">
+                <div class="ia-node"><span class="t-en">Video player</span><span class="t-jp">再生画面</span><span class="ia-modal">modal</span></div>
+              </div>
+            </div>
+            <div class="ia-node">Collections<span class="ia-modal">modal</span></div>
+          </div>
+          <div class="ia-dead">
+            <span class="t-en">Three layers deep, with no consistent way back — and "Courses" and "Collections" looked identical on the way in.</span>
+            <span class="t-jp is-block">3層の深さに対して、一貫した戻り道が無い。しかも入口では「Courses」と「Collections」が見分けられない。</span>
+          </div>
+        </div>
+        <div class="ia-panel ia-panel--after">
+          <div class="ia-tag">
+            <span class="t-en">After — four peer sections</span>
+            <span class="t-jp">再設計後 — 4つの対等なセクション</span>
+          </div>
+          <div class="ia-secs">
+            <div class="ia-sec">
+              <div class="ia-sec-name">Home</div>
+              <div class="ia-sec-note"><span class="t-en">Where you left off</span><span class="t-jp">続きから</span></div>
+            </div>
+            <div class="ia-sec">
+              <div class="ia-sec-name">Discover</div>
+              <div class="ia-sec-note"><span class="t-en">Browsing, not searching</span><span class="t-jp">探すのではなく、出会う</span></div>
+            </div>
+            <div class="ia-sec">
+              <div class="ia-sec-name">Library</div>
+              <div class="ia-sec-note"><span class="t-en">Learning Paths — sequential</span><span class="t-jp">ラーニングパス — 順序あり</span></div>
+            </div>
+            <div class="ia-sec">
+              <div class="ia-sec-name">My Pick</div>
+              <div class="ia-sec-note"><span class="t-en">Playlists — curated</span><span class="t-jp">プレイリスト — キュレーション</span></div>
+            </div>
+          </div>
+          <div class="ia-flat">
+            <span class="t-en">Full-page views throughout. Every screen has a parent, so back always means something.</span>
+            <span class="t-jp is-block">全面をフルページビューに。どの画面にも親があるので、「戻る」が常に意味を持つ。</span>
+          </div>
+        </div>
+      </div>
+      <p class="wds-fixes-lead" style="margin-top: clamp(30px, 3vw, 46px);">
+        <span class="t-en">Every one of the five problems dissolves out of that single decision — once the architecture held, the rest fell into place.</span>
+        <span class="t-jp is-block">5つの問題はすべて、この一つの決定から解けていく。アーキテクチャが定まれば、残りは自然に収まった。</span>
+      </p>
+      <div class="fix-grid">
+        <div class="fix-card">
+          <div class="fix-num">01</div>
+          <div class="fix-before"><span class="t-en">Poor information architecture</span><span class="t-jp">情報アーキテクチャの問題</span></div>
+          <div class="fix-arrow" aria-hidden="true">&darr;</div>
+          <div class="fix-after"><span class="t-en">4 clear sections: Home, Discover, Library, My Pick</span><span class="t-jp is-block">4つの明確なセクション：ホーム、ディスカバー、ライブラリ、マイピック</span></div>
+        </div>
+        <div class="fix-card">
+          <div class="fix-num">02</div>
+          <div class="fix-before"><span class="t-en">Indistinguishable content types</span><span class="t-jp">区別しにくいコンテンツタイプ</span></div>
+          <div class="fix-arrow" aria-hidden="true">&darr;</div>
+          <div class="fix-after"><span class="t-en">"Courses" &rarr; "Learning Path", "Collections" &rarr; "Playlists" — renamed to match how users actually think about sequential vs. curated content</span><span class="t-jp is-block">「コース」→「ラーニングパス」、「コレクション」→「プレイリスト」— 順序のあるコンテンツとキュレーションされたコンテンツをユーザーがどう認識するかに合わせて改名</span></div>
+        </div>
+        <div class="fix-card">
+          <div class="fix-num">03</div>
+          <div class="fix-before"><span class="t-en">Confusing navigation</span><span class="t-jp">分かりにくいナビゲーション</span></div>
+          <div class="fix-arrow" aria-hidden="true">&darr;</div>
+          <div class="fix-after"><span class="t-en">Full-page views replaced modals</span><span class="t-jp is-block">モーダルをフルページビューに置き換え</span></div>
+        </div>
+        <div class="fix-card">
+          <div class="fix-num">04</div>
+          <div class="fix-before"><span class="t-en">Poor visual clarity</span><span class="t-jp">視覚的わかりやすさの欠如</span></div>
+          <div class="fix-arrow" aria-hidden="true">&darr;</div>
+          <div class="fix-after"><span class="t-en">Distinct card designs per content type</span><span class="t-jp is-block">コンテンツタイプごとに異なるカードデザイン</span></div>
+        </div>
+        <div class="fix-card">
+          <div class="fix-num">05</div>
+          <div class="fix-before"><span class="t-en">Modal overload</span><span class="t-jp">モーダルの過剰使用</span></div>
+          <div class="fix-arrow" aria-hidden="true">&darr;</div>
+          <div class="fix-after"><span class="t-en">Consistent back navigation throughout</span><span class="t-jp is-block">全体を通じた一貫した戻るナビゲーション</span></div>
+        </div>
+      </div>
+    </section>
 
-    <!-- Gallery: Heuristic Evaluation -->
-    <div class="gallery reveal-on-scroll">
+    <!-- ═══ Slide 6 · Evidence — heuristic analysis (dark) ═══ -->
+    <section class="wds-evidence is-dark wds-slide deck-slide reveal-on-scroll" aria-label="Heuristic analysis evidence">
+      <p class="wds-kick">
+        <span class="t-en">Evidence · Research</span>
+        <span class="t-jp">証拠 · リサーチ</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">The diagnosis, on paper.</span>
+        <span class="t-jp is-block">診断の記録。</span>
+      </h2>
+      <p class="wds-evidence-lead">
+        <span class="t-en">Heuristic evaluation against Nielsen's 10 principles surfaced the five problems; interaction-flow mapping and wireframe sketches shaped the structural answer.</span>
+        <span class="t-jp is-block">Nielsenの10原則によるヒューリスティック評価が5つの問題を浮かび上がらせ、インタラクションフローの地図化とワイヤーフレームスケッチが構造の答えを形づくった。</span>
+      </p>
       <p class="gallery-label">
         <span class="t-en">Heuristic Evaluation — 5 Problems Identified</span>
         <span class="t-jp">ヒューリスティック評価 — 特定された5つの問題</span>
       </p>
       <div class="g-row r2">
-        <div class="g-cell dark">
-          <img src="../assets/ux-audit/Heuristics_(2).png" alt="Heuristic evaluation — issue 2" loading="lazy">
-        </div>
-        <div class="g-cell dark">
-          <img src="../assets/ux-audit/Heuristics_(4).png" alt="Heuristic evaluation — issue 4" loading="lazy">
-        </div>
+        <div class="g-cell dark"><img src="../assets/ux-audit/Heuristics_(2).png" alt="Heuristic evaluation — issue 2" loading="lazy"></div>
+        <div class="g-cell dark"><img src="../assets/ux-audit/Heuristics_(4).png" alt="Heuristic evaluation — issue 4" loading="lazy"></div>
       </div>
       <div class="g-row r2">
-        <div class="g-cell dark">
-          <img src="../assets/ux-audit/Heuristics_(5).png" alt="Heuristic evaluation — issue 5" loading="lazy">
-        </div>
-        <div class="g-cell dark">
-          <img src="../assets/ux-audit/Heuristics_(10).png" alt="Heuristic evaluation — issue 10" loading="lazy">
-        </div>
+        <div class="g-cell dark"><img src="../assets/ux-audit/Heuristics_(5).png" alt="Heuristic evaluation — issue 5" loading="lazy"></div>
+        <div class="g-cell dark"><img src="../assets/ux-audit/Heuristics_(10).png" alt="Heuristic evaluation — issue 10" loading="lazy"></div>
       </div>
       <div class="g-row r2">
-        <div class="g-cell dark">
-          <img src="../assets/ux-audit/Heuristics_(7).png" alt="Heuristic evaluation — issue 7" loading="lazy">
-        </div>
-        <div class="g-cell dark">
-          <img src="../assets/ux-audit/Heuristics_(6).png" alt="Heuristic evaluation — issue 6" loading="lazy">
-        </div>
+        <div class="g-cell dark"><img src="../assets/ux-audit/Heuristics_(7).png" alt="Heuristic evaluation — issue 7" loading="lazy"></div>
+        <div class="g-cell dark"><img src="../assets/ux-audit/Heuristics_(6).png" alt="Heuristic evaluation — issue 6" loading="lazy"></div>
       </div>
-
       <p class="gallery-label">
         <span class="t-en">Interaction Flow Research</span>
         <span class="t-jp">インタラクションフローリサーチ</span>
       </p>
       <div class="g-row r1">
-        <div class="g-cell dark">
-          <img src="../assets/ux-audit/Interaction_Flow_(2).jpg" alt="Interaction flow diagram" loading="lazy">
-        </div>
+        <div class="g-cell dark"><img src="../assets/ux-audit/Interaction_Flow_(2).jpg" alt="Interaction flow diagram" loading="lazy"></div>
       </div>
-
       <p class="gallery-label">
         <span class="t-en">Wireframe Sketches</span>
         <span class="t-jp">ワイヤーフレームスケッチ</span>
       </p>
       <div class="g-row r2">
-        <div class="g-cell dark">
-          <img src="../assets/cli-studios/Sketch_(1).png" alt="Wireframe sketch 1" loading="lazy">
-        </div>
-        <div class="g-cell dark">
-          <img src="../assets/cli-studios/Sketch_(2).png" alt="Wireframe sketch 2" loading="lazy">
-        </div>
+        <div class="g-cell dark"><img src="../assets/cli-studios/Sketch_(1).png" alt="Wireframe sketch 1" loading="lazy"></div>
+        <div class="g-cell dark"><img src="../assets/cli-studios/Sketch_(2).png" alt="Wireframe sketch 2" loading="lazy"></div>
       </div>
-    </div>
+    </section>
 
-    <!-- 5 Problems -->
-    <h2 class="project-section-title reveal-on-scroll">
-      <span class="t-en">5 Problems Solved</span>
-      <span class="t-jp">解決した5つの問題</span>
-    </h2>
-    <div class="problems-grid">
-      <div class="problem-block">
-        <div class="problem-num">
-          <span class="t-en">Problem 01</span>
-          <span class="t-jp">問題 01</span>
-        </div>
-        <div class="problem-before">
-          <span class="t-en">Poor Information Architecture</span>
-          <span class="t-jp">情報アーキテクチャの問題</span>
-        </div>
-        <div class="problem-arrow">↓</div>
-        <div class="problem-after">
-          <span class="t-en">4 clear sections: Home, Discover, Library, My Pick</span>
-          <span class="t-jp">4つの明確なセクション：ホーム、ディスカバー、ライブラリ、マイピック</span>
-        </div>
-      </div>
-      <div class="problem-block">
-        <div class="problem-num">
-          <span class="t-en">Problem 02</span>
-          <span class="t-jp">問題 02</span>
-        </div>
-        <div class="problem-before">
-          <span class="t-en">Indistinguishable Content Types</span>
-          <span class="t-jp">区別しにくいコンテンツタイプ</span>
-        </div>
-        <div class="problem-arrow">↓</div>
-        <div class="problem-after">
-          <span class="t-en">"Courses" → "Learning Path" / "Collections" → "Playlists" — renamed to match how users actually think about sequential vs. curated content</span>
-          <span class="t-jp">「コース」→「ラーニングパス」／「コレクション」→「プレイリスト」— ユーザーが順序のあるコンテンツとキュレーションされたコンテンツをどう認識するかに合わせてリネーム</span>
-        </div>
-      </div>
-      <div class="problem-block">
-        <div class="problem-num">
-          <span class="t-en">Problem 03</span>
-          <span class="t-jp">問題 03</span>
-        </div>
-        <div class="problem-before">
-          <span class="t-en">Confusing Navigation</span>
-          <span class="t-jp">分かりにくいナビゲーション</span>
-        </div>
-        <div class="problem-arrow">↓</div>
-        <div class="problem-after">
-          <span class="t-en">Full-page views replaced modals</span>
-          <span class="t-jp">モーダルをフルページビューに置き換え</span>
-        </div>
-      </div>
-      <div class="problem-block">
-        <div class="problem-num">
-          <span class="t-en">Problem 04</span>
-          <span class="t-jp">問題 04</span>
-        </div>
-        <div class="problem-before">
-          <span class="t-en">Poor Visual Clarity</span>
-          <span class="t-jp">視覚的わかりやすさの欠如</span>
-        </div>
-        <div class="problem-arrow">↓</div>
-        <div class="problem-after">
-          <span class="t-en">Distinct card designs per content type</span>
-          <span class="t-jp">コンテンツタイプごとに異なるカードデザイン</span>
-        </div>
-      </div>
-      <div class="problem-block">
-        <div class="problem-num">
-          <span class="t-en">Problem 05</span>
-          <span class="t-jp">問題 05</span>
-        </div>
-        <div class="problem-before">
-          <span class="t-en">Modal Overload</span>
-          <span class="t-jp">モーダルの過剰使用</span>
-        </div>
-        <div class="problem-arrow">↓</div>
-        <div class="problem-after">
-          <span class="t-en">Consistent back navigation throughout</span>
-          <span class="t-jp">全体を通じた一貫した戻るナビゲーション</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Before / After -->
-    <h2 class="project-section-title reveal-on-scroll">
-      <span class="t-en">Before &amp; After</span>
-      <span class="t-jp">ビフォー＆アフター</span>
-    </h2>
-
-    <!-- Gallery: Before & After -->
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label">
-        <span class="t-en">Before &amp; After — Redesigned Screens</span>
-        <span class="t-jp">ビフォー＆アフター — 再設計されたスクリーン</span>
+    <!-- ═══ Slide 7 · Evidence — redesigned screens (cream) ═══ -->
+    <section class="wds-evidence is-cream wds-slide deck-slide reveal-on-scroll" aria-label="Redesigned screens evidence">
+      <p class="wds-kick">
+        <span class="t-en">Evidence · Screens</span>
+        <span class="t-jp">証拠 · スクリーン</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Every core screen, before and after.</span>
+        <span class="t-jp is-block">主要スクリーンすべての、ビフォーとアフター。</span>
+      </h2>
+      <p class="wds-evidence-lead">
+        <span class="t-en">Login, Home, Discover, Library, My Pick — the same journey, restructured.</span>
+        <span class="t-jp is-block">ログイン、ホーム、ディスカバー、ライブラリ、マイピック — 同じ旅路を、構造から作り直した。</span>
       </p>
       <div class="g-row r1">
-        <div class="g-cell natural">
-          <img src="../assets/cli-studios/Before_and_After_login.png" alt="Before and after — Login screen" loading="lazy">
-        </div>
+        <div class="g-cell natural"><img src="../assets/cli-studios/Before_and_After_login.png" alt="Before and after — Login screen" loading="lazy"></div>
       </div>
       <div class="g-row r1">
-        <div class="g-cell natural">
-          <img src="../assets/cli-studios/Before_and_After__Home.png" alt="Before and after — Home screen" loading="lazy">
-        </div>
+        <div class="g-cell natural"><img src="../assets/cli-studios/Before_and_After__Home.png" alt="Before and after — Home screen" loading="lazy"></div>
       </div>
       <div class="g-row r1">
-        <div class="g-cell natural">
-          <img src="../assets/cli-studios/Before_and_After_Discover.png" alt="Before and after — Discover screen" loading="lazy">
-        </div>
+        <div class="g-cell natural"><img src="../assets/cli-studios/Before_and_After_Discover.png" alt="Before and after — Discover screen" loading="lazy"></div>
       </div>
       <div class="g-row r1">
-        <div class="g-cell natural">
-          <img src="../assets/cli-studios/Before_and_After_Library_(1).png" alt="Before and after — Library screen" loading="lazy">
-        </div>
+        <div class="g-cell natural"><img src="../assets/cli-studios/Before_and_After_Library_(1).png" alt="Before and after — Library screen" loading="lazy"></div>
       </div>
       <div class="g-row r1">
-        <div class="g-cell natural">
-          <img src="../assets/cli-studios/Before_and_After__My_Pick.png" alt="Before and after — My Pick screen" loading="lazy">
-        </div>
+        <div class="g-cell natural"><img src="../assets/cli-studios/Before_and_After__My_Pick.png" alt="Before and after — My Pick screen" loading="lazy"></div>
       </div>
-    </div>
+    </section>
 
-    <!-- Design System -->
-    <h2 class="project-section-title reveal-on-scroll">
-      <span class="t-en">Design System</span>
-      <span class="t-jp">デザインシステム</span>
-    </h2>
-
-    <!-- Gallery: Design System -->
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label">
-        <span class="t-en">Design System — 13-Page Documentation</span>
-        <span class="t-jp">デザインシステム — 13ページのドキュメント</span>
+    <!-- ═══ Slide 8 · Evidence — design system (dark) ═══ -->
+    <section class="wds-evidence is-dark wds-slide deck-slide reveal-on-scroll" aria-label="Design system evidence">
+      <p class="wds-kick">
+        <span class="t-en">Evidence · Design System</span>
+        <span class="t-jp">証拠 · デザインシステム</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">13 pages that outlive the redesign.</span>
+        <span class="t-jp is-block">再設計の先まで生きる、13ページ。</span>
+      </h2>
+      <p class="wds-evidence-lead">
+        <span class="t-en">The delivered design system documents 125+ components, interaction patterns, and accessibility specs — so future builds reuse instead of reinvent.</span>
+        <span class="t-jp is-block">納品したデザインシステムには、125以上のコンポーネント、インタラクションパターン、アクセシビリティ仕様を記載。将来の開発が「再発明」ではなく「再利用」になるように。</span>
       </p>
       <div class="g-row r3">
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-1.png" alt="Design System — page 1" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-2.png" alt="Design System — page 2" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-3.png" alt="Design System — page 3" loading="lazy">
-        </div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-1.png" alt="Design System — page 1" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-2.png" alt="Design System — page 2" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-3.png" alt="Design System — page 3" loading="lazy"></div>
       </div>
       <div class="g-row r3">
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-4.png" alt="Design System — page 4" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-5.png" alt="Design System — page 5" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-6.png" alt="Design System — page 6" loading="lazy">
-        </div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-4.png" alt="Design System — page 4" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-5.png" alt="Design System — page 5" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-6.png" alt="Design System — page 6" loading="lazy"></div>
       </div>
       <div class="g-row r3">
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-7.png" alt="Design System — page 7" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-8.png" alt="Design System — page 8" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-9.png" alt="Design System — page 9" loading="lazy">
-        </div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-7.png" alt="Design System — page 7" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-8.png" alt="Design System — page 8" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-9.png" alt="Design System — page 9" loading="lazy"></div>
       </div>
       <div class="g-row r3">
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-10.png" alt="Design System — page 10" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-11.png" alt="Design System — page 11" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts-12.png" alt="Design System — page 12" loading="lazy">
-        </div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-10.png" alt="Design System — page 10" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-11.png" alt="Design System — page 11" loading="lazy"></div>
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts-12.png" alt="Design System — page 12" loading="lazy"></div>
       </div>
       <div class="g-row r1">
-        <div class="g-cell brand">
-          <img src="../assets/cli-studios/Design_System_Parts.png" alt="Design System — overview" loading="lazy">
+        <div class="g-cell brand"><img src="../assets/cli-studios/Design_System_Parts.png" alt="Design System — overview" loading="lazy"></div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 9 · Craft — the judgment, and what was rejected (dark) ═══ -->
+    <section class="wds-craft wds-slide deck-slide reveal-on-scroll" aria-label="Craft and rejected alternatives">
+      <p class="wds-kick">
+        <span class="t-en">Craft &middot; 2024</span>
+        <span class="t-jp">クラフト &middot; 2024</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">No AI in the room. Just Figma, and <em>reasons</em>.</span>
+        <span class="t-jp is-block">AIはまだ無かった。あったのはFigmaと、<em>理由</em>だけ。</span>
+      </h2>
+      <p class="wds-craft-lead">
+        <span class="t-en">This was a solo engagement in 2024, before generative tools reached this kind of work. There was no model to generate a hundred directions and no team to argue with, so <strong>every decision had to carry its own justification</strong> — including the ones I decided not to take. Those are the more useful ones.</span>
+        <span class="t-jp is-block">2024年、この種の仕事に生成AIが届く前の単独案件だった。100案を出すモデルも、議論する相手もいない。だから<strong>すべての判断が、自前の根拠を持つ必要があった</strong>。採用しなかった判断も含めて。むしろ後者のほうが、読む価値がある。</span>
+      </p>
+      <div class="craft-grid">
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Rejected 01</span>
+            <span class="t-jp">選ばなかった案 01</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">A visual refresh</span>
+            <span class="t-jp">見た目のリフレッシュ</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">The fastest route to something that looks like progress. But all five problems traced to the architecture, so a surface pass would have returned every one of them on a different screen.</span>
+            <span class="t-jp is-block">最短で「進んでいるように見える」道。だが5つの問題はすべて構造に行き着くので、表層だけ直せば、同じ問題が別の画面で戻ってくる。</span>
+          </div>
+        </div>
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Rejected 02</span>
+            <span class="t-jp">選ばなかった案 02</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">Improving the modals</span>
+            <span class="t-jp">モーダルを改善する</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">The option that breaks nothing already built. But the modals were the cause, not the symptom — improved modals are still modals, and the depth stays exactly where it was.</span>
+            <span class="t-jp is-block">既存の作りを壊さずに済む案。しかしモーダルは症状ではなく原因だった。改善されたモーダルもモーダルであり、深さはそのまま残る。</span>
+          </div>
+        </div>
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Rejected 03</span>
+            <span class="t-jp">選ばなかった案 03</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">Five problems, five separate fixes</span>
+            <span class="t-jp">5つの問題を、5つ別々に直す</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">Defensible, and it would have closed every ticket. It would also have produced five unrelated patches — no single decision running through them, and no design system at the end of it.</span>
+            <span class="t-jp is-block">筋は通るし、チケットは全部閉じられる。ただし出来上がるのは無関係な5つのパッチで、それらを貫く1本の判断も、最後に残るデザインシステムも生まれない。</span>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Nav -->
-    <div class="project-nav">
-      <a href="tmobile.html" class="project-nav-link">
-        <span class="t-en">← T-Mobile BOPIS</span>
-        <span class="t-jp">← T-Mobile BOPIS</span>
-      </a>
-      <a href="web3-wallet.html" class="project-nav-link">
-        <span class="t-en">Next: Web3 Wallet →</span>
-        <span class="t-jp">次へ: Web3ウォレット →</span>
-      </a>
-    </div>
+    <!-- ═══ Slide 10 · Proof (cream) ═══ -->
+    <section class="wds-proof wds-slide deck-slide reveal-on-scroll" aria-label="Outcomes">
+      <p class="wds-kick" style="color: var(--acc); margin-bottom: 10px;">
+        <span class="t-en">Outcomes</span>
+        <span class="t-jp">成果</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Structure paid for itself.</span>
+        <span class="t-jp is-block">構造への投資は、元が取れた。</span>
+      </h2>
+      <div class="proof-stats">
+        <div class="proof-stat">
+          <div class="proof-stat-num">25%</div>
+          <div class="proof-stat-label">
+            <span class="t-en">Projected reduction in dev time — the design system enables component reuse across future builds</span>
+            <span class="t-jp is-block">デザインシステムのコンポーネント再利用により、将来の開発時間を25%削減（見込み）</span>
+          </div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-stat-num">5</div>
+          <div class="proof-stat-label">
+            <span class="t-en">Root structural problems solved — IA rebuilt, modals eliminated, navigation simplified</span>
+            <span class="t-jp is-block">根本的な構造問題を解決 — IA再構築、モーダル廃止、ナビゲーション簡素化</span>
+          </div>
+        </div>
+        <div class="proof-stat">
+          <div class="proof-stat-num">13<span style="font-size:0.55em;letter-spacing:0;"> pg</span></div>
+          <div class="proof-stat-label">
+            <span class="t-en">Design system documentation — 125+ components, interaction patterns, and accessibility specs</span>
+            <span class="t-jp is-block">デザインシステム資料 — 125以上のコンポーネント、インタラクションパターン、アクセシビリティ仕様</span>
+          </div>
+        </div>
+      </div>
+      <div class="tools-list">
+        <span class="tool-tag">Figma</span>
+        <span class="tool-tag"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
+        <span class="tool-tag"><span class="t-en">Design System</span><span class="t-jp">デザインシステム</span></span>
+        <span class="tool-tag"><span class="t-en">Heuristic Evaluation</span><span class="t-jp">ヒューリスティック評価</span></span>
+        <span class="tool-tag"><span class="t-en">User Interviews</span><span class="t-jp">ユーザーインタビュー</span></span>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 11 · Retrospective — what is still open (white) ═══ -->
+    <section class="wds-retro wds-slide deck-slide reveal-on-scroll" aria-label="Retrospective">
+      <p class="wds-kick">
+        <span class="t-en">Retrospective</span>
+        <span class="t-jp">振り返り</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">What I'd still argue with.</span>
+        <span class="t-jp is-block">まだ自分と議論が残っている点。</span>
+      </h2>
+      <p class="wds-retro-lead">
+        <span class="t-en">Three things this project did not settle. They don't belong in the outcomes column, which is exactly why they're worth writing down.</span>
+        <span class="t-jp is-block">この仕事で決着しなかったことが3つある。成果の欄には書けない。だからこそ書き残す価値がある。</span>
+      </p>
+      <div class="retro-list">
+        <div class="retro-item">
+          <div class="retro-num">01</div>
+          <div>
+            <div class="retro-title">
+              <span class="t-en">The 25% is still a projection.</span>
+              <span class="t-jp is-block">25%は、まだ見込みのままだ。</span>
+            </div>
+            <div class="retro-body">
+              <span class="t-en">A design system's return only becomes a measurement once the next build actually runs against it. I'm showing a projected number in an outcomes column, and I know what that's worth compared to a measured one.</span>
+              <span class="t-jp is-block">デザインシステムの投資対効果は、次のビルドが実際にそれを使って初めて実測になる。成果の欄に見込み値を置いているわけで、実測値と比べたときの重みの違いは自覚している。</span>
+            </div>
+          </div>
+        </div>
+        <div class="retro-item">
+          <div class="retro-num">02</div>
+          <div>
+            <div class="retro-title">
+              <span class="t-en">Structure-first gives you nothing to look at, early.</span>
+              <span class="t-jp is-block">構造から入ると、序盤に見せられる画面が出てこない。</span>
+            </div>
+            <div class="retro-body">
+              <span class="t-en">Rebuilding the architecture before touching the surface means weeks with no screens to show. This engagement had room for that. I don't yet have a good answer for how to win the same argument somewhere that doesn't.</span>
+              <span class="t-jp is-block">表層に触れる前にアーキテクチャを組み直すということは、見せる画面が無い期間を数週間つくるということだ。今回はそれが許される進め方だった。許されない現場で同じ判断をどう通すかには、まだ良い答えを持っていない。</span>
+            </div>
+          </div>
+        </div>
+        <div class="retro-item">
+          <div class="retro-num">03</div>
+          <div>
+            <div class="retro-title">
+              <span class="t-en">A system only becomes a system when someone uses it.</span>
+              <span class="t-jp is-block">システムは、使われて初めてシステムになる。</span>
+            </div>
+            <div class="retro-body">
+              <span class="t-en">Thirteen pages and 125+ components are a document until the next build reaches for them. Adoption happens after handoff, which is where it leaves my hands — and designing for that handoff is a separate problem I'd take more seriously now.</span>
+              <span class="t-jp is-block">13ページと125以上のコンポーネントは、次のビルドが手を伸ばすまではドキュメントでしかない。採用が起きるのは納品の後、つまり自分の手を離れた場所だ。その引き渡しをどう設計するかは別の問題で、今ならもっと真剣に扱う。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 12 · Closing (vivid blue) ═══ -->
+    <section class="wds-closing wds-slide deck-slide reveal-on-scroll" aria-label="Closing">
+      <p class="wds-kick">
+        <span class="t-en">The takeaway</span>
+        <span class="t-jp">この仕事から</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Fix the structure, and <em>the surface follows</em>.</span>
+        <span class="t-jp is-block">構造を直せば、<em>表面はついてくる</em>。</span>
+      </h2>
+      <div class="closing-ctas">
+        <a class="story-cta" href="../work.html">
+          <span class="t-en">Explore more Product Design &rarr;</span>
+          <span class="t-jp">他のProduct Designを見る &rarr;</span>
+        </a>
+      </div>
+    </section>
 
   </main>
 
-  <footer>
-    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
-      <div>
-        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
-        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
-          <span class="t-en">Design &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
-          <span class="t-jp">フリーランス・コンサルティングは <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて</span>
-        </div>
-      </div>
-      <div style="display:flex; gap:20px; flex-wrap:wrap;">
-        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
-        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
-        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
-        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
-        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
-        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
-        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
-        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
-      </div>
-      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
-    </div>
-  </footer>
-
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
+  <!-- ── Prev / Next ── -->
+  <div class="project-nav">
+    <a href="tmobile.html" class="project-nav-link">
+      <span class="t-en">&larr; T-Mobile BOPIS</span>
+      <span class="t-jp">&larr; T-Mobile BOPIS</span>
+    </a>
+    <a href="web3-wallet.html" class="project-nav-link">
+      <span class="t-en">Next: Web3 Wallet &rarr;</span>
+      <span class="t-jp">次へ: Web3ウォレット &rarr;</span>
+    </a>
   </div>
 
+  <footer class="site-footer">
+    <div>
+      <div class="footer-logo">Takao Umehara</div>
+      <div class="footer-llc">
+        <span class="t-en">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></span>
+        <span class="t-jp">フリーランス・コンサルティングは <strong>Creativity Is Everywhere LLC</strong> を通じて</span>
+      </div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+      <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+    </ul>
+    <div class="footer-loc">New York City</div>
+  </footer>
+
+  <!-- ── Page controls: language, view mode, and the deck readout in one cluster ── -->
+  <div class="page-controls">
+    <div class="deck-count" aria-live="polite">1 / 1</div>
+    <div class="pc-group pc-lang" role="group" aria-label="Language">
+      <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
+      <button class="lang-btn" type="button" data-lang="jp">JP</button>
+    </div>
+    <div class="pc-rule" aria-hidden="true"></div>
+    <div class="pc-group pc-view" role="group" aria-label="View mode">
+      <button type="button" data-viewbtn="scroll" aria-pressed="true"><span class="pc-i" aria-hidden="true">&#8801;</span><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></button>
+      <button type="button" data-viewbtn="deck-v" aria-pressed="false"><span class="pc-i" aria-hidden="true">&#8595;</span><span class="t-en">Slides</span><span class="t-jp">スライド</span></button>
+    </div>
+    <div class="deck-hint" id="deck-hint" aria-hidden="true">
+      <span class="t-en"><kbd>Space</kbd> to advance</span>
+      <span class="t-jp"><kbd>Space</kbd> で次へ</span>
+    </div>
+  </div>
+  <div class="deck-progress" aria-hidden="true"><i></i></div>
+
   <script>
+    // Language toggle
     (() => {
       const html = document.documentElement;
       const btns = [...document.querySelectorAll(".lang-btn")];
       const saved = localStorage.getItem("tu-lang") || "en";
       const setLang = (lang) => {
         html.classList.toggle("lang-jp", lang === "jp");
+        html.lang = lang === "jp" ? "ja" : "en";
         btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
         localStorage.setItem("tu-lang", lang);
       };
@@ -788,42 +1165,147 @@
       btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
     })();
 
-// ── Scroll Reveal ──
-(() => {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-visible');
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
-})();
-
-// ── Image Fade-In ──
-document.querySelectorAll('.g-cell img').forEach(img => {
-  if (img.complete) img.classList.add('loaded');
-  else img.addEventListener('load', () => img.classList.add('loaded'));
-});
-  
-  // ── Mobile Nav ──
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
-      toggle.addEventListener('click', () => {
-        toggle.classList.toggle('is-open');
-        links.classList.toggle('is-open');
-      });
-      // Close on link click
-      links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          toggle.classList.remove('is-open');
-          links.classList.remove('is-open');
+    // Scroll reveal
+    (() => {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            obs.unobserve(e.target);
+          }
         });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+    })();
+
+    // Image fade-in
+    document.querySelectorAll('.g-cell img').forEach(img => {
+      if (img.complete) img.classList.add('loaded');
+      else img.addEventListener('load', () => img.classList.add('loaded'));
+    });
+
+    // Mobile nav
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (toggle && links) {
+        toggle.addEventListener('click', () => {
+          const open = !links.classList.contains('is-open');
+          toggle.classList.toggle('is-open', open);
+          links.classList.toggle('is-open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+        });
+        links.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            toggle.classList.remove('is-open');
+            links.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+    })();
+  </script>
+
+  <script data-deck>
+  // View-mode engine: scroll | deck-v. Keyed only off html[data-view] + .deck-slide.
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll('[data-viewbtn]')];
+    const bar = document.querySelector('.deck-progress i');
+    const count = document.querySelector('.deck-count');
+    const hint = document.getElementById('deck-hint');
+    const mqMobile = window.matchMedia('(max-width: 768px)');
+    const mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const slides = () => [...document.querySelectorAll('.deck-slide')];
+    const allowDeck = () => !(mqMobile.matches || mqMotion.matches);
+    let cur = 0, advanced = false;
+
+    const setBtns = (v) => btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewbtn === v)));
+
+    const markLive = () => {
+      const s = slides();
+      s.forEach((el, i) => { if (i !== cur) el.classList.remove('is-live'); });
+      const el = s[cur];
+      if (el && !el.classList.contains('is-live')) {
+        void el.offsetWidth;           // restart the entrance when returning to a slide
+        el.classList.add('is-live');
+      }
+    };
+
+    const update = () => {
+      const n = slides().length || 1;
+      if (bar) bar.style.width = ((cur + 1) / n * 100) + '%';
+      if (count) count.textContent = (cur + 1) + ' / ' + n;
+      if (html.dataset.view === 'deck-v') markLive();
+    };
+
+    const idxFromScroll = () => {
+      const s = slides();
+      if (!s.length) return 0;
+      let best = 0, bestD = Infinity;
+      s.forEach((el, i) => {
+        const d = Math.abs(el.getBoundingClientRect().top);
+        if (d < bestD) { bestD = d; best = i; }
       });
-    }
+      return best;
+    };
+
+    const goto = (i, behavior) => {
+      const s = slides();
+      if (!s.length) return;
+      cur = Math.max(0, Math.min(i, s.length - 1));
+      s[cur].scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
+      update();
+    };
+
+    const setView = (v) => {
+      if (v !== 'scroll' && !allowDeck()) v = 'scroll';
+      html.dataset.view = v;
+      setBtns(v);
+      localStorage.setItem('tu-view', v);
+      if (v === 'scroll') {
+        slides().forEach(el => el.classList.remove('is-live'));
+        if (hint) hint.classList.remove('is-gone');
+        advanced = false;
+      } else {
+        requestAnimationFrame(() => goto(cur, 'auto'));
+      }
+      update();
+    };
+
+    btns.forEach(b => b.addEventListener('click', () => setView(b.dataset.viewbtn)));
+
+    const FWD = new Set([' ', 'Spacebar', 'ArrowDown', 'ArrowRight', 'PageDown']);
+    const BACK = new Set(['ArrowUp', 'ArrowLeft', 'PageUp']);
+    window.addEventListener('keydown', (e) => {
+      if (html.dataset.view !== 'deck-v') return;
+      const ae = document.activeElement;
+      if (ae && ae.matches && ae.matches('input,textarea,select,[contenteditable="true"]')) return;
+      if ((e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') && ae && ae.matches && ae.matches('button,a,[role="button"]')) return;
+      if (FWD.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur + 1); }
+      else if (BACK.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur - 1); }
+      else if (e.key === 'Home') { e.preventDefault(); goto(0); }
+      else if (e.key === 'End') { e.preventDefault(); goto(slides().length - 1); }
+      else return;
+      if (!advanced && hint) { advanced = true; hint.classList.add('is-gone'); }
+    });
+
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        if (html.dataset.view === 'deck-v') { cur = idxFromScroll(); update(); }
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => { if (html.dataset.view === 'deck-v') goto(cur, 'auto'); });
+    [mqMobile, mqMotion].forEach(mq => mq.addEventListener('change', () => {
+      if (!allowDeck() && html.dataset.view !== 'scroll') setView('scroll');
+    }));
+
+    const saved = localStorage.getItem('tu-view') || 'scroll';
+    setView(allowDeck() ? saved : 'scroll');
   })();
   </script>
 

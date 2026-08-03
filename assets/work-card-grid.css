@@ -155,6 +155,15 @@
   text-transform: uppercase;
 }
 
+/* Legacy anchor targets (e.g. #snap-pair-core) must never take part in the
+   .card-art grid — an empty grid item shifts sibling auto-placement and
+   throws off the label's centering versus every other card. */
+.card-art > [id]:empty {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
 .card-art--intent { background: linear-gradient(138deg, #152334, #4b6584 52%, #a7c5eb); }
 .card-art--arena { background: linear-gradient(140deg, #1a1b36, #5f49a7 56%, #f08ca9); }
 .card-art--brain { background: linear-gradient(140deg, #1f3437, #5d917b 54%, #c3d884); }
