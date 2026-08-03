@@ -42,7 +42,11 @@ const Voice = (() => {
     try {
       const r = await fetch('/api/tts/status');
       if (r.ok) { const s = await r.json(); cloudReady = !!s.enabled; }
-    } catch (e) { /* file:// or no relay → browser TTS */ }
+      else console.info(`[voice] relay TTS probe returned ${r.status} — using browser speech`);
+    } catch (e) {
+      // file:// or no relay running — expected, but worth saying which path we take
+      console.info('[voice] no TTS relay reachable — using browser speech', e.message);
+    }
   })();
 
   /* Rank the available system voices, strongly preferring neural/natural
@@ -79,7 +83,7 @@ const Voice = (() => {
       u.rate = v && /Natural|Neural|Online|Google/i.test(v.name) ? 1.0 : 1.05;
       u.pitch = 1.0;
       speechSynthesis.speak(u);
-    } catch (e) {}
+    } catch (e) { console.warn('[voice] browser speech unavailable — continuing silently', e); }
   }
 
   /* Voice priority: cloud TTS (Gemini or Amazon Polly — server picks based
@@ -89,13 +93,19 @@ const Voice = (() => {
     try {
       try { speechSynthesis.cancel(); } catch (e) {}
       if (!ttsAudio) ttsAudio = new Audio();
-      ttsAudio.onerror = () => browserSay(text); // bad creds / network → fall back
+      ttsAudio.onerror = () => {                 // bad creds / network → fall back
+        console.warn('[voice] cloud TTS playback failed — falling back to browser speech');
+        browserSay(text);
+      };
       ttsAudio.pause();
       const voiceParam = (window.App && window.App.state && window.App.state.voice) ? `&voice=${encodeURIComponent(window.App.state.voice)}` : '';
       ttsAudio.src = `/api/tts?text=${encodeURIComponent(text)}${voiceParam}`;
       const pr = ttsAudio.play();
-      if (pr && pr.catch) pr.catch(() => browserSay(text));
-    } catch (e) { browserSay(text); }
+      if (pr && pr.catch) pr.catch(e => { console.warn('[voice] cloud TTS play() rejected', e); browserSay(text); });
+    } catch (e) {
+      console.warn('[voice] cloud TTS request failed — falling back to browser speech', e);
+      browserSay(text);
+    }
   }
 
   function reply(text, opts = {}) {
@@ -301,7 +311,14 @@ const Voice = (() => {
       else dismiss(1500);
     };
     rec.onend = () => { if (listening) { stopRec(); dismiss(400); } };
-    try { rec.start(); } catch (e) { stopRec(); dismiss(300); }
+    try {
+      rec.start();
+    } catch (e) {
+      console.warn('[voice] speech recognition could not start', e);
+      setHeard('Voice input couldn’t start — try again, or use your phone remote’s mic.', true);
+      stopRec();
+      dismiss(3000);
+    }
   }
 
   function toggle() {
@@ -317,7 +334,10 @@ const Voice = (() => {
   }
 
   // Preload voices (Chrome loads async)
-  try { speechSynthesis.getVoices(); speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices(); } catch (e) {}
+  try {
+    speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
+  } catch (e) { console.info('[voice] speechSynthesis unavailable in this browser', e.message); }
 
   return { start, toggle, dismiss: () => dismiss(0), say, handle, fromRemote, get listening() { return listening; } };
 })();

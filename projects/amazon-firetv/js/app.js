@@ -12,8 +12,23 @@
 
   /* ---------- persistent state ---------- */
   const store = {
-    load(k, d) { try { return JSON.parse(localStorage.getItem('amztv.' + k)) ?? d; } catch { return d; } },
-    save(k, v) { localStorage.setItem('amztv.' + k, JSON.stringify(v)); },
+    load(k, d) {
+      try {
+        return JSON.parse(localStorage.getItem('amztv.' + k)) ?? d;
+      } catch (e) {
+        console.warn(`[store] unreadable value for ${k} — falling back to the default`, e);
+        return d;
+      }
+    },
+    // Storage can be full or blocked (private mode); a failed save must not
+    // abort the interaction that triggered it.
+    save(k, v) {
+      try {
+        localStorage.setItem('amztv.' + k, JSON.stringify(v));
+      } catch (e) {
+        console.warn(`[store] could not persist ${k} — this session only`, e);
+      }
+    },
   };
 
   const state = {
