@@ -525,6 +525,7 @@
     <ul class="nav-links">
       <li><a href="../ai-products.html" class="is-active" aria-current="page">Agentic UX</a></li>
       <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../interactive.html">Interactive</a></li>
       <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li><a href="../about.html">About</a></li>
@@ -976,16 +977,18 @@
     <!-- ── Master Brain (dynamic color-block slides) ── -->
     <style>
       /* ─── Master Brain three-brain architecture ─── */
-      .mb-feed { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
-      .mb-source { padding:clamp(28px,3.4vw,46px) clamp(22px,2.6vw,38px); color:#fff; }
+      .mb-feed { display:grid; grid-template-columns:1fr 1fr; gap:18px; position:relative; }
+      .mb-source { padding:clamp(28px,3.4vw,46px) clamp(22px,2.6vw,38px); color:#fff; position:relative; border-radius:12px; }
+      .mb-source::after { content:""; position:absolute; left:50%; bottom:-30px; width:2px; height:30px; background:#161619; transform:translateX(-50%); }
+      .mb-source::before { content:""; position:absolute; left:50%; bottom:-34px; width:10px; height:10px; border-right:2px solid #161619; border-bottom:2px solid #161619; transform:translateX(-50%) rotate(45deg); z-index:2; }
       .mb-source .mb-tag { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.72; margin-bottom:12px; }
       .mb-source h5 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(21px,2.5vw,32px); letter-spacing:-0.02em; line-height:1.04; margin-bottom:12px; }
       .mb-source p { font-size:13px; line-height:1.6; opacity:0.86; max-width:36ch; }
       .mb-source--brand { background:var(--p-violet); }
       .mb-source--research { background:var(--p-blue); }
-      .mb-join { display:flex; align-items:center; justify-content:center; gap:12px; padding:13px; background:#161619; color:rgba(255,255,255,0.6); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; }
-      .mb-join::before, .mb-join::after { content:"\2193"; font-size:15px; opacity:0.8; }
-      .mb-hub { background:var(--p-orange); color:#fff; padding:clamp(34px,4.6vw,66px) clamp(26px,3vw,52px); }
+      .mb-join { display:flex; align-items:center; justify-content:center; gap:12px; padding:28px 13px 16px; color:#161619; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; font-weight:700; text-align:center; }
+      .mb-join::before, .mb-join::after { content:""; flex:1; max-width:150px; height:1px; background:rgba(22,22,25,.28); }
+      .mb-hub { background:var(--p-orange); color:#fff; padding:clamp(34px,4.6vw,66px) clamp(26px,3vw,52px); border-radius:12px 12px 0 0; box-shadow:0 18px 44px rgba(196,85,8,.16); }
       .mb-hub .mb-tag { font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.72); margin-bottom:16px; }
       .mb-hub h4 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(30px,4.6vw,62px); letter-spacing:-0.03em; line-height:0.98; max-width:15ch; }
       .mb-hub p { font-size:clamp(14px,1.4vw,16.5px); line-height:1.68; color:rgba(255,255,255,0.88); max-width:56ch; margin-top:18px; }
@@ -996,7 +999,7 @@
       .mb-owned { display:flex; gap:18px; align-items:baseline; flex-wrap:wrap; margin-top:26px; padding-top:24px; border-top:1px solid var(--border); }
       .mb-owned-tag { font-size:11px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#7c3aed; }
       .mb-owned-txt { font-size:13.5px; line-height:1.62; color:var(--ink-mid); max-width:52ch; }
-      @media (max-width:820px) { .mb-feed { grid-template-columns:1fr; } .mb-out { grid-template-columns:1fr 1fr; } }
+      @media (max-width:820px) { .mb-feed { grid-template-columns:1fr; gap:34px; } .mb-source:first-child::after, .mb-source:first-child::before { display:none; } .mb-out { grid-template-columns:1fr 1fr; } }
       @media (max-width:520px) { .mb-out { grid-template-columns:1fr; } }
     </style>
 
@@ -1008,8 +1011,8 @@
 
       <!-- statement -->
       <div class="wds-slide deck-slide wds-hero">
-        <div class="wds-kick"><span class="t-en">The biggest one</span><span class="t-jp">最大の一手</span></div>
-        <h3 class="wds-serif"><span class="t-en">One project brain. <em>Every answer</em>, on demand.</span><span class="t-jp">ひとつのプロジェクトの脳。<em>あらゆる答え</em>を、その場で。</span></h3>
+        <div class="wds-kick"><span class="t-en">What it does</span><span class="t-jp">何をするシステムか</span></div>
+        <h3 class="wds-serif"><span class="t-en">One knowledge system answers questions about each project.</span><span class="t-jp">プロジェクトごとの情報を統合し、質問に答えるナレッジシステム。</span></h3>
         <p class="wds-hero-lead">
           <span class="t-en">Knowledge lived in heads, emails, and research PDFs no one had time to read &mdash; the research team ran deep brand studies five to eight times a year that never reached a busy project. Deep experts were underused. So I built a single place that <strong>holds it all and answers back</strong>.</span>
           <span class="t-jp is-block">知識は人の頭の中、メール、そして誰も読む時間のないリサーチPDFの中にあった &mdash; リサーチチームは年に5〜8回も深いブランド調査を行うのに、それが忙しいプロジェクトに届くことはなかった。深い知見を持つ人ほど活かされていなかった。だから私は、<strong>すべてを保持し、そして答えを返す</strong>単一の場所を作った。</span>
@@ -1020,17 +1023,17 @@
       <div class="wds-slide deck-slide">
         <div class="mb-feed">
           <div class="mb-source mb-source--brand">
-            <div class="mb-tag"><span class="t-en">Feeds in &middot; conceptual</span><span class="t-jp">流し込む &middot; 概念</span></div>
+            <div class="mb-tag"><span class="t-en">Input 01 &middot; Brand knowledge</span><span class="t-jp">入力 01 &middot; ブランド知識</span></div>
             <h5><span class="t-en">Brand Master Brain</span><span class="t-jp">ブランド Master Brain</span></h5>
             <p><span class="t-en">Brand history, voice, and standards &mdash; so every project inherits what the brand already knows about itself.</span><span class="t-jp is-block">ブランドの歴史、ボイス、基準 &mdash; すべてのプロジェクトが、ブランド自身の既知を受け継ぐ。</span></p>
           </div>
           <div class="mb-source mb-source--research">
-            <div class="mb-tag"><span class="t-en">Feeds in &middot; on NotebookLM</span><span class="t-jp">流し込む &middot; NotebookLM上</span></div>
+            <div class="mb-tag"><span class="t-en">Input 02 &middot; Research knowledge</span><span class="t-jp">入力 02 &middot; リサーチ知識</span></div>
             <h5><span class="t-en">Research Master Brain</span><span class="t-jp">リサーチ Master Brain</span></h5>
             <p><span class="t-en">Every deep study the research team produces &mdash; finally readable on demand, pulled into whichever project needs it.</span><span class="t-jp is-block">リサーチチームが生む深い調査のすべて &mdash; ようやく必要なときに読め、必要なプロジェクトへ引き込める。</span></p>
           </div>
         </div>
-        <div class="mb-join"><span class="t-en">feed into the project</span><span class="t-jp">プロジェクトへ流れ込む</span></div>
+        <div class="mb-join"><span class="t-en">Both knowledge sources feed the Project Master Brain</span><span class="t-jp">2つのナレッジをProject Master Brainへ統合</span></div>
         <div class="mb-hub">
           <div class="mb-tag"><span class="t-en">System 01 &middot; Single Source of Truth</span><span class="t-jp">システム 01 &middot; 単一の信頼できる情報源</span></div>
           <h4 class="t-en">Project Master Brain</h4>
@@ -1059,7 +1062,7 @@
 
       <!-- proof / adoption -->
       <div class="wds-slide deck-slide wds-adopt">
-        <h4 class="wds-serif"><span class="t-en">It answered the questions no one had time to answer.</span><span class="t-jp">誰も答える時間のなかった問いに、答えた。</span></h4>
+        <h4 class="wds-serif"><span class="t-en">The team used it to answer complex project questions faster.</span><span class="t-jp">複雑なプロジェクトの質問に、チームがより速く答えられるようになった。</span></h4>
         <p class="wds-adopt-lead">
           <span class="t-en">Mobile activation, account creation, add-a-line &mdash; where business rules and technical requirements tangle together, the Project Master Brain replied accurately and fast, saving real hours. On one payment-flexibility initiative it could articulate the <strong>entire business case on demand</strong>: the customer suspension gap, the recoverable nine-figure annual revenue, and the three &ldquo;how might we&rdquo; questions the design had to answer. That&rsquo;s the difference between a file archive and an organizational memory.</span>
           <span class="t-jp is-block">モバイルのアクティベーション、アカウント作成、回線追加 &mdash; ビジネスルールと技術要件が複雑に絡み合う場所で、プロジェクトMaster Brainは正確に、速く答え、実際に何時間も節約した。ある支払い柔軟化のイニシアチブでは、<strong>ビジネスケース全体をその場で</strong>語れた &mdash; 顧客の利用停止ギャップ、回収可能な9桁ドル規模の年間売上、そしてデザインが答えるべき3つの「How might we」まで。ファイル置き場と「組織の記憶」の違いが、ここにある。</span>
@@ -1112,18 +1115,18 @@
 
       <!-- Slide 1 — hero statement -->
       <div class="wds-slide deck-slide wds-hero jc-hero">
-        <div class="wds-kick"><span class="t-en">Break it before build</span><span class="t-jp">作る前に、壊す</span></div>
-        <h3 class="wds-serif"><span class="t-en">Break the logic <em>before a line of code exists.</em></span><span class="t-jp">コードが1行も書かれる<em>前に</em>、ロジックを壊す。</span></h3>
+        <div class="wds-kick"><span class="t-en">What it does</span><span class="t-jp">何をするツールか</span></div>
+        <h3 class="wds-serif"><span class="t-en">Justin reviews product flows for edge cases before development.</span><span class="t-jp">Justinは開発前のプロダクトフローからエッジケースを検出する。</span></h3>
         <p class="wds-hero-lead">
-          <span class="t-en">The name is the pitch &mdash; built to check things <em>just in case</em>. A Gemini Gem wired to a dedicated NotebookLM of edge-case detection resources, Justin runs a structured deep scan on a design <strong>before it ever reaches a developer's queue</strong>.</span>
-          <span class="t-jp is-block">名前がそのままコンセプトだ &mdash; 「念のため」（just in case）確認するために作られている。エッジケース検出のリソースを溜め込んだ専用のNotebookLMに接続されたGemini Gem。Justinは、<strong>デザインが開発者のキューに届くよりも前に</strong>、構造化されたディープスキャンを実行する。</span>
+          <span class="t-en">Justin is a Gemini Gem connected to a NotebookLM knowledge base for edge-case detection. It reviews a design, business rules, and project context, then returns a prioritized list of logic gaps, missing states, and questions for product and engineering to resolve before development.</span>
+          <span class="t-jp is-block">Justinは、エッジケース検出用のNotebookLMナレッジベースに接続したGemini Gem。デザイン、ビジネスルール、プロジェクト情報を確認し、開発前に解決すべきロジックの矛盾、未定義の状態、確認事項を優先順位付きで返す。</span>
         </p>
       </div>
 
       <!-- Slide 2 — the happy-path trap -->
       <div class="wds-slide deck-slide wds-adopt">
-        <h4 class="wds-serif"><span class="t-en">Designers design the happy path. Users don't live there.</span><span class="t-jp">デザイナーはハッピーパスを描く。ユーザーはそこには住んでいない。</span></h4>
-        <p class="wds-adopt-lead"><span class="t-en">Every flow hides the same three traps &mdash; and they all come due at the most expensive possible moment.</span><span class="t-jp is-block">どんなフローにも、同じ3つの罠が隠れている &mdash; そしてそのすべてが、最も高くつく瞬間に牙をむく。</span></p>
+        <h4 class="wds-serif"><span class="t-en">Product flows often omit error states and rule conflicts.</span><span class="t-jp">プロダクトフローでは、エラー状態やルールの矛盾が抜けやすい。</span></h4>
+        <p class="wds-adopt-lead"><span class="t-en">Justin checks for logic gaps, missing states, and issues that become more expensive after development starts.</span><span class="t-jp is-block">Justinは、ロジックの矛盾、未定義の状態、開発開始後に修正コストが上がる問題を確認する。</span></p>
         <div class="jc-trap">
           <div class="jc-trap-card">
             <div class="jc-trap-n">01</div>
@@ -1149,7 +1152,7 @@
           <img class="jc-scan-img" src="../assets/verizon-ai-agents/agent-justin-portrait.jpg" alt="Illustrated portrait of Justin Case, the Edge Case Detector AI agent, examining a layered wireframe stack with a magnifying glass" loading="lazy" onerror="this.remove()">
           <div>
             <div class="wds-kick" style="color:#16a34a;"><span class="t-en">The 4-Layer Deep Scan Protocol</span><span class="t-jp">4層のディープスキャン・プロトコル</span></div>
-            <h4 class="wds-serif jc-scan-title"><span class="t-en">Four layers. Every gap ranked. No code written yet.</span><span class="t-jp">4つの層。すべてのギャップを順位づけ。まだコードは1行もない。</span></h4>
+            <h4 class="wds-serif jc-scan-title"><span class="t-en">The audit checks four layers and ranks every issue.</span><span class="t-jp">4つの観点で監査し、すべての問題に優先順位をつける。</span></h4>
             <p class="jc-scan-lead"><span class="t-en">Fed the Project Master Brain, an Initiative Alignment Brief, and optionally the existing UI, Justin scans across four layers and returns a ranked matrix &mdash; <strong>each gap paired with an open question</strong> product and engineering must resolve before build.</span><span class="t-jp is-block">プロジェクトのMaster Brain、イニシアチブ整合ブリーフ、そして任意で既存のUIを与えられると、Justinは4つの層をスキャンし、順位づけされたマトリクスを返す &mdash; <strong>各ギャップには、開発が始まる前にプロダクトとエンジニアリングが解くべき問い</strong>が添えられる。</span></p>
             <div class="jc-inputs">
               <span>Project Master Brain</span>
@@ -1184,7 +1187,7 @@
 
       <!-- Slide 4 — what the matrix catches (proof) -->
       <div class="wds-slide deck-slide wds-adopt">
-        <h4 class="wds-serif"><span class="t-en">Type #audit &mdash; get 20&ndash;40 ranked questions engineering has to answer.</span><span class="t-jp">#audit と打つ &mdash; エンジニアが答えるべき20〜40の問いが返る。</span></h4>
+        <h4 class="wds-serif"><span class="t-en">The #audit command returns 20&ndash;40 prioritized questions.</span><span class="t-jp">#audit コマンドは、優先順位付きの確認事項を20〜40件返す。</span></h4>
         <p class="wds-adopt-lead">
           <span class="t-en">Each catch is phrased as a question, not a complaint. Real ones from a single payment feature: <em>what happens to a payment made at 11:59 PM when the system suspends the account at 12:02 AM? Does a user in Guam (UTC+10) see &ldquo;Day 0&rdquo; while US-Eastern servers still say &ldquo;Day &minus;1&rdquo;? If AutoPay batches lock 24&ndash;48 hours ahead, does the user get double-billed? What does five rage-clicks on &ldquo;Pay&rdquo; during a 60-second API hang actually charge?</em></span>
           <span class="t-jp is-block">検出はどれも、不満ではなく問いの形をとる。ある支払い機能ひとつからの実例 &mdash; <em>23:59の支払いは、システムが0:02に口座を停止する場合どうなる？ グアム（UTC+10）のユーザーには「Day 0」でも、米東部サーバーはまだ「Day &minus;1」では？ AutoPayが24〜48時間前にロックするなら、二重請求は起きない？ APIが60秒固まる間に「支払う」を5回連打したら、いくら請求される？</em></span>

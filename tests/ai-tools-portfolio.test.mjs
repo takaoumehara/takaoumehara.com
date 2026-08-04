@@ -9,7 +9,7 @@ const v3 = root;
 const read = (name) => readFileSync(join(v3, name), 'utf8');
 const mainPages = [
   'index.html', 'work.html', 'brand.html', 'ai-tools.html', 'ai-products.html', 'about.html',
-  'contact.html', 'breakbias.html', 'intentfirst.html', '404.html',
+  'contact.html', 'interactive.html', 'breakbias.html', 'intentfirst.html', '404.html',
 ];
 
 const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -79,14 +79,14 @@ function navDestinations(html, page) {
 
 // ── Nav consistency across the four-theme reorg ──
 
-test('all main-page navs order Agentic UX, AI Tools, Product Design, Brand & Visual, About, and Contact', () => {
+test('all main-page navs order Agentic UX, AI Tools, Interactive, Product Design, Brand & Visual, About, and Contact', () => {
   const expected = [
-    ['ai-products.html', 'Agentic UX'], ['ai-tools.html', 'AI Tools'], ['work.html', 'Product Design'],
-    ['brand.html', 'Brand &amp; Visual'], ['about.html', 'About'], ['contact.html', 'Contact'],
+    ['ai-products.html', 'Agentic UX'], ['ai-tools.html', 'AI Tools'], ['interactive.html', 'Interactive'],
+    ['work.html', 'Product Design'], ['brand.html', 'Brand &amp; Visual'], ['about.html', 'About'], ['contact.html', 'Contact'],
   ];
   for (const page of mainPages) {
     const nav = navDestinations(read(page), page);
-    assert.deepEqual(nav.slice(0, 6).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
+    assert.deepEqual(nav.slice(0, 7).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
   }
 });
 
@@ -94,13 +94,17 @@ test('each themed page marks its own nav item active', () => {
   const activeByPage = {
     'ai-products.html': 'ai-products.html',
     'ai-tools.html': 'ai-tools.html',
+    'interactive.html': 'interactive.html',
     'work.html': 'work.html',
     'brand.html': 'brand.html',
     'about.html': 'about.html',
     'contact.html': 'contact.html',
   };
   for (const [page, href] of Object.entries(activeByPage)) {
-    const active = navDestinations(read(page), page).find((item) => item.href === href)?.tag;
+    const nav = navDestinations(read(page), page);
+    const activeItems = nav.filter((item) => hasClass(item.tag, 'is-active') || attr(item.tag, 'aria-current') === 'page');
+    const active = activeItems.find((item) => item.href === href)?.tag;
+    assert.equal(activeItems.length, 1, `${page}: primary nav must have exactly one active item`);
     assert.ok(active && hasClass(active, 'is-active') && attr(active, 'aria-current') === 'page', `${page}: its own nav item must be active`);
   }
 });
@@ -227,12 +231,12 @@ test('AI Tools page mobile toggle exposes state, control, and collapses stories 
 
 // ── Agentic UX page (ai-products.html) ──
 
-test('Agentic UX page presents a curated products grid plus an Interactive Experience showcase', () => {
+test('Agentic UX page presents six AI-centered products without the Interactive collection', () => {
   const html = read('ai-products.html');
   assert.match(html, /<title>\s*Agentic UX — Takao Umehara\s*<\/title>/);
-  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*12 products\s*<\/div>/i);
-  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 12, 'Agentic UX page needs twelve work cards (6 products + 6 Interactive Experience)');
-  assertPair(html, 'Interactive Experience', 'Interactive Experience', 'Agentic UX Interactive Experience section title');
+  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*6 products\s*<\/div>/i);
+  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 6, 'Agentic UX page needs six AI-centered work cards');
+  assert.equal(html.includes('Interactive Experience projects'), false, 'Interactive projects must live on interactive.html');
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*intentfirst\.ai\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Verizon AI Workflow\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h2>/);
@@ -263,8 +267,9 @@ test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', ()
 
 test('AI index pages expose thumbnail-led work-card grids', () => {
   const expectations = [
-    ['ai-products.html', 12],
+    ['ai-products.html', 6],
     ['ai-tools.html', 6],
+    ['interactive.html', 6],
   ];
 
   for (const [page, expectedCount] of expectations) {
@@ -321,4 +326,23 @@ test('no main page carries the pre-reorg "AI Products" or "AI Tools & Infrastruc
     assert.equal(/>\s*AI Products\s*</.test(html), false, `${page}: stale "AI Products" label`);
     assert.equal(/AI Tools\s*&amp;\s*Infrastructure/.test(html), false, `${page}: stale "AI Tools & Infrastructure" label`);
   }
+});
+
+test('Interactive has its own six-project page and Agentic UX no longer duplicates it', () => {
+  const interactive = read('interactive.html');
+  const products = read('ai-products.html');
+  assert.match(interactive, /<title>Interactive — Takao Umehara<\/title>/);
+  assert.match(interactive, /Creative Technology × Interaction Design/);
+  assert.equal([...interactive.matchAll(openWithClass('article', 'work-card'))].length, 6);
+  for (const project of ['Typespace', 'Resona', 'Rakugaki Jam', 'Koe Baku', 'Werewolf Card Game', 'EmojiDrop']) {
+    assert.ok(interactive.includes(project), `Interactive page needs ${project}`);
+  }
+  assert.equal(products.includes('Interactive Experience projects'), false, 'Agentic UX must not duplicate the Interactive collection');
+});
+
+test('category guide distinguishes core AI behavior from incidental AI usage', () => {
+  const guide = read('docs/portfolio-category-guide.md');
+  assert.match(guide, /would materially stop working or change identity if AI were removed/);
+  assert.match(guide, /AI was only used during production/);
+  assert.match(guide, /participation through movement, sound, touch, play, devices, or a shared environment/);
 });
