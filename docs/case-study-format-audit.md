@@ -163,7 +163,7 @@ Variant A の上限は当初 9〜11枚と置いたが、実素材3ギャラリ�
 |---|---|---|
 | 1 | この照合文書を docs に追加 | 完了 |
 | 2 | `cli-studios.html` に Structure / Craft / Retrospective を追加し v2 参照実装にする | **完了**（12枚。§7 に文言の出所を記載） |
-| 3 | `portfolio-content-intake-prompt.md` を8章対応に改訂 | 未 |
+| 3 | `portfolio-content-intake-prompt.md` を8章対応に改訂 | **完了**（v2 / 2026-08-06。§5.5・§6.5・§10.5 を新設、§9 を変更） |
 | 4 | `portfolio-template-system.md` §2-1 のスパイン表を v2 に差し替え | 未 |
 | 5 | 残り18ページを v2 で移行 | 未 |
 

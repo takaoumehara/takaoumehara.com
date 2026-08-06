@@ -184,14 +184,30 @@
     }
 
     /* ─── Hero ─── */
+    /* ─── Hero — a dark colour field, the same vocabulary as the project pages ───
+       The landing page used to open with two columns of body copy on white. The
+       work behind it is visual and playable, so the front door has to look like
+       the work does: this borrows the keynote field from projects/cli-studios.html
+       rather than inventing a second visual language for the same site. */
     .hero {
-      padding: 96px 32px 80px;
-      max-width: 1200px;
-      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      background: #0d0d0f;
+      color: #fff;
+      padding: clamp(66px, 8vw, 118px) clamp(24px, 5vw, 72px) clamp(52px, 6vw, 84px);
     }
+    .hero::after {
+      content: "";
+      position: absolute; left: -8%; bottom: -55%;
+      width: 62%; height: 170%;
+      background: radial-gradient(ellipse at center, rgba(96,165,250,0.22), transparent 62%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
 
     .hero-kicker {
       margin-bottom: 20px;
+      color: rgba(255,255,255,0.52);
     }
 
     .hero-headline {
@@ -201,35 +217,53 @@
       line-height: 0.92;
       letter-spacing: -0.025em; /* serifs need less tracking */
       font-style: italic; /* DM Serif Display italic adds elegance */
-      max-width: 920px;
-      margin-bottom: 36px;
-      color: var(--ink);
+      max-width: 22ch;
+      margin-bottom: 30px;
+      color: #fff;
     }
+    .hero-headline em { font-style: italic; color: #9ec5fe; }
 
-    .hero-body {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 56px;
-      align-items: start;
-      max-width: 920px;
-    }
-
+    /* One lead, not two columns. The second paragraph was a positioning
+       statement — it belongs on About, not in front of someone deciding
+       within seconds whether this person's work is worth scrolling. */
     .hero-desc {
-      font-size: 17px;
+      font-size: clamp(16px, 1.25vw, 19.5px);
       line-height: 1.68;
-      color: var(--ink-mid);
+      color: rgba(255,255,255,0.72);
+      max-width: 62ch;
     }
+    .hero-desc strong { color: #fff; font-weight: 600; }
 
-    .hero-positioning {
-      font-size: 15px;
-      line-height: 1.72;
-      color: var(--ink-mid);
-      padding-top: 4px;
-      border-top: 1px solid var(--line);
+    /* Proof above the fold without waiting on imagery: the actual things,
+       named, linked, and marked with what state they are really in. */
+    .hero-live {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      margin-top: 30px; padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,0.14);
     }
+    .hero-live-label {
+      flex: 0 0 100%;
+      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); margin-bottom: 4px;
+    }
+    .hero-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 14px;
+      border: 1px solid rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.045);
+      color: rgba(255,255,255,0.9);
+      font-size: clamp(12.5px, 0.95vw, 14.5px);
+      text-decoration: none;
+      transition: background 200ms ease, border-color 200ms ease, transform 200ms ease;
+    }
+    .hero-chip:hover { background: rgba(255,255,255,0.11); border-color: rgba(255,255,255,0.34); transform: translateY(-1px); }
+    .hero-chip:focus-visible { outline: 2px solid #9ec5fe; outline-offset: 2px; }
+    .hero-chip .dot { width: 6px; height: 6px; border-radius: 50%; background: #4ade80; flex: none; }
+    .hero-chip .dot--proto { background: #fbbf24; }
+    .hero-chip .dot--case { background: #60a5fa; }
 
     .hero-cta {
-      margin-top: 40px;
+      margin-top: 32px;
       display: flex;
       gap: 16px;
       align-items: center;
@@ -267,6 +301,13 @@
     }
 
     .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* Both buttons invert on the dark hero field — the default primary is
+       near-black on near-black and would otherwise disappear entirely. */
+    .hero .btn-primary { background: #fff; color: #0d0d0f; border-color: #fff; }
+    .hero .btn-primary:hover { background: #9ec5fe; border-color: #9ec5fe; color: #0d0d0f; }
+    .hero .btn-secondary { color: #fff; border-color: rgba(255,255,255,0.34); }
+    .hero .btn-secondary:hover { border-color: #fff; }
 
     /* ─── Section header ─── */
     .section-head {
@@ -659,20 +700,20 @@
       margin: 0 auto;
       padding: 0 32px;
       border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: clamp(32px, 4vw, 64px);
     }
 
     .tools-row {
       position: relative;
       display: grid;
-      grid-template-columns: minmax(0, 1.28fr) minmax(260px, 0.72fr);
-      gap: clamp(32px, 7vw, 104px);
-      padding: 38px 0 42px;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 14px;
+      padding: 28px 0 30px;
       border-bottom: 1px solid var(--line);
     }
-
-    .tools-row:nth-child(2) {
-      grid-template-columns: minmax(0, 0.92fr) minmax(300px, 1.08fr);
-    }
+    @media (max-width: 860px) { .tools-list { grid-template-columns: 1fr; } }
 
     .tools-row::before {
       content: "";
@@ -899,10 +940,128 @@
     }
     .ai-card:hover .ai-thumb { transform: scale(1.035); }
 
+    /* AI Products sits on a cream field so the page reads dark → cream → dark
+       instead of one continuous white scroll. Same cream as the project pages. */
+    .ai-section {
+      background: #f4efe4;
+      border-top: 0;
+      padding: clamp(52px, 6vw, 84px) 0 clamp(56px, 6.5vw, 92px);
+    }
+    .ai-section .section-head, .ai-section .ai-intro, .ai-section .ai-grid { max-width: 1200px; }
+    .ai-section .ai-intro { margin-left: 0; max-width: 68ch; padding-left: 32px; }
+    .ai-section .ai-card { background: #fff; border-color: rgba(18,18,18,0.10); }
+
+    /* ─── Playable — the interactive work, on a dark field ───
+       This section did not exist on the landing page: the live pieces were
+       reachable only two clicks deep, which is the wrong depth for the work
+       that is easiest to judge in three seconds. */
+    .play-section {
+      position: relative; overflow: hidden;
+      background: #0d0d0f; color: #fff;
+      padding: clamp(52px, 6vw, 84px) 0 clamp(56px, 6.5vw, 92px);
+    }
+    .play-section::after {
+      content: ""; position: absolute; right: -10%; top: -40%;
+      width: 58%; height: 160%;
+      background: radial-gradient(ellipse at center, rgba(147,112,246,0.18), transparent 64%);
+      pointer-events: none;
+    }
+    .play-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .play-eyebrow { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
+    .play-title {
+      font-family: "DM Serif Display", Georgia, serif; font-weight: 400;
+      font-size: clamp(30px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.04;
+      color: #fff; margin-bottom: 14px;
+    }
+    /* The definition line is doing real work: "interactive" is true of any
+       button, so the section says out loud what it does and does not mean. */
+    .play-sub { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: rgba(255,255,255,0.66); max-width: 66ch; }
+    .play-sub strong { color: #fff; font-weight: 600; }
+    .play-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; margin-top: 34px; }
+    .play-card {
+      display: flex; flex-direction: column;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.11);
+      color: inherit; text-decoration: none;
+      transition: background 220ms ease, border-color 220ms ease, transform 220ms ease;
+    }
+    .play-card:hover { background: rgba(255,255,255,0.085); border-color: rgba(255,255,255,0.28); transform: translateY(-2px); }
+    .play-card:focus-visible { outline: 2px solid #9ec5fe; outline-offset: 3px; }
+
+    /* Each tile animates the sensation the piece is actually about, so the
+       card demonstrates rather than describes. Transform/opacity only — no
+       canvas, no JS, no GPU loop — and it stops dead under reduced motion. */
+    .play-art { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #131317; }
+    .play-art-label {
+      position: absolute; left: 18px; bottom: 14px; z-index: 3;
+      font-family: "DM Serif Display", Georgia, serif; font-size: clamp(19px, 1.7vw, 26px);
+      letter-spacing: -0.02em; color: #fff;
+    }
+    /* Resona — a spring settling: the pseudo-haptic press it exists to show */
+    .play-art--resona { background: radial-gradient(circle at 62% 38%, #2b2350, #131317 70%); }
+    .play-art--resona i {
+      position: absolute; left: 50%; top: 44%; width: 26%; aspect-ratio: 1;
+      margin: -13% 0 0 -13%; border-radius: 50%;
+      border: 1px solid rgba(196,181,253,0.55); background: rgba(167,139,250,0.16);
+    }
+    .play-card:hover .play-art--resona i { animation: play-spring 1100ms cubic-bezier(0.22, 1.2, 0.36, 1) infinite; }
+    @keyframes play-spring { 0%{transform:scale(1)} 26%{transform:scale(0.82)} 62%{transform:scale(1.08)} 100%{transform:scale(1)} }
+    /* Rakugaki Jam — a stroke drawing itself, then handed to the wall */
+    .play-art--rakugaki { background: linear-gradient(150deg, #1b2440, #131317 68%); }
+    .play-art--rakugaki i {
+      position: absolute; left: 12%; top: 58%; width: 76%; height: 3px;
+      background: linear-gradient(90deg, #f472b6, #fbbf24, #4ade80);
+      transform-origin: left center; transform: scaleX(0.62); border-radius: 2px;
+    }
+    .play-card:hover .play-art--rakugaki i { animation: play-draw 1500ms cubic-bezier(0.22, 0.84, 0.22, 1) infinite; }
+    @keyframes play-draw { 0%{transform:scaleX(0.06);opacity:1} 70%{transform:scaleX(1);opacity:1} 100%{transform:scaleX(1);opacity:0.2} }
+    /* Typespace — letters drifting apart into a constellation */
+    .play-art--typespace { background: radial-gradient(circle at 40% 60%, #16283a, #131317 72%); }
+    .play-art--typespace i {
+      position: absolute; width: 5px; height: 5px; border-radius: 50%;
+      background: #9ec5fe; box-shadow: 0 0 10px rgba(158,197,254,0.8);
+    }
+    .play-art--typespace i:nth-child(1) { left: 26%; top: 34%; }
+    .play-art--typespace i:nth-child(2) { left: 48%; top: 52%; }
+    .play-art--typespace i:nth-child(3) { left: 68%; top: 30%; }
+    .play-art--typespace i:nth-child(4) { left: 58%; top: 70%; }
+    .play-card:hover .play-art--typespace i { animation: play-drift 2600ms ease-in-out infinite alternate; }
+    .play-card:hover .play-art--typespace i:nth-child(2) { animation-delay: 220ms; }
+    .play-card:hover .play-art--typespace i:nth-child(3) { animation-delay: 440ms; }
+    .play-card:hover .play-art--typespace i:nth-child(4) { animation-delay: 660ms; }
+    @keyframes play-drift { from{transform:translate(0,0)} to{transform:translate(9px,-11px)} }
+
+    .play-body { padding: 22px 22px 12px; flex: 1; }
+    .play-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .play-chip {
+      font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.18); padding: 4px 8px;
+    }
+    .play-desc { font-size: clamp(13.5px, 1.02vw, 16.5px); line-height: 1.6; color: rgba(255,255,255,0.66); }
+    .play-foot {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 14px 22px 20px; font-size: 11.5px; letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.42);
+    }
+    .play-card:hover .play-foot span:last-child { color: #fff; }
+    .play-more { margin-top: 30px; }
+    .play-more a {
+      display: inline-block; padding: 13px 20px; border: 1px solid rgba(255,255,255,0.34);
+      color: #fff; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
+      transition: border-color 180ms ease, background 180ms ease;
+    }
+    .play-more a:hover { background: #fff; color: #0d0d0f; }
+    @media (max-width: 900px) { .play-grid { grid-template-columns: 1fr; } }
+
     /* ─── Capabilities strip ─── */
     .capabilities-section {
       padding: 72px 0 80px;
       border-top: 1px solid var(--line);
+    }
+
+    .capabilities-intro {
+      max-width: 68ch; padding: 0 32px; margin: 18px auto 0 0;
+      font-size: 16px; line-height: 1.7; color: var(--ink-mid);
     }
 
     .capabilities-grid {
@@ -1060,7 +1219,8 @@
 
     .hero-kicker  { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 80ms both; }
     .hero-headline{ animation: hero-in 900ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both; }
-    .hero-body    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 280ms both; }
+    .hero-desc    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 280ms both; }
+    .hero-live    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 360ms both; }
     .hero-cta     { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 400ms both; }
 
     /* ─── Responsive ─── */
@@ -1073,10 +1233,14 @@
       .work-card.is-featured { grid-column: span 2; grid-template-rows: 320px auto auto; }
       .initiatives-grid { grid-template-columns: 1fr; }
       .ai-grid { grid-template-columns: 1fr 1fr; }
-      .capabilities-grid { grid-template-columns: 1fr; }
+      .capabilities-intro {
+      max-width: 68ch; padding: 0 32px; margin: 18px auto 0 0;
+      font-size: 16px; line-height: 1.7; color: var(--ink-mid);
+    }
+
+    .capabilities-grid { grid-template-columns: 1fr; }
       .capability-block { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px 0; }
       .capability-block:not(:first-child) { padding-left: 0; }
-      .hero-body { grid-template-columns: 1fr; gap: 28px; }
     }
 
     @media (max-width: 767px) {
@@ -1142,7 +1306,12 @@
       line-height: 1.18;
       font-size: clamp(36px, 5.5vw, 72px);
       font-style: normal;
+      /* JP glyphs are full-width, so the Latin measure runs twice as wide, and
+         a break can land inside a word (体/験). Keep the emphasis phrase whole
+         and let the rest wrap on a shorter measure. */
+      max-width: 15ch;
     }
+    html.lang-jp .hero-headline em { font-style: normal; white-space: nowrap; }
     html.lang-jp .initiative-title {
       line-height: 1.12;
     }
@@ -1162,7 +1331,11 @@
       .rr > .inner  { animation: none !important; opacity: 1 !important; clip-path: inset(0 0 0 0) !important; transform: none !important; }
       .rr > .cover  { animation: none !important; opacity: 0 !important; }
       .card-image::before { animation: none !important; transition: none !important; }
-      .hero-kicker, .hero-headline, .hero-body, .hero-cta { animation: none !important; opacity: 1 !important; }
+      .hero-kicker, .hero-headline, .hero-desc, .hero-live, .hero-cta { animation: none !important; opacity: 1 !important; }
+      .play-card:hover .play-art--resona i,
+      .play-card:hover .play-art--rakugaki i,
+      .play-card:hover .play-art--typespace i { animation: none !important; }
+      .play-card, .play-card:hover { transform: none !important; }
       .tools-row::before,
       .tools-link { transition: none !important; }
       .tools-link:hover { transform: none; }
@@ -1181,7 +1354,7 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links" id="primary-nav-links">
-      <li><a href="ai-products.html">Agentic UX</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
       <li><a href="ai-tools.html">AI Tools</a></li>
       <li><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
@@ -1193,40 +1366,47 @@
 
   <!-- ── Hero ── -->
   <section class="hero">
+   <div class="hero-inner">
     <div class="hero-kicker eyebrow">
-      <span class="t-en">Product Designer — Agentic UX &amp; AI Products · New York</span>
-      <span class="t-jp">プロダクトデザイナー — Agentic UX &amp; AI プロダクト · ニューヨーク</span>
+      <span class="t-en">Product Designer — AI Products &amp; Playable Experiences · New York</span>
+      <span class="t-jp">プロダクトデザイナー — AI プロダクト＆遊べる体験 · ニューヨーク</span>
     </div>
     <h1 class="hero-headline">
-      <span class="t-en">Designing how humans and AI agents share work.</span>
-      <span class="t-jp">人と AI エージェントが、仕事を分かち合う体験をデザインする。</span>
+      <span class="t-en">Designing how humans and AI agents <em>share work</em>.</span>
+      <span class="t-jp">人と AI エージェントが、<em>仕事を分かち合う</em>体験をデザインする。</span>
     </h1>
-    <div class="hero-body">
-      <p class="hero-desc">
-        <span class="t-en">I research it through intentfirst.ai, ship it at enterprise scale — a 10-agent fleet inside Verizon's design org — and prove it with living prototypes you can drive from your phone. All grounded in 20 years of shipping products for Amplify, Coca-Cola, and T-Mobile.</span>
-        <span class="t-jp is-block">intentfirst.ai で研究し、Verizon のデザイン組織への 10 エージェント艦隊としてエンタープライズ規模で実装し、スマホから操作できる動くプロトタイプで証明する。その土台には、Amplify、Coca-Cola、T-Mobile に 20 年にわたりプロダクトを届けてきた経験があります。</span>
-      </p>
-      <p class="hero-positioning">
-        <span class="t-en">My best work happens where the problem doesn't have a name yet — designing experiences that shift perception, generate genuine delight, and translate directly into business impact. That's why innovation isn't a service I offer. It's how I think.</span>
-        <span class="t-jp is-block">最もやりがいを感じるのは、まだ問題に名前がついていない場所で働くとき。認識を変え、本物の喜びを生み出し、ビジネスインパクトに直結する体験を設計すること。だからイノベーションは、提供するサービスではなく、私の思考の仕方そのものです。</span>
-      </p>
+    <p class="hero-desc">
+      <span class="t-en">I research it at <strong>intentfirst.ai</strong>, ship it at enterprise scale — a 10-agent fleet inside Verizon's design org — and prove it with things you can open on your phone right now. Twenty years of shipping for Amplify, Coca-Cola and T-Mobile sits underneath all of it.</span>
+      <span class="t-jp is-block"><strong>intentfirst.ai</strong> で研究し、Verizon のデザイン組織に 10 エージェントの艦隊としてエンタープライズ規模で実装し、いますぐスマホで開けるもので証明する。その下には、Amplify・Coca-Cola・T-Mobile にプロダクトを届けてきた 20 年があります。</span>
+    </p>
+    <div class="hero-live">
+      <span class="hero-live-label">
+        <span class="t-en">Open right now</span>
+        <span class="t-jp">いま開けるもの</span>
+      </span>
+      <a class="hero-chip" href="https://intentfirst.ai" target="_blank" rel="noopener"><span class="dot dot--case"></span>intentfirst.ai</a>
+      <a class="hero-chip" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener"><span class="dot"></span>Rakugaki Jam</a>
+      <a class="hero-chip" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"><span class="dot"></span>Resona 響</a>
+      <a class="hero-chip" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener"><span class="dot"></span>Typespace</a>
+      <a class="hero-chip" href="projects/verizon-ai-agents.html"><span class="dot dot--case"></span>Verizon AI Workflow</a>
     </div>
     <div class="hero-cta">
-      <a href="ai-products.html" class="btn-primary"><span class="t-en">See Agentic UX →</span><span class="t-jp">Agentic UX を見る →</span></a>
+      <a href="ai-products.html" class="btn-primary"><span class="t-en">See AI Products →</span><span class="t-jp">AI Products を見る →</span></a>
       <a href="contact.html" class="btn-secondary"><span class="t-en">Start a conversation</span><span class="t-jp">相談する</span></a>
     </div>
+   </div>
   </section>
 
-  <!-- ── Agentic UX ── -->
+  <!-- ── AI Products ── -->
   <section class="ai-section" id="agentic-ux">
     <div class="section-head">
       <h2 class="section-title">
-        <span class="t-en">Agentic UX</span>
-        <span class="t-jp">Agentic UX</span>
+        <span class="t-en">AI Products</span>
+        <span class="t-jp">AI Products</span>
       </h2>
       <a href="ai-products.html" class="section-link">
-        <span class="t-en">All Agentic UX work →</span>
-        <span class="t-jp">Agentic UX をすべて見る →</span>
+        <span class="t-en">All AI Products work →</span>
+        <span class="t-jp">AI Products をすべて見る →</span>
       </a>
     </div>
     <p class="ai-intro">
@@ -1275,6 +1455,80 @@
         </div>
       </a>
 
+    </div>
+  </section>
+
+  <!-- ── Playable ── -->
+  <section class="play-section" id="playable" aria-labelledby="play-title">
+    <div class="play-inner">
+      <div class="play-eyebrow">
+        <span class="t-en">Playable · Open one on your phone</span>
+        <span class="t-jp">Playable · スマホで開いてみてください</span>
+      </div>
+      <h2 class="play-title" id="play-title">
+        <span class="t-en">Playable</span>
+        <span class="t-jp">遊べるもの</span>
+      </h2>
+      <p class="play-sub">
+        <span class="t-en">Not "interactive" in the sense that a button is interactive. <strong>The input is your voice, your hand, your drawing, or every phone in the room at once</strong> — and the output lands on a screen bigger than the one you are holding. These are running right now; there is nothing to install.</span>
+        <span class="t-jp is-block">ボタンを押せば「インタラクティブ」という意味ではありません。<strong>入力になるのは、声・手・描いた線、あるいはその場にあるスマホ全部</strong>。そして出力は、手元より大きな画面に出ます。どれも今すぐ動いていて、インストールは要りません。</span>
+      </p>
+
+      <div class="play-grid">
+
+        <a class="play-card" href="https://resona-motion.vercel.app" target="_blank" rel="noopener">
+          <div class="play-art play-art--resona" aria-hidden="true">
+            <i></i>
+            <span class="play-art-label">Resona 響</span>
+          </div>
+          <div class="play-body">
+            <div class="play-chips"><span class="play-chip">Live</span><span class="play-chip">Pseudo-haptics</span></div>
+            <p class="play-desc">
+              <span class="t-en">Motion that makes a screen feel like it has weight. Press something and it resists, settles, gives — the interface tells you what happened before you read a word.</span>
+              <span class="t-jp is-block">画面に重さを感じさせる動き。押せば抵抗し、揺れて、収まる。言葉を読む前に、インターフェイスが何が起きたかを伝えます。</span>
+            </p>
+          </div>
+          <div class="play-foot"><span>Web animation</span><span>Try it &#8599;</span></div>
+        </a>
+
+        <a class="play-card" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener">
+          <div class="play-art play-art--rakugaki" aria-hidden="true">
+            <i></i>
+            <span class="play-art-label">Rakugaki Jam</span>
+          </div>
+          <div class="play-body">
+            <div class="play-chips"><span class="play-chip">Live</span><span class="play-chip">Snap Pair</span><span class="play-chip">VJ</span></div>
+            <p class="play-desc">
+              <span class="t-en">Doodle on your phone, then fling it onto the wall screen everyone is watching. Scan a QR code and the whole room is drawing on the same canvas — no app, no accounts.</span>
+              <span class="t-jp is-block">スマホで落書きして、みんなが見ている壁の画面へ投げ込む。QR を読めば、その場の全員が同じキャンバスに描き始めます。アプリもアカウントも不要。</span>
+            </p>
+          </div>
+          <div class="play-foot"><span>Snap Pair · Firebase</span><span>Try it &#8599;</span></div>
+        </a>
+
+        <a class="play-card" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener">
+          <div class="play-art play-art--typespace" aria-hidden="true">
+            <i></i><i></i><i></i><i></i>
+            <span class="play-art-label">Typespace</span>
+          </div>
+          <div class="play-body">
+            <div class="play-chips"><span class="play-chip">Live</span><span class="play-chip">WebGL</span></div>
+            <p class="play-desc">
+              <span class="t-en">Type a word and it becomes a constellation, then slowly returns to the cosmos. No AI anywhere in it — just typing, and what typing can be made to feel like.</span>
+              <span class="t-jp is-block">言葉を打つと星座になり、やがてゆっくり宇宙へ還る。AI は一切使っていません。あるのはタイピングと、それがどんな感覚になりうるかだけ。</span>
+            </p>
+          </div>
+          <div class="play-foot"><span>r3f · GLSL · Web Audio</span><span>Try it &#8599;</span></div>
+        </a>
+
+      </div>
+
+      <div class="play-more">
+        <a href="ai-products.html#playable">
+          <span class="t-en">All playable work →</span>
+          <span class="t-jp">Playable をすべて見る →</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -1650,6 +1904,10 @@
     <div class="section-head">
       <h2 class="section-title">What I do</h2>
     </div>
+    <p class="capabilities-intro">
+      <span class="t-en">My best work happens where the problem doesn't have a name yet — designing experiences that shift perception, generate genuine delight, and translate directly into business impact. That's why innovation isn't a service I offer. It's how I think.</span>
+      <span class="t-jp is-block">最もやりがいを感じるのは、まだ問題に名前がついていない場所で働くとき。認識を変え、本物の喜びを生み出し、ビジネスインパクトに直結する体験を設計すること。だからイノベーションは、提供するサービスではなく、私の思考の仕方そのものです。</span>
+    </p>
     <div class="capabilities-grid">
       <div class="capability-block">
         <div class="capability-num">01</div>
