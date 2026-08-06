@@ -1015,6 +1015,18 @@
     }
     .play-card:hover .play-art--rakugaki i { animation: play-draw 1500ms cubic-bezier(0.22, 0.84, 0.22, 1) infinite; }
     @keyframes play-draw { 0%{transform:scaleX(0.06);opacity:1} 70%{transform:scaleX(1);opacity:1} 100%{transform:scaleX(1);opacity:0.2} }
+    /* Kao Game — two eyes, blinking out of sync */
+    .play-art--kao { background: radial-gradient(circle at 50% 46%, #5c1b30, #131317 74%); }
+    .play-art--kao i {
+      position: absolute; top: 40%; width: 11%; aspect-ratio: 1; border-radius: 50%;
+      background: rgba(247,183,51,0.9); box-shadow: 0 0 18px rgba(224,85,43,0.6);
+    }
+    .play-art--kao i:nth-child(1) { left: 30%; }
+    .play-art--kao i:nth-child(2) { left: 59%; }
+    .play-card:hover .play-art--kao i { animation: play-blink 1700ms ease-in-out infinite; }
+    .play-card:hover .play-art--kao i:nth-child(2) { animation-delay: 240ms; }
+    @keyframes play-blink { 0%,88%,100%{transform:scaleY(1)} 94%{transform:scaleY(0.12)} }
+
     /* Typespace — letters drifting apart into a constellation */
     .play-art--typespace { background: radial-gradient(circle at 40% 60%, #16283a, #131317 72%); }
     .play-art--typespace i {
@@ -1334,7 +1346,8 @@
       .hero-kicker, .hero-headline, .hero-desc, .hero-live, .hero-cta { animation: none !important; opacity: 1 !important; }
       .play-card:hover .play-art--resona i,
       .play-card:hover .play-art--rakugaki i,
-      .play-card:hover .play-art--typespace i { animation: none !important; }
+      .play-card:hover .play-art--typespace i,
+      .play-card:hover .play-art--kao i { animation: none !important; }
       .play-card, .play-card:hover { transform: none !important; }
       .tools-row::before,
       .tools-link { transition: none !important; }
@@ -1368,16 +1381,16 @@
   <section class="hero">
    <div class="hero-inner">
     <div class="hero-kicker eyebrow">
-      <span class="t-en">Product Designer — AI Products &amp; Playable Experiences · New York</span>
-      <span class="t-jp">プロダクトデザイナー — AI プロダクト＆遊べる体験 · ニューヨーク</span>
+      <span class="t-en">Product Designer · AI · New York</span>
+      <span class="t-jp">プロダクトデザイナー · AI · ニューヨーク</span>
     </div>
     <h1 class="hero-headline">
-      <span class="t-en">Designing how humans and AI agents <em>share work</em>.</span>
-      <span class="t-jp">人と AI エージェントが、<em>仕事を分かち合う</em>体験をデザインする。</span>
+      <span class="t-en">Intent first. <em>Then</em> the interface.</span>
+      <span class="t-jp">まず<em>意図</em>。<br>インターフェイスはその後。</span>
     </h1>
     <p class="hero-desc">
-      <span class="t-en">I research it at <strong>intentfirst.ai</strong>, ship it at enterprise scale — a 10-agent fleet inside Verizon's design org — and prove it with things you can open on your phone right now. Twenty years of shipping for Amplify, Coca-Cola and T-Mobile sits underneath all of it.</span>
-      <span class="t-jp is-block"><strong>intentfirst.ai</strong> で研究し、Verizon のデザイン組織に 10 エージェントの艦隊としてエンタープライズ規模で実装し、いますぐスマホで開けるもので証明する。その下には、Amplify・Coca-Cola・T-Mobile にプロダクトを届けてきた 20 年があります。</span>
+      <span class="t-en"><strong>intentfirst.ai</strong> is my thesis — how an AI should read what a person actually means, and a practical method for turning that into something a machine can learn. Everything else here is me testing it in public: a 10-agent fleet inside Verizon's design org, an AI that reads cognitive self-checks, and a room full of phones drawing on one wall. Underneath it, twenty years of shipping for Amplify, Coca-Cola and T-Mobile.</span>
+      <span class="t-jp is-block"><strong>intentfirst.ai</strong> は私の主張です — AI は人の意図をどう読むべきか、そしてそれを機械が学習できる形にどう落とすか。ここにある他のものは、その主張を公開の場で検証した記録です。Verizon のデザイン組織に置いた 10 エージェントの艦隊、認知セルフチェックを読む AI、そしてその場のスマホ全部でひとつの壁に描く仕掛け。下地には、Amplify・Coca-Cola・T-Mobile にプロダクトを届けてきた 20 年があります。</span>
     </p>
     <div class="hero-live">
       <span class="hero-live-label">
@@ -1462,16 +1475,16 @@
   <section class="play-section" id="playable" aria-labelledby="play-title">
     <div class="play-inner">
       <div class="play-eyebrow">
-        <span class="t-en">Playable · Open one on your phone</span>
-        <span class="t-jp">Playable · スマホで開いてみてください</span>
+        <span class="t-en">Interactive Experience · Open one on your phone</span>
+        <span class="t-jp">Interactive Experience · スマホで開いてみてください</span>
       </div>
       <h2 class="play-title" id="play-title">
-        <span class="t-en">Playable</span>
-        <span class="t-jp">遊べるもの</span>
+        <span class="t-en">Interactive Experience</span>
+        <span class="t-jp">インタラクティブ体験</span>
       </h2>
       <p class="play-sub">
-        <span class="t-en">Not "interactive" in the sense that a button is interactive. <strong>The input is your voice, your hand, your drawing, or every phone in the room at once</strong> — and the output lands on a screen bigger than the one you are holding. These are running right now; there is nothing to install.</span>
-        <span class="t-jp is-block">ボタンを押せば「インタラクティブ」という意味ではありません。<strong>入力になるのは、声・手・描いた線、あるいはその場にあるスマホ全部</strong>。そして出力は、手元より大きな画面に出ます。どれも今すぐ動いていて、インストールは要りません。</span>
+        <span class="t-en">Not "interactive" in the sense that a button is interactive. <strong>The input is your voice, your face, your body, or every phone in the room at once</strong> — and the output lands on a screen bigger than the one you are holding. Almost none of it is AI; it is networking, tracking and timing.</span>
+        <span class="t-jp is-block">ボタンを押せば「インタラクティブ」という意味ではありません。<strong>入力になるのは、声・表情・体の動き、あるいはその場にあるスマホ全部</strong>。そして出力は、手元より大きな画面に出ます。大半は AI ではなく、通信とトラッキングとタイミングの仕事です。</span>
       </p>
 
       <div class="play-grid">
@@ -1506,27 +1519,27 @@
           <div class="play-foot"><span>Snap Pair · Firebase</span><span>Try it &#8599;</span></div>
         </a>
 
-        <a class="play-card" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener">
-          <div class="play-art play-art--typespace" aria-hidden="true">
-            <i></i><i></i><i></i><i></i>
-            <span class="play-art-label">Typespace</span>
+        <a class="play-card" href="ai-products.html#interactive">
+          <div class="play-art play-art--kao" aria-hidden="true">
+            <i></i><i></i>
+            <span class="play-art-label">Kao Game</span>
           </div>
           <div class="play-body">
-            <div class="play-chips"><span class="play-chip">Live</span><span class="play-chip">WebGL</span></div>
+            <div class="play-chips"><span class="play-chip">In progress</span><span class="play-chip">Face tracking</span></div>
             <p class="play-desc">
-              <span class="t-en">Type a word and it becomes a constellation, then slowly returns to the cosmos. No AI anywhere in it — just typing, and what typing can be made to feel like.</span>
-              <span class="t-jp is-block">言葉を打つと星座になり、やがてゆっくり宇宙へ還る。AI は一切使っていません。あるのはタイピングと、それがどんな感覚になりうるかだけ。</span>
+              <span class="t-en">A game you play with your face. Pull the expressions it asks for, and the muscles you never train get a workout you actually want to repeat.</span>
+              <span class="t-jp is-block">顔で遊ぶゲーム。指示された表情をつくると、普段は鍛えない表情筋が動く。続けたくなる形にした表情筋トレーニング。</span>
             </p>
           </div>
-          <div class="play-foot"><span>r3f · GLSL · Web Audio</span><span>Try it &#8599;</span></div>
+          <div class="play-foot"><span>Face tracking</span><span>Read more →</span></div>
         </a>
 
       </div>
 
       <div class="play-more">
-        <a href="ai-products.html#playable">
-          <span class="t-en">All playable work →</span>
-          <span class="t-jp">Playable をすべて見る →</span>
+        <a href="ai-products.html#interactive">
+          <span class="t-en">All interactive work &amp; games →</span>
+          <span class="t-jp">体験とゲームをすべて見る →</span>
         </a>
       </div>
     </div>

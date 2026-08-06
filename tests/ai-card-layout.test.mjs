@@ -18,6 +18,6 @@ test('Agentic UX and AI Tools use the shared thumbnail-led portfolio grid', () =
   assert.match(tools, /assets\/work-card-grid\.js/);
   assert.match(products, /class="work-grid"/);
   assert.match(tools, /class="work-grid"/);
-  assert.equal(cardCount(products), 12);
+  assert.equal(cardCount(products), 13);
   assert.equal(cardCount(tools), 6);
 });

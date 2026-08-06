@@ -230,12 +230,12 @@ test('AI Tools page mobile toggle exposes state, control, and collapses stories 
 test('AI Products page presents a curated products grid plus a Playable showcase', () => {
   const html = read('ai-products.html');
   assert.match(html, /<title>\s*AI Products — Takao Umehara\s*<\/title>/);
-  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*12 products\s*<\/div>/i);
-  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 12, 'AI Products page needs twelve work cards (6 products + 6 Playable)');
-  assertPair(html, 'Playable', '遊べるもの', 'AI Products Playable section title');
+  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*13 projects\s*<\/div>/i);
+  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 13, 'AI Products page needs thirteen work cards (5 products + 5 interactive + 3 games)');
+  assertPair(html, 'Interactive Experience &amp; Games', 'インタラクティブ体験とゲーム', 'interactive section title');
   // The two named groups are the point: "interactive" alone is true of a button.
-  assertPair(html, 'Shared Screen', 'みんなの画面', 'Playable shared-screen group');
-  assertPair(html, 'Motion &amp; Feel', '動きと手ざわり', 'Playable motion-and-feel group');
+  assertPair(html, 'Interactive Experience', '体験', 'interactive-experience group');
+  assertPair(html, 'Games', 'ゲーム', 'games group');
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*intentfirst\.ai\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Verizon AI Workflow\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h2>/);
@@ -266,7 +266,7 @@ test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', ()
 
 test('AI index pages expose thumbnail-led work-card grids', () => {
   const expectations = [
-    ['ai-products.html', 12],
+    ['ai-products.html', 13],
     ['ai-tools.html', 6],
   ];
 

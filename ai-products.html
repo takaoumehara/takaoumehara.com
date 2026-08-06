@@ -505,6 +505,13 @@
     }
 
     /* ─── New project card-art gradients ─── */
+    .card-art--kao {
+      background:
+        radial-gradient(circle at 33% 40%, rgba(255,255,255,0.34) 0 2.2%, transparent 3%),
+        radial-gradient(circle at 63% 40%, rgba(255,255,255,0.34) 0 2.2%, transparent 3%),
+        linear-gradient(145deg, #7a1f3d, #e0552b 52%, #f7b733);
+    }
+
     .card-art--rakugaki {
       background:
         radial-gradient(circle at 22% 78%, rgba(255,255,255,0.30) 0 1.4%, transparent 2%),
@@ -632,7 +639,7 @@
         <span class="t-jp">AI Products</span>
       </h1>
     </div>
-    <div class="page-count">12 products</div>
+    <div class="page-count">13 projects</div>
   </div>
 
   <p class="lab-intro">
@@ -644,7 +651,7 @@
     <div class="work-grid" aria-label="AI Products projects">
       <article class="work-card" tabindex="0" data-href="https://intentfirst.ai" data-external="true">
         <div class="card-image"><div class="card-art card-art--intent"><span class="card-art-label">intent<br>first</span><span class="card-art-note">AI design research</span></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Research</span><span class="pill">Framework</span></div><h2 class="card-title">intentfirst.ai</h2><p class="card-desc"><span class="t-en">A design framework for the AI era: start from intent, not screens.</span><span class="t-jp is-block">画面ではなく意図から始める、AI 時代のためのデザインフレームワーク。</span></p></div>
+        <div class="card-body"><div class="chips"><span class="pill">Research</span><span class="pill">Framework</span></div><h2 class="card-title">intentfirst.ai</h2><p class="card-desc"><span class="t-en">Not a product — a thesis. How an AI should read what a person actually means, and a practical method for turning that into something a machine can learn.</span><span class="t-jp is-block">プロダクトではなく、主張です。AI は人の意図をどう読むべきか。そしてそれを機械が学習できる形にどう落とすか、という実務的な方法まで。</span></p></div>
         <div class="card-footer"><span class="card-meta">Context Grammar · AI Design Research</span><span class="card-meta card-meta--link">Visit ↗</span></div>
       </article>
 
@@ -660,7 +667,6 @@
         <div class="card-footer"><span class="card-meta">10-foot UI · Voice UX · Snap Pair</span><span class="card-meta card-meta--link">Prototype →</span></div>
       </article>
 
-      <article class="work-card" tabindex="0" data-href="projects/marubatsu.html"><div class="card-image"><div class="card-img-bg" style="background-image:url('assets/marubatsu/hero.jpg');"></div></div><div class="card-body"><div class="chips"><span class="pill">Shipped</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div><h2 class="card-title">Marubatsu 2.0</h2><p class="card-desc"><span class="t-en">Real-time online tic-tac-toe with an AI opponent.</span><span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span></p></div><div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span><span class="card-meta card-meta--link">Case study →</span></div></article>
 
       <article class="work-card"><div class="card-image"><div class="card-art card-art--brain"><span class="card-art-label">Brain<br>Manual</span><span class="card-art-note">Personalized self-check</span></div></div><div class="card-body"><div class="chips"><span class="pill">Coming soon</span><span class="pill">AI app</span></div><h2 class="card-title">MyBrainSpec</h2><p class="card-desc"><span class="t-en">A quick cognitive self-check, scored by AI, that creates a personalized BrainManual. Not yet public.</span><span class="t-jp is-block">AI が採点する認知セルフチェックから、あなただけの「ブレインマニュアル」を生成。まだ非公開です。</span></p></div><div class="card-footer"><span class="card-meta">React/Vite · Firebase · Gemini</span></div></article>
 
@@ -668,26 +674,46 @@
     </div>
   </div>
 
-  <!-- ── Playable ── -->
-  <section class="snap-section" id="playable" aria-labelledby="snap-title">
+  <!-- ── Interactive Experience & Games ── -->
+  <section class="snap-section" id="interactive" aria-labelledby="snap-title">
     <div class="snap-head">
-      <div class="snap-eyebrow"><span class="t-en">Playable · Open one on your phone</span><span class="t-jp">Playable · スマホで開いてみてください</span></div>
+      <div class="snap-eyebrow"><span class="t-en">Open one on your phone</span><span class="t-jp">スマホで開いてみてください</span></div>
       <h2 class="snap-title" id="snap-title">
-        <span class="t-en">Playable</span>
-        <span class="t-jp">遊べるもの</span>
+        <span class="t-en">Interactive Experience &amp; Games</span>
+        <span class="t-jp">インタラクティブ体験とゲーム</span>
       </h2>
       <p class="snap-sub">
-        <span class="t-en">Not "interactive" in the sense that a button is interactive. <strong>The input is your voice, your hand, your drawing, or every phone in the room at once</strong> — and the output lands on a screen bigger than the one you are holding. A short list on purpose: each of these is running right now, not a screenshot.</span>
-        <span class="t-jp is-block">ボタンを押せば「インタラクティブ」という意味ではありません。<strong>入力になるのは、声・手・描いた線、あるいはその場にあるスマホ全部</strong>。そして出力は、手元より大きな画面に出ます。意図的に短いリストです — どれもスクリーンショットではなく、いま動いているもの。</span>
+        <span class="t-en">Not "interactive" in the sense that a button is interactive. <strong>The input is your voice, your face, your body, your handwriting, or every phone in the room at once</strong> — and the output lands on a screen bigger than the one you are holding. Almost none of this is AI; it is networking, tracking and timing.</span>
+        <span class="t-jp is-block">ボタンを押せば「インタラクティブ」という意味ではありません。<strong>入力になるのは、声・表情・体の動き・手描きの線、あるいはその場にあるスマホ全部</strong>。そして出力は、手元より大きな画面に出ます。ここにある大半は AI ではなく、通信とトラッキングとタイミングの仕事です。</span>
       </p>
     </div>
 
     <div class="play-group">
-      <h3><span class="t-en">Shared Screen</span><span class="t-jp">みんなの画面</span></h3>
-      <p><span class="t-en">Many people, many phones, one screen everyone is watching. Scan a QR code to join — no app, no accounts.</span><span class="t-jp is-block">複数の人、複数のスマホ、そして全員が見ているひとつの画面。QR を読むだけで参加でき、アプリもアカウントも要りません。</span></p>
+      <h3><span class="t-en">Interactive Experience</span><span class="t-jp">体験</span></h3>
+      <p><span class="t-en">No winner, no score. What your voice or your body does to a room, and what it feels like to be the one causing it.</span><span class="t-jp is-block">勝ち負けも点数もありません。声や体の動きがその場に何を起こすか、そしてそれを起こしている側がどう感じるか。</span></p>
     </div>
 
-    <div class="work-grid" aria-label="Shared Screen projects">
+    <div class="work-grid" aria-label="Interactive Experience projects">
+
+      <article class="work-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
+        <div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">WebGL</span></div>
+          <h2 class="card-title">Typespace</h2>
+          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。AI は使っていません — 打って、眺めるだけ。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
+        <div class="card-image"><div class="card-art card-art--motion"><span class="card-art-label">Resona<br>響</span><span class="card-art-note">Pseudo-haptics</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Live</span><span class="pill">Motion design</span></div>
+          <h2 class="card-title">Resona <span style="font-size:0.6em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">響</span></h2>
+          <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">擬似ハプティクスにもとづく、意図を伝えるウェブアニメーションの実験場。言葉を読む前に、動きが意味を伝える。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Web animation · Pseudo-haptics</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+      </article>
 
       <article class="work-card" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
         <div class="card-image"><div class="card-art card-art--rakugaki"><span class="card-art-label">Rakugaki<br>Jam</span><span class="card-art-note">Phone → wall VJ</span></div></div>
@@ -710,6 +736,25 @@
       </article>
 
       <article class="work-card">
+        <div class="card-image"><div class="card-art card-art--kao"><span class="card-art-label">Kao<br>Game</span><span class="card-art-note">Your face is the controller</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">In progress</span><span class="pill">Face tracking</span></div>
+          <h2 class="card-title">Kao Game <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">顔ゲーム</span></h2>
+          <p class="card-desc"><span class="t-en">A game you play with your face. Pull the expressions the game asks for — and the muscles you never train get a workout you actually want to repeat.</span><span class="t-jp is-block">顔で遊ぶゲーム。指示された表情をつくると、普段は鍛えない表情筋が動く。続けたくなる形にした表情筋トレーニング。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Face tracking · Web</span></div>
+      </article>
+
+    </div>
+
+    <div class="play-group">
+      <h3><span class="t-en">Games</span><span class="t-jp">ゲーム</span></h3>
+      <p><span class="t-en">Play on the phones everyone already has. Scan a code to join — no app, no accounts, no controllers to hand out.</span><span class="t-jp is-block">その場にあるスマホでそのまま遊ぶ。コードを読むだけで参加でき、アプリもアカウントもコントローラーも要りません。</span></p>
+    </div>
+
+    <div class="work-grid" aria-label="Games projects">
+
+      <article class="work-card">
         <div class="card-image"><div class="card-img-bg card-img-bg--werewolf" style="background-image:url('assets/werewolf/ghost-wolf.png');"></div></div>
         <div class="card-body">
           <div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
@@ -729,34 +774,7 @@
         <div class="card-footer"><span class="card-meta">HTML5 Canvas · WebRTC · single-file</span></div>
       </article>
 
-    </div>
-
-    <div class="play-group">
-      <h3><span class="t-en">Motion &amp; Feel</span><span class="t-jp">動きと手ざわり</span></h3>
-      <p><span class="t-en">One person, one screen, and the question of what an interface can be made to feel like. No multiplayer, no room required.</span><span class="t-jp is-block">一人、ひとつの画面。インターフェイスをどんな感覚にできるか、という問いだけがあります。多人数も、場所も要りません。</span></p>
-    </div>
-
-    <div class="work-grid" aria-label="Motion and Feel projects">
-
-      <article class="work-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
-        <div class="card-image"><div class="card-art card-art--motion"><span class="card-art-label">Resona<br>響</span><span class="card-art-note">Pseudo-haptics</span></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Live</span><span class="pill">Motion design</span></div>
-          <h2 class="card-title">Resona <span style="font-size:0.6em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">響</span></h2>
-          <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">擬似ハプティクスにもとづく、意図を伝えるウェブアニメーションの実験場。言葉を読む前に、動きが意味を伝える。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Web animation · Pseudo-haptics</span><span class="card-meta card-meta--link">Try it ↗</span></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
-        <div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">WebGL</span></div>
-          <h2 class="card-title">Typespace</h2>
-          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。AI は使っていません — 打って、眺めるだけ。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span><span class="card-meta card-meta--link">Try it ↗</span></div>
-      </article>
+      <article class="work-card" tabindex="0" data-href="projects/marubatsu.html"><div class="card-image"><div class="card-img-bg" style="background-image:url('assets/marubatsu/hero.jpg');"></div></div><div class="card-body"><div class="chips"><span class="pill">Shipped</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div><h2 class="card-title">Marubatsu 2.0</h2><p class="card-desc"><span class="t-en">Real-time online tic-tac-toe with an AI opponent.</span><span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span></p></div><div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span><span class="card-meta card-meta--link">Case study →</span></div></article>
 
     </div>
   </section>
