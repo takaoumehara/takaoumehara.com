@@ -116,26 +116,32 @@ test('final polish: repeated main-page mobile navs remain closed by default', ()
 
 // ── Homepage: Agentic UX + AI Tools + Selected Work ──
 
-test('homepage orders Agentic UX, then AI Tools, then Selected Work', () => {
+test('homepage leads with proof and work, and demotes the open-source tools', () => {
   const html = read('index.html');
+  const proof = html.indexOf('class="proof-strip"');
   const agentic = html.indexOf('id="agentic-ux"');
-  const tools = html.indexOf('id="ai-tools"');
   const selected = html.indexOf('id="selected-work"');
-  assert.ok(agentic >= 0, 'homepage needs id="agentic-ux"');
-  assert.ok(tools > agentic, 'AI Tools must follow Agentic UX');
-  assert.ok(selected > tools, 'Selected Work must follow AI Tools');
+  const capabilities = html.indexOf('class="capabilities-section"');
+  const tools = html.indexOf('id="ai-tools"');
+  const close = html.indexOf('class="close-cta"');
+  assert.ok(proof >= 0, 'homepage needs the client proof strip');
+  assert.ok(agentic > proof, 'AI Products must follow the proof strip');
+  assert.ok(selected > agentic, 'Selected Work must follow AI Products');
+  assert.ok(capabilities > selected, 'What I do must follow Selected Work');
+  assert.ok(tools > capabilities, 'open-source tools sit below the case studies now');
+  assert.ok(close > tools, 'the page must end on the closing CTA');
 });
 
-test('homepage Agentic UX section presents the three flagship items', () => {
+test('homepage AI Products section presents the three flagship items', () => {
   const html = read('index.html');
   const section = html.match(/<section\b[^>]*\bid\s*=\s*["']agentic-ux["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
-  assert.match(section, /Agentic UX/);
-  assert.equal([...section.matchAll(openWithClass('a', 'ai-card'))].length, 3, 'Agentic UX needs three cards');
+  assert.match(section, /AI Products/);
+  assert.equal([...section.matchAll(openWithClass('a', 'ai-card'))].length, 3, 'AI Products needs three cards');
   assert.match(section, /href\s*=\s*["']https:\/\/intentfirst\.ai["']/);
   assert.match(section, /href\s*=\s*["']projects\/verizon-ai-agents\.html["']/);
   assert.match(section, /href\s*=\s*["']projects\/amazon-firetv\.html["']/);
-  assertPair(section, 'Designing how humans and AI agents share work — framework research, an enterprise agent fleet, and living prototypes you can touch.', '人と AI エージェントがどう仕事を分担するかのデザイン。フレームワーク研究、エンタープライズのエージェント艦隊、そして実際に触れる動くプロトタイプ。', 'homepage Agentic UX intro');
-  assertNoUnsupportedClaims(section, 'homepage Agentic UX section');
+  assertPair(section, 'Designing how humans and AI agents share work — framework research, an enterprise agent fleet, and living prototypes you can touch.', '人と AI エージェントがどう仕事を分担するかのデザイン。フレームワーク研究、エンタープライズのエージェント艦隊、そして実際に触れる動くプロトタイプ。', 'homepage AI Products intro');
+  assertNoUnsupportedClaims(section, 'homepage AI Products section');
 });
 
 test('homepage AI Tools section presents six project rows in order', () => {

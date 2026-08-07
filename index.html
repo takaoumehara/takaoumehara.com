@@ -1171,6 +1171,51 @@
       .lang-btn { transition: none !important; }
     }
   </style>
+
+  <style>
+    /* ─── Proof strip — borrowed credibility, set in type.
+           No logo images: a fabricated logo row costs more trust than none. ─── */
+    .proof-strip { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 22px 32px; }
+    .proof-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: baseline; gap: 28px; flex-wrap: wrap; }
+    .proof-label { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-dim); font-weight: 600; white-space: nowrap; }
+    .proof-names { display: flex; gap: 26px; flex-wrap: wrap; align-items: baseline; }
+    .proof-name { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(15px, 1.5vw, 19px); letter-spacing: -0.01em; color: var(--ink); opacity: 0.82; }
+    @media (max-width: 700px) {
+      .proof-strip { padding: 18px 20px; }
+      .proof-inner { gap: 12px; }
+      .proof-names { gap: 16px; }
+      .proof-name { font-size: 15px; }
+    }
+
+    /* ─── Compact the open-source tool list.
+           Same markup and copy; it simply no longer outweighs the case studies
+           it used to sit above. ─── */
+    /* Align the grid to the same content edge the other sections use
+       (max-width 1200 minus their 32px inset), so its border does not
+       overhang the last column. */
+    .tools-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; background: none;
+      border-top: 1px solid var(--line); border-left: 1px solid var(--line);
+      padding: 0; width: calc(100% - 64px); max-width: 1136px; margin: 0 auto; }
+    @media (max-width: 768px) { .tools-list { width: calc(100% - 40px); } }
+    .tools-list .tools-row { display: block; background: none; padding: 22px 20px; margin: 0;
+      border: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .tools-list .tools-primary { display: flex; gap: 12px; align-items: flex-start; }
+    .tools-list .tools-name { font-size: clamp(17px, 1.6vw, 21px); margin-bottom: 4px; }
+    .tools-list .tools-outcome { font-size: 13px; line-height: 1.55; }
+    .tools-list .tools-meta { margin-top: 14px; }
+    .tools-list .tools-classification { font-size: 10.5px; line-height: 1.5; }
+    .tools-list .tools-stack { display: none; }
+    .tools-list .tools-link { font-size: 11px; margin-top: 10px; display: inline-block; }
+    @media (max-width: 980px) { .tools-list { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 620px) { .tools-list { grid-template-columns: 1fr; } }
+
+    /* ─── Closing CTA — the page used to just stop ─── */
+    .close-cta { border-top: 1px solid var(--line); padding: clamp(64px, 9vw, 110px) 32px; text-align: center; }
+    .close-cta-title { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(32px, 5vw, 58px); letter-spacing: -0.03em; line-height: 1.02; max-width: 20ch; margin: 0 auto 18px; }
+    .close-cta-desc { font-size: 16px; line-height: 1.7; color: var(--ink-mid); max-width: 56ch; margin: 0 auto 30px; }
+    .close-cta-alt { display: block; margin-top: 18px; font-size: 13px; color: var(--ink-dim); }
+    html.lang-jp .close-cta-title { line-height: 1.22; }
+  </style>
 </head>
 <body>
 
@@ -1213,17 +1258,38 @@
       </p>
     </div>
     <div class="hero-cta">
-      <a href="ai-products.html" class="btn-primary"><span class="t-en">See AI Products →</span><span class="t-jp">AI Products を見る →</span></a>
+      <a href="#selected-work" class="btn-primary"><span class="t-en">See selected work →</span><span class="t-jp">実績を見る →</span></a>
       <a href="contact.html" class="btn-secondary"><span class="t-en">Start a conversation</span><span class="t-jp">相談する</span></a>
     </div>
   </section>
+
+
+  <!-- ── Proof strip ── -->
+  <section class="proof-strip" aria-label="Selected clients">
+    <div class="proof-inner">
+      <p class="proof-label"><span class="t-en">Shipped for</span><span class="t-jp">これまでの相手</span></p>
+      <div class="proof-names">
+        <span class="proof-name">Amplify Education</span>
+        <span class="proof-name">Verizon</span>
+        <span class="proof-name">T&#8209;Mobile</span>
+        <span class="proof-name">Amazon</span>
+        <span class="proof-name">Coca&#8209;Cola</span>
+        <span class="proof-name">USAA</span>
+        <span class="proof-name">Carnegie Foundation</span>
+        <span class="proof-name">Emerson Collective</span>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── AI Products ── -->
 
   <!-- ── Agentic UX ── -->
   <section class="ai-section" id="agentic-ux">
     <div class="section-head">
       <h2 class="section-title">
-        <span class="t-en">Agentic UX</span>
-        <span class="t-jp">Agentic UX</span>
+        <span class="t-en">AI Products</span>
+        <span class="t-jp">AI Products</span>
       </h2>
       <a href="ai-products.html" class="section-link">
         <span class="t-en">All AI Products work →</span>
@@ -1279,150 +1345,7 @@
     </div>
   </section>
 
-  <!-- ── AI Tools ── -->
-  <section class="tools-section" id="ai-tools" aria-labelledby="ai-tools-title">
-    <div class="section-head tools-head">
-      <div>
-        <h2 class="section-title" id="ai-tools-title"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h2>
-        <p class="tools-intro">
-          <span class="t-en">Claude skills, CLIs, and realtime libraries for people who build with AI agents — all open source.</span>
-          <span class="t-jp is-block">エージェントとともに作る人のための、Claude スキル・CLI・リアルタイムライブラリ。すべてオープンソース。</span>
-        </p>
-      </div>
-      <a href="ai-tools.html" class="section-link">
-        <span class="t-en">Explore AI tools →</span>
-        <span class="t-jp">AI Tools を見る →</span>
-      </a>
-    </div>
-
-    <div class="tools-list">
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--snap" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">01</p>
-            <h3 class="tools-name">Snap Pair</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Every phone in the room joins your app in one scan.</span>
-              <span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Realtime library · React + Firebase · Claude skill</p>
-          <p class="tools-stack">Firebase Auth · Cloud Functions · Realtime Database</p>
-          <a href="ai-tools.html#snap-pair" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--superforge" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">02</p>
-            <h3 class="tools-name">superforge</h3>
-            <p class="tools-outcome">
-              <span class="t-en">One sentence in. Twelve skills take it from idea to ship.</span>
-              <span class="t-jp is-block">一文を渡せば、12 のスキルが着想から公開まで運ぶ。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Skill system · 12 Claude Code skills · Model routing</p>
-          <p class="tools-stack">Codex / Gemini / Kimi mapping · docs/ output · MIT</p>
-          <a href="ai-tools.html#superforge" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--handoff" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">03</p>
-            <h3 class="tools-name">cross-model-handoff</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Switch AI tools mid-task. Keep the whole context.</span>
-              <span class="t-jp is-block">AI ツールを途中で乗り換えても、文脈はそのまま。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Claude Code plugin · Skill system · Codex / Gemini / Cursor</p>
-          <p class="tools-stack">AGENTS.md · Claude Code hooks · Markdown</p>
-          <a href="ai-tools.html#cross-model-handoff" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--fail" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">04</p>
-            <h3 class="tools-name">failforward</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Your coding agent stops repeating yesterday's mistakes.</span>
-              <span class="t-jp is-block">エージェントが、昨日と同じ失敗を繰り返さなくなる。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">CLI · Claude Code skill + hook · Codex / Gemini ready</p>
-          <p class="tools-stack">Python stdlib · Markdown store · MIT</p>
-          <a href="ai-tools.html#failforward" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--readme" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">05</p>
-            <h3 class="tools-name">multilingual-readme</h3>
-            <p class="tools-outcome">
-              <span class="t-en">A README a stranger understands in ten seconds — technical or not.</span>
-              <span class="t-jp is-block">初めて見た人が 10 秒で分かる README を、技術者かどうかを問わず。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Claude Code skill · EN · 日本語 · 简体中文 · Español · 한국어</p>
-          <p class="tools-stack">Source inspection · check_readme.py · MIT</p>
-          <a href="ai-tools.html#multilingual-readme" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--motionskills" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">06</p>
-            <h3 class="tools-name">interactive-experience-skills</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Settle artwork-or-tool first, then answer in lumens and milliseconds.</span>
-              <span class="t-jp is-block">作品か道具かを先に決め、そのあとルーメンとミリ秒で答える。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">3 Claude Code skills · Camera &amp; sensors · Human movement</p>
-          <p class="tools-stack">Director + 2 specialists · 2 commands · MIT</p>
-          <a href="ai-tools.html#interactive-experience-skills" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-    </div>
-  </section>
+  <!-- ── Featured Work ── -->
 
   <!-- ── Featured Work ── -->
   <section class="work-section" id="selected-work">
@@ -1612,39 +1535,7 @@
     </div><!-- /project-grid -->
   </section>
 
-  <!-- ── Initiatives ── -->
-  <section class="initiatives-section">
-    <div class="section-head">
-      <h2 class="section-title">Initiatives</h2>
-    </div>
-    <div class="initiatives-grid">
-
-      <a href="breakbias.html" class="initiative-card">
-        <div class="initiative-tag">Innovation Training</div>
-        <div>
-          <div class="initiative-title">BreakBias</div>
-          <div class="initiative-desc" style="margin-top:14px;">Eight structured tools for overcoming the cognitive biases that block innovation. Available as workshops for teams, in online and in-person formats.</div>
-        </div>
-        <div class="initiative-footer">
-          <div class="initiative-clients">Microsoft · Tiffany · Havas · Dentsu · Google</div>
-          <div class="initiative-arrow">↗</div>
-        </div>
-      </a>
-
-      <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="initiative-card intentfirst">
-        <div class="initiative-tag">AI Design Research</div>
-        <div>
-          <div class="initiative-title">intentfirst.ai</div>
-          <div class="initiative-desc" style="margin-top:14px;">Context Grammar is a design language that gives AI systems the vocabulary to understand not just what users ask, but what they actually need — across 8 Context Tokens and a 3-layer memory model.</div>
-        </div>
-        <div class="initiative-footer">
-          <div class="initiative-clients">Agentic AI · OS Design · Context-aware UX</div>
-          <div class="initiative-arrow">↗</div>
-        </div>
-      </a>
-
-    </div>
-  </section>
+  <!-- ── Capabilities ── -->
 
   <!-- ── Capabilities ── -->
   <section class="capabilities-section">
@@ -1687,6 +1578,205 @@
       </div>
     </div>
   </section>
+
+  <!-- ── AI Tools ── -->
+
+  <!-- ── AI Tools ── -->
+  <section class="tools-section" id="ai-tools" aria-labelledby="ai-tools-title">
+    <div class="section-head tools-head">
+      <div>
+        <h2 class="section-title" id="ai-tools-title"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h2>
+        <p class="tools-intro">
+          <span class="t-en">Claude skills, CLIs, and realtime libraries for people who build with AI agents — all open source.</span>
+          <span class="t-jp is-block">エージェントとともに作る人のための、Claude スキル・CLI・リアルタイムライブラリ。すべてオープンソース。</span>
+        </p>
+      </div>
+      <a href="ai-tools.html" class="section-link">
+        <span class="t-en">Explore AI tools →</span>
+        <span class="t-jp">AI Tools を見る →</span>
+      </a>
+    </div>
+
+    <div class="tools-list">
+      <article class="tools-row">
+        <div class="tools-primary">
+          <div class="tools-swatch tools-swatch--snap" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">01</p>
+            <h3 class="tools-name">Snap Pair</h3>
+            <p class="tools-outcome">
+              <span class="t-en">Every phone in the room joins your app in one scan.</span>
+              <span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる。</span>
+            </p>
+          </div>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">Realtime library · React + Firebase · Claude skill</p>
+          <p class="tools-stack">Firebase Auth · Cloud Functions · Realtime Database</p>
+          <a href="ai-tools.html#snap-pair" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tools-row">
+        <div class="tools-primary">
+          <div class="tools-swatch tools-swatch--superforge" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">02</p>
+            <h3 class="tools-name">superforge</h3>
+            <p class="tools-outcome">
+              <span class="t-en">One sentence in. Twelve skills take it from idea to ship.</span>
+              <span class="t-jp is-block">一文を渡せば、12 のスキルが着想から公開まで運ぶ。</span>
+            </p>
+          </div>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">Skill system · 12 Claude Code skills · Model routing</p>
+          <p class="tools-stack">Codex / Gemini / Kimi mapping · docs/ output · MIT</p>
+          <a href="ai-tools.html#superforge" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tools-row">
+        <div class="tools-primary">
+          <div class="tools-swatch tools-swatch--handoff" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">03</p>
+            <h3 class="tools-name">cross-model-handoff</h3>
+            <p class="tools-outcome">
+              <span class="t-en">Switch AI tools mid-task. Keep the whole context.</span>
+              <span class="t-jp is-block">AI ツールを途中で乗り換えても、文脈はそのまま。</span>
+            </p>
+          </div>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">Claude Code plugin · Skill system · Codex / Gemini / Cursor</p>
+          <p class="tools-stack">AGENTS.md · Claude Code hooks · Markdown</p>
+          <a href="ai-tools.html#cross-model-handoff" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tools-row">
+        <div class="tools-primary">
+          <div class="tools-swatch tools-swatch--fail" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">04</p>
+            <h3 class="tools-name">failforward</h3>
+            <p class="tools-outcome">
+              <span class="t-en">Your coding agent stops repeating yesterday's mistakes.</span>
+              <span class="t-jp is-block">エージェントが、昨日と同じ失敗を繰り返さなくなる。</span>
+            </p>
+          </div>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">CLI · Claude Code skill + hook · Codex / Gemini ready</p>
+          <p class="tools-stack">Python stdlib · Markdown store · MIT</p>
+          <a href="ai-tools.html#failforward" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tools-row">
+        <div class="tools-primary">
+          <div class="tools-swatch tools-swatch--readme" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">05</p>
+            <h3 class="tools-name">multilingual-readme</h3>
+            <p class="tools-outcome">
+              <span class="t-en">A README a stranger understands in ten seconds — technical or not.</span>
+              <span class="t-jp is-block">初めて見た人が 10 秒で分かる README を、技術者かどうかを問わず。</span>
+            </p>
+          </div>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">Claude Code skill · EN · 日本語 · 简体中文 · Español · 한국어</p>
+          <p class="tools-stack">Source inspection · check_readme.py · MIT</p>
+          <a href="ai-tools.html#multilingual-readme" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="tools-row">
+        <div class="tools-primary">
+          <div class="tools-swatch tools-swatch--motionskills" aria-hidden="true"></div>
+          <div>
+            <p class="tools-index" aria-hidden="true">06</p>
+            <h3 class="tools-name">interactive-experience-skills</h3>
+            <p class="tools-outcome">
+              <span class="t-en">Settle artwork-or-tool first, then answer in lumens and milliseconds.</span>
+              <span class="t-jp is-block">作品か道具かを先に決め、そのあとルーメンとミリ秒で答える。</span>
+            </p>
+          </div>
+        </div>
+        <div class="tools-meta">
+          <p class="tools-classification">3 Claude Code skills · Camera &amp; sensors · Human movement</p>
+          <p class="tools-stack">Director + 2 specialists · 2 commands · MIT</p>
+          <a href="ai-tools.html#interactive-experience-skills" class="tools-link">
+            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ── Initiatives ── -->
+
+  <!-- ── Initiatives ── -->
+  <section class="initiatives-section">
+    <div class="section-head">
+      <h2 class="section-title">Initiatives</h2>
+    </div>
+    <div class="initiatives-grid">
+
+      <a href="breakbias.html" class="initiative-card">
+        <div class="initiative-tag">Innovation Training</div>
+        <div>
+          <div class="initiative-title">BreakBias</div>
+          <div class="initiative-desc" style="margin-top:14px;">Eight structured tools for overcoming the cognitive biases that block innovation. Available as workshops for teams, in online and in-person formats.</div>
+        </div>
+        <div class="initiative-footer">
+          <div class="initiative-clients">Microsoft · Tiffany · Havas · Dentsu · Google</div>
+          <div class="initiative-arrow">↗</div>
+        </div>
+      </a>
+
+      <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="initiative-card intentfirst">
+        <div class="initiative-tag">AI Design Research</div>
+        <div>
+          <div class="initiative-title">intentfirst.ai</div>
+          <div class="initiative-desc" style="margin-top:14px;">Context Grammar is a design language that gives AI systems the vocabulary to understand not just what users ask, but what they actually need — across 8 Context Tokens and a 3-layer memory model.</div>
+        </div>
+        <div class="initiative-footer">
+          <div class="initiative-clients">Agentic AI · OS Design · Context-aware UX</div>
+          <div class="initiative-arrow">↗</div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+
+  <!-- ── Closing CTA ── -->
+  <section class="close-cta">
+    <h2 class="close-cta-title">
+      <span class="t-en">Got a problem that doesn't have a name yet?</span>
+      <span class="t-jp">まだ名前のついていない問題は、ありますか？</span>
+    </h2>
+    <p class="close-cta-desc">
+      <span class="t-en">That is the work I want. Full-time roles, product engagements, and speaking — tell me what you are looking at.</span>
+      <span class="t-jp is-block">そこがいちばんやりたい仕事です。正社員としての参加、プロダクトの案件、登壇 — いま見えているものを聞かせてください。</span>
+    </p>
+    <a href="contact.html" class="btn-primary"><span class="t-en">Start a conversation</span><span class="t-jp">相談する</span></a>
+    <a href="about.html" class="close-cta-alt"><span class="t-en">Or read the longer version →</span><span class="t-jp">経歴を読む →</span></a>
+  </section>
+
 
   <!-- ── Lang Switch ── -->
   <div class="lang-switch" id="lang-switch">
