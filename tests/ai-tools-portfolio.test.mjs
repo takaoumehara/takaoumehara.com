@@ -79,9 +79,9 @@ function navDestinations(html, page) {
 
 // ── Nav consistency across the four-theme reorg ──
 
-test('all main-page navs order Agentic UX, AI Tools, Interactive, Product Design, Brand & Visual, About, and Contact', () => {
+test('all main-page navs order AI Products, AI Tools, Interactive Experience, Product Design, Brand & Visual, About, and Contact', () => {
   const expected = [
-    ['ai-products.html', 'Agentic UX'], ['ai-tools.html', 'AI Tools'], ['interactive.html', 'Interactive'],
+    ['ai-products.html', 'AI Products'], ['ai-tools.html', 'AI Tools'], ['interactive.html', 'Interactive Experience'],
     ['work.html', 'Product Design'], ['brand.html', 'Brand &amp; Visual'], ['about.html', 'About'],
     ['contact.html', 'Contact'],
   ];
@@ -228,15 +228,14 @@ test('AI Tools page mobile toggle exposes state, control, and collapses stories 
   assert.ok(collapsesToOneColumn, 'ai-tools.html must collapse .mech-grid to one column at or below 900px (covers the 768px breakpoint)');
 });
 
-// ── Agentic UX page (ai-products.html) ──
+// ── AI Products page (ai-products.html) ──
 
-test('Agentic UX page presents a curated products grid and points at the Interactive page', () => {
+test('AI Products page presents a curated products grid', () => {
   const html = read('ai-products.html');
-  assert.match(html, /<title>\s*Agentic UX — Takao Umehara\s*<\/title>/);
+  assert.match(html, /<title>\s*AI Products — Takao Umehara\s*<\/title>/);
   assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*6 products\s*<\/div>/i);
-  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 6, 'Agentic UX page needs six product cards — the Interactive pieces moved to interactive.html');
-  assertPair(html, 'Interactive', 'Interactive', 'Agentic UX Interactive pointer title');
-  assert.match(html, /href\s*=\s*["']interactive\.html["']/, 'Agentic UX must link out to the Interactive page');
+  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 5, 'AI Products needs five cards — Marubatsu moved to the Interactive Experience page');
+  assert.equal(/Built to be touched/.test(html), false, 'the Interactive pointer section was removed from AI Products');
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*intentfirst\.ai\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Verizon AI Workflow\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h2>/);
@@ -245,9 +244,10 @@ test('Agentic UX page presents a curated products grid and points at the Interac
   assert.match(html, /mypick\.link/, 'InstaLink must be renamed to mypick.link');
 });
 
-test('Agentic UX page no longer lists failforward, cross-model-handoff, or Konosaki', () => {
+test('AI Products page no longer lists failforward, cross-model-handoff, or Konosaki', () => {
   const html = read('ai-products.html');
   assert.equal(html.includes('failforward'), false, 'failforward must have moved to AI Tools');
+  assert.equal(html.includes('Marubatsu'), false, 'Marubatsu moved to the Interactive Experience page');
   assert.equal(html.includes('cross-model-handoff'), false, 'cross-model-handoff was never an Agentic UX product');
   assert.equal(html.includes('Konosaki'), false, 'Konosaki must have moved to Brand & Visual');
 });
@@ -267,9 +267,9 @@ test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', ()
 
 test('AI index pages expose thumbnail-led work-card grids', () => {
   const expectations = [
-    ['ai-products.html', 6],
+    ['ai-products.html', 5],
     ['ai-tools.html', 7],
-    ['interactive.html', 6],
+    ['interactive.html', 7],
   ];
 
   for (const [page, expectedCount] of expectations) {
@@ -294,9 +294,9 @@ test('Product Design page dropped the brand/visual cards and Konosaki', () => {
 
 // ── Amazon Fire TV project page ──
 
-test('Amazon Fire TV project page labels itself under Agentic UX and links AI Tools next', () => {
+test('Amazon Fire TV project page labels itself under AI Products and links AI Tools next', () => {
   const html = read('projects/amazon-firetv.html');
-  assert.match(html, /<a href="\.\.\/ai-products\.html">Agentic UX<\/a>/, 'breadcrumb must read Agentic UX');
+  assert.match(html, /<a href="\.\.\/ai-products\.html">AI Products<\/a>/, 'breadcrumb must read AI Products');
   assert.match(html, /Next: AI Tools/, 'bottom nav must point to AI Tools, not the old AI Tools & Infrastructure label');
   assert.match(html, /class="demo-full/, 'the live simulator must use the full-bleed demo-full container');
 });
@@ -320,10 +320,12 @@ test('internal HTML links on every main page resolve to files and fragments', ()
   }
 });
 
-test('no main page carries the pre-reorg "AI Products" or "AI Tools & Infrastructure" labels', () => {
+test('no main page carries the pre-reorg "AI Tools & Infrastructure" label', () => {
+  // "AI Products" was guarded here while the category was called Agentic UX.
+  // It is the category name again as of 2026-08-07, so only the other stale
+  // label is still forbidden.
   for (const page of mainPages) {
     const html = read(page);
-    assert.equal(/>\s*AI Products\s*</.test(html), false, `${page}: stale "AI Products" label`);
     assert.equal(/AI Tools\s*&amp;\s*Infrastructure/.test(html), false, `${page}: stale "AI Tools & Infrastructure" label`);
   }
 });

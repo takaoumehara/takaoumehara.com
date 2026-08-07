@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>Interactive — Takao Umehara</title>
+  <title>Interactive Experience — Takao Umehara</title>
   <meta name="description" content="Interactive experiences by Takao Umehara — Typespace, Resona, Rakugaki Jam, Koe Baku, Werewolf and EmojiDrop. Working demos you join by scanning a QR code, not screenshots.">
-  <meta property="og:title" content="Interactive — Takao Umehara">
+  <meta property="og:title" content="Interactive Experience — Takao Umehara">
   <meta property="og:description" content="Built to be touched, not read about. Live, multi-phone experiences — most running on Snap Pair, one on WebRTC.">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -156,9 +156,9 @@
   <nav class="site-nav" aria-label="Primary navigation">
     <a href="index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
     <ul class="nav-links">
-      <li><a href="ai-products.html">Agentic UX</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
       <li><a href="ai-tools.html">AI Tools</a></li>
-      <li><a href="interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="interactive.html" class="is-active" aria-current="page">Interactive Experience</a></li>
       <li><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li><a href="about.html">About</a></li>
@@ -172,14 +172,38 @@
   <main class="work-list-page">
     <header class="work-list-header">
       <div>
-        <p class="work-list-kicker"><span class="t-en">Interactive · Built to be touched, not read about</span><span class="t-jp">Interactive · 読むものではなく、触れるもの</span></p>
-        <h1 class="work-list-title"><span class="t-en">Interactive</span><span class="t-jp">Interactive</span></h1>
+        <p class="work-list-kicker"><span class="t-en">Interactive Experience · Built to be touched, not read about</span><span class="t-jp">Interactive Experience · 読むものではなく、触れるもの</span></p>
+        <h1 class="work-list-title"><span class="t-en">Interactive Experience</span><span class="t-jp">Interactive Experience</span></h1>
       </div>
-      <p class="page-count"><span class="t-en">6 live experiences</span><span class="t-jp">6 つの体験</span></p>
+      <p class="page-count"><span class="t-en">7 live pieces</span><span class="t-jp">7 つの体験</span></p>
     </header>
     <p class="work-list-intro"><span class="t-en">A short list on purpose. Each of these is a working demo, not a screenshot — most run on <strong>Snap Pair</strong> (scan a QR code, every phone in the room joins one live session, no app install), one runs on WebRTC instead. Click through; they're better felt than described.</span><span class="t-jp is-block">意図的に短いリストです。どれもスクリーンショットではなく、実際に動くデモ。多くは <strong>Snap Pair</strong> 上で動きます（QR コードを読み取れば、その場のすべてのスマホがアプリ不要でひとつのライブ・セッションに参加）。ひとつだけ WebRTC で動いています。クリックして触れてみてください — 説明より体験のほうが早いので。</span></p>
 
-    <div class="work-grid" aria-label="Interactive experiences">
+    <style>
+      /* ─── Group headings inside the work list ─── */
+      .wl-group { border-top: 1px solid var(--line); margin: 56px 0 0; padding-top: 22px; }
+      .wl-group:first-of-type { margin-top: 0; border-top: 0; padding-top: 0; }
+      .wl-group-label {
+        font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+        font-weight: 600; color: var(--ink-dim); margin-bottom: 8px;
+      }
+      .wl-group-title {
+        font-family: "DM Serif Display", Georgia, serif; font-weight: 400;
+        font-size: clamp(24px, 3vw, 34px); letter-spacing: -0.03em; line-height: 1.02;
+        margin-bottom: 6px;
+      }
+      .wl-group-sub { font-size: 14.5px; line-height: 1.65; color: var(--ink-mid); max-width: 62ch; }
+      .wl-group + .work-grid { margin-top: 24px; }
+      html.lang-jp .wl-group-title { line-height: 1.22; }
+    </style>
+
+    <div class="wl-group">
+      <p class="wl-group-label"><span class="t-en">Experiences</span><span class="t-jp">体験</span></p>
+      <h2 class="wl-group-title"><span class="t-en">Made to be walked into</span><span class="t-jp">入っていくもの</span></h2>
+      <p class="wl-group-sub"><span class="t-en">Screens you join rather than watch. Scan a QR code and the room becomes the interface.</span><span class="t-jp is-block">眺めるのではなく、参加する画面。QR を読み取れば、その場そのものがインターフェースになります。</span></p>
+    </div>
+
+    <div class="work-grid" aria-label="Made to be walked into">
 
       <article class="work-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
         <div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div>
@@ -221,6 +245,16 @@
         <div class="card-footer"><span class="card-meta">Snap Pair · Web Audio · Canvas</span></div>
       </article>
 
+    </div>
+
+    <div class="wl-group">
+      <p class="wl-group-label"><span class="t-en">Game</span><span class="t-jp">ゲーム</span></p>
+      <h2 class="wl-group-title"><span class="t-en">Made to be played</span><span class="t-jp">遊ぶもの</span></h2>
+      <p class="wl-group-sub"><span class="t-en">Small games that need other people in the room — or on the other end of a connection.</span><span class="t-jp is-block">その場に誰かがいてこそ成立する、小さなゲーム。あるいは、回線の向こうに。</span></p>
+    </div>
+
+    <div class="work-grid" aria-label="Made to be played">
+
       <article class="work-card">
         <div class="card-image"><div class="card-img-bg card-img-bg--werewolf" style="background-image:url('assets/werewolf/ghost-wolf.png');"></div></div>
         <div class="card-body">
@@ -241,7 +275,10 @@
         <div class="card-footer"><span class="card-meta">HTML5 Canvas · WebRTC · single-file</span></div>
       </article>
 
+      <article class="work-card" tabindex="0" data-href="projects/marubatsu.html"><div class="card-image"><div class="card-img-bg" style="background-image:url('assets/marubatsu/hero.jpg');"></div></div><div class="card-body"><div class="chips"><span class="pill">Shipped</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div><h2 class="card-title">Marubatsu 2.0</h2><p class="card-desc"><span class="t-en">Real-time online tic-tac-toe with an AI opponent.</span><span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span></p></div><div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span><span class="card-meta card-meta--link">Case study →</span></div></article>
+
     </div>
+  
   </main>
 
   <section class="how-section" aria-labelledby="how-title">
@@ -286,7 +323,7 @@
 
   <footer class="site-footer">
     <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc"><span class="t-en">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></span><span class="t-jp">フリーランス・コンサルティングは <strong>Creativity Is Everywhere LLC</strong> を通じて</span></div></div>
-    <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="ai-products.html">Agentic UX</a></li><li><a href="ai-tools.html">AI Tools</a></li><li><a href="work.html">Product Design</a></li><li><a href="brand.html">Brand &amp; Visual</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li></ul>
+    <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="ai-products.html">AI Products</a></li><li><a href="ai-tools.html">AI Tools</a></li><li><a href="work.html">Product Design</a></li><li><a href="brand.html">Brand &amp; Visual</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li></ul>
   </footer>
 
   <script>

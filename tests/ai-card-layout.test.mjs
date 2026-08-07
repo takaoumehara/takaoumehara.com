@@ -8,7 +8,7 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (name) => readFileSync(join(root, name), 'utf8');
 const cardCount = (html) => [...html.matchAll(/<article\b[^>]*\bclass\s*=\s*["'][^"']*\bwork-card\b[^"']*["']/gi)].length;
 
-test('Agentic UX, AI Tools and Interactive use the shared thumbnail-led portfolio grid', () => {
+test('AI Products, AI Tools and Interactive Experience use the shared thumbnail-led portfolio grid', () => {
   const products = read('ai-products.html');
   const tools = read('ai-tools.html');
   const interactive = read('interactive.html');
@@ -18,8 +18,8 @@ test('Agentic UX, AI Tools and Interactive use the shared thumbnail-led portfoli
     assert.match(html, /assets\/work-card-grid\.js/);
     assert.match(html, /class="work-grid"/);
   }
-  // Agentic UX kept the six products; the six Interactive pieces moved to their own page.
-  assert.equal(cardCount(products), 6);
+  // Marubatsu moved to the Interactive Experience page's Game group, leaving five here.
+  assert.equal(cardCount(products), 5);
   assert.equal(cardCount(tools), 7);
-  assert.equal(cardCount(interactive), 6);
+  assert.equal(cardCount(interactive), 7);
 });
