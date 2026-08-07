@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>AI Window Deck — Takao Umehara</title>
+  <meta name="description" content="AI Window Deck — a Chrome extension that replaces a numeric setup form with a drag-and-drop canvas of your real monitors. Case study by Takao Umehara.">
+  <meta property="og:title" content="AI Window Deck — Takao Umehara">
+  <meta property="og:description" content="A layout you can see, not a form you have to fill in. Rebuilding a multi-monitor window manager around a two-pane canvas.">
+  <meta property="og:type" content="article">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      /* Project accent: cobalt blue. Kept distinct from the Product Design blue
+         (#2563eb, cli-studios) because these pages never sit next to each other. */
+      --acc: #2f5bff;
+      --acc-tint: #8aa6ff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--ff); color: var(--ink); background: var(--bg); min-height: 100vh; }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+
+    .nav-toggle { display: none; appearance: none; background: none; border: none; cursor: pointer; width: 28px; height: 20px; position: relative; padding: 0; }
+    .nav-toggle span { display: block; position: absolute; left: 0; width: 100%; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; padding: 0; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+
+    /* ─── Bilingual ─── */
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+    html.lang-jp .wds-serif { line-height: 1.22; letter-spacing: -0.01em; }
+    html.lang-jp .wds-serif em { white-space: nowrap; }
+
+    /* ─── Breadcrumb ─── */
+    .breadcrumb { padding: 20px 32px; max-width: 1360px; margin: 0 auto; }
+    .breadcrumb a { font-size: clamp(12px, 0.88vw, 13.5px); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: clamp(12px, 0.88vw, 13.5px); color: rgba(18,18,18,0.28); margin: 0 8px; }
+
+    /* ═══ Slide deck (wds-*) ═══ */
+    .deck { max-width: 1360px; margin: 0 auto; padding: 0 20px 8px; }
+    .wds-slide { margin-bottom: 2px; }
+    .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
+    .wds-kick { font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
+
+    /* Hero — dark, cobalt glow. A real product shot can be dropped in behind the
+       scrim later; see the commented background rule below. */
+    .wds-hero {
+      position: relative; overflow: hidden;
+      background: #0d0d0f;
+      /* When assets/ai-window-deck/hero.jpg lands, replace the line above with:
+         background:
+           linear-gradient(180deg, rgba(10,12,16,0.88) 0%, rgba(10,12,16,0.93) 55%, #0d0d0f 100%),
+           url('../assets/ai-window-deck/hero.jpg') center/cover no-repeat,
+           #0d0d0f; */
+      color: #fff;
+      padding: clamp(46px, 6.5vw, 96px) clamp(28px, 5vw, 78px);
+    }
+    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(47,91,255,0.30), transparent 62%); pointer-events: none; }
+    .wds-hero > * { position: relative; z-index: 1; }
+    .wds-hero .wds-kick { color: rgba(255,255,255,0.55); }
+    .wds-hero h1 { font-size: clamp(38px, 6.4vw, 82px); max-width: 16ch; }
+    .wds-hero h1 em { font-style: italic; color: var(--acc-tint); }
+    .wds-hero-lead { font-size: clamp(15.5px, 1.25vw, 21px); line-height: 1.68; color: rgba(255,255,255,0.7); max-width: 62ch; margin-top: 28px; }
+    .wds-hero-lead strong { color: #fff; font-weight: 600; }
+
+    .wds-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
+    .wds-chip { padding: 7px 13px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: clamp(10.5px, 0.78vw, 12.5px); }
+    .wds-hero-meta { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 34px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.14); }
+    .wds-hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+    .wds-hero-meta-l { font-size: clamp(10px, 0.72vw, 11.5px); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.46); }
+    .wds-hero-meta-v { font-size: clamp(13px, 1vw, 16px); color: rgba(255,255,255,0.88); }
+    .wds-hero-meta-v a { color: inherit; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,0.34); }
+    .wds-hero-meta-v a:hover { border-bottom-color: #fff; }
+
+    /* Two worlds — the tension */
+    .wds-worlds { display: grid; grid-template-columns: 1fr auto 1fr; gap: 2px; align-items: stretch; }
+    .wds-world { padding: clamp(30px, 4vw, 54px) clamp(24px, 3vw, 44px); }
+    .wds-world--before { background: #161619; color: #fff; }
+    .wds-world--after { background: var(--acc); color: #fff; }
+    .wds-world-tag { font-size: clamp(10px, 0.78vw, 12.5px); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px; }
+    .wds-world--before .wds-world-tag { color: rgba(255,255,255,0.42); }
+    .wds-world--after .wds-world-tag { color: rgba(255,255,255,0.72); }
+    .wds-world h4 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.7vw, 34px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 16px; }
+    .wds-world p { font-size: clamp(14.5px, 1.08vw, 18px); line-height: 1.66; margin-bottom: 22px; max-width: 44ch; }
+    .wds-world--before p { color: rgba(255,255,255,0.58); }
+    .wds-world--after p { color: rgba(255,255,255,0.86); }
+    .wds-world .wds-chips { margin-top: 0; }
+    .wds-world--before .wds-chip { border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.82); }
+    .wds-world--after .wds-chip { border-color: rgba(255,255,255,0.34); color: #fff; }
+    .wds-bridge { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #0d0d0f; color: var(--acc-tint); padding: 0 clamp(16px, 2vw, 28px); min-width: 96px; text-align: center; }
+    .wds-bridge-arrow { font-size: 30px; line-height: 1; }
+    .wds-bridge-label { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 600; color: rgba(255,255,255,0.7); }
+    @media (max-width: 820px) {
+      .wds-worlds { grid-template-columns: 1fr; }
+      .wds-bridge { flex-direction: row; padding: 16px; }
+      .wds-bridge-arrow { transform: rotate(90deg); }
+    }
+
+    /* Approach statement — dark */
+    .wds-statement { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6vw, 88px) clamp(28px, 5vw, 78px); }
+    .wds-statement::after { content: ""; position: absolute; left: -10%; bottom: -40%; width: 55%; height: 150%; background: radial-gradient(ellipse at center, rgba(47,91,255,0.20), transparent 62%); pointer-events: none; }
+    .wds-statement > * { position: relative; z-index: 1; }
+    .wds-statement .wds-kick { color: rgba(255,255,255,0.5); }
+    .wds-statement h3 { font-size: clamp(32px, 4.8vw, 62px); max-width: 17ch; }
+    .wds-statement h3 em { font-style: italic; color: var(--acc-tint); }
+    .wds-statement-lead { font-size: clamp(15.5px, 1.22vw, 20px); line-height: 1.68; color: rgba(255,255,255,0.7); max-width: 62ch; margin-top: 26px; }
+    .wds-statement-lead strong { color: #fff; font-weight: 600; }
+
+    /* Structure — the flow itself, before and after (cream), then the four moves
+       that produced it. CSS-only: a screenshot of an IA goes stale the moment the
+       words describing it change, and this is the slide that must match the text. */
+    .wds-structure { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-structure .wds-kick { color: var(--acc); margin-bottom: 10px; }
+    .wds-structure h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
+    .wds-structure-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .ia-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 30px; }
+    .ia-panel { background: #fff; border: 1px solid var(--line); padding: clamp(22px, 2vw, 34px); }
+    .ia-panel--after { border-top: 3px solid var(--acc); }
+    .ia-tag { font-size: clamp(10.5px, 0.8vw, 12.5px); letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 18px; }
+    .ia-panel--after .ia-tag { color: var(--acc); }
+    .ia-node { font-size: clamp(13.5px, 1.02vw, 17px); line-height: 1.5; color: var(--ink); padding: 8px 0; }
+    .ia-note { font-size: clamp(11.5px, 0.86vw, 14px); color: var(--ink-dim); }
+    .ia-sub { margin-left: 14px; padding-left: 16px; border-left: 1px solid var(--border); }
+    .ia-flag { display: inline-block; font-size: clamp(9.5px, 0.72vw, 11px); letter-spacing: 0.1em; text-transform: uppercase; color: #a8412f; border: 1px solid rgba(168,65,47,0.34); padding: 2px 7px; margin-left: 8px; }
+    .ia-dead { font-size: clamp(12.5px, 0.95vw, 15.5px); color: #a8412f; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .ia-flat { font-size: clamp(12.5px, 0.95vw, 15.5px); color: var(--acc); margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    @media (max-width: 760px) { .ia-pair { grid-template-columns: 1fr; } }
+
+    .wds-moves-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .fix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 26px; }
+    .fix-card { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: clamp(22px, 1.9vw, 32px); }
+    .fix-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(24px, 2vw, 32px); line-height: 1; letter-spacing: -0.03em; color: var(--acc); margin-bottom: 12px; }
+    .fix-after { font-size: clamp(15px, 1.15vw, 19px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.5; color: var(--ink); margin-bottom: 8px; }
+    .fix-before { font-size: clamp(13px, 0.98vw, 16px); line-height: 1.6; color: var(--ink-dim); }
+    .fix-before code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
+    @media (max-width: 700px) { .fix-grid { grid-template-columns: 1fr; } }
+
+    /* Evidence gallery slides */
+    .wds-evidence { padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-evidence.is-dark { background: #111; color: #fff; }
+    .wds-evidence.is-cream { background: #f4efe4; }
+    .wds-evidence .wds-kick { margin-bottom: 10px; }
+    .wds-evidence.is-dark .wds-kick { color: rgba(255,255,255,0.5); }
+    .wds-evidence.is-cream .wds-kick { color: var(--acc); }
+    .wds-evidence h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
+    .wds-evidence-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; max-width: 64ch; margin-bottom: 28px; }
+    .wds-evidence.is-dark .wds-evidence-lead { color: rgba(255,255,255,0.62); }
+    .wds-evidence.is-cream .wds-evidence-lead { color: var(--ink-mid); }
+    .gallery-label { font-size: clamp(11px, 0.82vw, 13.5px); letter-spacing: 0.14em; text-transform: uppercase; margin: 34px 0 12px; }
+    .wds-evidence.is-dark .gallery-label { color: rgba(255,255,255,0.48); }
+    .wds-evidence.is-cream .gallery-label { color: var(--ink-dim); }
+    .gallery-label:first-of-type { margin-top: 0; }
+
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-cell { overflow: hidden; background: #f5f3f0; border-radius: 2px; }
+    .g-cell.dark { background: #0a0a0a; }
+    .g-cell img { width: 100%; height: auto; display: block; opacity: 0; transition: opacity 400ms ease; }
+    .g-cell img.loaded { opacity: 1; }
+    @media (max-width: 700px) { .g-row.r3 { grid-template-columns: 1fr 1fr; } }
+
+    /* Awaiting-asset slot. The screenshots for this project exist but have not been
+       committed yet, so the evidence slides carry a labelled placeholder rather than
+       a broken image or a silently missing section. Swap instructions sit next to
+       each one in the markup. */
+    .g-cell.is-pending {
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+      aspect-ratio: 16 / 10; padding: 20px; text-align: center; background: transparent;
+      border: 1px dashed rgba(18,18,18,0.24); border-radius: 2px;
+    }
+    .is-dark .g-cell.is-pending { border-color: rgba(255,255,255,0.24); }
+    .pending-name { font-size: clamp(11px, 0.84vw, 13.5px); font-family: ui-monospace, "SF Mono", Menlo, monospace; color: var(--ink-mid); letter-spacing: 0.02em; word-break: break-all; }
+    .is-dark .pending-name { color: rgba(255,255,255,0.72); }
+    .pending-note { font-size: clamp(10px, 0.74vw, 12px); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
+    .is-dark .pending-note { color: rgba(255,255,255,0.44); }
+
+    /* Craft — how the AI was used, and what was rejected */
+    .wds-craft { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6vw, 88px) clamp(28px, 5vw, 78px); }
+    .wds-craft::after { content: ""; position: absolute; right: -12%; top: -45%; width: 58%; height: 160%; background: radial-gradient(ellipse at center, rgba(47,91,255,0.18), transparent 64%); pointer-events: none; }
+    .wds-craft > * { position: relative; z-index: 1; }
+    .wds-craft .wds-kick { color: rgba(255,255,255,0.5); margin-bottom: 10px; }
+    .wds-craft h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(28px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.06; max-width: 21ch; margin-bottom: 16px; }
+    .wds-craft h2 em { font-style: italic; color: var(--acc-tint); }
+    .wds-craft-lead { font-size: clamp(15px, 1.18vw, 19.5px); line-height: 1.7; color: rgba(255,255,255,0.7); max-width: 64ch; }
+    .wds-craft-lead strong { color: #fff; font-weight: 600; }
+    .wds-craft-lead code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.88em; background: rgba(255,255,255,0.1); padding: 1px 5px; }
+    .craft-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 32px; }
+    .craft-card { background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.11); border-top: 3px solid var(--acc-tint); padding: clamp(20px, 1.8vw, 30px); }
+    .craft-label { font-size: clamp(10.5px, 0.78vw, 12.5px); letter-spacing: 0.13em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 12px; }
+    .craft-title { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.4; color: #fff; margin-bottom: 10px; }
+    .craft-why { font-size: clamp(13px, 1vw, 16.5px); line-height: 1.6; color: rgba(255,255,255,0.64); }
+    .craft-why code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: rgba(255,255,255,0.1); padding: 1px 5px; }
+    @media (max-width: 860px) { .craft-grid { grid-template-columns: 1fr; } }
+
+    /* Proof — cream. This project has no measured numbers yet, so the slide says so
+       instead of dressing up counts of things built as impact. */
+    .wds-proof { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-proof .wds-kick { color: var(--acc); margin-bottom: 10px; }
+    .wds-proof h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 16px; }
+    .wds-proof-lead { font-size: clamp(16px, 1.3vw, 21px); line-height: 1.66; color: var(--ink); max-width: 60ch; }
+    .proof-status { font-size: clamp(13px, 1vw, 16.5px); line-height: 1.6; color: var(--ink-dim); max-width: 60ch; margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--border); }
+    .tools-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+    .tool-tag { font-size: clamp(12.5px, 0.92vw, 15px); color: var(--ink-mid); border: 1px solid var(--border); background: #fff; padding: 9px 15px; }
+
+    /* Retrospective — what is still open */
+    .wds-retro { background: #fff; border-top: 1px solid var(--line); padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .wds-retro .wds-kick { color: var(--ink-dim); margin-bottom: 10px; }
+    .wds-retro h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 14px; }
+    .wds-retro-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
+    .retro-list { display: grid; gap: 2px; margin-top: 28px; }
+    .retro-item { display: grid; grid-template-columns: auto 1fr; gap: clamp(16px, 1.8vw, 30px); align-items: start; background: #f4efe4; padding: clamp(20px, 1.9vw, 30px); }
+    .retro-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(20px, 1.8vw, 28px); color: var(--acc); line-height: 1; }
+    .retro-title { font-size: clamp(15.5px, 1.2vw, 20px); line-height: 1.4; color: var(--ink); margin-bottom: 8px; }
+    .retro-body { font-size: clamp(13.5px, 1.02vw, 17px); line-height: 1.62; color: var(--ink-mid); max-width: 78ch; }
+    .retro-body code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
+
+    /* Closing — vivid cobalt */
+    .wds-closing { position: relative; overflow: hidden; color: #fff; padding: clamp(46px, 6.5vw, 92px) clamp(28px, 5vw, 78px); background: var(--acc); }
+    .wds-closing .wds-kick { color: rgba(255,255,255,0.68); }
+    .wds-closing h2 { font-size: clamp(32px, 4.6vw, 60px); max-width: 18ch; }
+    .wds-closing h2 em { font-style: italic; color: #f4efe4; }
+    .closing-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 30px; }
+    .story-cta { display: inline-block; padding: 14px 20px; border: 1px solid rgba(255,255,255,0.5); color: #fff; font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
+    .story-cta:hover { background: #fff; color: var(--acc); }
+
+    /* Prev / next */
+    .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1360px; margin: 0 auto; padding: 48px 20px 64px; }
+    .project-nav-link { font-size: clamp(12px, 0.9vw, 14px); letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .project-nav-link:hover { color: var(--ink); }
+
+    /* Footer */
+    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1360px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .footer-llc { margin-top: 5px; color: var(--ink-dim); font-size: 11px; }
+    .footer-llc strong { color: var(--ink-mid); font-weight: 500; }
+    .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+    .footer-links a { color: var(--ink-dim); font-size: 12px; text-decoration: none; }
+    .footer-loc { font-size: 12px; color: var(--ink-dim); }
+
+    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible,
+    .nav-toggle:focus-visible, .breadcrumb a:focus-visible, .project-nav-link:focus-visible,
+    .story-cta:focus-visible, .footer-links a:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .g-cell img { opacity: 1 !important; transition: none !important; }
+    }
+
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .breadcrumb { padding: 16px 20px; }
+      .deck { padding: 0 12px 8px; }
+      .project-nav { flex-direction: column; gap: 12px; }
+    }
+  </style>
+
+  <style data-deck>
+    /* ═══ View modes: scroll (default) | deck-v ═══
+       Variant A gets deck-v only: the evidence panels are taller than a screen by
+       design, and a horizontal track would hide half of each behind an internal
+       scrollbar. See docs/portfolio-template-system.md §2-7. */
+
+    .page-controls {
+      position: fixed; right: 14px; bottom: 16px; z-index: 120;
+      display: flex; flex-direction: column; gap: 2px; padding: 4px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--border); border-radius: 12px;
+      transition: border-color 200ms ease, background 200ms ease;
+    }
+    .page-controls:hover, .page-controls:focus-within { background: rgba(255,255,255,0.97); border-color: rgba(18,18,18,0.2); }
+    .pc-group { display: flex; gap: 2px; }
+    .pc-view { flex-direction: column; }
+    .pc-rule { height: 1px; background: var(--line); margin: 3px 5px; }
+    .page-controls button {
+      appearance: none; border: none; background: none; cursor: pointer;
+      font-family: var(--ff); font-size: 10.5px; letter-spacing: 0.09em;
+      text-transform: uppercase; color: var(--ink-mid);
+      padding: 7px 11px; border-radius: 8px;
+      display: flex; align-items: center; gap: 7px; white-space: nowrap;
+      transition: background 140ms ease, color 140ms ease;
+    }
+    .pc-lang button { flex: 1; justify-content: center; padding: 6px 12px; }
+    .page-controls button:hover { color: var(--ink); background: rgba(18,18,18,0.05); }
+    .page-controls button.is-active,
+    .page-controls button[aria-pressed="true"] { background: var(--ink); color: #fff; }
+    .page-controls .pc-i { font-size: 12px; line-height: 1; width: 13px; text-align: center; }
+
+    .deck-count, .deck-hint { display: none; }
+    .deck-count { font-size: 10.5px; letter-spacing: 0.12em; font-variant-numeric: tabular-nums; color: var(--ink-dim); text-align: center; padding: 5px 4px 6px; }
+    .deck-hint { font-size: 9.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-align: center; padding: 6px 4px 3px; border-top: 1px solid var(--line); margin-top: 3px; transition: opacity 400ms ease; }
+    .deck-hint kbd { font-family: var(--ff); font-weight: 600; color: var(--ink-mid); }
+    .deck-hint.is-gone { display: none; }
+    html[data-view="deck-v"] .deck-count,
+    html[data-view="deck-v"] .deck-hint:not(.is-gone) { display: block; }
+
+    .deck-progress { position: fixed; left: 0; top: 0; right: 0; height: 3px; z-index: 121; background: rgba(18,18,18,0.10); display: none; }
+    .deck-progress i { display: block; height: 100%; width: 0; background: var(--acc); transition: width 260ms cubic-bezier(0.22,0.84,0.22,1); }
+    html[data-view="deck-v"] .deck-progress { display: block; }
+
+    html[data-view="deck-v"] { scroll-snap-type: y mandatory; }
+    html[data-view="deck-v"] .reveal-on-scroll { opacity: 1 !important; transform: none !important; }
+    html[data-view="deck-v"] .site-nav,
+    html[data-view="deck-v"] .breadcrumb,
+    html[data-view="deck-v"] .site-footer,
+    html[data-view="deck-v"] .project-nav { display: none; }
+    html[data-view="deck-v"] .deck { max-width: none; margin: 0; padding: 0; }
+    html[data-view="deck-v"] .wds-slide { margin-bottom: 0; }
+    html[data-view="deck-v"] .deck-slide {
+      scroll-snap-align: start; scroll-snap-stop: always;
+      min-height: 100vh; min-height: 100dvh;
+      padding-inline: clamp(32px, 6vw, 130px);
+      display: flex; flex-direction: column; justify-content: safe center;
+    }
+    html[data-view="deck-v"] .deck-slide.wds-worlds { display: grid; grid-template-rows: 1fr; align-content: stretch; padding-inline: 0; padding-block: 0; }
+    html[data-view="deck-v"] .wds-world { display: flex; flex-direction: column; justify-content: center; }
+    html[data-view="deck-v"] .deck-slide.wds-evidence { justify-content: flex-start; padding-block: clamp(56px, 9vh, 110px); }
+    html[data-view="deck-v"] .deck-slide { padding-block: clamp(36px, 5.5vh, 76px); }
+    html[data-view="deck-v"] .wds-hero h1 { font-size: min(clamp(44px, 7vw, 104px), 8.4vh); }
+    html[data-view="deck-v"] .wds-statement h3 { font-size: min(clamp(38px, 5.6vw, 78px), 9vh); }
+    html[data-view="deck-v"] .wds-closing h2 { font-size: min(clamp(38px, 5.4vw, 74px), 9vh); }
+    html[data-view="deck-v"] .wds-proof h2,
+    html[data-view="deck-v"] .wds-evidence h2,
+    html[data-view="deck-v"] .wds-structure h2,
+    html[data-view="deck-v"] .wds-craft h2,
+    html[data-view="deck-v"] .wds-retro h2 { font-size: min(clamp(32px, 4.4vw, 58px), 6.6vh); }
+    html[data-view="deck-v"] .wds-statement-lead { font-size: min(clamp(16px, 1.4vw, 23px), 2.5vh); }
+    html[data-view="deck-v"] .wds-hero-lead { font-size: min(clamp(15.5px, 1.25vw, 21px), 2.3vh); margin-top: 3vh; }
+    html[data-view="deck-v"] .wds-hero .wds-chips { margin-top: 2.6vh; }
+    html[data-view="deck-v"] .wds-hero-meta { margin-top: 3vh; padding-top: 2.4vh; }
+    html[data-view="deck-v"] .wds-structure-lead,
+    html[data-view="deck-v"] .wds-moves-lead,
+    html[data-view="deck-v"] .wds-craft-lead,
+    html[data-view="deck-v"] .wds-retro-lead { font-size: min(clamp(15px, 1.15vw, 19px), 2.1vh); }
+    html[data-view="deck-v"] .wds-proof-lead { font-size: min(clamp(16px, 1.3vw, 21px), 2.4vh); }
+    html[data-view="deck-v"] .ia-pair, html[data-view="deck-v"] .craft-grid, html[data-view="deck-v"] .retro-list { margin-top: 2.8vh; }
+    html[data-view="deck-v"] .ia-panel { padding: clamp(18px, 2.4vh, 34px) clamp(18px, 1.6vw, 32px); }
+    html[data-view="deck-v"] .ia-node { padding: 0.8vh 0; font-size: min(clamp(13.5px, 1.02vw, 17px), 2vh); }
+    html[data-view="deck-v"] .craft-card { padding: clamp(16px, 2.2vh, 30px) clamp(18px, 1.6vw, 30px); }
+    html[data-view="deck-v"] .craft-why { font-size: min(clamp(13px, 1vw, 16.5px), 1.9vh); }
+    html[data-view="deck-v"] .retro-item { padding: clamp(14px, 2vh, 30px) clamp(18px, 1.7vw, 30px); }
+    html[data-view="deck-v"] .retro-body { font-size: min(clamp(13.5px, 1.02vw, 17px), 1.95vh); }
+    html[data-view="deck-v"] .fix-grid { margin-top: 2.6vh; }
+    html[data-view="deck-v"] .fix-card { padding: clamp(16px, 2.1vh, 28px) clamp(18px, 1.6vw, 28px); }
+    html[data-view="deck-v"] .fix-num { font-size: min(clamp(24px, 2vw, 32px), 3.6vh); margin-bottom: 1vh; }
+    html[data-view="deck-v"] .fix-after { font-size: min(clamp(15px, 1.15vw, 19px), 2.1vh); }
+    html[data-view="deck-v"] .fix-before { font-size: min(clamp(13px, 0.98vw, 16px), 1.8vh); }
+    html[data-view="deck-v"] .tools-list { margin-top: 2.4vh; }
+
+    @keyframes deck-in { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    html[data-view="deck-v"] .deck-slide.is-live > * { animation: deck-in 560ms cubic-bezier(0.22,0.84,0.22,1) both; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(2) { animation-delay: 70ms; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(3) { animation-delay: 130ms; }
+    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(n+4) { animation-delay: 180ms; }
+
+    @media (max-width: 768px) { .pc-view, .pc-rule { display: none; } }
+    @media (prefers-reduced-motion: reduce) {
+      html[data-view="deck-v"] .deck-slide.is-live > * { animation: none !important; }
+      .pc-view, .pc-rule { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
+      <li><a href="../interactive.html">Interactive Experience</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="breadcrumb">
+    <a href="../ai-tools.html">AI Tools</a>
+    <span>/</span>
+    <a href="#">
+      <span class="t-en">AI Window Deck</span>
+      <span class="t-jp">AI Window Deck</span>
+    </a>
+  </div>
+
+  <main class="deck">
+
+    <!-- ═══ Slide 1 · Hero ═══ -->
+    <header class="wds-hero wds-slide deck-slide reveal-on-scroll">
+      <p class="wds-kick">
+        <span class="t-en">AI Window Deck · Chrome Extension · 2026</span>
+        <span class="t-jp">AI Window Deck · Chrome拡張機能 · 2026</span>
+      </p>
+      <h1 class="wds-serif">
+        <span class="t-en">A layout you can see, not a form you have to <em>fill in</em>.</span>
+        <span class="t-jp is-block">入力する設定画面から、<em>見て置く</em>キャンバスへ。</span>
+      </h1>
+      <p class="wds-hero-lead">
+        <span class="t-en">Dozens of tabs across several monitors, and the only way to place them was to type numbers into a form — a form that wiped every window already registered. I rebuilt the setup screen as a two-pane canvas: real monitors on the left, a live split grid on the right, drag a window onto a cell to assign it. Registration moved into its own modal, so <strong>saved work is never overwritten again</strong>.</span>
+        <span class="t-jp is-block">複数ディスプレイに散らばる大量のタブを配置する手段が、フォームへの数値入力しか無かった。しかもその画面は、開くたびに登録済みのウィンドウを全消去した。私は設定画面を2カラムのキャンバスに作り直した — 左に実在のモニター、右にライブの分割グリッド、枠へドラッグすれば割り付く。登録はモーダルに分離し、<strong>保存済みのデータが上書きされることは無くなった</strong>。</span>
+      </p>
+      <div class="wds-chips">
+        <span class="wds-chip">Manifest V3</span>
+        <span class="wds-chip">Vanilla JS</span>
+        <span class="wds-chip">Grid Engine</span>
+      </div>
+      <div class="wds-hero-meta">
+        <div class="wds-hero-meta-item">
+          <span class="wds-hero-meta-l"><span class="t-en">Client</span><span class="t-jp">クライアント</span></span>
+          <span class="wds-hero-meta-v"><span class="t-en">Personal project</span><span class="t-jp">自主開発</span></span>
+        </div>
+        <div class="wds-hero-meta-item">
+          <span class="wds-hero-meta-l"><span class="t-en">Role</span><span class="t-jp">役割</span></span>
+          <span class="wds-hero-meta-v"><span class="t-en">Design, extension development, prompting</span><span class="t-jp">デザイン・拡張機能開発・プロンプト設計</span></span>
+        </div>
+        <div class="wds-hero-meta-item">
+          <span class="wds-hero-meta-l"><span class="t-en">Year</span><span class="t-jp">年</span></span>
+          <span class="wds-hero-meta-v"><span class="t-en">2026 · ~2 weeks</span><span class="t-jp">2026 · 約2週間</span></span>
+        </div>
+        <div class="wds-hero-meta-item">
+          <span class="wds-hero-meta-l"><span class="t-en">Source</span><span class="t-jp">ソース</span></span>
+          <span class="wds-hero-meta-v"><a href="https://github.com/takaoumehara/ai-window-deck" target="_blank" rel="noopener">github.com/takaoumehara/ai-window-deck</a></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ═══ Slide 2 · Two worlds — the tension ═══ -->
+    <section class="wds-worlds wds-slide deck-slide reveal-on-scroll" aria-label="The tension">
+      <div class="wds-world wds-world--before">
+        <div class="wds-world-tag">
+          <span class="t-en">Where it started</span>
+          <span class="t-jp">出発点</span>
+        </div>
+        <h4>
+          <span class="t-en">A form that erased your work</span>
+          <span class="t-jp">開くたびに消える設定画面</span>
+        </h4>
+        <p>
+          <span class="t-en">Opening the settings screen wiped everything already registered, so each session began by pasting the same list back in from a text file. In the popup the same layout collapsed to a 200px column, stacking every control on top of the next.</span>
+          <span class="t-jp is-block">設定画面を開くたびに登録済みの内容が全消去され、毎回テキストファイルから同じリストを貼り直すところから始まった。ポップアップ表示では同じレイアウトが幅200pxに潰れ、要素が縦一列に折り重なった。</span>
+        </p>
+        <div class="wds-chips">
+          <span class="wds-chip"><span class="t-en">Layout collapse</span><span class="t-jp">画面崩壊</span></span>
+          <span class="wds-chip"><span class="t-en">Data wiped</span><span class="t-jp">全消去事故</span></span>
+          <span class="wds-chip"><span class="t-en">Broken flow</span><span class="t-jp">導線の分断</span></span>
+        </div>
+      </div>
+      <div class="wds-bridge" aria-hidden="true">
+        <div class="wds-bridge-arrow">&rarr;</div>
+        <div class="wds-bridge-label">
+          <span class="t-en">rebuilt</span>
+          <span class="t-jp">再構築</span>
+        </div>
+      </div>
+      <div class="wds-world wds-world--after">
+        <div class="wds-world-tag">
+          <span class="t-en">What it became</span>
+          <span class="t-jp">再設計後の姿</span>
+        </div>
+        <h4>
+          <span class="t-en">A canvas you drag onto</span>
+          <span class="t-jp">手で置ける、生きたキャンバス</span>
+        </h4>
+        <p>
+          <span class="t-en">Pick a monitor that actually exists, open the accordion library, drag a window onto a cell. Adding windows happens in its own modal — one at a time or pasted in bulk — so nothing already saved is touched.</span>
+          <span class="t-jp is-block">実在するモニターを選び、アコーディオンのライブラリから枠へドラッグする。ウィンドウの追加は専用のモーダルで — 1件ずつでも一括貼り付けでも — 行うので、保存済みのものには一切触れない。</span>
+        </p>
+        <div class="wds-chips">
+          <span class="wds-chip"><span class="t-en">Real monitors</span><span class="t-jp">実モニター検知</span></span>
+          <span class="wds-chip"><span class="t-en">Smart drop</span><span class="t-jp">スマートD&amp;D</span></span>
+          <span class="wds-chip"><span class="t-en">Resizable</span><span class="t-jp">リサイズ自在</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 3 · Approach ═══ -->
+    <section class="wds-statement wds-slide deck-slide reveal-on-scroll" aria-label="My approach">
+      <p class="wds-kick">
+        <span class="t-en">My approach</span>
+        <span class="t-jp">アプローチ</span>
+      </p>
+      <h3 class="wds-serif">
+        <span class="t-en">Visual first, <em>dynamic after</em>.</span>
+        <span class="t-jp is-block">視覚が先、<em>自動適合は後</em>。</span>
+      </h3>
+      <p class="wds-statement-lead">
+        <span class="t-en">Nobody wanted a numeric form; they wanted to see their own screens and the shape of the windows on them. So I made the physical display and the drop targets the interactive centre of the product and pushed the grid maths behind them. The layout still adapts to whatever monitors are attached — but <strong>only after the user has placed things by hand</strong>.</span>
+        <span class="t-jp is-block">誰も数値フォームを求めていなかった。求めていたのは、自分の画面と、その上の窓の形が見えることだった。だから物理ディスプレイとドロップ先をプロダクトの中心に据え、グリッド計算はその裏へ回した。レイアウトは接続中のモニターに合わせて適合する — ただし<strong>ユーザーが手で置いたあとに</strong>。</span>
+      </p>
+    </section>
+
+    <!-- ═══ Slide 4 · Structure — the flow before and after, and the four moves ═══ -->
+    <section class="wds-structure wds-slide deck-slide reveal-on-scroll" aria-label="Structure, before and after">
+      <p class="wds-kick">
+        <span class="t-en">The structure</span>
+        <span class="t-jp">構造</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Three steps became one workspace.</span>
+        <span class="t-jp is-block">3ステップを、ひとつの作業台に。</span>
+      </h2>
+      <p class="wds-structure-lead">
+        <span class="t-en">The old flow was a wizard: three screens in a fixed order, with the actual work crammed into a textarea at the end. Collapsing steps 2 and 3 into a single two-pane workspace let the library and the grid stay on screen together — and moved registration out of the flow entirely, which is what stopped the data loss.</span>
+        <span class="t-jp is-block">旧フローはウィザードだった。順序の固定された3画面で、実際の作業は最後のテキストエリアに押し込まれていた。Step 2 と 3 を2カラムの作業台にまとめたことで、ライブラリと分割グリッドが同時に見えるようになった。そして登録をフローの外へ出したことが、データ消失を止めた。</span>
+      </p>
+      <div class="ia-pair">
+        <div class="ia-panel">
+          <div class="ia-tag">
+            <span class="t-en">Before — a wizard with a textarea at the end</span>
+            <span class="t-jp">再設計前 — 末尾がテキストエリアのウィザード</span>
+          </div>
+          <div class="ia-node">
+            <span class="t-en">Step 1 · Pick a display</span><span class="t-jp">Step 1 · ディスプレイ選択</span>
+            <div class="ia-note"><span class="t-en">Numbers only — no monitor names</span><span class="t-jp">数字のみ — モニター名は出ない</span></div>
+          </div>
+          <div class="ia-node">
+            <span class="t-en">Step 2 · Pick a split</span><span class="t-jp">Step 2 · 分割を選択</span>
+            <div class="ia-note"><span class="t-en">Fixed 2&times;2 / 4&times;2 radio buttons</span><span class="t-jp">固定の 2&times;2 / 4&times;2 ラジオボタン</span></div>
+          </div>
+          <div class="ia-node">
+            <span class="t-en">Step 3 · Assign windows</span><span class="t-jp">Step 3 · ウィンドウをアサイン</span><span class="ia-flag">wipes</span>
+            <div class="ia-note"><span class="t-en">One large textarea, pasted from a text file</span><span class="t-jp">巨大なテキストエリアに、ファイルから貼り付け</span></div>
+          </div>
+          <div class="ia-dead">
+            <span class="t-en">Saving at step 3 cleared every card already registered — and in the popup the whole wizard collapsed to a 200px column.</span>
+            <span class="t-jp is-block">Step 3 で保存すると、登録済みのカードがすべて消えた。しかもポップアップでは、ウィザード全体が幅200pxに潰れた。</span>
+          </div>
+        </div>
+        <div class="ia-panel ia-panel--after">
+          <div class="ia-tag">
+            <span class="t-en">After — one workspace, one modal</span>
+            <span class="t-jp">再設計後 — ひとつの作業台と、ひとつのモーダル</span>
+          </div>
+          <div class="ia-node">
+            <span class="t-en">Step 1 · Display cards</span><span class="t-jp">Step 1 · ディスプレイカード</span>
+            <div class="ia-note"><span class="t-en">Real monitor names, read from the browser</span><span class="t-jp">ブラウザから読んだ実在のモニター名</span></div>
+          </div>
+          <div class="ia-node">
+            <span class="t-en">Step 2 · The workspace</span><span class="t-jp">Step 2 · ワークスペース</span>
+          </div>
+          <div class="ia-sub">
+            <div class="ia-node">
+              <span class="t-en">Left — window library</span><span class="t-jp">左 — ウィンドウ・ライブラリ</span>
+              <div class="ia-note"><span class="t-en">Accordion, editable in place</span><span class="t-jp">アコーディオン、その場で編集</span></div>
+            </div>
+            <div class="ia-node">
+              <span class="t-en">Right — live split canvas</span><span class="t-jp">右 — ライブ分割キャンバス</span>
+              <div class="ia-note"><span class="t-en">Drop to assign, resize, grow</span><span class="t-jp">ドロップで割り付け・リサイズ・増枠</span></div>
+            </div>
+          </div>
+          <div class="ia-node">
+            <span class="t-en">Modal · Register a window</span><span class="t-jp">モーダル · ウィンドウ登録</span>
+            <div class="ia-note"><span class="t-en">Single entry or bulk paste — appends, never replaces</span><span class="t-jp">単一登録 / 一括貼り付け — 追記であって置換ではない</span></div>
+          </div>
+          <div class="ia-flat">
+            <span class="t-en">"Step 3 — paste text" became "Register a window", because separating it is what made appending safe.</span>
+            <span class="t-jp is-block">「Step 3 テキスト貼り付け」を「Register a window」に改名した。分離したからこそ、追記が安全になったからだ。</span>
+          </div>
+        </div>
+      </div>
+      <p class="wds-moves-lead" style="margin-top: clamp(30px, 3vw, 46px);">
+        <span class="t-en">Four moves got it there, in order.</span>
+        <span class="t-jp is-block">そこへ至るまでに、4つの手を順に打った。</span>
+      </p>
+      <div class="fix-grid">
+        <div class="fix-card">
+          <div class="fix-num">01</div>
+          <div class="fix-after"><span class="t-en">Read the structure out of hand-drawn sketches</span><span class="t-jp is-block">手書きスケッチから構造を読み出す</span></div>
+          <div class="fix-before"><span class="t-en">Three wireframes I drew by hand fixed the mental model — what sits where, and what dragging is supposed to mean — before any code existed.</span><span class="t-jp is-block">自分で描いた3枚のワイヤーフレームが、コードより先にメンタルモデルを決めた。何がどこに座り、ドラッグが何を意味するか。</span></div>
+        </div>
+        <div class="fix-card">
+          <div class="fix-num">02</div>
+          <div class="fix-after"><span class="t-en">Show monitors that actually exist</span><span class="t-jp is-block">実在するモニターだけを見せる</span></div>
+          <div class="fix-before"><span class="t-en">Names and positions come from <code>chrome.system.display.getInfo()</code>, so the cards match the desk instead of standing in for it.</span><span class="t-jp is-block">名前と位置は <code>chrome.system.display.getInfo()</code> から取る。カードが机上の代役ではなく、実物と一致する。</span></div>
+        </div>
+        <div class="fix-card">
+          <div class="fix-num">03</div>
+          <div class="fix-after"><span class="t-en">Let the drop position decide</span><span class="t-jp is-block">ドロップ位置に決めさせる</span></div>
+          <div class="fix-before"><span class="t-en">Dropping on a cell assigns the window; dropping on empty canvas adds a cell. One gesture, two meanings, no mode switch.</span><span class="t-jp is-block">枠へのドロップは割り付け、余白へのドロップは枠の追加。ひとつの操作に2つの意味を持たせ、モード切替を無くした。</span></div>
+        </div>
+        <div class="fix-card">
+          <div class="fix-num">04</div>
+          <div class="fix-after"><span class="t-en">Make the last 10% adjustable</span><span class="t-jp is-block">最後の1割を、あとから直せるように</span></div>
+          <div class="fix-before"><span class="t-en">A <code>&larr; | &rarr;</code> handle on every cell, and a search-or-create dropdown in the header for switching between saved layouts.</span><span class="t-jp is-block">各枠に <code>&larr; | &rarr;</code> のハンドル、ヘッダーに保存済みレイアウトの検索・新規作成ドロップダウン。</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 5 · Evidence — the sketches (dark) ═══
+         ASSET SWAP: replace each .g-cell.is-pending block with
+           <div class="g-cell dark"><img src="../assets/ai-window-deck/sketch-1.jpg" alt="Hand-drawn wireframe 1" loading="lazy"></div>
+         Nothing else on the page needs to change. -->
+    <section class="wds-evidence is-dark wds-slide deck-slide reveal-on-scroll" aria-label="Wireframe evidence">
+      <p class="wds-kick">
+        <span class="t-en">Evidence · Sketches</span>
+        <span class="t-jp">証拠 · スケッチ</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Drawn first, then built.</span>
+        <span class="t-jp is-block">先に描いて、あとで作った。</span>
+      </h2>
+      <p class="wds-evidence-lead">
+        <span class="t-en">Three hand-drawn wireframes settled the two-pane split, the accordion, and what a drop onto empty space should do. The build follows them closely enough that the sketches still read as documentation.</span>
+        <span class="t-jp is-block">3枚の手書きワイヤーフレームで、2カラムの分け方、アコーディオン、そして空きスペースへのドロップの挙動が決まった。実装はそれに忠実なので、スケッチは今も仕様書として読める。</span>
+      </p>
+      <div class="g-row r3">
+        <div class="g-cell dark is-pending"><span class="pending-name">assets/ai-window-deck/sketch-1.jpg</span><span class="pending-note"><span class="t-en">Asset pending</span><span class="t-jp">素材待ち</span></span></div>
+        <div class="g-cell dark is-pending"><span class="pending-name">assets/ai-window-deck/sketch-2.jpg</span><span class="pending-note"><span class="t-en">Asset pending</span><span class="t-jp">素材待ち</span></span></div>
+        <div class="g-cell dark is-pending"><span class="pending-name">assets/ai-window-deck/sketch-3.jpg</span><span class="pending-note"><span class="t-en">Asset pending</span><span class="t-jp">素材待ち</span></span></div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 6 · Evidence — the working canvas (cream) ═══
+         ASSET SWAP: same pattern, but use <div class="g-cell"> (light) for these. -->
+    <section class="wds-evidence is-cream wds-slide deck-slide reveal-on-scroll" aria-label="Interface evidence">
+      <p class="wds-kick">
+        <span class="t-en">Evidence · Interface</span>
+        <span class="t-jp">証拠 · インターフェース</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Placing a window, end to end.</span>
+        <span class="t-jp is-block">ウィンドウを置くまで、ひと続きで。</span>
+      </h2>
+      <p class="wds-evidence-lead">
+        <span class="t-en">Detecting the real displays, dragging a window onto a cell, then adjusting what the grid guessed — the whole loop, in the shipped interface.</span>
+        <span class="t-jp is-block">実在のディスプレイを検知し、ウィンドウを枠へドラッグし、グリッドの推測を手で直す。その一周を、実装された画面で。</span>
+      </p>
+      <p class="gallery-label">
+        <span class="t-en">Real monitors, and drag-to-assign</span>
+        <span class="t-jp">実モニター検出と、ドラッグでの割り付け</span>
+      </p>
+      <div class="g-row r2">
+        <div class="g-cell is-pending"><span class="pending-name">assets/ai-window-deck/ui-monitors.png</span><span class="pending-note"><span class="t-en">Asset pending</span><span class="t-jp">素材待ち</span></span></div>
+        <div class="g-cell is-pending"><span class="pending-name">assets/ai-window-deck/ui-canvas-dnd.png</span><span class="pending-note"><span class="t-en">Asset pending</span><span class="t-jp">素材待ち</span></span></div>
+      </div>
+      <p class="gallery-label">
+        <span class="t-en">Resize handles, and layout search</span>
+        <span class="t-jp">リサイズハンドルと、レイアウト検索</span>
+      </p>
+      <div class="g-row r2">
+        <div class="g-cell is-pending"><span class="pending-name">assets/ai-window-deck/ui-resize.png</span><span class="pending-note"><span class="t-en">Asset pending</span><span class="t-jp">素材待ち</span></span></div>
+        <div class="g-cell is-pending"><span class="pending-name">assets/ai-window-deck/ui-layout-search.png</span><span class="pending-note"><span class="t-en">Asset pending</span><span class="t-jp">素材待ち</span></span></div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 7 · Craft — how the AI was used, and what was rejected ═══ -->
+    <section class="wds-craft wds-slide deck-slide reveal-on-scroll" aria-label="Craft and rejected alternatives">
+      <p class="wds-kick">
+        <span class="t-en">Craft &middot; AI collaboration</span>
+        <span class="t-jp">クラフト &middot; AIとの協働</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">The AI wrote the grid. It also <em>blocked the app</em>.</span>
+        <span class="t-jp is-block">グリッドはAIが書いた。そして<em>画面を塞いだ</em>。</span>
+      </h2>
+      <p class="wds-craft-lead">
+        <span class="t-en">I had the model build the DOM, the dynamic grid maths in <code>computeDynamicLayout</code>, and the layout-search dropdown, and debug the popup width. What I could not hand over was the rulebook: I redrew the wireframes and specified the interaction rules — accordion editing, drop-on-empty grows the grid, a resize handle per cell — as constraints rather than requests. <strong>Three attempts, judged on two things: does it feel direct, and can it lose your data.</strong></span>
+        <span class="t-jp is-block">DOM構築、<code>computeDynamicLayout</code> の動的グリッド計算、レイアウト検索ドロップダウン、そしてポップアップ幅のデバッグはモデルに任せた。渡せなかったのはルールブックのほうだ。ワイヤーフレームを描き直し、インタラクションのルール — アコーディオン編集、空きスペースへのドロップで枠が増えること、枠ごとのリサイズハンドル — を要望ではなく制約として指定した。<strong>試したのは3案。判断基準は2つだけ — 直感的か、そしてデータを失いうるか。</strong></span>
+      </p>
+      <div class="craft-grid">
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Where the model failed</span>
+            <span class="t-jp">モデルが外したところ</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">A modal that was never closed</span>
+            <span class="t-jp">閉じられないモーダル</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">The generated CSS put <code>display: flex</code> straight onto <code>.modal-overlay</code>, which overrides the HTML <code>hidden</code> attribute. Correct-looking code, and the extension opened with the whole screen blocked. The average answer is fluent about CSS and indifferent to what happens on first launch.</span>
+            <span class="t-jp is-block">生成されたCSSが <code>.modal-overlay</code> に直接 <code>display: flex</code> を書き、HTMLの <code>hidden</code> 属性を打ち消した。見た目は正しいコードで、結果は起動時に画面全域が塞がれた状態。平均解はCSSには流暢だが、初回起動で何が起きるかには無関心だ。</span>
+          </div>
+        </div>
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Rejected 01</span>
+            <span class="t-jp">選ばなかった案 01</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">A stacked form in the popup</span>
+            <span class="t-jp">ポップアップ内の多段フォーム</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">By far the least code, and it would have shipped in a day. But the popup is a few hundred pixels wide — the same form that already collapsed there would have collapsed again, and every fix would have been a scrollbar.</span>
+            <span class="t-jp is-block">コード量は圧倒的に少なく、1日で出せた。だがポップアップは幅数百px。すでにそこで潰れていたフォームは、また潰れる。そして直す手段はスクロールバーしか無くなる。</span>
+          </div>
+        </div>
+        <div class="craft-card">
+          <div class="craft-label">
+            <span class="t-en">Rejected 02</span>
+            <span class="t-jp">選ばなかった案 02</span>
+          </div>
+          <div class="craft-title">
+            <span class="t-en">Describe the layout in text</span>
+            <span class="t-jp">レイアウトを文章で指示する</span>
+          </div>
+          <div class="craft-why">
+            <span class="t-en">Genuinely appealing: CLI-like, one input, no canvas to build. It fails on the one thing this product is about — you cannot picture where a monitor sits relative to another, or which cell a window landed in, from a sentence.</span>
+            <span class="t-jp is-block">本気で魅力的だった。CLIライクで、入力欄ひとつ、キャンバスを作る必要もない。ただしこのプロダクトの核心で失敗する。モニター同士の位置関係も、ウィンドウがどの枠に入ったかも、文章からは像を結ばない。</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 8 · Proof — no measured numbers yet, and it says so ═══ -->
+    <section class="wds-proof wds-slide deck-slide reveal-on-scroll" aria-label="Outcomes">
+      <p class="wds-kick">
+        <span class="t-en">Outcomes</span>
+        <span class="t-jp">成果</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">No measured numbers yet.</span>
+        <span class="t-jp is-block">実測値は、まだ無い。</span>
+      </h2>
+      <p class="wds-proof-lead">
+        <span class="t-en">What it did do is remove the re-typing: a developer moving between several monitors and dozens of tabs no longer rebuilds the same list from a text file every time the layout changes.</span>
+        <span class="t-jp is-block">この設計が動かしたのは、再入力の作業だ。複数モニターと大量のタブを行き来する開発者は、レイアウトを変えるたびに同じリストをテキストファイルから組み直さなくてよくなった。</span>
+      </p>
+      <p class="proof-status">
+        <span class="t-en">The extension is in release preparation for the Chrome Web Store. Adoption and time-saved figures will be measured after it ships, and this slide will carry them — projected numbers would not be worth reading.</span>
+        <span class="t-jp is-block">現在 Chrome Web Store の公開準備中。利用状況と削減時間はリリース後に実測し、このスライドに載せる。見込み値を置いても読む価値が無いためだ。</span>
+      </p>
+      <div class="tools-list">
+        <span class="tool-tag">Manifest V3</span>
+        <span class="tool-tag">Chrome Display API</span>
+        <span class="tool-tag">Vanilla CSS</span>
+        <span class="tool-tag"><span class="t-en">Dynamic grid engine</span><span class="t-jp">動的グリッドエンジン</span></span>
+        <span class="tool-tag"><span class="t-en">Hand-drawn wireframes</span><span class="t-jp">手書きワイヤーフレーム</span></span>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 9 · Retrospective ═══ -->
+    <section class="wds-retro wds-slide deck-slide reveal-on-scroll" aria-label="Retrospective">
+      <p class="wds-kick">
+        <span class="t-en">Retrospective</span>
+        <span class="t-jp">振り返り</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Two things this didn't settle.</span>
+        <span class="t-jp is-block">決着しなかったことが、2つ。</span>
+      </h2>
+      <p class="wds-retro-lead">
+        <span class="t-en">One I fixed and learned from. One I still don't have an answer to.</span>
+        <span class="t-jp is-block">ひとつは直して学んだこと。もうひとつは、まだ答えを持っていないこと。</span>
+      </p>
+      <div class="retro-list">
+        <div class="retro-item">
+          <div class="retro-num">01</div>
+          <div>
+            <div class="retro-title">
+              <span class="t-en">I designed two surfaces and defined the width of one.</span>
+              <span class="t-jp is-block">2つの表示を作って、幅を決めたのは片方だけだった。</span>
+            </div>
+            <div class="retro-body">
+              <span class="t-en">The same markup renders as a popup and as a full page. I styled the full page and let the popup inherit, which is how a missing width on the container turned into a collapsed layout at <code>800&times;600</code>. Fixed with an explicit <code>body.as-popup</code> width — but the lesson is that "responsive" was never the problem; an undeclared container was.</span>
+              <span class="t-jp is-block">同じマークアップがポップアップとフルページの両方で描画される。私はフルページを整え、ポップアップには継承させた。その結果、コンテナの幅指定が抜けていたことが <code>800&times;600</code> でのレイアウト崩れになった。<code>body.as-popup</code> に明示的な幅を置いて直したが、教訓は「レスポンシブが問題だったのではなく、宣言されていないコンテナが問題だった」ということだ。</span>
+            </div>
+          </div>
+        </div>
+        <div class="retro-item">
+          <div class="retro-num">02</div>
+          <div>
+            <div class="retro-title">
+              <span class="t-en">Past sixteen cells, the labels stop being readable.</span>
+              <span class="t-jp is-block">16分割を超えると、ラベルが読めなくなる。</span>
+            </div>
+            <div class="retro-body">
+              <span class="t-en">The grid keeps subdividing happily; the URL inside each virtual card does not. Truncating, showing favicons, or refusing to split further are all defensible, and I don't yet know which one is right — so the current build simply lets it get small.</span>
+              <span class="t-jp is-block">グリッドはいくらでも細かく割れるが、仮想カードの中のURLはそうはいかない。切り詰める、ファビコンだけにする、それ以上割らせない — どれも筋は通り、どれが正解かはまだ分からない。だから現状は、小さくなるに任せている。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Slide 10 · Closing ═══ -->
+    <section class="wds-closing wds-slide deck-slide reveal-on-scroll" aria-label="Closing">
+      <p class="wds-kick">
+        <span class="t-en">The takeaway</span>
+        <span class="t-jp">この仕事から</span>
+      </p>
+      <h2 class="wds-serif">
+        <span class="t-en">Let people <em>place</em> it, and the numbers stop mattering.</span>
+        <span class="t-jp is-block"><em>置ける</em>ようにすれば、数値は要らなくなる。</span>
+      </h2>
+      <div class="closing-ctas">
+        <a class="story-cta" href="https://github.com/takaoumehara/ai-window-deck" target="_blank" rel="noopener">
+          <span class="t-en">Source on GitHub &nearr;</span>
+          <span class="t-jp">GitHubでソースを見る &nearr;</span>
+        </a>
+        <a class="story-cta" href="../ai-tools.html">
+          <span class="t-en">More AI Tools &rarr;</span>
+          <span class="t-jp">他のAI Toolsを見る &rarr;</span>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="project-nav">
+    <a href="interactive-experience-skills.html" class="project-nav-link">
+      <span class="t-en">&larr; interactive-experience-skills</span>
+      <span class="t-jp">&larr; interactive-experience-skills</span>
+    </a>
+    <a href="snap-pair.html" class="project-nav-link">
+      <span class="t-en">Next: Snap Pair &rarr;</span>
+      <span class="t-jp">次へ: Snap Pair &rarr;</span>
+    </a>
+  </div>
+
+  <footer class="site-footer">
+    <div>
+      <div class="footer-logo">Takao Umehara</div>
+      <div class="footer-llc">
+        <span class="t-en">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></span>
+        <span class="t-jp">フリーランス・コンサルティングは <strong>Creativity Is Everywhere LLC</strong> を通じて</span>
+      </div>
+    </div>
+    <ul class="footer-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../interactive.html">Interactive Experience</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../about.html">About</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <div class="footer-loc">New York City</div>
+  </footer>
+
+  <div class="page-controls">
+    <div class="deck-count" aria-live="polite">1 / 1</div>
+    <div class="pc-group pc-lang" role="group" aria-label="Language">
+      <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
+      <button class="lang-btn" type="button" data-lang="jp">JP</button>
+    </div>
+    <div class="pc-rule" aria-hidden="true"></div>
+    <div class="pc-group pc-view" role="group" aria-label="View mode">
+      <button type="button" data-viewbtn="scroll" aria-pressed="true"><span class="pc-i" aria-hidden="true">&#8801;</span><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></button>
+      <button type="button" data-viewbtn="deck-v" aria-pressed="false"><span class="pc-i" aria-hidden="true">&#8595;</span><span class="t-en">Slides</span><span class="t-jp">スライド</span></button>
+    </div>
+    <div class="deck-hint" id="deck-hint" aria-hidden="true">
+      <span class="t-en"><kbd>Space</kbd> to advance</span>
+      <span class="t-jp"><kbd>Space</kbd> で次へ</span>
+    </div>
+  </div>
+  <div class="deck-progress" aria-hidden="true"><i></i></div>
+
+  <script>
+    // Language toggle
+    (() => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp");
+        html.lang = lang === "jp" ? "ja" : "en";
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
+
+    // Scroll reveal
+    (() => {
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            obs.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+    })();
+
+    // Image fade-in
+    document.querySelectorAll('.g-cell img').forEach(img => {
+      if (img.complete) img.classList.add('loaded');
+      else img.addEventListener('load', () => img.classList.add('loaded'));
+    });
+
+    // Mobile nav
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (toggle && links) {
+        toggle.addEventListener('click', () => {
+          const open = !links.classList.contains('is-open');
+          toggle.classList.toggle('is-open', open);
+          links.classList.toggle('is-open', open);
+          toggle.setAttribute('aria-expanded', String(open));
+        });
+        links.querySelectorAll('a').forEach(a => {
+          a.addEventListener('click', () => {
+            toggle.classList.remove('is-open');
+            links.classList.remove('is-open');
+            toggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+    })();
+  </script>
+
+  <script data-deck>
+  // View-mode engine: scroll | deck-v. Keyed only off html[data-view] + .deck-slide.
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll('[data-viewbtn]')];
+    const bar = document.querySelector('.deck-progress i');
+    const count = document.querySelector('.deck-count');
+    const hint = document.getElementById('deck-hint');
+    const mqMobile = window.matchMedia('(max-width: 768px)');
+    const mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const slides = () => [...document.querySelectorAll('.deck-slide')];
+    const allowDeck = () => !(mqMobile.matches || mqMotion.matches);
+    let cur = 0, advanced = false;
+
+    const setBtns = (v) => btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewbtn === v)));
+
+    const markLive = () => {
+      const s = slides();
+      s.forEach((el, i) => { if (i !== cur) el.classList.remove('is-live'); });
+      const el = s[cur];
+      if (el && !el.classList.contains('is-live')) {
+        void el.offsetWidth;
+        el.classList.add('is-live');
+      }
+    };
+
+    const update = () => {
+      const n = slides().length || 1;
+      if (bar) bar.style.width = ((cur + 1) / n * 100) + '%';
+      if (count) count.textContent = (cur + 1) + ' / ' + n;
+      if (html.dataset.view === 'deck-v') markLive();
+    };
+
+    const idxFromScroll = () => {
+      const s = slides();
+      if (!s.length) return 0;
+      let best = 0, bestD = Infinity;
+      s.forEach((el, i) => {
+        const d = Math.abs(el.getBoundingClientRect().top);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      return best;
+    };
+
+    const goto = (i, behavior) => {
+      const s = slides();
+      if (!s.length) return;
+      cur = Math.max(0, Math.min(i, s.length - 1));
+      s[cur].scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
+      update();
+    };
+
+    const setView = (v) => {
+      if (v !== 'scroll' && !allowDeck()) v = 'scroll';
+      html.dataset.view = v;
+      setBtns(v);
+      localStorage.setItem('tu-view', v);
+      if (v === 'scroll') {
+        slides().forEach(el => el.classList.remove('is-live'));
+        if (hint) hint.classList.remove('is-gone');
+        advanced = false;
+      } else {
+        requestAnimationFrame(() => goto(cur, 'auto'));
+      }
+      update();
+    };
+
+    btns.forEach(b => b.addEventListener('click', () => setView(b.dataset.viewbtn)));
+
+    const FWD = new Set([' ', 'Spacebar', 'ArrowDown', 'ArrowRight', 'PageDown']);
+    const BACK = new Set(['ArrowUp', 'ArrowLeft', 'PageUp']);
+    window.addEventListener('keydown', (e) => {
+      if (html.dataset.view !== 'deck-v') return;
+      const ae = document.activeElement;
+      if (ae && ae.matches && ae.matches('input,textarea,select,[contenteditable="true"]')) return;
+      if ((e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') && ae && ae.matches && ae.matches('button,a,[role="button"]')) return;
+      if (FWD.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur + 1); }
+      else if (BACK.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur - 1); }
+      else if (e.key === 'Home') { e.preventDefault(); goto(0); }
+      else if (e.key === 'End') { e.preventDefault(); goto(slides().length - 1); }
+      else return;
+      if (!advanced && hint) { advanced = true; hint.classList.add('is-gone'); }
+    });
+
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        if (html.dataset.view === 'deck-v') { cur = idxFromScroll(); update(); }
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', () => { if (html.dataset.view === 'deck-v') goto(cur, 'auto'); });
+    [mqMobile, mqMotion].forEach(mq => mq.addEventListener('change', () => {
+      if (!allowDeck() && html.dataset.view !== 'scroll') setView('scroll');
+    }));
+
+    const saved = localStorage.getItem('tu-view') || 'scroll';
+    setView(allowDeck() ? saved : 'scroll');
+  })();
+  </script>
+
+</body>
+</html>
