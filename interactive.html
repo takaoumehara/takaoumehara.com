@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Interactive — Takao Umehara</title>
+  <meta name="description" content="Interactive experiences by Takao Umehara — Typespace, Resona, Rakugaki Jam, Koe Baku, Werewolf and EmojiDrop. Working demos you join by scanning a QR code, not screenshots.">
+  <meta property="og:title" content="Interactive — Takao Umehara">
+  <meta property="og:description" content="Built to be touched, not read about. Live, multi-phone experiences — most running on Snap Pair, one on WebRTC.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/work-card-grid.css">
+  <script src="assets/work-card-grid.js" defer></script>
+  <style>
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+
+    :root {
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #79746d;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      /* Interactive keeps the teal reserved for it in the six-colour palette
+         (docs/portfolio-template-system.md §2-4). */
+      --acc: #0d9488;
+      --acc-tint: #2dd4bf;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { min-height: 100vh; color: var(--ink); background: var(--bg); font-family: var(--ff); }
+
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: var(--ink); line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .nav-logo-tag { color: var(--ink-dim); font-size: 10.5px; font-weight: 400; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 22px; list-style: none; }
+    .nav-links a { color: var(--ink-mid); font-size: 13px; letter-spacing: 0.01em; text-decoration: none; transition: color 160ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; appearance: none; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      display: flex; align-items: center; gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94);
+      border-top: 1px solid rgba(18,18,18,0.07);
+      border-bottom: 1px solid rgba(18,18,18,0.07);
+      border-left: 1px solid var(--border);
+      border-radius: 6px 0 0 6px;
+      writing-mode: vertical-rl;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    }
+    .lang-btn { padding: 0; appearance: none; background: none; border: none; color: var(--ink-dim); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { color: rgba(18,18,18,0.18); font-size: 9px; }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    /* ─── Snap Pair connective tag (carried over with the section) ─── */
+    .pill--snap { display: inline-flex; align-items: center; gap: 5px; color: #1d4ed8; border-color: rgba(37,99,235,0.34); background: rgba(37,99,235,0.06); }
+    .pill--snap::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.14); }
+
+    /* ─── Card art unique to this page ─── */
+    .card-art--rakugaki {
+      background:
+        radial-gradient(circle at 22% 78%, rgba(255,255,255,0.30) 0 1.4%, transparent 2%),
+        radial-gradient(circle at 78% 30%, rgba(255,255,255,0.22) 0 1%, transparent 1.6%),
+        linear-gradient(140deg, #16104a, #7b2ff2 46%, #ff4f9a);
+    }
+    .card-art--koebaku {
+      background:
+        radial-gradient(circle at 50% 116%, rgba(255,209,120,0.55), transparent 46%),
+        linear-gradient(140deg, #2b0f14, #e23b4e 48%, #ffb347);
+    }
+    .card-img-bg--werewolf { position: relative; background-color: #0b0c10; background-size: contain; background-position: center 44%; background-repeat: no-repeat; }
+    .card-img-bg--werewolf::before { content: ""; position: absolute; inset: 0; background: radial-gradient(circle at 50% 34%, rgba(126,200,235,0.32), transparent 58%); pointer-events: none; z-index: 0; }
+
+    /* ─── How to run one of these ─── */
+    .how-section { max-width: 1200px; margin: 0 auto; padding: 8px 32px 8px; }
+    .how-head { border-top: 1px solid var(--line); padding: 44px 0 26px; max-width: 780px; }
+    .how-eyebrow { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 13px; color: var(--acc); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; }
+    .how-eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .how-title { margin-bottom: 13px; font-family: "DM Serif Display", Georgia, serif; font-size: clamp(28px, 3.6vw, 42px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
+    html.lang-jp .how-title { line-height: 1.18; letter-spacing: -0.02em; }
+    .how-sub { color: var(--ink-mid); font-size: 15.5px; line-height: 1.7; }
+    .how-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; }
+    .how-step { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: 22px 22px 26px; }
+    .how-step-n { font-family: "DM Serif Display", Georgia, serif; font-size: 26px; line-height: 1; letter-spacing: -0.03em; color: var(--acc); margin-bottom: 12px; }
+    .how-step-t { font-size: 15.5px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 7px; }
+    .how-step-d { font-size: 13.5px; line-height: 1.6; color: var(--ink-dim); }
+    @media (max-width: 760px) { .how-steps { grid-template-columns: 1fr; } }
+
+    /* ─── CTA ─── */
+    .lab-cta { max-width: 1200px; margin: 0 auto; padding: 56px 32px 72px; text-align: center; }
+    .lab-cta-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(28px, 3.6vw, 44px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.0; margin-bottom: 14px; }
+    html.lang-jp .lab-cta-title { line-height: 1.2; }
+    .lab-cta-desc { max-width: 56ch; margin: 0 auto 26px; color: var(--ink-mid); font-size: 15.5px; line-height: 1.7; }
+    .btn-primary { display: inline-block; padding: 14px 22px; background: var(--ink); color: #fff; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background 180ms ease; }
+    .btn-primary:hover { background: var(--acc); }
+
+    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible,
+    .nav-toggle:focus-visible, .btn-primary:focus-visible, .footer-links a:focus-visible,
+    .work-card:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+    .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1200px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .footer-llc { margin-top: 5px; color: var(--ink-dim); font-size: 11px; }
+    .footer-llc strong { color: var(--ink-mid); font-weight: 500; }
+    .footer-links { display: flex; gap: 24px; list-style: none; flex-wrap: wrap; }
+    .footer-links a { color: var(--ink-dim); font-size: 12px; text-decoration: none; }
+
+    @media (max-width: 767px) {
+      .nav-toggle { display: block; }
+      .nav-links { position: absolute; top: 100%; right: 0; left: 0; display: none; flex-direction: column; gap: 0; padding: 0; background: rgba(255,255,255,0.97); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+      .site-nav { padding: 16px 20px; }
+      .how-section, .lab-cta { padding-left: 20px; padding-right: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .btn-primary, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="site-nav" aria-label="Primary navigation">
+    <a href="index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
+    <ul class="nav-links">
+      <li><a href="ai-products.html">Agentic UX</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="work.html">Product Design</a></li>
+      <li><a href="brand.html">Brand &amp; Visual</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="lang-switch" id="lang-switch" aria-label="Language"><button class="lang-btn is-active" type="button" data-lang="en">EN</button><span class="lang-sep" aria-hidden="true">|</span><button class="lang-btn" type="button" data-lang="jp">JP</button></div>
+
+  <main class="work-list-page">
+    <header class="work-list-header">
+      <div>
+        <p class="work-list-kicker"><span class="t-en">Interactive · Built to be touched, not read about</span><span class="t-jp">Interactive · 読むものではなく、触れるもの</span></p>
+        <h1 class="work-list-title"><span class="t-en">Interactive</span><span class="t-jp">Interactive</span></h1>
+      </div>
+      <p class="page-count"><span class="t-en">6 live experiences</span><span class="t-jp">6 つの体験</span></p>
+    </header>
+    <p class="work-list-intro"><span class="t-en">A short list on purpose. Each of these is a working demo, not a screenshot — most run on <strong>Snap Pair</strong> (scan a QR code, every phone in the room joins one live session, no app install), one runs on WebRTC instead. Click through; they're better felt than described.</span><span class="t-jp is-block">意図的に短いリストです。どれもスクリーンショットではなく、実際に動くデモ。多くは <strong>Snap Pair</strong> 上で動きます（QR コードを読み取れば、その場のすべてのスマホがアプリ不要でひとつのライブ・セッションに参加）。ひとつだけ WebRTC で動いています。クリックして触れてみてください — 説明より体験のほうが早いので。</span></p>
+
+    <div class="work-grid" aria-label="Interactive experiences">
+
+      <article class="work-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
+        <div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">WebGL</span></div>
+          <h2 class="card-title">Typespace</h2>
+          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。AI は使っていません — 打って、眺めるだけ。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
+        <div class="card-image"><div class="card-art card-art--motion"><span class="card-art-label">Resona<br>響</span><span class="card-art-note">Pseudo-haptics</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Live</span><span class="pill">Motion design</span></div>
+          <h2 class="card-title">Resona <span style="font-size:0.6em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">響</span></h2>
+          <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">擬似ハプティクスにもとづく、意図を伝えるウェブアニメーションの実験場。言葉を読む前に、動きが意味を伝える。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Web animation · Pseudo-haptics</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+      </article>
+
+      <article class="work-card" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
+        <div class="card-image"><div class="card-art card-art--rakugaki"><span class="card-art-label">Rakugaki<br>Jam</span><span class="card-art-note">Phone → wall VJ</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">VJ</span></div>
+          <h2 class="card-title">Rakugaki Jam</h2>
+          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホで落書きして、みんなの壁画面へ投げ込む。観客みんなで描く、ライブな VJ ジャム。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · Firebase RTDB · Canvas</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+      </article>
+
+      <article class="work-card">
+        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/koebaku/hero.jpg');"></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Voice</span></div>
+          <h2 class="card-title">Koe Baku <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">声爆</span></h2>
+          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — a QR-join VJ, measured on-device, no audio ever leaves the phone.</span><span class="t-jp is-block">叫べば、声が漫画の擬音になって画面で弾ける。QR で参加する VJ。判定は端末内で完結し、音声は外に出ません。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · Web Audio · Canvas</span></div>
+      </article>
+
+      <article class="work-card">
+        <div class="card-image"><div class="card-img-bg card-img-bg--werewolf" style="background-image:url('assets/werewolf/ghost-wolf.png');"></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
+          <h2 class="card-title">Werewolf Card Game</h2>
+          <p class="card-desc"><span class="t-en">A digital Werewolf (Mafia) party game — hand-illustrated role cards dealt to each player's phone, one table on the big screen.</span><span class="t-jp is-block">デジタル版の人狼ゲーム。手描きの役職カードが各プレイヤーのスマホに配られ、卓は大画面にひとつ。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · 27 illustrated roles</span></div>
+      </article>
+
+      <article class="work-card">
+        <div class="card-image"><div class="card-art card-art--emoji"><span class="card-art-label">Emoji<br>Drop</span><span class="card-art-note">2-player online shooter</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill">Prototype</span><span class="pill">Game</span><span class="pill">WebRTC</span></div>
+          <h2 class="card-title">EmojiDrop</h2>
+          <p class="card-desc"><span class="t-en">An emoji-only arcade shooter, two players head-to-head over WebRTC — no Snap Pair here, no server relay either.</span><span class="t-jp is-block">絵文字だけで対戦する、2人同時プレイのアーケードシューター。WebRTC で直接対戦 — Snap Pair もサーバー中継も使っていません。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">HTML5 Canvas · WebRTC · single-file</span></div>
+      </article>
+
+    </div>
+  </main>
+
+  <section class="how-section" aria-labelledby="how-title">
+    <div class="how-head">
+      <div class="how-eyebrow"><span class="t-en">How you join one</span><span class="t-jp">参加のしかた</span></div>
+      <h2 class="how-title" id="how-title"><span class="t-en">Three steps, no app store</span><span class="t-jp">3ステップ、アプリのインストールなし</span></h2>
+      <p class="how-sub"><span class="t-en">Most of these are built on <a href="projects/snap-pair.html">Snap Pair</a>, the pairing layer I wrote for exactly this: getting a room full of strangers' phones into one live session before anyone loses interest.</span><span class="t-jp is-block">多くは <a href="projects/snap-pair.html">Snap Pair</a> の上に載っています。その場にいる初対面の人たちのスマホを、興味が切れる前にひとつのライブ・セッションに入れる — そのために書いたペアリング層です。</span></p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step">
+        <div class="how-step-n">01</div>
+        <div class="how-step-t"><span class="t-en">Open it on the big screen</span><span class="t-jp">大画面で開く</span></div>
+        <div class="how-step-d"><span class="t-en">A laptop, a projector, a TV — whatever the room already has. A QR code appears.</span><span class="t-jp is-block">ノートPCでもプロジェクターでもTVでも、その場にあるもので。QRコードが出ます。</span></div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-n">02</div>
+        <div class="how-step-t"><span class="t-en">Everyone scans it</span><span class="t-jp">全員でスキャン</span></div>
+        <div class="how-step-d"><span class="t-en">The camera app is enough. No install, no account, no room code to read out loud.</span><span class="t-jp is-block">カメラアプリだけで十分。インストールもアカウントも、読み上げるルームコードも要りません。</span></div>
+      </div>
+      <div class="how-step">
+        <div class="how-step-n">03</div>
+        <div class="how-step-t"><span class="t-en">Every phone is a controller</span><span class="t-jp">スマホがコントローラーになる</span></div>
+        <div class="how-step-d"><span class="t-en">Draw, shout, type, or play — whatever that particular piece does with the hands in the room.</span><span class="t-jp is-block">描く、叫ぶ、打つ、遊ぶ。その作品が、その場の手をどう使うか次第です。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="lab-cta">
+    <h2 class="lab-cta-title">
+      <span class="t-en">Got a room to fill?</span>
+      <span class="t-jp">埋めたい場所はありますか？</span>
+    </h2>
+    <p class="lab-cta-desc">
+      <span class="t-en">Events, exhibitions, launches, classrooms — if there's a screen and a crowd with phones, there's a version of this that fits. Tell me about the space.</span>
+      <span class="t-jp is-block">イベント、展示、ローンチ、教室。画面があって、スマホを持った人がいるなら、それに合う形があります。その場所のことを聞かせてください。</span>
+    </p>
+    <a href="contact.html" class="btn-primary">
+      <span class="t-en">Start a conversation</span>
+      <span class="t-jp">相談する</span>
+    </a>
+  </section>
+
+  <footer class="site-footer">
+    <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc"><span class="t-en">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></span><span class="t-jp">フリーランス・コンサルティングは <strong>Creativity Is Everywhere LLC</strong> を通じて</span></div></div>
+    <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="ai-products.html">Agentic UX</a></li><li><a href="ai-tools.html">AI Tools</a></li><li><a href="work.html">Product Design</a></li><li><a href="brand.html">Brand &amp; Visual</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li></ul>
+  </footer>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      html.lang = lang === "jp" ? "ja" : "en";
+      btns.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((button) => button.addEventListener("click", () => setLang(button.dataset.lang)));
+  })();
+
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (!toggle || !links) return;
+    toggle.addEventListener('click', () => {
+      const open = !links.classList.contains('is-open');
+      toggle.classList.toggle('is-open', open);
+      links.classList.toggle('is-open', open);
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    links.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+      toggle.classList.remove('is-open');
+      links.classList.remove('is-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }));
+  })();
+  </script>
+</body>
+</html>

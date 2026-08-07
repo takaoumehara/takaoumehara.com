@@ -107,7 +107,11 @@ Problems Solved(intake 7)がある案件は 3 と 4 の間に Before/After ス�
 | orange `#f97316` / `#f7a63a` | Brand & Visual | kitadoko, festival |
 | yellow `#eab308` / `#fbbf24` | AI Tools | superforge(済) |
 | violet `#7c3aed` / `#a78bfa` | Agentic UX | verizon-ai-agents |
-| teal `#0d9488` / `#2dd4bf` | Interactive / その他 | konosaki系 |
+| teal `#0d9488` / `#2dd4bf` | Interactive / その他 | konosaki系, **interactive.html**(済) |
+| cobalt `#2f5bff` / `#8aa6ff` | — | **ai-window-deck**(済) |
+
+cobalt は本人指定（`docs/portfolio-case-study-ai-window-deck/case-study.md` §12）。
+Product Design の blue `#2563eb` とは別色だが、両ページが隣り合う導線が無いため許容する。
 
 ### 2-5. 大面積の色は「深く・彩度を落として」使う
 
@@ -189,11 +193,23 @@ Problems Solved(intake 7)がある案件は 3 と 4 の間に Before/After ス�
 
 | フェーズ | 内容 | 状態 |
 |---|---|---|
-| 1 | シェル統一: verizon-ai-agents に JPフォント/lang/focus-visible | 今回 |
-| 1 | `cli-studios.html` を Variant A リファレンスとして再構築 | 今回 |
+| 1 | シェル統一: verizon-ai-agents に JPフォント/lang/focus-visible | 完了 |
+| 1 | `cli-studios.html` を Variant A リファレンスとして再構築 | 完了 |
+| 1 | `ai-window-deck.html` を新規作成（スパイン v2 / Variant A / 素材待ち） | 完了 |
+| 1 | Interactive Experience を `interactive.html` に独立させ、ナビを7項目に | 完了 |
 | 2 | preview 2枚の内容を本ページに昇格させ、preview を削除(ファイル名は本体を維持) | 未 |
-| 2 | verizon-ai-agents を 10〜14枚に圧縮 | 未 |
-| 3 | 残り18ページを work.html 掲載順に Variant A/B へ移行(intake promptで内容を再収集してから) | 未 |
+| 2 | verizon-ai-agents を 10〜13枚に圧縮 | 未 |
+| 3 | 残り26ページを Variant A/B へ移行 | **`docs/pdp-migration-status.md` に実測と質問** |
+
+**移行の実数は「残り18ページ」ではなく26ページだった**（2026-08-07 の走査）。
+内訳・順番・本人への質問は `docs/pdp-migration-status.md` を正とする。
+
+### ナビは7項目になった
+
+Agentic UX / AI Tools / **Interactive** / Product Design / Brand & Visual / About / Contact。
+Interactive は `ai-products.html` の中の1セクションだった。実演デモの集まりであって
+Agentic UX の脚注ではないので独立させ、`ai-products.html` には導線だけ残した。
+順序は `tests/ai-tools-portfolio.test.mjs` が全ページで検証する。
 
 移行時の作法: ファイル名変更禁止(既存仕様)。1ページ移行するたびに reveal無効レンダリングで
 スクリーンショット検証(keynote-slide-page スキルの手順)+ EN/JP 両表示チェック。

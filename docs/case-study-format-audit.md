@@ -165,7 +165,11 @@ Variant A の上限は当初 9〜11枚と置いたが、実素材3ギャラリ�
 | 2 | `cli-studios.html` に Structure / Craft / Retrospective を追加し v2 参照実装にする | **完了**（12枚。§7 に文言の出所を記載） |
 | 3 | `portfolio-content-intake-prompt.md` を8章対応に改訂 | 未 |
 | 4 | `portfolio-template-system.md` §2-1 のスパイン表を v2 に差し替え | 未 |
-| 5 | 残り18ページを v2 で移行 | 未 |
+| 5 | 残りページを v2 で移行 | **実測は26ページ。`docs/pdp-migration-status.md`** |
+
+`ai-window-deck.html` が v2 の2枚目の実装（2026-08-07）。`cli-studios` との差:
+Proof に数値グリッドを**置かなかった**。実測値が無い案件で「作った量」を数字に見せる
+のを避けるため、§3-3 の逃がし方（1文で言い切る）をそのまま採用した最初のページ。
 
 ---
 
@@ -178,6 +182,7 @@ Craft スライドの埋め方を決める判定表。**推測で埋めないこ
 | T-Mobile | **なし** | 人間の判断側 | 当時まだAIが業務に入っていない。**単独作業** |
 | CLI Studios | **なし** | 人間の判断側 | Figma のみ。**単独作業** |
 | Verizon（AI Agents） | **あり・全面的** | AI協働側 | ページ自体がAI案件。Craft は「AIの平均解の何を捨てたか」に絞る |
+| AI Window Deck | **あり** | AI協働側 | 本人回答（2026-08-07）。Craft は `.modal-overlay` の `display:flex` が `hidden` を打ち消した実例 |
 | Amazon Fire TV | 要確認 | — | 下記 §6-1 |
 | Coca-Cola / その他旧案件 | 未確認 | — | 移行時に同じ判定を行う |
 

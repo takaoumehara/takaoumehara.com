@@ -8,8 +8,8 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const v3 = root;
 const read = (name) => readFileSync(join(v3, name), 'utf8');
 const mainPages = [
-  'index.html', 'work.html', 'brand.html', 'ai-tools.html', 'ai-products.html', 'about.html',
-  'contact.html', 'breakbias.html', 'intentfirst.html', '404.html',
+  'index.html', 'work.html', 'brand.html', 'ai-tools.html', 'ai-products.html', 'interactive.html',
+  'about.html', 'contact.html', 'breakbias.html', 'intentfirst.html', '404.html',
 ];
 
 const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -79,14 +79,15 @@ function navDestinations(html, page) {
 
 // ── Nav consistency across the four-theme reorg ──
 
-test('all main-page navs order Agentic UX, AI Tools, Product Design, Brand & Visual, About, and Contact', () => {
+test('all main-page navs order Agentic UX, AI Tools, Interactive, Product Design, Brand & Visual, About, and Contact', () => {
   const expected = [
-    ['ai-products.html', 'Agentic UX'], ['ai-tools.html', 'AI Tools'], ['work.html', 'Product Design'],
-    ['brand.html', 'Brand &amp; Visual'], ['about.html', 'About'], ['contact.html', 'Contact'],
+    ['ai-products.html', 'Agentic UX'], ['ai-tools.html', 'AI Tools'], ['interactive.html', 'Interactive'],
+    ['work.html', 'Product Design'], ['brand.html', 'Brand &amp; Visual'], ['about.html', 'About'],
+    ['contact.html', 'Contact'],
   ];
   for (const page of mainPages) {
     const nav = navDestinations(read(page), page);
-    assert.deepEqual(nav.slice(0, 6).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
+    assert.deepEqual(nav.slice(0, 7).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
   }
 });
 
@@ -94,6 +95,7 @@ test('each themed page marks its own nav item active', () => {
   const activeByPage = {
     'ai-products.html': 'ai-products.html',
     'ai-tools.html': 'ai-tools.html',
+    'interactive.html': 'interactive.html',
     'work.html': 'work.html',
     'brand.html': 'brand.html',
     'about.html': 'about.html',
@@ -157,7 +159,7 @@ test('AI Tools page tells six bilingual tool stories with the right ids', () => 
   const html = read('ai-tools.html');
   assert.match(html, /<title>\s*AI Tools — Takao Umehara\s*<\/title>/);
   assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, 'AI Tools page needs exactly one h1');
-  for (const id of ['snap-pair', 'failforward', 'cross-model-handoff', 'superforge', 'interactive-experience-skills', 'multilingual-readme']) {
+  for (const id of ['snap-pair', 'failforward', 'cross-model-handoff', 'superforge', 'interactive-experience-skills', 'multilingual-readme', 'ai-window-deck']) {
     assert.match(html, new RegExp(`\\bid\\s*=\\s*["']${escape(id)}["']`), `ai-tools.html must have an anchor id="${id}"`);
   }
   assert.match(html, /\bid\s*=\s*["']snap-pair-core["']/, 'ai-tools.html must keep the legacy #snap-pair-core anchor for existing links');
@@ -173,6 +175,7 @@ test('AI Tools index cards link to internal project detail pages, not straight t
     ['superforge', 'projects/superforge.html'],
     ['interactive-experience-skills', 'projects/interactive-experience-skills.html'],
     ['multilingual-readme', 'projects/multilingual-readme.html'],
+    ['ai-window-deck', 'projects/ai-window-deck.html'],
   ];
   for (const [id, href] of expected) {
     const card = html.match(new RegExp(`<article\\b[^>]*\\bid\\s*=\\s*["']${escape(id)}["'][^>]*>`, 'i'))?.[0];
@@ -227,12 +230,13 @@ test('AI Tools page mobile toggle exposes state, control, and collapses stories 
 
 // ── Agentic UX page (ai-products.html) ──
 
-test('Agentic UX page presents a curated products grid plus an Interactive Experience showcase', () => {
+test('Agentic UX page presents a curated products grid and points at the Interactive page', () => {
   const html = read('ai-products.html');
   assert.match(html, /<title>\s*Agentic UX — Takao Umehara\s*<\/title>/);
-  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*12 products\s*<\/div>/i);
-  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 12, 'Agentic UX page needs twelve work cards (6 products + 6 Interactive Experience)');
-  assertPair(html, 'Interactive Experience', 'Interactive Experience', 'Agentic UX Interactive Experience section title');
+  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*6 products\s*<\/div>/i);
+  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 6, 'Agentic UX page needs six product cards — the Interactive pieces moved to interactive.html');
+  assertPair(html, 'Interactive', 'Interactive', 'Agentic UX Interactive pointer title');
+  assert.match(html, /href\s*=\s*["']interactive\.html["']/, 'Agentic UX must link out to the Interactive page');
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*intentfirst\.ai\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Verizon AI Workflow\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h2>/);
@@ -263,8 +267,9 @@ test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', ()
 
 test('AI index pages expose thumbnail-led work-card grids', () => {
   const expectations = [
-    ['ai-products.html', 12],
-    ['ai-tools.html', 6],
+    ['ai-products.html', 6],
+    ['ai-tools.html', 7],
+    ['interactive.html', 6],
   ];
 
   for (const [page, expectedCount] of expectations) {
