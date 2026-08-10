@@ -201,11 +201,16 @@
       color: #fff;
       padding: clamp(66px, 8vw, 118px) clamp(24px, 5vw, 72px) clamp(52px, 6vw, 84px);
     }
+    /* The glow moved from bottom-left to right. The copy column is left-aligned
+       and ends around 74% of the width, so a left-side glow stacked light on
+       top of the text and left the right third genuinely dead. Putting the
+       weight opposite the type balances the field without adding content —
+       the same move projects/cli-studios.html already makes. */
     .hero::after {
       content: "";
-      position: absolute; left: -8%; bottom: -55%;
-      width: 62%; height: 170%;
-      background: radial-gradient(ellipse at center, rgba(96,165,250,0.22), transparent 62%);
+      position: absolute; right: -10%; top: -40%;
+      width: 60%; height: 180%;
+      background: radial-gradient(ellipse at center, rgba(96,165,250,0.24), transparent 63%);
       pointer-events: none;
     }
     .hero-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; }
@@ -217,34 +222,82 @@
 
     .hero-headline {
       font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
-      font-size: clamp(46px, 7vw, 92px);
+      /* Capped below the old 92px. The hero now carries five elements instead
+         of three, and at 1440x900 — an ordinary laptop — the old scale pushed
+         the call to action and the live links off the fold entirely. A
+         headline nobody can act on is not worth the extra 16px. */
+      font-size: clamp(44px, 5.6vw, 74px);
       font-weight: 400; /* serif displays read better at regular weight */
-      line-height: 0.92;
+      line-height: 0.94;
       letter-spacing: -0.025em; /* serifs need less tracking */
       font-style: italic; /* DM Serif Display italic adds elegance */
-      max-width: 22ch;
-      margin-bottom: 30px;
+      max-width: 20ch;
+      margin-bottom: 24px;
       color: #fff;
     }
     .hero-headline em { font-style: italic; color: #9ec5fe; }
 
-    /* One lead, not two columns. The second paragraph was a positioning
-       statement — it belongs on About, not in front of someone deciding
-       within seconds whether this person's work is worth scrolling. */
+    /* One sentence, not a paragraph. The headline is a claim, and a stranger
+       does not grant a claim to someone they have not placed yet — so the lead
+       exists to answer "who are you to say that", in the length of one breath.
+       The five-line version that used to sit here buried the client names in
+       the middle of prose, where a scanning reader never reached them. */
     .hero-desc {
-      font-size: clamp(16px, 1.25vw, 19.5px);
-      line-height: 1.68;
-      color: rgba(255,255,255,0.72);
-      max-width: 62ch;
+      font-size: clamp(17px, 1.45vw, 22px);
+      line-height: 1.6;
+      color: rgba(255,255,255,0.78);
+      max-width: 48ch;
     }
     .hero-desc strong { color: #fff; font-weight: 600; }
 
+    /* The credential row. This is the element the landing page was missing
+       outright: projects/cli-studios.html carries the same label/value strip
+       (.wds-hero-meta) and the landing hero borrowed that page's colour field
+       without it, keeping the atmosphere and dropping the substance. Both
+       readers this page has — someone hiring, someone buying — need scale and
+       seniority as scannable facts, not as adjectives inside a paragraph. */
+    .hero-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(20px, 2.6vw, 44px);
+      margin-top: clamp(30px, 3.4vw, 44px);
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,0.14);
+      max-width: 940px;
+    }
+    .hero-fact-l {
+      display: block;
+      font-size: 10.5px; letter-spacing: 0.15em; text-transform: uppercase;
+      color: rgba(255,255,255,0.44);
+      margin-bottom: 9px;
+    }
+    .hero-fact-v {
+      display: block;
+      font-size: clamp(14px, 1.08vw, 17px);
+      line-height: 1.45;
+      color: rgba(255,255,255,0.92);
+      letter-spacing: -0.005em;
+    }
+    /* The number is the fact. At 1.3em it read as emphasis inside a sentence;
+       these have to survive being scanned at arm's length by someone who is
+       not reading, so they get their own line and roughly display scale. */
+    .hero-fact-v b {
+      display: block;
+      font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
+      font-weight: 400; font-style: italic;
+      font-size: clamp(38px, 3.6vw, 52px); line-height: 0.9;
+      letter-spacing: -0.03em;
+      color: #9ec5fe;
+      margin-bottom: 7px;
+    }
+
     /* Proof above the fold without waiting on imagery: the actual things,
        named, linked, and marked with what state they are really in. */
+    /* The credential row above now owns the dividing rule, so this strip drops
+       its own — two rules 30px apart read as a table, not a hierarchy. */
     .hero-live {
       display: flex; flex-wrap: wrap; gap: 8px;
-      margin-top: 30px; padding-top: 26px;
-      border-top: 1px solid rgba(255,255,255,0.14);
+      margin-top: clamp(26px, 3vw, 36px);
     }
     .hero-live-label {
       flex: 0 0 100%;
@@ -267,13 +320,27 @@
     .hero-chip .dot--proto { background: #fbbf24; }
     .hero-chip .dot--case { background: #60a5fa; }
 
+    /* One button, not two. Two equally-weighted calls to action in the same
+       viewport is the most reliable way to get neither — the visitor is asked
+       to choose before they have decided anything. The second destination is
+       still reachable; it is demoted to a text link so it stops competing. */
     .hero-cta {
       margin-top: 32px;
       display: flex;
-      gap: 16px;
+      gap: 22px;
       align-items: center;
       flex-wrap: wrap;
     }
+    .hero-textlink {
+      color: rgba(255,255,255,0.72);
+      font-size: 13.5px;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.28);
+      padding-bottom: 2px;
+      transition: color 180ms ease, border-color 180ms ease;
+    }
+    .hero-textlink:hover { color: #fff; border-color: #fff; }
+    .hero-textlink:focus-visible { outline: 2px solid #9ec5fe; outline-offset: 3px; }
 
     .btn-primary {
       display: inline-block;
@@ -1237,8 +1304,9 @@
     .hero-kicker  { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 80ms both; }
     .hero-headline{ animation: hero-in 900ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both; }
     .hero-desc    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 280ms both; }
-    .hero-live    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 360ms both; }
-    .hero-cta     { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 400ms both; }
+    .hero-facts   { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 340ms both; }
+    .hero-live    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 420ms both; }
+    .hero-cta     { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 480ms both; }
 
     /* ─── Responsive ─── */
     @media (max-width: 1000px) {
@@ -1278,6 +1346,12 @@
       .ai-grid { grid-template-columns: 1fr; }
       .site-nav { padding: 16px 20px; }
       .hero { padding: 64px 20px 56px; }
+      /* Three columns of facts at 375px gives each one about 100px, which
+         wraps every value to four lines and turns the strongest element on
+         the page into noise. Two columns, with the third spanning, keeps each
+         fact readable on one or two lines. */
+      .hero-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 18px; }
+      .hero-facts > div:last-child { grid-column: 1 / -1; }
       .section-head, .initiatives-grid, .capabilities-grid, .ai-grid, .ai-intro { padding: 0 20px; }
     }
 
@@ -1320,8 +1394,11 @@
     html.lang-jp body { font-family: var(--ff-jp); }
     html.lang-jp .hero-headline {
       font-family: "DM Serif Display", "Noto Sans JP", Georgia, serif;
-      line-height: 1.18;
-      font-size: clamp(36px, 5.5vw, 72px);
+      line-height: 1.14;
+      /* Two lines, not three. Full-width glyphs at 72px wrapped the JP headline
+         onto a third line, which cost exactly the height the credential row and
+         the call to action need to stay on the fold. */
+      font-size: clamp(34px, 4.4vw, 58px);
       font-style: normal;
       /* JP glyphs are full-width, so the Latin measure runs twice as wide, and
          a break can land inside a word (体/験). Keep the emphasis phrase whole
@@ -1348,7 +1425,7 @@
       .rr > .inner  { animation: none !important; opacity: 1 !important; clip-path: inset(0 0 0 0) !important; transform: none !important; }
       .rr > .cover  { animation: none !important; opacity: 0 !important; }
       .card-image::before { animation: none !important; transition: none !important; }
-      .hero-kicker, .hero-headline, .hero-desc, .hero-live, .hero-cta { animation: none !important; opacity: 1 !important; }
+      .hero-kicker, .hero-headline, .hero-desc, .hero-facts, .hero-live, .hero-cta { animation: none !important; opacity: 1 !important; }
       .play-card:hover .play-art--resona i,
       .play-card:hover .play-art--rakugaki i,
       .play-card:hover .play-art--typespace i,
@@ -1386,17 +1463,31 @@
   <section class="hero">
    <div class="hero-inner">
     <div class="hero-kicker eyebrow">
-      <span class="t-en">Product Designer · AI · New York</span>
-      <span class="t-jp">プロダクトデザイナー · AI · ニューヨーク</span>
+      <span class="t-en">Lead Product Designer · AI Products &amp; Interactive · New York</span>
+      <span class="t-jp">リードプロダクトデザイナー · AIプロダクト＆インタラクティブ · ニューヨーク</span>
     </div>
     <h1 class="hero-headline">
       <span class="t-en">Intent first. <em>Then</em> the interface.</span>
       <span class="t-jp">まず<em>意図</em>。<br>インターフェイスはその後。</span>
     </h1>
     <p class="hero-desc">
-      <span class="t-en"><strong>intentfirst.ai</strong> is my thesis — how an AI should read what a person actually means, and a practical method for turning that into something a machine can learn. Everything else here is me testing it in public: a 10-agent fleet inside Verizon's design org, an AI that reads cognitive self-checks, and a room full of phones drawing on one wall. Underneath it, twenty years of shipping for Amplify, Coca-Cola and T-Mobile.</span>
-      <span class="t-jp is-block"><strong>intentfirst.ai</strong> は私の主張です — AI は人の意図をどう読むべきか、そしてそれを機械が学習できる形にどう落とすか。ここにある他のものは、その主張を公開の場で検証した記録です。Verizon のデザイン組織に置いた 10 エージェントの艦隊、認知セルフチェックを読む AI、そしてその場のスマホ全部でひとつの壁に描く仕掛け。下地には、Amplify・Coca-Cola・T-Mobile にプロダクトを届けてきた 20 年があります。</span>
+      <span class="t-en">Twenty years designing products at <strong>Verizon, Amazon, Coca-Cola and T-Mobile</strong> — now spent building the AI itself, not slideware about it.</span>
+      <span class="t-jp is-block"><strong>Verizon・Amazon・Coca-Cola・T-Mobile</strong> で20年、プロダクトを設計してきました。いまはその経験を、AI を語る資料ではなく、動く AI そのものに使っています。</span>
     </p>
+    <div class="hero-facts">
+      <div>
+        <span class="hero-fact-l"><span class="t-en">Practice</span><span class="t-jp">実務</span></span>
+        <span class="hero-fact-v"><b>20</b><span class="t-en">years · enterprise product design</span><span class="t-jp">年 · エンタープライズのプロダクト設計</span></span>
+      </div>
+      <div>
+        <span class="hero-fact-l"><span class="t-en">Running in production</span><span class="t-jp">本番で稼働中</span></span>
+        <span class="hero-fact-v"><b>10</b><span class="t-en">agents running inside Verizon's design org</span><span class="t-jp">エージェントが Verizon のデザイン組織で稼働</span></span>
+      </div>
+      <div>
+        <span class="hero-fact-l"><span class="t-en">Tools I ship</span><span class="t-jp">自分で出している道具</span></span>
+        <span class="hero-fact-v"><b>12</b><span class="t-en">skills — superforge, idea to release</span><span class="t-jp">スキル — superforge、着想から公開まで</span></span>
+      </div>
+    </div>
     <div class="hero-live">
       <span class="hero-live-label">
         <span class="t-en">Open right now</span>
@@ -1409,8 +1500,8 @@
       <a class="hero-chip" href="projects/verizon-ai-agents.html"><span class="dot dot--case"></span>Verizon AI Workflow</a>
     </div>
     <div class="hero-cta">
-      <a href="ai-products.html" class="btn-primary"><span class="t-en">See AI Products →</span><span class="t-jp">AI Products を見る →</span></a>
-      <a href="contact.html" class="btn-secondary"><span class="t-en">Start a conversation</span><span class="t-jp">相談する</span></a>
+      <a href="ai-products.html" class="btn-primary"><span class="t-en">See the work →</span><span class="t-jp">仕事を見る →</span></a>
+      <a href="contact.html" class="hero-textlink"><span class="t-en">or start a conversation</span><span class="t-jp">相談する</span></a>
     </div>
    </div>
   </section>
