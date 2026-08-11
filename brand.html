@@ -19,6 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/index-grid.css">
   <style>
     /* ─── Geist Sans (Vercel) ─── */
     @font-face {
@@ -225,31 +226,6 @@
       flex-wrap: wrap;
       border-bottom: 1px solid var(--line);
       padding-bottom: 28px;
-    }
-
-    .filter-btn {
-      appearance: none;
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 9px 14px;
-      font-family: var(--ff);
-      font-size: 12px;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      cursor: pointer;
-      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
-    }
-
-    .filter-btn:hover {
-      color: var(--ink);
-      border-color: rgba(18,18,18,0.24);
-    }
-
-    .filter-btn.is-active {
-      background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
     }
 
     /* ─── Grid ─── */
@@ -707,612 +683,150 @@
     <button class="lang-btn" data-lang="jp">JP</button>
   </div>
 
-  <!-- ── Header ── -->
-  <div class="page-header">
-    <div>
-      <div style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:12px;">Selected Work</div>
-      <h1 class="page-title">
-        <span class="t-en">Brand &amp; Visual</span>
-        <span class="t-jp">ブランド＆ビジュアル</span>
-      </h1>
-      <p class="page-intro" style="margin-top:16px; font-size:15px; line-height:1.66; color:var(--ink-mid); max-width:560px;">
-        <span class="t-en">Identity systems, campaigns, films, and environments — brand work that gives products a voice.</span>
-        <span class="t-jp is-block">アイデンティティ、キャンペーン、映像、空間 — プロダクトに声を与えるブランドワーク。</span>
-      </p>
+  <!-- ══ Identity strip ══ -->
+  <header class="idx-head">
+    <h1 class="idx-name"><span class="t-en">Brand &amp; Visual</span><span class="t-jp">ブランド＆ビジュアル</span></h1>
+
+    <div class="idx-meta">
+      <div class="idx-meta-col">
+        <span class="is-ink">Takao Umehara</span>
+        <span><span class="t-en">Identity, environments and editorial</span><span class="t-jp">アイデンティティ・空間・エディトリアル</span></span>
+      </div>
+      <div class="idx-meta-col">
+        <a href="index.html"><span class="t-en">Index</span><span class="t-jp">全作品</span></a>
+        <a href="about.html"><span class="t-en">Information</span><span class="t-jp">プロフィール</span></a>
+      </div>
+      <div class="idx-meta-col">
+        <span class="is-ink">12 <span class="t-en">projects</span><span class="t-jp">件</span></span>
+        <span><span class="t-en">20 years · New York</span><span class="t-jp">20年 · ニューヨーク</span></span>
+      </div>
+      <div class="idx-meta-col is-right">
+        <span class="is-ink">New York</span>
+        <span>2026</span>
+      </div>
     </div>
-    <div class="page-count" id="count-label">12 projects</div>
+
+    <p class="idx-thesis">
+      <span class="t-en">Identity systems, spaces people walk through, and things that get printed. From <strong>Coca-Cola</strong> campaigns to a festival&rsquo;s pattern language.</span>
+      <span class="t-jp is-block">アイデンティティ、人が歩く空間、そして印刷される物。<strong>Coca-Cola</strong> のキャンペーンから、祭のパターン言語まで。</span>
+    </p>
+  </header>
+
+  <section class="idx-band">
+    <div class="idx-band-head">
+      <span class="idx-band-num">01</span>
+      <span class="idx-band-title"><span class="t-en">Identity systems</span><span class="t-jp">アイデンティティ・システム</span></span>
+    </div>
+    <div class="idx-grid">
+      <a class="idx-tile" href="projects/coca-cola.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Coca-Cola</div><div class="idx-tile-kind"><span class="t-en">Campaign · Visual</span><span class="t-jp">キャンペーン · ビジュアル</span></div></div>
+          <div class="idx-tile-no">12</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/coca-cola.jpg" alt="Coca-Cola" loading="eager" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/value-frontier.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Value Frontier</div><div class="idx-tile-kind"><span class="t-en">Brand identity</span><span class="t-jp">ブランドアイデンティティ</span></div></div>
+          <div class="idx-tile-no">11</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/value-frontier.jpg" alt="Value Frontier" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/odell-education.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Odell Education</div><div class="idx-tile-kind"><span class="t-en">Brand system</span><span class="t-jp">ブランドシステム</span></div></div>
+          <div class="idx-tile-no">10</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/odell-education.jpg" alt="Odell Education" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="https://konosaki-co.vercel.app/" target="_blank" rel="noopener">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Konosaki</div><div class="idx-tile-kind"><span class="t-en">Brand extension · Live</span><span class="t-jp">ブランド拡張 · 公開中</span></div></div>
+          <div class="idx-tile-no">09</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/konosaki.jpg" alt="Konosaki" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/dnt.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">DNT</div><div class="idx-tile-kind"><span class="t-en">Identity</span><span class="t-jp">アイデンティティ</span></div></div>
+          <div class="idx-tile-no">08</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/dnt.jpg" alt="DNT" loading="lazy" width="760" height="570"></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="idx-band">
+    <div class="idx-band-head">
+      <span class="idx-band-num">02</span>
+      <span class="idx-band-title"><span class="t-en">Space &amp; environment</span><span class="t-jp">空間と環境</span></span>
+    </div>
+    <div class="idx-grid">
+      <a class="idx-tile" href="projects/kitadoko.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Kitadoko</div><div class="idx-tile-kind"><span class="t-en">Space design</span><span class="t-jp">空間デザイン</span></div></div>
+          <div class="idx-tile-no">07</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/kitadoko.jpg" alt="Kitadoko" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/festival-design.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Festival Design</div><div class="idx-tile-kind"><span class="t-en">Pattern · Identity</span><span class="t-jp">パターン · アイデンティティ</span></div></div>
+          <div class="idx-tile-no">06</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/festival-design.jpg" alt="Festival Design" loading="lazy" width="760" height="570"></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="idx-band">
+    <div class="idx-band-head">
+      <span class="idx-band-num">03</span>
+      <span class="idx-band-title"><span class="t-en">Editorial &amp; product</span><span class="t-jp">エディトリアルとプロダクト</span></span>
+    </div>
+    <div class="idx-grid">
+      <a class="idx-tile" href="projects/xq.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">XQ</div><div class="idx-tile-kind"><span class="t-en">Information design</span><span class="t-jp">情報設計</span></div></div>
+          <div class="idx-tile-no">05</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/xq.jpg" alt="XQ" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/extraordinary.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Extraordinary</div><div class="idx-tile-kind"><span class="t-en">Book · Cover</span><span class="t-jp">書籍 · 装丁</span></div></div>
+          <div class="idx-tile-no">04</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/extraordinary.jpg" alt="Extraordinary" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/koji-fizz.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Koji Fizz</div><div class="idx-tile-kind"><span class="t-en">Packaging · Product</span><span class="t-jp">パッケージ · プロダクト</span></div></div>
+          <div class="idx-tile-no">03</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/koji-fizz.jpg" alt="Koji Fizz" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/graffitiwear.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Graffitiwear</div><div class="idx-tile-kind"><span class="t-en">Product · Visual</span><span class="t-jp">プロダクト · ビジュアル</span></div></div>
+          <div class="idx-tile-no">02</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/graffitiwear.jpg" alt="Graffitiwear" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/skateboard-egift.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Skateboard eGift</div><div class="idx-tile-kind"><span class="t-en">Product · Visual</span><span class="t-jp">プロダクト · ビジュアル</span></div></div>
+          <div class="idx-tile-no">01</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/skateboard-egift.jpg" alt="Skateboard eGift" loading="lazy" width="760" height="570"></div>
+      </a>
+    </div>
+  </section>
+
+  <div class="idx-foot">
+    <a href="contact.html" class="idx-foot-cta"><span class="t-en">Start a conversation →</span><span class="t-jp">相談する →</span></a>
   </div>
 
-  <!-- ── Grid ── -->
-  <div class="work-grid-wrap">
-    <div class="work-grid" id="work-grid">
-
-      <article class="work-card" tabindex="0" data-href="projects/coca-cola.html" data-cat="brand">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="965">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/Coke_Hero_1500x1000.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="539">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Global Brand</span><span
-                  class="pill text-reactive">Branding</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="739">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Coca-Cola Rebranding</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="879">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Global visual refresh across billboards, vehicles, packaging and
-                environmental design. With Ogilvy.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="619">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Coca-Cola / Ogilvy</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="639">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Senior Designer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/value-frontier.html" data-cat="brand">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="970">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/VF_Hero.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="540">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Branding</span><span
-                  class="pill text-reactive">Strategy</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="740">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Value Frontier</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="880">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Brand DNA to full identity system, culminating in the DO! NUTS TOKYO
-                sub-brand launch.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="620">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Value Frontier</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="640">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Creative Director</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/dnt.html" data-cat="brand innovation">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="950">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/image-asset_3.jpeg')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="536">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Social Innovation</span><span
-                  class="pill text-reactive">Award</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="736">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">DO! NUTS TOKYO</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="876">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Sustainability platform for Tokyo Metropolitan Government. 2021
-                American Graphic Design Award.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="616">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Tokyo Metropolitan Gov.</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="636">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Creative Director</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/kitadoko.html" data-cat="brand">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="955">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/Space_Design_kitadoko.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="537">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Rebranding</span><span
-                  class="pill text-reactive">Service Design</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="737">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Kitadoko</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="877">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">150-year-old salon rebranded. Female clientele 10%→50%, repeat rate
-                0%→90%.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="617">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Kitadoko Hair Salon</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="637">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Creative Director</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="https://konosaki-co.vercel.app/" data-external="true" data-cat="brand">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="950">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/konosaki/KONOSAKI-logo/KONOSAKI_WEWORK-VERTICAL.svg'); background-position:center;"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="537">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Brand Identity</span><span
-                  class="pill text-reactive">Website</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="737">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Konosaki</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="877">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">
-                <span class="t-en">Complete brand identity and bilingual website for a cross-border consulting firm — strategy, logo, guidelines, and live site. AI-assisted through Creativity Is Everywhere LLC.</span>
-                <span class="t-jp is-block">越境コンサルティング企業のためのブランドアイデンティティとバイリンガルウェブサイト。戦略、ロゴ、ガイドライン、ライブサイト。Creativity Is Everywhere LLC として AI を活用して設計・構築。</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="617">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Konosaki LLC</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="637">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Design & Build</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/odell-education.html" data-cat="brand product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="960">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/odell-education/Books_Gradebooks_Grade9-sm.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="538">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">EdTech</span><span
-                  class="pill text-reactive">Branding</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="738">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Odell Education</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="878">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Brand identity and program website for a high school literacy
-                curriculum — a grade 9–12 visual system.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="618">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Brand &amp; Product Design</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="638">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Odell Education</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/xq.html" data-cat="brand innovation">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="945">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/xq_map_v7-2.jpg')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="535">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">EdTech</span><span
-                  class="pill text-reactive">Platform</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="735">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">XQ Super School</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="875">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Nationwide HS redesign competition hub with XQ Canvas Framework and
-                XQ Directory.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="615">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Emerson Collective</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="635">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Design Director</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/koji-fizz.html" data-cat="brand">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="960">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg"
-                style="background-image:url('assets/shared/Screenshot_2023-12-21_at_9.53.28_PM.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="538">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Film</span><span
-                  class="pill text-reactive">Brand</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="738">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">KOJI FIZZ Films</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="878">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Short film series featuring NY designers and artists for brand
-                promotion.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="618">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">See the Sun / KOJI FIZZ</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="638">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Film Producer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/graffitiwear.html" data-cat="brand personal">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="940">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg"
-                style="background-image:url('assets/shared/Screenshot_2026-02-19_at_12.51.33.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="534">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Apparel</span><span
-                  class="pill text-reactive">Brand</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="734">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">GraffitiWear</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="874">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">NYC street culture–inspired apparel for JWSNY. 50%+ adoption among
-                students and faculty.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="614">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">JWSNY</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="634">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Creative Director</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/festival-design.html" data-cat="personal">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="935">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg"
-                style="background-image:url('assets/festival-design/Aki_Pattern_Fine_Vert02.png'); background-position:center;">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="533">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Event Design</span><span
-                  class="pill text-reactive">Cultural</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="733">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Akimatsuri Festival</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="873">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Branding, 7 hand-built games, 110 volunteers. Revenue tripled.
-                Perfect satisfaction score.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="613">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">NY Japanese Saturday School</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="633">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">2022–2024</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/extraordinary.html" data-cat="personal">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="930">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/exmag-01.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="532">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Book</span><span class="pill text-reactive">Art
-                  Direction</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="732">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">extra•ordinary</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="872">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Co-authored creativity book published by Rockport. 11,000+ copies
-                sold worldwide.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="612">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Rockport Publishing</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="632">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Co-author &amp; Designer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/skateboard-egift.html" data-cat="personal">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="925">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/image-asset_2.jpeg')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="531">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Packaging</span><span
-                  class="pill text-reactive">Experience</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="731">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">E-Gift Reimagined</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="871">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Transforming a digital gift card into a tangible unboxing experience
-                with skateboarding life lessons.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="611">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Personal</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="631">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Creative Director</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-    </div><!-- /work-grid -->
-  </div>
-
-  <!-- ── Footer ── -->
   <footer
     style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
     <div>
@@ -1334,183 +848,11 @@
   </footer>
 
   <script>
-  (() => {
-    // ── Palette presets (from 5-3C family — 6 presets) ──
-    const presets = [
-      { angle:"102deg", a1:"hsla(198 82% 72% / 0.44)", a2:"hsla(248 74% 80% / 0.36)", a3:"hsla(324 72% 81% / 0.40)", a4:"hsla(36 80% 78% / 0.34)", t1:"hsl(198 58% 56%)", t2:"hsl(248 58% 70%)", t3:"hsl(324 60% 72%)", t4:"hsl(36 58% 62%)" },
-      { angle:"96deg",  a1:"hsla(222 84% 62% / 0.48)", a2:"hsla(198 80% 74% / 0.34)", a3:"hsla(274 62% 80% / 0.32)", a4:"hsla(36 74% 80% / 0.28)",  t1:"hsl(222 62% 52%)", t2:"hsl(198 56% 60%)", t3:"hsl(274 50% 72%)", t4:"hsl(36 54% 66%)" },
-      { angle:"110deg", a1:"hsla(40 80% 74% / 0.38)",  a2:"hsla(320 70% 76% / 0.42)", a3:"hsla(266 62% 80% / 0.34)", a4:"hsla(194 78% 74% / 0.32)", t1:"hsl(40 56% 62%)",  t2:"hsl(320 58% 68%)", t3:"hsl(266 52% 72%)", t4:"hsl(194 56% 60%)" },
-      { angle:"90deg",  a1:"hsla(206 86% 70% / 0.46)", a2:"hsla(232 86% 60% / 0.42)", a3:"hsla(274 62% 78% / 0.28)", a4:"hsla(42 72% 82% / 0.22)",  t1:"hsl(206 62% 56%)", t2:"hsl(232 62% 52%)", t3:"hsl(274 50% 72%)", t4:"hsl(42 54% 70%)" },
-      { angle:"108deg", a1:"hsla(42 78% 78% / 0.34)",  a2:"hsla(28 84% 72% / 0.28)",  a3:"hsla(314 68% 76% / 0.40)", a4:"hsla(196 78% 76% / 0.30)", t1:"hsl(42 58% 68%)",  t2:"hsl(28 60% 62%)",  t3:"hsl(314 58% 70%)", t4:"hsl(196 56% 62%)" },
-      { angle:"100deg", a1:"hsla(202 70% 84% / 0.30)", a2:"hsla(248 62% 82% / 0.32)", a3:"hsla(330 62% 84% / 0.28)", a4:"hsla(48 70% 84% / 0.24)",  t1:"hsl(202 52% 66%)", t2:"hsl(248 50% 72%)", t3:"hsl(330 52% 74%)", t4:"hsl(48 52% 72%)" }
-    ];
-
-    const pickPreset = () => presets[Math.floor(Math.random() * presets.length)];
-    const whole = (min, max) => Math.round(min + Math.random() * (max - min));
-
-    const applyPreset = (target, preset) => {
-      target.style.setProperty("--angle", preset.angle);
-      target.style.setProperty("--a1", preset.a1);
-      target.style.setProperty("--a2", preset.a2);
-      target.style.setProperty("--a3", preset.a3);
-      target.style.setProperty("--a4", preset.a4);
-      target.style.setProperty("--t1", preset.t1);
-      target.style.setProperty("--t2", preset.t2);
-      target.style.setProperty("--t3", preset.t3);
-      target.style.setProperty("--t4", preset.t4);
-    };
-
-    // ── Filter ──
-    const filterBtns = [...document.querySelectorAll(".filter-btn")];
-    const cards = [...document.querySelectorAll(".work-card")];
-    const countLabel = document.getElementById("count-label");
-
-    const updateCount = (visible) => {
-      countLabel.textContent = `${visible} project${visible !== 1 ? "s" : ""}`;
-    };
-
-    const applyFilter = (filter) => {
-      let visible = 0;
-      cards.forEach((card) => {
-        const cats = (card.dataset.cat || "").split(" ");
-        const isAi = cats.includes("ai");
-        // AI-only cards live outside the normal project set:
-        // hidden on "All", shown only under the "AI" tab.
-        const show = filter === "ai" ? isAi : (filter === "all" ? !isAi : cats.includes(filter));
-        card.dataset.hidden = show ? "false" : "true";
-        if (show) visible++;
-      });
-      if (filter === "ai") {
-        countLabel.textContent = "12 AI products";
-      } else {
-        updateCount(visible);
-      }
-    };
-
-    filterBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        filterBtns.forEach((b) => b.classList.remove("is-active"));
-        btn.classList.add("is-active");
-        applyFilter(btn.dataset.filter);
-      });
-    });
-
-    // Initial state — hide AI-only cards and set the correct count.
-    applyFilter("all");
-
-    // ── Reveal system ──
-    const triggerReveal = (item, delay) => {
-      const speed = parseInt(item.dataset.speed || "900", 10);
-      item.style.setProperty("--delay", `${delay}ms`);
-      item.style.setProperty("--dur", `${speed}ms`);
-      item.classList.remove("is-on");
-      requestAnimationFrame(() => requestAnimationFrame(() => item.classList.add("is-on")));
-    };
-
-    const revealCard = (card, baseDelay) => {
-      applyPreset(card, pickPreset());
-      const items = [...card.querySelectorAll(".rr")];
-      let cursor = baseDelay;
-      const order = { image: 0, meta: 1, title: 2, body: 3 };
-      const sorted = [...items].sort((a, b) => {
-        const ra = order[a.dataset.role] ?? 2;
-        const rb = order[b.dataset.role] ?? 2;
-        return ra - rb;
-      });
-      sorted.forEach((item, i) => {
-        cursor += whole(20, 48) + (i === 0 ? 0 : 0);
-        triggerReveal(item, cursor);
-      });
-    };
-
-    // IntersectionObserver for cards with stagger
-    const cardObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting || entry.target._revealed) return;
-        entry.target._revealed = true;
-        cardObserver.unobserve(entry.target);
-        const allCards = cards.filter((c) => c.dataset.hidden !== "true");
-        const idx = allCards.indexOf(entry.target);
-        revealCard(entry.target, Math.max(0, (idx % 3) * 60));
-      });
-    }, { threshold: 0.10, rootMargin: "0px 0px -40px 0px" });
-
-    cards.forEach((card) => cardObserver.observe(card));
-
-    // ── Hover interactions (index.html detailed version) ──
-    cards.forEach((card) => {
-      const cardImage = card.querySelector(".card-image");
-      const trioTexts = [...card.querySelectorAll(".card-title, .card-desc, .pill")];
-
-      const clearTextState = () => {
-        trioTexts.forEach((el) => {
-          el.classList.remove("is-hovered", "is-exiting");
-          clearTimeout(el._exitTimer);
-        });
-      };
-
-      const startTextHover = () => {
-        applyPreset(card, pickPreset());
-        trioTexts.forEach((el) => {
-          el.style.setProperty("--hover-shift", `${whole(18, 78)}%`);
-          el.classList.remove("is-exiting");
-          el.classList.add("is-hovered");
-        });
-        if (cardImage) {
-          cardImage.classList.remove("hover-leaving");
-          cardImage.classList.add("hover-active");
-        }
-      };
-
-      const startTextExit = () => {
-        trioTexts.forEach((el) => {
-          el.classList.remove("is-hovered");
-          el.classList.add("is-exiting");
-          clearTimeout(el._exitTimer);
-          el._exitTimer = setTimeout(() => {
-            el.classList.remove("is-exiting");
-            el.style.removeProperty("--hover-shift");
-          }, 560);
-        });
-        if (cardImage) {
-          cardImage.classList.remove("hover-active");
-          cardImage.classList.add("hover-leaving");
-          clearTimeout(cardImage._leaveTimer);
-          cardImage._leaveTimer = setTimeout(() => {
-            cardImage.classList.remove("hover-leaving");
-          }, 920);
-        }
-      };
-
-      card.addEventListener("pointerenter", () => {
-        card.classList.add("is-hovering");
-        startTextHover();
-      });
-
-      card.addEventListener("pointerleave", () => {
-        card.classList.remove("is-hovering", "is-pressing", "is-held");
-        startTextExit();
-      });
-
-      card.addEventListener("pointerdown", () => card.classList.add("is-pressing"));
-      card.addEventListener("pointerup",   () => card.classList.remove("is-pressing"));
-
-      card.addEventListener("click", () => {
-        const href = card.dataset.href;
-        if (!href) return;
-        card.classList.add("is-held");
-        clearTimeout(card._holdTimer);
-        card._holdTimer = setTimeout(() => card.classList.remove("is-held"), 920);
-        setTimeout(() => {
-          if (card.dataset.external === "true") {
-            window.open(href, "_blank", "noopener");
-          } else {
-            window.location.href = href;
-          }
-        }, 120);
-      });
-    });
-  })();
+  // The palette, reveal and hover machinery that used to live here drove
+  // .work-card, which this page no longer has — the index draws tiles with a
+  // border, a label and an image, and nothing about them animates on reveal.
+  // Left in place it threw on an undefined `cards` before either of the two
+  // scripts below could run.
 
   // ── Lang switch ──
   (() => {

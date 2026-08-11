@@ -1,0 +1,98 @@
+/* ══════════════════════════════════════════════════════════════════
+   QUIET MODE — the shared scroll-read treatment for every deck-style
+   case study.
+
+   These pages are built as slides, and as slides they are right: a new
+   colour field is what tells a viewer a new slide began. Scrolled in a
+   browser the same device works against the page — cli-studios changed
+   ground about a dozen times across 23 screens, against tmobile's two
+   across 12.7, so every image sat on a different field and the page kept
+   changing state while the reader was trying to compare screens. On a
+   portfolio the work should be the only variable.
+
+   So the scroll read keeps four grounds: the dark hero as entry, one
+   light body for all the evidence, the before/after pair where colour
+   carries the argument, and the dark closing as exit.
+
+   Every rule is scoped to html:not([data-view="deck-v"]). Presented as a
+   deck the pages are untouched. That scoping is the whole point — one
+   set of markup, two readings, and they do not want the same treatment.
+   ══════════════════════════════════════════════════════════════════ */
+
+html:not([data-view="deck-v"]) {
+  --quiet-ground: #faf8f4;
+  --quiet-panel: #ffffff;
+}
+
+/* Formerly dark or cream bands → one ground */
+html:not([data-view="deck-v"]) .wds-video,
+html:not([data-view="deck-v"]) .wds-statement,
+html:not([data-view="deck-v"]) .wds-evidence.is-dark,
+html:not([data-view="deck-v"]) .wds-evidence.is-cream,
+html:not([data-view="deck-v"]) .wds-structure,
+html:not([data-view="deck-v"]) .wds-craft,
+html:not([data-view="deck-v"]) .wds-proof,
+html:not([data-view="deck-v"]) .wds-retro {
+  background: var(--quiet-ground);
+  color: var(--ink);
+}
+/* The glow only reads on a dark field; on light it is a grey smear. */
+html:not([data-view="deck-v"]) .wds-statement::after,
+html:not([data-view="deck-v"]) .wds-craft::after { display: none; }
+
+/* Text that was set for a dark ground has to come back to ink. */
+html:not([data-view="deck-v"]) .wds-video h2,
+html:not([data-view="deck-v"]) .wds-statement h3,
+html:not([data-view="deck-v"]) .wds-evidence.is-dark h2,
+html:not([data-view="deck-v"]) .wds-craft h2,
+html:not([data-view="deck-v"]) .wds-craft h3 { color: var(--ink); }
+
+html:not([data-view="deck-v"]) .wds-statement-lead,
+html:not([data-view="deck-v"]) .wds-craft-lead,
+html:not([data-view="deck-v"]) .wds-evidence.is-dark .wds-evidence-lead { color: var(--ink-mid); }
+html:not([data-view="deck-v"]) .wds-statement-lead strong,
+html:not([data-view="deck-v"]) .wds-craft-lead strong { color: var(--ink); }
+
+html:not([data-view="deck-v"]) .wds-video .wds-kick,
+html:not([data-view="deck-v"]) .wds-statement .wds-kick,
+html:not([data-view="deck-v"]) .wds-craft .wds-kick,
+html:not([data-view="deck-v"]) .wds-evidence.is-dark .wds-kick,
+html:not([data-view="deck-v"]) .video-label,
+html:not([data-view="deck-v"]) .wds-evidence.is-dark .gallery-label { color: var(--ink-dim); }
+
+/* Cards drawn as translucent white over black need a real border on light. */
+html:not([data-view="deck-v"]) .craft-card {
+  background: var(--quiet-panel);
+  border: 1px solid var(--line);
+  border-top: 3px solid var(--acc);
+}
+html:not([data-view="deck-v"]) .craft-card * { color: var(--ink-mid); }
+html:not([data-view="deck-v"]) .craft-card h4,
+html:not([data-view="deck-v"]) .craft-card strong { color: var(--ink); }
+
+/* Image cells sat on their own grey; on one ground they should read as
+   part of the page, with a hairline doing the separating. */
+html:not([data-view="deck-v"]) .g-cell {
+  background: var(--quiet-panel);
+  border: 1px solid var(--line);
+}
+/* .g-cell.dark paints #0a0a0a behind the image so dark screenshots bleed
+   into a dark band. On one light ground that backing shows below every
+   image that does not fill its cell — the design-system pages are white
+   documents, and each was ending in a black strip. */
+html:not([data-view="deck-v"]) .g-cell.dark,
+html:not([data-view="deck-v"]) .g-cell.natural,
+html:not([data-view="deck-v"]) .g-cell.brand { background: var(--quiet-panel); }
+
+/* 23 screens is past what anyone scrolls. The bands were padded to behave
+   as slides; off the deck they do not need to. */
+html:not([data-view="deck-v"]) .wds-video,
+html:not([data-view="deck-v"]) .wds-statement,
+html:not([data-view="deck-v"]) .wds-evidence,
+html:not([data-view="deck-v"]) .wds-structure,
+html:not([data-view="deck-v"]) .wds-craft,
+html:not([data-view="deck-v"]) .wds-proof,
+html:not([data-view="deck-v"]) .wds-retro,
+html:not([data-view="deck-v"]) .wds-fixes {
+  padding-block: clamp(30px, 3.2vw, 48px);
+}

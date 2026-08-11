@@ -257,15 +257,18 @@ test('AI Products page no longer lists failforward, cross-model-handoff, or Kono
 
 // ── Brand & Visual page (brand.html) ──
 
-test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', () => {
+// brand.html is now a banded index rather than a card grid: .idx-tile anchors
+// carrying a thumbnail from assets/thumbs/, not <article class="work-card">.
+test('Brand & Visual page lists twelve projects and keeps Konosaki on its live URL', () => {
   assert.ok(existsSync(join(v3, 'brand.html')), 'v3/brand.html must exist');
   const html = read('brand.html');
   assert.match(html, /<title>\s*Brand &amp; Visual — Takao Umehara\s*<\/title>/);
-  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 12, 'Brand & Visual page needs twelve cards');
-  const konosaki = html.match(/<article\b[^>]*\bdata-href\s*=\s*["']https:\/\/konosaki-co\.vercel\.app\/?["'][^>]*>[\s\S]*?<\/article>/i)?.[0];
-  assert.ok(konosaki, 'Brand & Visual page needs a Konosaki card linking to konosaki-co.vercel.app');
+  assert.equal([...html.matchAll(/<a\b[^>]*\bclass\s*=\s*["']idx-tile["']/gi)].length, 12, 'Brand & Visual page needs twelve tiles');
+  const konosaki = html.match(/<a\b[^>]*href\s*=\s*["']https:\/\/konosaki-co\.vercel\.app\/?["'][\s\S]*?<\/a>/i)?.[0];
+  assert.ok(konosaki, 'the Konosaki tile must still point at konosaki-co.vercel.app');
   assert.match(konosaki, /Konosaki/);
-  assert.match(konosaki, /assets\/konosaki\/KONOSAKI-logo\/KONOSAKI_WEWORK-VERTICAL\.svg/);
+  assert.match(konosaki, /assets\/thumbs\/konosaki\.jpg/);
+  assert.match(html, /<link\b[^>]*href\s*=\s*["']assets\/index-grid\.css["']/, 'brand.html must use the shared index system');
 });
 
 test('AI index pages expose thumbnail-led work-card grids', () => {
@@ -284,14 +287,19 @@ test('AI index pages expose thumbnail-led work-card grids', () => {
 
 // ── Product Design page (work.html) ──
 
-test('Product Design page dropped the brand/visual cards and Konosaki', () => {
+test('Product Design page is an index of thirteen projects, with brand work still on brand.html', () => {
   const html = read('work.html');
   assert.match(html, /<title>\s*Product Design — Takao Umehara\s*<\/title>/);
-  for (const moved of ['Coca-Cola Rebranding', 'KOJI FIZZ Films', 'Kitadoko', 'DO! NUTS TOKYO', 'XQ Super School', 'GraffitiWear', 'extra•ordinary', 'Konosaki']) {
+  for (const moved of ['Coca-Cola', 'KOJI FIZZ', 'Kitadoko', 'DO! NUTS TOKYO', 'XQ Super School', 'GraffitiWear', 'extra•ordinary', 'Konosaki']) {
     assert.equal(html.includes(moved), false, `${moved} must have moved to brand.html`);
   }
-  assert.match(html, /Verizon TotalWireless/);
-  assert.match(html, /AI Workflow Transformation/);
+  assert.equal([...html.matchAll(/<a\b[^>]*\bclass\s*=\s*["']idx-tile["']/gi)].length, 13, 'Product Design page needs thirteen tiles');
+  assert.match(html, /Verizon Total Wireless/);
+  assert.match(html, /Verizon AI Agents/);
+  assert.match(html, /<link\b[^>]*href\s*=\s*["']assets\/index-grid\.css["']/, 'work.html must use the shared index system');
+  // the card grid's filter bar and reveal script are gone; nothing may still
+  // reference the count label they shared, which threw on every load.
+  assert.equal(html.includes('id="count-label"'), false, 'the retired filter count label must be gone');
 });
 
 // ── Amazon Fire TV project page ──
