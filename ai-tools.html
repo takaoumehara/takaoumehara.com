@@ -19,6 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/index-grid.css">
   <link rel="stylesheet" href="assets/work-card-grid.css">
   <script src="assets/work-card-grid.js" defer></script>
   <style>
@@ -252,6 +253,12 @@
       .diagram .dot, .diagram .pulse { animation: none !important; opacity: 1 !important; }
       .story-cta, .rail-item, .hero-close-cta, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
+  
+    /* The identity strip pads itself, but on this page it sits inside a
+       container that already pads — the two stacked and the wordmark sat 40px
+       right of the text under it. Zero the strip's own inset here and let the
+       container own the margin, so every left edge lines up. */
+    .work-list-page > .idx-head { padding-left: 0; padding-right: 0; max-width: none; }
   </style>
 </head>
 <body>
@@ -271,13 +278,32 @@
   <div class="lang-switch" id="lang-switch" aria-label="Language"><button class="lang-btn is-active" type="button" data-lang="en">EN</button><span class="lang-sep" aria-hidden="true">|</span><button class="lang-btn" type="button" data-lang="jp">JP</button></div>
 
   <main class="work-list-page">
-    <header class="work-list-header">
-      <div>
-        <p class="work-list-kicker"><span class="t-en">AI Tools — open source, designed &amp; built by Takao</span><span class="t-jp">AI Tools — オープンソース · Takaoが設計・実装</span></p>
-        <h1 class="work-list-title"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h1>
+  <!-- ══ Identity strip — the same one work.html and brand.html carry, so the
+       site reads as one system. The card grid below stays: unlike those two,
+       this page argues for each item, and an index would delete the copy. ══ -->
+  <header class="idx-head">
+    <h1 class="idx-name"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h1>
+
+    <div class="idx-meta">
+      <div class="idx-meta-col">
+        <span class="is-ink">Takao Umehara</span>
+        <span><span class="t-en">AI Tools — open source, designed &amp; built by Takao</span><span class="t-jp">AI Tools — オープンソース · Takaoが設計・実装</span></span>
       </div>
-      <p class="page-count"><span class="t-en">6 open-source releases</span><span class="t-jp">6 つのオープンソース公開物</span></p>
-    </header>
+      <div class="idx-meta-col">
+        <a href="index.html"><span class="t-en">Index</span><span class="t-jp">全作品</span></a>
+        <a href="about.html"><span class="t-en">Information</span><span class="t-jp">プロフィール</span></a>
+      </div>
+      <div class="idx-meta-col">
+        <span class="is-ink">6 <span class="t-en">releases</span><span class="t-jp">件の公開物</span></span>
+        <span><span class="t-en">20 years · New York</span><span class="t-jp">20年 · ニューヨーク</span></span>
+      </div>
+      <div class="idx-meta-col is-right">
+        <span class="is-ink">New York</span>
+        <span>2026</span>
+      </div>
+    </div>
+  </header>
+
     <p class="work-list-intro"><span class="t-en"><strong>Claude Code skills</strong> — some ship as a runnable library, some as pure judgement, all installed the same way. Each one grew out of a real friction in AI-assisted work and is available to use today.</span><span class="t-jp is-block"><strong>Claude Code スキル。</strong>実行コードとして届くものもあれば、判断そのものとして届くものもありますが、インストールの仕方は同じです。どれも AI 協働で出会った実際の摩擦から生まれ、いま使える形で公開しています。</span></p>
 
     <section class="tool-group" aria-labelledby="group-tools-title" style="--g-tint:#1d4ed8;">

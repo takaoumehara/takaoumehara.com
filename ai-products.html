@@ -19,6 +19,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/index-grid.css">
   <link rel="stylesheet" href="assets/work-card-grid.css">
   <style>
     /* ─── Geist Sans (Vercel) ─── */
@@ -607,6 +608,11 @@
     @media (max-width: 600px) {
       .snap-section { padding-left: 20px; padding-right: 20px; }
     }
+  
+    /* .lab-intro and the card grid are centred inside a 1200px column; the
+       strip spans 1680px, so their left edges disagreed by 270px. Match the
+       strip to the column the rest of the page uses. */
+    body > .idx-head { max-width: 1200px; padding-left: 32px; padding-right: 32px; }
   </style>
 </head>
 <body>
@@ -636,16 +642,31 @@
   </div>
 
   <!-- ── Header ── -->
-  <div class="page-header">
-    <div>
-      <div class="page-eyebrow">Product Design × AI Systems</div>
-      <h1 class="page-title">
-        <span class="t-en">AI Products</span>
-        <span class="t-jp">AI Products</span>
-      </h1>
+  <!-- ══ Identity strip — the same one work.html and brand.html carry, so the
+       site reads as one system. The card grid below stays: unlike those two,
+       this page argues for each item, and an index would delete the copy. ══ -->
+  <header class="idx-head">
+    <h1 class="idx-name"><span class="t-en">AI Products</span><span class="t-jp">AI Products</span></h1>
+
+    <div class="idx-meta">
+      <div class="idx-meta-col">
+        <span class="is-ink">Takao Umehara</span>
+        <span><span class="t-en">Product design × AI systems</span><span class="t-jp">プロダクト設計 × AIシステム</span></span>
+      </div>
+      <div class="idx-meta-col">
+        <a href="index.html"><span class="t-en">Index</span><span class="t-jp">全作品</span></a>
+        <a href="about.html"><span class="t-en">Information</span><span class="t-jp">プロフィール</span></a>
+      </div>
+      <div class="idx-meta-col">
+        <div class="page-count is-ink">13 projects</div>
+        <span><span class="t-en">20 years · New York</span><span class="t-jp">20年 · ニューヨーク</span></span>
+      </div>
+      <div class="idx-meta-col is-right">
+        <span class="is-ink">New York</span>
+        <span>2026</span>
+      </div>
     </div>
-    <div class="page-count">13 projects</div>
-  </div>
+  </header>
 
   <p class="lab-intro">
     <span class="t-en"><strong>An AI product is one where the AI is inside the thing, not bolted next to it.</strong> These are mine — framework research, an enterprise agent fleet, and working products you can open right now. AI shows up differently in each one: sometimes it's the whole subject of the design, sometimes it's the thing making the call, sometimes it's just the voice interface — and one or two of these were built with no AI in the product itself at all. Each card below says which.</span>
