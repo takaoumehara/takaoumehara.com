@@ -391,7 +391,25 @@
     }
     @keyframes webScrollCue { 0%,100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(3px); opacity: 1; } }
     @media (prefers-reduced-motion: reduce) { .web-frame-hint .scroll-cue::after { animation: none !important; } }
-  </style>
+  
+    /* ─── Cross-document view transition ───────────────────────────────
+       The tile the visitor clicked on the index expands into this page's
+       hero. Both documents have to opt in for the morph to happen, and the
+       transition name has to match the one the index assigns to the tile it
+       was launched from. Browsers without support simply navigate — nothing
+       here is load-bearing. */
+    @view-transition { navigation: auto; }
+    @media (prefers-reduced-motion: no-preference) {
+      .project-hero, .wds-hero { view-transition-name: hero-media; }
+      ::view-transition-old(hero-media),
+      ::view-transition-new(hero-media) {
+        animation-duration: 520ms;
+        animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 300ms; }
+    }
+</style>
 </head>
 <body>
 

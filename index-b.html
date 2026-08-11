@@ -464,6 +464,20 @@
 
     /* superforge ships as a diagram rather than a screen, so its own map is
        the honest thumbnail. Padded because an SVG has no bleed. */
+    /* In production. Distinct from live on purpose — an amber dot that does not
+       pulse, no "Open" affordance, and no anchor wrapping it, because a tile
+       that looks clickable and goes nowhere is worse than one that says plainly
+       it is not ready. */
+    .idx-tile-frame.is-wip {
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 16px;
+      background: #1d1a15;
+      border-color: #1d1a15;
+    }
+    .idx-wip-dot { width: 6px; height: 6px; border-radius: 50%; background: #e2b874; }
+    .idx-tile-frame.is-wip .idx-live-name { color: rgba(255,255,255,0.82); }
+    .idx-tile.is-static { cursor: default; }
+
     .idx-tile-frame.is-diagram { background: #fff; padding: 12px; }
     .idx-tile-frame.is-diagram img { object-fit: contain; }
 
@@ -498,6 +512,23 @@
     @media (prefers-reduced-motion: reduce) {
       .idx-tile-frame img { transition: none !important; }
       .idx-tile:hover .idx-tile-frame img { transform: none !important; }
+    }
+
+    /* ─── Cross-document view transition ───────────────────────────────
+       Clicking a tile expands it into the destination page's hero. The name
+       is put on one tile only, at click time — view-transition-name has to be
+       unique in the document, so tagging all 24 up front would disable the
+       whole thing. Browsers without support just navigate. */
+    @view-transition { navigation: auto; }
+    @media (prefers-reduced-motion: no-preference) {
+      .idx-tile.is-navigating .idx-tile-frame { view-transition-name: hero-media; }
+      ::view-transition-old(hero-media),
+      ::view-transition-new(hero-media) {
+        animation-duration: 520ms;
+        animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 300ms; }
     }
   </style>
 </head>
@@ -544,8 +575,8 @@
     </div>
 
     <p class="idx-thesis">
-      <span class="t-en"><em>Intent first. Then the interface.</em> &nbsp;Twenty years designing products at enterprise scale — now spent building the AI itself. <strong>23 selected projects below.</strong></span>
-      <span class="t-jp is-block"><em>まず意図。インターフェイスはその後。</em> &nbsp;エンタープライズ規模で20年、プロダクトを設計。いまは AI そのものを作っています。<strong>以下、選抜23件。</strong></span>
+      <span class="t-en"><em>Intent first. Then the interface.</em> &nbsp;Twenty years designing products at enterprise scale — now spent building the AI itself. <strong>24 selected projects below.</strong></span>
+      <span class="t-jp is-block"><em>まず意図。インターフェイスはその後。</em> &nbsp;エンタープライズ規模で20年、プロダクトを設計。いまは AI そのものを作っています。<strong>以下、選抜24件。</strong></span>
     </p>
   </header>
 
@@ -554,14 +585,14 @@
     <div class="idx-band-head">
       <span class="idx-band-num">01</span>
       <span class="idx-band-title"><span class="t-en">AI Products &amp; Tools</span><span class="t-jp">AIプロダクト＆ツール</span></span>
-      <span class="idx-band-note"><span class="t-en">Five of these are live — open them</span><span class="t-jp">うち5つは公開中 — その場で開けます</span></span>
+      <span class="idx-band-note"><span class="t-en">Four are live · two in production</span><span class="t-jp">4つ公開中 · 2つ制作中</span></span>
     </div>
     <div class="idx-grid">
 
       <a class="idx-tile" href="projects/verizon-ai-agents.html">
         <div class="idx-tile-bar">
           <div><div class="idx-tile-name">Verizon AI Agents</div><div class="idx-tile-kind"><span class="t-en">Agent fleet · Case study</span><span class="t-jp">エージェント編成 · ケーススタディ</span></div></div>
-          <div class="idx-tile-no">23</div>
+          <div class="idx-tile-no">24</div>
         </div>
         <div class="idx-tile-frame"><img src="assets/thumbs/verizon-ai-agents.jpg" alt="Verizon AI Agents" loading="eager" width="760" height="570"></div>
       </a>
@@ -569,7 +600,7 @@
       <a class="idx-tile" href="https://intentfirst.ai" target="_blank" rel="noopener">
         <div class="idx-tile-bar">
           <div><div class="idx-tile-name">intentfirst.ai</div><div class="idx-tile-kind"><span class="t-en">Thesis · Live product</span><span class="t-jp">主張 · 公開中</span></div></div>
-          <div class="idx-tile-no">22</div>
+          <div class="idx-tile-no">23</div>
         </div>
         <div class="idx-tile-frame is-live"><span class="idx-live-dot"></span><span class="idx-live-name">intentfirst</span><span class="idx-live-open">Open ↗</span></div>
       </a>
@@ -577,7 +608,7 @@
       <a class="idx-tile" href="projects/superforge.html">
         <div class="idx-tile-bar">
           <div><div class="idx-tile-name">superforge</div><div class="idx-tile-kind"><span class="t-en">12 skills · Idea to release</span><span class="t-jp">12スキル · 着想から公開まで</span></div></div>
-          <div class="idx-tile-no">21</div>
+          <div class="idx-tile-no">22</div>
         </div>
         <div class="idx-tile-frame is-diagram"><img src="assets/superforge/superforge-map.svg" alt="superforge skill map" loading="eager"></div>
       </a>
@@ -585,7 +616,7 @@
       <a class="idx-tile" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener">
         <div class="idx-tile-bar">
           <div><div class="idx-tile-name">Rakugaki Jam</div><div class="idx-tile-kind"><span class="t-en">Multiplayer drawing · Live</span><span class="t-jp">多人数お絵かき · 公開中</span></div></div>
-          <div class="idx-tile-no">20</div>
+          <div class="idx-tile-no">21</div>
         </div>
         <div class="idx-tile-frame is-live"><span class="idx-live-dot"></span><span class="idx-live-name">Rakugaki Jam</span><span class="idx-live-open">Open ↗</span></div>
       </a>
@@ -593,7 +624,7 @@
       <a class="idx-tile" href="https://resona-motion.vercel.app" target="_blank" rel="noopener">
         <div class="idx-tile-bar">
           <div><div class="idx-tile-name">Resona 響</div><div class="idx-tile-kind"><span class="t-en">Motion instrument · Live</span><span class="t-jp">モーション楽器 · 公開中</span></div></div>
-          <div class="idx-tile-no">19</div>
+          <div class="idx-tile-no">20</div>
         </div>
         <div class="idx-tile-frame is-live"><span class="idx-live-dot"></span><span class="idx-live-name">Resona 響</span><span class="idx-live-open">Open ↗</span></div>
       </a>
@@ -601,18 +632,26 @@
       <a class="idx-tile" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener">
         <div class="idx-tile-bar">
           <div><div class="idx-tile-name">Typespace</div><div class="idx-tile-kind"><span class="t-en">Type experiment · Live</span><span class="t-jp">タイポ実験 · 公開中</span></div></div>
-          <div class="idx-tile-no">18</div>
+          <div class="idx-tile-no">19</div>
         </div>
         <div class="idx-tile-frame is-live"><span class="idx-live-dot"></span><span class="idx-live-name">Typespace</span><span class="idx-live-open">Open ↗</span></div>
       </a>
 
-      <a class="idx-tile" href="https://mypick.link" target="_blank" rel="noopener">
+      <div class="idx-tile is-static">
         <div class="idx-tile-bar">
-          <div><div class="idx-tile-name">My Pick</div><div class="idx-tile-kind"><span class="t-en">Product · Live</span><span class="t-jp">プロダクト · 公開中</span></div></div>
+          <div><div class="idx-tile-name">moimee.app</div><div class="idx-tile-kind"><span class="t-en">Product · In production</span><span class="t-jp">プロダクト · 制作中</span></div></div>
+          <div class="idx-tile-no">18</div>
+        </div>
+        <div class="idx-tile-frame is-wip"><span class="idx-wip-dot"></span><span class="idx-live-name">moimee</span><span class="idx-live-open"><span class="t-en">Now under production</span><span class="t-jp">現在制作中</span></span></div>
+      </div>
+
+      <div class="idx-tile is-static">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">my brain spec</div><div class="idx-tile-kind"><span class="t-en">Product · In production</span><span class="t-jp">プロダクト · 制作中</span></div></div>
           <div class="idx-tile-no">17</div>
         </div>
-        <div class="idx-tile-frame is-live"><span class="idx-live-dot"></span><span class="idx-live-name">My Pick</span><span class="idx-live-open">Open ↗</span></div>
-      </a>
+        <div class="idx-tile-frame is-wip"><span class="idx-wip-dot"></span><span class="idx-live-name">my brain spec</span><span class="idx-live-open"><span class="t-en">Now under production</span><span class="t-jp">現在制作中</span></span></div>
+      </div>
 
       <a class="idx-tile" href="projects/marubatsu.html">
         <div class="idx-tile-bar">
@@ -814,6 +853,19 @@
     };
     setLang(saved);
     btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+
+  // ── Tag the clicked tile so it morphs into the next page's hero ──
+  (() => {
+    const clear = () => document.querySelectorAll('.idx-tile.is-navigating')
+      .forEach(e => e.classList.remove('is-navigating'));
+    document.querySelectorAll('a.idx-tile[href^="projects/"]').forEach((a) => {
+      a.addEventListener('click', () => { clear(); a.classList.add('is-navigating'); });
+    });
+    // Coming back through the bfcache restores the DOM as it was, so the tag
+    // has to be dropped or the next click has two named tiles and the
+    // transition is skipped entirely.
+    window.addEventListener('pageshow', clear);
   })();
 
   // ── Mobile Nav ──

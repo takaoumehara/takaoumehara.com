@@ -241,7 +241,11 @@ test('AI Products page presents a curated products grid plus a Playable showcase
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h2>/);
   assert.equal(html.includes('BreakBias Studio'), false, 'BreakBias Studio must be removed — absorbed into superforge');
   assert.equal(html.includes('Ren UX Guard'), false, 'Ren UX Guard must be removed — absorbed into cross-model-handoff');
-  assert.match(html, /mypick\.link/, 'InstaLink must be renamed to mypick.link');
+  // InstaLink → mypick.link → moimee.app. The product is being rebuilt under
+  // the new name, so it is listed as in production rather than as shipped.
+  assert.match(html, /moimee\.app/, 'the product must carry its current name, moimee.app');
+  assert.equal(html.includes('mypick.link'), false, 'the retired mypick.link name must be gone');
+  assert.match(html, /Now under production/, 'moimee.app must be marked as in production, not shipped');
 });
 
 test('AI Products page no longer lists failforward, cross-model-handoff, or Konosaki', () => {
