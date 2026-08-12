@@ -14,6 +14,10 @@
    light body for all the evidence, the before/after pair where colour
    carries the argument, and the dark closing as exit.
 
+   Video is the exception, and not an arbitrary one: a player letterboxes
+   its own frame, so anything but true black draws a visible seam around
+   the picture. .wds-video stays black in both readings.
+
    Every rule is scoped to html:not([data-view="deck-v"]). Presented as a
    deck the pages are untouched. That scoping is the whole point — one
    set of markup, two readings, and they do not want the same treatment.
@@ -25,7 +29,6 @@ html:not([data-view="deck-v"]) {
 }
 
 /* Formerly dark or cream bands → one ground */
-html:not([data-view="deck-v"]) .wds-video,
 html:not([data-view="deck-v"]) .wds-statement,
 html:not([data-view="deck-v"]) .wds-evidence.is-dark,
 html:not([data-view="deck-v"]) .wds-evidence.is-cream,
@@ -41,7 +44,6 @@ html:not([data-view="deck-v"]) .wds-statement::after,
 html:not([data-view="deck-v"]) .wds-craft::after { display: none; }
 
 /* Text that was set for a dark ground has to come back to ink. */
-html:not([data-view="deck-v"]) .wds-video h2,
 html:not([data-view="deck-v"]) .wds-statement h3,
 html:not([data-view="deck-v"]) .wds-evidence.is-dark h2,
 html:not([data-view="deck-v"]) .wds-craft h2,
@@ -53,11 +55,9 @@ html:not([data-view="deck-v"]) .wds-evidence.is-dark .wds-evidence-lead { color:
 html:not([data-view="deck-v"]) .wds-statement-lead strong,
 html:not([data-view="deck-v"]) .wds-craft-lead strong { color: var(--ink); }
 
-html:not([data-view="deck-v"]) .wds-video .wds-kick,
 html:not([data-view="deck-v"]) .wds-statement .wds-kick,
 html:not([data-view="deck-v"]) .wds-craft .wds-kick,
 html:not([data-view="deck-v"]) .wds-evidence.is-dark .wds-kick,
-html:not([data-view="deck-v"]) .video-label,
 html:not([data-view="deck-v"]) .wds-evidence.is-dark .gallery-label { color: var(--ink-dim); }
 
 /* Cards drawn as translucent white over black need a real border on light. */
