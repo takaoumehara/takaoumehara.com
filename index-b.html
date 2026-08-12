@@ -319,6 +319,16 @@
       ::view-transition-new(root) { animation-duration: 300ms; }
     }
   </style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline, present but not competing. ── */
+    .nav-links { align-items: center; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-rule { width: 1px; height: 12px; background: var(--line); flex: none; }
+    @media (max-width: 768px) { .nav-rule { display: none; } }
+  </style>
 </head>
 <body>
 
@@ -329,8 +339,10 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links" id="primary-nav-links">
-      <li><a href="ai-products.html">AI Products</a></li>
-      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="ai-tools.html" class="is-lead">AI Tools</a></li>
+      <li class="nav-rule" aria-hidden="true"></li>
       <li><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li><a href="about.html">About</a></li>

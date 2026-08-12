@@ -177,6 +177,16 @@
       .wds-head { padding-left: 20px; padding-right: 20px; }
     }
   </style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline, present but not competing. ── */
+    .nav-links { align-items: center; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-rule { width: 1px; height: 12px; background: var(--line); flex: none; }
+    @media (max-width: 768px) { .nav-rule { display: none; } }
+  </style>
 </head>
 <body>
 
@@ -187,8 +197,10 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../ai-products.html">AI Products</a></li>
-      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="../ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="../ai-tools.html" class="is-lead">AI Tools</a></li>
+      <li class="nav-rule" aria-hidden="true"></li>
       <li><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li><a href="../about.html">About</a></li>
@@ -490,7 +502,8 @@
       </div>
       <div style="display:flex; gap:20px; flex-wrap:wrap;">
         <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
-        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Products</a>
+        <a href="../interactive.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Interactive</a>
+      <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Products</a>
         <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
         <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
         <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>

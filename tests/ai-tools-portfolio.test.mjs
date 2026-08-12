@@ -8,8 +8,8 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const v3 = root;
 const read = (name) => readFileSync(join(v3, name), 'utf8');
 const mainPages = [
-  'index.html', 'work.html', 'brand.html', 'ai-tools.html', 'ai-products.html', 'about.html',
-  'contact.html', 'breakbias.html', 'intentfirst.html', '404.html',
+  'index.html', 'work.html', 'brand.html', 'ai-tools.html', 'ai-products.html', 'interactive.html',
+  'about.html', 'contact.html', 'breakbias.html', 'intentfirst.html', '404.html',
 ];
 
 const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -79,20 +79,31 @@ function navDestinations(html, page) {
 
 // ── Nav consistency across the four-theme reorg ──
 
-test('all main-page navs order AI Products, AI Tools, Product Design, Brand & Visual, About, and Contact', () => {
+// Six equal nav items read as a generalist. The three the work is sold as now
+// lead at full ink; the two decades underneath sit behind a hairline rule.
+test('all main-page navs carry the two-tier order, with the lead three marked', () => {
   const expected = [
-    ['ai-products.html', 'AI Products'], ['ai-tools.html', 'AI Tools'], ['work.html', 'Product Design'],
-    ['brand.html', 'Brand &amp; Visual'], ['about.html', 'About'], ['contact.html', 'Contact'],
+    ['interactive.html', 'Interactive'], ['ai-products.html', 'AI Products'], ['ai-tools.html', 'AI Tools'],
+    ['work.html', 'Product Design'], ['brand.html', 'Brand &amp; Visual'],
+    ['about.html', 'About'], ['contact.html', 'Contact'],
   ];
+  const lead = new Set(['interactive.html', 'ai-products.html', 'ai-tools.html']);
+
   for (const page of mainPages) {
-    const nav = navDestinations(read(page), page);
-    assert.deepEqual(nav.slice(0, 6).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
+    const html = read(page);
+    const nav = navDestinations(html, page);
+    assert.deepEqual(nav.slice(0, 7).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
+    for (const { href, tag } of nav.slice(0, 7)) {
+      assert.equal(hasClass(tag, 'is-lead'), lead.has(href), `${page}: ${href} lead-tier marking`);
+    }
+    assert.match(html, /<li\b[^>]*\bclass\s*=\s*["']nav-rule["']/i, `${page}: needs the tier separator`);
   }
 });
 
 test('each themed page marks its own nav item active', () => {
   const activeByPage = {
     'ai-products.html': 'ai-products.html',
+    'interactive.html': 'interactive.html',
     'ai-tools.html': 'ai-tools.html',
     'work.html': 'work.html',
     'brand.html': 'brand.html',
@@ -112,42 +123,61 @@ test('final polish: repeated main-page mobile navs remain closed by default', ()
   assert.ok(hasFinalClosedMobileNavOverride(read('ai-tools.html')), 'ai-tools.html must hide .nav-links until it is-open');
 });
 
-// ── Homepage: AI Products + Playable + AI Tools + Selected Work ──
+// ── Homepage: a curated few, then the full set by category ──
 
-test('homepage orders AI Products, then AI Tools, then Selected Work', () => {
+// The visitor decides in three seconds whether this person is at their level,
+// and that decision is made on the strongest few. Stacking every section on
+// the landing page buried them, so the homepage now leads with seven and
+// hands the rest to the category pages.
+test('homepage leads with Selected Work, then the category index', () => {
   const html = read('index.html');
-  const agentic = html.indexOf('id="agentic-ux"');
-  const tools = html.indexOf('id="ai-tools"');
   const selected = html.indexOf('id="selected-work"');
-  assert.ok(agentic >= 0, 'homepage needs id="agentic-ux"');
-  assert.ok(tools > agentic, 'AI Tools must follow AI Products');
-  assert.ok(selected > tools, 'Selected Work must follow AI Tools');
-});
-
-test('homepage AI Products section presents the three flagship items', () => {
-  const html = read('index.html');
-  const section = html.match(/<section\b[^>]*\bid\s*=\s*["']agentic-ux["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
-  assert.match(section, /AI Products/);
-  assert.equal([...section.matchAll(openWithClass('a', 'ai-card'))].length, 3, 'AI Products needs three cards');
-  assert.match(section, /href\s*=\s*["']https:\/\/intentfirst\.ai["']/);
-  assert.match(section, /href\s*=\s*["']projects\/verizon-ai-agents\.html["']/);
-  assert.match(section, /href\s*=\s*["']projects\/amazon-firetv\.html["']/);
-  assertPair(section, 'Designing how humans and AI agents share work — framework research, an enterprise agent fleet, and living prototypes you can touch.', '人と AI エージェントがどう仕事を分担するかのデザイン。フレームワーク研究、エンタープライズのエージェント艦隊、そして実際に触れる動くプロトタイプ。', 'homepage AI Products intro');
-  assertNoUnsupportedClaims(section, 'homepage AI Products section');
-});
-
-test('homepage AI Tools section presents six project rows in order', () => {
-  const html = read('index.html');
-  const section = html.match(/<section\b[^>]*\bid\s*=\s*["']ai-tools["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
-  assert.equal([...section.matchAll(openWithClass('article', 'tools-row'))].length, 6, 'AI Tools needs six project rows');
-  const names = [...section.matchAll(/<h3\b[^>]*\bclass\s*=\s*["']tools-name["'][^>]*>([\s\S]*?)<\/h3>/gi)].map((m) => m[1].trim());
-  assert.deepEqual(names, ['Snap Pair', 'superforge', 'cross-model-handoff', 'failforward', 'multilingual-readme', 'interactive-experience-skills'], 'AI Tools rows must lead with Snap Pair and superforge, the two flagships, then the rest');
-  for (const anchor of ['snap-pair', 'superforge', 'cross-model-handoff', 'failforward', 'multilingual-readme', 'interactive-experience-skills']) {
-    assert.match(section, new RegExp(`href\\s*=\\s*["']ai-tools\\.html#${escape(anchor)}["']`), `homepage row must link ai-tools.html#${anchor}`);
+  const categories = html.indexOf('id="categories"');
+  assert.ok(selected >= 0, 'homepage needs id="selected-work"');
+  assert.ok(categories > selected, 'the category index must follow Selected Work');
+  for (const removed of ['id="agentic-ux"', 'id="playable"', 'id="ai-tools"']) {
+    assert.equal(html.includes(removed), false, `${removed} belongs on its category page, not the homepage`);
   }
-  assertPair(section, 'View project →', 'プロジェクトを見る →', 'homepage AI Tools project CTAs');
-  assertPair(section, 'Explore AI tools →', 'AI Tools を見る →', 'homepage AI Tools section CTA');
-  assertNoUnsupportedClaims(section, 'homepage AI Tools section');
+});
+
+test('homepage Selected Work is seven cards spanning all five categories', () => {
+  const html = read('index.html');
+  const section = html.match(/<section\b[^>]*\bid\s*=\s*["']selected-work["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
+  assert.ok(section, 'homepage needs a Selected Work section');
+  assert.equal([...section.matchAll(openWithClass('article', 'work-card'))].length, 7, 'Selected Work is seven, not twenty-four');
+
+  // One drawn from each category, so the range is visible without scrolling.
+  for (const href of [
+    'projects/verizon-ai-agents.html', 'projects/amazon-firetv.html', 'ai-tools.html',
+    'projects/marubatsu.html', 'projects/cli-studios.html', 'projects/coca-cola.html',
+    'projects/ela-quests.html',
+  ]) {
+    assert.match(section, new RegExp(`data-href\\s*=\\s*["']${escape(href)}["']`), `Selected Work must include ${href}`);
+  }
+  assertNoUnsupportedClaims(section, 'homepage Selected Work');
+});
+
+test('homepage category index carries five categories in two tiers with live counts', () => {
+  const html = read('index.html');
+  const section = html.match(/<section\b[^>]*\bid\s*=\s*["']categories["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
+  assert.ok(section, 'homepage needs a category index');
+
+  const cards = [...section.matchAll(/<a\b[^>]*\bclass\s*=\s*["']cat-card["'][^>]*>/gi)].map((m) => m[0]);
+  assert.equal(cards.length, 5, 'five categories — Innovation Workshop stays out until it has a case study');
+  assert.deepEqual(cards.map((tag) => attr(tag, 'href')),
+    ['interactive.html', 'ai-products.html', 'ai-tools.html', 'work.html', 'brand.html'],
+    'lead three first, then the two foundations');
+
+  // The base tier is a separate grid so it reads as support, not as a peer.
+  assert.match(section, /<div\b[^>]*\bclass\s*=\s*["']cat-tier cat-tier--base["']/i, 'the two foundations need their own tier');
+
+  // Counts must match what each category page actually holds.
+  const counts = { 'interactive.html': 8, 'ai-products.html': 5, 'ai-tools.html': 6, 'work.html': 13, 'brand.html': 11 };
+  for (const [page, count] of Object.entries(counts)) {
+    assert.match(section, new RegExp(`href\\s*=\\s*["']${escape(page)}["'][\\s\\S]*?${count} projects`), `${page} must be listed as ${count} projects`);
+  }
+
+  assert.equal(section.includes('Innovation Workshop'), false, 'a category with no case study must not be advertised');
 });
 
 // ── AI Tools dedicated page (ai-tools.html) ──
@@ -227,15 +257,16 @@ test('AI Tools page mobile toggle exposes state, control, and collapses stories 
 
 // ── AI Products page (ai-products.html) ──
 
-test('AI Products page presents a curated products grid plus a Playable showcase', () => {
+test('AI Products page is five products, with the interactive work moved out', () => {
   const html = read('ai-products.html');
   assert.match(html, /<title>\s*AI Products — Takao Umehara\s*<\/title>/);
-  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*13 projects\s*<\/div>/i);
-  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 13, 'AI Products page needs thirteen work cards (5 products + 5 interactive + 3 games)');
-  assertPair(html, 'Interactive Experience &amp; Games', 'インタラクティブ体験とゲーム', 'interactive section title');
-  // The two named groups are the point: "interactive" alone is true of a button.
-  assertPair(html, 'Interactive Experience', '体験', 'interactive-experience group');
-  assertPair(html, 'Games', 'ゲーム', 'games group');
+  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*5 projects\s*<\/div>/i);
+  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 5, 'AI Products page needs five work cards');
+  // Interactive Experience is its own category now; nothing of it may linger
+  // here, markup or dead stylesheet.
+  for (const stale of ['snap-section', 'play-group', 'Interactive Experience &amp; Games']) {
+    assert.equal(html.includes(stale), false, `${stale} moved to interactive.html`);
+  }
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*intentfirst\.ai\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Verizon AI Workflow\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Amazon Shopping on Fire TV\s*<\/h2>/);
@@ -246,6 +277,26 @@ test('AI Products page presents a curated products grid plus a Playable showcase
   assert.match(html, /moimee\.app/, 'the product must carry its current name, moimee.app');
   assert.equal(html.includes('mypick.link'), false, 'the retired mypick.link name must be gone');
   assert.match(html, /Now under production/, 'moimee.app must be marked as in production, not shipped');
+});
+
+// ── Interactive Experience page (interactive.html) ──
+
+test('Interactive Experience is its own category page of eight projects', () => {
+  assert.ok(existsSync(join(v3, 'interactive.html')), 'interactive.html must exist');
+  const html = read('interactive.html');
+  assert.match(html, /<title>\s*Interactive Experience — Takao Umehara\s*<\/title>/);
+  assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, 'interactive.html needs exactly one h1');
+  assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*8 projects\s*<\/div>/i);
+  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 8, 'five experiences plus three games');
+
+  // "Interactive" is true of any button, so the two named groups carry the
+  // meaning the umbrella cannot.
+  assertPair(html, 'Experiences', '体験', 'experiences group');
+  assertPair(html, 'Games', 'ゲーム', 'games group');
+  assert.match(html, /Typespace/);
+  assert.match(html, /Rakugaki Jam/);
+  assert.match(html, /Marubatsu 2\.0/);
+  assertNoUnsupportedClaims(html, 'Interactive Experience page');
 });
 
 test('AI Products page no longer lists failforward, cross-model-handoff, or Konosaki', () => {
@@ -273,7 +324,8 @@ test('Brand & Visual page lists twelve projects and keeps Konosaki on its live U
 
 test('AI index pages expose thumbnail-led work-card grids', () => {
   const expectations = [
-    ['ai-products.html', 13],
+    ['ai-products.html', 5],
+    ['interactive.html', 8],
     ['ai-tools.html', 6],
   ];
 

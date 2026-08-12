@@ -750,279 +750,6 @@
       color: var(--ink);
     }
 
-    /* ─── AI Tools & Infrastructure ─── */
-    .tools-section {
-      padding: 78px 0 86px;
-      border-top: 1px solid var(--line);
-    }
-
-    .tools-head { align-items: flex-end; }
-    .tools-head > div { max-width: 720px; }
-
-    .tools-intro {
-      margin-top: 18px;
-      max-width: 680px;
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--ink-mid);
-    }
-
-    .tools-list {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 32px;
-      border-top: 1px solid var(--line);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      column-gap: clamp(32px, 4vw, 64px);
-    }
-
-    .tools-row {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 14px;
-      padding: 28px 0 30px;
-      border-bottom: 1px solid var(--line);
-    }
-    @media (max-width: 860px) { .tools-list { grid-template-columns: 1fr; } }
-
-    .tools-row::before {
-      content: "";
-      position: absolute;
-      top: -1px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--t1), var(--t2), var(--t3), var(--t4));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 460ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-
-    .tools-row:hover::before,
-    .tools-row:focus-within::before { transform: scaleX(1); }
-
-    .tools-primary {
-      display: flex;
-      gap: 22px;
-      align-items: flex-start;
-    }
-
-    .tools-swatch {
-      flex: 0 0 46px;
-      width: 46px;
-      height: 46px;
-      margin-top: 3px;
-      border-radius: 11px;
-    }
-
-    .tools-swatch--snap { background: linear-gradient(140deg, #123b82, #2563eb 55%, #7fb7ff); }
-    .tools-swatch--superforge { background: radial-gradient(circle at 74% 26%, rgba(253,224,71,0.34), transparent 44%), linear-gradient(140deg, #13161f, #8a6a12 48%, #fde047); }
-    .tools-swatch--handoff { background: linear-gradient(140deg, #2d1a51, #7042b8 55%, #b9a2ed); }
-    .tools-swatch--fail { background: linear-gradient(140deg, #4b2217, #d6572a 54%, #f7b74c); }
-    .tools-swatch--readme { background: linear-gradient(140deg, #2a0e22, #be185d 52%, #fbcfe8); }
-    .tools-swatch--motionskills { background: radial-gradient(ellipse at 50% 118%, rgba(94,234,212,0.46), transparent 54%), linear-gradient(140deg, #05191e, #0d7c74 46%, #7dd3fc); }
-
-    .tools-index {
-      margin-bottom: 22px;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      color: var(--ink-dim);
-    }
-
-    .tools-name {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(28px, 3.4vw, 46px);
-      font-weight: 400;
-      letter-spacing: -0.025em;
-      line-height: 1;
-    }
-
-    .tools-outcome {
-      margin-top: 16px;
-      max-width: 650px;
-      font-size: clamp(17px, 1.8vw, 22px);
-      line-height: 1.45;
-      color: var(--ink-mid);
-    }
-
-    .tools-meta {
-      align-self: end;
-      display: grid;
-      gap: 12px;
-    }
-
-    .tools-classification {
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink);
-    }
-
-    .tools-stack {
-      font-size: 12px;
-      line-height: 1.55;
-      color: var(--ink-dim);
-    }
-
-    .tools-link {
-      justify-self: start;
-      margin-top: 10px;
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-mid);
-      text-decoration: none;
-      transition: color 160ms ease, transform 240ms ease;
-    }
-
-    .tools-link:hover { color: var(--ink); transform: translateX(3px); }
-
-    .tools-link:focus-visible,
-    .tools-head .section-link:focus-visible {
-      outline: 2px solid var(--ink);
-      outline-offset: 4px;
-    }
-
-    /* ─── AI Products section ─── */
-    .ai-section {
-      padding: 72px 0 80px;
-      border-top: 1px solid var(--line);
-    }
-
-    .ai-intro {
-      max-width: 760px;
-      padding: 0 32px;
-      margin: 0 auto 34px;
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--ink-mid);
-    }
-
-    .ai-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 2px;
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .ai-card {
-      position: relative;
-      display: grid;
-      grid-template-rows: auto auto 1fr auto;
-      gap: 13px;
-      padding: 26px 24px 22px;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      text-decoration: none;
-      color: inherit;
-      overflow: hidden;
-      isolation: isolate;
-      transition: border-color 240ms ease, box-shadow 240ms ease;
-    }
-
-    .ai-card::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--t1) 0%, var(--t2) 34%, var(--t3) 68%, var(--t4) 100%);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 460ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-
-    .ai-card:hover::before { transform: scaleX(1); }
-    .ai-card:hover {
-      border-color: rgba(18,18,18,0.16);
-      box-shadow: var(--shadow);
-    }
-
-    .ai-badge {
-      justify-self: start;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      padding: 4px 9px;
-      border: 1px solid var(--border);
-    }
-
-    .ai-badge::before {
-      content: "";
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--ink-dim);
-    }
-
-    .ai-badge.shipped::before { background: hsl(158 42% 46%); }
-    .ai-badge.near::before    { background: hsl(36 64% 52%); }
-    .ai-badge.proto::before   { background: hsl(248 46% 62%); }
-    .ai-badge.case::before    { background: hsl(198 54% 50%); }
-
-    .ai-name {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: 25px;
-      font-weight: 400;
-      letter-spacing: -0.015em;
-      line-height: 1.04;
-    }
-
-    .ai-tagline {
-      font-size: 13.5px;
-      line-height: 1.56;
-      color: var(--ink-mid);
-    }
-
-    .ai-card-foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .ai-stack {
-      font-size: 11px;
-      letter-spacing: 0.02em;
-      color: var(--ink-dim);
-    }
-
-    .ai-arrow {
-      font-size: 15px;
-      color: var(--ink-dim);
-      transition: transform 240ms ease, color 240ms ease;
-      flex-shrink: 0;
-    }
-
-    .ai-card:hover .ai-arrow { transform: translate(3px, -3px); color: var(--ink); }
-
-    .ai-card.is-case { grid-template-rows: auto auto auto 1fr auto; }
-    .ai-thumb {
-      margin: -26px -24px 4px;
-      aspect-ratio: 5 / 2;
-      background-size: cover;
-      background-position: center;
-      transition: transform 640ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-    .ai-card:hover .ai-thumb { transform: scale(1.035); }
-
-    /* AI Products sits on a cream field so the page reads dark → cream → dark
-       instead of one continuous white scroll. Same cream as the project pages. */
-    .ai-section {
-      background: #f4efe4;
-      border-top: 0;
-      padding: clamp(52px, 6vw, 84px) 0 clamp(56px, 6.5vw, 92px);
-    }
-    .ai-section .section-head, .ai-section .ai-intro, .ai-section .ai-grid { max-width: 1200px; }
-    .ai-section .ai-intro { margin-left: 0; max-width: 68ch; padding-left: 32px; }
-    .ai-section .ai-card { background: #fff; border-color: rgba(18,18,18,0.10); }
-
     /* ─── Playable — the interactive work, on a dark field ───
        This section did not exist on the landing page: the live pieces were
        reachable only two clicks deep, which is the wrong depth for the work
@@ -1032,110 +759,22 @@
       background: #0d0d0f; color: #fff;
       padding: clamp(52px, 6vw, 84px) 0 clamp(56px, 6.5vw, 92px);
     }
-    .play-section::after {
-      content: ""; position: absolute; right: -10%; top: -40%;
-      width: 58%; height: 160%;
-      background: radial-gradient(ellipse at center, rgba(147,112,246,0.18), transparent 64%);
-      pointer-events: none;
-    }
-    .play-inner { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-    .play-eyebrow { font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 14px; }
-    .play-title {
-      font-family: "DM Serif Display", Georgia, serif; font-weight: 400;
-      font-size: clamp(30px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.04;
-      color: #fff; margin-bottom: 14px;
-    }
     /* The definition line is doing real work: "interactive" is true of any
        button, so the section says out loud what it does and does not mean. */
     .play-sub { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: rgba(255,255,255,0.66); max-width: 66ch; }
-    .play-sub strong { color: #fff; font-weight: 600; }
-    .play-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; margin-top: 34px; }
-    .play-card {
-      display: flex; flex-direction: column;
-      background: rgba(255,255,255,0.045);
-      border: 1px solid rgba(255,255,255,0.11);
-      color: inherit; text-decoration: none;
-      transition: background 220ms ease, border-color 220ms ease, transform 220ms ease;
-    }
-    .play-card:hover { background: rgba(255,255,255,0.085); border-color: rgba(255,255,255,0.28); transform: translateY(-2px); }
-    .play-card:focus-visible { outline: 2px solid #9ec5fe; outline-offset: 3px; }
 
     /* Each tile animates the sensation the piece is actually about, so the
        card demonstrates rather than describes. Transform/opacity only — no
        canvas, no JS, no GPU loop — and it stops dead under reduced motion. */
     .play-art { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #131317; }
-    .play-art-label {
-      position: absolute; left: 18px; bottom: 14px; z-index: 3;
-      font-family: "DM Serif Display", Georgia, serif; font-size: clamp(19px, 1.7vw, 26px);
-      letter-spacing: -0.02em; color: #fff;
-    }
-    /* Resona — a spring settling: the pseudo-haptic press it exists to show */
-    .play-art--resona { background: radial-gradient(circle at 62% 38%, #2b2350, #131317 70%); }
-    .play-art--resona i {
-      position: absolute; left: 50%; top: 44%; width: 26%; aspect-ratio: 1;
-      margin: -13% 0 0 -13%; border-radius: 50%;
-      border: 1px solid rgba(196,181,253,0.55); background: rgba(167,139,250,0.16);
-    }
-    .play-card:hover .play-art--resona i { animation: play-spring 1100ms cubic-bezier(0.22, 1.2, 0.36, 1) infinite; }
     @keyframes play-spring { 0%{transform:scale(1)} 26%{transform:scale(0.82)} 62%{transform:scale(1.08)} 100%{transform:scale(1)} }
     /* Rakugaki Jam — a stroke drawing itself, then handed to the wall */
     .play-art--rakugaki { background: linear-gradient(150deg, #1b2440, #131317 68%); }
-    .play-art--rakugaki i {
-      position: absolute; left: 12%; top: 58%; width: 76%; height: 3px;
-      background: linear-gradient(90deg, #f472b6, #fbbf24, #4ade80);
-      transform-origin: left center; transform: scaleX(0.62); border-radius: 2px;
-    }
-    .play-card:hover .play-art--rakugaki i { animation: play-draw 1500ms cubic-bezier(0.22, 0.84, 0.22, 1) infinite; }
     @keyframes play-draw { 0%{transform:scaleX(0.06);opacity:1} 70%{transform:scaleX(1);opacity:1} 100%{transform:scaleX(1);opacity:0.2} }
     /* Kao Game — two eyes, blinking out of sync */
     .play-art--kao { background: radial-gradient(circle at 50% 46%, #5c1b30, #131317 74%); }
-    .play-art--kao i {
-      position: absolute; top: 40%; width: 11%; aspect-ratio: 1; border-radius: 50%;
-      background: rgba(247,183,51,0.9); box-shadow: 0 0 18px rgba(224,85,43,0.6);
-    }
-    .play-art--kao i:nth-child(1) { left: 30%; }
-    .play-art--kao i:nth-child(2) { left: 59%; }
-    .play-card:hover .play-art--kao i { animation: play-blink 1700ms ease-in-out infinite; }
-    .play-card:hover .play-art--kao i:nth-child(2) { animation-delay: 240ms; }
     @keyframes play-blink { 0%,88%,100%{transform:scaleY(1)} 94%{transform:scaleY(0.12)} }
-
-    /* Typespace — letters drifting apart into a constellation */
-    .play-art--typespace { background: radial-gradient(circle at 40% 60%, #16283a, #131317 72%); }
-    .play-art--typespace i {
-      position: absolute; width: 5px; height: 5px; border-radius: 50%;
-      background: #9ec5fe; box-shadow: 0 0 10px rgba(158,197,254,0.8);
-    }
-    .play-art--typespace i:nth-child(1) { left: 26%; top: 34%; }
-    .play-art--typespace i:nth-child(2) { left: 48%; top: 52%; }
-    .play-art--typespace i:nth-child(3) { left: 68%; top: 30%; }
-    .play-art--typespace i:nth-child(4) { left: 58%; top: 70%; }
-    .play-card:hover .play-art--typespace i { animation: play-drift 2600ms ease-in-out infinite alternate; }
-    .play-card:hover .play-art--typespace i:nth-child(2) { animation-delay: 220ms; }
-    .play-card:hover .play-art--typespace i:nth-child(3) { animation-delay: 440ms; }
-    .play-card:hover .play-art--typespace i:nth-child(4) { animation-delay: 660ms; }
     @keyframes play-drift { from{transform:translate(0,0)} to{transform:translate(9px,-11px)} }
-
-    .play-body { padding: 22px 22px 12px; flex: 1; }
-    .play-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-    .play-chip {
-      font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
-      color: rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.18); padding: 4px 8px;
-    }
-    .play-desc { font-size: clamp(13.5px, 1.02vw, 16.5px); line-height: 1.6; color: rgba(255,255,255,0.66); }
-    .play-foot {
-      display: flex; justify-content: space-between; align-items: center; gap: 12px;
-      padding: 14px 22px 20px; font-size: 11.5px; letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.42);
-    }
-    .play-card:hover .play-foot span:last-child { color: #fff; }
-    .play-more { margin-top: 30px; }
-    .play-more a {
-      display: inline-block; padding: 13px 20px; border: 1px solid rgba(255,255,255,0.34);
-      color: #fff; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none;
-      transition: border-color 180ms ease, background 180ms ease;
-    }
-    .play-more a:hover { background: #fff; color: #0d0d0f; }
-    @media (max-width: 900px) { .play-grid { grid-template-columns: 1fr; } }
 
     /* ─── Capabilities strip ─── */
     .capabilities-section {
@@ -1317,7 +956,6 @@
       .project-grid { grid-template-columns: 1fr 1fr; }
       .work-card.is-featured { grid-column: span 2; grid-template-rows: 320px auto auto; }
       .initiatives-grid { grid-template-columns: 1fr; }
-      .ai-grid { grid-template-columns: 1fr 1fr; }
       .capabilities-intro {
       max-width: 68ch; padding: 0 32px; margin: 18px auto 0 0;
       font-size: 16px; line-height: 1.7; color: var(--ink-mid);
@@ -1328,22 +966,9 @@
       .capability-block:not(:first-child) { padding-left: 0; }
     }
 
-    @media (max-width: 767px) {
-      .tools-head { align-items: flex-start; }
-      .tools-list { padding: 0 20px; }
-      .tools-row,
-      .tools-row:nth-child(2) {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        padding: 32px 0 36px;
-      }
-      .tools-meta { align-self: auto; }
-    }
-
     @media (max-width: 600px) {
       .project-grid { grid-template-columns: 1fr; padding: 0 20px; }
       .work-card.is-featured { grid-column: span 1; grid-template-rows: 260px auto auto; }
-      .ai-grid { grid-template-columns: 1fr; }
       .site-nav { padding: 16px 20px; }
       .hero { padding: 64px 20px 56px; }
       /* Three columns of facts at 375px gives each one about 100px, which
@@ -1416,9 +1041,6 @@
     html.lang-jp .section-title {
       line-height: 1.14;
     }
-    html.lang-jp .ai-name {
-      line-height: 1.18;
-    }
 
     /* ─── Reduced motion ─── */
     @media (prefers-reduced-motion: reduce) {
@@ -1439,6 +1061,142 @@
       .lang-btn { transition: none !important; }
     }
   </style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline, present but not competing. ── */
+    .nav-links { align-items: center; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-rule { width: 1px; height: 12px; background: var(--line); flex: none; }
+    @media (max-width: 768px) { .nav-rule { display: none; } }
+  </style>
+  <style>
+    /* ── Category index ── Two tiers. The lead three sit on a light plate and
+       carry a hairline top rule; the base two are quieter and half-width, so
+       the eye finishes the offer before it reaches the foundation. ── */
+    .cat-section {
+      padding: 72px 0 80px;
+      border-top: 1px solid var(--line);
+    }
+    .cat-tier {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 2px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+    .cat-tier--base { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+    .cat-card {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 26px 24px 22px;
+      border-top: 1px solid var(--ink);
+      text-decoration: none;
+      color: inherit;
+      transition: background 200ms ease, transform 200ms ease;
+    }
+    .cat-card:hover { background: rgba(0,0,0,0.03); }
+    .cat-tier--base .cat-card { border-top-color: var(--line); }
+
+    .cat-no {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--ink-dim);
+    }
+    .cat-name {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(22px, 2.4vw, 31px);
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      line-height: 1.04;
+      color: var(--ink);
+    }
+    .cat-tier--base .cat-name {
+      font-size: clamp(19px, 1.9vw, 25px);
+      color: var(--ink-mid);
+    }
+    .cat-desc {
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--ink-mid);
+      max-width: 42ch;
+      flex: 1;
+    }
+    .cat-tier--base .cat-desc { color: var(--ink-dim); }
+
+    .cat-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-top: 6px;
+      font-size: 11.5px;
+      letter-spacing: 0.06em;
+      color: var(--ink-dim);
+    }
+    .cat-go { transition: transform 200ms ease; }
+    .cat-card:hover .cat-go { transform: translateX(4px); }
+
+    .cat-rule {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 32px 12px;
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+    .cat-rule::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    @media (max-width: 900px) {
+      .cat-tier, .cat-tier--base { grid-template-columns: 1fr; }
+      .cat-card { padding: 22px 20px 20px; }
+      .cat-tier, .cat-rule { padding-left: 20px; padding-right: 20px; }
+    }
+
+    /* ── One curated card has no photograph: the AI Skills work is a system,
+       not a screen. It borrows the gradient plate from the tools index. ── */
+    .card-art--superforge {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 100%;
+      height: 100%;
+      padding: 24px;
+      overflow: hidden;
+      color: #fff;
+      text-align: center;
+      background:
+        radial-gradient(circle at 74% 26%, rgba(253,224,71,0.34), transparent 44%),
+        linear-gradient(140deg, #13161f, #8a6a12 48%, #fde047);
+    }
+    .card-art-label {
+      font-family: "DM Serif Display", Georgia, serif;
+      font-size: clamp(26px, 3vw, 38px);
+      line-height: 0.98;
+      letter-spacing: -0.02em;
+    }
+    .card-art-note {
+      position: absolute;
+      left: 0; right: 0; bottom: 16px;
+      font-size: 10.5px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      opacity: 0.72;
+    }
+  </style>
 </head>
 <body>
 
@@ -1449,8 +1207,10 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links" id="primary-nav-links">
-      <li><a href="ai-products.html">AI Products</a></li>
-      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="ai-tools.html" class="is-lead">AI Tools</a></li>
+      <li class="nav-rule" aria-hidden="true"></li>
       <li><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li><a href="about.html">About</a></li>
@@ -1471,8 +1231,8 @@
       <span class="t-jp">まず<em>意図</em>。<br>インターフェイスはその後。</span>
     </h1>
     <p class="hero-desc">
-      <span class="t-en">Twenty years designing products at <strong>Verizon, Amazon, Coca-Cola and T-Mobile</strong> — now spent building the AI itself, not slideware about it.</span>
-      <span class="t-jp is-block"><strong>Verizon・Amazon・Coca-Cola・T-Mobile</strong> で20年、プロダクトを設計してきました。いまはその経験を、AI を語る資料ではなく、動く AI そのものに使っています。</span>
+      <span class="t-en">I work where <strong>product design, AI engineering and interactive experience</strong> meet. Twenty years designing at Verizon, Amazon, Coca-Cola and T-Mobile — now spent building the AI itself, not slideware about it.</span>
+      <span class="t-jp is-block"><strong>プロダクト設計・AI 実装・インタラクティブ体験</strong>が交わるところで仕事をしています。Verizon・Amazon・Coca-Cola・T-Mobile で20年。いまはその経験を、AI を語る資料ではなく、動く AI そのものに使っています。</span>
     </p>
     <div class="hero-facts">
       <div>
@@ -1485,7 +1245,7 @@
       </div>
       <div>
         <span class="hero-fact-l"><span class="t-en">Tools I ship</span><span class="t-jp">自分で出している道具</span></span>
-        <span class="hero-fact-v"><b>12</b><span class="t-en">skills — superforge, idea to release</span><span class="t-jp">スキル — superforge、着想から公開まで</span></span>
+        <span class="hero-fact-v"><b>14</b><span class="t-en">skills — superforge, idea to release</span><span class="t-jp">スキル — superforge、着想から公開まで</span></span>
       </div>
     </div>
     <div class="hero-live">
@@ -1506,472 +1266,184 @@
    </div>
   </section>
 
-  <!-- ── AI Products ── -->
-  <section class="ai-section" id="agentic-ux">
-    <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">AI Products</span>
-        <span class="t-jp">AI Products</span>
-      </h2>
-      <a href="ai-products.html" class="section-link">
-        <span class="t-en">All AI Products work →</span>
-        <span class="t-jp">AI Products をすべて見る →</span>
-      </a>
-    </div>
-    <p class="ai-intro">
-      <span class="t-en">Designing how humans and AI agents share work — framework research, an enterprise agent fleet, and living prototypes you can touch.</span>
-      <span class="t-jp is-block">人と AI エージェントがどう仕事を分担するかのデザイン。フレームワーク研究、エンタープライズのエージェント艦隊、そして実際に触れる動くプロトタイプ。</span>
-    </p>
-    <div class="ai-grid">
-
-      <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="ai-card">
-        <span class="ai-badge case"><span class="t-en">Research · Framework</span><span class="t-jp">研究・フレームワーク</span></span>
-        <div class="ai-name">intentfirst.ai</div>
-        <p class="ai-tagline">
-          <span class="t-en">Start from intent, not screens — a design framework for the AI era.</span>
-          <span class="t-jp is-block">画面ではなく意図から始める、AI 時代のデザインフレームワーク。</span>
-        </p>
-        <div class="ai-card-foot">
-          <span class="ai-stack">Context Grammar · 8 Context Tokens</span>
-          <span class="ai-arrow">↗</span>
-        </div>
-      </a>
-
-      <a href="projects/verizon-ai-agents.html" class="ai-card is-case">
-        <div class="ai-thumb" style="background-image:url('assets/verizon-ai-agents/hero-agents-network.jpg');"></div>
-        <span class="ai-badge case"><span class="t-en">Enterprise · Shipped</span><span class="t-jp">エンタープライズ・導入済み</span></span>
-        <div class="ai-name">Verizon AI Workflow</div>
-        <p class="ai-tagline">
-          <span class="t-en">A 10-agent fleet changing how 42 designers work across 6 brands.</span>
-          <span class="t-jp is-block">42 名・6 ブランドのデザイン組織の働き方を変えた 10 エージェントの艦隊。</span>
-        </p>
-        <div class="ai-card-foot">
-          <span class="ai-stack">Agent fleet · Design Ops</span>
-          <span class="ai-arrow">→</span>
-        </div>
-      </a>
-
-      <a href="projects/amazon-firetv.html" class="ai-card">
-        <span class="ai-badge proto"><span class="t-en">Live prototype</span><span class="t-jp">公開中のプロトタイプ</span></span>
-        <div class="ai-name">Amazon Shopping on Fire TV</div>
-        <p class="ai-tagline">
-          <span class="t-en">Agentic commerce for the living room — Alexa voice, phone as remote, one-scan pairing.</span>
-          <span class="t-jp is-block">リビングのエージェンティック・コマース。Alexa 音声、スマホがリモコンに、ワンスキャンで接続。</span>
-        </p>
-        <div class="ai-card-foot">
-          <span class="ai-stack">10-foot UI · Voice UX · Snap Pair</span>
-          <span class="ai-arrow">→</span>
-        </div>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ── Playable ── -->
-  <section class="play-section" id="playable" aria-labelledby="play-title">
-    <div class="play-inner">
-      <div class="play-eyebrow">
-        <span class="t-en">Interactive Experience · Open one on your phone</span>
-        <span class="t-jp">Interactive Experience · スマホで開いてみてください</span>
-      </div>
-      <h2 class="play-title" id="play-title">
-        <span class="t-en">Interactive Experience</span>
-        <span class="t-jp">インタラクティブ体験</span>
-      </h2>
-      <p class="play-sub">
-        <span class="t-en">Not "interactive" in the sense that a button is interactive. <strong>The input is your voice, your face, your body, or every phone in the room at once</strong> — and the output lands on a screen bigger than the one you are holding. Almost none of it is AI; it is networking, tracking and timing.</span>
-        <span class="t-jp is-block">ボタンを押せば「インタラクティブ」という意味ではありません。<strong>入力になるのは、声・表情・体の動き、あるいはその場にあるスマホ全部</strong>。そして出力は、手元より大きな画面に出ます。大半は AI ではなく、通信とトラッキングとタイミングの仕事です。</span>
-      </p>
-
-      <div class="play-grid">
-
-        <a class="play-card" href="https://resona-motion.vercel.app" target="_blank" rel="noopener">
-          <div class="play-art play-art--resona" aria-hidden="true">
-            <i></i>
-            <span class="play-art-label">Resona 響</span>
-          </div>
-          <div class="play-body">
-            <div class="play-chips"><span class="play-chip">Live</span><span class="play-chip">Pseudo-haptics</span></div>
-            <p class="play-desc">
-              <span class="t-en">Motion that makes a screen feel like it has weight. Press something and it resists, settles, gives — the interface tells you what happened before you read a word.</span>
-              <span class="t-jp is-block">画面に重さを感じさせる動き。押せば抵抗し、揺れて、収まる。言葉を読む前に、インターフェイスが何が起きたかを伝えます。</span>
-            </p>
-          </div>
-          <div class="play-foot"><span>Web animation</span><span>Try it &#8599;</span></div>
-        </a>
-
-        <a class="play-card" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener">
-          <div class="play-art play-art--rakugaki" aria-hidden="true">
-            <i></i>
-            <span class="play-art-label">Rakugaki Jam</span>
-          </div>
-          <div class="play-body">
-            <div class="play-chips"><span class="play-chip">Live</span><span class="play-chip">Snap Pair</span><span class="play-chip">VJ</span></div>
-            <p class="play-desc">
-              <span class="t-en">Doodle on your phone, then fling it onto the wall screen everyone is watching. Scan a QR code and the whole room is drawing on the same canvas — no app, no accounts.</span>
-              <span class="t-jp is-block">スマホで落書きして、みんなが見ている壁の画面へ投げ込む。QR を読めば、その場の全員が同じキャンバスに描き始めます。アプリもアカウントも不要。</span>
-            </p>
-          </div>
-          <div class="play-foot"><span>Snap Pair · Firebase</span><span>Try it &#8599;</span></div>
-        </a>
-
-        <a class="play-card" href="ai-products.html#interactive">
-          <div class="play-art play-art--kao" aria-hidden="true">
-            <i></i><i></i>
-            <span class="play-art-label">Kao Game</span>
-          </div>
-          <div class="play-body">
-            <div class="play-chips"><span class="play-chip">In progress</span><span class="play-chip">Face tracking</span></div>
-            <p class="play-desc">
-              <span class="t-en">A game you play with your face. Pull the expressions it asks for, and the muscles you never train get a workout you actually want to repeat.</span>
-              <span class="t-jp is-block">顔で遊ぶゲーム。指示された表情をつくると、普段は鍛えない表情筋が動く。続けたくなる形にした表情筋トレーニング。</span>
-            </p>
-          </div>
-          <div class="play-foot"><span>Face tracking</span><span>Read more →</span></div>
-        </a>
-
-      </div>
-
-      <div class="play-more">
-        <a href="ai-products.html#interactive">
-          <span class="t-en">All interactive work &amp; games →</span>
-          <span class="t-jp">体験とゲームをすべて見る →</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── AI Tools ── -->
-  <section class="tools-section" id="ai-tools" aria-labelledby="ai-tools-title">
-    <div class="section-head tools-head">
-      <div>
-        <h2 class="section-title" id="ai-tools-title"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h2>
-        <p class="tools-intro">
-          <span class="t-en">Claude skills, CLIs, and realtime libraries for people who build with AI agents — all open source.</span>
-          <span class="t-jp is-block">エージェントとともに作る人のための、Claude スキル・CLI・リアルタイムライブラリ。すべてオープンソース。</span>
-        </p>
-      </div>
-      <a href="ai-tools.html" class="section-link">
-        <span class="t-en">Explore AI tools →</span>
-        <span class="t-jp">AI Tools を見る →</span>
-      </a>
-    </div>
-
-    <div class="tools-list">
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--snap" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">01</p>
-            <h3 class="tools-name">Snap Pair</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Every phone in the room joins your app in one scan.</span>
-              <span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Realtime library · React + Firebase · Claude skill</p>
-          <p class="tools-stack">Firebase Auth · Cloud Functions · Realtime Database</p>
-          <a href="ai-tools.html#snap-pair" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--superforge" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">02</p>
-            <h3 class="tools-name">superforge</h3>
-            <p class="tools-outcome">
-              <span class="t-en">One sentence in. Fourteen skills take it from idea to ship.</span>
-              <span class="t-jp is-block">一文を渡せば、14 のスキルが着想から公開まで運ぶ。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Skill system · 14 Claude Code skills · Model tiering</p>
-          <p class="tools-stack">Codex / Gemini / Kimi mapping · docs/ output · MIT</p>
-          <a href="ai-tools.html#superforge" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--handoff" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">03</p>
-            <h3 class="tools-name">cross-model-handoff</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Switch AI tools mid-task. Keep the whole context.</span>
-              <span class="t-jp is-block">AI ツールを途中で乗り換えても、文脈はそのまま。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Claude Code plugin · Skill system · Codex / Gemini / Cursor</p>
-          <p class="tools-stack">AGENTS.md · Claude Code hooks · Markdown</p>
-          <a href="ai-tools.html#cross-model-handoff" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--fail" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">04</p>
-            <h3 class="tools-name">failforward</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Your coding agent stops repeating yesterday's mistakes.</span>
-              <span class="t-jp is-block">エージェントが、昨日と同じ失敗を繰り返さなくなる。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">CLI · Claude Code skill + hook · Codex / Gemini ready</p>
-          <p class="tools-stack">Python stdlib · Markdown store · MIT</p>
-          <a href="ai-tools.html#failforward" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--readme" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">05</p>
-            <h3 class="tools-name">multilingual-readme</h3>
-            <p class="tools-outcome">
-              <span class="t-en">A README a stranger understands in ten seconds — technical or not.</span>
-              <span class="t-jp is-block">初めて見た人が 10 秒で分かる README を、技術者かどうかを問わず。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Claude Code skill · EN · 日本語 · 简体中文 · Español · 한국어</p>
-          <p class="tools-stack">Source inspection · check_readme.py · MIT</p>
-          <a href="ai-tools.html#multilingual-readme" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--motionskills" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">06</p>
-            <h3 class="tools-name">interactive-experience-skills</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Settle artwork-or-tool first, then answer in lumens and milliseconds.</span>
-              <span class="t-jp is-block">作品か道具かを先に決め、そのあとルーメンとミリ秒で答える。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">3 Claude Code skills · Camera &amp; sensors · Human movement</p>
-          <p class="tools-stack">Director + 2 specialists · 2 commands · MIT</p>
-          <a href="ai-tools.html#interactive-experience-skills" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ── Featured Work ── -->
+  <!-- ══ Selected Work ══════════════════════════════════════════════════
+       Seven, not twenty-four. The visitor decides in three seconds whether
+       this person is at their level; that decision is made on the strongest
+       few, and a long grid buries them. The full set lives one click down,
+       in the categories below. ══════════════════════════════════════════ -->
   <section class="work-section" id="selected-work">
     <div class="section-head">
-      <h2 class="section-title">Selected Work</h2>
-      <a href="work.html" class="section-link">All projects →</a>
+      <h2 class="section-title"><span class="t-en">Selected Work</span><span class="t-jp">主な仕事</span></h2>
+      <a href="#categories" class="section-link"><span class="t-en">Everything, by category →</span><span class="t-jp">カテゴリー別に全件 →</span></a>
     </div>
 
     <div class="project-grid" id="project-grid">
 
-      <!-- 1. ELA Quests — Featured (spans 2 cols) -->
-      <article class="work-card is-featured" tabindex="0" data-href="projects/ela-quests.html">
+      <article class="work-card is-featured" tabindex="0" data-href="projects/verizon-ai-agents.html">
         <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1020">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/Quest_teaser_tr.png')"></div>
-            </div>
-          </div>
+          <div class="rr" data-role="image" data-speed="1020"><div class="cover"></div><div class="inner"><div class="card-img-bg" style="background-image: url('assets/thumbs/verizon-ai-agents.jpg')"></div></div></div>
         </div>
         <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="560"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">EdTech</span><span class="pill text-reactive">Product Design</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="760"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Amplify ELA Quests</div></div></div>
-          <div class="rr" data-role="body" data-speed="900"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Immersive in-classroom learning experiences using AR and storytelling, reaching millions of students across the US.</div></div></div>
+          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Enterprise AI</span><span class="pill text-reactive">Shipped</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Verizon AI Workflow</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">A ten-agent fleet running inside a 42-designer org across six brands — built, deployed and still in production.</div></div></div>
         </div>
         <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="640"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Amplify Education</div></div></div>
-          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
+          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Verizon / Design Ops</div></div></div>
+          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Agent fleet</div></div></div>
         </div>
         <div class="press-frame"></div>
       </article>
 
-      <!-- 2. Verizon TotalWireless -->
-      <article class="work-card" tabindex="0" data-href="projects/verizon-totalwireless.html">
+      <article class="work-card" tabindex="0" data-href="projects/amazon-firetv.html">
         <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1060">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png'); background-position: center top;"></div>
-            </div>
-          </div>
+          <div class="rr" data-role="image" data-speed="1020"><div class="cover"></div><div class="inner"><div class="card-img-bg" style="background-image: url('assets/thumbs/amazon-firetv.jpg')"></div></div></div>
         </div>
         <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="580"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Telecom</span><span class="pill text-reactive">UX Design</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="790"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Verizon TotalWireless</div></div></div>
-          <div class="rr" data-role="body" data-speed="930"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Post-login experience design for a major prepaid wireless platform — streamlining account management for millions of subscribers.</div></div></div>
+          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Agentic commerce</span><span class="pill text-reactive">Live prototype</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Amazon Shopping on Fire TV</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Agentic commerce for the living room: Alexa shops by voice, the D-pad browses, and Snap Pair turns your phone into the remote.</div></div></div>
         </div>
         <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Verizon / TotalWireless</div></div></div>
-          <div class="rr" data-role="meta" data-speed="680"><div class="cover"></div><div class="inner"><div class="meta text-reactive">UX Design</div></div></div>
+          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Amazon</div></div></div>
+          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">10-foot UI / Voice UX</div></div></div>
         </div>
         <div class="press-frame"></div>
       </article>
 
-      <!-- 3. T-Mobile BOPIS -->
-      <article class="work-card" tabindex="0" data-href="projects/tmobile.html">
+      <article class="work-card" tabindex="0" data-href="ai-tools.html">
         <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1040">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/M−Mobile_teaser2.jpg')"></div>
-            </div>
-          </div>
+          <div class="rr" data-role="image" data-speed="1020"><div class="cover"></div><div class="inner"><div class="card-art card-art--superforge"><span class="card-art-label">super<br>forge</span><span class="card-art-note">Idea to release</span></div></div></div>
         </div>
         <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Retail CX</span><span class="pill text-reactive">Multi-touchpoint</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="780"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">T-Mobile BOPIS</div></div></div>
-          <div class="rr" data-role="body" data-speed="920"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">An integrated Buy Online Pick Up In Store system — kiosk, staff app, and voice AI — that made T-Mobile a preferred innovation partner.</div></div></div>
+          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">AI Skills</span><span class="pill text-reactive">Own tool</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">superforge</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Fourteen Claude skills that carry a product from first idea to release — brainstorm, business model, brand, UI, build, test, security, ship.</div></div></div>
         </div>
         <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">T-Mobile</div></div></div>
-          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead UX</div></div></div>
+          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Own tool</div></div></div>
+          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Claude Skills</div></div></div>
         </div>
         <div class="press-frame"></div>
       </article>
 
-      <!-- 4. CLI Studios -->
+      <article class="work-card" tabindex="0" data-href="projects/marubatsu.html">
+        <div class="card-image">
+          <div class="rr" data-role="image" data-speed="1020"><div class="cover"></div><div class="inner"><div class="card-img-bg" style="background-image: url('assets/thumbs/marubatsu.jpg')"></div></div></div>
+        </div>
+        <div class="card-body">
+          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Interactive</span><span class="pill text-reactive">Shipped</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Marubatsu 2.0</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Real-time online tic-tac-toe with an AI opponent, and Snap Pair — scan once and any phone in the room becomes a controller.</div></div></div>
+        </div>
+        <div class="card-footer">
+          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Own product</div></div></div>
+          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Next.js / Firebase</div></div></div>
+        </div>
+        <div class="press-frame"></div>
+      </article>
+
       <article class="work-card" tabindex="0" data-href="projects/cli-studios.html">
         <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1030">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/cli-studios/CLI_UI_Screens.png')"></div>
-            </div>
-          </div>
+          <div class="rr" data-role="image" data-speed="1020"><div class="cover"></div><div class="inner"><div class="card-img-bg" style="background-image: url('assets/thumbs/cli-studios.jpg')"></div></div></div>
         </div>
         <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="560"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">App Design</span><span class="pill text-reactive">Design System</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="760"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">CLI Studios App</div></div></div>
-          <div class="rr" data-role="body" data-speed="900"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Complete mobile app redesign — heuristic analysis, IA restructuring, and a design system that reduced future dev time by 25%.</div></div></div>
+          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Design system</span><span class="pill text-reactive">Rebuild</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">CLI Studios</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">A unified design system and mobile UX overhaul for a dance-education platform, projected to cut development time by 25%.</div></div></div>
         </div>
         <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="640"><div class="cover"></div><div class="inner"><div class="meta text-reactive">CLI Studios</div></div></div>
-          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
+          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">CLI Studios</div></div></div>
+          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Design system</div></div></div>
         </div>
         <div class="press-frame"></div>
       </article>
 
-      <!-- 5. Web3 Custodial Wallet -->
-      <article class="work-card" tabindex="0" data-href="projects/web3-wallet.html">
+      <article class="work-card" tabindex="0" data-href="projects/coca-cola.html">
         <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1010">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/EventStack-Mobile.png')"></div>
-            </div>
-          </div>
+          <div class="rr" data-role="image" data-speed="1020"><div class="cover"></div><div class="inner"><div class="card-img-bg" style="background-image: url('assets/thumbs/coca-cola.jpg')"></div></div></div>
         </div>
         <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="555"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Web3</span><span class="pill text-reactive">Award</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="755"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Web3 Custodial Wallet</div></div></div>
-          <div class="rr" data-role="body" data-speed="895"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">NFT-enhanced event management wallet. 2023 Merit Gold Award — Metaverse &amp; AI.</div></div></div>
+          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Campaign</span><span class="pill text-reactive">Visual direction</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Coca-Cola</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Two global brand campaign worlds, built to survive translation into six-plus formats across international markets.</div></div></div>
         </div>
         <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="635"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
-          <div class="rr" data-role="meta" data-speed="655"><div class="cover"></div><div class="inner"><div class="meta text-reactive">2023</div></div></div>
+          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Coca-Cola / Ogilvy</div></div></div>
+          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Visual direction</div></div></div>
         </div>
         <div class="press-frame"></div>
       </article>
 
-      <!-- 6. Kitadoko -->
-      <article class="work-card" tabindex="0" data-href="projects/kitadoko.html">
+      <article class="work-card" tabindex="0" data-href="projects/ela-quests.html">
         <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1050">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/Space_Design_kitadoko.png')"></div>
-            </div>
-          </div>
+          <div class="rr" data-role="image" data-speed="1020"><div class="cover"></div><div class="inner"><div class="card-img-bg" style="background-image: url('assets/thumbs/ela-quests.jpg')"></div></div></div>
         </div>
         <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="565"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Rebranding</span><span class="pill text-reactive">Service Design</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Kitadoko</div></div></div>
-          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">A 150-year-old hair salon rebranded end to end. Female clientele grew 10%→50%, repeat rate 0%→90%.</div></div></div>
+          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">EdTech</span><span class="pill text-reactive">Product Design</span></div></div></div>
+          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Amplify ELA Quests</div></div></div>
+          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Immersive in-classroom learning built on AR and storytelling, reaching millions of students across the US.</div></div></div>
         </div>
         <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="645"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Kitadoko Hair Salon</div></div></div>
-          <div class="rr" data-role="meta" data-speed="665"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Creative Director</div></div></div>
+          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Amplify Education</div></div></div>
+          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
         </div>
         <div class="press-frame"></div>
       </article>
 
-      <!-- 7. KOJI FIZZ -->
-      <article class="work-card" tabindex="0" data-href="projects/koji-fizz.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1050">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/Screenshot_2023-12-21_at_9.53.28_PM.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="565"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Film</span><span class="pill text-reactive">Brand</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">KOJI FIZZ Films</div></div></div>
-          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Produced a short film series featuring New York designers and artists, showcasing KOJI FIZZ's influence on creative life and work.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="645"><div class="cover"></div><div class="inner"><div class="meta text-reactive">See the Sun / KOJI FIZZ</div></div></div>
-          <div class="rr" data-role="meta" data-speed="665"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Film Producer</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
+    </div>
+  </section>
 
-      <!-- 8. extra•ordinary -->
-      <article class="work-card" tabindex="0" data-href="projects/extraordinary.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1015">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/exmag-01.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="552"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Book</span><span class="pill text-reactive">Art Direction</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="752"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">extra•ordinary</div></div></div>
-          <div class="rr" data-role="body" data-speed="892"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Co-authored and art-directed a book on everyday creativity published by Rockport. Over 11,000 copies sold worldwide.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="632"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Rockport Publishing</div></div></div>
-          <div class="rr" data-role="meta" data-speed="652"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Co-author &amp; Designer</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
+  <!-- ══ Categories ══════════════════════════════════════════════════════
+       Two tiers, deliberately. Six equal boxes read as a generalist, and a
+       generalist competes on price. The three at the top are what the work
+       is sold as now; the two below are the twenty years that make the top
+       three credible — present, but not competing for the same attention. -->
+  <section class="cat-section" id="categories">
+    <div class="section-head">
+      <h2 class="section-title"><span class="t-en">Everything, by category</span><span class="t-jp">カテゴリー別に全件</span></h2>
+    </div>
 
-    </div><!-- /project-grid -->
+    <div class="cat-tier">
+      <a class="cat-card" href="interactive.html">
+        <div class="cat-no">01</div>
+        <div class="cat-name"><span class="t-en">Interactive Experience</span><span class="t-jp">インタラクティブ体験</span></div>
+        <p class="cat-desc"><span class="t-en">Your voice, your face, your body, your handwriting, or every phone in the room at once — used as the input.</span><span class="t-jp is-block">声、表情、身体、手描きの線、あるいはその場のスマホ全部を、入力として使う。</span></p>
+        <div class="cat-foot"><span class="cat-count">8 projects</span><span class="cat-go" aria-hidden="true">→</span></div>
+      </a>
+      <a class="cat-card" href="ai-products.html">
+        <div class="cat-no">02</div>
+        <div class="cat-name"><span class="t-en">AI Products</span><span class="t-jp">AI プロダクト</span></div>
+        <p class="cat-desc"><span class="t-en">Products where the AI is inside the thing rather than bolted next to it — designed and built, not specified and handed off.</span><span class="t-jp is-block">AI が製品の隣ではなく中に入っているもの。仕様を渡すのではなく、設計して実装する。</span></p>
+        <div class="cat-foot"><span class="cat-count">5 projects</span><span class="cat-go" aria-hidden="true">→</span></div>
+      </a>
+      <a class="cat-card" href="ai-tools.html">
+        <div class="cat-no">03</div>
+        <div class="cat-name"><span class="t-en">AI Skills &amp; Tools</span><span class="t-jp">AI スキル・ツール</span></div>
+        <p class="cat-desc"><span class="t-en">The tools I build to do the work — Claude skills, CLIs and libraries, all of them in daily use before anyone else sees them.</span><span class="t-jp is-block">仕事のために自分で作る道具。Claude スキル、CLI、ライブラリ。どれも公開前から毎日使っています。</span></p>
+        <div class="cat-foot"><span class="cat-count">6 projects</span><span class="cat-go" aria-hidden="true">→</span></div>
+      </a>
+    </div>
+
+    <div class="cat-rule">
+      <span class="t-en">Twenty years underneath all of it</span>
+      <span class="t-jp">その全部の下にある20年</span>
+    </div>
+
+    <div class="cat-tier cat-tier--base">
+      <a class="cat-card" href="work.html">
+        <div class="cat-no">04</div>
+        <div class="cat-name"><span class="t-en">Product Design</span><span class="t-jp">プロダクトデザイン</span></div>
+        <p class="cat-desc"><span class="t-en">Enterprise product and UX work at Verizon, Amazon, T-Mobile and Amplify — research through launch.</span><span class="t-jp is-block">Verizon・Amazon・T-Mobile・Amplify でのエンタープライズ設計。調査から公開まで。</span></p>
+        <div class="cat-foot"><span class="cat-count">13 projects</span><span class="cat-go" aria-hidden="true">→</span></div>
+      </a>
+      <a class="cat-card" href="brand.html">
+        <div class="cat-no">05</div>
+        <div class="cat-name"><span class="t-en">Brand &amp; Visual</span><span class="t-jp">ブランド・ビジュアル</span></div>
+        <p class="cat-desc"><span class="t-en">Identity systems, campaign worlds and creative direction for Coca-Cola, XQ and others.</span><span class="t-jp is-block">Coca-Cola、XQ ほかのアイデンティティ設計、キャンペーン、クリエイティブディレクション。</span></p>
+        <div class="cat-foot"><span class="cat-count">11 projects</span><span class="cat-go" aria-hidden="true">→</span></div>
+      </a>
+    </div>
   </section>
 
   <!-- ── Initiatives ── -->

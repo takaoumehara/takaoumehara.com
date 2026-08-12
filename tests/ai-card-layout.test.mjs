@@ -8,16 +8,21 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (name) => readFileSync(join(root, name), 'utf8');
 const cardCount = (html) => [...html.matchAll(/<article\b[^>]*\bclass\s*=\s*["'][^"']*\bwork-card\b[^"']*["']/gi)].length;
 
-test('Agentic UX and AI Tools use the shared thumbnail-led portfolio grid', () => {
-  const products = read('ai-products.html');
-  const tools = read('ai-tools.html');
+test('the three lead category pages use the shared thumbnail-led portfolio grid', () => {
+  // Interactive Experience was split out of ai-products.html: designing an AI
+  // product and staging a room-scale experience are sold to different buyers,
+  // so they no longer share a page.
+  const pages = {
+    'ai-products.html': 5,
+    'interactive.html': 8,
+    'ai-tools.html': 6,
+  };
 
-  assert.match(products, /assets\/work-card-grid\.css/);
-  assert.match(tools, /assets\/work-card-grid\.css/);
-  assert.match(products, /assets\/work-card-grid\.js/);
-  assert.match(tools, /assets\/work-card-grid\.js/);
-  assert.match(products, /class="work-grid"/);
-  assert.match(tools, /class="work-grid"/);
-  assert.equal(cardCount(products), 13);
-  assert.equal(cardCount(tools), 6);
+  for (const [page, expectedCount] of Object.entries(pages)) {
+    const html = read(page);
+    assert.match(html, /assets\/work-card-grid\.css/, `${page} needs the shared grid stylesheet`);
+    assert.match(html, /assets\/work-card-grid\.js/, `${page} needs the shared grid script`);
+    assert.match(html, /class="work-grid"/, `${page} needs a work-grid`);
+    assert.equal(cardCount(html), expectedCount, `${page} needs ${expectedCount} work cards`);
+  }
 });
