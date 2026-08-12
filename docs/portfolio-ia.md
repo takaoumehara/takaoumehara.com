@@ -37,7 +37,7 @@ generalist, and a generalist competes on price.
 |---|---|---|
 | Interactive Experience | `interactive.html` | 8 |
 | AI Products | `ai-products.html` | 5 |
-| AI Skills & Tools | `ai-tools.html` | 6 |
+| AI Skills & Tools | `ai-tools.html` | 7 |
 
 ### Base tier — the twenty years that make the lead tier credible
 
@@ -116,3 +116,53 @@ only the landing page still sees the whole shape of the practice.
 
 The hero's live chips (Rakugaki Jam, Resona, Typespace) carry the "open it
 right now" proof that the removed playable section used to provide.
+
+
+---
+
+## Column and rule (2026-08-12)
+
+The three lead pages were centred in a 1200px column while `work.html` used
+1680px, so the same site had two different left edges. They now share one
+column — measured: grid left 40px, right 1400px on all four at 1440px wide.
+
+They also borrow work.html's index rule: every card hangs off a hairline drawn
+across the top of its row. What they do **not** borrow is its austerity. A
+client-project index can be a name and a thumbnail; these pages have to argue
+for each item, so labels, description and footer meta all stay.
+
+## The nav separator
+
+The tier break between `AI Tools` and `Product Design` is drawn as a
+pseudo-element inside the existing 28px gap, not as a list item. As an element
+it consumed a flex slot and made that one gap 57px against 28px everywhere
+else. Measured after the fix: 28px × 6, all equal.
+
+## Interactive Experience — the input is the argument
+
+The page opens with a specification, not a paragraph:
+
+```
+INPUT    your voice · your face · your body · your handwriting · every phone at once
+OUTPUT   a screen bigger than the one you are holding
+NOT      AI. Almost none of this is. It is networking, tracking and timing.
+```
+
+That same vocabulary then leads every card as the one solid-filled label, so
+the grid can be scanned by input alone — "which of these uses my voice" is
+answerable without reading a single description.
+
+Order is by strength, not by category: Resona, Kao Game, Rakugaki Jam,
+Typespace, Koe Baku · then Games: EmojiDrop, Marubatsu 2.0, Werewolf.
+
+## The identity meta row is gone from the three lead pages
+
+`Takao Umehara / Product design × AI systems / Index / Information / N projects
+/ 20 years · New York / New York / 2026` repeated the nav and the footer on
+every page. The wordmark stays; the meta row does not. `work.html` and
+`brand.html` still carry theirs — **not yet reconciled**, and worth deciding
+one way or the other.
+
+One casualty: the line "AI Tools — open source, designed & built by Takao"
+lived inside that row. The claim now sits in the page copy instead, where it
+reads as an argument rather than as metadata.

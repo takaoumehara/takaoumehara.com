@@ -381,13 +381,16 @@
     .lab-link:hover { color: var(--ink); }
 
     /* ─── CTA ─── */
+    /* The rule has to start where the grid's rules start, or the page ends
+       on a line 480px narrower than every line above it. */
     .lab-cta {
       border-top: 1px solid var(--line);
-      max-width: 1200px;
+      max-width: 1680px;
       margin: 0 auto;
-      padding: 72px 32px 96px;
+      padding: 72px clamp(20px, 3vw, 40px) 96px;
       text-align: center;
     }
+    .lab-cta-title, .lab-cta-desc { max-width: 44ch; margin-left: auto; margin-right: auto; }
 
     .lab-cta-title {
       font-family: "DM Serif Display", Georgia, serif;
@@ -548,20 +551,32 @@
     }
 
   
-    /* .lab-intro and the card grid are centred inside a 1200px column; the
-       strip spans 1680px, so their left edges disagreed by 270px. Match the
-       strip to the column the rest of the page uses. */
-    body > .idx-head { max-width: 1200px; padding-left: 32px; padding-right: 32px; }
+    /* The intro is set to the same column as the grid and the identity
+       strip — 1680px, matching work.html — so every left edge on the page
+       lines up with every other. */
+    .lab-intro { max-width: 1680px; margin-left: auto; margin-right: auto;
+                 padding-left: clamp(20px, 3vw, 40px); padding-right: clamp(20px, 3vw, 40px); }
+    /* Measure is held with padding rather than a display override on the
+       spans — those spans are how the EN/JP switch works, and setting
+       display on them shows both languages at once. */
+    @media (min-width: 900px) { .lab-intro { padding-right: 48%; } }
   </style>
   <style>
     /* ── Nav tiers ── The three offers read first at full ink; the two
-       foundations sit behind a hairline, present but not competing. ── */
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
     .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
     .nav-links a { color: var(--ink-dim); }
     .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
     .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
-    .nav-rule { width: 1px; height: 12px; background: var(--line); flex: none; }
-    @media (max-width: 768px) { .nav-rule { display: none; } }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
 <body>
@@ -576,8 +591,7 @@
       <li><a href="interactive.html" class="is-lead">Interactive</a></li>
       <li><a href="ai-products.html" class="is-lead is-active" aria-current="page">AI Products</a></li>
       <li><a href="ai-tools.html" class="is-lead">AI Tools</a></li>
-      <li class="nav-rule" aria-hidden="true"></li>
-      <li><a href="work.html">Product Design</a></li>
+      <li class="is-tierbreak"><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -593,30 +607,13 @@
   </div>
 
   <!-- ── Header ── -->
-  <!-- ══ Identity strip — the same one work.html and brand.html carry, so the
-       site reads as one system. The card grid below stays: unlike those two,
-       this page argues for each item, and an index would delete the copy. ══ -->
+  <!-- ══ Wordmark only. The meta row that work.html and brand.html carry
+       (name, role, city, year, counts) repeated the nav and the footer on
+       every page, so it earns nothing here. The card grid below stays:
+       unlike those two indexes, this page argues for each item. ══ -->
   <header class="idx-head">
     <h1 class="idx-name"><span class="t-en">AI Products</span><span class="t-jp">AI Products</span></h1>
 
-    <div class="idx-meta">
-      <div class="idx-meta-col">
-        <span class="is-ink">Takao Umehara</span>
-        <span><span class="t-en">Product design × AI systems</span><span class="t-jp">プロダクト設計 × AIシステム</span></span>
-      </div>
-      <div class="idx-meta-col">
-        <a href="index.html"><span class="t-en">Index</span><span class="t-jp">全作品</span></a>
-        <a href="about.html"><span class="t-en">Information</span><span class="t-jp">プロフィール</span></a>
-      </div>
-      <div class="idx-meta-col">
-        <div class="page-count is-ink">5 projects</div>
-        <span><span class="t-en">20 years · New York</span><span class="t-jp">20年 · ニューヨーク</span></span>
-      </div>
-      <div class="idx-meta-col is-right">
-        <span class="is-ink">New York</span>
-        <span>2026</span>
-      </div>
-    </div>
   </header>
 
   <p class="lab-intro">
@@ -645,9 +642,9 @@
       </article>
 
 
-      <article class="work-card"><div class="card-image"><div class="card-art card-art--brain"><span class="card-art-label">Brain<br>Manual</span><span class="card-art-note">Personalized self-check</span></div></div><div class="card-body"><div class="chips"><span class="pill">Coming soon</span><span class="pill">AI app</span></div><h2 class="card-title">MyBrainSpec</h2><p class="card-desc"><span class="t-en">A quick cognitive self-check, scored by AI, that creates a personalized BrainManual. Not yet public.</span><span class="t-jp is-block">AI が採点する認知セルフチェックから、あなただけの「ブレインマニュアル」を生成。まだ非公開です。</span></p></div><div class="card-footer"><span class="card-meta">React/Vite · Firebase · Gemini</span></div></article>
+      <article class="work-card"><div class="card-image"><div class="card-art card-art--brain"><span class="card-art-label">My Brain<br>Spec</span><span class="card-art-note">Personalized self-check</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">AI app</span></div><h2 class="card-title">MyBrainSpec</h2><p class="card-desc"><span class="t-en">A short cognitive self-check. AI scores it and returns a written profile of how your own attention and memory actually behave.</span><span class="t-jp is-block">短い認知セルフチェックを AI が採点し、自分の注意と記憶が実際どう働くかを文章のプロファイルにして返します。</span></p></div><div class="card-footer"><span class="card-meta">React/Vite · Firebase · Gemini</span></div></article>
 
-      <article class="work-card is-wip"><div class="card-image"><div class="card-art card-art--insta"><span class="card-art-label">moimee<br>.app</span><span class="card-art-note">Elegant link-in-bio</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">Design tool</span></div><h2 class="card-title">moimee.app</h2><p class="card-desc"><span class="t-en">A link-in-bio for promo codes and events built around one rule: it has to look beautiful. AI just reads the flyer so you don't have to type the details in.</span><span class="t-jp is-block">プロモコードやイベント向けのリンク・イン・バイオ。ルールはひとつ、美しく見えること。AI はチラシを読み取るだけ — 入力の手間を省くために。</span></p></div><div class="card-footer"><span class="card-meta">React 19 · Gemini · Serverless</span><span class="card-meta card-meta--link">Visit ↗</span></div></article>
+      <article class="work-card is-wip"><div class="card-image"><div class="card-art card-art--insta"><span class="card-art-label">Moime<br>.app</span><span class="card-art-note">Elegant link-in-bio</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">Design tool</span></div><h2 class="card-title">Moime.app</h2><p class="card-desc"><span class="t-en">A link-in-bio page for promo codes and events. Point it at a flyer and it reads the dates, codes and venue off the image instead of asking you to type them.</span><span class="t-jp is-block">プロモコードやイベント用のリンク・イン・バイオ。チラシを読み込ませれば、日付・コード・会場を画像から取り出します。入力は不要です。</span></p></div><div class="card-footer"><span class="card-meta">React 19 · Gemini · Serverless</span></div></article>
     </div>
   </div>
 

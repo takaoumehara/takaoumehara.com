@@ -15,7 +15,7 @@ test('the three lead category pages use the shared thumbnail-led portfolio grid'
   const pages = {
     'ai-products.html': 5,
     'interactive.html': 8,
-    'ai-tools.html': 6,
+    'ai-tools.html': 7,
   };
 
   for (const [page, expectedCount] of Object.entries(pages)) {

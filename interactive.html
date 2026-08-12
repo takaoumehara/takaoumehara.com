@@ -381,13 +381,16 @@
     .lab-link:hover { color: var(--ink); }
 
     /* ─── CTA ─── */
+    /* The rule has to start where the grid's rules start, or the page ends
+       on a line 480px narrower than every line above it. */
     .lab-cta {
       border-top: 1px solid var(--line);
-      max-width: 1200px;
+      max-width: 1680px;
       margin: 0 auto;
-      padding: 72px 32px 96px;
+      padding: 72px clamp(20px, 3vw, 40px) 96px;
       text-align: center;
     }
+    .lab-cta-title, .lab-cta-desc { max-width: 44ch; margin-left: auto; margin-right: auto; }
 
     .lab-cta-title {
       font-family: "DM Serif Display", Georgia, serif;
@@ -547,82 +550,79 @@
       z-index: 0;
     }
 
-    /* ─── Snap Pair showcase section ─── */
-    .snap-section {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 8px 32px 40px;
-    }
-    .snap-head {
-      border-top: 1px solid var(--line);
-      padding: 44px 0 26px;
-      max-width: 760px;
-    }
-    .snap-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #1d4ed8;
-      margin-bottom: 14px;
-    }
-    .snap-eyebrow::before {
-      content: "";
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #2563eb, #7fb7ff);
-    }
-    .snap-title {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(30px, 4vw, 46px);
-      font-weight: 400;
-      letter-spacing: -0.03em;
-      line-height: 0.96;
-      margin-bottom: 14px;
-    }
-    .snap-sub {
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--ink-mid);
-    }
-    html.lang-jp .snap-title { line-height: 1.18; }
-
-    /* "Interactive" is true of any button, so the umbrella alone cannot carry
-       the meaning. Two named groups do: one is many people and one screen, the
-       other is one person and how the thing feels under their hand. */
-    .play-group {
-      display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
-      margin: 40px 0 18px; padding-top: 22px;
-      border-top: 1px solid var(--line);
-    }
-    .play-group:first-of-type { margin-top: 26px; }
-    .play-group h3 {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(21px, 2.2vw, 30px); font-weight: 400;
-      letter-spacing: -0.025em; line-height: 1.05;
-    }
-    .play-group p { font-size: 14.5px; line-height: 1.6; color: var(--ink-dim); max-width: 52ch; }
-
-    @media (max-width: 600px) {
-      .snap-section { padding-left: 20px; padding-right: 20px; }
-    }
-  
-    /* .lab-intro and the card grid are centred inside a 1200px column; the
-       strip spans 1680px, so their left edges disagreed by 270px. Match the
-       strip to the column the rest of the page uses. */
-    body > .idx-head { max-width: 1200px; padding-left: 32px; padding-right: 32px; }
   </style>
   <style>
     /* ── Nav tiers ── The three offers read first at full ink; the two
-       foundations sit behind a hairline, present but not competing. ── */
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
     .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
     .nav-links a { color: var(--ink-dim); }
     .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
     .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
-    .nav-rule { width: 1px; height: 12px; background: var(--line); flex: none; }
-    @media (max-width: 768px) { .nav-rule { display: none; } }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
+  </style>
+  <style>
+    /* ─── Input/output specification ───
+       The input is the argument this page makes, so it is set as a spec
+       sheet rather than a paragraph: three rows read in two seconds, and
+       the same vocabulary then leads every card as a solid label, so the
+       grid can be scanned for "which one uses my voice". */
+    .io-strip {
+      max-width: 1680px;
+      margin: 0 auto;
+      padding: clamp(22px, 2.6vw, 38px) clamp(20px, 3vw, 40px) 0;
+    }
+    .io-row {
+      display: grid;
+      grid-template-columns: 104px minmax(0, 1fr);
+      gap: 20px;
+      align-items: baseline;
+      padding: 13px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .io-row:first-child { border-top: 1px solid var(--ink); }
+    .io-label {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+      line-height: 1.9;
+    }
+    .io-values {
+      font-size: clamp(16px, 1.5vw, 23px);
+      line-height: 1.4;
+      letter-spacing: -0.018em;
+      color: var(--ink);
+    }
+    .io-values.is-dim { color: var(--ink-mid); }
+    .io-note {
+      margin-top: 16px;
+      max-width: 64ch;
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--ink-dim);
+    }
+
+    /* The input label leads every card and is the one chip set solid, so
+       the grid can be read by input alone. */
+    .pill--in {
+      border-color: var(--ink);
+      background: var(--ink);
+      color: #fff;
+      font-weight: 500;
+    }
+
+    @media (max-width: 640px) {
+      .io-row { grid-template-columns: 1fr; gap: 4px; padding: 11px 0; }
+      .io-label { line-height: 1.4; }
+    }
   </style>
 </head>
 <body>
@@ -637,8 +637,7 @@
       <li><a href="interactive.html" class="is-lead is-active" aria-current="page">Interactive</a></li>
       <li><a href="ai-products.html" class="is-lead">AI Products</a></li>
       <li><a href="ai-tools.html" class="is-lead">AI Tools</a></li>
-      <li class="nav-rule" aria-hidden="true"></li>
-      <li><a href="work.html">Product Design</a></li>
+      <li class="is-tierbreak"><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -654,127 +653,128 @@
   </div>
 
   <!-- ── Header ── -->
-  <!-- ══ Identity strip — the same one work.html and brand.html carry, so the
-       site reads as one system. The card grid below stays: unlike those two,
-       this page argues for each item, and an index would delete the copy. ══ -->
   <header class="idx-head">
     <h1 class="idx-name"><span class="t-en">Interactive<br>Experience</span><span class="t-jp">Interactive<br>Experience</span></h1>
-
-    <div class="idx-meta">
-      <div class="idx-meta-col">
-        <span class="is-ink">Takao Umehara</span>
-        <span><span class="t-en">Voice, body &amp; screen × real time</span><span class="t-jp">声・身体・画面 × リアルタイム</span></span>
-      </div>
-      <div class="idx-meta-col">
-        <a href="index.html"><span class="t-en">Index</span><span class="t-jp">全作品</span></a>
-        <a href="about.html"><span class="t-en">Information</span><span class="t-jp">プロフィール</span></a>
-      </div>
-      <div class="idx-meta-col">
-        <div class="page-count is-ink">8 projects</div>
-        <span><span class="t-en">20 years · New York</span><span class="t-jp">20年 · ニューヨーク</span></span>
-      </div>
-      <div class="idx-meta-col is-right">
-        <span class="is-ink">New York</span>
-        <span>2026</span>
-      </div>
-    </div>
   </header>
 
-  <p class="lab-intro">
-    <span class="t-en">Not "interactive" in the sense that a button is interactive. <strong>The input is your voice, your face, your body, your handwriting, or every phone in the room at once</strong> — and the output lands on a screen bigger than the one you are holding. Almost none of this is AI; it is networking, tracking and timing. Most of them open on your phone right now.</span>
-    <span class="t-jp is-block">ボタンを押せば「インタラクティブ」という意味ではありません。<strong>入力になるのは、声・表情・体の動き・手描きの線、あるいはその場にあるスマホ全部</strong>。そして出力は、手元より大きな画面に出ます。ここにある大半は AI ではなく、通信とトラッキングとタイミングの仕事です。ほとんどが、いまスマホで開けます。</span>
-  </p>
-
-  <!-- ── Interactive Experience & Games ── -->
-  <section class="snap-section" id="interactive" aria-labelledby="snap-title">
-
-    <div class="play-group">
-      <h3><span class="t-en">Experiences</span><span class="t-jp">体験</span></h3>
-      <p><span class="t-en">No winner, no score. What your voice or your body does to a room, and what it feels like to be the one causing it.</span><span class="t-jp is-block">勝ち負けも点数もありません。声や体の動きがその場に何を起こすか、そしてそれを起こしている側がどう感じるか。</span></p>
+  <!-- ══ The input is the whole argument, so it is set as a specification
+       rather than as a paragraph: three rows a visitor reads in two seconds,
+       and then the same vocabulary repeated as the first label on every card,
+       so the grid can be scanned for "which one uses my voice". ══ -->
+  <section class="io-strip" aria-label="What these are made of">
+    <div class="io-row">
+      <span class="io-label"><span class="t-en">Input</span><span class="t-jp">入力</span></span>
+      <span class="io-values"><span class="t-en">your voice · your face · your body · your handwriting · every phone in the room at once</span><span class="t-jp">声 · 表情 · 身体 · 手描きの線 · その場のスマホ全部</span></span>
     </div>
+    <div class="io-row">
+      <span class="io-label"><span class="t-en">Output</span><span class="t-jp">出力</span></span>
+      <span class="io-values"><span class="t-en">a screen bigger than the one you are holding</span><span class="t-jp">手元より大きな画面</span></span>
+    </div>
+    <div class="io-row">
+      <span class="io-label"><span class="t-en">Not</span><span class="t-jp">中身</span></span>
+      <span class="io-values is-dim"><span class="t-en">AI. Almost none of this is. It is networking, tracking and timing.</span><span class="t-jp">ほぼ AI ではありません。通信とトラッキングとタイミングの仕事です。</span></span>
+    </div>
+    <p class="io-note"><span class="t-en">Pressing a button is also "interactive." That is not what this word means here. Most of these open on your phone right now.</span><span class="t-jp is-block">ボタンを押すことも「インタラクティブ」です。ここで言う意味はそれではありません。ほとんどが、いまスマホで開けます。</span></p>
+  </section>
 
-    <div class="work-grid" aria-label="Interactive Experience projects">
-
-      <article class="work-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
-        <div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">WebGL</span></div>
-          <h2 class="card-title">Typespace</h2>
-          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。AI は使っていません — 打って、眺めるだけ。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span><span class="card-meta card-meta--link">Try it ↗</span></div>
-      </article>
+  <section class="idx-band" id="experiences">
+    <div class="idx-band-head">
+      <span class="idx-band-num">01</span>
+      <span class="idx-band-title"><span class="t-en">Experiences</span><span class="t-jp">体験</span></span>
+      <span class="idx-band-note"><span class="t-en">No winner, no score</span><span class="t-jp">勝ち負けも点数もない</span></span>
+    </div>
+    <div class="work-grid" aria-label="Interactive experience projects">
 
       <article class="work-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
         <div class="card-image"><div class="card-art card-art--motion"><span class="card-art-label">Resona<br>響</span><span class="card-art-note">Pseudo-haptics</span></div></div>
         <div class="card-body">
-          <div class="chips"><span class="pill">Live</span><span class="pill">Motion design</span></div>
+          <div class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill">Live</span><span class="pill">Motion design</span></div>
           <h2 class="card-title">Resona <span style="font-size:0.6em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">響</span></h2>
           <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">擬似ハプティクスにもとづく、意図を伝えるウェブアニメーションの実験場。言葉を読む前に、動きが意味を伝える。</span></p>
         </div>
         <div class="card-footer"><span class="card-meta">Web animation · Pseudo-haptics</span><span class="card-meta card-meta--link">Try it ↗</span></div>
       </article>
 
-      <article class="work-card" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
-        <div class="card-image"><div class="card-art card-art--rakugaki"><span class="card-art-label">Rakugaki<br>Jam</span><span class="card-art-note">Phone → wall VJ</span></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">VJ</span></div>
-          <h2 class="card-title">Rakugaki Jam</h2>
-          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホで落書きして、みんなの壁画面へ投げ込む。観客みんなで描く、ライブな VJ ジャム。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · Firebase RTDB · Canvas</span><span class="card-meta card-meta--link">Try it ↗</span></div>
-      </article>
-
-      <article class="work-card">
-        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/koebaku/hero.jpg');"></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Voice</span></div>
-          <h2 class="card-title">Koe Baku <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">声爆</span></h2>
-          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — a QR-join VJ, measured on-device, no audio ever leaves the phone.</span><span class="t-jp is-block">叫べば、声が漫画の擬音になって画面で弾ける。QR で参加する VJ。判定は端末内で完結し、音声は外に出ません。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · Web Audio · Canvas</span></div>
-      </article>
-
       <article class="work-card">
         <div class="card-image"><div class="card-art card-art--kao"><span class="card-art-label">Kao<br>Game</span><span class="card-art-note">Your face is the controller</span></div></div>
         <div class="card-body">
-          <div class="chips"><span class="pill">In progress</span><span class="pill">Face tracking</span></div>
+          <div class="chips"><span class="pill pill--in"><span class="t-en">Face</span><span class="t-jp">表情</span></span><span class="pill">In progress</span><span class="pill">Face tracking</span></div>
           <h2 class="card-title">Kao Game <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">顔ゲーム</span></h2>
           <p class="card-desc"><span class="t-en">A game you play with your face. Pull the expressions the game asks for — and the muscles you never train get a workout you actually want to repeat.</span><span class="t-jp is-block">顔で遊ぶゲーム。指示された表情をつくると、普段は鍛えない表情筋が動く。続けたくなる形にした表情筋トレーニング。</span></p>
         </div>
         <div class="card-footer"><span class="card-meta">Face tracking · Web</span></div>
       </article>
 
-    </div>
+      <article class="work-card" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
+        <div class="card-image"><div class="card-art card-art--rakugaki"><span class="card-art-label">Rakugaki<br>Jam</span><span class="card-art-note">Phone → wall VJ</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill pill--in"><span class="t-en">Handwriting</span><span class="t-jp">手描き</span></span><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">VJ</span></div>
+          <h2 class="card-title">Rakugaki Jam</h2>
+          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホで落書きして、みんなの壁画面へ投げ込む。観客みんなで描く、ライブな VJ ジャム。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · Firebase RTDB · Canvas</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+      </article>
 
-    <div class="play-group">
-      <h3><span class="t-en">Games</span><span class="t-jp">ゲーム</span></h3>
-      <p><span class="t-en">Play on the phones everyone already has. Scan a code to join — no app, no accounts, no controllers to hand out.</span><span class="t-jp is-block">その場にあるスマホでそのまま遊ぶ。コードを読むだけで参加でき、アプリもアカウントもコントローラーも要りません。</span></p>
-    </div>
-
-    <div class="work-grid" aria-label="Games projects">
+      <article class="work-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
+        <div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill pill--in"><span class="t-en">Typing</span><span class="t-jp">タイピング</span></span><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">WebGL</span></div>
+          <h2 class="card-title">Typespace</h2>
+          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。AI は使っていません — 打って、眺めるだけ。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+      </article>
 
       <article class="work-card">
-        <div class="card-image"><div class="card-img-bg card-img-bg--werewolf" style="background-image:url('assets/werewolf/ghost-wolf.png');"></div></div>
+        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/koebaku/hero.jpg');"></div></div>
         <div class="card-body">
-          <div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
-          <h2 class="card-title">Werewolf Card Game</h2>
-          <p class="card-desc"><span class="t-en">A digital Werewolf (Mafia) party game — hand-illustrated role cards dealt to each player's phone, one table on the big screen.</span><span class="t-jp is-block">デジタル版の人狼ゲーム。手描きの役職カードが各プレイヤーのスマホに配られ、卓は大画面にひとつ。</span></p>
+          <div class="chips"><span class="pill pill--in"><span class="t-en">Voice</span><span class="t-jp">声</span></span><span class="pill">In progress</span><span class="pill pill--snap">Snap Pair</span></div>
+          <h2 class="card-title">Koe Baku <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">声爆</span></h2>
+          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — a QR-join VJ, measured on-device, no audio ever leaves the phone.</span><span class="t-jp is-block">叫べば、声が漫画の擬音になって画面で弾ける。QR で参加する VJ。判定は端末内で完結し、音声は外に出ません。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · 27 illustrated roles</span></div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · Web Audio · Canvas</span></div>
       </article>
+
+    </div>
+  </section>
+
+  <section class="idx-band" id="games">
+    <div class="idx-band-head">
+      <span class="idx-band-num">02</span>
+      <span class="idx-band-title"><span class="t-en">Games</span><span class="t-jp">ゲーム</span></span>
+      <span class="idx-band-note"><span class="t-en">Scan to join — no app, no accounts</span><span class="t-jp">コードを読むだけ — アプリもアカウントも不要</span></span>
+    </div>
+    <div class="work-grid" aria-label="Game projects">
 
       <article class="work-card">
         <div class="card-image"><div class="card-art card-art--emoji"><span class="card-art-label">Emoji<br>Drop</span><span class="card-art-note">2-player online shooter</span></div></div>
         <div class="card-body">
-          <div class="chips"><span class="pill">Prototype</span><span class="pill">Game</span><span class="pill">WebRTC</span></div>
+          <div class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2台のスマホ</span></span><span class="pill">Prototype</span><span class="pill">Game</span><span class="pill">WebRTC</span></div>
           <h2 class="card-title">EmojiDrop</h2>
           <p class="card-desc"><span class="t-en">An emoji-only arcade shooter, two players head-to-head over WebRTC — no Snap Pair here, no server relay either.</span><span class="t-jp is-block">絵文字だけで対戦する、2人同時プレイのアーケードシューター。WebRTC で直接対戦 — Snap Pair もサーバー中継も使っていません。</span></p>
         </div>
         <div class="card-footer"><span class="card-meta">HTML5 Canvas · WebRTC · single-file</span></div>
       </article>
 
-      <article class="work-card" tabindex="0" data-href="projects/marubatsu.html"><div class="card-image"><div class="card-img-bg" style="background-image:url('assets/marubatsu/hero.jpg');"></div></div><div class="card-body"><div class="chips"><span class="pill">Shipped</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div><h2 class="card-title">Marubatsu 2.0</h2><p class="card-desc"><span class="t-en">Real-time online tic-tac-toe with an AI opponent.</span><span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span></p></div><div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span><span class="card-meta card-meta--link">Case study →</span></div></article>
+      <article class="work-card" tabindex="0" data-href="projects/marubatsu.html">
+        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/marubatsu/hero.jpg');"></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2台のスマホ</span></span><span class="pill">Shipped</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
+          <h2 class="card-title">Marubatsu 2.0</h2>
+          <p class="card-desc"><span class="t-en">Real-time online tic-tac-toe with an AI opponent.</span><span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span><span class="card-meta card-meta--link">Case study →</span></div>
+      </article>
+
+      <article class="work-card">
+        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/werewolf/ghost-wolf.png');"></div></div>
+        <div class="card-body">
+          <div class="chips"><span class="pill pill--in"><span class="t-en">Every phone</span><span class="t-jp">その場の全端末</span></span><span class="pill">In progress</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
+          <h2 class="card-title">Werewolf Card Game</h2>
+          <p class="card-desc"><span class="t-en">A digital Werewolf (Mafia) party game — hand-illustrated role cards dealt to each player's phone, one table on the big screen.</span><span class="t-jp is-block">デジタル版の人狼ゲーム。手描きの役職カードが各プレイヤーのスマホに配られ、卓は大画面にひとつ。</span></p>
+        </div>
+        <div class="card-footer"><span class="card-meta">Snap Pair · 27 illustrated roles</span></div>
+      </article>
 
     </div>
   </section>

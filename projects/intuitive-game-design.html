@@ -4,17 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <title>multilingual-readme — Takao Umehara</title>
-  <meta name="description" content="multilingual-readme — a Claude Code skill that writes a README engineers and non-technical builders both understand in ten seconds, in five languages, derived from your source files and machine-verified.">
-  <meta property="og:title" content="multilingual-readme — Takao Umehara">
-  <meta property="og:description" content="Written for whoever opens it, coder or not — in five languages.">
+  <title>intuitive-game-design — Takao Umehara</title>
+  <meta name="description" content="intuitive-game-design — a Claude Code skill for games and interactive experiences a first-time player understands with no tutorial, and that feel good under the hand.">
+  <meta property="og:title" content="intuitive-game-design — Takao Umehara">
+  <meta property="og:description" content="A game nobody has to explain. Affordances, game feel and web audio, as one installable skill.">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="https://takaoumehara.com/projects/multilingual-readme.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/og/multilingual-readme.jpg">
+  <meta property="og:url" content="https://takaoumehara.com/projects/intuitive-game-design.html">
+  <meta property="og:image" content="https://takaoumehara.com/assets/og/superforge.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="multilingual-readme — Takao Umehara">
-  <meta name="twitter:description" content="Written for whoever opens it, coder or not — in five languages.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/og/multilingual-readme.jpg">
+  <meta name="twitter:title" content="intuitive-game-design — Takao Umehara">
+  <meta name="twitter:description" content="A game nobody has to explain. Affordances, game feel and web audio, as one installable skill.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/og/superforge.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -36,8 +36,7 @@
       --a-blue: #2563eb;
       --a-orange: #f97316;
       --a-violet: #7c3aed;
-      --a-tool: #be185d;
-      --m-tint: var(--a-tool);
+      --m-tint: var(--a-orange);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -75,7 +74,6 @@
     .breadcrumb a:hover { color: var(--ink); }
     .breadcrumb span { font-size: 12px; color: rgba(18, 18, 18, 0.28); margin: 0 8px; }
 
-    /* ═══ Slide deck ═══ */
     .deck { max-width: 1240px; margin: 0 auto; padding: 8px 20px 8px; }
     .wds-slide { margin-bottom: 2px; }
     .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
@@ -84,20 +82,20 @@
     html.lang-jp .wds-serif em { white-space: nowrap; }
 
     .wds-hero { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6.5vw, 96px) clamp(28px, 5vw, 78px); }
-    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(219,39,119,0.26), transparent 62%); pointer-events: none; }
+    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(249,115,22,0.24), transparent 62%); pointer-events: none; }
     .wds-hero > * { position: relative; z-index: 1; }
     .wds-hero .wds-kick { color: rgba(255,255,255,0.5); }
     .wds-hero h1 { font-size: clamp(40px, 6.6vw, 84px); max-width: 15ch; }
-    .wds-hero h1 em { font-style: italic; color: #f9a8d4; }
+    .wds-hero h1 em { font-style: italic; color: #f7a63a; }
     .wds-hero-lead { font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.72; color: rgba(255,255,255,0.66); max-width: 60ch; margin-top: 30px; }
     .wds-hero-lead strong { color: #fff; font-weight: 600; }
-    .wds-hero-lead code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: rgba(255,255,255,0.12); padding: 1px 5px; }
 
     .tool-statement { position: relative; overflow: hidden; color: #fff; padding: clamp(46px, 6.5vw, 92px) clamp(28px, 5vw, 78px); }
     .tool-statement .wds-kick { color: rgba(255,255,255,0.62); }
     .tool-statement h2 { font-size: clamp(34px, 5vw, 66px); max-width: 17ch; }
     .tool-statement h2 em { font-style: italic; color: #f8f3e7; }
-    .tool-statement.st-rose { background: var(--a-tool); }
+    .tool-statement.st-orange { background: var(--a-orange); }
+    .tool-statement.st-violet { background: linear-gradient(140deg, #2a1140, #7b2d8e 52%, #ff9ec7); color: #fff; }
 
     .wds-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
     .wds-chip { padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
@@ -108,7 +106,6 @@
     .tool-mech h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
     .mech-lead { font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.72; color: var(--ink-mid); max-width: 62ch; }
     .mech-lead strong { color: var(--ink); font-weight: 600; }
-    .mech-lead code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.88em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
     .mech-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 28px; }
     .mech-fact { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--m-tint); padding: 16px 16px 18px; }
     .mech-fact-l { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 7px; }
@@ -116,20 +113,8 @@
     .mech-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
     .story-cta { display: inline-block; padding: 13px 18px; border: 1px solid var(--ink); color: var(--ink); font-size: 11px; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
     .story-cta:hover { background: var(--ink); color: #fff; }
-    .story-cta--ghost { border-color: var(--border); }
-    .story-cta--ghost:hover { background: transparent; color: var(--ink); border-color: rgba(18,18,18,0.34); }
     .wds-hero .story-cta { border-color: rgba(255,255,255,0.4); color: #fff; }
     .wds-hero .story-cta:hover { background: #fff; color: #0d0d0f; }
-
-    .mech-rail { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(18,18,18,0.12); }
-    .mech-rail-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
-    .rail-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2px; }
-    .rail-item { display: block; padding: 20px 22px; background: #fff; border: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color 180ms ease; }
-    a.rail-item:hover { border-color: rgba(18,18,18,0.32); }
-    .rail-item-status { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--a-tool); font-weight: 600; margin-bottom: 8px; }
-    .rail-item-status.is-soon { color: var(--ink-dim); }
-    .rail-item-name { font-size: 15px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 6px; }
-    .rail-item-desc { font-size: 12.5px; line-height: 1.55; color: var(--ink-dim); }
 
     .mech-figure { display: flex; justify-content: center; }
     .diagram { width: min(100%, 330px); height: auto; overflow: visible; }
@@ -141,12 +126,10 @@
     .diagram .draw { stroke-dasharray: 340; stroke-dashoffset: 340; transition: stroke-dashoffset 1100ms cubic-bezier(0.22, 0.84, 0.22, 1); }
     .is-visible .diagram .draw { stroke-dashoffset: 0; }
     .is-visible .diagram .draw.d2 { transition-delay: 260ms; }
-    .diagram .dot { opacity: 0; }
-    .is-visible .diagram .dot { opacity: 1; animation: travel-pair 2.8s cubic-bezier(0.45, 0, 0.55, 1) 900ms infinite; }
-    @keyframes travel-pair { 0%, 12% { transform: translate(0, 0); } 55%, 70% { transform: translate(56px, 14px); } 100% { transform: translate(0, 0); } }
-    @keyframes pulse-ring { 0% { transform: scale(0.6); opacity: 0.9; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
+    .is-visible .diagram .draw.d3 { transition-delay: 520ms; }
     .diagram .pulse { transform-origin: center; transform-box: fill-box; opacity: 0; }
     .is-visible .diagram .pulse { animation: pulse-ring 2.8s ease-out 1200ms infinite; }
+    @keyframes pulse-ring { 0% { transform: scale(0.6); opacity: 0.9; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
 
     .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1240px; margin: 0 auto; padding: 48px 20px 64px; }
     .project-nav-link { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
@@ -155,7 +138,7 @@
     .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22,0.84,0.22,1), transform 600ms cubic-bezier(0.22,0.84,0.22,1); }
     .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
 
-    .story-cta:focus-visible, .rail-item:focus-visible,
+    .story-cta:focus-visible,
     .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible, .nav-toggle:focus-visible, .project-nav-link:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
     .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
@@ -169,7 +152,6 @@
       .mech-figure { justify-content: flex-start; }
       .diagram { width: min(72%, 280px); }
       .mech-facts { grid-template-columns: 1fr; }
-      .rail-items { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 767px) {
@@ -186,8 +168,8 @@
       html { scroll-behavior: auto; }
       .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
       .diagram .draw { stroke-dashoffset: 0 !important; transition: none !important; }
-      .diagram .dot, .diagram .pulse { animation: none !important; opacity: 1 !important; }
-      .story-cta, .rail-item, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
+      .diagram .pulse { animation: none !important; opacity: 1 !important; }
+      .story-cta, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
   </style>
   <style>
@@ -228,66 +210,64 @@
   <div class="breadcrumb">
     <a href="../ai-tools.html">AI Tools</a>
     <span>/</span>
-    <a href="#">multilingual-readme</a>
+    <a href="#">intuitive-game-design</a>
   </div>
 
   <main class="deck">
 
-    <!-- ═══ Slide 1 · Hero (dark, rose glow) ═══ -->
+    <!-- ═══ Slide 1 · Hero (dark, orange glow) ═══ -->
     <header class="wds-hero wds-slide reveal-on-scroll">
-      <p class="wds-kick"><span class="t-en">Claude Code Skill · Written for Non-Engineers Too · 5 Languages</span><span class="t-jp">Claude Code スキル · 非エンジニアにも書く · 5 言語</span></p>
-      <h1 class="wds-serif"><span class="t-en">Written for whoever opens it — <em>coder or not</em>.</span><span class="t-jp is-block">開いた人が誰であっても伝わるように — <em>コードが読めなくても</em>。</span></h1>
-      <p class="wds-hero-lead"><span class="t-en">Vibe coding means the person shipping a project increasingly can't read its code — and a README that only speaks engineer loses them at line one. <strong>multilingual-readme</strong> inspects the project itself — <code>SKILL.md</code>, <code>package.json</code>, scripts, the git remote — and writes a full README set in English, 日本語, 简体中文, Español and 한국어: a plain-language explanation before any jargon, a Mermaid architecture diagram, exactly three features, a before/after table, and install guides per environment. Then a Python checker audits the result, so no install command is invented and no translation artifact leaks through.</span><span class="t-jp is-block">バイブコーディングの時代、プロジェクトを世に出す人が自分でコードを読めないことは珍しくありません。エンジニア語だけで書かれた README は、その人を最初の一行で振り落とします。<strong>multilingual-readme</strong> はプロジェクト自体を読みます — <code>SKILL.md</code>、<code>package.json</code>、スクリプト、git remote。そこから English・日本語・简体中文・Español・한국어 の README 一式を書き出します。専門用語より先に平易な説明、Mermaid のアーキテクチャ図、機能はちょうど 3 つ、Before/After 表、環境別のインストール手順。最後に Python のチェッカーが結果を監査するので、存在しないインストールコマンドも、翻訳の残りかすも通りません。</span></p>
+      <p class="wds-kick"><span class="t-en">Claude Code Skill · Game design · Game feel · Web audio</span><span class="t-jp">Claude Code スキル · ゲームデザイン · 手ざわり · Web の音</span></p>
+      <h1 class="wds-serif"><span class="t-en">A game nobody has to <em>explain</em>.</span><span class="t-jp is-block">誰も<em>説明しなくていい</em>ゲームを。</span></h1>
+      <p class="wds-hero-lead"><span class="t-en"><strong>intuitive-game-design</strong> is a Claude Code skill for games and interactive experiences a first-time player understands without a tutorial — and that feel right under the hand. It carries three bodies of work: designing and diagnosing intuitiveness, building games around a single mechanic, and implementing sound on the web.</span><span class="t-jp is-block"><strong>intuitive-game-design</strong> は、初見の人がチュートリアルなしで理解でき、触って気持ちいいゲームと体験をつくるための Claude Code スキルです。中身は3つ — 直感性の設計と診断、ひとつのメカニクスに絞ったゲーム、そして Web での音の実装。</span></p>
       <div class="wds-chips">
-        <span class="wds-chip"><span class="t-en">Plain-language section, no jargon first</span><span class="t-jp">専門用語より先に平易な説明</span></span>
-        <span class="wds-chip">EN · 日本語 · 简体中文 · Español · 한국어</span>
-        <span class="wds-chip"><span class="t-en">Python checker</span><span class="t-jp">Python チェッカー</span></span>
-        <span class="wds-chip">MIT</span>
+        <span class="wds-chip">Claude Code Skill</span>
+        <span class="wds-chip"><span class="t-en">Affordances · MDA</span><span class="t-jp">アフォーダンス · MDA</span></span>
+        <span class="wds-chip"><span class="t-en">Game feel</span><span class="t-jp">手ざわり</span></span>
+        <span class="wds-chip">Web Audio · Tone.js</span>
       </div>
       <div class="mech-ctas">
-        <a class="story-cta" href="https://github.com/takaoumehara/multilingual-readme-skill" target="_blank" rel="noopener" aria-label="View multilingual-readme on GitHub (opens in a new tab)">GitHub ↗</a>
+        <a class="story-cta" href="https://github.com/takaoumehara/intuitive-game-design-skill" target="_blank" rel="noopener" aria-label="View intuitive-game-design on GitHub (opens in a new tab)">GitHub ↗</a>
       </div>
     </header>
 
     <!-- ═══ Slide 2 · Mechanism (cream) ═══ -->
-    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="multilingual-readme details">
+    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="intuitive-game-design details">
       <div class="mech-grid">
         <div>
-          <h3><span class="t-en">Two different readers, one README, neither one loses.</span><span class="t-jp is-block">読む人が違っても、同じ README で、誰も置き去りにしない。</span></h3>
-          <p class="mech-lead"><span class="t-en">A README has about ten seconds to show whoever opens it what your tool does — and it has to work for a developer skimming for the install command <em>and</em> for the non-technical builder who assembled the product with AI and just needs to know what this thing is for. This skill writes for both: a plain-language explanation comes before any jargon, install paths and entry points are pulled from the project's own files instead of invented, each of the five languages is rewritten for its own readers rather than word-substituted, and <code>check_readme.py</code> validates anchors, links, section counts and script purity before anything ships.</span><span class="t-jp is-block">README が「これは何か」を伝えられる時間は約 10 秒。その 10 秒は、インストールコマンドを探すエンジニアにも、AI と一緒にプロダクトを組み立てた非技術者にも通用しなければなりません。このスキルは両方に向けて書きます。専門用語より先に平易な説明を置き、インストールパスとエントリポイントはプロジェクトのファイルから取り出してでっち上げず、5 言語それぞれをその言語の読者に向けて書き直し、単語の置換で済ませません。そして公開前に <code>check_readme.py</code> がアンカー、リンク、セクション数、スクリプトの混入を検証します。</span></p>
+          <h3><span class="t-en">A tutorial is what you write when the design did not communicate.</span><span class="t-jp is-block">チュートリアルは、デザインが伝わらなかったときに書くものです。</span></h3>
+          <p class="mech-lead"><span class="t-en">This skill works the other side of that sentence. First, what the shape of a thing tells a player before they read anything — affordances, cognitive load, natural mapping, and the playtest protocols (CARD, ORID) that find out whether it actually landed. Then the handful of milliseconds that decide whether an input feels responsive or broken: variable jump, coyote time, input buffering, and the juice that makes a hit register. Sound is the third part, because on the web a silent game reads as unfinished.</span><span class="t-jp is-block">このスキルは、その一文の反対側を扱います。まず、読む前に形が伝えること — アフォーダンス、認知負荷、ナチュラルマッピング、そして本当に伝わったかを確かめるプレイテスト手順（CARD・ORID）。次に、入力が「効いている」か「壊れている」かを分ける数十ミリ秒 — 可変ジャンプ、コヨーテタイム、入力バッファ、当たった感じを出す Juice。3つめが音です。Web では、無音のゲームは未完成に見えるので。</span></p>
           <div class="mech-facts">
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Reads for</span><span class="t-jp">誰に向けて</span></div><div class="mech-fact-v"><span class="t-en">Engineers and non-technical builders alike</span><span class="t-jp">エンジニアにも非技術者にも</span></div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Languages</span><span class="t-jp">言語</span></div><div class="mech-fact-v">EN · 日本語 · 简体中文 · Español · 한국어</div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Verify</span><span class="t-jp">検証</span></div><div class="mech-fact-v"><span class="t-en">check_readme.py, not proofreading</span><span class="t-jp">目視ではなく check_readme.py</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Understand</span><span class="t-jp">わかる</span></div><div class="mech-fact-v"><span class="t-en">Affordances, cognitive load, CARD / ORID playtests</span><span class="t-jp">アフォーダンス、認知負荷、CARD / ORID プレイテスト</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Feel</span><span class="t-jp">手ざわり</span></div><div class="mech-fact-v"><span class="t-en">Variable jump, coyote time, input buffering, juice</span><span class="t-jp">可変ジャンプ、コヨーテタイム、入力バッファ、Juice</span></div></div>
+            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Hear</span><span class="t-jp">音</span></div><div class="mech-fact-v"><span class="t-en">Web Audio synthesis, Tone.js, look-ahead rhythm timing</span><span class="t-jp">Web Audio の効果音合成、Tone.js、先読みのリズム判定</span></div></div>
           </div>
           <div class="mech-ctas">
-            <a class="story-cta" href="https://github.com/takaoumehara/multilingual-readme-skill" target="_blank" rel="noopener" aria-label="View multilingual-readme on GitHub (opens in a new tab)">GitHub ↗</a>
+            <a class="story-cta" href="https://github.com/takaoumehara/intuitive-game-design-skill" target="_blank" rel="noopener" aria-label="View intuitive-game-design on GitHub (opens in a new tab)">GitHub ↗</a>
           </div>
         </div>
         <div class="mech-figure" aria-hidden="true">
           <svg class="diagram" viewBox="0 0 160 120" role="img">
-            <path class="ink draw" d="M12 26 h26 l10 10 v48 H12 z M38 26 v10 h10"/>
-            <path class="tint draw d2" d="M20 48 h20 M20 56 h24 M20 64 h16"/>
-            <path class="faint" d="M52 60 h24"/>
-            <path class="tint draw d2" d="M80 14 v92 M80 14 h10 M80 37 h10 M80 60 h10 M80 83 h10 M80 106 h10"/>
-            <rect class="ink draw d3" x="92" y="8" width="46" height="12" rx="2"/>
-            <rect class="ink draw d3" x="92" y="31" width="46" height="12" rx="2"/>
-            <rect class="ink draw d3" x="92" y="54" width="46" height="12" rx="2"/>
-            <rect class="ink draw d3" x="92" y="77" width="46" height="12" rx="2"/>
-            <rect class="ink draw d3" x="92" y="100" width="46" height="12" rx="2"/>
-            <circle class="tint pulse" cx="64" cy="60" r="9"/>
-            <text x="12" y="98">SOURCE</text>
+            <path class="faint" d="M14 96 h132"/>
+            <path class="faint" d="M14 96 V20"/>
+            <path class="ink draw" d="M14 96 C 34 96, 44 92, 60 74 C 84 46, 108 32, 146 28"/>
+            <circle class="tint-fill" cx="14" cy="96" r="3.5"/>
+            <circle class="tint pulse" cx="14" cy="96" r="9"/>
+            <path class="tint draw d2" d="M14 96 L14 74"/>
+            <path class="tint draw d3" d="M9 80 L14 74 L19 80"/>
+            <text x="12" y="112">TOUCH</text>
+            <text x="112" y="112">GETS IT</text>
           </svg>
         </div>
       </div>
     </section>
 
-    <!-- ═══ Slide 3 · Closing (vivid rose) ═══ -->
-    <section class="tool-statement st-rose wds-slide reveal-on-scroll">
+    <!-- ═══ Slide 3 · Closing (vivid orange) ═══ -->
+    <section class="tool-statement st-violet wds-slide reveal-on-scroll">
       <p class="wds-kick"><span class="t-en">Why it matters</span><span class="t-jp">なぜ重要か</span></p>
-      <h2 class="wds-serif"><span class="t-en">Most good tools lose people at the <em>front page</em>.</span><span class="t-jp is-block">良い道具の多くは、<em>最初のページ</em>で人を失う。</span></h2>
+      <h2 class="wds-serif"><span class="t-en">If it needs a tutorial, <em>the design is not finished</em>.</span><span class="t-jp is-block">チュートリアルが要るなら、<em>デザインはまだ終わっていない</em>。</span></h2>
       <div class="mech-ctas">
-        <a class="story-cta" href="../ai-tools.html"><span class="t-en">Back to AI Tools →</span><span class="t-jp">AI Tools に戻る →</span></a>
+        <a class="story-cta" href="../ai-tools.html"><span class="t-en">Explore other AI Tools →</span><span class="t-jp">他の AI Tools を見る →</span></a>
       </div>
     </section>
 
@@ -295,7 +275,7 @@
 
   <div class="project-nav">
     <a href="interactive-experience-skills.html" class="project-nav-link"><span class="t-en">&larr; interactive-experience-skills</span><span class="t-jp">&larr; interactive-experience-skills</span></a>
-    <a href="../ai-tools.html" class="project-nav-link"><span class="t-en">Next: AI Tools &rarr;</span><span class="t-jp">次へ: AI Tools &rarr;</span></a>
+    <a href="cross-model-handoff.html" class="project-nav-link"><span class="t-en">Next: cross-model-handoff &rarr;</span><span class="t-jp">次へ: cross-model-handoff &rarr;</span></a>
   </div>
 
   <footer class="site-footer">
