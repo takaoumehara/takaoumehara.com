@@ -16,6 +16,9 @@ const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const classSelector = (name) =>
   `(?=[^>]*\\bclass\\s*=\\s*(?:"[^"]*\\b${escape(name)}\\b[^"]*"|'[^']*\\b${escape(name)}\\b[^']*'))`;
 const openWithClass = (tag, name) => new RegExp(`<${tag}\\b${classSelector(name)}[^>]*>`, 'gi');
+// Work cards render as <a href> when they link somewhere and <article> when they
+// do not (unreleased work). Count both.
+const cardsWithClass = (name) => new RegExp(`<(?:a|article)\\b${classSelector(name)}[^>]*>`, 'gi');
 const langSpan = (lang, text) =>
   `<span\\b${classSelector(lang)}[^>]*>\\s*${escape(text)}\\s*<\\/span>`;
 const paired = (en, jp) => new RegExp(`${langSpan('t-en', en)}\\s*${langSpan('t-jp', jp)}`);
@@ -175,9 +178,9 @@ test('AI Tools index cards link to internal project detail pages, not straight t
     ['multilingual-readme', 'projects/multilingual-readme.html'],
   ];
   for (const [id, href] of expected) {
-    const card = html.match(new RegExp(`<article\\b[^>]*\\bid\\s*=\\s*["']${escape(id)}["'][^>]*>`, 'i'))?.[0];
+    const card = html.match(new RegExp(`<(?:a|article)\\b[^>]*\\bid\\s*=\\s*["']${escape(id)}["'][^>]*>`, 'i'))?.[0];
     assert.ok(card, `ai-tools.html needs a #${id} card`);
-    assert.equal(attr(card, 'data-href'), href, `${id} card must link to ${href}`);
+    assert.equal(attr(card, 'href'), href, `${id} card must link to ${href}`);
     assert.equal(attr(card, 'data-external'), undefined, `${id} card must not be marked external (it's an internal project page)`);
   }
 });
@@ -231,7 +234,7 @@ test('Agentic UX page presents a curated products grid plus an Interactive Exper
   const html = read('ai-products.html');
   assert.match(html, /<title>\s*Agentic UX — Takao Umehara\s*<\/title>/);
   assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bpage-count\b[^"']*["'][^>]*>\s*12 products\s*<\/div>/i);
-  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 12, 'Agentic UX page needs twelve work cards (6 products + 6 Interactive Experience)');
+  assert.equal([...html.matchAll(cardsWithClass('work-card'))].length, 12, 'Agentic UX page needs twelve work cards (6 products + 6 Interactive Experience)');
   assertPair(html, 'Interactive Experience', 'Interactive Experience', 'Agentic UX Interactive Experience section title');
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*intentfirst\.ai\s*<\/h2>/);
   assert.match(html, /<h2\b[^>]*\bclass\s*=\s*["']card-title["'][^>]*>\s*Verizon AI Workflow\s*<\/h2>/);
@@ -254,8 +257,8 @@ test('Brand & Visual page uses the supplied Konosaki thumbnail and live URL', ()
   assert.ok(existsSync(join(v3, 'brand.html')), 'v3/brand.html must exist');
   const html = read('brand.html');
   assert.match(html, /<title>\s*Brand &amp; Visual — Takao Umehara\s*<\/title>/);
-  assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, 12, 'Brand & Visual page needs twelve cards');
-  const konosaki = html.match(/<article\b[^>]*\bdata-href\s*=\s*["']https:\/\/konosaki-co\.vercel\.app\/?["'][^>]*>[\s\S]*?<\/article>/i)?.[0];
+  assert.equal([...html.matchAll(cardsWithClass('work-card'))].length, 12, 'Brand & Visual page needs twelve cards');
+  const konosaki = html.match(/<a\b[^>]*\bhref\s*=\s*["']https:\/\/konosaki-co\.vercel\.app\/?["'][^>]*>[\s\S]*?<\/a>/i)?.[0];
   assert.ok(konosaki, 'Brand & Visual page needs a Konosaki card linking to konosaki-co.vercel.app');
   assert.match(konosaki, /Konosaki/);
   assert.match(konosaki, /assets\/konosaki\/KONOSAKI-logo\/KONOSAKI_WEWORK-VERTICAL\.svg/);
@@ -270,7 +273,7 @@ test('AI index pages expose thumbnail-led work-card grids', () => {
   for (const [page, expectedCount] of expectations) {
     const html = read(page);
     assert.match(html, /<div\b[^>]*\bclass\s*=\s*["'][^"']*\bwork-grid\b[^"']*["']/i, `${page} needs a work-grid`);
-    assert.equal([...html.matchAll(openWithClass('article', 'work-card'))].length, expectedCount, `${page} needs ${expectedCount} work cards`);
+    assert.equal([...html.matchAll(cardsWithClass('work-card'))].length, expectedCount, `${page} needs ${expectedCount} work cards`);
     assert.match(html, /class=["'][^"']*\bcard-image\b[^"']*["']/i, `${page} needs card thumbnails`);
   }
 });

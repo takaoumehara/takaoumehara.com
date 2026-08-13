@@ -1,0 +1,65 @@
+/* ─── Cross-document view transitions ───────────────────────────────────────
+ * Grid card → project hero, as one continuous element.
+ *
+ * The card's image and the project page's hero use the same asset on 19 of
+ * the 22 linked projects, so the morph reads as one picture growing rather
+ * than two pictures swapping. Pages whose hero has no image (verizon-ai-agents,
+ * amazon-firetv) and the keynote-slide pages (.wds-hero) simply cross-fade —
+ * the shared element is an enhancement, never a requirement.
+ *
+ * Firefox has not shipped cross-document transitions; it navigates normally.
+ * Paired with assets/work-card-grid.js, which assigns the outgoing name.
+ * ────────────────────────────────────────────────────────────────────────── */
+
+@view-transition {
+  navigation: auto;
+}
+
+/* The receiving half. Only one hero exists per project page, so this is static
+   — no script needed on the destination. */
+.project-hero-img {
+  view-transition-name: project-hero;
+}
+
+/* The morph itself. 460ms is deliberate: long enough to read as one movement,
+   short enough that comparing several projects does not become a wait. */
+::view-transition-group(project-hero) {
+  animation-duration: 460ms;
+  animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+}
+
+::view-transition-image-pair(project-hero) {
+  isolation: auto;
+}
+
+::view-transition-old(project-hero),
+::view-transition-new(project-hero) {
+  animation: none;
+  mix-blend-mode: normal;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Everything that is not the shared element. Shorter than the morph so the
+   page settles around the image rather than competing with it. */
+::view-transition-old(root) {
+  animation: vt-fade-out 220ms cubic-bezier(0.4, 0, 1, 1) both;
+}
+
+::view-transition-new(root) {
+  animation: vt-fade-in 300ms cubic-bezier(0, 0, 0.2, 1) 60ms both;
+}
+
+@keyframes vt-fade-out {
+  to { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  @view-transition {
+    navigation: none;
+  }
+}

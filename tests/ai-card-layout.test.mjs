@@ -6,7 +6,8 @@ import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (name) => readFileSync(join(root, name), 'utf8');
-const cardCount = (html) => [...html.matchAll(/<article\b[^>]*\bclass\s*=\s*["'][^"']*\bwork-card\b[^"']*["']/gi)].length;
+// Linked cards are <a href>; cards with nowhere to go stay <article>.
+const cardCount = (html) => [...html.matchAll(/<(?:a|article)\b[^>]*\bclass\s*=\s*["'][^"']*\bwork-card\b[^"']*["']/gi)].length;
 
 test('Agentic UX and AI Tools use the shared thumbnail-led portfolio grid', () => {
   const products = read('ai-products.html');
