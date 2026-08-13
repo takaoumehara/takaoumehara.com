@@ -9,7 +9,12 @@
   <meta property="og:title" content="Web3 Custodial Wallet — Takao Umehara">
   <meta property="og:description" content="A role-based Web3 custodial wallet for event ticketing that hides blockchain complexity from end users — 2023 Merit Gold Award winner.">
   <meta property="og:type" content="article">
-  <meta property="og:image" content="../assets/web3-wallet/EventStack_Admin_Event_Detail.png">
+  <meta property="og:url" content="https://takaoumehara.com/projects/web3-wallet.html">
+  <meta property="og:image" content="https://takaoumehara.com/assets/web3-wallet/EventStack_Admin_Event_Detail.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Web3 Custodial Wallet — Takao Umehara">
+  <meta name="twitter:description" content="A role-based Web3 custodial wallet for event ticketing that hides blockchain complexity from end users — 2023 Merit Gold Award winner.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/web3-wallet/EventStack_Admin_Event_Detail.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
@@ -175,6 +180,41 @@
       .g-cell img { opacity: 1 !important; transition: none !important; }
       .g-cell:hover img { transform: none !important; }
     }
+  
+    /* ─── Cross-document view transition ───────────────────────────────
+       The tile the visitor clicked on the index expands into this page's
+       hero. Both documents have to opt in for the morph to happen, and the
+       transition name has to match the one the index assigns to the tile it
+       was launched from. Browsers without support simply navigate — nothing
+       here is load-bearing. */
+    @view-transition { navigation: auto; }
+    @media (prefers-reduced-motion: no-preference) {
+      .project-hero, .wds-hero { view-transition-name: hero-media; }
+      ::view-transition-old(hero-media),
+      ::view-transition-new(hero-media) {
+        animation-duration: 520ms;
+        animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 300ms; }
+    }
+</style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
 <body>
@@ -185,9 +225,10 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../ai-products.html">Agentic UX</a></li>
-      <li><a href="../ai-tools.html">AI Tools</a></li>
-      <li><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
+      <li><a href="../interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="../ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="../ai-tools.html" class="is-lead">AI Tools</a></li>
+      <li class="is-tierbreak"><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
@@ -389,7 +430,8 @@
       </div>
       <div style="display:flex; gap:20px; flex-wrap:wrap;">
         <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
-        <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+        <a href="../interactive.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Interactive</a>
+      <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Products</a>
         <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
         <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
         <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>

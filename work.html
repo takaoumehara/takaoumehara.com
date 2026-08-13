@@ -9,11 +9,17 @@
   <meta property="og:title" content="Product Design — Takao Umehara">
   <meta property="og:description" content="Products, platforms, and design systems — from EdTech reaching millions of students to enterprise AI workflows.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <meta property="og:url" content="https://takaoumehara.com/work.html">
+  <meta property="og:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Product Design — Takao Umehara">
+  <meta name="twitter:description" content="Products, platforms, and design systems — from EdTech reaching millions of students to enterprise AI workflows.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/index-grid.css">
   <style>
     /* ─── Geist Sans (Vercel) ─── */
     @font-face {
@@ -220,31 +226,6 @@
       flex-wrap: wrap;
       border-bottom: 1px solid var(--line);
       padding-bottom: 28px;
-    }
-
-    .filter-btn {
-      appearance: none;
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 9px 14px;
-      font-family: var(--ff);
-      font-size: 12px;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      cursor: pointer;
-      transition: background 160ms ease, color 160ms ease, border-color 160ms ease;
-    }
-
-    .filter-btn:hover {
-      color: var(--ink);
-      border-color: rgba(18,18,18,0.24);
-    }
-
-    .filter-btn.is-active {
-      background: var(--ink);
-      color: #fff;
-      border-color: var(--ink);
     }
 
     /* ─── Grid ─── */
@@ -675,6 +656,23 @@
       .page-header, .filter-bar { animation: none !important; opacity: 1 !important; }
     }
   </style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
+  </style>
 </head>
 <body>
 
@@ -685,9 +683,10 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="ai-products.html">Agentic UX</a></li>
-      <li><a href="ai-tools.html">AI Tools</a></li>
-      <li><a href="work.html" class="is-active" aria-current="page">Product Design</a></li>
+      <li><a href="interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="ai-tools.html" class="is-lead">AI Tools</a></li>
+      <li class="is-tierbreak"><a href="work.html" class="is-active" aria-current="page">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -702,682 +701,150 @@
     <button class="lang-btn" data-lang="jp">JP</button>
   </div>
 
-  <!-- ── Header ── -->
-  <div class="page-header">
-    <div>
-      <div style="font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:12px;">Selected Work</div>
-      <h1 class="page-title">
-        <span class="t-en">Product Design</span>
-        <span class="t-jp">プロダクトデザイン</span>
-      </h1>
-      <p class="page-intro" style="margin-top:16px; font-size:15px; line-height:1.66; color:var(--ink-mid); max-width:560px;">
-        <span class="t-en">Products, platforms, and design systems — from EdTech reaching millions of students to enterprise AI workflows.</span>
-        <span class="t-jp is-block">プロダクト、プラットフォーム、デザインシステム。数百万人の生徒に届く EdTech から、エンタープライズの AI ワークフローまで。</span>
-      </p>
+  <!-- ══ Identity strip ══ -->
+  <header class="idx-head">
+    <h1 class="idx-name"><span class="t-en">Product Design</span><span class="t-jp">プロダクトデザイン</span></h1>
+
+    <div class="idx-meta">
+      <div class="idx-meta-col">
+        <span class="is-ink">Takao Umehara</span>
+        <span><span class="t-en">Products, platforms and design systems</span><span class="t-jp">プロダクト・プラットフォーム・デザインシステム</span></span>
+      </div>
+      <div class="idx-meta-col">
+        <a href="index.html"><span class="t-en">Index</span><span class="t-jp">全作品</span></a>
+        <a href="about.html"><span class="t-en">Information</span><span class="t-jp">プロフィール</span></a>
+      </div>
+      <div class="idx-meta-col">
+        <span class="is-ink">13 <span class="t-en">projects</span><span class="t-jp">件</span></span>
+        <span><span class="t-en">20 years · New York</span><span class="t-jp">20年 · ニューヨーク</span></span>
+      </div>
+      <div class="idx-meta-col is-right">
+        <span class="is-ink">New York</span>
+        <span>2026</span>
+      </div>
     </div>
-    <div class="page-count" id="count-label">13 projects</div>
+
+    <p class="idx-thesis">
+      <span class="t-en">Enterprise platforms shipped to millions, and learning products used in classrooms. Twenty years at <strong>Verizon, Amazon, T-Mobile and Amplify</strong>.</span>
+      <span class="t-jp is-block">数百万人規模に届いたエンタープライズのプラットフォームと、教室で使われる学習プロダクト。<strong>Verizon・Amazon・T-Mobile・Amplify</strong> で20年。</span>
+    </p>
+  </header>
+
+  <section class="idx-band">
+    <div class="idx-band-head">
+      <span class="idx-band-num">01</span>
+      <span class="idx-band-title"><span class="t-en">Enterprise platforms</span><span class="t-jp">エンタープライズのプラットフォーム</span></span>
+      <span class="idx-band-note"><span class="t-en">Shipped to millions of users</span><span class="t-jp">数百万人規模に出荷</span></span>
+    </div>
+    <div class="idx-grid">
+      <a class="idx-tile" href="projects/verizon-ai-agents.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Verizon AI Agents</div><div class="idx-tile-kind"><span class="t-en">Agent fleet · Case study</span><span class="t-jp">エージェント編成 · ケーススタディ</span></div></div>
+          <div class="idx-tile-no">13</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/verizon-ai-agents.jpg" alt="Verizon AI Agents" loading="eager" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/verizon-totalwireless.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Verizon Total Wireless</div><div class="idx-tile-kind"><span class="t-en">E-commerce · Website</span><span class="t-jp">EC · ウェブ</span></div></div>
+          <div class="idx-tile-no">12</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/verizon-totalwireless.jpg" alt="Verizon Total Wireless" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/tmobile.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">T-Mobile</div><div class="idx-tile-kind"><span class="t-en">Customer care tool</span><span class="t-jp">カスタマーケア基盤</span></div></div>
+          <div class="idx-tile-no">11</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/tmobile.jpg" alt="T-Mobile" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/cli-studios.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">CLI Studios</div><div class="idx-tile-kind"><span class="t-en">Design system · Rebuild</span><span class="t-jp">デザインシステム · 再構築</span></div></div>
+          <div class="idx-tile-no">10</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/cli-studios.jpg" alt="CLI Studios" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/web3-wallet.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">EventStack</div><div class="idx-tile-kind"><span class="t-en">Web3 · Admin product</span><span class="t-jp">Web3 · 管理プロダクト</span></div></div>
+          <div class="idx-tile-no">09</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/web3-wallet.jpg" alt="EventStack" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/credit-card-portal.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Credit Card Portal</div><div class="idx-tile-kind"><span class="t-en">Fintech</span><span class="t-jp">フィンテック</span></div></div>
+          <div class="idx-tile-no">08</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/credit-card-portal.jpg" alt="Credit Card Portal" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/hummingbird.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Hummingbird</div><div class="idx-tile-kind"><span class="t-en">Product education</span><span class="t-jp">プロダクト教育</span></div></div>
+          <div class="idx-tile-no">07</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/hummingbird.jpg" alt="Hummingbird" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/ux-audit.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">UX Audit</div><div class="idx-tile-kind"><span class="t-en">Research · Method</span><span class="t-jp">リサーチ · 手法</span></div></div>
+          <div class="idx-tile-no">06</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/ux-audit.jpg" alt="UX Audit" loading="lazy" width="760" height="570"></div>
+      </a>
+    </div>
+  </section>
+
+  <section class="idx-band">
+    <div class="idx-band-head">
+      <span class="idx-band-num">02</span>
+      <span class="idx-band-title"><span class="t-en">Learning products</span><span class="t-jp">学習プロダクト</span></span>
+      <span class="idx-band-note"><span class="t-en">Used in classrooms</span><span class="t-jp">教室で使われているもの</span></span>
+    </div>
+    <div class="idx-grid">
+      <a class="idx-tile" href="projects/ela-quests.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">ELA Quests</div><div class="idx-tile-kind"><span class="t-en">Learning product</span><span class="t-jp">学習プロダクト</span></div></div>
+          <div class="idx-tile-no">05</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/ela-quests.jpg" alt="ELA Quests" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/menlomath.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Menlo Math</div><div class="idx-tile-kind"><span class="t-en">Curriculum · Interface</span><span class="t-jp">カリキュラム · インターフェイス</span></div></div>
+          <div class="idx-tile-no">04</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/menlomath.jpg" alt="Menlo Math" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/vocab-app.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Vocabulary App</div><div class="idx-tile-kind"><span class="t-en">Learning tool</span><span class="t-jp">学習ツール</span></div></div>
+          <div class="idx-tile-no">03</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/vocab-app.jpg" alt="Vocabulary App" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/edutrack.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Lesson Planner</div><div class="idx-tile-kind"><span class="t-en">Teacher tool</span><span class="t-jp">教員向けツール</span></div></div>
+          <div class="idx-tile-no">02</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/edutrack.jpg" alt="Lesson Planner" loading="lazy" width="760" height="570"></div>
+      </a>
+      <a class="idx-tile" href="projects/carnegie.html">
+        <div class="idx-tile-bar">
+          <div><div class="idx-tile-name">Carnegie Learning</div><div class="idx-tile-kind"><span class="t-en">Learning platform</span><span class="t-jp">学習プラットフォーム</span></div></div>
+          <div class="idx-tile-no">01</div>
+        </div>
+        <div class="idx-tile-frame"><img src="assets/thumbs/carnegie.jpg" alt="Carnegie Learning" loading="lazy" width="760" height="570"></div>
+      </a>
+    </div>
+  </section>
+
+  <div class="idx-foot">
+    <a href="contact.html" class="idx-foot-cta"><span class="t-en">Start a conversation →</span><span class="t-jp">相談する →</span></a>
   </div>
 
-  <!-- ── Filters ── -->
-  <div class="filter-bar">
-    <button class="filter-btn is-active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="ai">AI</button>
-  </div>
-
-  <!-- ── Grid ── -->
-  <div class="work-grid-wrap">
-    <div class="work-grid" id="work-grid">
-
-      <!-- AI banner — shown only on the "AI" filter -->
-      <article class="work-card ai-banner" tabindex="0" data-href="ai-products.html" data-cat="ai" data-hidden="true">
-        <div class="ai-banner-inner">
-          <div class="ai-banner-eyebrow">Creativity Is Everywhere LLC</div>
-          <h2 class="ai-banner-title">
-            <span class="t-en">12 AI products — see the full lab</span>
-            <span class="t-jp">12 の AI プロダクト — ラボの全貌へ</span>
-          </h2>
-          <p class="ai-banner-desc">
-            <span class="t-en">Beyond client design work, I build and ship AI-native products — developer tools, MCP servers, and web experiments — through Creativity Is Everywhere.</span>
-            <span class="t-jp is-block">クライアントのデザインワークの枠を越えて、Creativity Is Everywhere を通じて AI ネイティブなプロダクトを開発・公開しています。開発者向けツール、MCP サーバー、ウェブ実験まで。</span>
-          </p>
-          <span class="ai-banner-cta">
-            <span class="t-en">Explore AI Products →</span>
-            <span class="t-jp">AIプロダクトを見る →</span>
-          </span>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- Product Design -->
-      <article class="work-card" tabindex="0" data-href="projects/ela-quests.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="980">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/Quest_teaser_tr.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="540">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">EdTech</span><span class="pill text-reactive">Product
-                  Design</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="740">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Amplify ELA Quests</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="880">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Immersive AR-powered learning modules reaching millions of students
-                across the US.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="620">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Amplify Education</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="640">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead Designer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/verizon-ai-agents.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="990">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/verizon-ai-agents/hero-agents-network.jpg'); background-position:center center;"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="545">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Agentic UX</span><span class="pill text-reactive">AI Workflow</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="745">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">AI Workflow Transformation</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="885">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Built purpose-specific AI agents that shifted 42 designers from tactical executors to strategic pilots across 6 Verizon brands.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="625">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Verizon Value</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="645">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead Product Designer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/tmobile.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1000">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/M−Mobile_teaser2.jpg')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="545">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Retail CX</span><span
-                  class="pill text-reactive">Multi-touchpoint</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="745">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">T-Mobile BOPIS</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="885">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Integrated kiosk, staff app, and voice AI for seamless retail pickup.
-                Selected as preferred innovation partner.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="625">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">T-Mobile</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="645">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead UX</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/cli-studios.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="990">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/cli-studios/CLI_UI_Screens.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="542">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">App Design</span><span
-                  class="pill text-reactive">Design System</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="742">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">CLI Studios App</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="882">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Full mobile redesign + design system. Reduced future dev time by 25%.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="622">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">CLI Studios</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="642">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead Designer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/web3-wallet.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="985">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/EventStack-Mobile.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="543">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Web3</span><span
-                  class="pill text-reactive">Award</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="743">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Web3 Custodial Wallet</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="883">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">NFT-enhanced event management wallet. 2023 Merit Gold Award —
-                Metaverse &amp; AI.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="623">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead Designer</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="643">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">2023</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/hummingbird.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="975">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/Product_Education-HummingBird.jpeg')">
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="541">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">EdTech</span><span class="pill text-reactive">UI
-                  Design</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="741">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Hummingbird</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="881">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Real-time student feedback app. Boosted classroom efficiency by 40%.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="621">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Amplify Education</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="641">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead Designer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/credit-card-portal.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="970">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg"
-                style="background-image:url('assets/credit-card-portal/nobrand_Bankcard.001.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="540">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">FinTech</span><span
-                  class="pill text-reactive">UX/UI</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="740">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Credit Card Portal</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="880">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">105 screens, 10 user flows, 125+ components for First PREMIER Bank's
-                portal.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="620">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">First PREMIER Bank</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="640">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead Designer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/ux-audit.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="965">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/image-asset.jpeg')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="539">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Insurance</span><span class="pill text-reactive">UX
-                  Audit</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="739">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">USAA Life Insurance</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="879">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Trauma-informed heuristic evaluation. 40% navigation improvement, 25%
-                dropout reduction.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="619">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">USAA</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="639">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead UX</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/edutrack.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="960">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/LessonPlanner_Hero_(1).png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="538">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">EdTech</span><span
-                  class="pill text-reactive">iPad</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="738">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">EduTrack</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="878">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Digital lesson planner for educators — intuitive scheduling and
-                deadline tracking.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="618">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead Designer</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="638">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">2024</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/menlomath.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="945">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="537">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">EdTech</span><span
-                  class="pill text-reactive">iPad</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="737">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Menlo Math</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="877">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Redesign of a middle-school math curriculum app — theme-driven,
-                card-based unit navigation.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="617">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">UX / UI Design</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="637">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">SunBay Math</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/vocab-app.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="950">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_3.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="536">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">EdTech</span><span
-                  class="pill text-reactive">Tooling</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="736">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Amplify Vocabulary App</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="876">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Word-list management UX for Amplify's ELA curriculum — a clear,
-                table-driven authoring tool.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="616">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">UX Design</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="636">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Amplify Education</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="projects/carnegie.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="955">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/shared/thumb-Nils-transparent.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="537">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">EdTech</span><span
-                  class="pill text-reactive">Platform</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="737">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Carnegie NILS™</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="877">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">PDSA platform redesign. 40% adoption increase, 25% operational
-                efficiency boost.</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="617">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Carnegie Foundation</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="637">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Lead Designer</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- Verizon Placeholder -->
-      <article class="work-card" tabindex="0" data-href="projects/verizon-totalwireless.html" data-cat="product">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="950">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image:url('assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png'); background-position:center top;"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="536">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="chips"><span class="pill text-reactive">Telecom</span><span class="pill text-reactive">UX
-                  Design</span></div>
-            </div>
-          </div>
-          <div class="rr" data-role="title" data-speed="736">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-title text-reactive">Verizon TotalWireless</div>
-            </div>
-          </div>
-          <div class="rr" data-role="body" data-speed="876">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-desc text-reactive">Post-login experience design for a major prepaid wireless platform.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="616">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">Verizon / TotalWireless</div>
-            </div>
-          </div>
-          <div class="rr" data-role="meta" data-speed="636">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="meta text-reactive">UX Design</div>
-            </div>
-          </div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-    </div><!-- /work-grid -->
-  </div>
-
-  <!-- ── Footer ── -->
   <footer
     style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
     <div>
@@ -1387,7 +854,8 @@
     </div>
     <div style="display:flex; gap:20px; list-style:none; flex-wrap:wrap;">
       <a href="index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
-      <a href="ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Agentic UX</a>
+      <a href="interactive.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Interactive</a>
+      <a href="ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Products</a>
       <a href="ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
       <a href="work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
       <a href="brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
@@ -1399,183 +867,11 @@
   </footer>
 
   <script>
-  (() => {
-    // ── Palette presets (from 5-3C family — 6 presets) ──
-    const presets = [
-      { angle:"102deg", a1:"hsla(198 82% 72% / 0.44)", a2:"hsla(248 74% 80% / 0.36)", a3:"hsla(324 72% 81% / 0.40)", a4:"hsla(36 80% 78% / 0.34)", t1:"hsl(198 58% 56%)", t2:"hsl(248 58% 70%)", t3:"hsl(324 60% 72%)", t4:"hsl(36 58% 62%)" },
-      { angle:"96deg",  a1:"hsla(222 84% 62% / 0.48)", a2:"hsla(198 80% 74% / 0.34)", a3:"hsla(274 62% 80% / 0.32)", a4:"hsla(36 74% 80% / 0.28)",  t1:"hsl(222 62% 52%)", t2:"hsl(198 56% 60%)", t3:"hsl(274 50% 72%)", t4:"hsl(36 54% 66%)" },
-      { angle:"110deg", a1:"hsla(40 80% 74% / 0.38)",  a2:"hsla(320 70% 76% / 0.42)", a3:"hsla(266 62% 80% / 0.34)", a4:"hsla(194 78% 74% / 0.32)", t1:"hsl(40 56% 62%)",  t2:"hsl(320 58% 68%)", t3:"hsl(266 52% 72%)", t4:"hsl(194 56% 60%)" },
-      { angle:"90deg",  a1:"hsla(206 86% 70% / 0.46)", a2:"hsla(232 86% 60% / 0.42)", a3:"hsla(274 62% 78% / 0.28)", a4:"hsla(42 72% 82% / 0.22)",  t1:"hsl(206 62% 56%)", t2:"hsl(232 62% 52%)", t3:"hsl(274 50% 72%)", t4:"hsl(42 54% 70%)" },
-      { angle:"108deg", a1:"hsla(42 78% 78% / 0.34)",  a2:"hsla(28 84% 72% / 0.28)",  a3:"hsla(314 68% 76% / 0.40)", a4:"hsla(196 78% 76% / 0.30)", t1:"hsl(42 58% 68%)",  t2:"hsl(28 60% 62%)",  t3:"hsl(314 58% 70%)", t4:"hsl(196 56% 62%)" },
-      { angle:"100deg", a1:"hsla(202 70% 84% / 0.30)", a2:"hsla(248 62% 82% / 0.32)", a3:"hsla(330 62% 84% / 0.28)", a4:"hsla(48 70% 84% / 0.24)",  t1:"hsl(202 52% 66%)", t2:"hsl(248 50% 72%)", t3:"hsl(330 52% 74%)", t4:"hsl(48 52% 72%)" }
-    ];
-
-    const pickPreset = () => presets[Math.floor(Math.random() * presets.length)];
-    const whole = (min, max) => Math.round(min + Math.random() * (max - min));
-
-    const applyPreset = (target, preset) => {
-      target.style.setProperty("--angle", preset.angle);
-      target.style.setProperty("--a1", preset.a1);
-      target.style.setProperty("--a2", preset.a2);
-      target.style.setProperty("--a3", preset.a3);
-      target.style.setProperty("--a4", preset.a4);
-      target.style.setProperty("--t1", preset.t1);
-      target.style.setProperty("--t2", preset.t2);
-      target.style.setProperty("--t3", preset.t3);
-      target.style.setProperty("--t4", preset.t4);
-    };
-
-    // ── Filter ──
-    const filterBtns = [...document.querySelectorAll(".filter-btn")];
-    const cards = [...document.querySelectorAll(".work-card")];
-    const countLabel = document.getElementById("count-label");
-
-    const updateCount = (visible) => {
-      countLabel.textContent = `${visible} project${visible !== 1 ? "s" : ""}`;
-    };
-
-    const applyFilter = (filter) => {
-      let visible = 0;
-      cards.forEach((card) => {
-        const cats = (card.dataset.cat || "").split(" ");
-        const isAi = cats.includes("ai");
-        // AI-only cards live outside the normal project set:
-        // hidden on "All", shown only under the "AI" tab.
-        const show = filter === "ai" ? isAi : (filter === "all" ? !isAi : cats.includes(filter));
-        card.dataset.hidden = show ? "false" : "true";
-        if (show) visible++;
-      });
-      if (filter === "ai") {
-        countLabel.textContent = "12 AI products";
-      } else {
-        updateCount(visible);
-      }
-    };
-
-    filterBtns.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        filterBtns.forEach((b) => b.classList.remove("is-active"));
-        btn.classList.add("is-active");
-        applyFilter(btn.dataset.filter);
-      });
-    });
-
-    // Initial state — hide AI-only cards and set the correct count.
-    applyFilter("all");
-
-    // ── Reveal system ──
-    const triggerReveal = (item, delay) => {
-      const speed = parseInt(item.dataset.speed || "900", 10);
-      item.style.setProperty("--delay", `${delay}ms`);
-      item.style.setProperty("--dur", `${speed}ms`);
-      item.classList.remove("is-on");
-      requestAnimationFrame(() => requestAnimationFrame(() => item.classList.add("is-on")));
-    };
-
-    const revealCard = (card, baseDelay) => {
-      applyPreset(card, pickPreset());
-      const items = [...card.querySelectorAll(".rr")];
-      let cursor = baseDelay;
-      const order = { image: 0, meta: 1, title: 2, body: 3 };
-      const sorted = [...items].sort((a, b) => {
-        const ra = order[a.dataset.role] ?? 2;
-        const rb = order[b.dataset.role] ?? 2;
-        return ra - rb;
-      });
-      sorted.forEach((item, i) => {
-        cursor += whole(20, 48) + (i === 0 ? 0 : 0);
-        triggerReveal(item, cursor);
-      });
-    };
-
-    // IntersectionObserver for cards with stagger
-    const cardObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting || entry.target._revealed) return;
-        entry.target._revealed = true;
-        cardObserver.unobserve(entry.target);
-        const allCards = cards.filter((c) => c.dataset.hidden !== "true");
-        const idx = allCards.indexOf(entry.target);
-        revealCard(entry.target, Math.max(0, (idx % 3) * 60));
-      });
-    }, { threshold: 0.10, rootMargin: "0px 0px -40px 0px" });
-
-    cards.forEach((card) => cardObserver.observe(card));
-
-    // ── Hover interactions (index.html detailed version) ──
-    cards.forEach((card) => {
-      const cardImage = card.querySelector(".card-image");
-      const trioTexts = [...card.querySelectorAll(".card-title, .card-desc, .pill")];
-
-      const clearTextState = () => {
-        trioTexts.forEach((el) => {
-          el.classList.remove("is-hovered", "is-exiting");
-          clearTimeout(el._exitTimer);
-        });
-      };
-
-      const startTextHover = () => {
-        applyPreset(card, pickPreset());
-        trioTexts.forEach((el) => {
-          el.style.setProperty("--hover-shift", `${whole(18, 78)}%`);
-          el.classList.remove("is-exiting");
-          el.classList.add("is-hovered");
-        });
-        if (cardImage) {
-          cardImage.classList.remove("hover-leaving");
-          cardImage.classList.add("hover-active");
-        }
-      };
-
-      const startTextExit = () => {
-        trioTexts.forEach((el) => {
-          el.classList.remove("is-hovered");
-          el.classList.add("is-exiting");
-          clearTimeout(el._exitTimer);
-          el._exitTimer = setTimeout(() => {
-            el.classList.remove("is-exiting");
-            el.style.removeProperty("--hover-shift");
-          }, 560);
-        });
-        if (cardImage) {
-          cardImage.classList.remove("hover-active");
-          cardImage.classList.add("hover-leaving");
-          clearTimeout(cardImage._leaveTimer);
-          cardImage._leaveTimer = setTimeout(() => {
-            cardImage.classList.remove("hover-leaving");
-          }, 920);
-        }
-      };
-
-      card.addEventListener("pointerenter", () => {
-        card.classList.add("is-hovering");
-        startTextHover();
-      });
-
-      card.addEventListener("pointerleave", () => {
-        card.classList.remove("is-hovering", "is-pressing", "is-held");
-        startTextExit();
-      });
-
-      card.addEventListener("pointerdown", () => card.classList.add("is-pressing"));
-      card.addEventListener("pointerup",   () => card.classList.remove("is-pressing"));
-
-      card.addEventListener("click", () => {
-        const href = card.dataset.href;
-        if (!href) return;
-        card.classList.add("is-held");
-        clearTimeout(card._holdTimer);
-        card._holdTimer = setTimeout(() => card.classList.remove("is-held"), 920);
-        setTimeout(() => {
-          if (card.dataset.external === "true") {
-            window.open(href, "_blank", "noopener");
-          } else {
-            window.location.href = href;
-          }
-        }, 120);
-      });
-    });
-  })();
+  // The palette, reveal and hover machinery that used to live here drove
+  // .work-card, which this page no longer has — the index draws tiles with a
+  // border, a label and an image, and nothing about them animates on reveal.
+  // Left in place it threw on an undefined `cards` before either of the two
+  // scripts below could run.
 
   // ── Lang switch ──
   (() => {

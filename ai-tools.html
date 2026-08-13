@@ -9,10 +9,17 @@
   <meta property="og:title" content="AI Tools — Takao Umehara">
   <meta property="og:description" content="Claude Code skills, CLIs, and realtime libraries for people working with AI agents — all open source.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://takaoumehara.com/ai-tools.html">
+  <meta property="og:image" content="https://takaoumehara.com/assets/og/ai-tools.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Tools — Takao Umehara">
+  <meta name="twitter:description" content="Claude Code skills, CLIs, and realtime libraries for people working with AI agents — all open source.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/og/ai-tools.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/index-grid.css">
   <link rel="stylesheet" href="assets/work-card-grid.css">
   <script src="assets/work-card-grid.js" defer></script>
   <style>
@@ -246,15 +253,39 @@
       .diagram .dot, .diagram .pulse { animation: none !important; opacity: 1 !important; }
       .story-cta, .rail-item, .hero-close-cta, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
+  
+    /* The identity strip pads itself, but on this page it sits inside a
+       container that already pads — the two stacked and the wordmark sat 40px
+       right of the text under it. Zero the strip's own inset here and let the
+       container own the margin, so every left edge lines up. */
+    .work-list-page > .idx-head { padding-left: 0; padding-right: 0; max-width: none; }
+  </style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
 <body>
   <nav class="site-nav" aria-label="Primary navigation">
     <a href="index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
     <ul class="nav-links">
-      <li><a href="ai-products.html">Agentic UX</a></li>
-      <li><a href="ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
-      <li><a href="work.html">Product Design</a></li>
+      <li><a href="interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="ai-tools.html" class="is-lead is-active" aria-current="page">AI Tools</a></li>
+      <li class="is-tierbreak"><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -265,32 +296,44 @@
   <div class="lang-switch" id="lang-switch" aria-label="Language"><button class="lang-btn is-active" type="button" data-lang="en">EN</button><span class="lang-sep" aria-hidden="true">|</span><button class="lang-btn" type="button" data-lang="jp">JP</button></div>
 
   <main class="work-list-page">
-    <header class="work-list-header">
-      <div>
-        <p class="work-list-kicker"><span class="t-en">AI Tools — open source, designed &amp; built by Takao</span><span class="t-jp">AI Tools — オープンソース · Takaoが設計・実装</span></p>
-        <h1 class="work-list-title"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h1>
-      </div>
-      <p class="page-count"><span class="t-en">6 open-source releases</span><span class="t-jp">6 つのオープンソース公開物</span></p>
-    </header>
-    <p class="work-list-intro"><span class="t-en"><strong>Claude Code skills</strong> — some ship as a runnable library, some as pure judgement, all installed the same way. Each one grew out of a real friction in AI-assisted work and is available to use today.</span><span class="t-jp is-block"><strong>Claude Code スキル。</strong>実行コードとして届くものもあれば、判断そのものとして届くものもありますが、インストールの仕方は同じです。どれも AI 協働で出会った実際の摩擦から生まれ、いま使える形で公開しています。</span></p>
+  <!-- ══ Wordmark only. The meta row that work.html and brand.html carry
+       (name, role, city, year, counts) repeated the nav and the footer on
+       every page, so it earns nothing here. The card grid below stays:
+       unlike those two indexes, this page argues for each item. ══ -->
+  <header class="idx-head">
+    <h1 class="idx-name"><span class="t-en">AI Tools</span><span class="t-jp">AI Tools</span></h1>
+
+  </header>
 
     <section class="tool-group" aria-labelledby="group-tools-title" style="--g-tint:#1d4ed8;">
       <div class="tool-group-head">
-        <h2 class="tool-group-title" id="group-tools-title"><span class="t-en">Six skills, one shelf</span><span class="t-jp">6 つのスキル、ひとつの棚</span></h2>
-        <p class="tool-group-sub"><span class="t-en">A skill is a folder of instructions an AI tool starts following. Some, like Snap Pair, also carry runnable code — a pairing layer, a CLI. Others are pure method: which question to answer first, which model to spend, what to write down before moving on. Both install the same way, so the site stopped pretending they're two different categories.</span><span class="t-jp is-block">スキルとは、AI ツールがそのまま従いはじめる手順書のフォルダです。Snap Pair のように実行コード（ペアリング層や CLI）を伴うものもあれば、方法そのもの — 最初に答えるべき問い、使うモデル、次に進む前に書き残すこと — だけのものもあります。インストールの仕方は同じなので、この2つを別カテゴリーのふりをするのはやめました。</span></p>
+        <h2 class="tool-group-title" id="group-tools-title"><span class="t-en">I build the tools I build the products with</span><span class="t-jp">プロダクトをつくる道具から、自分でつくっています</span></h2>
+        <p class="tool-group-sub"><span class="t-en">Every one of these came out of building the AI products and interactive experiences on this site. Snap Pair exists because a room full of phones had to join a screen in one scan. superforge exists because the same fourteen decisions kept recurring on every build. Some ship as runnable code, some as pure method, and all install the same way. None of them started as a product — they started as something missing, and they are all open source and installable today.</span><span class="t-jp is-block">どれも、このサイトにある AI プロダクトとインタラクティブ体験をつくる過程から出てきたものです。Snap Pair は、その場のスマホをワンスキャンで画面につなぐ必要があったから。superforge は、どのビルドでも同じ14の判断が繰り返し現れたから。実行コードとして届くものも、方法そのものとして届くものもありますが、入れ方は同じです。最初からプロダクトだったものはひとつもなく、すべて「無かったもの」として始まりました。全部オープンソースで、いますぐ入れて使えます。</span></p>
       </div>
 
       <div class="work-grid" aria-label="Claude Code skills">
+        <article class="work-card" id="superforge" tabindex="0" data-href="projects/superforge.html">
+          <div class="card-image"><div class="card-art card-art--superforge"><span class="card-art-label">super<br>forge</span><span class="card-art-note">Idea → ship, in order</span></div></div>
+          <div class="card-body"><div class="chips"><span class="pill">Skill system</span><span class="pill">14 skills</span></div><h2 class="card-title">superforge</h2><p class="card-desc"><span class="t-en">Say what you want to build in one sentence — fourteen skills take it from idea to accessibility-checked, pre-launch ready, in the right order and on the right model.</span><span class="t-jp is-block">作りたいものを一文で言えば、14 のスキルが正しい順番と正しいモデルで、着想からアクセシビリティ確認・公開前チェックまで運ぶ。</span></p></div>
+          <div class="card-footer"><span class="card-meta">Claude · Codex · Gemini · Kimi · MIT</span><span class="card-meta card-meta--link">View project →</span></div>
+        </article>
+
         <article class="work-card" id="snap-pair" tabindex="0" data-href="projects/snap-pair.html">
           <div class="card-image"><div class="card-art card-art--snap"><span id="snap-pair-core" aria-hidden="true"></span><span class="card-art-label">Snap<br>Pair</span><span class="card-art-note">Multi-device pairing</span></div></div>
           <div class="card-body"><div class="chips"><span class="pill">Realtime library</span><span class="pill">Claude skill</span></div><h2 class="card-title">Snap Pair</h2><p class="card-desc"><span class="t-en">A React + Firebase pairing layer that lets every phone in the room join an app in one scan.</span><span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる React + Firebase のペアリング層。</span></p></div>
           <div class="card-footer"><span class="card-meta">React + Firebase · MIT</span><span class="card-meta card-meta--link">View project →</span></div>
         </article>
 
-        <article class="work-card" id="superforge" tabindex="0" data-href="projects/superforge.html">
-          <div class="card-image"><div class="card-art card-art--superforge"><span class="card-art-label">super<br>forge</span><span class="card-art-note">Idea → ship, in order</span></div></div>
-          <div class="card-body"><div class="chips"><span class="pill">Skill system</span><span class="pill">12 skills</span></div><h2 class="card-title">superforge</h2><p class="card-desc"><span class="t-en">Say what you want to build in one sentence — twelve skills take it from idea to accessibility-checked, pre-launch ready, in the right order and on the right model.</span><span class="t-jp is-block">作りたいものを一文で言えば、12 のスキルが正しい順番と正しいモデルで、着想からアクセシビリティ確認・公開前チェックまで運ぶ。</span></p></div>
-          <div class="card-footer"><span class="card-meta">Claude · Codex · Gemini · Kimi · MIT</span><span class="card-meta card-meta--link">View project →</span></div>
+        <article class="work-card" id="interactive-experience-skills" tabindex="0" data-href="projects/interactive-experience-skills.html">
+          <div class="card-image"><div class="card-art card-art--motionskills"><span class="card-art-label">interactive<br>experience</span><span class="card-art-note">Camera &amp; movement products</span></div></div>
+          <div class="card-body"><div class="chips"><span class="pill">Skill set</span><span class="pill">Computer vision</span></div><h2 class="card-title">interactive-experience-skills</h2><p class="card-desc"><span class="t-en">Three skills for products that read human movement — settling artwork-or-tool first, then answering in lumens and milliseconds.</span><span class="t-jp is-block">人の動きを読むプロダクトのための 3 スキル。作品か実用かを先に決め、そのあとルーメンとミリ秒で答える。</span></p></div>
+          <div class="card-footer"><span class="card-meta">3 skills · 2 commands · MIT</span><span class="card-meta card-meta--link">View project →</span></div>
+        </article>
+
+        <article class="work-card" id="intuitive-game-design" tabindex="0" data-href="projects/intuitive-game-design.html">
+          <div class="card-image"><div class="card-art card-art--game"><span class="card-art-label">intuitive<br>game</span><span class="card-art-note">Playable without a tutorial</span></div></div>
+          <div class="card-body"><div class="chips"><span class="pill">Claude skill</span><span class="pill">Game design</span></div><h2 class="card-title">intuitive-game-design</h2><p class="card-desc"><span class="t-en">A game a first-time player understands with nobody explaining it — affordances, cognitive load, and the handful of milliseconds that decide whether an input feels good. Covers one-tap minimal games and web audio too.</span><span class="t-jp is-block">初見の人が、誰の説明もなしに分かるゲームを作るための道具。アフォーダンス、認知負荷、そして入力の手ざわりを決める数十ミリ秒。ワンタップの極小ゲームと Web の音まで扱います。</span></p></div>
+          <div class="card-footer"><span class="card-meta">Game feel · Web Audio</span><span class="card-meta card-meta--link">View project →</span></div>
         </article>
 
         <article class="work-card" id="cross-model-handoff" tabindex="0" data-href="projects/cross-model-handoff.html">
@@ -310,12 +353,6 @@
           <div class="card-body"><div class="chips"><span class="pill">Claude skill</span><span class="pill">5 languages</span></div><h2 class="card-title">multilingual-readme</h2><p class="card-desc"><span class="t-en">A README a total stranger — engineer or not, native speaker or not — understands in ten seconds. Written in five languages from your actual source files, then machine-checked.</span><span class="t-jp is-block">初めて見た人が — エンジニアでも非エンジニアでも、母語話者でなくても — 10 秒で分かる README を。実際のソースから 5 言語で生成し、機械で検証する。</span></p></div>
           <div class="card-footer"><span class="card-meta">EN · JA · ZH · ES · KO · MIT</span><span class="card-meta card-meta--link">View project →</span></div>
         </article>
-
-        <article class="work-card" id="interactive-experience-skills" tabindex="0" data-href="projects/interactive-experience-skills.html">
-          <div class="card-image"><div class="card-art card-art--motionskills"><span class="card-art-label">motion<br>skills</span><span class="card-art-note">Camera &amp; movement products</span></div></div>
-          <div class="card-body"><div class="chips"><span class="pill">Skill set</span><span class="pill">Computer vision</span></div><h2 class="card-title">interactive-experience-skills</h2><p class="card-desc"><span class="t-en">Three skills for products that read human movement — settling artwork-or-tool first, then answering in lumens and milliseconds.</span><span class="t-jp is-block">人の動きを読むプロダクトのための 3 スキル。作品か実用かを先に決め、そのあとルーメンとミリ秒で答える。</span></p></div>
-          <div class="card-footer"><span class="card-meta">3 skills · 2 commands · MIT</span><span class="card-meta card-meta--link">View project →</span></div>
-        </article>
       </div>
     </section>
   </main>
@@ -323,7 +360,8 @@
 
   <footer class="site-footer">
     <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div></div>
-    <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="ai-products.html">Agentic UX</a></li><li><a href="work.html">Product Design</a></li><li><a href="brand.html">Brand &amp; Visual</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li></ul>
+    <ul class="footer-links"><li><a href="index.html">Home</a></li><li><a href="interactive.html">Interactive</a></li>
+      <li><a href="ai-products.html">AI Products</a></li><li><a href="work.html">Product Design</a></li><li><a href="brand.html">Brand &amp; Visual</a></li><li><a href="about.html">About</a></li><li><a href="contact.html">Contact</a></li><li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li></ul>
   </footer>
 
   <script>

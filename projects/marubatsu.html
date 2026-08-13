@@ -9,6 +9,12 @@
   <meta property="og:title" content="Marubatsu Arena — Takao Umehara">
   <meta property="og:description" content="A ferry-ride game with my son, turned into a real-time online arena — pass-and-play, AI opponent, or pair up in one scan.">
   <meta property="og:type" content="article">
+  <meta property="og:url" content="https://takaoumehara.com/projects/marubatsu.html">
+  <meta property="og:image" content="https://takaoumehara.com/assets/marubatsu/hero.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Marubatsu Arena — Takao Umehara">
+  <meta name="twitter:description" content="A ferry-ride game with my son, turned into a real-time online arena — pass-and-play, AI opponent, or pair up in one scan.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/marubatsu/hero.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -198,15 +204,51 @@
       .sketch-hint::after { animation: none !important; }
       .story-cta, .rail-item, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
+  
+    /* ─── Cross-document view transition ───────────────────────────────
+       The tile the visitor clicked on the index expands into this page's
+       hero. Both documents have to opt in for the morph to happen, and the
+       transition name has to match the one the index assigns to the tile it
+       was launched from. Browsers without support simply navigate — nothing
+       here is load-bearing. */
+    @view-transition { navigation: auto; }
+    @media (prefers-reduced-motion: no-preference) {
+      .project-hero, .wds-hero { view-transition-name: hero-media; }
+      ::view-transition-old(hero-media),
+      ::view-transition-new(hero-media) {
+        animation-duration: 520ms;
+        animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 300ms; }
+    }
+</style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
 <body>
   <nav class="site-nav" aria-label="Primary navigation">
     <a href="../index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
     <ul class="nav-links">
-      <li><a href="../ai-products.html" class="is-active" aria-current="page">Agentic UX</a></li>
-      <li><a href="../ai-tools.html">AI Tools</a></li>
-      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../interactive.html" class="is-lead is-active" aria-current="page">Interactive</a></li>
+      <li><a href="../ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="../ai-tools.html" class="is-lead">AI Tools</a></li>
+      <li class="is-tierbreak"><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
@@ -217,7 +259,7 @@
   <div class="lang-switch" id="lang-switch" aria-label="Language"><button class="lang-btn is-active" type="button" data-lang="en">EN</button><span class="lang-sep" aria-hidden="true">|</span><button class="lang-btn" type="button" data-lang="jp">JP</button></div>
 
   <div class="breadcrumb">
-    <a href="../ai-products.html">Agentic UX</a>
+    <a href="../ai-products.html">AI Products</a>
     <span>/</span>
     <a href="#">Marubatsu Arena</a>
   </div>
@@ -333,20 +375,21 @@
       <h2 class="wds-serif"><span class="t-en">Still played every ferry ride — now <em>anyone</em> can join.</span><span class="t-jp is-block">今も毎回のフェリーで遊ばれている——今では<em>誰でも</em>参加できる。</span></h2>
       <div class="mech-ctas">
         <a class="story-cta" href="https://marubatsu20.vercel.app/" target="_blank" rel="noopener" aria-label="Play Marubatsu Arena (opens in a new tab)"><span class="t-en">Play now ↗</span><span class="t-jp">今すぐ遊ぶ ↗</span></a>
-        <a class="story-cta" href="../ai-products.html"><span class="t-en">Explore Agentic UX →</span><span class="t-jp">Agentic UX を見る →</span></a>
+        <a class="story-cta" href="../ai-products.html"><span class="t-en">Explore AI Products →</span><span class="t-jp">AI Products を見る →</span></a>
       </div>
     </section>
 
   </main>
 
   <div class="project-nav">
-    <a href="../ai-products.html" class="project-nav-link"><span class="t-en">&larr; Agentic UX</span><span class="t-jp">&larr; Agentic UX</span></a>
+    <a href="../ai-products.html" class="project-nav-link"><span class="t-en">&larr; AI Products</span><span class="t-jp">&larr; AI Products</span></a>
     <a href="snap-pair.html" class="project-nav-link"><span class="t-en">Next: Snap Pair &rarr;</span><span class="t-jp">次へ: Snap Pair &rarr;</span></a>
   </div>
 
   <footer class="site-footer">
     <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div></div>
-    <ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="../ai-products.html">Agentic UX</a></li><li><a href="../work.html">Product Design</a></li><li><a href="../brand.html">Brand &amp; Visual</a></li><li><a href="../about.html">About</a></li><li><a href="../contact.html">Contact</a></li></ul>
+    <ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="../interactive.html">Interactive</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li><li><a href="../work.html">Product Design</a></li><li><a href="../brand.html">Brand &amp; Visual</a></li><li><a href="../about.html">About</a></li><li><a href="../contact.html">Contact</a></li></ul>
   </footer>
 
   <script>

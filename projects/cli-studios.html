@@ -9,7 +9,12 @@
   <meta property="og:title" content="CLI Studios App Redesign — Takao Umehara">
   <meta property="og:description" content="CLI Studios App Redesign — a unified design system and mobile UX overhaul projected to cut development time by 25%.">
   <meta property="og:type" content="article">
-  <meta property="og:image" content="../assets/cli-studios/CLI_UI_Screens.png">
+  <meta property="og:url" content="https://takaoumehara.com/projects/cli-studios.html">
+  <meta property="og:image" content="https://takaoumehara.com/assets/cli-studios/CLI_UI_Screens.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CLI Studios App Redesign — Takao Umehara">
+  <meta name="twitter:description" content="CLI Studios App Redesign — a unified design system and mobile UX overhaul projected to cut development time by 25%.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/cli-studios/CLI_UI_Screens.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -52,7 +57,9 @@
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: var(--ff); color: var(--ink); background: var(--bg); min-height: 100vh; }
+    /* overflow-x: clip, not hidden — hidden would make body a scroll
+       container and break the full-bleed break-out below. */
+    body { font-family: var(--ff); color: var(--ink); background: var(--bg); min-height: 100vh; overflow-x: clip; }
 
     /* ─── Nav ─── */
     .site-nav {
@@ -153,8 +160,13 @@
     .wds-hero-meta-l { font-size: clamp(10px, 0.72vw, 11.5px); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.46); }
     .wds-hero-meta-v { font-size: clamp(13px, 1vw, 16px); color: rgba(255,255,255,0.88); }
 
-    /* Video pair — dark slide */
-    .wds-video { background: #111; color: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    /* Video pair — dark slide. Video needs true black: the players letterbox
+       their own frame, and any lighter ground draws that edge as a seam. */
+    .wds-video { background: #000; color: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    /* Scrolled, the section breaks out of the 1360px deck to full viewport
+       width so the black is the whole band, not a card floating on the page.
+       Deck view is untouched — there each slide already fills the screen. */
+    html:not([data-view="deck-v"]) .wds-video { width: 100vw; margin-inline: calc(50% - 50vw); }
     .wds-video .wds-kick { color: rgba(255,255,255,0.5); margin-bottom: 10px; }
     .wds-video h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; margin-bottom: 26px; }
     .video-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; margin: 0 auto; }
@@ -540,6 +552,42 @@
       html[data-view="deck-v"] .deck-slide.is-live > * { animation: none !important; }
       .pc-view, .pc-rule { display: none; }
     }
+  
+    /* ─── Cross-document view transition ───────────────────────────────
+       The tile the visitor clicked on the index expands into this page's
+       hero. Both documents have to opt in for the morph to happen, and the
+       transition name has to match the one the index assigns to the tile it
+       was launched from. Browsers without support simply navigate — nothing
+       here is load-bearing. */
+    @view-transition { navigation: auto; }
+    @media (prefers-reduced-motion: no-preference) {
+      .project-hero, .wds-hero { view-transition-name: hero-media; }
+      ::view-transition-old(hero-media),
+      ::view-transition-new(hero-media) {
+        animation-duration: 520ms;
+        animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 300ms; }
+    }
+</style>
+  <link rel="stylesheet" href="../assets/deck-quiet.css">
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
 <body>
@@ -550,9 +598,10 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../ai-products.html">Agentic UX</a></li>
-      <li><a href="../ai-tools.html">AI Tools</a></li>
-      <li><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
+      <li><a href="../interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="../ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="../ai-tools.html" class="is-lead">AI Tools</a></li>
+      <li class="is-tierbreak"><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
@@ -1119,7 +1168,8 @@
     </div>
     <ul class="footer-links">
       <li><a href="../index.html">Home</a></li>
-      <li><a href="../ai-products.html">Agentic UX</a></li>
+      <li><a href="../interactive.html">Interactive</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
       <li><a href="../ai-tools.html">AI Tools</a></li>
       <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>

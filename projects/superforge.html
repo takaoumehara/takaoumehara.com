@@ -5,10 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>superforge — Takao Umehara</title>
-  <meta name="description" content="superforge — twelve Claude Code skills that take one sentence from idea to pre-launch check, routing each subtask to a model that fits and leaving every decision in a file.">
+  <meta name="description" content="superforge — fourteen Claude Code skills that take one sentence from idea to pre-launch check, routing each subtask to a model that fits and leaving every decision in a file.">
   <meta property="og:title" content="superforge — Takao Umehara">
-  <meta property="og:description" content="Say what you want to build in one sentence. Twelve skills take it from there.">
+  <meta property="og:description" content="A multi-agent system built to make AI development repeatable. Fourteen skills, five model tiers, and every decision written to a file.">
   <meta property="og:type" content="article">
+  <meta property="og:url" content="https://takaoumehara.com/projects/superforge.html">
+  <meta property="og:image" content="https://takaoumehara.com/assets/og/superforge.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="superforge — Takao Umehara">
+  <meta name="twitter:description" content="A multi-agent system built to make AI development repeatable. Fourteen skills, five model tiers, and every decision written to a file.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/og/superforge.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -26,11 +32,13 @@
       --line: rgba(18,18,18,0.08);
       --border: rgba(18,18,18,0.10);
       --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --ff-mono: ui-monospace, "SF Mono", Menlo, monospace;
       --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-      --a-blue: #2563eb;
-      --a-orange: #f97316;
-      --a-violet: #7c3aed;
-      --a-tool: #a16207;
+      /* Cyan, the accent the owner specified for this project. The text-weight
+         value is cyan-700 so that white-on-accent and accent-on-white both clear
+         4.5:1; the brighter cyan is used only for glows, where nothing is read. */
+      --a-tool: #0e7490;
+      --a-glow: #06b6d4;
       --m-tint: var(--a-tool);
     }
 
@@ -77,70 +85,147 @@
     html.lang-jp .wds-serif { line-height: 1.2; letter-spacing: -0.01em; }
     html.lang-jp .wds-serif em { white-space: nowrap; }
 
+    /* ─── Hero ─── */
     .wds-hero { position: relative; overflow: hidden; background: #0d0d0f; color: #fff; padding: clamp(46px, 6.5vw, 96px) clamp(28px, 5vw, 78px); }
-    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(234,179,8,0.26), transparent 62%); pointer-events: none; }
+    .wds-hero::after { content: ""; position: absolute; right: -6%; top: -34%; width: 58%; height: 168%; background: radial-gradient(ellipse at center, rgba(6,182,212,0.30), transparent 62%); pointer-events: none; }
     .wds-hero > * { position: relative; z-index: 1; }
     .wds-hero .wds-kick { color: rgba(255,255,255,0.5); }
-    .wds-hero h1 { font-size: clamp(40px, 6.6vw, 84px); max-width: 15ch; }
-    .wds-hero h1 em { font-style: italic; color: #fbbf24; }
-    .wds-hero-lead { font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.72; color: rgba(255,255,255,0.66); max-width: 60ch; margin-top: 30px; }
+    .wds-hero h1 { font-size: clamp(38px, 6.2vw, 78px); max-width: 16ch; }
+    .wds-hero h1 em { font-style: italic; color: #67e8f9; }
+    .wds-hero-lead { font-size: clamp(15px, 1.5vw, 18.5px); line-height: 1.72; color: rgba(255,255,255,0.66); max-width: 62ch; margin-top: 30px; }
     .wds-hero-lead strong { color: #fff; font-weight: 600; }
-    .wds-hero-lead code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9em; background: rgba(255,255,255,0.12); padding: 1px 5px; }
-
-    .tool-statement { position: relative; overflow: hidden; color: #fff; padding: clamp(46px, 6.5vw, 92px) clamp(28px, 5vw, 78px); }
-    .tool-statement .wds-kick { color: rgba(255,255,255,0.62); }
-    .tool-statement h2 { font-size: clamp(34px, 5vw, 66px); max-width: 17ch; }
-    .tool-statement h2 em { font-style: italic; color: #f8f3e7; }
-    .tool-statement.st-gold { background: var(--a-tool); }
+    .wds-hero-lead code { font-family: var(--ff-mono); font-size: 0.9em; background: rgba(255,255,255,0.12); padding: 1px 5px; }
 
     .wds-chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 28px; }
     .wds-chip { padding: 6px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); letter-spacing: 0.06em; text-transform: uppercase; font-size: 10.5px; }
-    .wds-chip b { font-weight: 600; color: #fff; }
 
+    /* Client / role / year sits under the headline rather than above it — present
+       for anyone scanning for credentials, never competing with the first line. */
+    .wds-hero-meta { display: flex; flex-wrap: wrap; gap: 22px 44px; margin-top: 38px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.16); }
+    .wds-hero-meta div { min-width: 150px; }
+    .wds-hero-meta dt { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.42); margin-bottom: 6px; }
+    .wds-hero-meta dd { font-size: 13.5px; line-height: 1.5; color: rgba(255,255,255,0.84); }
+
+    /* ─── Vivid statement slide ─── */
+    .tool-statement { position: relative; overflow: hidden; color: #fff; padding: clamp(46px, 6.5vw, 92px) clamp(28px, 5vw, 78px); }
+    .tool-statement .wds-kick { color: rgba(255,255,255,0.72); }
+    .tool-statement h2 { font-size: clamp(32px, 4.7vw, 62px); max-width: 18ch; }
+    .tool-statement h2 em { font-style: italic; color: #cffafe; }
+    .tool-statement.st-cyan { background: var(--a-tool); }
+    .tool-statement .st-lead { font-size: clamp(14.5px, 1.4vw, 17px); line-height: 1.74; color: rgba(255,255,255,0.9); max-width: 66ch; margin-top: 26px; }
+
+    /* ─── Two worlds (Tension) ─── */
+    .tw { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .tw-col { padding: clamp(34px, 4.2vw, 60px) clamp(24px, 3vw, 46px); position: relative; overflow: hidden; }
+    .tw-before { background: #eeeae2; color: var(--ink); }
+    .tw-after { background: #0d0d0f; color: #fff; }
+    .tw-after::after { content: ""; position: absolute; right: -20%; bottom: -50%; width: 76%; height: 150%; background: radial-gradient(ellipse at center, rgba(6,182,212,0.22), transparent 64%); pointer-events: none; }
+    .tw-col > * { position: relative; z-index: 1; }
+    .tw-tag { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; margin-bottom: 18px; }
+    .tw-before .tw-tag { color: var(--ink-dim); }
+    .tw-after .tw-tag { color: #67e8f9; }
+    .tw-col h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.7vw, 36px); letter-spacing: -0.02em; line-height: 1.08; margin-bottom: 16px; }
+    .tw-col p { font-size: clamp(14px, 1.3vw, 16px); line-height: 1.74; }
+    .tw-before p { color: var(--ink-mid); }
+    .tw-after p { color: rgba(255,255,255,0.68); }
+    .tw-after code { font-family: var(--ff-mono); font-size: 0.9em; background: rgba(255,255,255,0.12); padding: 1px 5px; }
+    .tw-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 24px; }
+    .tw-chip { font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; padding: 5px 10px; border-radius: 20px; }
+    .tw-before .tw-chip { border: 1px solid rgba(18,18,18,0.2); color: var(--ink-mid); }
+    .tw-after .tw-chip { border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.88); }
+
+    /* ─── Cream / plain content slide ─── */
     .tool-mech { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
-    .mech-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(220px, 0.75fr); gap: clamp(36px, 5vw, 84px); align-items: center; }
+    .tool-mech.is-plain { background: #fff; }
     .tool-mech h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
-    .mech-lead { font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.72; color: var(--ink-mid); max-width: 62ch; }
+    .mech-lead { font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.72; color: var(--ink-mid); max-width: 66ch; }
     .mech-lead strong { color: var(--ink); font-weight: 600; }
-    .mech-lead code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.88em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
-    .mech-facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 28px; }
-    .mech-fact { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--m-tint); padding: 16px 16px 18px; }
-    .mech-fact-l { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 7px; }
-    .mech-fact-v { font-size: 13px; line-height: 1.55; color: var(--ink-mid); }
+    .mech-lead code, .tree-note code, .move code, .retro-item code { font-family: var(--ff-mono); font-size: 0.88em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
     .mech-ctas { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
     .story-cta { display: inline-block; padding: 13px 18px; border: 1px solid var(--ink); color: var(--ink); font-size: 11px; letter-spacing: 0.1em; text-decoration: none; text-transform: uppercase; transition: background 180ms ease, color 180ms ease; }
     .story-cta:hover { background: var(--ink); color: #fff; }
-    .story-cta--ghost { border-color: var(--border); }
-    .story-cta--ghost:hover { background: transparent; color: var(--ink); border-color: rgba(18,18,18,0.34); }
     .wds-hero .story-cta { border-color: rgba(255,255,255,0.4); color: #fff; }
     .wds-hero .story-cta:hover { background: #fff; color: #0d0d0f; }
+    .tool-statement .story-cta { border-color: rgba(255,255,255,0.5); color: #fff; }
+    .tool-statement .story-cta:hover { background: #fff; color: var(--a-tool); }
 
-    .mech-rail { margin-top: 40px; padding-top: 28px; border-top: 1px solid rgba(18,18,18,0.12); }
-    .mech-rail-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
-    .rail-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2px; }
-    .rail-item { display: block; padding: 20px 22px; background: #fff; border: 1px solid var(--line); color: inherit; text-decoration: none; transition: border-color 180ms ease; }
-    a.rail-item:hover { border-color: rgba(18,18,18,0.32); }
-    .rail-item-status { font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--a-tool); font-weight: 600; margin-bottom: 8px; }
-    .rail-item-status.is-soon { color: var(--ink-dim); }
-    .rail-item-name { font-size: 15px; font-weight: 600; letter-spacing: -0.015em; margin-bottom: 6px; }
-    .rail-item-desc { font-size: 12.5px; line-height: 1.55; color: var(--ink-dim); }
+    /* ─── Structure: the two trees ─── */
+    .tree-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 32px; }
+    /* min-width:0 so the pre-formatted tree below can scroll inside this cell
+       instead of forcing the grid — and the page — wider than the viewport. */
+    .tree { background: #fff; border: 1px solid var(--line); padding: 24px 24px 26px; min-width: 0; }
+    .tree.is-after { border-top: 3px solid var(--a-tool); }
+    .tree.is-before { border-top: 3px solid rgba(18,18,18,0.22); }
+    .tree-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 14px; }
+    .tree pre { font-family: var(--ff-mono); font-size: 12px; line-height: 1.85; color: var(--ink-mid); white-space: pre; overflow-x: auto; }
+    .tree pre b { color: var(--ink); font-weight: 600; }
+    .tree-note { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 12.5px; line-height: 1.65; color: var(--ink-dim); }
 
-    .mech-figure { display: flex; justify-content: center; }
-    .diagram { width: min(100%, 330px); height: auto; overflow: visible; }
-    .diagram .ink { fill: none; stroke: var(--ink); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-    .diagram .tint { fill: none; stroke: var(--m-tint); stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-    .diagram .tint-fill { fill: var(--m-tint); stroke: none; }
-    .diagram .faint { fill: none; stroke: rgba(18,18,18,0.25); stroke-width: 1.5; stroke-dasharray: 3 5; stroke-linecap: round; }
-    .diagram text { font-family: var(--ff); font-size: 6.5px; letter-spacing: 0.12em; fill: var(--ink-dim); text-transform: uppercase; }
-    .diagram .draw { stroke-dasharray: 340; stroke-dashoffset: 340; transition: stroke-dashoffset 1100ms cubic-bezier(0.22, 0.84, 0.22, 1); }
-    .is-visible .diagram .draw { stroke-dashoffset: 0; }
-    .is-visible .diagram .draw.d2 { transition-delay: 260ms; }
-    .diagram .dot { opacity: 0; }
-    .is-visible .diagram .dot { opacity: 1; animation: travel-pair 2.8s cubic-bezier(0.45, 0, 0.55, 1) 900ms infinite; }
-    @keyframes travel-pair { 0%, 12% { transform: translate(0, 0); } 55%, 70% { transform: translate(56px, 14px); } 100% { transform: translate(0, 0); } }
-    @keyframes pulse-ring { 0% { transform: scale(0.6); opacity: 0.9; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
-    .diagram .pulse { transform-origin: center; transform-box: fill-box; opacity: 0; }
-    .is-visible .diagram .pulse { animation: pulse-ring 2.8s ease-out 1200ms infinite; }
+    /* ─── Numbered moves ─── */
+    .moves { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; margin-top: 32px; }
+    .move { background: var(--bg); border: 1px solid var(--line); padding: 26px 26px 28px; }
+    .move-n { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--a-tool); font-weight: 600; margin-bottom: 12px; }
+    .move h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.35; margin-bottom: 10px; }
+    .move p { font-size: 13.5px; line-height: 1.7; color: var(--ink-mid); }
+    .move strong { color: var(--ink); font-weight: 600; }
+
+    /* ─── Evidence figures ─── */
+    .ev { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .ev h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.8vw, 38px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 14px; }
+    .ev-lead { font-size: clamp(14px, 1.35vw, 16px); line-height: 1.72; color: var(--ink-mid); max-width: 66ch; }
+    .ev-lead code { font-family: var(--ff-mono); font-size: 0.88em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
+    .ev-figwrap { margin-top: 30px; }
+    /* Two language variants of the same figure. The labels inside are real text,
+       not pixels — which is the whole reason these are SVG and not screenshots. */
+    .ev-fig { display: block; width: 100%; height: auto; border: 1px solid var(--border); background: #fbfaf7; }
+    html.lang-jp .ev-fig.t-en { display: none; }
+    .ev-fig.t-jp { display: none; }
+    html.lang-jp .ev-fig.t-jp { display: block; }
+    .ev-cap { margin-top: 12px; font-size: 12px; line-height: 1.6; color: var(--ink-dim); }
+
+    /* ─── Craft (dark) ─── */
+    .craft { background: #131316; color: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .craft .wds-kick { color: rgba(255,255,255,0.5); }
+    .craft h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; color: #fff; margin-bottom: 16px; }
+    .craft-lead { font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.74; color: rgba(255,255,255,0.68); max-width: 66ch; }
+    .craft-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; margin-top: 32px; }
+    .craft-col { background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.11); padding: 22px 22px 24px; }
+    .craft-col-l { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #67e8f9; font-weight: 600; margin-bottom: 12px; }
+    .craft-col p, .craft-col li { font-size: 13px; line-height: 1.68; color: rgba(255,255,255,0.72); }
+    .craft-col ul { list-style: none; display: grid; gap: 9px; }
+    .craft-col li { padding-left: 14px; position: relative; }
+    .craft-col li::before { content: "—"; position: absolute; left: 0; color: rgba(255,255,255,0.35); }
+    .drop { margin-top: 34px; padding-top: 26px; border-top: 1px solid rgba(255,255,255,0.14); }
+    .drop-label { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.45); margin-bottom: 16px; }
+    .drop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .drop-item { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.09); padding: 20px 22px 22px; }
+    .drop-item h4 { font-size: 14.5px; font-weight: 600; color: #fff; margin-bottom: 10px; letter-spacing: -0.01em; }
+    .drop-item p { font-size: 12.5px; line-height: 1.66; color: rgba(255,255,255,0.62); }
+    .drop-item p + p { margin-top: 8px; }
+    .drop-item b { color: rgba(255,255,255,0.9); font-weight: 600; }
+
+    /* ─── Proof — the only numbers on the page ─── */
+    .proof { background: #f4efe4; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .proof h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
+    .proof-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; margin-top: 30px; }
+    .proof-cell { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--a-tool); padding: 24px 22px 26px; }
+    .proof-n { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(34px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1; margin-bottom: 12px; }
+    .proof-d { font-size: 13px; line-height: 1.65; color: var(--ink-mid); }
+    .proof-close { margin-top: 30px; font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.74; color: var(--ink-mid); max-width: 66ch; }
+    .proof-close strong { color: var(--ink); font-weight: 600; }
+    .proof-stack { margin-top: 28px; padding-top: 22px; border-top: 1px solid rgba(18,18,18,0.12); }
+    .proof-stack-l { font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 12px; }
+    .proof-stack p { font-family: var(--ff-mono); font-size: 12.5px; line-height: 1.9; color: var(--ink-mid); }
+
+    /* ─── Retrospective ─── */
+    .retro { background: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
+    .retro h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
+    .retro-lead { font-size: clamp(14px, 1.35vw, 16px); line-height: 1.72; color: var(--ink-mid); max-width: 66ch; }
+    .retro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 30px; }
+    .retro-item { background: var(--bg); border: 1px solid var(--line); padding: 24px 24px 26px; }
+    .retro-n { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--ink-dim); margin-bottom: 12px; }
+    .retro-item h4 { font-size: 16.5px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.35; margin-bottom: 10px; }
+    .retro-item p { font-size: 13.5px; line-height: 1.7; color: var(--ink-mid); }
 
     .project-nav { display: flex; justify-content: space-between; gap: 20px; max-width: 1240px; margin: 0 auto; padding: 48px 20px 64px; }
     .project-nav-link { font-size: 12px; letter-spacing: 0.10em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
@@ -149,8 +234,9 @@
     .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22,0.84,0.22,1), transform 600ms cubic-bezier(0.22,0.84,0.22,1); }
     .reveal-on-scroll.is-visible { opacity: 1; transform: none; }
 
-    .story-cta:focus-visible, .rail-item:focus-visible,
-    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible, .nav-toggle:focus-visible, .project-nav-link:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+    .story-cta:focus-visible, .nav-links a:focus-visible, .nav-logo:focus-visible,
+    .lang-btn:focus-visible, .nav-toggle:focus-visible, .project-nav-link:focus-visible,
+    .breadcrumb a:focus-visible, .footer-links a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
     .site-footer { display: flex; justify-content: space-between; align-items: center; gap: 24px; max-width: 1240px; margin: 0 auto; padding: 40px 32px; flex-wrap: wrap; border-top: 1px solid var(--line); }
     .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
@@ -159,11 +245,8 @@
     .footer-links a { color: var(--ink-dim); font-size: 12px; text-decoration: none; }
 
     @media (max-width: 900px) {
-      .mech-grid { grid-template-columns: 1fr; gap: 36px; }
-      .mech-figure { justify-content: flex-start; }
-      .diagram { width: min(72%, 280px); }
-      .mech-facts { grid-template-columns: 1fr; }
-      .rail-items { grid-template-columns: 1fr; }
+      .tw, .tree-grid, .moves, .craft-cols, .drop-grid, .proof-grid, .retro-grid { grid-template-columns: 1fr; }
+      .wds-hero-meta { gap: 18px 28px; }
     }
 
     @media (max-width: 767px) {
@@ -179,19 +262,53 @@
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
       .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
-      .diagram .draw { stroke-dashoffset: 0 !important; transition: none !important; }
-      .diagram .dot, .diagram .pulse { animation: none !important; opacity: 1 !important; }
-      .story-cta, .rail-item, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
+      .story-cta, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
+  
+    /* ─── Cross-document view transition ───────────────────────────────
+       The tile the visitor clicked on the index expands into this page's
+       hero. Both documents have to opt in for the morph to happen, and the
+       transition name has to match the one the index assigns to the tile it
+       was launched from. Browsers without support simply navigate — nothing
+       here is load-bearing. */
+    @view-transition { navigation: auto; }
+    @media (prefers-reduced-motion: no-preference) {
+      .project-hero, .wds-hero { view-transition-name: hero-media; }
+      ::view-transition-old(hero-media),
+      ::view-transition-new(hero-media) {
+        animation-duration: 520ms;
+        animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+      }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 300ms; }
+    }
+</style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
 <body>
   <nav class="site-nav" aria-label="Primary navigation">
     <a href="../index.html" class="nav-logo"><span class="nav-logo-name">Takao Umehara</span><span class="nav-logo-tag">creativity is everywhere</span></a>
     <ul class="nav-links">
-      <li><a href="../ai-products.html">Agentic UX</a></li>
-      <li><a href="../ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
-      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="../ai-products.html" class="is-lead">AI Products</a></li>
+      <li><a href="../ai-tools.html" class="is-lead is-active" aria-current="page">AI Tools</a></li>
+      <li class="is-tierbreak"><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
@@ -209,130 +326,245 @@
 
   <main class="deck">
 
-    <!-- ═══ Slide 1 · Hero (dark, gold glow) ═══ -->
+    <!-- ═══ 1 · Hero ═══ -->
     <header class="wds-hero wds-slide reveal-on-scroll">
-      <p class="wds-kick"><span class="t-en">Skill System · 12 Claude Code Skills · Model Routing</span><span class="t-jp">スキルシステム · 12 の Claude Code スキル · モデル割り当て</span></p>
-      <h1 class="wds-serif"><span class="t-en">Say what you want to build. <em>Twelve skills</em> take it from there.</span><span class="t-jp is-block">作りたいものを一文で。あとは<em>12 のスキル</em>が運ぶ。</span></h1>
-      <p class="wds-hero-lead"><span class="t-en"><strong>superforge</strong> is the front desk of a workshop. One sentence in, and it does three things: picks which of twelve skills takes the job, picks a model that matches the difficulty so a bulk rename is never billed like an architecture decision, and makes sure the result lands in a file — so <code>/clear</code>, a model switch, or a week away costs you nothing.</span><span class="t-jp is-block"><strong>superforge</strong> は工房の受付です。一文を渡すと、3 つのことをします。12 のスキルのどれが担当するかを決め、難易度に見合ったモデルを割り当て（一括リネームがアーキテクチャ判断と同じ単価にならないように）、結果を必ずファイルに残します。だから <code>/clear</code> も、モデルの切り替えも、一週間の中断も、何も失いません。</span></p>
+      <p class="wds-kick"><span class="t-en">Skill system · 14 Claude Code skills · Model tiering</span><span class="t-jp">スキルシステム · 14 の Claude Code スキル · モデル階層制御</span></p>
+      <h1 class="wds-serif"><span class="t-en">A multi-agent system built to make AI development <em>repeatable</em>.</span><span class="t-jp is-block">AIとの開発を<em>再現可能</em>にする、14 の専門役割とモデル階層。</span></h1>
+      <p class="wds-hero-lead"><span class="t-en">AI coding assistants lose their context the moment a session is cleared, and the quality of the output goes with it. I split development into <strong>fourteen specialist skills</strong>, gave every subtask a model sized to its difficulty, and required each skill to write its result to a file before reporting back. Rebuilding the same instructions every morning stops being part of the job — and the token bill stops paying for it.</span><span class="t-jp is-block">AIツールとの対話は、セッションをクリアした瞬間に合意事項や設計意図が失われ、出力の品質が不安定になる課題がありました。私は開発工程を<strong>14 の専門スキル</strong>に分解し、タスク難易度に応じたモデル割り当てと、成果物の自動永続化を行うオーケストレーションシステムを設計しました。都度の指示組み立てを不要にし、APIトークン消費と品質の双方を最適化しました。</span></p>
       <div class="wds-chips">
-        <span class="wds-chip"><span class="t-en">Claude Code Skills</span><span class="t-jp">Claude Code スキル</span></span>
-        <span class="wds-chip"><span class="t-en">12 skills</span><span class="t-jp">12 スキル</span></span>
-        <span class="wds-chip">Codex · Gemini · Kimi <span class="t-en">ready</span><span class="t-jp">対応</span></span>
+        <span class="wds-chip"><span class="t-en">14 agent skills</span><span class="t-jp">14 の専門スキル</span></span>
+        <span class="wds-chip"><span class="t-en">Model tiering</span><span class="t-jp">モデル階層制御</span></span>
+        <span class="wds-chip"><span class="t-en">Persistent docs</span><span class="t-jp">成果物永続化</span></span>
         <span class="wds-chip">MIT</span>
       </div>
+      <dl class="wds-hero-meta">
+        <div><dt><span class="t-en">Client</span><span class="t-jp">クライアント</span></dt><dd><span class="t-en">Personal project · open source</span><span class="t-jp">自主開発・オープンソース</span></dd></div>
+        <div><dt><span class="t-en">Role</span><span class="t-jp">役割</span></dt><dd><span class="t-en">Lead developer &amp; prompt systems architect</span><span class="t-jp">Lead Developer &amp; Prompt Systems Architect</span></dd></div>
+        <div><dt><span class="t-en">Year</span><span class="t-jp">制作年</span></dt><dd><span class="t-en">2026 — ongoing</span><span class="t-jp">2026年（継続開発中）</span></dd></div>
+      </dl>
       <div class="mech-ctas">
         <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
       </div>
     </header>
 
-    <!-- ═══ Slide 2 · Mechanism + the twelve skills (cream) ═══ -->
-    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="superforge details">
-      <div class="mech-grid">
-        <div>
-          <h3><span class="t-en">Who takes it, what it runs on, where it gets written down.</span><span class="t-jp is-block">誰が担当し、何で動かし、どこに書き残すか。</span></h3>
-          <p class="mech-lead"><span class="t-en">Left alone, every subtask runs on the same expensive model and every decision dies with the conversation. superforge sorts each subtask into one of four tiers before starting and assigns a model to match — including the bottom tier, bulk text work that never touches the repository, which goes to the local <code>gemini</code> CLI and consumes no Anthropic usage at all. Then every skill writes a file under <code>docs/</code> before it reports back: decide the design and you get <code>docs/design.md</code>, decide the pricing and you get <code>docs/business-model.md</code>.</span><span class="t-jp is-block">放っておくと、すべてのサブタスクが同じ高価なモデルで走り、決めたことは会話とともに消えます。superforge は開始前に各サブタスクを 4 段階に仕分けし、それぞれにモデルを割り当てます。最下段の「大量テキスト処理」（リポジトリに触れない翻訳・要約・バリエーション生成）はローカルの <code>gemini</code> CLI に回るため、Anthropic の利用量をまったく消費しません。そして各スキルは報告の前に必ず <code>docs/</code> にファイルを書きます。設計を決めれば <code>docs/design.md</code>、価格を決めれば <code>docs/business-model.md</code> が残ります。</span></p>
-          <div class="mech-facts">
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Skills</span><span class="t-jp">スキル</span></div><div class="mech-fact-v"><span class="t-en">12 across think · build · prove · ship</span><span class="t-jp">12（思考・制作・検証・出荷）</span></div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Routing</span><span class="t-jp">割り当て</span></div><div class="mech-fact-v"><span class="t-en">Four tiers, one model each</span><span class="t-jp">4 段階、それぞれにモデル</span></div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Output</span><span class="t-jp">出力</span></div><div class="mech-fact-v"><span class="t-en">Every run leaves a file in docs/</span><span class="t-jp">実行ごとに docs/ へ 1 ファイル</span></div></div>
-          </div>
-          <div class="mech-ctas">
-            <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
+    <!-- ═══ 2 · The Tension ═══ -->
+    <section class="wds-slide reveal-on-scroll" aria-label="The tension">
+      <div class="tw">
+        <div class="tw-col tw-before">
+          <p class="tw-tag"><span class="t-en">Where it started</span><span class="t-jp">出発点</span></p>
+          <h3><span class="t-en">Single-model transient chats</span><span class="t-jp is-block">全てが消える単一モデル対話</span></h3>
+          <p><span class="t-en">Standard workflows pass every task — from business strategy down to a minor text replacement — to a single expensive model. Decisions live only in a temporary chat window, so the same setup gets explained again the next morning.</span><span class="t-jp is-block">従来のAI対話では、高度な設計判断から機械的なファイル置換まで、全て同一の高額モデルで処理されていました。決定事項は一次的なチャット欄にしか残らず、翌日には同じ説明を繰り返す必要がありました。</span></p>
+          <div class="tw-chips">
+            <span class="tw-chip"><span class="t-en">High API cost</span><span class="t-jp">高コスト単一モデル</span></span>
+            <span class="tw-chip"><span class="t-en">Lost context</span><span class="t-jp">スレッド消去で喪失</span></span>
+            <span class="tw-chip"><span class="t-en">Ad-hoc prompts</span><span class="t-jp">都度の手動指示</span></span>
           </div>
         </div>
-        <div class="mech-figure" aria-hidden="true">
-          <svg class="diagram" viewBox="0 0 160 120" role="img">
-            <path class="faint" d="M6 52 h22"/>
-            <rect class="ink draw" x="30" y="38" width="42" height="28" rx="4"/>
-            <path class="tint draw d2" d="M72 52 h14 M86 16 v76 M86 16 h18 M86 40 h18 M86 64 h18 M86 92 h18"/>
-            <rect class="ink draw d3" x="106" y="8" width="34" height="16" rx="3"/>
-            <rect class="ink draw d3" x="106" y="32" width="34" height="16" rx="3"/>
-            <rect class="ink draw d3" x="106" y="56" width="34" height="16" rx="3"/>
-            <rect class="ink draw d3" x="106" y="84" width="34" height="16" rx="3"/>
-            <circle class="tint pulse" cx="51" cy="52" r="11"/>
-            <text x="30" y="80">FRONT DESK</text>
-            <text x="106" y="114">12 SKILLS</text>
-          </svg>
-        </div>
-      </div>
-      <div class="mech-rail">
-        <p class="mech-rail-label"><span class="t-en">The twelve skills</span><span class="t-jp">12 のスキル</span></p>
-        <div class="rail-items">
-          <div class="rail-item">
-            <div class="rail-item-status"><span class="t-en">Think</span><span class="t-jp">考える</span></div>
-            <div class="rail-item-name">brain · biz · brand</div>
-            <div class="rail-item-desc"><span class="t-en">An idea that isn't the obvious one, a price with a place to put the paywall, and a name, colour and tone.</span><span class="t-jp is-block">当たり前でない発想、ペイウォールの置き場所まで決めた価格、そして名前・色・トーン。</span></div>
-          </div>
-          <div class="rail-item">
-            <div class="rail-item-status"><span class="t-en">Build</span><span class="t-jp">作る</span></div>
-            <div class="rail-item-name">ui · dev</div>
-            <div class="rail-item-desc"><span class="t-en">Interface design with a style guide a human can open and check, then implementation split across agents on fitting models.</span><span class="t-jp is-block">人が開いて確認できるスタイルガイド付きの UI 設計と、適したモデルのエージェントに分けた実装。</span></div>
-          </div>
-          <div class="rail-item">
-            <div class="rail-item-status"><span class="t-en">Prove</span><span class="t-jp">確かめる</span></div>
-            <div class="rail-item-name">test · debug · a11y</div>
-            <div class="rail-item-desc"><span class="t-en">Write the test first — Web, iOS, Android — find the cause of a bug instead of patching over it, then run a seven-pass accessibility audit across all 86 WCAG 2.2 criteria.</span><span class="t-jp is-block">先にテストを書く（Web / iOS / Android）。バグは覆い隠さず、原因を突き止める。そして WCAG 2.2 の全 86 基準を 7 パスで監査する。</span></div>
-          </div>
-          <div class="rail-item">
-            <div class="rail-item-status"><span class="t-en">Ship</span><span class="t-jp">出す</span></div>
-            <div class="rail-item-name">roast · verify · handoff</div>
-            <div class="rail-item-desc"><span class="t-en">Have the flaws named before users find them, attach evidence to "it's done", and hand off cleanly before clearing a session.</span><span class="t-jp is-block">ユーザーより先に欠点を名指しし、「完了」に証拠を添え、セッションを消す前にきれいに引き継ぐ。</span></div>
+        <div class="tw-col tw-after">
+          <p class="tw-tag"><span class="t-en">What it became</span><span class="t-jp">再設計後の姿</span></p>
+          <h3><span class="t-en">Tiered models &amp; saved assets</span><span class="t-jp is-block">階層化モデルと成果物の永続保存</span></h3>
+          <p><span class="t-en">Tasks are triaged into five complexity tiers, and the bottom one — bulk text that never touches the repository — is offloaded to a local CLI at no cost. Every skill writes a structured file under <code>docs/</code>, so the context survives a session reset or a switch to another tool.</span><span class="t-jp is-block">作業難易度を5段階に仕分けし、コード修正を伴わないテキスト処理はローカルの無料CLIへオフロード。各スキルが決定事項を <code>docs/</code> 内へ構造化ファイルとして自動出力するため、環境を跨いでも文脈が維持されます。</span></p>
+          <div class="tw-chips">
+            <span class="tw-chip"><span class="t-en">5 model tiers</span><span class="t-jp">5段階モデル配分</span></span>
+            <span class="tw-chip"><span class="t-en">docs/ persistence</span><span class="t-jp">docs/ への永続化</span></span>
+            <span class="tw-chip"><span class="t-en">0-cost local run</span><span class="t-jp">無料ローカル実行</span></span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══ Slide 2.5 · Model routing detail (cream, new diagram) ═══ -->
-    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="superforge model routing">
-      <div class="mech-grid">
-        <div>
-          <h3><span class="t-en">Judgement costs more than volume. The router knows the difference.</span><span class="t-jp is-block">判断は量より高くつく。ルーターはその違いを知っている。</span></h3>
-          <p class="mech-lead"><span class="t-en">Before any agent starts, superforge sorts the subtask into one of four tiers and hands it a model sized to match — so an architecture decision and a bulk rename are never billed the same, and the bottom tier never touches Anthropic usage at all.</span><span class="t-jp is-block">エージェントが動き出す前に、superforge はサブタスクを 4 段階のどれかに仕分け、見合ったモデルを割り当てます。アーキテクチャ判断と一括リネームが同じ単価になることはなく、最下段は Anthropic の利用量にすら触れません。</span></p>
-          <div class="mech-rail" style="margin-top:32px; padding-top:0; border-top:0;">
-            <div class="rail-items" style="grid-template-columns: repeat(4, minmax(0,1fr));">
-              <div class="rail-item">
-                <div class="rail-item-status">A · <span class="t-en">Judgement</span><span class="t-jp">判断</span></div>
-                <div class="rail-item-name"><span class="t-en">Architecture, root cause, review</span><span class="t-jp is-block">設計・原因究明・レビュー</span></div>
-                <div class="rail-item-desc">Opus-class</div>
-              </div>
-              <div class="rail-item">
-                <div class="rail-item-status">B · <span class="t-en">Volume</span><span class="t-jp">量産</span></div>
-                <div class="rail-item-name"><span class="t-en">Feature builds, UI, QA</span><span class="t-jp is-block">機能実装・UI・QA</span></div>
-                <div class="rail-item-desc">Sonnet-class</div>
-              </div>
-              <div class="rail-item">
-                <div class="rail-item-status">C · <span class="t-en">Routine</span><span class="t-jp">定型</span></div>
-                <div class="rail-item-name"><span class="t-en">Tests, formatting, renames</span><span class="t-jp is-block">テスト・整形・リネーム</span></div>
-                <div class="rail-item-desc">Haiku-class</div>
-              </div>
-              <div class="rail-item">
-                <div class="rail-item-status is-soon">D · <span class="t-en">Bulk text</span><span class="t-jp">大量テキスト</span></div>
-                <div class="rail-item-name"><span class="t-en">Translation, summarizing, variants</span><span class="t-jp is-block">翻訳・要約・バリエーション</span></div>
-                <div class="rail-item-desc"><span class="t-en">Local Gemini CLI · no repo access</span><span class="t-jp is-block">ローカル Gemini CLI・リポジトリ非接触</span></div>
-              </div>
-            </div>
-          </div>
+    <!-- ═══ 3 · Approach ═══ -->
+    <section class="tool-statement st-cyan wds-slide reveal-on-scroll">
+      <p class="wds-kick"><span class="t-en">The decision</span><span class="t-jp">意思決定</span></p>
+      <h2 class="wds-serif"><span class="t-en">Task complexity must determine <em>model selection</em>.</span><span class="t-jp is-block">作業の難易度で、<em>使うモデルを決める</em>。</span></h2>
+      <p class="st-lead"><span class="t-en">To settle the trade-off between speed, depth and cost, I gave up on relying on a single model. An orchestration hub reads the task it is handed and assigns it a tier. High-reasoning models are reserved for architectural and business judgment; mechanical work is spread across fast, light ones.</span><span class="t-jp is-block">AI開発における実行速度・深さ・コストのトレードオフを解消するため、単一モデルへの依存を捨てる判断をしました。タスク内容を受付（オーケストレータ）が判別し、最適なモデル階層へ動的に振り分けるアーキテクチャを導入。高度なビジネス・設計判断だけに高推論モデルを集中させ、機械的な作業は軽量・高速なモデル群に分散させました。</span></p>
+    </section>
+
+    <!-- ═══ 4 · Structure ═══ -->
+    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="Structure">
+      <h3><span class="t-en">One timeline became a workshop with four rooms.</span><span class="t-jp is-block">ひとつのタイムラインを、4 つの部屋を持つ工房に。</span></h3>
+      <p class="mech-lead"><span class="t-en">The old structure was not really a structure. Thinking, building and checking all shared one thread, so nothing showed how far a decision had actually got. The new tree gives each phase its own skills and its own output file — and it is the file, not the conversation, that carries the project forward.</span><span class="t-jp is-block">旧構造は、構造と呼べるものではありませんでした。思考・実装・検証の全工程が1つのタイムラインに混在し、どこまで決定したかが不透明。新しいツリーは各フェーズに専用のスキルと出力ファイルを与えます。プロジェクトを前に運ぶのは、会話ではなくファイルです。</span></p>
+      <div class="tree-grid">
+        <div class="tree is-before">
+          <p class="tree-label"><span class="t-en">Before</span><span class="t-jp">再設計前</span></p>
+          <pre><span class="t-en is-block"><b>One chat session</b>
+ ├─ app concept       (typed by hand)
+ ├─ UI design talk    (typed by hand)
+ ├─ code &amp; debug      (typed by hand)
+ └─ session cleared   → everything gone</span><span class="t-jp is-block"><b>ユーザー単一セッション</b>
+ ├─ アプリ構想指示        （手動入力）
+ ├─ UIデザイン相談        （手動入力）
+ ├─ コーディング・デバッグ （手動入力）
+ └─ セッション消去        → 全履歴・合意内容の消失</span></pre>
+          <p class="tree-note"><span class="t-en">Scrolling back through old logs, or explaining the same thing again, was a daily cost.</span><span class="t-jp is-block">過去ログのスクロールや再説明が頻発していた。</span></p>
         </div>
-        <div class="mech-figure" aria-hidden="true">
-          <svg class="diagram" viewBox="0 0 160 140" role="img">
-            <rect class="ink draw" x="10" y="10" width="140" height="20" rx="3"/>
-            <rect class="tint draw d2" x="10" y="38" width="112" height="20" rx="3"/>
-            <rect class="tint draw d2" x="10" y="66" width="80" height="20" rx="3"/>
-            <rect class="faint" x="10" y="94" width="48" height="20" rx="3"/>
-            <text x="14" y="24">A · JUDGEMENT</text>
-            <text x="14" y="52">B · VOLUME</text>
-            <text x="14" y="80">C · ROUTINE</text>
-            <text x="14" y="108">D · BULK TEXT</text>
-          </svg>
+        <div class="tree is-after">
+          <p class="tree-label"><span class="t-en">After</span><span class="t-jp">再設計後</span></p>
+          <pre><span class="t-en is-block"><b>HUB: superforge</b>  (tiering + routing)
+ ├─ 1. THINK  brain / biz / brand
+ │            → product-idea.md, business-model.md
+ ├─ 2. BUILD  ui / dev
+ │            → design.md, plan.md
+ ├─ 3. TEST   test / debug / a11y / secure
+ │            → failforward.md, security.md
+ └─ 4. SHIP   roast / verify / ship / handoff
+              → ship-readiness.md, llms.txt</span><span class="t-jp is-block"><b>受付 HUB: superforge</b>（階層判定・自動割当）
+ ├─ 1. 考える brain / biz / brand
+ │            → product-idea.md, business-model.md
+ ├─ 2. 作る   ui / dev
+ │            → design.md, plan.md
+ ├─ 3. 試す   test / debug / a11y / secure
+ │            → failforward.md, security.md
+ └─ 4. 出す   roast / verify / ship / handoff
+              → ship-readiness.md, llms.txt</span></pre>
+          <p class="tree-note"><span class="t-en">One long prompt became fourteen skills with a single responsibility each, so the constraints and checks a given job needs can be injected on their own.</span><span class="t-jp is-block">「一言の長いプロンプト」を「明確な責任を持つ14の単機能スキル」へ。各作業に必要な制約と検証ルールを独立して注入するため。</span></p>
         </div>
       </div>
     </section>
 
-    <!-- ═══ Slide 3 · Closing (vivid gold) ═══ -->
-    <section class="tool-statement st-gold wds-slide reveal-on-scroll">
-      <p class="wds-kick"><span class="t-en">Why it matters</span><span class="t-jp">なぜ重要か</span></p>
-      <h2 class="wds-serif"><span class="t-en">Twelve skills, one entrance, and <em>nothing lost between sessions</em>.</span><span class="t-jp is-block">12 のスキル、入口はひとつ。セッションをまたいでも<em>何も失わない</em>。</span></h2>
+    <!-- ═══ 5 · Moves ═══ -->
+    <section class="tool-mech is-plain wds-slide reveal-on-scroll" aria-label="How it was built">
+      <h3><span class="t-en">Four decisions, in the order they were made.</span><span class="t-jp is-block">決めた順に、4 つ。</span></h3>
+      <div class="moves">
+        <div class="move">
+          <div class="move-n">01</div>
+          <h4><span class="t-en">Fourteen roles and one front desk</span><span class="t-jp is-block">14 の役割分離と、中央受付ハブ</span></h4>
+          <p><span class="t-en">To stop a single prompt from running away with the whole job, I defined four phases — think, build, test, ship — modelled on how client work is actually staged, and placed fourteen skills inside them. The central <code>superforge</code> skill routes each task.</span><span class="t-jp is-block">単一プロンプトでの暴走を防ぐため、受託開発の工程になぞらえた「考える・作る・試す・出す」の4フェーズ14スキルを定義。中央の <code>superforge</code> スキルがタスクを自動ルーティングする構造を確立しました。</span></p>
+        </div>
+        <div class="move">
+          <div class="move-n">02</div>
+          <h4><span class="t-en">A cost-and-capability matrix, five tiers deep</span><span class="t-jp is-block">5 段階のコスト・能力マトリクス</span></h4>
+          <p><span class="t-en">Rules for when each model earns its place: Opus for judgment, Fable for long unattended runs, Sonnet for volume, Haiku for fast audits. Text work that never touches the repository moves to the local <code>gemini</code> CLI, which costs nothing to run.</span><span class="t-jp is-block">各スキルの実行コストを最適化するため、Opus（最高推論）、Fable（長距離自律）、Sonnet（標準量産）、Haiku（高速監査）の使い分けルールを制定。コード変更不要なテキスト処理はローカル <code>gemini</code> CLI（コストゼロ）へ移送可能にしました。</span></p>
+        </div>
+        <div class="move">
+          <div class="move-n">03</div>
+          <h4><span class="t-en">docs/ as the single source of truth</span><span class="t-jp is-block"><code>docs/</code> を唯一の真実の source に</span></h4>
+          <p><span class="t-en">So that a project can continue after the conversation is gone, every skill is required to write a specific format of Markdown or HTML into <code>docs/</code> when it finishes. Switch tools or switch models, and the work resumes immediately.</span><span class="t-jp is-block">会話セッションが消えてもプロジェクトが進行できるよう、全スキルが完了時に特定フォーマットのMarkdownやHTMLを <code>docs/</code> 内に出力する制約を付与。ツールやモデルを乗り換えても即座に再開できる基盤を整えました。</span></p>
+        </div>
+        <div class="move">
+          <div class="move-n">04</div>
+          <h4><span class="t-en">Refusing the average answer</span><span class="t-jp is-block">平均解を打破する思考エンジンと、失敗の記憶</span></h4>
+          <p><span class="t-en">To avoid the safe, unremarkable answer a model defaults to, I built in a <strong>BreakBias</strong> engine that forces ideas past the obvious, and a <strong>FailForward</strong> memory that learns from past bugs and can be searched before a new one is diagnosed.</span><span class="t-jp is-block">AI特有の「無難で無害な回答」を避けるため、極端なアイデア発案を強制する<strong>BreakBias エンジン</strong>や、過去のバグから失敗パターンを学習・検索する<strong>FailForward 記憶機構</strong>を組み込みました。</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 6 · Evidence — the map ═══ -->
+    <section class="ev wds-slide reveal-on-scroll" aria-label="The skill map">
+      <h3><span class="t-en">One sentence, and where it goes</span><span class="t-jp is-block">一文を渡したあと、どこへ運ばれるか</span></h3>
+      <p class="ev-lead"><span class="t-en">The whole system seen from the typing end: what you actually enter, which skill takes it, in what order, and the file each one leaves behind. Every name on the right is a file that outlives the session.</span><span class="t-jp is-block">打つ側から見たシステム全体です。実際に入力するもの、担当するスキル、その順序、そして各スキルが残すファイル。右側の名前はすべて、セッションより長く生き残るファイルです。</span></p>
+      <div class="ev-figwrap">
+        <img class="ev-fig t-en" src="../assets/superforge/superforge-map.svg" width="980" height="698" loading="lazy" decoding="async" alt="The superforge front desk. One typed sentence is routed through four phases — Think (brain, biz, brand), Build (ui, dev), Prove (test, debug, a11y, secure) and Ship (roast, verify, ship, handoff) — and each skill writes its own file under docs/.">
+        <img class="ev-fig t-jp" src="../assets/superforge/superforge-map.ja.svg" width="980" height="698" loading="lazy" decoding="async" alt="superforge の受付図。入力した一文が、考える（brain・biz・brand）、作る（ui・dev）、試す（test・debug・a11y・secure）、出す（roast・verify・ship・handoff）の4フェーズに振り分けられ、各スキルが docs/ 配下にファイルを残す。">
+      </div>
+      <p class="ev-cap"><span class="t-en">The figure is SVG rather than a screenshot — the labels inside it are real text, and they change language along with the rest of the page.</span><span class="t-jp is-block">この図はスクリーンショットではなく SVG です。図中の文字は本物のテキストなので、ページと一緒に言語が切り替わります。</span></p>
+    </section>
+
+    <!-- ═══ 7 · Evidence — model tiers ═══ -->
+    <section class="ev wds-slide reveal-on-scroll" aria-label="Model tiers">
+      <h3><span class="t-en">The tier is chosen before any agent is spawned</span><span class="t-jp is-block">エージェントを起こす前に、階層は決まっている</span></h3>
+      <p class="ev-lead"><span class="t-en">Judgment costs more than volume, so the two are never billed the same. The bottom tier is the interesting one: work that needs no repository access runs on the local <code>gemini</code> CLI and consumes no Anthropic usage at all.</span><span class="t-jp is-block">判断は量より高くつくので、同じ単価にはしません。面白いのは最下段です。リポジトリへのアクセスが要らない作業はローカルの <code>gemini</code> CLI で走り、Anthropic の利用量をまったく消費しません。</span></p>
+      <div class="ev-figwrap">
+        <img class="ev-fig t-en" src="../assets/superforge/superforge-models.svg" width="980" height="660" loading="lazy" decoding="async" alt="Model tier table. A judgment, A endurance, B volume, C routine and D bulk text, mapped across Claude, Gemini, Codex and Kimi. Tier D never touches the repository, so it stays off Anthropic usage entirely.">
+        <img class="ev-fig t-jp" src="../assets/superforge/superforge-models.ja.svg" width="980" height="660" loading="lazy" decoding="async" alt="モデル階層の対応表。A（判断）、A（持久）、B（量産）、C（定型）、D（大量テキスト）を Claude・Gemini・Codex・Kimi に割り当てる。Tier D はリポジトリに触れないため Anthropic の利用量を消費しない。">
+      </div>
+    </section>
+
+    <!-- ═══ 8 · Craft ═══ -->
+    <section class="craft wds-slide reveal-on-scroll" aria-label="How AI was used">
+      <p class="wds-kick"><span class="t-en">How AI was used</span><span class="t-jp">AIをどう使ったか</span></p>
+      <h3><span class="t-en">The model wrote the scaffolding. The opinions it could not.</span><span class="t-jp is-block">雛形はAIが書いた。意見の部分は書けなかった。</span></h3>
+      <p class="craft-lead"><span class="t-en">More than eighteen configurations of the skill set were tried. The test for each was the same: clear the session completely, and see whether the next model could resume at the same quality from the written files alone.</span><span class="t-jp is-block">スキル構成案は18パターン以上を検証しました。選定基準は一貫して「セッションを完全にリセットしても、出力されたドキュメントだけで次のAIが同じ品質で開発を再開できるか」です。</span></p>
+      <div class="craft-cols">
+        <div class="craft-col">
+          <p class="craft-col-l"><span class="t-en">What AI did</span><span class="t-jp">AIにさせたこと</span></p>
+          <p><span class="t-en">Wrote the boilerplate for all fourteen skills, generated the first pass of the documentation in five languages, and ran the test workflows.</span><span class="t-jp is-block">14スキルの雛形コード記述、多言語ドキュメント（5言語）の初期生成、およびテストワークフローの自動実行。</span></p>
+        </div>
+        <div class="craft-col">
+          <p class="craft-col-l"><span class="t-en">Where it fell short</span><span class="t-jp">AI案のどこがダメだったか</span></p>
+          <p><span class="t-en">Followed faithfully, the output collapsed toward the polished but familiar — a design or an idea you have seen somewhere before. The sharp product decisions and the strict security and accessibility rules were the first things to fall out.</span><span class="t-jp is-block">指示を忠実に実行させようとすると、デザインやアイデアが「綺麗だがどこかで見たような平均的で浅い回答」に収縮し、エッジの効いたプロダクト設計や厳格なセキュリティ・アクセシビリティ監査ルールが抜け落ちていました。</span></p>
+        </div>
+        <div class="craft-col">
+          <p class="craft-col-l"><span class="t-en">What I added</span><span class="t-jp">人として足したこと</span></p>
+          <ul>
+            <li><span class="t-en">The BreakBias engine, which breaks the average idea on purpose</span><span class="t-jp is-block">平均的発案を強制破壊する BreakBias エンジン</span></li>
+            <li><span class="t-en">The VVA Matrix — visual density and tone made measurable on four axes</span><span class="t-jp is-block">視覚密度やトーンを定量化する VVA Matrix（4軸設計）</span></li>
+            <li><span class="t-en">FailForward, which tags a bug's root cause so it is recalled next time</span><span class="t-jp is-block">失敗の根本原因をタグ記憶させる FailForward の連動設計</span></li>
+            <li><span class="t-en">A sources ledger carrying verification dates, so changes to external models cannot rot the system quietly</span><span class="t-jp is-block">外部モデルのバージョン変化に耐える Sources Ledger（検証期日台帳）</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="drop">
+        <p class="drop-label"><span class="t-en">Considered and dropped</span><span class="t-jp">検討したが採用しなかった案</span></p>
+        <div class="drop-grid">
+          <div class="drop-item">
+            <h4><span class="t-en">A one-click generator</span><span class="t-jp is-block">全自動ワンクリック生成アプリ</span></h4>
+            <p><b><span class="t-en">The appeal:</span><span class="t-jp">魅力:</span></b> <span class="t-en">say "build me an app" once, and let the whole pipeline finish in the background.</span><span class="t-jp">「アプリを作って」と一言入れるだけで、バックグラウンドで全工程が完了する手軽さ。</span></p>
+            <p><b><span class="t-en">Why not:</span><span class="t-jp">捨てた理由:</span></b> <span class="t-en">the human is shut out of the decisions that matter — tone, business model — and what comes back is a mountain of code too large to correct.</span><span class="t-jp">人間が途中の意思決定（デザインのトーン、ビジネスモデルの選択）に関与できず、修正不能な巨大なコードの山が生成されるリスクが高かった。</span></p>
+          </div>
+          <div class="drop-item">
+            <h4><span class="t-en">One giant prompt</span><span class="t-jp is-block">単一の巨大な万能プロンプト</span></h4>
+            <p><b><span class="t-en">The appeal:</span><span class="t-jp">魅力:</span></b> <span class="t-en">one file to manage, and the easiest thing in the world to distribute and update.</span><span class="t-jp">ファイル1つで管理でき、配布や更新が最も容易だった。</span></p>
+            <p><b><span class="t-en">Why not:</span><span class="t-jp">捨てた理由:</span></b> <span class="t-en">the context window fills, the instructions begin contradicting each other, and the model quietly skips the security checks and the UI token constraints.</span><span class="t-jp">コンテキストウィンドウの圧迫と「指示の競合」が発生し、モデルが重要なセキュリティチェックやUIトークン制約を無視する現象が頻発した。</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 9 · Proof ═══ -->
+    <section class="proof wds-slide reveal-on-scroll" aria-label="Proof">
+      <h3><span class="t-en">What is actually in it</span><span class="t-jp is-block">実際に入っているもの</span></h3>
+      <div class="proof-grid">
+        <div class="proof-cell">
+          <div class="proof-n">14</div>
+          <p class="proof-d"><span class="t-en">specialist skills, covering the whole development lifecycle</span><span class="t-jp is-block">開発ライフサイクル全域をカバーする専門スキル</span></p>
+        </div>
+        <div class="proof-cell">
+          <div class="proof-n">5</div>
+          <p class="proof-d"><span class="t-en">languages the README and documentation ship in</span><span class="t-jp is-block">READMEとドキュメントが対応する言語数</span></p>
+        </div>
+        <div class="proof-cell">
+          <div class="proof-n">Tier D</div>
+          <p class="proof-d"><span class="t-en">runs entirely locally — bulk text work that costs nothing to run</span><span class="t-jp is-block">完全ローカル実行。大量テキスト処理を無料でオフロード</span></p>
+        </div>
+      </div>
+      <p class="proof-close"><span class="t-en">What this design moves is a developer's morning. <strong>The time spent re-explaining the same premises to a model drops to zero</strong>, the decisions that used to evaporate stay written down, and the token bill is spent where judgment is actually needed.</span><span class="t-jp is-block">この設計は、AIツールと協働する開発者の<strong>「毎回同じ前提を説明する無駄な時間」をゼロにし</strong>、APIトークン消費量を最適化しながら高品質な意思決定を残せる仕組みを構築した。</span></p>
+      <div class="proof-stack">
+        <p class="proof-stack-l"><span class="t-en">Built with</span><span class="t-jp">使った技術・手法</span></p>
+        <p>Claude Code Skills · Antigravity IDE · Codex CLI · Gemini CLI<br>
+           Opus 5 / Fable 5 / Sonnet 5 / Haiku 4.5 / gemini-3.6-flash<br>
+           SVG architecture visualization · install.sh / install.ps1<br>
+           BreakBias engine · FailForward debug memory</p>
+      </div>
       <div class="mech-ctas">
+        <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
+      </div>
+    </section>
+
+    <!-- ═══ 10 · Retrospective ═══ -->
+    <section class="retro wds-slide reveal-on-scroll" aria-label="What is unresolved">
+      <h3><span class="t-en">Two things this has not solved</span><span class="t-jp is-block">まだ決着していない、2 つ</span></h3>
+      <p class="retro-lead"><span class="t-en">Both are structural rather than incidental — they are the price of building on top of models someone else ships.</span><span class="t-jp is-block">どちらも偶発的な不具合ではなく構造的なものです。他人が出すモデルの上に建てる以上、避けられない代償です。</span></p>
+      <div class="retro-grid">
+        <div class="retro-item">
+          <div class="retro-n">01</div>
+          <h4><span class="t-en">The inevitable decay of external model APIs</span><span class="t-jp is-block">外部モデルAPI仕様の、不可避な経年変化</span></h4>
+          <p><span class="t-en">Model names and API specifications change every few months. A <code>SOURCES.md</code> ledger carrying verification dates keeps the drift visible, but the update logic is not automated — periodic manual or workflow checking is still the running cost of this system.</span><span class="t-jp is-block">AIモデルの名称やAPI仕様は数ヶ月単位で更新されます。<code>SOURCES.md</code> という検証期日台帳を導入しましたが、自動更新ロジックの完全自動化には至っておらず、定期的な手動またはワークフロー検証の手間が課題として残っています。</span></p>
+        </div>
+        <div class="retro-item">
+          <div class="retro-n">02</div>
+          <h4><span class="t-en">Visual feedback limits in a CLI agent environment</span><span class="t-jp is-block">CLI環境における、リアルタイムUIフィードバックの限界</span></h4>
+          <p><span class="t-en">The HTML and CSS that <code>superforge-ui</code> produces is strong, but in a CLI-first agent environment there is a lag before a human can look at the rendered result and adjust it. Making headless-browser screenshots seamless is the piece still open.</span><span class="t-jp is-block"><code>superforge-ui</code> によるHTML/CSS出力は強力ですが、CLI主体のエージェント環境ではレンダリング結果の視覚的微調整を即座に人間が確認するループにラグが生じます。ヘッドレスブラウザ連携による自動スクショ取得のシームレス化が今後の宿題です。</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 11 · Closing ═══ -->
+    <section class="tool-statement st-cyan wds-slide reveal-on-scroll">
+      <p class="wds-kick"><span class="t-en">Why it matters</span><span class="t-jp">なぜ重要か</span></p>
+      <h2 class="wds-serif"><span class="t-en">Turn conversational chaos into <em>persistent structure</em>.</span><span class="t-jp is-block">消える対話を捨て、<em>永続する構造</em>へ。</span></h2>
+      <div class="mech-ctas">
+        <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
         <a class="story-cta" href="../ai-tools.html"><span class="t-en">Explore other AI Tools →</span><span class="t-jp">他の AI Tools を見る →</span></a>
       </div>
     </section>
@@ -346,7 +578,8 @@
 
   <footer class="site-footer">
     <div><div class="footer-logo">Takao Umehara</div><div class="footer-llc">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div></div>
-    <ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="../ai-products.html">Agentic UX</a></li><li><a href="../work.html">Product Design</a></li><li><a href="../brand.html">Brand &amp; Visual</a></li><li><a href="../about.html">About</a></li><li><a href="../contact.html">Contact</a></li></ul>
+    <ul class="footer-links"><li><a href="../index.html">Home</a></li><li><a href="../interactive.html">Interactive</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li><li><a href="../work.html">Product Design</a></li><li><a href="../brand.html">Brand &amp; Visual</a></li><li><a href="../about.html">About</a></li><li><a href="../contact.html">Contact</a></li></ul>
   </footer>
 
   <script>

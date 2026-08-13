@@ -1,9 +1,17 @@
-/* Shared portfolio-card presentation for the AI indexes. */
+/* Shared portfolio-card presentation for the AI indexes.
+   ══════════════════════════════════════════════════════════════════
+   These pages sit in the same column as work.html (1680px) and borrow
+   its index rule: every card hangs off a hairline drawn across the top,
+   so a row reads as one ruled line rather than as separate objects.
+   What is NOT borrowed is work.html's austerity — these cards keep
+   their labels and their description, because unlike a list of client
+   projects, each of these has to argue for itself.
+   ══════════════════════════════════════════════════════════════════ */
 .work-list-page,
 .work-grid-wrap.ai-index-grid {
-  max-width: 1200px;
+  max-width: 1680px;
   margin: 0 auto;
-  padding: 40px 32px 80px;
+  padding: clamp(26px, 3vw, 44px) clamp(20px, 3vw, 40px) 80px;
 }
 
 .work-list-header {
@@ -48,30 +56,33 @@
 
 .work-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 2px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 30px 22px;
 }
 
+/* The hairline is the whole point: four cards in a row share one drawn
+   line, the way work.html's tiles do. So no lift, no shadow and no card
+   background — a floating panel would break the line it hangs from. */
 .work-card {
   position: relative;
   display: grid;
-  grid-template-rows: 260px auto auto;
-  overflow: hidden;
-  isolation: isolate;
-  background: var(--surface, #fff);
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  border-top: 1px solid var(--ink);
+  padding-top: 9px;
+  background: none;
   outline: none;
-  transition: transform 240ms cubic-bezier(0.22, 0.84, 0.22, 1), box-shadow 240ms ease;
 }
 
 .work-card[data-href] { cursor: pointer; }
-.work-card[data-href]:hover { transform: translateY(-2px); box-shadow: var(--shadow, 0 18px 42px rgba(18,18,18,0.04)); }
-.work-card:focus-visible { box-shadow: 0 0 0 2px rgba(18,18,18,0.28) inset; }
+.work-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 .card-image {
   position: relative;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-bottom: 1px solid var(--line);
   background: #ece8e2;
+  margin-bottom: 13px;
 }
 
 .card-image::after {
@@ -174,6 +185,7 @@
 .card-art--emoji { background: linear-gradient(140deg, #113c63, #2377a8 50%, #ffc553); }
 .card-art--motion { background: linear-gradient(140deg, #24322f, #62836a 50%, #c4d99b); }
 .card-art--snap { background: linear-gradient(140deg, #123b82, #2563eb 55%, #7fb7ff); }
+.card-art--game { background: linear-gradient(140deg, #2a1140, #7b2d8e 52%, #ff9ec7); }
 .card-art--fail { background: linear-gradient(140deg, #4b2217, #d6572a 54%, #f7b74c); }
 .card-art--handoff { background: linear-gradient(140deg, #2d1a51, #7042b8 55%, #b9a2ed); }
 .card-art--superforge {
@@ -190,14 +202,14 @@
 
 .card-body {
   display: grid;
-  gap: 10px;
-  padding: 18px 16px 10px;
+  gap: 9px;
+  padding: 0;
 }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .pill {
-  padding: 6px 9px;
+  padding: 4px 7px;
   border: 1px solid var(--border);
   color: var(--ink-dim);
   font-size: 10px;
@@ -205,22 +217,23 @@
   text-transform: uppercase;
 }
 
+/* Four columns rather than three, so the title comes down with them. */
 .card-title {
   color: var(--ink);
-  font-size: clamp(22px, 2.2vw, 28px);
+  font-size: clamp(17px, 1.28vw, 21px);
   font-weight: 600;
-  letter-spacing: -0.028em;
-  line-height: 1.04;
+  letter-spacing: -0.022em;
+  line-height: 1.12;
 }
 
-.card-desc { color: var(--ink-mid); font-size: 14px; line-height: 1.58; }
+.card-desc { color: var(--ink-mid); font-size: 13px; line-height: 1.58; }
 
 .card-footer {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: baseline;
   gap: 12px;
-  padding: 8px 16px 20px;
+  padding: 11px 0 0;
 }
 
 .card-meta { color: var(--ink-dim); font-size: 11px; letter-spacing: 0.02em; }
@@ -232,13 +245,19 @@
 html.lang-jp .work-list-title,
 html.lang-jp .card-title { line-height: 1.16; letter-spacing: -0.02em; }
 
-@media (max-width: 900px) { .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* Same steps work.html takes, so the two pages resize together. */
+@media (max-width: 1180px) { .work-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+@media (max-width: 720px) {
+  /* Two columns, not one — a single column shows one project per screen
+     and loses the density that is the argument on these pages. */
+  .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px 14px; }
+  .card-desc { font-size: 12.5px; }
+}
 
 @media (max-width: 600px) {
   .work-list-page,
-  .work-grid-wrap.ai-index-grid { padding: 32px 20px 64px; }
-  .work-grid { grid-template-columns: 1fr; }
-  .card-image { min-height: 230px; }
+  .work-grid-wrap.ai-index-grid { padding: 26px 20px 64px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

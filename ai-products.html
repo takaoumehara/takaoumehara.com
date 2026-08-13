@@ -4,16 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>Agentic UX — Takao Umehara</title>
-  <meta name="description" content="Agentic UX by Takao Umehara — designing how humans and AI agents share work. Flagship research, enterprise agent deployments, and living prototypes.">
-  <meta property="og:title" content="Agentic UX — Takao Umehara">
+  <title>AI Products — Takao Umehara</title>
+  <meta name="description" content="AI Products by Takao Umehara — designing how humans and AI agents share work. Flagship research, enterprise agent deployments, and living prototypes.">
+  <meta property="og:title" content="AI Products — Takao Umehara">
   <meta property="og:description" content="Designing how humans and AI agents share work — research, enterprise deployments, and living prototypes.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <meta property="og:url" content="https://takaoumehara.com/ai-products.html">
+  <meta property="og:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Products — Takao Umehara">
+  <meta name="twitter:description" content="Designing how humans and AI agents share work — research, enterprise deployments, and living prototypes.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/index-grid.css">
   <link rel="stylesheet" href="assets/work-card-grid.css">
   <style>
     /* ─── Geist Sans (Vercel) ─── */
@@ -375,13 +381,16 @@
     .lab-link:hover { color: var(--ink); }
 
     /* ─── CTA ─── */
+    /* The rule has to start where the grid's rules start, or the page ends
+       on a line 480px narrower than every line above it. */
     .lab-cta {
       border-top: 1px solid var(--line);
-      max-width: 1200px;
+      max-width: 1680px;
       margin: 0 auto;
-      padding: 72px 32px 96px;
+      padding: 72px clamp(20px, 3vw, 40px) 96px;
       text-align: center;
     }
+    .lab-cta-title, .lab-cta-desc { max-width: 44ch; margin-left: auto; margin-right: auto; }
 
     .lab-cta-title {
       font-family: "DM Serif Display", Georgia, serif;
@@ -505,6 +514,13 @@
     }
 
     /* ─── New project card-art gradients ─── */
+    .card-art--kao {
+      background:
+        radial-gradient(circle at 33% 40%, rgba(255,255,255,0.34) 0 2.2%, transparent 3%),
+        radial-gradient(circle at 63% 40%, rgba(255,255,255,0.34) 0 2.2%, transparent 3%),
+        linear-gradient(145deg, #7a1f3d, #e0552b 52%, #f7b733);
+    }
+
     .card-art--rakugaki {
       background:
         radial-gradient(circle at 22% 78%, rgba(255,255,255,0.30) 0 1.4%, transparent 2%),
@@ -534,51 +550,33 @@
       z-index: 0;
     }
 
-    /* ─── Snap Pair showcase section ─── */
-    .snap-section {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 8px 32px 40px;
+  
+    /* The intro is set to the same column as the grid and the identity
+       strip — 1680px, matching work.html — so every left edge on the page
+       lines up with every other. */
+    .lab-intro { max-width: 1680px; margin-left: auto; margin-right: auto;
+                 padding-left: clamp(20px, 3vw, 40px); padding-right: clamp(20px, 3vw, 40px); }
+    /* Measure is held with padding rather than a display override on the
+       spans — those spans are how the EN/JP switch works, and setting
+       display on them shows both languages at once. */
+    @media (min-width: 900px) { .lab-intro { padding-right: 48%; } }
+  </style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-dim); }
+    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
     }
-    .snap-head {
-      border-top: 1px solid var(--line);
-      padding: 44px 0 26px;
-      max-width: 760px;
-    }
-    .snap-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: #1d4ed8;
-      margin-bottom: 14px;
-    }
-    .snap-eyebrow::before {
-      content: "";
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #2563eb, #7fb7ff);
-    }
-    .snap-title {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(30px, 4vw, 46px);
-      font-weight: 400;
-      letter-spacing: -0.03em;
-      line-height: 0.96;
-      margin-bottom: 14px;
-    }
-    .snap-sub {
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--ink-mid);
-    }
-    html.lang-jp .snap-title { line-height: 1.18; }
-
-    @media (max-width: 600px) {
-      .snap-section { padding-left: 20px; padding-right: 20px; }
-    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
 <body>
@@ -590,9 +588,10 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="ai-products.html" class="is-active" aria-current="page">Agentic UX</a></li>
-      <li><a href="ai-tools.html">AI Tools</a></li>
-      <li><a href="work.html">Product Design</a></li>
+      <li><a href="interactive.html" class="is-lead">Interactive</a></li>
+      <li><a href="ai-products.html" class="is-lead is-active" aria-current="page">AI Products</a></li>
+      <li><a href="ai-tools.html" class="is-lead">AI Tools</a></li>
+      <li class="is-tierbreak"><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -608,28 +607,26 @@
   </div>
 
   <!-- ── Header ── -->
-  <div class="page-header">
-    <div>
-      <div class="page-eyebrow">Product Design × AI Systems</div>
-      <h1 class="page-title">
-        <span class="t-en">Agentic UX</span>
-        <span class="t-jp">Agentic UX</span>
-      </h1>
-    </div>
-    <div class="page-count">12 products</div>
-  </div>
+  <!-- ══ Wordmark only. The meta row that work.html and brand.html carry
+       (name, role, city, year, counts) repeated the nav and the footer on
+       every page, so it earns nothing here. The card grid below stays:
+       unlike those two indexes, this page argues for each item. ══ -->
+  <header class="idx-head">
+    <h1 class="idx-name"><span class="t-en">AI Products</span><span class="t-jp">AI Products</span></h1>
+
+  </header>
 
   <p class="lab-intro">
-    <span class="t-en"><strong>Agentic UX is the practice of designing how humans and AI agents share work.</strong> These are my working answers — from framework research and an enterprise agent fleet to living prototypes you can touch. AI shows up differently in each one: sometimes it's the whole subject of the design, sometimes it's the thing making the call, sometimes it's just the voice interface — and one or two of these were built with no AI in the product itself at all. Each card below says which.</span>
-    <span class="t-jp is-block"><strong>Agentic UX とは、人と AI エージェントがどう仕事を分担するかをデザインする実践です。</strong>ここに並ぶのは、その私なりの答え。フレームワーク研究とエンタープライズのエージェント艦隊から、実際に触れる動くプロトタイプまで。AI の関わり方はそれぞれ違います — デザインそのものの主題であることもあれば、判断を担う部分であることもあり、単に音声インターフェイスであることもあります。プロダクト自体には AI を使っていないものも一つ二つ混ざっています。どれがどれかは、各カードに書いてあります。</span>
+    <span class="t-en"><strong>An AI product is one where the AI is inside the thing, not bolted next to it.</strong> These are mine — framework research, an enterprise agent fleet, and working products you can open right now. AI shows up differently in each one: sometimes it's the whole subject of the design, sometimes it's the thing making the call, sometimes it's just the voice interface — and one or two of these were built with no AI in the product itself at all. Each card below says which.</span>
+    <span class="t-jp is-block"><strong>AI プロダクトとは、AI が製品の隣に付いているのではなく、中に入っているもの。</strong>ここに並ぶのは私の答えです。フレームワーク研究、エンタープライズのエージェント艦隊、そしていますぐ開ける実働プロダクト。AI の関わり方はそれぞれ違います — デザインそのものの主題であることもあれば、判断を担う部分であることもあり、単に音声インターフェイスであることもあります。プロダクト自体には AI を使っていないものも一つ二つ混ざっています。どれがどれかは、各カードに書いてあります。</span>
   </p>
 
   <div class="work-grid-wrap ai-index-grid">
-    <div class="work-grid" aria-label="Agentic UX projects">
+    <div class="work-grid" aria-label="AI Products projects">
       <article class="work-card" tabindex="0" data-href="https://intentfirst.ai" data-external="true">
         <div class="card-image"><div class="card-art card-art--intent"><span class="card-art-label">intent<br>first</span><span class="card-art-note">AI design research</span></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Research</span><span class="pill">Framework</span></div><h2 class="card-title">intentfirst.ai</h2><p class="card-desc"><span class="t-en">A design framework for the AI era: start from intent, not screens.</span><span class="t-jp is-block">画面ではなく意図から始める、AI 時代のためのデザインフレームワーク。</span></p></div>
-        <div class="card-footer"><span class="card-meta">Context Grammar · AI Design Research</span><span class="card-meta card-meta--link">Visit ↗</span></div>
+        <div class="card-body"><div class="chips"><span class="pill">Research</span><span class="pill">Framework</span></div><h2 class="card-title">intentfirst.ai</h2><p class="card-desc"><span class="t-en">Not a product — a thesis. How an AI should read what a person actually means, and a practical method for turning that into something a machine can learn.</span><span class="t-jp is-block">プロダクトではなく、主張です。AI は人の意図をどう読むべきか。そしてそれを機械が学習できる形にどう落とすか、という実務的な方法まで。</span></p></div>
+        <div class="card-footer"><span class="card-meta">Context Grammar · AI Design Research</span><span class="card-meta card-meta--link"><span class="t-en">Now under production</span><span class="t-jp">現在制作中</span></span></div>
       </article>
 
       <article class="work-card" tabindex="0" data-href="projects/verizon-ai-agents.html">
@@ -640,96 +637,17 @@
 
       <article class="work-card" tabindex="0" data-href="projects/amazon-firetv.html">
         <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/amazon-firetv/hero.jpg');"></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Agentic UX</span></div><h2 class="card-title">Amazon Shopping on Fire TV</h2><p class="card-desc"><span class="t-en">Agentic commerce for the living room: Alexa voice AI does the shopping, D-pad handles browsing, Snap Pair turns your phone into a remote — no AI required for that last part.</span><span class="t-jp is-block">リビングのエージェンティック・コマース。買い物は Alexa の音声 AI が担当、閲覧は D-pad、そしてスマホをリモコンに変えるのは Snap Pair — こちらは AI を使っていません。</span></p></div>
+        <div class="card-body"><div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Agentic commerce</span></div><h2 class="card-title">Amazon Shopping on Fire TV</h2><p class="card-desc"><span class="t-en">Agentic commerce for the living room: Alexa voice AI does the shopping, D-pad handles browsing, Snap Pair turns your phone into a remote — no AI required for that last part.</span><span class="t-jp is-block">リビングのエージェンティック・コマース。買い物は Alexa の音声 AI が担当、閲覧は D-pad、そしてスマホをリモコンに変えるのは Snap Pair — こちらは AI を使っていません。</span></p></div>
         <div class="card-footer"><span class="card-meta">10-foot UI · Voice UX · Snap Pair</span><span class="card-meta card-meta--link">Prototype →</span></div>
       </article>
 
-      <article class="work-card" tabindex="0" data-href="projects/marubatsu.html"><div class="card-image"><div class="card-img-bg" style="background-image:url('assets/marubatsu/hero.jpg');"></div></div><div class="card-body"><div class="chips"><span class="pill">Shipped</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div><h2 class="card-title">Marubatsu 2.0</h2><p class="card-desc"><span class="t-en">Real-time online tic-tac-toe with an AI opponent.</span><span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×ゲーム。</span></p></div><div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span><span class="card-meta card-meta--link">Case study →</span></div></article>
 
-      <article class="work-card"><div class="card-image"><div class="card-art card-art--brain"><span class="card-art-label">Brain<br>Manual</span><span class="card-art-note">Personalized self-check</span></div></div><div class="card-body"><div class="chips"><span class="pill">Coming soon</span><span class="pill">AI app</span></div><h2 class="card-title">MyBrainSpec</h2><p class="card-desc"><span class="t-en">A quick cognitive self-check, scored by AI, that creates a personalized BrainManual. Not yet public.</span><span class="t-jp is-block">AI が採点する認知セルフチェックから、あなただけの「ブレインマニュアル」を生成。まだ非公開です。</span></p></div><div class="card-footer"><span class="card-meta">React/Vite · Firebase · Gemini</span></div></article>
+      <article class="work-card"><div class="card-image"><div class="card-art card-art--brain"><span class="card-art-label">My Brain<br>Spec</span><span class="card-art-note">Personalized self-check</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">AI app</span></div><h2 class="card-title">MyBrainSpec</h2><p class="card-desc"><span class="t-en">A short cognitive self-check. AI scores it and returns a written profile of how your own attention and memory actually behave.</span><span class="t-jp is-block">短い認知セルフチェックを AI が採点し、自分の注意と記憶が実際どう働くかを文章のプロファイルにして返します。</span></p></div><div class="card-footer"><span class="card-meta">React/Vite · Firebase · Gemini</span></div></article>
 
-      <article class="work-card" tabindex="0" data-href="https://mypick.link" data-external="true"><div class="card-image"><div class="card-art card-art--insta"><span class="card-art-label">mypick<br>.link</span><span class="card-art-note">Elegant link-in-bio</span></div></div><div class="card-body"><div class="chips"><span class="pill">Shipped</span><span class="pill">Design tool</span></div><h2 class="card-title">mypick.link</h2><p class="card-desc"><span class="t-en">A link-in-bio for promo codes and events built around one rule: it has to look beautiful. AI just reads the flyer so you don't have to type the details in.</span><span class="t-jp is-block">プロモコードやイベント向けのリンク・イン・バイオ。ルールはひとつ、美しく見えること。AI はチラシを読み取るだけ — 入力の手間を省くために。</span></p></div><div class="card-footer"><span class="card-meta">React 19 · Gemini · Serverless</span><span class="card-meta card-meta--link">Visit ↗</span></div></article>
+      <article class="work-card is-wip"><div class="card-image"><div class="card-art card-art--insta"><span class="card-art-label">Moime<br>.app</span><span class="card-art-note">Elegant link-in-bio</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">Design tool</span></div><h2 class="card-title">Moime.app</h2><p class="card-desc"><span class="t-en">A link-in-bio page for promo codes and events. Point it at a flyer and it reads the dates, codes and venue off the image instead of asking you to type them.</span><span class="t-jp is-block">プロモコードやイベント用のリンク・イン・バイオ。チラシを読み込ませれば、日付・コード・会場を画像から取り出します。入力は不要です。</span></p></div><div class="card-footer"><span class="card-meta">React 19 · Gemini · Serverless</span></div></article>
     </div>
   </div>
 
-  <!-- ── Interactive Experience ── -->
-  <section class="snap-section" aria-labelledby="snap-title">
-    <div class="snap-head">
-      <div class="snap-eyebrow"><span class="t-en">Interactive Experience · Built to be touched, not read about</span><span class="t-jp">Interactive Experience · 読むものではなく、触れるもの</span></div>
-      <h2 class="snap-title" id="snap-title">
-        <span class="t-en">Interactive Experience</span>
-        <span class="t-jp">Interactive Experience</span>
-      </h2>
-      <p class="snap-sub">
-        <span class="t-en">A short list on purpose. Each of these is a working demo, not a screenshot — most run on Snap Pair (scan a QR code, every phone in the room joins one live session, no app install), one runs on WebRTC instead. Click through; they're better felt than described.</span>
-        <span class="t-jp is-block">意図的に短いリストです。どれもスクリーンショットではなく、実際に動くデモ。多くは Snap Pair 上で動きます（QR コードを読み取れば、その場のすべてのスマホがアプリ不要でひとつのライブ・セッションに参加）。ひとつだけ WebRTC で動いています。クリックして触れてみてください — 説明より体験のほうが早いので。</span>
-      </p>
-    </div>
-
-    <div class="work-grid" aria-label="Interactive Experience projects">
-
-      <article class="work-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
-        <div class="card-image"><div class="card-art card-art--typespace"><span class="card-art-label">Type<br>space</span><span class="card-art-note">Particle constellations</span></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">WebGL</span></div>
-          <h2 class="card-title">Typespace</h2>
-          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。AI は使っていません — 打って、眺めるだけ。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span><span class="card-meta card-meta--link">Try it ↗</span></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
-        <div class="card-image"><div class="card-art card-art--motion"><span class="card-art-label">Resona<br>響</span><span class="card-art-note">Pseudo-haptics</span></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Live</span><span class="pill">Motion design</span></div>
-          <h2 class="card-title">Resona <span style="font-size:0.6em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">響</span></h2>
-          <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">擬似ハプティクスにもとづく、意図を伝えるウェブアニメーションの実験場。言葉を読む前に、動きが意味を伝える。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Web animation · Pseudo-haptics</span><span class="card-meta card-meta--link">Try it ↗</span></div>
-      </article>
-
-      <article class="work-card" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
-        <div class="card-image"><div class="card-art card-art--rakugaki"><span class="card-art-label">Rakugaki<br>Jam</span><span class="card-art-note">Phone → wall VJ</span></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">VJ</span></div>
-          <h2 class="card-title">Rakugaki Jam</h2>
-          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホで落書きして、みんなの壁画面へ投げ込む。観客みんなで描く、ライブな VJ ジャム。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · Firebase RTDB · Canvas</span><span class="card-meta card-meta--link">Try it ↗</span></div>
-      </article>
-
-      <article class="work-card">
-        <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/koebaku/hero.jpg');"></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Voice</span></div>
-          <h2 class="card-title">Koe Baku <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">声爆</span></h2>
-          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — a QR-join VJ, measured on-device, no audio ever leaves the phone.</span><span class="t-jp is-block">叫べば、声が漫画の擬音になって画面で弾ける。QR で参加する VJ。判定は端末内で完結し、音声は外に出ません。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · Web Audio · Canvas</span></div>
-      </article>
-
-      <article class="work-card">
-        <div class="card-image"><div class="card-img-bg card-img-bg--werewolf" style="background-image:url('assets/werewolf/ghost-wolf.png');"></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
-          <h2 class="card-title">Werewolf Card Game</h2>
-          <p class="card-desc"><span class="t-en">A digital Werewolf (Mafia) party game — hand-illustrated role cards dealt to each player's phone, one table on the big screen.</span><span class="t-jp is-block">デジタル版の人狼ゲーム。手描きの役職カードが各プレイヤーのスマホに配られ、卓は大画面にひとつ。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · 27 illustrated roles</span></div>
-      </article>
-
-      <article class="work-card">
-        <div class="card-image"><div class="card-art card-art--emoji"><span class="card-art-label">Emoji<br>Drop</span><span class="card-art-note">2-player online shooter</span></div></div>
-        <div class="card-body">
-          <div class="chips"><span class="pill">Prototype</span><span class="pill">Game</span><span class="pill">WebRTC</span></div>
-          <h2 class="card-title">EmojiDrop</h2>
-          <p class="card-desc"><span class="t-en">An emoji-only arcade shooter, two players head-to-head over WebRTC — no Snap Pair here, no server relay either.</span><span class="t-jp is-block">絵文字だけで対戦する、2人同時プレイのアーケードシューター。WebRTC で直接対戦 — Snap Pair もサーバー中継も使っていません。</span></p>
-        </div>
-        <div class="card-footer"><span class="card-meta">HTML5 Canvas · WebRTC · single-file</span></div>
-      </article>
-
-    </div>
-  </section>
 
 
   <!-- ── CTA ── -->
@@ -758,6 +676,7 @@
     </div>
     <div style="display:flex; gap:20px; list-style:none; flex-wrap:wrap;">
       <a href="index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+      <a href="interactive.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Interactive</a>
       <a href="ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
       <a href="work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
       <a href="brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
