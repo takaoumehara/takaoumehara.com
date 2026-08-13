@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Takao Umehara — Reel (Variant C)</title>
+<meta name="description" content="Layout variant C — one project per screen, the work at full size, after Channel Studio.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0a; --ink:#f2f2f2; --dim:#8b8b8b; --accent:#ff3b1f;
+  --ff:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --ff-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --pad:clamp(16px,2.6vw,32px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ff);
+  font-size:16px;line-height:1.45;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{display:block;max-width:100%}
+
+.t-jp{display:none}
+html.lang-jp .t-en{display:none}
+html.lang-jp .t-jp{display:inline}
+html.lang-jp .t-jp.is-block{display:block}
+html.lang-jp body{font-family:var(--ff-jp)}
+
+/* ── Fixed chrome ── */
+.chrome{position:fixed;inset:var(--pad) var(--pad) auto;z-index:30;display:flex;
+  justify-content:space-between;align-items:flex-start;gap:16px;pointer-events:none}
+.chrome > *{pointer-events:auto}
+.mark{font-size:12px;letter-spacing:0.04em;line-height:1.35}
+.mark b{display:block;font-weight:500}
+.mark span{color:var(--dim)}
+.chrome-right{display:flex;gap:8px;align-items:center}
+.langs{display:flex;gap:2px;border:1px solid rgba(242,242,242,.28);border-radius:100px;padding:3px;backdrop-filter:blur(6px)}
+.langs button{appearance:none;background:transparent;border:0;border-radius:100px;font:inherit;
+  font-size:11px;padding:5px 10px;cursor:pointer;color:var(--dim)}
+.langs button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.pill{border:1px solid rgba(242,242,242,.34);border-radius:100px;padding:8px 16px;font-size:12px;backdrop-filter:blur(6px)}
+
+/* ── Scroll reel ── */
+.reel{scroll-snap-type:y mandatory;height:100dvh;overflow-y:auto;overflow-x:hidden}
+.panel{scroll-snap-align:start;position:relative;height:100dvh;overflow:hidden;display:flex;
+  flex-direction:column;justify-content:flex-end;padding:var(--pad)}
+.panel-media{position:absolute;inset:0;z-index:0}
+.panel-media img{width:100%;height:100%;object-fit:cover}
+.panel-media::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(10,10,10,.62) 0%,rgba(10,10,10,.12) 34%,rgba(10,10,10,.86) 100%)}
+.panel-body{position:relative;z-index:1;max-width:56ch}
+.kicker{color:var(--accent);font-size:clamp(13px,1.5vw,16px);letter-spacing:-0.01em;margin:0 0 10px}
+.panel h2{margin:0;font-weight:400;font-size:clamp(30px,5.4vw,64px);line-height:1.04;letter-spacing:-0.035em}
+html.lang-jp .panel h2{font-weight:500;letter-spacing:-0.02em}
+.panel p{margin:14px 0 0;font-size:clamp(14px,1.5vw,17px);color:rgba(242,242,242,.82);max-width:46ch}
+.panel-foot{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:flex-end;
+  gap:16px;margin-top:clamp(20px,3vw,32px);flex-wrap:wrap}
+.facts{display:flex;gap:clamp(16px,3vw,40px);flex-wrap:wrap}
+.facts div b{display:block;font-weight:500;font-size:clamp(18px,2.4vw,26px);letter-spacing:-0.02em}
+.facts div span{display:block;font-size:11px;color:var(--dim);margin-top:3px}
+.see{font-size:13px;border-bottom:1px solid var(--accent);padding-bottom:2px;color:var(--accent);white-space:nowrap}
+
+/* ── Intro panel ── */
+.intro{justify-content:center}
+.intro h1{margin:0;font-weight:400;font-size:clamp(28px,5vw,60px);line-height:1.08;
+  letter-spacing:-0.035em;max-width:20ch}
+html.lang-jp .intro h1{font-weight:500;letter-spacing:-0.02em}
+.intro .sub{margin-top:20px;color:var(--dim);max-width:46ch;font-size:clamp(14px,1.5vw,17px)}
+.scroll-hint{position:absolute;left:var(--pad);bottom:var(--pad);font-size:11px;color:var(--dim);
+  letter-spacing:0.06em;text-transform:uppercase}
+.counter{position:absolute;right:var(--pad);bottom:var(--pad);font-size:11px;color:var(--dim);
+  font-variant-numeric:tabular-nums;z-index:2}
+
+/* ── Closing ── */
+.end{justify-content:center;background:var(--bg)}
+.end h2{font-weight:400;font-size:clamp(26px,4.4vw,48px);letter-spacing:-0.03em;line-height:1.1;margin:0;max-width:18ch}
+.end .links{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+.end .cta{border-radius:100px;padding:12px 24px;background:var(--ink);color:var(--bg);font-size:14px;border:1px solid var(--ink)}
+
+@media(prefers-reduced-motion:reduce){
+  .reel{scroll-snap-type:none}
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="chrome">
+  <div class="mark">
+    <b>Takao Umehara</b>
+    <span class="t-en">Product &amp; brand designer</span><span class="t-jp">プロダクト／ブランドデザイナー</span>
+  </div>
+  <div class="chrome-right">
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="jp" aria-pressed="false">JP</button>
+    </div>
+    <a class="pill" href="contact.html"><span class="t-en">Start a project</span><span class="t-jp">相談する</span></a>
+  </div>
+</div>
+
+<div class="reel" id="reel">
+
+  <section class="panel intro">
+    <div class="panel-body">
+      <h1>
+        <span class="t-en">Twenty years of shipped work, now pointed at agentic systems.</span>
+        <span class="t-jp is-block">20年の実装を、いまエージェント型システムに。</span>
+      </h1>
+      <p class="sub">
+        <span class="t-en">Six projects, one per screen. Scroll.</span>
+        <span class="t-jp is-block">6件を、1画面に1件ずつ。スクロールしてください。</span>
+      </p>
+    </div>
+    <div class="scroll-hint"><span class="t-en">Scroll ↓</span><span class="t-jp">スクロール ↓</span></div>
+  </section>
+
+  <a class="panel" href="projects/verizon-ai-agents.html">
+    <div class="panel-media"><img src="assets/verizon-ai-agents/hero-agents-network.jpg" alt="Agent network from the Verizon AI workflow project" width="1600" height="900" fetchpriority="high"></div>
+    <div class="panel-body">
+      <p class="kicker">Verizon Value — Agentic UX</p>
+      <h2><span class="t-en">A fleet of ten agents inside a six-brand design team</span><span class="t-jp is-block">6ブランドのデザインチームに、10体のエージェント</span></h2>
+      <p><span class="t-en">Knowledge management, edge-case detection, CX strategy, writing evaluation — built for the 42 designers who actually had to use them.</span><span class="t-jp is-block">ナレッジ管理、エッジケース検出、CX戦略、ライティング評価。実際に使う42名のデザイナーのために作りました。</span></p>
+    </div>
+    <div class="panel-foot">
+      <div class="facts">
+        <div><b>10</b><span class="t-en">agents</span><span class="t-jp">エージェント</span></div>
+        <div><b>42</b><span class="t-en">designers</span><span class="t-jp">デザイナー</span></div>
+        <div><b>6</b><span class="t-en">brands</span><span class="t-jp">ブランド</span></div>
+      </div>
+      <span class="see"><span class="t-en">See project →</span><span class="t-jp">プロジェクトを見る →</span></span>
+    </div>
+    <div class="counter">01 / 06</div>
+  </a>
+
+  <a class="panel" href="ai-products.html">
+    <div class="panel-media"><img src="assets/marubatsu/hero.jpg" alt="Marubatsu Arena, a realtime multiplayer game" loading="lazy" width="1600" height="900"></div>
+    <div class="panel-body">
+      <p class="kicker"><span class="t-en">Creativity Is Everywhere — Playable</span><span class="t-jp">Creativity Is Everywhere ／ 触れる</span></p>
+      <h2><span class="t-en">Four things you can open right now</span><span class="t-jp is-block">いますぐ開ける4つ</span></h2>
+      <p><span class="t-en">Typespace, Rakugaki Jam, Resona, Marubatsu Arena. No install, no signup — the argument I do not have to make in words.</span><span class="t-jp is-block">Typespace、Rakugaki Jam、Resona、Marubatsu Arena。インストールも登録も不要。言葉で説明しなくていい主張です。</span></p>
+    </div>
+    <div class="panel-foot">
+      <div class="facts">
+        <div><b>4</b><span class="t-en">live demos</span><span class="t-jp">公開中のデモ</span></div>
+        <div><b>0</b><span class="t-en">installs required</span><span class="t-jp">インストール不要</span></div>
+      </div>
+      <span class="see"><span class="t-en">Open them →</span><span class="t-jp">開いてみる →</span></span>
+    </div>
+    <div class="counter">02 / 06</div>
+  </a>
+
+  <a class="panel" href="projects/tmobile.html">
+    <div class="panel-media"><img src="assets/shared/M−Mobile_teaser2.jpg" alt="T-Mobile retail pickup environment" loading="lazy" width="1600" height="900"></div>
+    <div class="panel-body">
+      <p class="kicker">T-Mobile — Lead UX, 2024</p>
+      <h2><span class="t-en">The digital experience used to end where the physical one began</span><span class="t-jp is-block">デジタルの体験は、物理の体験が始まる場所で途切れていた</span></h2>
+      <p><span class="t-en">App, kiosk, locker and voice AI stitched into one handoff. The work led T-Mobile to select Concentrix Catalyst as a preferred innovation partner.</span><span class="t-jp is-block">アプリ、キオスク、ロッカー、音声AIを一本の受け渡しに。この仕事が、T-Mobile による Concentrix Catalyst の優先イノベーションパートナー選定につながりました。</span></p>
+    </div>
+    <div class="panel-foot">
+      <div class="facts">
+        <div><b>3</b><span class="t-en">touchpoints</span><span class="t-jp">タッチポイント</span></div>
+        <div><b>12+</b><span class="t-en">kiosk screens</span><span class="t-jp">キオスク画面</span></div>
+        <div><b>1st</b><span class="t-en">preferred partner</span><span class="t-jp">優先パートナー選定</span></div>
+      </div>
+      <span class="see"><span class="t-en">See project →</span><span class="t-jp">プロジェクトを見る →</span></span>
+    </div>
+    <div class="counter">03 / 06</div>
+  </a>
+
+  <a class="panel" href="projects/kitadoko.html">
+    <div class="panel-media"><img src="assets/shared/Space_Design_kitadoko.png" alt="Kitadoko salon interior after the rebrand" loading="lazy" width="1600" height="900"></div>
+    <div class="panel-body">
+      <p class="kicker"><span class="t-en">Kitadoko — Creative Director</span><span class="t-jp">Kitadoko ／ クリエイティブディレクター</span></p>
+      <h2><span class="t-en">A 150-year-old barbershop with zero repeat customers</span><span class="t-jp is-block">創業150年、リピーターゼロの理容店</span></h2>
+      <p><span class="t-en">Underground, invisible from the street, 90% male. I started with the business model, not the aesthetics — bootcamp with the CEO, journey mapping, then identity and space.</span><span class="t-jp is-block">地下にあり通りから見えず、客の9割が男性。美意識ではなくビジネスモデルから始めました。経営者とのブートキャンプ、ジャーニーマップ、その後にアイデンティティと空間。</span></p>
+    </div>
+    <div class="panel-foot">
+      <div class="facts">
+        <div><b>1871</b><span class="t-en">established</span><span class="t-jp">創業</span></div>
+        <div><b>0 → 90%</b><span class="t-en">repeat rate</span><span class="t-jp">リピート率</span></div>
+      </div>
+      <span class="see"><span class="t-en">See project →</span><span class="t-jp">プロジェクトを見る →</span></span>
+    </div>
+    <div class="counter">04 / 06</div>
+  </a>
+
+  <a class="panel" href="projects/ela-quests.html">
+    <div class="panel-media"><img src="assets/shared/Quest_teaser_tr.png" alt="Amplify ELA Quests immersive learning" loading="lazy" width="1600" height="900"></div>
+    <div class="panel-body">
+      <p class="kicker">Amplify Education — 2014–2025</p>
+      <h2><span class="t-en">Eleven years with one client</span><span class="t-jp is-block">同じクライアントと11年</span></h2>
+      <p><span class="t-en">Ready-to-run immersive quest modules with AR built in, so the average teacher could deliver what only the best ones could before.</span><span class="t-jp is-block">ARを組み込んだ、そのまま使える没入型クエスト。優秀な教師にしかできなかったことを、すべての教師ができるように。</span></p>
+    </div>
+    <div class="panel-foot">
+      <div class="facts">
+        <div><b>11</b><span class="t-en">years</span><span class="t-jp">年</span></div>
+        <div><b>10+</b><span class="t-en">quest modules</span><span class="t-jp">クエストモジュール</span></div>
+        <div><b>Millions</b><span class="t-en">of students reached</span><span class="t-jp">の生徒に到達</span></div>
+      </div>
+      <span class="see"><span class="t-en">See project →</span><span class="t-jp">プロジェクトを見る →</span></span>
+    </div>
+    <div class="counter">05 / 06</div>
+  </a>
+
+  <a class="panel" href="projects/coca-cola.html">
+    <div class="panel-media"><img src="assets/shared/Coke_Hero_1500x1000.png" alt="Coca-Cola global visual direction" loading="lazy" width="1500" height="1000"></div>
+    <div class="panel-body">
+      <p class="kicker"><span class="t-en">The Coca-Cola Company — Ogilvy</span><span class="t-jp">The Coca-Cola Company ／ Ogilvy</span></p>
+      <h2><span class="t-en">Two visual systems for the most recognised brand there is</span><span class="t-jp is-block">世界で最も知られたブランドに、2つのビジュアルシステム</span></h2>
+      <p><span class="t-en">Global visual directions under VP of Design David Butler, deployed across international markets — billboards, vehicles, packaging, environments.</span><span class="t-jp is-block">デザイン担当副社長 David Butler の体制下でのグローバルビジュアルディレクション。屋外広告、車両、パッケージ、空間まで各国市場へ展開。</span></p>
+    </div>
+    <div class="panel-foot">
+      <div class="facts">
+        <div><b>2</b><span class="t-en">parallel directions</span><span class="t-jp">並行する方向性</span></div>
+        <div><b>6+</b><span class="t-en">formats</span><span class="t-jp">フォーマット</span></div>
+      </div>
+      <span class="see"><span class="t-en">See project →</span><span class="t-jp">プロジェクトを見る →</span></span>
+    </div>
+    <div class="counter">06 / 06</div>
+  </a>
+
+  <section class="panel end">
+    <div class="panel-body">
+      <h2><span class="t-en">That is six of thirty-four. The rest is here if you want it.</span><span class="t-jp is-block">34件のうちの6件です。残りもここにあります。</span></h2>
+      <div class="links">
+        <a class="cta" href="contact.html"><span class="t-en">Start a project</span><span class="t-jp">相談する</span></a>
+        <a class="pill" href="work.html"><span class="t-en">All product work</span><span class="t-jp">プロダクト実績</span></a>
+        <a class="pill" href="brand.html"><span class="t-en">Brand &amp; visual</span><span class="t-jp">ブランド</span></a>
+        <a class="pill" href="ai-tools.html"><span class="t-en">AI tools</span><span class="t-jp">AIツール</span></a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const btns = [...document.querySelectorAll('.langs button')];
+  const setLang = (lang) => {
+    root.classList.toggle('lang-jp', lang === 'jp');
+    root.lang = lang === 'jp' ? 'ja' : 'en';
+    btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    try { localStorage.setItem('tu-lang', lang); } catch {}
+  };
+  btns.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  let saved = 'en'; try { saved = localStorage.getItem('tu-lang') || 'en'; } catch {}
+  setLang(saved);
+})();
+</script>
+</body>
+</html>

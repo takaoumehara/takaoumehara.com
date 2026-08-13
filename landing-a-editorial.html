@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Takao Umehara — Editorial (Variant A)</title>
+<meta name="description" content="Layout variant A — oversized editorial poster on cream paper, after Creative Giants.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bone:#fffef7; --ink:#000; --graphite:#666; --ash:#aaa;
+  --magenta:#8a0467; --teal:#03624c; --powder:#a5c8eb;
+  --pink:#ffacea; --mint:#a5ebd6; --navy:#101731; --signal:#ffd001;
+  --ff:"Inter",ui-sans-serif,system-ui,sans-serif;
+  --ff-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
+  --pad:clamp(20px,4vw,48px);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bone);color:var(--ink);font-family:var(--ff);font-weight:400;
+  font-size:16px;line-height:1.4;letter-spacing:-0.018em;overflow-x:hidden}
+img{max-width:100%;display:block}
+a{color:inherit;text-decoration:none}
+
+/* EN / JP */
+.t-jp{display:none}
+html.lang-jp .t-en{display:none}
+html.lang-jp .t-jp{display:inline}
+html.lang-jp .t-jp.is-block{display:block}
+html.lang-jp body{font-family:var(--ff-jp)}
+/* Light 300 is the signature in Latin; Japanese at 300 goes thin and breaks up,
+   so JP display type steps to 400. */
+html.lang-jp .display,html.lang-jp .statement,html.lang-jp .card-title{font-weight:400}
+
+/* ── Header ── */
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:16px var(--pad);position:sticky;top:0;background:var(--bone);z-index:20}
+.eyebrow{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;line-height:1.35;color:var(--ink)}
+.hdr-right{display:flex;align-items:center;gap:10px}
+.pill{display:inline-block;border-radius:1440px;padding:11px 22px;font-size:14px;
+  background:var(--ink);color:var(--bone);border:1px solid var(--ink);white-space:nowrap}
+.pill--ghost{background:transparent;color:var(--ink);border-color:var(--ash)}
+.langs{display:flex;gap:2px;border:1px solid var(--ash);border-radius:1440px;padding:3px}
+.langs button{appearance:none;background:transparent;border:0;border-radius:1440px;
+  font:inherit;font-size:12px;padding:5px 11px;cursor:pointer;color:var(--graphite)}
+.langs button[aria-pressed="true"]{background:var(--ink);color:var(--bone)}
+
+/* ── Hero ── */
+.hero{padding:clamp(28px,6vw,72px) var(--pad) clamp(24px,4vw,48px)}
+.display{font-weight:300;font-size:clamp(40px,8.4vw,84px);line-height:1.0;
+  letter-spacing:-0.04em;margin:0;max-width:16ch}
+.hero-sub{margin:clamp(20px,3vw,32px) 0 0;font-size:clamp(16px,1.6vw,20px);
+  color:var(--graphite);max-width:52ch;line-height:1.45}
+.hero-cta{margin-top:clamp(24px,3vw,40px);display:flex;gap:10px;flex-wrap:wrap}
+
+/* ── Proof strip ── */
+.proof{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--ash);
+  border-top:1px solid var(--ash);border-bottom:1px solid var(--ash);margin-top:clamp(32px,5vw,64px)}
+.proof div{background:var(--bone);padding:20px var(--pad)}
+.proof b{display:block;font-weight:300;font-size:clamp(24px,3.4vw,34px);letter-spacing:-0.02em;line-height:1.1}
+.proof span{display:block;margin-top:6px;font-size:12px;color:var(--graphite);letter-spacing:-0.018em}
+@media(max-width:720px){.proof{grid-template-columns:repeat(2,1fr)}}
+
+/* ── Sections ── */
+section{padding:clamp(40px,7vw,80px) 0}
+.rail{padding:0 var(--pad)}
+.label{font-size:12px;text-transform:uppercase;letter-spacing:0.06em;color:var(--graphite);margin:0}
+.statement{font-weight:300;font-size:clamp(26px,4.2vw,54px);line-height:1.08;
+  letter-spacing:-0.023em;margin:24px 0 0;max-width:22ch}
+
+/* ── Cards ── */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:48px 32px;
+  margin-top:clamp(32px,5vw,64px)}
+@media(max-width:960px){.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px 24px}}
+@media(max-width:600px){.grid{grid-template-columns:1fr;gap:36px}}
+.card{display:block}
+.card-media{aspect-ratio:4/3;overflow:hidden;background:#efebe6;border-radius:0}
+.card-media img{width:100%;height:100%;object-fit:cover;transition:transform 640ms cubic-bezier(.22,.84,.22,1)}
+.card:hover .card-media img{transform:scale(1.035)}
+.card-meta{margin-top:14px;font-size:12px;text-transform:uppercase;letter-spacing:0.05em;color:var(--graphite)}
+.card-title{margin:8px 0 0;font-weight:300;font-size:clamp(19px,2vw,22px);letter-spacing:-0.02em;line-height:1.25}
+.card-desc{margin:8px 0 0;font-size:14px;color:var(--graphite);line-height:1.45}
+.tag{display:inline-block;border:1px solid var(--ash);border-radius:1440px;
+  padding:5px 11px;font-size:11px;text-transform:uppercase;letter-spacing:0.05em;margin-top:12px}
+
+/* The system's one colour rupture: a single tinted card per row. */
+.card--tint .card-media{background:var(--mint);display:grid;place-items:center;padding:28px}
+.card--tint.is-navy .card-media{background:var(--navy)}
+.card--tint .tint-inner{font-weight:300;font-size:clamp(22px,3vw,34px);line-height:1.1;letter-spacing:-0.025em}
+.card--tint.is-navy .tint-inner{color:var(--bone)}
+.card--tint .tint-note{margin-top:12px;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;opacity:.72}
+
+/* ── Full-bleed band ── */
+.band{position:relative;margin-top:clamp(40px,6vw,64px)}
+.band img{width:100%;height:clamp(240px,46vw,520px);object-fit:cover}
+.band-cap{position:absolute;left:var(--pad);bottom:24px;right:var(--pad);color:var(--bone);text-shadow:0 1px 24px rgba(0,0,0,.5)}
+.band-cap .m{font-size:11px;text-transform:uppercase;letter-spacing:0.08em}
+.band-cap .h{font-weight:300;font-size:clamp(20px,3.2vw,34px);line-height:1.15;letter-spacing:-0.02em;margin-top:10px;max-width:24ch}
+
+/* ── Contract list ── */
+.rows{margin-top:clamp(28px,4vw,48px);border-top:1px solid var(--ash)}
+.row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.5fr) auto;gap:20px;
+  align-items:baseline;padding:22px 0;border-bottom:1px solid var(--ash)}
+.row h3{margin:0;font-weight:300;font-size:clamp(18px,2.2vw,26px);letter-spacing:-0.02em;line-height:1.2}
+.row p{margin:0;font-size:14px;color:var(--graphite);line-height:1.45}
+.row .go{font-size:12px;text-transform:uppercase;letter-spacing:0.06em;white-space:nowrap}
+@media(max-width:760px){.row{grid-template-columns:1fr;gap:8px}}
+
+/* ── Footer ── */
+footer{border-top:1px solid var(--ash);padding:40px var(--pad) 56px;margin-top:clamp(40px,6vw,72px)}
+.f-grid{display:flex;flex-wrap:wrap;gap:32px 56px;justify-content:space-between}
+.f-grid a{font-size:14px;display:block;padding:3px 0}
+.f-note{margin-top:32px;font-size:12px;color:var(--graphite)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="eyebrow">
+    <span class="t-en">AI-ERA PRODUCT DESIGN // 20 YEARS OF SHIPPING</span>
+    <span class="t-jp">AI時代のプロダクトデザイン ／ 20年の実装</span>
+  </div>
+  <div class="hdr-right">
+    <div class="langs" role="group" aria-label="Language">
+      <button type="button" data-lang="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang="jp" aria-pressed="false">JP</button>
+    </div>
+    <a class="pill" href="contact.html"><span class="t-en">Start a project</span><span class="t-jp">相談する</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:0">
+    <h1 class="display">
+      <span class="t-en">I design AI products that ship, and I have the receipts.</span>
+      <span class="t-jp is-block">出荷されるAIプロダクトを設計しています。証拠もあります。</span>
+    </h1>
+    <p class="hero-sub">
+      <span class="t-en">Takao Umehara — product and brand designer. Twenty years of shipped work, now pointed at agentic systems: an AI agent fleet inside Verizon, and prototypes you can open right now.</span>
+      <span class="t-jp is-block">梅原隆生 — プロダクト／ブランドデザイナー。20年の実装を、いまエージェント型システムに向けています。Verizon 社内で稼働する AI エージェント群と、いますぐ開けるプロトタイプ。</span>
+    </p>
+    <div class="hero-cta">
+      <a class="pill" href="contact.html"><span class="t-en">Start a project</span><span class="t-jp">相談する</span></a>
+      <a class="pill pill--ghost" href="#work"><span class="t-en">See selected work</span><span class="t-jp">実績を見る</span></a>
+    </div>
+
+    <div class="proof">
+      <div><b>10</b><span class="t-en">AI agents built for Verizon Value</span><span class="t-jp">Verizon Value 向け AI エージェント</span></div>
+      <div><b>42</b><span class="t-en">Designers across 6 brands</span><span class="t-jp">6ブランド・42名のデザイナー</span></div>
+      <div><b>0→90%</b><span class="t-en">Repeat rate, Kitadoko rebrand</span><span class="t-jp">リピート率（Kitadoko）</span></div>
+      <div><b>4</b><span class="t-en">Live demos you can open now</span><span class="t-jp">いま開けるデモ</span></div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="rail">
+      <p class="label"><span class="t-en">Selected Work</span><span class="t-jp">選んだ仕事</span></p>
+      <h2 class="statement">
+        <span class="t-en">Six projects, not thirty-five. These are the ones that answer the question.</span>
+        <span class="t-jp is-block">35件ではなく6件。問いに答えるのはこの6件です。</span>
+      </h2>
+
+      <div class="grid">
+        <a class="card" href="projects/verizon-ai-agents.html">
+          <div class="card-media"><img src="assets/verizon-ai-agents/hero-agents-network.jpg" alt="Agent network diagram from the Verizon AI workflow project" width="1200" height="900"></div>
+          <div class="card-meta">Verizon Value · Agentic UX</div>
+          <h3 class="card-title"><span class="t-en">AI-Powered UX Workflow Transformation</span><span class="t-jp">AIによるUXワークフローの変革</span></h3>
+          <p class="card-desc"><span class="t-en">A fleet of 10 purpose-built agents for a 42-designer, 6-brand team — knowledge management, edge-case detection, writing evaluation.</span><span class="t-jp is-block">42名・6ブランドのチームに、用途別の10エージェント。ナレッジ管理、エッジケース検出、ライティング評価まで。</span></p>
+          <span class="tag">Featured 01</span>
+        </a>
+
+        <a class="card card--tint is-navy" href="ai-products.html">
+          <div class="card-media">
+            <div>
+              <div class="tint-inner"><span class="t-en">Four demos.<br>Open them.</span><span class="t-jp is-block">4つのデモ。<br>いま開けます。</span></div>
+              <div class="tint-note">Typespace · Rakugaki Jam · Resona · Marubatsu</div>
+            </div>
+          </div>
+          <div class="card-meta">Creativity Is Everywhere</div>
+          <h3 class="card-title"><span class="t-en">Playable AI Experiments</span><span class="t-jp">触れるAI実験</span></h3>
+          <p class="card-desc"><span class="t-en">The argument I do not have to make in words: interactive pieces running live in the browser, no install, no signup.</span><span class="t-jp is-block">言葉で説明しなくていい主張。ブラウザで動くインタラクティブ作品。インストールも登録も不要。</span></p>
+          <span class="tag">Featured 02</span>
+        </a>
+
+        <a class="card" href="projects/tmobile.html">
+          <div class="card-media"><img src="assets/shared/M−Mobile_teaser2.jpg" alt="T-Mobile retail pickup experience" loading="lazy" width="1200" height="900"></div>
+          <div class="card-meta">T-Mobile · Lead UX · 2024</div>
+          <h3 class="card-title"><span class="t-en">Buy Online, Pick Up in Store</span><span class="t-jp">オンライン購入・店舗受取</span></h3>
+          <p class="card-desc"><span class="t-en">App, kiosk and voice AI as one handoff. The work led T-Mobile to select Concentrix Catalyst as a preferred innovation partner.</span><span class="t-jp is-block">アプリ・キオスク・音声AIを一本の受け渡しに。この仕事が、T-Mobile による Concentrix Catalyst の優先イノベーションパートナー選定につながりました。</span></p>
+          <span class="tag">Featured 03</span>
+        </a>
+
+        <a class="card" href="projects/kitadoko.html">
+          <div class="card-media"><img src="assets/shared/Space_Design_kitadoko.png" alt="Kitadoko salon interior after the rebrand" loading="lazy" width="1200" height="900"></div>
+          <div class="card-meta">Kitadoko · Creative Director</div>
+          <h3 class="card-title"><span class="t-en">Rebranding a 150-year-old barbershop</span><span class="t-jp">創業150年の理容店を建て直す</span></h3>
+          <p class="card-desc"><span class="t-en">Est. 1871, underground, 90% male, zero repeat customers. I started with the business model, not the aesthetics. Repeat rate went 0% to 90%.</span><span class="t-jp is-block">1871年創業、地下、客の9割が男性、リピーターはゼロ。美意識ではなくビジネスモデルから始めました。リピート率は0%から90%へ。</span></p>
+          <span class="tag">Featured 04</span>
+        </a>
+
+        <a class="card" href="projects/ela-quests.html">
+          <div class="card-media"><img src="assets/shared/Quest_teaser_tr.png" alt="Amplify ELA Quests immersive learning module" loading="lazy" width="1200" height="900"></div>
+          <div class="card-meta">Amplify Education · 2014–2025</div>
+          <h3 class="card-title"><span class="t-en">ELA Quests</span><span class="t-jp">ELAクエスト</span></h3>
+          <p class="card-desc"><span class="t-en">Eleven years with one client. Ready-to-run immersive quest modules with AR, reaching millions of students across the US.</span><span class="t-jp is-block">同じクライアントと11年。ARを組み込んだ、そのまま使える没入型クエスト。全米で数百万人の生徒に届きました。</span></p>
+          <span class="tag">Featured 05</span>
+        </a>
+
+        <a class="card" href="projects/coca-cola.html">
+          <div class="card-media"><img src="assets/shared/Coke_Hero_1500x1000.png" alt="Coca-Cola global visual direction" loading="lazy" width="1500" height="1000"></div>
+          <div class="card-meta">The Coca-Cola Company · Ogilvy</div>
+          <h3 class="card-title"><span class="t-en">Global Visual Directions</span><span class="t-jp">グローバル・ビジュアルディレクション</span></h3>
+          <p class="card-desc"><span class="t-en">Two parallel visual systems for the world's most recognised brand, deployed across international markets in six-plus formats.</span><span class="t-jp is-block">世界で最も知られたブランドに、2つの並行するビジュアルシステム。6以上のフォーマットで各国市場に展開。</span></p>
+          <span class="tag">Featured 06</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="band">
+      <img src="assets/shared/M−Mobile_teaser2.jpg" alt="Retail pickup environment" loading="lazy" width="1600" height="900">
+      <div class="band-cap">
+        <div class="m"><span class="t-en">Retail · Kiosk · Voice</span><span class="t-jp">店舗・キオスク・音声</span></div>
+        <div class="h"><span class="t-en">The digital experience used to end where the physical one began.</span><span class="t-jp is-block">デジタルの体験は、物理の体験が始まる場所で途切れていました。</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="rail">
+      <p class="label"><span class="t-en">What you can put on a contract</span><span class="t-jp">発注できる形</span></p>
+      <div class="rows">
+        <div class="row">
+          <h3><span class="t-en">Agentic UX</span><span class="t-jp">エージェンティックUX</span></h3>
+          <p><span class="t-en">Agent fleet design, handoff models, evaluation loops. Research through to a shipped internal tool.</span><span class="t-jp is-block">エージェント群の設計、受け渡しモデル、評価ループ。研究から社内ツールの出荷まで。</span></p>
+          <a class="go" href="ai-products.html">Agentic UX ↗</a>
+        </div>
+        <div class="row">
+          <h3><span class="t-en">Product Design</span><span class="t-jp">プロダクトデザイン</span></h3>
+          <p><span class="t-en">End-to-end product work across app, kiosk, and web. Design systems, prototypes, live-coded HTML when it settles arguments faster.</span><span class="t-jp is-block">アプリ・キオスク・Webを横断するプロダクト設計。デザインシステム、プロトタイプ、議論が早く終わるならライブコーディングも。</span></p>
+          <a class="go" href="work.html">Product ↗</a>
+        </div>
+        <div class="row">
+          <h3><span class="t-en">Brand &amp; Visual</span><span class="t-jp">ブランド・ビジュアル</span></h3>
+          <p><span class="t-en">Identity, service and space design. Starting from the business model, the way Kitadoko did.</span><span class="t-jp is-block">アイデンティティ、サービス、空間。Kitadoko と同じく、ビジネスモデルから始めます。</span></p>
+          <a class="go" href="brand.html">Brand ↗</a>
+        </div>
+        <div class="row">
+          <h3><span class="t-en">AI Tools</span><span class="t-jp">AIツール</span></h3>
+          <p><span class="t-en">Six open tools and Claude Code skills I built and use daily — the plumbing under the design work.</span><span class="t-jp is-block">日常的に自分で使っている6つのオープンなツールと Claude Code スキル。デザインの下にある配管です。</span></p>
+          <a class="go" href="ai-tools.html">Tools ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="f-grid">
+    <div>
+      <a href="ai-products.html">Agentic UX</a>
+      <a href="ai-tools.html">AI Tools</a>
+      <a href="work.html">Product Design</a>
+    </div>
+    <div>
+      <a href="brand.html">Brand &amp; Visual</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <a class="pill" href="contact.html"><span class="t-en">Start a project</span><span class="t-jp">相談する</span></a>
+    </div>
+  </div>
+  <p class="f-note">
+    <span class="t-en">Layout variant A — editorial. Type at weight 300, colour rationed to one card, whitespace doing the structural work.</span>
+    <span class="t-jp is-block">レイアウト案A — エディトリアル。ウェイト300、色は1枚のカードだけに配給、構造は余白が担う。</span>
+  </p>
+</footer>
+
+<script>
+(() => {
+  const root = document.documentElement;
+  const btns = [...document.querySelectorAll('.langs button')];
+  const set = (lang) => {
+    root.classList.toggle('lang-jp', lang === 'jp');
+    root.lang = lang === 'jp' ? 'ja' : 'en';
+    btns.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    try { localStorage.setItem('tu-lang', lang); } catch {}
+  };
+  btns.forEach((b) => b.addEventListener('click', () => set(b.dataset.lang)));
+  let saved = 'en';
+  try { saved = localStorage.getItem('tu-lang') || 'en'; } catch {}
+  set(saved);
+})();
+</script>
+</body>
+</html>
