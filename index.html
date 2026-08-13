@@ -1880,8 +1880,8 @@
       </a>
     </div>
     <p class="band-lede">
-      <span class="t-en">Not screenshots. Every tile below is live code drawing in your browser at this moment — the same behaviour as the real thing, running at tile size. Move your cursor across them. Four of them open as full apps in one tap, and you can put them on a room full of phones with a QR code.</span>
-      <span class="t-jp is-block">スクリーンショットではありません。下のタイルはすべて、いまこの瞬間あなたのブラウザで描画されているコードです。実物と同じ挙動を、タイルの大きさで動かしています。カーソルを乗せてみてください。うち4つはワンタップで本体が開き、QR コードでその場のスマホ全部に配れます。</span>
+      <span class="t-en">Not screenshots. Every tile below is live code drawing in your browser at this moment — the same behaviour as the real thing, running at tile size. Move your cursor across them. Five of them open as full apps in one tap, and you can put them on a room full of phones with a QR code.</span>
+      <span class="t-jp is-block">スクリーンショットではありません。下のタイルはすべて、いまこの瞬間あなたのブラウザで描画されているコードです。実物と同じ挙動を、タイルの大きさで動かしています。カーソルを乗せてみてください。うち5つはワンタップで本体が開き、QR コードでその場のスマホ全部に配れます。</span>
     </p>
 
     <div class="play-grid">
@@ -1971,20 +1971,20 @@
         </div>
       </a>
 
-      <a class="play-tile" href="ai-products.html#snap-title">
+      <a class="play-tile" href="https://emoji-drop-ultimate.vercel.app" target="_blank" rel="noopener">
         <div class="play-stage"><canvas data-play="emojidrop" aria-hidden="true"></canvas>
-          <span class="play-hint"><span class="t-en">Two players, no server</span><span class="t-jp">2人対戦・サーバー無し</span></span>
+          <span class="play-hint"><span class="t-en">Up to four players</span><span class="t-jp">最大4人で対戦</span></span>
         </div>
         <div class="play-body">
           <h3 class="play-name">EmojiDrop</h3>
           <p class="play-desc">
-            <span class="t-en">An emoji-only arcade shooter, two players head-to-head over WebRTC. No relay server, one file.</span>
-            <span class="t-jp is-block">絵文字だけの対戦アーケードシューター。WebRTC で直接対戦、中継サーバーなし、ファイル1つ。</span>
+            <span class="t-en">An emoji-only arcade shooter for up to four players at once, over WebRTC. One file.</span>
+            <span class="t-jp is-block">絵文字だけの対戦アーケードシューター。WebRTC で最大4人同時プレイ。ファイル1つ。</span>
           </p>
         </div>
         <div class="play-foot">
           <span class="play-stack">Canvas · WebRTC · single file</span>
-          <span class="play-go is-static"><span class="t-en">Case study →</span><span class="t-jp">解説を見る →</span></span>
+          <span class="play-go"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></span>
         </div>
       </a>
 
@@ -3241,9 +3241,11 @@
         }};
       },
 
-      /* EmojiDrop — two shooters, no server in the middle */
+      /* EmojiDrop — four shooters, one per corner */
       emojidrop(w, h) {
         const CH = ['🍕', '🌵', '🐙', '🍋', '🛸', '🐸', '⚡', '🍄'];
+        /* One origin per player. The tile claims four, so it fires from four. */
+        const ORIGINS = [[0.16, 1], [0.84, 1], [0.16, 0], [0.84, 0]];
         const drops = [], shots = [], pops = [];
         let acc = 0, fire = 0, ci = 0;
         const size = Math.max(13, Math.min(w, h) * 0.11);
@@ -3275,9 +3277,9 @@
           if (fire > 380 && drops.length) {
             fire = 0;
             const target = drops[Math.floor(Math.random() * drops.length)];
-            const fromBottom = Math.random() < 0.5;
-            const sx = fromBottom ? w * 0.16 : w * 0.84;
-            const sy = fromBottom ? h - 10 : 10;
+            const o = ORIGINS[Math.floor(Math.random() * ORIGINS.length)];
+            const sx = w * o[0];
+            const sy = o[1] ? h - 10 : 10;
             const d = Math.hypot(target.x - sx, target.y - sy) || 1;
             shots.push({ x: sx, y: sy, vx: (target.x - sx) / d * 4.2, vy: (target.y - sy) / d * 4.2 });
           }
@@ -3320,10 +3322,10 @@
             ctx.beginPath(); ctx.arc(p.x, p.y, size * 0.4 + k * size * 0.7, 0, TAU); ctx.stroke();
           }
 
-          /* the two players */
+          /* the four players — one bar per origin, so the tile shows the
+             same count the copy claims */
           ctx.fillStyle = 'rgba(236,244,255,0.5)';
-          ctx.fillRect(w * 0.16 - 11, h - 8, 22, 3);
-          ctx.fillRect(w * 0.84 - 11, 5, 22, 3);
+          for (const o of ORIGINS) ctx.fillRect(w * o[0] - 11, o[1] ? h - 8 : 5, 22, 3);
         }};
       }
     };
