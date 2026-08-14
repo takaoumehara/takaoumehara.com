@@ -110,9 +110,31 @@ footer{padding:clamp(32px,5vw,56px) var(--pad);font-size:13px;display:flex;
   font-size:14px;transition:background 300ms ease,color 300ms ease}
 body.is-lit .cta{background:var(--on-tint);color:var(--tint)}
 
+/* ── Leaving ──────────────────────────────────────────────────────────────
+ * The destination's colour is already full-screen, so the click has nothing
+ * to animate. Only the list leaves; the field stays put and the next page
+ * opens on the same gradient. No View Transitions API, so no 5-in-10 misses.
+ * ────────────────────────────────────────────────────────────────────────── */
+body.is-leaving .wrap{opacity:0;transform:translate3d(0,-10px,0);
+  transition:opacity 240ms ease,transform 300ms cubic-bezier(.4,0,1,1)}
+body.is-leaving .field-art{opacity:1;transform:scale(1.04);
+  transition:opacity 300ms ease,transform 420ms cubic-bezier(.4,0,1,1)}
+
+/* ── Section rule ── */
+.sec-note{padding:0 var(--pad);margin:-6px 0 clamp(14px,2vw,22px);font-size:13px;
+  color:var(--dim);max-width:58ch;transition:color 300ms ease}
+body.is-lit .sec-note{color:color-mix(in oklab, var(--on-tint) 74%, transparent)}
+
 @media(prefers-reduced-motion:reduce){
   *{transition-duration:1ms!important;animation:none!important}
+  body.is-leaving .wrap{opacity:1;transform:none}
 }
+
+/* Language visibility is an invariant, not a preference. Component rules that
+   style a bare descendant span (.nums span, .proof span, .facts span) outrank
+   .t-jp{display:none} on specificity and leak both languages at once. */
+html:not(.lang-jp) .t-jp{display:none!important}
+html.lang-jp .t-en{display:none!important}
 </style>
 </head>
 <body>
@@ -183,6 +205,56 @@ body.is-lit .cta{background:var(--on-tint);color:var(--tint)}
     </a>
   </div>
 
+  <p class="label"><span class="t-en">Interactive — things you can open and touch</span><span class="t-jp">インタラクティブ — 開いて触れるもの</span></p>
+  <p class="sec-note">
+    <span class="t-en">Built to be used by a room, not demoed from a deck. Each one runs in a browser with nothing to install.</span>
+    <span class="t-jp is-block">スライドで見せるためではなく、その場の全員に使ってもらうために作ったもの。どれもブラウザで動き、インストールは要りません。</span>
+  </p>
+
+  <div class="idx" id="idx2">
+    <a class="idx-item" href="projects/rakugaki-jam.html"
+       data-tint="#3b1d6e" data-tint2="#8b3fd6" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
+      <span class="idx-num">07</span>
+      <span class="idx-name">Rakugaki Jam</span>
+      <span class="idx-meta"><span class="t-en">Snap Pair · crowd drawing</span><span class="t-jp">Snap Pair ／ みんなで描く</span></span>
+    </a>
+
+    <a class="idx-item" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener"
+       data-tint="#0b1030" data-tint2="#3a4fb8" data-on="#ffffff" data-art="assets/verizon-ai-agents/hero-agents-network.jpg">
+      <span class="idx-num">08</span>
+      <span class="idx-name">Typespace</span>
+      <span class="idx-meta"><span class="t-en">WebGL · words become constellations</span><span class="t-jp">WebGL ／ 言葉が星座になる</span></span>
+    </a>
+
+    <a class="idx-item" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"
+       data-tint="#0d3b3a" data-tint2="#1f8f86" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
+      <span class="idx-num">09</span>
+      <span class="idx-name">Resona 響</span>
+      <span class="idx-meta"><span class="t-en">Pseudo-haptics · motion with weight</span><span class="t-jp">擬似ハプティクス ／ 重さのある動き</span></span>
+    </a>
+
+    <a class="idx-item" href="https://kao-game.vercel.app/" target="_blank" rel="noopener"
+       data-tint="#5c1a12" data-tint2="#e0642c" data-on="#ffffff" data-art="assets/koebaku/hero.jpg">
+      <span class="idx-num">10</span>
+      <span class="idx-name">Kao Game <span style="font-size:.62em;opacity:.7">顔ゲーム</span></span>
+      <span class="idx-meta"><span class="t-en">Live · details to confirm</span><span class="t-jp">公開中 ／ 詳細は要確認</span></span>
+    </a>
+
+    <a class="idx-item" href="projects/marubatsu.html"
+       data-tint="#1b1145" data-tint2="#6d4aff" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
+      <span class="idx-num">11</span>
+      <span class="idx-name">Marubatsu Arena</span>
+      <span class="idx-meta"><span class="t-en">Realtime multiplayer · Gemini opponent</span><span class="t-jp">リアルタイム対戦 ／ Gemini の相手</span></span>
+    </a>
+
+    <a class="idx-item" href="projects/snap-pair.html"
+       data-tint="#111827" data-tint2="#4b5563" data-on="#ffffff" data-art="assets/koebaku/hero.jpg">
+      <span class="idx-num">12</span>
+      <span class="idx-name">Snap Pair</span>
+      <span class="idx-meta"><span class="t-en">The layer the others are built on</span><span class="t-jp">上の作品群が乗っている土台</span></span>
+    </a>
+  </div>
+
   <div class="nums">
     <div><b>10</b><span class="t-en">AI agents built for Verizon Value</span><span class="t-jp">Verizon Value 向け AI エージェント</span></div>
     <div><b>42</b><span class="t-en">Designers across 6 brands</span><span class="t-jp">6ブランド・42名のデザイナー</span></div>
@@ -192,8 +264,8 @@ body.is-lit .cta{background:var(--on-tint);color:var(--tint)}
 
   <footer>
     <span>
-      <span class="t-en">Everything else — 28 more projects and 6 open tools.</span>
-      <span class="t-jp is-block">その他 — 28件の実績と6つのオープンなツール。</span>
+      <span class="t-en">Everything else — the rest of the 34 projects and 6 open tools.</span>
+      <span class="t-jp is-block">その他 — 34件の残りと6つのオープンなツール。</span>
       <a href="work.html" style="text-decoration:underline">work</a> ·
       <a href="brand.html" style="text-decoration:underline">brand</a> ·
       <a href="ai-tools.html" style="text-decoration:underline">tools</a>
@@ -217,6 +289,7 @@ body.is-lit .cta{background:var(--on-tint);color:var(--tint)}
   setLang(saved);
 
   const items = [...document.querySelectorAll('.idx-item')];
+  const isExternal = (a) => a.target === '_blank';
   const art = document.getElementById('fieldImg');
   const style = document.body.style;
   let current = null;
@@ -241,7 +314,9 @@ body.is-lit .cta{background:var(--on-tint);color:var(--tint)}
     items.forEach((el) => {
       el.addEventListener('pointerenter', () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => light(el), 70); });
     });
-    document.getElementById('idx').addEventListener('pointerleave', () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => light(null), 160); });
+    ['idx', 'idx2'].forEach((id) => document.getElementById(id)?.addEventListener('pointerleave', () => {
+      clearTimeout(hoverTimer); hoverTimer = setTimeout(() => light(null), 160);
+    }));
   } else {
     // Touch: scrolling replaces hovering — whichever name is nearest the middle
     // of the screen owns the colour.
@@ -262,6 +337,19 @@ body.is-lit .cta{background:var(--on-tint);color:var(--tint)}
   items.forEach((el) => {
     el.addEventListener('focus', () => light(el));
     el.addEventListener('blur', () => light(null));
+  });
+
+  // Leaving: paint the destination's field, drop the list, then navigate. The
+  // colour is continuous across the two documents, so there is no cut to hide.
+  const HOLD = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260;
+  items.forEach((el) => {
+    el.addEventListener('click', (e) => {
+      if (isExternal(el) || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+      e.preventDefault();
+      light(el);
+      document.body.classList.add('is-leaving');
+      setTimeout(() => { location.href = el.href; }, HOLD);
+    });
   });
 })();
 </script>

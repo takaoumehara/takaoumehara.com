@@ -114,6 +114,12 @@ footer{border-top:1px solid var(--ash);padding:40px var(--pad) 56px;margin-top:c
 .f-grid a{font-size:14px;display:block;padding:3px 0}
 .f-note{margin-top:32px;font-size:12px;color:var(--graphite)}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* Language visibility is an invariant, not a preference. Component rules that
+   style a bare descendant span (.nums span, .proof span, .facts span) outrank
+   .t-jp{display:none} on specificity and leak both languages at once. */
+html:not(.lang-jp) .t-jp{display:none!important}
+html.lang-jp .t-en{display:none!important}
 </style>
 </head>
 <body>

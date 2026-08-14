@@ -58,9 +58,50 @@ test('grid pages opt into view transitions and name the outgoing card', () => {
   }
 });
 
-test('every project page opts in, so arriving is a transition and not a reload', () => {
+test('every project page arrives without a hard cut', () => {
+  // Two ways to satisfy this, and a page needs exactly one of them:
+  //   1. the grid system — a shared-element morph via the view-transition sheet
+  //   2. the colour-continuity system — the landing page paints the project's
+  //      gradient before the click, and the project page opens on that same
+  //      gradient, inlined so it is present in the first frame
   for (const page of PROJECT_PAGES) {
-    assert.match(read(page), /\.\.\/assets\/view-transitions\.css/, `${page} needs the view-transition stylesheet`);
+    const html = read(page);
+    const morph = /\.\.\/assets\/view-transitions\.css/.test(html);
+    const field = /--tint:\s*#[0-9a-f]{3,8}/i.test(html) && /linear-gradient\(152deg,\s*var\(--tint\)/.test(html);
+    assert.ok(morph || field, `${page} has neither a shared-element morph nor an arrival field`);
+  }
+});
+
+test('the colour a project is hovered in is the colour it opens in', () => {
+  const landing = read('landing-b-index.html');
+  let checked = 0;
+  for (const m of landing.matchAll(
+    /<a\b[^>]*\bclass\s*=\s*["'][^"']*\bidx-item\b[^"']*["'][^>]*>/gi
+  )) {
+    const tag = m[0];
+    const href = tag.match(/\bhref\s*=\s*["']([^"']+)["']/)?.[1];
+    const tint = tag.match(/\bdata-tint\s*=\s*["']([^"']+)["']/)?.[1];
+    const tint2 = tag.match(/\bdata-tint2\s*=\s*["']([^"']+)["']/)?.[1];
+    if (!href || !href.startsWith('projects/') || !tint) continue;
+    let page;
+    try { page = read(href); } catch { continue; }
+    if (!/--tint:/.test(page)) continue; // still on the old grid system
+    const pageTint = page.match(/--tint:\s*(#[0-9a-f]{3,8})/i)?.[1];
+    const pageTint2 = page.match(/--tint-2:\s*(#[0-9a-f]{3,8})/i)?.[1];
+    assert.equal(pageTint?.toLowerCase(), tint.toLowerCase(), `${href}: opens in a different colour than it is hovered in`);
+    assert.equal(pageTint2?.toLowerCase(), tint2?.toLowerCase(), `${href}: second gradient stop does not match`);
+    checked += 1;
+  }
+  assert.ok(checked > 0, 'expected at least one project page on the colour-continuity system');
+});
+
+test('no page shows both languages at once', () => {
+  // Component rules that style a bare descendant span outrank .t-jp{display:none}
+  // on specificity, which silently renders EN and JP together.
+  for (const page of ['landing-a-editorial.html', 'landing-b-index.html', 'landing-c-reel.html', 'projects/rakugaki-jam.html']) {
+    const html = read(page);
+    assert.match(html, /html:not\(\.lang-jp\)\s+\.t-jp\s*\{\s*display:\s*none\s*!important/, `${page} needs the language visibility guard`);
+    assert.match(html, /html\.lang-jp\s+\.t-en\s*\{\s*display:\s*none\s*!important/, `${page} needs the language visibility guard`);
   }
 });
 

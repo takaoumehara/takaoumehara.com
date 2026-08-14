@@ -83,6 +83,12 @@ html.lang-jp .intro h1{font-weight:500;letter-spacing:-0.02em}
   .reel{scroll-snap-type:none}
   *{animation:none!important;transition:none!important}
 }
+
+/* Language visibility is an invariant, not a preference. Component rules that
+   style a bare descendant span (.nums span, .proof span, .facts span) outrank
+   .t-jp{display:none} on specificity and leak both languages at once. */
+html:not(.lang-jp) .t-jp{display:none!important}
+html.lang-jp .t-en{display:none!important}
 </style>
 </head>
 <body>
