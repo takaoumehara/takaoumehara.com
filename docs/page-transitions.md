@@ -1,7 +1,24 @@
-# ページ遷移 — カードからプロジェクトヒーローへの morph
+# ページ遷移 — 2つの方式と、採らなかった方の記録
 
-> Written by: superforge-ui · Last updated: 2026-08-13
-> 対象: `assets/view-transitions.css` / `assets/work-card-grid.js` / 全グリッドページ / `projects/*.html`
+> Written by: superforge-ui · Last updated: 2026-08-14
+> Status: **morph = 棚上げ（superseded）／色の連続 = 現行**
+> 対象: `assets/view-transitions.css` · `assets/work-card-grid.js` ·
+> `landing-b-index.html` · `projects/rakugaki-jam.html`
+
+## 現在の結論（先に読むところ）
+
+**採用: 色の連続（§5）。** ホバー時点で遷移先のグラデーションが全画面にあるので、
+クリックは「それを壊さない」だけでよい。View Transitions API を使わないため、
+下の §3 にある 5〜8/10 の不安定さが**構造的に発生しない**。
+
+**棚上げ: shared-element morph（§1〜§4）。** 実装は残してあり、旧グリッド
+（`work.html` / `brand.html` / `index.html`）では今も動く。ただし
+**ユーザーが実機で「morph が見えない」と報告**し、それは §3 の実測（5〜8/10）と
+一致した。原因は未特定のまま。B 案を採る場合、この機能は不要になる。
+
+以下 §1〜§4 は morph の記録。現行方式は §5。
+
+---
 
 ---
 
@@ -128,3 +145,43 @@ Creative Giants の 1.5 秒は、作品8件のアート制作会社だから演�
 - **アセットの再エンコード**。`assets/` は 1.1GB のまま（`docs/portfolio-tiering.md` §6-2）
 - **Featured 6 の実装**。階層化はまだドキュメントのみで、UI には出ていない
 - `index-v1` / `index-v53` / `index-grad` は `<a>` 化のみ。遷移は入れていない（旧版のため）
+
+---
+
+## 5. 現行方式 — 色の連続（`landing-b-index.html` → `projects/rakugaki-jam.html`）
+
+### 仕組み
+
+```
+ホバー   → body に --tint / --tint-2 を設定、.field を opacity:1
+          （遷移先の全画面グラデーションが、クリック前から画面にある）
+クリック → body.is-leaving：リストだけ落とす。フィールドは動かさない
+          260ms 後に location.href
+到着     → 遷移先が同一のグラデーションで開く。中身だけ rise-in
+```
+
+**遷移先の CSS はインラインで持つ。** 外部スタイルシートは1フレーム遅れて届くこと
+があり、その1フレームで色の連続が切れる。§3 で「到達できない外部 CSS が遷移を殺す」
+と分かっているので、ここは意図的にインライン。
+
+### 検証（Chromium 141・実行して確認）
+
+| 確認したこと | 結果 |
+|---|---|
+| 両ページの `background-image` 計算値が一致 | **完全一致**（`oklab(0.472212 0.0432401 -0.0930929)` まで同一） |
+| 遷移先の canvas が生きている／実際に描ける | **確認**（ドラッグして描画を検出） |
+| 横スクロール（1440 / 375px） | **0px** |
+| JS エラー | **0** |
+| EN/JP 同時表示 | **0**（下記の欠陥を修正後） |
+
+### 同時に見つけて直した既存欠陥
+
+**`.nums span` / `.proof span` / `.facts span` の詳細度が `.t-jp{display:none}` を
+上回り、日英が同時に表示されていた。** index に4箇所、新規ページに3箇所。
+4ページすべてに不変条件（`html:not(.lang-jp) .t-jp{display:none!important}`）を入れ、
+`tests/view-transitions.test.mjs` で固定した。
+
+### 未確認
+
+- **Firefox / Safari での実機確認**（この方式は API 非依存なので動く想定だが、未確認）
+- morph 側の 5〜8/10 の根本原因（棚上げしたため未追跡）
