@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Takao Umehara — Editorial (Variant A)</title>
 <meta name="description" content="Layout variant A — oversized editorial poster on cream paper, after Creative Giants.">
+<!-- Render-blocking on purpose: it paints the first frame of the arriving
+     page. See assets/handoff.js -->
+<script src="assets/handoff.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -113,6 +116,22 @@ footer{border-top:1px solid var(--ash);padding:40px var(--pad) 56px;margin-top:c
 .f-grid{display:flex;flex-wrap:wrap;gap:32px 56px;justify-content:space-between}
 .f-grid a{font-size:14px;display:block;padding:3px 0}
 .f-note{margin-top:32px;font-size:12px;color:var(--graphite)}
+
+/* ── Leaving ──────────────────────────────────────────────────────────────
+ * A is cream and rationed; flooding the screen with a project colour would
+ * contradict everything else on the page. So A's transition is the one thing
+ * on a card that is genuinely the project's own — the photograph. It grows to
+ * full bleed, the paper drops away behind it, and the destination opens on
+ * that same frame before settling into its own page (assets/handoff.js,
+ * data-tu-mode="image").
+ *
+ * Only the three page regions fade. The thumbnail in flight is a sibling of
+ * them, so it is not dragged down with the paper.
+ * ────────────────────────────────────────────────────────────────────────── */
+html.tu-leaving .hdr,
+html.tu-leaving main,
+html.tu-leaving footer{opacity:0;transition:opacity 240ms ease}
+
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* Language visibility is an invariant, not a preference. Component rules that
@@ -170,7 +189,8 @@ html.lang-jp .t-en{display:none!important}
       </h2>
 
       <div class="grid">
-        <a class="card" href="projects/verizon-ai-agents.html">
+        <a class="card" href="projects/verizon-ai-agents.html" data-tu data-tu-mode="image"
+           data-tint="#101731" data-tint2="#2c3f7a" data-on="#ffffff" data-art="assets/verizon-ai-agents/hero-agents-network.jpg">
           <div class="card-media"><img src="assets/verizon-ai-agents/hero-agents-network.jpg" alt="Agent network diagram from the Verizon AI workflow project" width="1200" height="900"></div>
           <div class="card-meta">Verizon Value · Agentic UX</div>
           <h3 class="card-title"><span class="t-en">AI-Powered UX Workflow Transformation</span><span class="t-jp">AIによるUXワークフローの変革</span></h3>
@@ -178,7 +198,8 @@ html.lang-jp .t-en{display:none!important}
           <span class="tag">Featured 01</span>
         </a>
 
-        <a class="card card--tint is-navy" href="ai-products.html">
+        <a class="card card--tint is-navy" href="ai-products.html" data-tu
+           data-tint="#101731" data-tint2="#2a1245" data-on="#ffffff">
           <div class="card-media">
             <div>
               <div class="tint-inner"><span class="t-en">Four demos.<br>Open them.</span><span class="t-jp is-block">4つのデモ。<br>いま開けます。</span></div>
@@ -191,7 +212,8 @@ html.lang-jp .t-en{display:none!important}
           <span class="tag">Featured 02</span>
         </a>
 
-        <a class="card" href="projects/tmobile.html">
+        <a class="card" href="projects/tmobile.html" data-tu data-tu-mode="image"
+           data-tint="#6d0244" data-tint2="#c4177f" data-on="#ffffff" data-art="assets/shared/M−Mobile_teaser2.jpg">
           <div class="card-media"><img src="assets/shared/M−Mobile_teaser2.jpg" alt="T-Mobile retail pickup experience" loading="lazy" width="1200" height="900"></div>
           <div class="card-meta">T-Mobile · Lead UX · 2024</div>
           <h3 class="card-title"><span class="t-en">Buy Online, Pick Up in Store</span><span class="t-jp">オンライン購入・店舗受取</span></h3>
@@ -199,7 +221,8 @@ html.lang-jp .t-en{display:none!important}
           <span class="tag">Featured 03</span>
         </a>
 
-        <a class="card" href="projects/kitadoko.html">
+        <a class="card" href="projects/kitadoko.html" data-tu data-tu-mode="image"
+           data-tint="#03392e" data-tint2="#0a7a5f" data-on="#ffffff" data-art="assets/shared/Space_Design_kitadoko.png">
           <div class="card-media"><img src="assets/shared/Space_Design_kitadoko.png" alt="Kitadoko salon interior after the rebrand" loading="lazy" width="1200" height="900"></div>
           <div class="card-meta">Kitadoko · Creative Director</div>
           <h3 class="card-title"><span class="t-en">Rebranding a 150-year-old barbershop</span><span class="t-jp">創業150年の理容店を建て直す</span></h3>
@@ -207,7 +230,8 @@ html.lang-jp .t-en{display:none!important}
           <span class="tag">Featured 04</span>
         </a>
 
-        <a class="card" href="projects/ela-quests.html">
+        <a class="card" href="projects/ela-quests.html" data-tu data-tu-mode="image"
+           data-tint="#123a5c" data-tint2="#3d86c6" data-on="#ffffff" data-art="assets/shared/Quest_teaser_tr.png">
           <div class="card-media"><img src="assets/shared/Quest_teaser_tr.png" alt="Amplify ELA Quests immersive learning module" loading="lazy" width="1200" height="900"></div>
           <div class="card-meta">Amplify Education · 2014–2025</div>
           <h3 class="card-title"><span class="t-en">ELA Quests</span><span class="t-jp">ELAクエスト</span></h3>
@@ -215,7 +239,8 @@ html.lang-jp .t-en{display:none!important}
           <span class="tag">Featured 05</span>
         </a>
 
-        <a class="card" href="projects/coca-cola.html">
+        <a class="card" href="projects/coca-cola.html" data-tu data-tu-mode="image"
+           data-tint="#7a0c14" data-tint2="#d8262f" data-on="#ffffff" data-art="assets/shared/Coke_Hero_1500x1000.png">
           <div class="card-media"><img src="assets/shared/Coke_Hero_1500x1000.png" alt="Coca-Cola global visual direction" loading="lazy" width="1500" height="1000"></div>
           <div class="card-meta">The Coca-Cola Company · Ogilvy</div>
           <h3 class="card-title"><span class="t-en">Global Visual Directions</span><span class="t-jp">グローバル・ビジュアルディレクション</span></h3>

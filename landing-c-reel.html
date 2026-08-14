@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Takao Umehara — Reel (Variant C)</title>
 <meta name="description" content="Layout variant C — one project per screen, the work at full size, after Channel Studio.">
+<!-- Render-blocking on purpose: it paints the first frame of the arriving
+     page. See assets/handoff.js -->
+<script src="assets/handoff.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Noto+Sans+JP:wght@400;500&display=swap" rel="stylesheet">
@@ -73,11 +76,41 @@ html.lang-jp .intro h1{font-weight:500;letter-spacing:-0.02em}
 .counter{position:absolute;right:var(--pad);bottom:var(--pad);font-size:11px;color:var(--dim);
   font-variant-numeric:tabular-nums;z-index:2}
 
-/* ── Closing ── */
-.end{justify-content:center;background:var(--bg)}
-.end h2{font-weight:400;font-size:clamp(26px,4.4vw,48px);letter-spacing:-0.03em;line-height:1.1;margin:0;max-width:18ch}
-.end .links{margin-top:28px;display:flex;gap:10px;flex-wrap:wrap}
+/* ── The index panel ──────────────────────────────────────────────────────
+ * C spends one full screen per project, which is what makes it good and also
+ * what caps it: every panel is a scroll the visitor has to agree to. Six is
+ * comfortable, nine is the ceiling, thirty-four is not a reel — it is a
+ * hostage situation. So the reel ends by handing over: one screen that lists
+ * everything it did not show, at the density a list can carry.
+ * ────────────────────────────────────────────────────────────────────────── */
+/* The one panel allowed to be taller than the screen: a list is the only
+   thing here that gets better with more rows. */
+.end{justify-content:center;background:var(--bg);height:auto;min-height:100dvh;overflow:visible;
+  padding-top:clamp(72px,12vh,120px);padding-bottom:clamp(40px,8vh,80px)}
+.end .panel-body{max-width:none}
+.end h2{font-weight:400;font-size:clamp(24px,3.6vw,40px);letter-spacing:-0.03em;line-height:1.12;margin:0;max-width:20ch}
+.end .links{margin-top:24px;display:flex;gap:10px;flex-wrap:wrap}
 .end .cta{border-radius:100px;padding:12px 24px;background:var(--ink);color:var(--bg);font-size:14px;border:1px solid var(--ink)}
+.rest{margin-top:clamp(20px,3vw,32px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:0 clamp(20px,3vw,44px);border-top:1px solid rgba(242,242,242,.18)}
+@media(max-width:820px){.rest{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){.rest{grid-template-columns:1fr}}
+.rest a{display:flex;justify-content:space-between;gap:14px;align-items:baseline;
+  padding:9px 0;border-bottom:1px solid rgba(242,242,242,.12);font-size:14px;
+  transition:color 200ms ease}
+.rest a:hover{color:var(--accent)}
+.rest a span{color:var(--dim);font-size:11px;white-space:nowrap}
+
+/* ── Leaving ──────────────────────────────────────────────────────────────
+ * A panel already fills the viewport with the project's own image, so there
+ * is nothing to fly: the image holds still, the chrome and the writing drop
+ * away, and the destination opens on that same frame (assets/handoff.js,
+ * data-tu-mode="image"). Nothing goes black in between.
+ * ────────────────────────────────────────────────────────────────────────── */
+html.tu-leaving .chrome,
+html.tu-leaving .panel-body,
+html.tu-leaving .panel-foot,
+html.tu-leaving .counter{opacity:0;transition:opacity 220ms ease}
 
 @media(prefers-reduced-motion:reduce){
   .reel{scroll-snap-type:none}
@@ -123,7 +156,8 @@ html.lang-jp .t-en{display:none!important}
     <div class="scroll-hint"><span class="t-en">Scroll ↓</span><span class="t-jp">スクロール ↓</span></div>
   </section>
 
-  <a class="panel" href="projects/verizon-ai-agents.html">
+  <a class="panel" href="projects/verizon-ai-agents.html" data-tu data-tu-mode="image"
+     data-tint="#101731" data-tint2="#2c3f7a" data-on="#ffffff" data-art="assets/verizon-ai-agents/hero-agents-network.jpg">
     <div class="panel-media"><img src="assets/verizon-ai-agents/hero-agents-network.jpg" alt="Agent network from the Verizon AI workflow project" width="1600" height="900" fetchpriority="high"></div>
     <div class="panel-body">
       <p class="kicker">Verizon Value — Agentic UX</p>
@@ -141,7 +175,8 @@ html.lang-jp .t-en{display:none!important}
     <div class="counter">01 / 06</div>
   </a>
 
-  <a class="panel" href="ai-products.html">
+  <a class="panel" href="ai-products.html" data-tu data-tu-mode="image"
+     data-tint="#2a1245" data-tint2="#7a35c9" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
     <div class="panel-media"><img src="assets/marubatsu/hero.jpg" alt="Marubatsu Arena, a realtime multiplayer game" loading="lazy" width="1600" height="900"></div>
     <div class="panel-body">
       <p class="kicker"><span class="t-en">Creativity Is Everywhere — Playable</span><span class="t-jp">Creativity Is Everywhere ／ 触れる</span></p>
@@ -158,7 +193,8 @@ html.lang-jp .t-en{display:none!important}
     <div class="counter">02 / 06</div>
   </a>
 
-  <a class="panel" href="projects/tmobile.html">
+  <a class="panel" href="projects/tmobile.html" data-tu data-tu-mode="image"
+     data-tint="#6d0244" data-tint2="#c4177f" data-on="#ffffff" data-art="assets/shared/M−Mobile_teaser2.jpg">
     <div class="panel-media"><img src="assets/shared/M−Mobile_teaser2.jpg" alt="T-Mobile retail pickup environment" loading="lazy" width="1600" height="900"></div>
     <div class="panel-body">
       <p class="kicker">T-Mobile — Lead UX, 2024</p>
@@ -176,7 +212,8 @@ html.lang-jp .t-en{display:none!important}
     <div class="counter">03 / 06</div>
   </a>
 
-  <a class="panel" href="projects/kitadoko.html">
+  <a class="panel" href="projects/kitadoko.html" data-tu data-tu-mode="image"
+     data-tint="#03392e" data-tint2="#0a7a5f" data-on="#ffffff" data-art="assets/shared/Space_Design_kitadoko.png">
     <div class="panel-media"><img src="assets/shared/Space_Design_kitadoko.png" alt="Kitadoko salon interior after the rebrand" loading="lazy" width="1600" height="900"></div>
     <div class="panel-body">
       <p class="kicker"><span class="t-en">Kitadoko — Creative Director</span><span class="t-jp">Kitadoko ／ クリエイティブディレクター</span></p>
@@ -193,7 +230,8 @@ html.lang-jp .t-en{display:none!important}
     <div class="counter">04 / 06</div>
   </a>
 
-  <a class="panel" href="projects/ela-quests.html">
+  <a class="panel" href="projects/ela-quests.html" data-tu data-tu-mode="image"
+     data-tint="#123a5c" data-tint2="#3d86c6" data-on="#ffffff" data-art="assets/shared/Quest_teaser_tr.png">
     <div class="panel-media"><img src="assets/shared/Quest_teaser_tr.png" alt="Amplify ELA Quests immersive learning" loading="lazy" width="1600" height="900"></div>
     <div class="panel-body">
       <p class="kicker">Amplify Education — 2014–2025</p>
@@ -211,7 +249,8 @@ html.lang-jp .t-en{display:none!important}
     <div class="counter">05 / 06</div>
   </a>
 
-  <a class="panel" href="projects/coca-cola.html">
+  <a class="panel" href="projects/coca-cola.html" data-tu data-tu-mode="image"
+     data-tint="#7a0c14" data-tint2="#d8262f" data-on="#ffffff" data-art="assets/shared/Coke_Hero_1500x1000.png">
     <div class="panel-media"><img src="assets/shared/Coke_Hero_1500x1000.png" alt="Coca-Cola global visual direction" loading="lazy" width="1500" height="1000"></div>
     <div class="panel-body">
       <p class="kicker"><span class="t-en">The Coca-Cola Company — Ogilvy</span><span class="t-jp">The Coca-Cola Company ／ Ogilvy</span></p>
@@ -228,14 +267,51 @@ html.lang-jp .t-en{display:none!important}
     <div class="counter">06 / 06</div>
   </a>
 
+  <!-- The reel spends a screen per project, so it can only ever hold a few.
+       It ends by handing the rest over at list density instead of pretending
+       six is all there is. -->
   <section class="panel end">
     <div class="panel-body">
-      <h2><span class="t-en">That is six of thirty-four. The rest is here if you want it.</span><span class="t-jp is-block">34件のうちの6件です。残りもここにあります。</span></h2>
+      <h2><span class="t-en">That is six of thirty-four. The reel stops here; the list does not.</span><span class="t-jp is-block">34件のうちの6件でした。リールはここまで、リストは続きます。</span></h2>
+
+      <div class="rest">
+        <div>
+          <a href="projects/rakugaki-jam.html" data-tu data-tint="#131017" data-tint2="#2e1b33" data-on="#ffffff">Rakugaki Jam <span>crowd drawing</span></a>
+          <a href="https://typespace-rho.vercel.app" target="_blank" rel="noopener">Typespace <span>WebGL ↗</span></a>
+          <a href="https://resona-motion.vercel.app" target="_blank" rel="noopener">Resona 響 <span>pseudo-haptics ↗</span></a>
+          <a href="https://kao-game.vercel.app/" target="_blank" rel="noopener">Kao Game 顔ゲーム <span>live ↗</span></a>
+          <a href="projects/marubatsu.html" data-tu data-tint="#12092e" data-tint2="#4a2ae0" data-on="#ffffff">Marubatsu Arena <span>realtime</span></a>
+          <a href="projects/snap-pair.html" data-tu data-tint="#0b1220" data-tint2="#31445f" data-on="#ffffff">Snap Pair <span>pairing layer</span></a>
+          <a href="projects/superforge.html" data-tu data-tint="#141414" data-tint2="#3a3a3a" data-on="#ffffff">superforge <span>skills</span></a>
+          <a href="ai-tools.html"><span class="t-en">All AI tools →</span><span class="t-jp">AIツール一覧 →</span></a>
+        </div>
+
+        <div>
+          <a href="projects/amazon-firetv.html">Amazon on Fire TV <span>Amazon</span></a>
+          <a href="projects/verizon-totalwireless.html">Shopping Flow &amp; Price <span>Verizon</span></a>
+          <a href="projects/web3-wallet.html">Web3 Custodial Wallet <span>fintech</span></a>
+          <a href="projects/credit-card-portal.html">Credit Card Portal <span>First PREMIER</span></a>
+          <a href="projects/menlomath.html">Menlo Math <span>education</span></a>
+          <a href="projects/cli-studios.html">CLI Studios <span>app redesign</span></a>
+          <a href="projects/ux-audit.html">USAA UX Audit <span>audit</span></a>
+          <a href="work.html"><span class="t-en">All product work →</span><span class="t-jp">プロダクト実績 →</span></a>
+        </div>
+
+        <div>
+          <a href="projects/konosaki.html">Konosaki <span>brand + site</span></a>
+          <a href="projects/value-frontier.html">Value Frontier <span>rebrand</span></a>
+          <a href="projects/dnt.html">DO! NUTS TOKYO <span>platform</span></a>
+          <a href="projects/koji-fizz.html">KOJI FIZZ <span>films</span></a>
+          <a href="projects/graffitiwear.html">GraffitiWear <span>apparel</span></a>
+          <a href="projects/festival-design.html">Akimatsuri Festival <span>identity</span></a>
+          <a href="projects/extraordinary.html">extra·ordinary <span>book</span></a>
+          <a href="brand.html"><span class="t-en">All brand &amp; visual →</span><span class="t-jp">ブランド一覧 →</span></a>
+        </div>
+      </div>
+
       <div class="links">
         <a class="cta" href="contact.html"><span class="t-en">Start a project</span><span class="t-jp">相談する</span></a>
-        <a class="pill" href="work.html"><span class="t-en">All product work</span><span class="t-jp">プロダクト実績</span></a>
-        <a class="pill" href="brand.html"><span class="t-en">Brand &amp; visual</span><span class="t-jp">ブランド</span></a>
-        <a class="pill" href="ai-tools.html"><span class="t-en">AI tools</span><span class="t-jp">AIツール</span></a>
+        <a class="pill" href="about.html"><span class="t-en">About</span><span class="t-jp">プロフィール</span></a>
       </div>
     </div>
   </section>

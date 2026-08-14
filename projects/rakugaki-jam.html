@@ -1,27 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<!-- data-tu-adopt: this page hosts the shared field rather than being covered
+     by it. See assets/handoff.js. -->
+<html lang="en" data-tu-adopt>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rakugaki Jam — Takao Umehara</title>
 <meta name="description" content="Rakugaki Jam — doodle on your phone, fling it onto the shared wall. A crowd-drawn VJ jam that needs no app install.">
+<script src="../assets/handoff.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-/* The gradient is inlined, not linked. The landing page paints this exact
-   field before the click, so it must be on screen in the first frame here —
-   an external stylesheet can arrive a frame late and the continuity breaks. */
+/* ── Rakugaki Jam's own colour ────────────────────────────────────────────
+ * Not the house purple. This piece happens in an unlit room with a projected
+ * wall, so the ground is nearly colourless and the only saturated thing on
+ * the page is a stroke somebody drew. The neon values below are literally the
+ * hues the canvas draws with — the colour is taken from the work rather than
+ * assigned to it.
+ *
+ * These values are the fallback for a direct visit. Arriving from the index,
+ * assets/handoff.js sets the identical values as inline custom properties
+ * before the first paint, so the field never changes at the seam.
+ * ────────────────────────────────────────────────────────────────────────── */
 :root{
-  --tint:#3b1d6e; --tint-2:#8b3fd6; --on-tint:#ffffff;
+  --tu-tint:#131017; --tu-tint-2:#2e1b33; --tu-on:#ffffff;
+  --neon:#ff5ad9; --neon-2:#5ae0ff;
   --ff:"Inter",ui-sans-serif,system-ui,sans-serif;
   --ff-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
   --pad:clamp(20px,3.4vw,40px);
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;font-family:var(--ff);font-size:16px;line-height:1.5;color:var(--on-tint);
-  background:var(--tint);overflow-x:hidden}
+/* The ink is on <html> so nothing white can paint for a frame; the field is
+   html::before under a transparent body. Identical box to the index — the
+   viewport — which is what makes the colour survive the navigation. */
+html{-webkit-text-size-adjust:100%;background:var(--tu-tint)}
+body{margin:0;background:transparent;font-family:var(--ff);font-size:16px;line-height:1.5;
+  color:var(--tu-on);overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .t-jp{display:none}
@@ -30,17 +45,15 @@ html.lang-jp .t-jp{display:inline}
 html.lang-jp .t-jp.is-block{display:block}
 html.lang-jp body{font-family:var(--ff-jp)}
 
-/* ── The arrival field: identical to the landing page's hovered state ── */
-.hero{position:relative;min-height:min(100dvh,880px);display:flex;flex-direction:column;
-  padding:var(--pad);overflow:hidden}
-.hero::before{content:"";position:absolute;inset:0;z-index:0;
-  background:
-    radial-gradient(120% 90% at 18% 12%, color-mix(in oklab, var(--tint) 78%, white) 0%, transparent 58%),
-    radial-gradient(100% 80% at 82% 88%, color-mix(in oklab, var(--tint-2) 86%, black) 0%, transparent 62%),
-    linear-gradient(152deg, var(--tint) 0%, var(--tint-2) 100%)}
-.hero > *{position:relative;z-index:1}
+/* ── The hero sits on the field; it does not own it ───────────────────────
+ * The old version painted its own gradient inside a hero capped at 880px, so
+ * the colour ended partway down the screen and read as the transition
+ * failing. Now the hero is transparent and full height, the field is fixed
+ * behind everything, and the cream below scrolls up over it — a deliberate
+ * arrival at the writing, not a seam.
+ * ────────────────────────────────────────────────────────────────────────── */
+.hero{position:relative;min-height:100dvh;display:flex;flex-direction:column;padding:var(--pad)}
 
-/* Content rises in; the colour never moves. That is the whole transition. */
 .rise{opacity:0;transform:translate3d(0,14px,0);
   animation:rise 520ms cubic-bezier(.22,.84,.22,1) forwards}
 .rise-2{animation-delay:80ms}
@@ -53,7 +66,7 @@ html.lang-jp body{font-family:var(--ff-jp)}
 .langs{display:flex;gap:2px;border:1px solid rgba(255,255,255,.34);border-radius:100px;padding:3px}
 .langs button{appearance:none;background:transparent;border:0;border-radius:100px;font:inherit;
   font-size:11px;padding:5px 10px;cursor:pointer;color:rgba(255,255,255,.72)}
-.langs button[aria-pressed="true"]{background:#fff;color:var(--tint)}
+.langs button[aria-pressed="true"]{background:#fff;color:var(--tu-tint)}
 
 .hero-mid{flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);
   gap:clamp(20px,3vw,48px);align-items:center;padding:clamp(24px,4vw,48px) 0}
@@ -66,13 +79,19 @@ html.lang-jp h1{font-weight:700;letter-spacing:-0.02em}
   padding-top:18px;border-top:1px solid rgba(255,255,255,.24)}
 .meta div .k{display:block;font-size:11px;color:rgba(255,255,255,.6);letter-spacing:.04em}
 .meta div b{display:block;font-weight:500;font-size:clamp(13px,1.4vw,15px);margin-top:4px}
-.open{display:inline-block;margin-top:clamp(20px,3vw,28px);background:#fff;color:var(--tint);
+.open{display:inline-block;margin-top:clamp(20px,3vw,28px);background:#fff;color:var(--tu-tint);
   border-radius:100px;padding:13px 26px;font-size:15px;font-weight:500}
 
-/* ── The playable hero. Not a video: the thing itself, at 0 bytes. ── */
-.play{position:relative;border-radius:14px;overflow:hidden;background:rgba(0,0,0,.22);
+/* ── The playable hero. Not a video: the thing itself, at 0 bytes. ────────
+ * The index draws this same mechanic in miniature while you hover the name,
+ * with the same neon hues and the same dashed wall. Arriving here, the
+ * strokes carry on at full size. */
+.play{position:relative;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.035);
   aspect-ratio:4/3;touch-action:none;cursor:crosshair;
-  box-shadow:0 30px 80px rgba(0,0,0,.32)}
+  border:1px solid rgba(255,255,255,.12);
+  /* The only glow on the page comes off the drawing surface, which is the
+     only place colour is generated. */
+  box-shadow:0 30px 90px rgba(0,0,0,.5), 0 0 90px -30px color-mix(in oklab, var(--neon) 60%, transparent)}
 .play canvas{width:100%;height:100%;display:block}
 .play-hint{position:absolute;left:14px;bottom:12px;font-size:12px;color:rgba(255,255,255,.8);
   pointer-events:none;text-shadow:0 1px 8px rgba(0,0,0,.5)}
@@ -82,7 +101,7 @@ html.lang-jp h1{font-weight:700;letter-spacing:-0.02em}
   text-transform:uppercase;color:rgba(255,255,255,.55)}
 
 /* ── Body: label left, prose right — the spine from the reference sites ── */
-.body{background:#faf9f7;color:#15121c;padding:clamp(40px,7vw,88px) var(--pad)}
+.body{position:relative;background:#faf9f7;color:#15121c;padding:clamp(40px,7vw,88px) var(--pad)}
 .rows{max-width:1100px;margin:0 auto}
 .row{display:grid;grid-template-columns:minmax(0,200px) minmax(0,1fr);gap:clamp(14px,3vw,48px);
   padding:clamp(20px,3vw,32px) 0;border-top:1px solid rgba(21,18,28,.12)}
@@ -96,7 +115,7 @@ html.lang-jp h1{font-weight:700;letter-spacing:-0.02em}
 @media(max-width:760px){.row{grid-template-columns:1fr;gap:10px}}
 .unknown{color:#6b6577;font-style:italic}
 
-footer{background:#15121c;color:#f2f2f2;padding:clamp(32px,5vw,56px) var(--pad);
+footer{position:relative;background:#15121c;color:#f2f2f2;padding:clamp(32px,5vw,56px) var(--pad);
   display:flex;flex-wrap:wrap;gap:16px 32px;justify-content:space-between;align-items:center}
 footer a{border-bottom:1px solid rgba(242,242,242,.4)}
 
@@ -213,7 +232,7 @@ html.lang-jp .t-en{display:none!important}
 /* ── The playable panel ─────────────────────────────────────────────────────
  * The real mechanic in miniature: draw on the left, the finished stroke flies
  * to the wall on the right. Zero bytes of media — a recording of this would be
- * both heavier and dead.
+ * both heavier and dead. The hues are the ones the index previews with.
  * ────────────────────────────────────────────────────────────────────────── */
 (() => {
   const box = document.getElementById('play');
@@ -221,7 +240,7 @@ html.lang-jp .t-en{display:none!important}
   if (!box || !cv) return;
   const ctx = cv.getContext('2d');
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const HUES = [292, 318, 262, 342, 198];
+  const HUES = [318, 292, 262, 342, 196];
 
   let W = 0, H = 0, wallX = 0, running = false, hue = 0;
   const live = [];      // strokes being drawn
@@ -237,15 +256,20 @@ html.lang-jp .t-en{display:none!important}
     wallX = W * 0.66;
   };
 
-  const draw = (pts, alpha, dx, scale) => {
-    if (pts.length < 2) return;
+  const draw = (pts, alpha, dx, scale, upTo) => {
+    const n = upTo == null ? pts.length : Math.max(2, Math.floor(pts.length * upTo));
+    if (n < 2) return;
     ctx.save();
     ctx.globalAlpha = alpha;
-    ctx.lineWidth = 3 * (scale || 1);
+    ctx.lineWidth = 3.6 * (scale || 1);
     ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    ctx.strokeStyle = `hsl(${pts.hue} 90% 72%)`;
+    ctx.strokeStyle = `hsl(${pts.hue} 96% 70%)`;
+    // Marker bloom — the same treatment the index preview uses, so a stroke
+    // does not get quieter by arriving here.
+    ctx.shadowColor = `hsl(${pts.hue} 96% 62%)`;
+    ctx.shadowBlur = 18 * (scale || 1);
     ctx.beginPath();
-    for (let i = 0; i < pts.length; i++) {
+    for (let i = 0; i < n; i++) {
       const p = pts[i];
       const x = (p.x * (scale || 1)) + (dx || 0);
       const y = (p.y * (scale || 1)) + (pts.dy || 0);
@@ -258,10 +282,14 @@ html.lang-jp .t-en{display:none!important}
   const frame = () => {
     if (!running) return;
     ctx.clearRect(0, 0, W, H);
-    for (const s of wall) draw(s, 0.9, s.dx, s.scale);
+    for (let i = 0; i < wall.length; i++) draw(wall[i], 0.35 + 0.55 * (i / Math.max(1, wall.length - 1)), wall[i].dx, wall[i].scale);
     for (let i = flying.length - 1; i >= 0; i--) {
       const s = flying[i];
       s.t = Math.min(1, s.t + 0.045);
+      // Negative t is the drawing phase: the stroke appears on the phone side
+      // stroke-by-stroke before it is finished and sent, the same way the
+      // index previews it.
+      if (s.t < 0) { draw(s, 1, 0, 1, 1 + s.t); continue; }
       const e = 1 - Math.pow(1 - s.t, 3);
       s.dx = s.fromX + (s.toX - s.fromX) * e;
       s.dy = s.fromY + (s.toY - s.fromY) * e;
@@ -302,21 +330,30 @@ html.lang-jp .t-en{display:none!important}
 
   /* Nobody is drawing yet — draw for them, so the panel is never a blank box. */
   let demoTimer;
-  const demo = () => {
-    if (cur || document.hidden) return;
+  const scribble = () => {
     const s = []; s.hue = HUES[hue++ % HUES.length]; s.dy = 0;
-    const cx = W * 0.16 + Math.random() * W * 0.24;
-    const cy = H * 0.3 + Math.random() * H * 0.34;
-    const r = 22 + Math.random() * 34, turns = 1.4 + Math.random();
+    const cx = W * 0.14 + Math.random() * W * 0.28;
+    const cy = H * 0.2 + Math.random() * H * 0.52;
+    const r = H * (0.09 + Math.random() * 0.13), turns = 1.4 + Math.random();
     for (let i = 0; i <= 26; i++) {
       const a = (i / 26) * Math.PI * 2 * turns;
       s.push({ x: cx + Math.cos(a) * r * (1 - i / 46), y: cy + Math.sin(a) * r * (1 - i / 46) });
     }
-    send(s);
+    return s;
+  };
+  const demo = () => {
+    if (cur || document.hidden) return;
+    const s = scribble(); send(s); s.t = -1;   // draw it first, then fly it
+  };
+
+  /* Open mid-jam rather than on an empty wall: a few strokes are already in
+     flight or landed by the time the page has finished arriving. */
+  const seed = () => {
+    for (let i = 0; i < 5; i++) { const s = scribble(); send(s); s.t = 0.42 + i * 0.16; }
   };
 
   const start = () => { if (running) return; running = true; size(); requestAnimationFrame(frame);
-    if (!reduce) { demo(); demoTimer = setInterval(demo, 2600); } };
+    if (!reduce) { seed(); demoTimer = setInterval(demo, 1700); } };
   const stop = () => { running = false; clearInterval(demoTimer); };
 
   new IntersectionObserver((es) => { es[0].isIntersecting ? start() : stop(); }, { threshold: 0.15 }).observe(box);

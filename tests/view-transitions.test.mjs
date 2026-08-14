@@ -59,17 +59,31 @@ test('grid pages opt into view transitions and name the outgoing card', () => {
 });
 
 test('every project page arrives without a hard cut', () => {
-  // Two ways to satisfy this, and a page needs exactly one of them:
-  //   1. the grid system — a shared-element morph via the view-transition sheet
-  //   2. the colour-continuity system — the landing page paints the project's
-  //      gradient before the click, and the project page opens on that same
-  //      gradient, inlined so it is present in the first frame
+  // Every project page must be reachable without a white flash. Since the
+  // shared handoff layer paints the arriving colour (or the arriving frame)
+  // before the page draws, loading it is the whole requirement — the old
+  // per-page gradient contract is gone.
   for (const page of PROJECT_PAGES) {
-    const html = read(page);
-    const morph = /\.\.\/assets\/view-transitions\.css/.test(html);
-    const field = /--tint:\s*#[0-9a-f]{3,8}/i.test(html) && /linear-gradient\(152deg,\s*var\(--tint\)/.test(html);
-    assert.ok(morph || field, `${page} has neither a shared-element morph nor an arrival field`);
+    assert.match(read(page), /assets\/handoff\.js/, `${page} does not load the arrival layer`);
   }
+});
+
+test('the field is the viewport on both sides of a navigation', () => {
+  // This is the bug the system exists to prevent: the index resolved its
+  // gradient against the viewport and the project page resolved the identical
+  // CSS against an 880px-tall hero, so the same string drew a different
+  // picture and the colour jumped at the click. One selector, one box.
+  const js = read('assets/handoff.js');
+  assert.match(js, /html::before\s*\{[^}]*position:fixed;inset:0/, 'the ground layer must be the viewport');
+  assert.match(js, /html::after\s*\{[^}]*position:fixed;inset:0/, 'the veil must be the viewport');
+  assert.match(js, /--tu-field:/, 'both layers must share one gradient definition');
+
+  // A page that hosts the field must not paint a competing one of its own in
+  // some other box.
+  const rakugaki = read('projects/rakugaki-jam.html');
+  assert.match(rakugaki, /<html[^>]*\bdata-tu-adopt\b/, 'a page sitting on the field declares it');
+  assert.doesNotMatch(rakugaki, /\.hero::before/, 'the hero must not paint its own gradient');
+  assert.match(rakugaki, /body\{[^}]*background:transparent/, 'an opaque body would cover the field');
 });
 
 test('the colour a project is hovered in is the colour it opens in', () => {
@@ -85,14 +99,48 @@ test('the colour a project is hovered in is the colour it opens in', () => {
     if (!href || !href.startsWith('projects/') || !tint) continue;
     let page;
     try { page = read(href); } catch { continue; }
-    if (!/--tint:/.test(page)) continue; // still on the old grid system
-    const pageTint = page.match(/--tint:\s*(#[0-9a-f]{3,8})/i)?.[1];
-    const pageTint2 = page.match(/--tint-2:\s*(#[0-9a-f]{3,8})/i)?.[1];
+    // Only pages that host the field declare their own fallback tint; the rest
+    // are veiled in the hovered colour and need no declaration.
+    if (!/--tu-tint:/.test(page)) continue;
+    const pageTint = page.match(/--tu-tint:\s*(#[0-9a-f]{3,8})/i)?.[1];
+    const pageTint2 = page.match(/--tu-tint-2:\s*(#[0-9a-f]{3,8})/i)?.[1];
     assert.equal(pageTint?.toLowerCase(), tint.toLowerCase(), `${href}: opens in a different colour than it is hovered in`);
     assert.equal(pageTint2?.toLowerCase(), tint2?.toLowerCase(), `${href}: second gradient stop does not match`);
     checked += 1;
   }
-  assert.ok(checked > 0, 'expected at least one project page on the colour-continuity system');
+  assert.ok(checked > 0, 'expected at least one project page hosting the field');
+});
+
+test('no row borrows another project\'s picture', () => {
+  // Rakugaki Jam used to show Marubatsu's tic-tac-toe board, copied along with
+  // Marubatsu's tint. A row now either points at an image that belongs to it,
+  // or draws its own mechanic, or shows neither.
+  const landing = read('landing-b-index.html');
+  const rows = [...landing.matchAll(/<a\b[^>]*\bclass\s*=\s*["'][^"']*\bidx-item\b[^"']*["'][^>]*>/gi)].map((m) => m[0]);
+  const arts = new Map();
+  for (const tag of rows) {
+    const href = tag.match(/\bhref\s*=\s*["']([^"']+)["']/)?.[1];
+    const art = tag.match(/\bdata-art\s*=\s*["']([^"']+)["']/)?.[1];
+    if (!art) continue;
+    assert.ok(!arts.has(art) || arts.get(art) === href, `${href} shows the same photograph as ${arts.get(art)}`);
+    arts.set(art, href);
+  }
+  // The built pieces have no photograph and must not be given one.
+  const interactive = landing.slice(landing.indexOf('id="idx2"'));
+  assert.doesNotMatch(interactive, /data-art=/, 'interactive rows draw themselves; they do not borrow photographs');
+  assert.match(interactive, /data-motif="strokes"/, 'Rakugaki Jam draws its own mechanic');
+});
+
+test('all three landing variants transition through the same system', () => {
+  for (const page of ['landing-a-editorial.html', 'landing-b-index.html', 'landing-c-reel.html']) {
+    const html = read(page);
+    assert.match(html, /<script src="assets\/handoff\.js"><\/script>/, `${page} must load the handoff layer`);
+    assert.match(html, /\bdata-tu\b/, `${page} must opt its project links in`);
+    assert.match(html, /html\.tu-leaving/, `${page} must say what leaves when a link is clicked`);
+  }
+  // A and C carry the project's own frame across; B carries its colour.
+  assert.match(read('landing-a-editorial.html'), /data-tu-mode="image"/);
+  assert.match(read('landing-c-reel.html'), /data-tu-mode="image"/);
 });
 
 test('no page shows both languages at once', () => {

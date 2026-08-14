@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Takao Umehara — Index (Variant B)</title>
 <meta name="description" content="Layout variant B — project names as the structure; the screen takes on each project's colour before you click.">
+<!-- Render-blocking on purpose: this file defines the field that the next page
+     opens on, and it has to be painted in the first frame. See assets/handoff.js -->
+<script src="assets/handoff.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
@@ -14,12 +17,12 @@
   --ff:"Inter",ui-sans-serif,system-ui,sans-serif;
   --ff-jp:"Noto Sans JP","Hiragino Kaku Gothic ProN",sans-serif;
   --pad:clamp(20px,3.4vw,40px);
-  /* driven by the hovered project */
-  --tint:#111; --tint-2:#111; --on-tint:#fff;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--ff);
+/* The paper lives on <html>, not <body>. The field is html::before at z-index
+   -1 (assets/handoff.js); an opaque body would paint straight over it. */
+html{-webkit-text-size-adjust:100%;background:var(--paper)}
+body{margin:0;background:transparent;color:var(--ink);font-family:var(--ff);
   font-size:16px;line-height:1.4;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
@@ -30,32 +33,33 @@ html.lang-jp .t-jp{display:inline}
 html.lang-jp .t-jp.is-block{display:block}
 html.lang-jp body{font-family:var(--ff-jp)}
 
-/* ── The colour field. This is the whole idea: the destination's colour and
-      artwork arrive while the cursor is still on the name, so the click has
-      nothing left to animate. ── */
-.field{position:fixed;inset:0;z-index:0;opacity:0;transition:opacity 420ms ease;pointer-events:none}
-.field::before{content:"";position:absolute;inset:0;
-  background:
-    radial-gradient(120% 90% at 18% 12%, color-mix(in oklab, var(--tint) 78%, white) 0%, transparent 58%),
-    radial-gradient(100% 80% at 82% 88%, color-mix(in oklab, var(--tint-2) 86%, black) 0%, transparent 62%),
-    linear-gradient(152deg, var(--tint) 0%, var(--tint-2) 100%);
-  transition:background 520ms ease}
-.field-art{position:absolute;right:0;bottom:0;top:0;width:min(40vw,540px);
-  opacity:0;transform:translate3d(28px,0,0) scale(1.02);
+/* ── The two background layers ────────────────────────────────────────────
+ * The colour is html::before, shared with every destination page. This page
+ * only decides *which* colour, and how lit it is.
+ *
+ * On top of it sits one canvas with two jobs: a pointer-reactive dot matrix
+ * that is the resting state of the page, and — once a name is hovered — that
+ * project's own motif. Projects with real photography use .field-art instead;
+ * projects that are software draw themselves. Nothing borrows another
+ * project's picture any more.
+ * ────────────────────────────────────────────────────────────────────────── */
+#tuField{position:fixed;inset:0;z-index:0;pointer-events:none}
+.field-art{position:fixed;right:0;bottom:0;top:0;width:min(38vw,520px);z-index:0;
+  opacity:0;transform:translate3d(28px,0,0) scale(1.02);pointer-events:none;
   transition:opacity 460ms ease,transform 680ms cubic-bezier(.22,.84,.22,1)}
 .field-art img{width:100%;height:100%;object-fit:cover;
-  -webkit-mask-image:linear-gradient(to right,transparent,#000 58%);
-  mask-image:linear-gradient(to right,transparent,#000 58%)}
-body.is-lit .field{opacity:1}
-body.is-lit .field-art{opacity:.85;transform:none}
-body.is-lit{color:var(--on-tint)}
-body.is-lit .nav a,body.is-lit .nav b,body.is-lit .label,body.is-lit .idx-num{color:var(--on-tint)}
-body.is-lit .idx-name{color:color-mix(in oklab, var(--on-tint) 45%, transparent)}
-body.is-lit .idx-item.is-active .idx-name{color:var(--on-tint)}
-body.is-lit .idx-item{border-color:color-mix(in oklab, var(--on-tint) 22%, transparent)}
-body.is-lit .langs{border-color:color-mix(in oklab, var(--on-tint) 34%, transparent)}
-body.is-lit .langs button{color:color-mix(in oklab, var(--on-tint) 70%, transparent)}
-body.is-lit .langs button[aria-pressed="true"]{background:var(--on-tint);color:var(--tint)}
+  -webkit-mask-image:linear-gradient(to right,transparent,#000 62%);
+  mask-image:linear-gradient(to right,transparent,#000 62%)}
+body.has-art .field-art{opacity:.8;transform:none}
+
+body.is-lit{color:var(--tu-on)}
+body.is-lit .nav a,body.is-lit .nav b,body.is-lit .label,body.is-lit .idx-num{color:var(--tu-on)}
+body.is-lit .idx-name{color:color-mix(in oklab, var(--tu-on) 45%, transparent)}
+body.is-lit .idx-item.is-active .idx-name{color:var(--tu-on)}
+body.is-lit .idx-item{border-color:color-mix(in oklab, var(--tu-on) 22%, transparent)}
+body.is-lit .langs{border-color:color-mix(in oklab, var(--tu-on) 34%, transparent)}
+body.is-lit .langs button{color:color-mix(in oklab, var(--tu-on) 70%, transparent)}
+body.is-lit .langs button[aria-pressed="true"]{background:var(--tu-on);color:var(--tu-tint)}
 
 .wrap{position:relative;z-index:1}
 
@@ -71,6 +75,9 @@ body.is-lit .langs button[aria-pressed="true"]{background:var(--on-tint);color:v
 /* ── Intro ── */
 .intro{padding:clamp(24px,5vw,64px) var(--pad) clamp(20px,3vw,40px);max-width:24ch}
 .intro h1{margin:0;font-weight:600;font-size:clamp(28px,4.6vw,54px);line-height:1.06;letter-spacing:-0.03em}
+.hint{margin:14px 0 0;font-size:12px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim);
+  transition:color 300ms ease,opacity 300ms ease}
+body.is-lit .hint{opacity:0}
 .label{font-size:11px;text-transform:uppercase;letter-spacing:0.07em;color:var(--dim);
   padding:0 var(--pad);margin:clamp(24px,4vw,48px) 0 clamp(12px,2vw,20px);transition:color 300ms ease}
 
@@ -84,8 +91,8 @@ body.is-lit .langs button[aria-pressed="true"]{background:var(--on-tint);color:v
 .idx-name{font-weight:600;font-size:clamp(24px,4.9vw,64px);line-height:1.04;letter-spacing:-0.033em;
   transition:color 320ms ease,transform 420ms cubic-bezier(.22,.84,.22,1);transform-origin:left center}
 .idx-item.is-active .idx-name{transform:translateX(clamp(6px,1vw,16px))}
-/* Names must never run under the artwork bleeding in from the right. */
-@media(min-width:900px){.idx-name{max-width:58vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+/* Names must never run under whatever is drawn on the right. */
+@media(min-width:900px){.idx-name{max-width:48vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
 .idx-meta{font-size:clamp(11px,1.2vw,13px);text-align:right;line-height:1.35;opacity:.78;white-space:nowrap}
 body.is-lit .idx-meta{text-shadow:0 1px 12px rgba(0,0,0,.6)}
 html.lang-jp .idx-name{font-weight:700;letter-spacing:-0.02em}
@@ -98,7 +105,7 @@ html.lang-jp .idx-name{font-weight:700;letter-spacing:-0.02em}
 .nums{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
   margin:clamp(24px,4vw,48px) var(--pad) 0}
 .nums div{background:var(--paper);padding:18px 16px;transition:background 300ms ease}
-body.is-lit .nums{background:color-mix(in oklab, var(--on-tint) 22%, transparent)}
+body.is-lit .nums{background:color-mix(in oklab, var(--tu-on) 22%, transparent)}
 body.is-lit .nums div{background:transparent}
 .nums b{display:block;font-weight:600;font-size:clamp(20px,2.8vw,30px);letter-spacing:-0.02em}
 .nums span{display:block;margin-top:5px;font-size:11px;opacity:.7;line-height:1.35}
@@ -108,26 +115,26 @@ footer{padding:clamp(32px,5vw,56px) var(--pad);font-size:13px;display:flex;
   flex-wrap:wrap;gap:16px 32px;justify-content:space-between;align-items:flex-end}
 .cta{display:inline-block;border-radius:100px;padding:12px 24px;background:var(--ink);color:#fff;
   font-size:14px;transition:background 300ms ease,color 300ms ease}
-body.is-lit .cta{background:var(--on-tint);color:var(--tint)}
+body.is-lit .cta{background:var(--tu-on);color:var(--tu-tint)}
 
 /* ── Leaving ──────────────────────────────────────────────────────────────
- * The destination's colour is already full-screen, so the click has nothing
- * to animate. Only the list leaves; the field stays put and the next page
- * opens on the same gradient. No View Transitions API, so no 5-in-10 misses.
+ * The destination's colour is already full-screen and it is the same layer
+ * the next document will paint, so the click has nothing to animate. Only the
+ * list leaves.
  * ────────────────────────────────────────────────────────────────────────── */
-body.is-leaving .wrap{opacity:0;transform:translate3d(0,-10px,0);
+html.tu-leaving .wrap{opacity:0;transform:translate3d(0,-10px,0);
   transition:opacity 240ms ease,transform 300ms cubic-bezier(.4,0,1,1)}
-body.is-leaving .field-art{opacity:1;transform:scale(1.04);
+html.tu-leaving .field-art{opacity:1;transform:scale(1.04);
   transition:opacity 300ms ease,transform 420ms cubic-bezier(.4,0,1,1)}
 
 /* ── Section rule ── */
 .sec-note{padding:0 var(--pad);margin:-6px 0 clamp(14px,2vw,22px);font-size:13px;
   color:var(--dim);max-width:58ch;transition:color 300ms ease}
-body.is-lit .sec-note{color:color-mix(in oklab, var(--on-tint) 74%, transparent)}
+body.is-lit .sec-note{color:color-mix(in oklab, var(--tu-on) 74%, transparent)}
 
 @media(prefers-reduced-motion:reduce){
   *{transition-duration:1ms!important;animation:none!important}
-  body.is-leaving .wrap{opacity:1;transform:none}
+  html.tu-leaving .wrap{opacity:1;transform:none}
 }
 
 /* Language visibility is an invariant, not a preference. Component rules that
@@ -139,7 +146,8 @@ html.lang-jp .t-en{display:none!important}
 </head>
 <body>
 
-<div class="field" aria-hidden="true"><div class="field-art"><img id="fieldImg" src="" alt=""></div></div>
+<canvas id="tuField" aria-hidden="true"></canvas>
+<div class="field-art" aria-hidden="true"><img id="fieldImg" src="" alt=""></div>
 
 <div class="wrap">
   <nav class="nav">
@@ -157,47 +165,48 @@ html.lang-jp .t-en{display:none!important}
       <span class="t-en">Twenty years of shipped work, now pointed at agentic systems.</span>
       <span class="t-jp is-block">20年の実装を、いまエージェント型システムに。</span>
     </h1>
+    <p class="hint"><span class="t-en">Point at a name</span><span class="t-jp">名前にカーソルを</span></p>
   </div>
 
   <p class="label"><span class="t-en">Selected Work</span><span class="t-jp">選んだ仕事</span></p>
 
   <div class="idx" id="idx">
-    <a class="idx-item" href="projects/verizon-ai-agents.html"
+    <a class="idx-item" href="projects/verizon-ai-agents.html" data-tu
        data-tint="#101731" data-tint2="#2c3f7a" data-on="#ffffff" data-art="assets/verizon-ai-agents/hero-agents-network.jpg">
       <span class="idx-num">01</span>
       <span class="idx-name"><span class="t-en">Verizon AI Agents</span><span class="t-jp">Verizon AIエージェント</span></span>
       <span class="idx-meta"><span class="t-en">Verizon Value · Agentic UX</span><span class="t-jp">Verizon Value ／ エージェンティックUX</span></span>
     </a>
 
-    <a class="idx-item" href="ai-products.html"
-       data-tint="#3b1d6e" data-tint2="#8b3fd6" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
+    <a class="idx-item" href="ai-products.html" data-tu
+       data-tint="#2a1245" data-tint2="#7a35c9" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
       <span class="idx-num">02</span>
       <span class="idx-name"><span class="t-en">Playable Experiments</span><span class="t-jp">触れるAI実験</span></span>
       <span class="idx-meta"><span class="t-en">4 live demos · open now</span><span class="t-jp">4つのデモ ／ いま開ける</span></span>
     </a>
 
-    <a class="idx-item" href="projects/tmobile.html"
+    <a class="idx-item" href="projects/tmobile.html" data-tu
        data-tint="#6d0244" data-tint2="#c4177f" data-on="#ffffff" data-art="assets/shared/M−Mobile_teaser2.jpg">
       <span class="idx-num">03</span>
       <span class="idx-name"><span class="t-en">T-Mobile BOPIS</span><span class="t-jp">T-Mobile 店舗受取</span></span>
       <span class="idx-meta"><span class="t-en">T-Mobile · Lead UX · 2024</span><span class="t-jp">T-Mobile ／ リードUX ／ 2024</span></span>
     </a>
 
-    <a class="idx-item" href="projects/kitadoko.html"
+    <a class="idx-item" href="projects/kitadoko.html" data-tu
        data-tint="#03392e" data-tint2="#0a7a5f" data-on="#ffffff" data-art="assets/shared/Space_Design_kitadoko.png">
       <span class="idx-num">04</span>
       <span class="idx-name">Kitadoko</span>
       <span class="idx-meta"><span class="t-en">Est. 1871 · repeat 0% → 90%</span><span class="t-jp">1871年創業 ／ リピート 0%→90%</span></span>
     </a>
 
-    <a class="idx-item" href="projects/ela-quests.html"
+    <a class="idx-item" href="projects/ela-quests.html" data-tu
        data-tint="#123a5c" data-tint2="#3d86c6" data-on="#ffffff" data-art="assets/shared/Quest_teaser_tr.png">
       <span class="idx-num">05</span>
       <span class="idx-name"><span class="t-en">Amplify ELA Quests</span><span class="t-jp">Amplify ELAクエスト</span></span>
       <span class="idx-meta"><span class="t-en">Amplify Education · 2014–2025</span><span class="t-jp">Amplify Education ／ 2014–2025</span></span>
     </a>
 
-    <a class="idx-item" href="projects/coca-cola.html"
+    <a class="idx-item" href="projects/coca-cola.html" data-tu
        data-tint="#7a0c14" data-tint2="#d8262f" data-on="#ffffff" data-art="assets/shared/Coke_Hero_1500x1000.png">
       <span class="idx-num">06</span>
       <span class="idx-name">Coca-Cola</span>
@@ -207,48 +216,53 @@ html.lang-jp .t-en{display:none!important}
 
   <p class="label"><span class="t-en">Interactive — things you can open and touch</span><span class="t-jp">インタラクティブ — 開いて触れるもの</span></p>
   <p class="sec-note">
-    <span class="t-en">Built to be used by a room, not demoed from a deck. Each one runs in a browser with nothing to install.</span>
-    <span class="t-jp is-block">スライドで見せるためではなく、その場の全員に使ってもらうために作ったもの。どれもブラウザで動き、インストールは要りません。</span>
+    <span class="t-en">Built to be used by a room, not demoed from a deck. Each one runs in a browser with nothing to install — including, on this page, its own preview.</span>
+    <span class="t-jp is-block">スライドで見せるためではなく、その場の全員に使ってもらうために作ったもの。どれもブラウザで動き、インストールは要りません — このページのプレビューも含めて。</span>
   </p>
 
+  <!-- Software has no photograph, so these rows draw their own mechanic
+       instead of borrowing someone else's picture. data-motif → assets/field.js -->
   <div class="idx" id="idx2">
-    <a class="idx-item" href="projects/rakugaki-jam.html"
-       data-tint="#3b1d6e" data-tint2="#8b3fd6" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
+    <a class="idx-item" href="projects/rakugaki-jam.html" data-tu
+       data-tint="#131017" data-tint2="#2e1b33" data-on="#ffffff" data-motif="strokes">
       <span class="idx-num">07</span>
       <span class="idx-name">Rakugaki Jam</span>
       <span class="idx-meta"><span class="t-en">Snap Pair · crowd drawing</span><span class="t-jp">Snap Pair ／ みんなで描く</span></span>
     </a>
 
     <a class="idx-item" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener"
-       data-tint="#0b1030" data-tint2="#3a4fb8" data-on="#ffffff" data-art="assets/verizon-ai-agents/hero-agents-network.jpg">
+       data-tint="#060a1e" data-tint2="#1b2a6b" data-on="#ffffff" data-motif="constellation">
       <span class="idx-num">08</span>
       <span class="idx-name">Typespace</span>
       <span class="idx-meta"><span class="t-en">WebGL · words become constellations</span><span class="t-jp">WebGL ／ 言葉が星座になる</span></span>
     </a>
 
     <a class="idx-item" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"
-       data-tint="#0d3b3a" data-tint2="#1f8f86" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
+       data-tint="#06231f" data-tint2="#0d5d55" data-on="#ffffff" data-motif="ripple">
       <span class="idx-num">09</span>
       <span class="idx-name">Resona 響</span>
       <span class="idx-meta"><span class="t-en">Pseudo-haptics · motion with weight</span><span class="t-jp">擬似ハプティクス ／ 重さのある動き</span></span>
     </a>
 
+    <!-- No motif: the contents of Kao Game are unverified (docs/landing-variants.md
+         §4), and inventing a drawing for it would be the same mistake as the
+         borrowed photograph. -->
     <a class="idx-item" href="https://kao-game.vercel.app/" target="_blank" rel="noopener"
-       data-tint="#5c1a12" data-tint2="#e0642c" data-on="#ffffff" data-art="assets/koebaku/hero.jpg">
+       data-tint="#2a1410" data-tint2="#7a3a20" data-on="#ffffff">
       <span class="idx-num">10</span>
       <span class="idx-name">Kao Game <span style="font-size:.62em;opacity:.7">顔ゲーム</span></span>
       <span class="idx-meta"><span class="t-en">Live · details to confirm</span><span class="t-jp">公開中 ／ 詳細は要確認</span></span>
     </a>
 
-    <a class="idx-item" href="projects/marubatsu.html"
-       data-tint="#1b1145" data-tint2="#6d4aff" data-on="#ffffff" data-art="assets/marubatsu/hero.jpg">
+    <a class="idx-item" href="projects/marubatsu.html" data-tu
+       data-tint="#12092e" data-tint2="#4a2ae0" data-on="#ffffff" data-motif="grid">
       <span class="idx-num">11</span>
       <span class="idx-name">Marubatsu Arena</span>
       <span class="idx-meta"><span class="t-en">Realtime multiplayer · Gemini opponent</span><span class="t-jp">リアルタイム対戦 ／ Gemini の相手</span></span>
     </a>
 
-    <a class="idx-item" href="projects/snap-pair.html"
-       data-tint="#111827" data-tint2="#4b5563" data-on="#ffffff" data-art="assets/koebaku/hero.jpg">
+    <a class="idx-item" href="projects/snap-pair.html" data-tu
+       data-tint="#0b1220" data-tint2="#31445f" data-on="#ffffff" data-motif="pair">
       <span class="idx-num">12</span>
       <span class="idx-name">Snap Pair</span>
       <span class="idx-meta"><span class="t-en">The layer the others are built on</span><span class="t-jp">上の作品群が乗っている土台</span></span>
@@ -274,6 +288,7 @@ html.lang-jp .t-en{display:none!important}
   </footer>
 </div>
 
+<script src="assets/field.js" defer></script>
 <script>
 (() => {
   const root = document.documentElement;
@@ -289,28 +304,41 @@ html.lang-jp .t-en{display:none!important}
   setLang(saved);
 
   const items = [...document.querySelectorAll('.idx-item')];
-  const isExternal = (a) => a.target === '_blank';
   const art = document.getElementById('fieldImg');
-  const style = document.body.style;
   let current = null;
 
+  /* Lighting a row does three things at once, and they are all the same
+     gesture: the shared field takes the project's colour, the canvas swaps
+     from its resting dot matrix to that project's motif, and the photograph
+     (only for projects that have one of their own) slides in. Clicking then
+     changes nothing about any of them — which is the point. */
   const light = (el) => {
     if (el === current) return;
     current = el;
     items.forEach((i) => i.classList.toggle('is-active', i === el));
-    if (!el) { document.body.classList.remove('is-lit'); return; }
-    style.setProperty('--tint', el.dataset.tint);
-    style.setProperty('--tint-2', el.dataset.tint2);
-    style.setProperty('--on-tint', el.dataset.on);
-    if (art.getAttribute('src') !== el.dataset.art) art.setAttribute('src', el.dataset.art);
+
+    if (!el) {
+      document.body.classList.remove('is-lit', 'has-art');
+      if (window.TU) window.TU.setLit(0);
+      window.TUField?.show(null);
+      return;
+    }
+    if (window.TU) { window.TU.setTint(window.TU.payloadOf(el)); window.TU.setLit(1); }
+    window.TUField?.show(el.dataset.motif || 'photo');
+
+    if (el.dataset.art) {
+      if (art.getAttribute('src') !== el.dataset.art) art.setAttribute('src', el.dataset.art);
+      document.body.classList.add('has-art');
+    } else {
+      document.body.classList.remove('has-art');
+    }
     document.body.classList.add('is-lit');
   };
 
   // Desktop: the cursor picks. A short delay stops the field strobing while
   // the pointer travels down the list.
   let hoverTimer;
-  const canHover = matchMedia('(hover: hover)').matches;
-  if (canHover) {
+  if (matchMedia('(hover: hover)').matches) {
     items.forEach((el) => {
       el.addEventListener('pointerenter', () => { clearTimeout(hoverTimer); hoverTimer = setTimeout(() => light(el), 70); });
     });
@@ -320,7 +348,7 @@ html.lang-jp .t-en{display:none!important}
   } else {
     // Touch: scrolling replaces hovering — whichever name is nearest the middle
     // of the screen owns the colour.
-    const io = new IntersectionObserver((entries) => {
+    const io = new IntersectionObserver(() => {
       const mid = innerHeight / 2;
       let best = null, bestD = Infinity;
       for (const el of items) {
@@ -339,18 +367,7 @@ html.lang-jp .t-en{display:none!important}
     el.addEventListener('blur', () => light(null));
   });
 
-  // Leaving: paint the destination's field, drop the list, then navigate. The
-  // colour is continuous across the two documents, so there is no cut to hide.
-  const HOLD = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 260;
-  items.forEach((el) => {
-    el.addEventListener('click', (e) => {
-      if (isExternal(el) || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
-      e.preventDefault();
-      light(el);
-      document.body.classList.add('is-leaving');
-      setTimeout(() => { location.href = el.href; }, HOLD);
-    });
-  });
+  // Navigation itself is assets/handoff.js — every page uses the same one.
 })();
 </script>
 </body>
