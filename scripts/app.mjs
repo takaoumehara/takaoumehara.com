@@ -11,6 +11,7 @@ const dialogScroll = dialog?.querySelector('[data-dialog-scroll]');
 const closeButton = dialog?.querySelector('[data-dialog-close]');
 const nextButton = dialog?.querySelector('[data-dialog-next]');
 const fullProjectLink = dialog?.querySelector('[data-dialog-link]');
+const fullProjectLinkContext = dialog?.querySelector('[data-dialog-link-context]');
 const status = document.querySelector('[data-status]');
 const cards = [...document.querySelectorAll('[data-project]')];
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -87,7 +88,8 @@ function fillDialog(entry) {
   fullProjectLink.href = entry.href;
   fullProjectLink.target = '_blank';
   fullProjectLink.rel = 'noopener noreferrer';
-  fullProjectLink.setAttribute('aria-label', `Open ${entry.title} in a new tab`);
+  fullProjectLink.removeAttribute('aria-label');
+  fullProjectLinkContext.textContent = ` (${entry.title}, opens in a new tab)`;
 
   renderMedia(entry, sourceCard);
   return { index, next, sourceCard };

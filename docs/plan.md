@@ -28,7 +28,7 @@
 
 ## Wave 3 — accessibility and release evidence
 
-- [ ] Responsive, keyboard, reduced-motion, and axe coverage
+- [x] Responsive, keyboard, reduced-motion, and axe coverage
   - Files: `tests/portfolio.spec.mjs`, `scripts/app.mjs`, `styles.css`, `index.html`
   - Proof: Node and Playwright suites pass at desktop and 320px.
 - [ ] Seven-pass WCAG evidence and final audit
@@ -41,3 +41,4 @@
 - 2026-08-23: Registry RED reproduced as a missing module, then GREEN with 14 verified projects and 12 local thumbnails (`npm test`: 1/1 passing).
 - 2026-08-23: Static-contract RED reproduced for missing `index.html`, `styles.css`, and design artifacts; GREEN after implementing the five-section grid and mirrored design system (`npm test`: 4/4 passing, text source 46,272 bytes).
 - 2026-08-23: History-helper RED reproduced before adding URL state; GREEN after implementing the native dialog, card-to-viewport transition, and Back restoration (`npm test`: 7/7 passing; focused Playwright flow: 1/1 passing).
+- 2026-08-23: Browser audit reproduced an active-category transition contrast failure and a 13px forced-spacing overflow at 320px. Removed the contrast-unsafe colour tween, strengthened mobile heading reflow, aligned visible and accessible control names, and reached GREEN across 9 Playwright flows. Desktop, mobile, and open-dialog screenshots were inspected.
