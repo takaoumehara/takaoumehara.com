@@ -123,6 +123,10 @@ test('the complete desktop tab order stays visible and reaches every control', a
     await page.evaluate(() => new Promise((resolve) => {
       requestAnimationFrame(() => requestAnimationFrame(resolve));
     }));
+    await page.waitForFunction(() => {
+      const rect = document.activeElement.getBoundingClientRect();
+      return rect.bottom > 0 && rect.top < window.innerHeight;
+    }, null, { timeout: 1000 });
     const focus = await page.evaluate(() => {
       const active = document.activeElement;
       const focusable = [...document.querySelectorAll('a[href], button, summary')]
