@@ -16,7 +16,7 @@
 - [x] Verified project registry and test foundation
   - Files: `package.json`, `.gitignore`, `tests/portfolio.test.mjs`, `scripts/project-data.mjs`, `assets/thumbs/*`
   - Proof: `npm test` exits 0 and every selected local image exists.
-- [ ] Mirrored design system and static page structure
+- [x] Mirrored design system and static page structure
   - Files: `docs/design.md`, `docs/design.html`, `index.html`, `styles.css`, `tests/portfolio.test.mjs`
   - Proof: source-contract tests pass and text payload is below 150KB.
 
@@ -39,3 +39,4 @@
 
 - 2026-08-23: Design specification approved by the user. Implementation plan created; execution starts from Wave 1.
 - 2026-08-23: Registry RED reproduced as a missing module, then GREEN with 14 verified projects and 12 local thumbnails (`npm test`: 1/1 passing).
+- 2026-08-23: Static-contract RED reproduced for missing `index.html`, `styles.css`, and design artifacts; GREEN after implementing the five-section grid and mirrored design system (`npm test`: 4/4 passing, text source 46,272 bytes).

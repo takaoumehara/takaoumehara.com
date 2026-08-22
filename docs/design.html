@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Structured Tech Editorial — Design System</title>
+  <style>
+    :root {
+      --ground: #f2f0ea;
+      --surface: #ffffff;
+      --ink: #11110f;
+      --ink-secondary: #4f514c;
+      --accent: #165dff;
+      --accent-ink: #ffffff;
+      --border: rgba(17, 17, 15, 0.2);
+      --disabled-surface: #d8d6d0;
+      --disabled-ink: #5e605b;
+      --error: #b42318;
+      --sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+      --mono: "IBM Plex Mono", ui-monospace, monospace;
+      --s1: .25rem; --s2: .5rem; --s3: .75rem; --s4: 1rem;
+      --s6: 1.5rem; --s8: 2rem; --s12: 3rem; --s16: 4rem;
+    }
+    * { box-sizing: border-box; }
+    html { color-scheme: light; }
+    body { margin: 0; background: var(--ground); color: var(--ink); font: 400 1rem/1.6 var(--sans); }
+    button, a { font: inherit; }
+    a { color: inherit; }
+    :focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .wrap { width: min(100% - 2rem, 80rem); margin-inline: auto; }
+    header { padding-block: clamp(3rem, 8vw, 7rem); border-bottom: 2px solid var(--ink); }
+    .kicker, code { font: 500 .75rem/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    h1 { max-width: 12ch; margin: .75rem 0 1.5rem; font-size: clamp(3rem, 8vw, 7rem); line-height: .94; letter-spacing: -.04em; }
+    h2 { margin: 0 0 1rem; font-size: clamp(2rem, 5vw, 4rem); line-height: 1; letter-spacing: -.035em; }
+    h3 { margin: 0; font-size: 1.5rem; line-height: 1.08; letter-spacing: -.025em; }
+    section { padding-block: clamp(3rem, 7vw, 6rem); border-bottom: 1px solid var(--border); }
+    .lede { max-width: 65ch; color: var(--ink-secondary); font-size: 1.125rem; }
+    .swatches, .type-grid, .state-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1rem; }
+    .swatch { min-height: 10rem; padding: 1rem; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid var(--border); background: var(--surface); }
+    .swatch__sample { height: 4rem; margin: -1rem -1rem 1rem; background: var(--swatch); border-bottom: 1px solid var(--border); }
+    .pass { color: #075f2c; font-weight: 700; }
+    .type-sample { border-top: 2px solid var(--ink); padding-top: 1rem; }
+    .type-sample--display { font-size: clamp(3rem, 7vw, 6rem); font-weight: 700; line-height: .94; letter-spacing: -.04em; }
+    .type-sample--title { font-size: 2.25rem; font-weight: 600; line-height: 1.08; letter-spacing: -.025em; }
+    .type-sample--meta { font: 500 .75rem/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+    .spacing-row { display: flex; align-items: center; gap: 1rem; margin-block: .75rem; }
+    .spacing-block { width: var(--size); height: 1.5rem; background: var(--accent); }
+    .demo-card { display: grid; min-height: 19rem; align-content: space-between; padding-top: 1rem; border-top: 2px solid var(--ink); text-decoration: none; }
+    .demo-card__media { aspect-ratio: 4/3; margin-bottom: 1rem; background: var(--ink); }
+    .demo-card:hover .demo-card__media { transform: scale(.98); }
+    .demo-card:active { transform: scale(.99); }
+    .demo-card[aria-disabled="true"] { color: var(--disabled-ink); background: var(--disabled-surface); pointer-events: none; }
+    .demo-card--error { padding: 1rem; color: white; background: var(--error); border-color: var(--error); }
+    .demo-card--loading .demo-card__media { background: linear-gradient(90deg, var(--disabled-surface), var(--surface), var(--disabled-surface)); background-size: 200% 100%; }
+    .button { min-height: 44px; padding: .75rem 1rem; border: 0; border-radius: .125rem; color: var(--accent-ink); background: var(--accent); font-weight: 600; }
+    .button:active { transform: scale(.99); }
+    .button:disabled { color: var(--disabled-ink); background: var(--disabled-surface); }
+    .note { padding: 1rem; border: 1px solid var(--border); background: var(--surface); }
+    @media (prefers-reduced-motion: no-preference) {
+      .demo-card, .demo-card__media, .button { transition: transform 120ms cubic-bezier(.16,1,.3,1); }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <div class="kicker">Design system · 2026-08-23</div>
+      <h1>Structured Tech Editorial</h1>
+      <p class="lede">A firm sans-serif portfolio system where one aligned rectangle becomes the project detail.</p>
+      <button class="button" type="button" disabled aria-describedby="mode-note">Light mode only</button>
+      <p id="mode-note">Dark mode is deliberately outside this first review.</p>
+    </div>
+  </header>
+  <main>
+    <section><div class="wrap">
+      <h2>Colour</h2>
+      <div class="swatches">
+        <article class="swatch" style="--swatch:#f2f0ea"><div class="swatch__sample"></div><strong>Ground · #F2F0EA</strong><span>Ink <b class="pass">16.59:1 AA</b></span></article>
+        <article class="swatch" style="--swatch:#11110f"><div class="swatch__sample"></div><strong>Ink · #11110F</strong><span>On ground <b class="pass">16.59:1 AA</b></span></article>
+        <article class="swatch" style="--swatch:#4f514c"><div class="swatch__sample"></div><strong>Secondary · #4F514C</strong><span>On ground <b class="pass">7.05:1 AA</b></span></article>
+        <article class="swatch" style="--swatch:#165dff"><div class="swatch__sample"></div><strong>Accent · #165DFF</strong><span>White <b class="pass">5.19:1 AA</b></span></article>
+        <article class="swatch" style="--swatch:#b42318"><div class="swatch__sample"></div><strong>Error · #B42318</strong><span>White <b class="pass">6.57:1 AA</b></span></article>
+      </div>
+    </div></section>
+    <section><div class="wrap">
+      <h2>Typography</h2>
+      <div class="type-grid">
+        <div class="type-sample type-sample--display">Build the system.</div>
+        <div class="type-sample type-sample--display" lang="ja">仕組みから設計する。</div>
+        <div class="type-sample type-sample--title">Project title · プロジェクト</div>
+        <div class="type-sample"><p>Readable product stories stay between 45 and 75 characters per line.</p><p lang="ja">日本語の本文も、読みやすい行長と十分な行間を保ちます。</p></div>
+        <div class="type-sample type-sample--meta">AI Tools · 03 Projects</div>
+      </div>
+    </div></section>
+    <section><div class="wrap">
+      <h2>Spacing</h2>
+      <div class="spacing-row"><code>8px</code><span class="spacing-block" style="--size:.5rem"></span></div>
+      <div class="spacing-row"><code>16px</code><span class="spacing-block" style="--size:1rem"></span></div>
+      <div class="spacing-row"><code>24px</code><span class="spacing-block" style="--size:1.5rem"></span></div>
+      <div class="spacing-row"><code>32px</code><span class="spacing-block" style="--size:2rem"></span></div>
+      <div class="spacing-row"><code>64px</code><span class="spacing-block" style="--size:4rem"></span></div>
+    </div></section>
+    <section><div class="wrap">
+      <h2>Component states</h2>
+      <div class="state-grid">
+        <a class="demo-card" href="#demo"><div class="demo-card__media"></div><div><div class="kicker">Default / hover / focus / active</div><h3>Project card</h3></div></a>
+        <div class="demo-card demo-card--loading" aria-label="Loading project preview"><div class="demo-card__media"></div><div><div class="kicker">Loading</div><h3>Space is reserved</h3></div></div>
+        <div class="demo-card" aria-disabled="true"><div class="demo-card__media"></div><div><div class="kicker">Disabled</div><h3>Named muted tokens</h3></div></div>
+        <div class="demo-card demo-card--error"><div><div class="kicker">Image error</div><h3>The project link remains available.</h3></div><a href="#demo" style="color:inherit">Open project →</a></div>
+        <div class="demo-card"><div><div class="kicker">Empty category</div><h3>No selected work here yet.</h3></div><a href="#demo">View the complete archive →</a></div>
+      </div>
+      <p><button class="button" type="button">Open project</button> <button class="button" type="button" disabled>Unavailable</button></p>
+    </div></section>
+    <section><div class="wrap">
+      <h2>Do not</h2>
+      <div class="note">No serif display face, gradient text, glass, glow, rounded card grid, paragraph-length monospace, low-contrast copy, or decorative continuous motion.</div>
+    </div></section>
+  </main>
+</body>
+</html>

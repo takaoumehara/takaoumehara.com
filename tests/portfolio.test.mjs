@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { CATEGORY_ORDER, PROJECTS, projectBySlug } from '../scripts/project-data.mjs';
+
+const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
 test('registry uses the five approved categories and verified assets', () => {
   assert.deepEqual(CATEGORY_ORDER, [
@@ -22,4 +24,49 @@ test('registry uses the five approved categories and verified assets', () => {
   );
   assert.equal(projectBySlug('superforge')?.title, 'superforge');
   assert.equal(projectBySlug('unknown'), null);
+});
+
+test('page exposes approved navigation and progressive fallback links', () => {
+  const indexUrl = new URL('../index.html', import.meta.url);
+  assert.ok(existsSync(indexUrl), 'index.html should exist');
+  const html = readFileSync(indexUrl, 'utf8');
+
+  for (const category of CATEGORY_ORDER) {
+    assert.match(html, new RegExp(`>${escapeRegExp(category)}<`));
+  }
+
+  assert.match(html, /href="https:\/\/linkedin\.com\/in\/takaoumehara"/);
+  assert.match(html, /class="skip-link"/);
+  assert.match(html, /<dialog[^>]+id="project-dialog"/);
+  assert.doesNotMatch(html, /Mirai Abe|miraiabe|Lorem ipsum/);
+
+  for (const entry of PROJECTS) {
+    assert.match(html, new RegExp(`data-project="${escapeRegExp(entry.slug)}"`));
+    assert.match(html, new RegExp(`href="${escapeRegExp(entry.href)}"`));
+  }
+});
+
+test('CSS includes semantic tokens and accessibility states', () => {
+  const stylesUrl = new URL('../styles.css', import.meta.url);
+  assert.ok(existsSync(stylesUrl), 'styles.css should exist');
+  const css = readFileSync(stylesUrl, 'utf8');
+
+  for (const token of [
+    '--color-ground',
+    '--color-ink',
+    '--color-accent',
+    '--space-8',
+    '--motion-expand',
+  ]) {
+    assert.ok(css.includes(token), `${token} should be declared`);
+  }
+
+  assert.match(css, /:focus-visible/);
+  assert.match(css, /prefers-reduced-motion:\s*reduce/);
+  assert.match(css, /@media\s*\(max-width:\s*40rem\)/);
+});
+
+test('machine and human design-system artifacts are both present', () => {
+  assert.ok(existsSync(new URL('../docs/design.md', import.meta.url)));
+  assert.ok(existsSync(new URL('../docs/design.html', import.meta.url)));
 });
