@@ -22,7 +22,7 @@
 
 ## Wave 2 — interaction
 
-- [ ] URL helpers and reversible project dialog
+- [x] URL helpers and reversible project dialog
   - Files: `tests/history.test.mjs`, `scripts/history.mjs`, `scripts/app.mjs`, `tests/portfolio.spec.mjs`, `playwright.config.mjs`, `package.json`, `index.html`, `styles.css`
   - Proof: Playwright opens a card, changes URL, goes Back, and restores focus.
 
@@ -40,3 +40,4 @@
 - 2026-08-23: Design specification approved by the user. Implementation plan created; execution starts from Wave 1.
 - 2026-08-23: Registry RED reproduced as a missing module, then GREEN with 14 verified projects and 12 local thumbnails (`npm test`: 1/1 passing).
 - 2026-08-23: Static-contract RED reproduced for missing `index.html`, `styles.css`, and design artifacts; GREEN after implementing the five-section grid and mirrored design system (`npm test`: 4/4 passing, text source 46,272 bytes).
+- 2026-08-23: History-helper RED reproduced before adding URL state; GREEN after implementing the native dialog, card-to-viewport transition, and Back restoration (`npm test`: 7/7 passing; focused Playwright flow: 1/1 passing).
