@@ -4,2487 +4,1037 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>Takao Umehara — Product Designer & Innovation Strategist</title>
-  <meta name="description" content="Takao Umehara — NYC-based product designer and innovation strategist. Product design, creative direction, and AI products through Creativity Is Everywhere LLC.">
-  <meta property="og:title" content="Takao Umehara — Product Designer & Innovation Strategist">
-  <meta property="og:description" content="NYC-based product designer and innovation strategist. Product design, creative direction, and AI products through Creativity Is Everywhere LLC.">
+  <title>Takao Umehara — Product Designer &amp; Innovation Strategist</title>
+  <meta name="description" content="Takao Umehara — NYC-based product designer and innovation strategist. Interactive experience, AI products, AI tools, product design and branded experience through Creativity Is Everywhere LLC.">
+  <meta property="og:title" content="Takao Umehara — Product Designer &amp; Innovation Strategist">
+  <meta property="og:description" content="I design how people and AI agents share the work. Twenty years of shipping products, now spent on AI.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/shared/Quest_teaser_tr.png">
+  <meta property="og:url" content="https://takaoumehara.com/">
+  <meta property="og:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Takao Umehara — Product Designer &amp; Innovation Strategist">
+  <meta name="twitter:description" content="I design how people and AI agents share the work.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
+  <meta name="theme-color" content="#000000">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
+
   <style>
-    /* ─── Geist Sans (Vercel) ─── */
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
-      font-weight: 400;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
-      font-weight: 500;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
-      font-weight: 600;
-      font-display: swap;
-    }
+  /* ══════════════════════════════════════════════════════════════════════
+     Studio Oker direction — a darkened gallery with scarlet punctuation.
 
-    /* ─── Mobile Menu ─── */
-    .nav-toggle {
-      display: none;
-      appearance: none; background: none; border: none; cursor: pointer;
-      width: 44px; height: 44px; position: relative; padding: 0;
-    }
-    .nav-toggle span {
-      display: block; position: absolute; left: 8px; width: 28px; height: 1.5px;
-      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
-    }
-    .nav-toggle span:nth-child(1) { top: 12px; }
-    .nav-toggle span:nth-child(2) { top: 21px; }
-    .nav-toggle span:nth-child(3) { top: 30px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 21px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
+     The rules this file follows, taken from the reference and not softened:
+       · #000000 is the only background. No gray surfaces, no tints.
+       · Radius is 0 everywhere. Cards, images, tags, actions.
+       · Elevation is replaced by the void — no shadow, no glow, ever.
+       · Scarlet is rationed. One drop per screen: the panel, or a 6px dot.
+       · Weights are 300 and 400 only. The whisper weight is the signature.
+       · Actions are dots and text. A button with a fill would break the room.
+       · 120 / 240px is the structural rhythm, not decoration.
 
-    @media (max-width: 768px) {
-      .nav-toggle { display: block; width: 44px; height: 44px; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; gap: 0; padding: 0;
-        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--line);
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links li { border-top: 1px solid var(--line); }
-      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
-    }
-  </style>
-  <style>
-    /* ─── Tokens ─── */
-    :root {
-      --bg: #fbfaf7;
-      --ink: #121212;
-      --ink-mid: #4c4841;
-      --ink-dim: #79746d;
-      --line: rgba(18,18,18,0.08);
-      --border: rgba(18,18,18,0.10);
-      --surface: rgba(255,255,255,0.92);
-      --shadow: 0 18px 42px rgba(18,18,18,0.04);
-      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
-      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-      /* 5-3C'02 Rich palette */
-      --angle: 102deg;
-      --a1: hsla(198 82% 72% / 0.44);
-      --a2: hsla(248 74% 80% / 0.36);
-      --a3: hsla(324 72% 81% / 0.40);
-      --a4: hsla(36 80% 78% / 0.34);
-      --t1: hsl(198 58% 56%);
-      --t2: hsl(248 58% 70%);
-      --t3: hsl(324 60% 72%);
-      --t4: hsl(36 58% 62%);
-      --hover-angle: 98deg;
-      /* Rich variant vars */
-      --bar-width: 70%;
-      --image-hover-opacity: 0.985;
-      --image-hover-width: 174%;
-      --image-hover-from: -96%;
-      --image-hover-to: -4%;
-      --image-hover-leave-to: 124%;
-      --image-hover-enter-ms: 1260ms;
-      --image-hover-leave-ms: 920ms;
-      --hover-ms: 880ms;
-      --press-ms: 760ms;
-    }
+     NextBook is the studio's own face and is not licensable here; the
+     reference names Söhne or Inter as the substitute. Inter it is — same
+     humanist-geometric balance, and it holds the negative tracking.
+     ══════════════════════════════════════════════════════════════════════ */
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    /* Colors */
+    --pure-black:     #000000;
+    --soft-black:     #101010;
+    --bone-white:     #ffffff;
+    --fog-gray:       #a0a0a0;
+    --graphite:       #484848;
+    --scarlet:        #e4002b;
 
-    html { scroll-behavior: smooth; }
+    /* Type */
+    --ff:    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+    --w-light:   300;
+    --w-regular: 400;
 
-    body {
-      font-family: var(--ff);
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
-        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
-        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-      min-height: 100vh;
-    }
+    --text-body:       16px;
+    --leading-body:    1.25;
+    --tracking-body:   -0.01em;
+    --text-sub:        24px;
+    --leading-sub:     1.13;
+    --tracking-sub:    -0.01em;
+    --text-heading-sm: 32px;
+    --tracking-tight:  -0.02em;
 
-    /* ─── Typography ─── */
-    .eyebrow, .kicker, .meta, .small, .pill {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-    }
+    /* Spacing */
+    --s-8:   8px;
+    --s-16:  16px;
+    --s-48:  48px;
+    --s-120: 120px;
+    --s-240: 240px;
 
-    /* ─── Nav ─── */
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-    }
+    /* Rhythm. The reference calls these the page's primary structural
+       tool, so they scale with the viewport rather than collapsing. */
+    --gutter:  16px;
+    --edge:    clamp(16px, 4vw, 64px);
+    --measure: clamp(16px, 11vw, 264px);
+    --break:   clamp(72px, 12vw, 240px);
+    --gap:     clamp(48px, 7vw, 120px);
+  }
 
-    .nav-logo {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      text-decoration: none;
-      line-height: 1;
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    .nav-logo-name {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.018em;
-      color: var(--ink);
-    }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
-    .nav-logo-tag {
-      font-size: 10.5px;
-      letter-spacing: 0.02em;
-      color: var(--ink-dim);
-      font-weight: 400;
-    }
+  body {
+    background: var(--pure-black);
+    color: var(--bone-white);
+    font-family: var(--ff);
+    font-weight: var(--w-regular);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    letter-spacing: var(--tracking-body);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
 
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+
+  ::selection { background: var(--scarlet); color: var(--bone-white); }
+
+  :focus-visible { outline: 1px solid var(--bone-white); outline-offset: 3px; }
+
+  /* ─── Bilingual ─── */
+  .t-jp { display: none; }
+  html.lang-jp .t-en { display: none; }
+  html.lang-jp .t-jp { display: inline; }
+  html.lang-jp .t-jp.is-block { display: block; }
+
+  /* Japanese does not take negative tracking — it closes gaps the script
+     needs. Everything else about the system stays identical. */
+  html.lang-jp body,
+  html.lang-jp .display,
+  html.lang-jp .section-title { font-family: var(--ff-jp); letter-spacing: 0; }
+  html.lang-jp .display { line-height: 1.16; }
+  html.lang-jp .section-title { line-height: 1.2; }
+
+  /* ══ Nav ══════════════════════════════════════════════════════════════
+     Full-bleed black, ~48px, three zones, no border-bottom — the bar
+     blends into the canvas rather than sitting on top of it. ══ */
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-16);
+    min-height: 48px;
+    padding: var(--s-16);
+    background: var(--pure-black);
+  }
+
+  .nav-mark { font-weight: var(--w-regular); white-space: nowrap; }
+
+  .nav-clock {
+    color: var(--fog-gray);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--s-16);
+    list-style: none;
+  }
+
+  .nav-links a { color: var(--fog-gray); white-space: nowrap; transition: color 160ms linear; }
+  .nav-links a:hover,
+  .nav-links a.is-active { color: var(--bone-white); }
+
+  .nav-toggle {
+    display: none;
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    position: relative;
+  }
+  /* The 2×2 expand glyph the reference uses — the only icon in the system */
+  .nav-toggle i {
+    position: absolute;
+    width: 8px; height: 8px;
+    border: 1px solid var(--bone-white);
+    transition: transform 200ms ease;
+  }
+  .nav-toggle i:nth-child(1) { top: 0; left: 0; }
+  .nav-toggle i:nth-child(2) { top: 0; right: 0; }
+  .nav-toggle i:nth-child(3) { bottom: 0; left: 0; }
+  .nav-toggle i:nth-child(4) { bottom: 0; right: 0; }
+  .nav-toggle.is-open i:nth-child(1) { transform: translate(4px, 4px); }
+  .nav-toggle.is-open i:nth-child(2) { transform: translate(-4px, 4px); }
+  .nav-toggle.is-open i:nth-child(3) { transform: translate(4px, -4px); }
+  .nav-toggle.is-open i:nth-child(4) { transform: translate(-4px, -4px); }
+
+  @media (max-width: 1180px) { .nav-clock { display: none; } }
+
+  @media (max-width: 940px) {
+    .nav-toggle { display: block; }
     .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 13px;
-      color: var(--ink-mid);
-      text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: color 160ms ease;
-    }
-
-    .nav-links a:hover { color: var(--ink); }
-
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .nav-links.is-open { display: flex; }
-    }
-
-    /* ─── Hero ─── */
-    .hero {
-      padding: 96px 32px 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .hero-kicker {
-      margin-bottom: 20px;
-    }
-
-    .hero-headline {
-      font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
-      font-size: clamp(46px, 7vw, 92px);
-      font-weight: 400; /* serif displays read better at regular weight */
-      line-height: 0.92;
-      letter-spacing: -0.025em; /* serifs need less tracking */
-      font-style: italic; /* DM Serif Display italic adds elegance */
-      max-width: 920px;
-      margin-bottom: 36px;
-      color: var(--ink);
-    }
-
-    .hero-body {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 56px;
-      align-items: start;
-      max-width: 920px;
-    }
-
-    .hero-desc {
-      font-size: 17px;
-      line-height: 1.68;
-      color: var(--ink-mid);
-    }
-
-    .hero-positioning {
-      font-size: 15px;
-      line-height: 1.72;
-      color: var(--ink-mid);
-      padding-top: 4px;
-      border-top: 1px solid var(--line);
-    }
-
-    .hero-cta {
-      margin-top: 40px;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      padding: 13px 20px;
-      background: var(--ink);
-      color: #fff;
-      font-family: var(--ff);
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border: 1px solid var(--ink);
-      transition: background 180ms ease, color 180ms ease;
-    }
-
-    .btn-primary:hover { background: #2a2a2a; }
-
-    .btn-secondary {
-      display: inline-block;
-      padding: 13px 20px;
-      background: transparent;
-      color: var(--ink);
-      font-family: var(--ff);
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border: 1px solid var(--border);
-      transition: border-color 180ms ease;
-    }
-
-    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
-
-    /* ─── Section header ─── */
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 24px;
-      padding: 0 32px;
-      margin: 0 auto 28px;
-      max-width: 1200px;
-    }
-
-    .section-title {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(22px, 2.4vw, 32px);
-      font-weight: 400;
-      letter-spacing: -0.015em;
-    }
-
-    .section-link {
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--ink-mid);
-      text-decoration: none;
-      transition: color 160ms ease;
-    }
-
-    .section-link:hover { color: var(--ink); }
-
-    /* ─── Work grid wrapper ─── */
-    .work-section {
-      padding: 72px 0 80px;
-    }
-
-    .project-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-      gap: 2px;
-    }
-
-    /* ─── Work card (5-3C'02 Rich) ─── */
-    .work-card {
-      position: relative;
-      display: grid;
-      grid-template-rows: 260px auto auto;
-      overflow: hidden;
-      isolation: isolate;
-      outline: none;
-      touch-action: manipulation;
-      cursor: pointer;
-      background: transparent;
-    }
-
-    /* Featured card — 2-col span, taller image */
-    .work-card.is-featured {
-      grid-column: span 2;
-      grid-template-rows: 400px auto auto;
-    }
-
-    /* Dark card — intentfirst.ai innovation */
-    .work-card.is-dark {
-      background: #0f0f10;
-    }
-    .work-card.is-dark .card-image {
-      background: #1a1e2e;
-      border-bottom-color: rgba(255,255,255,0.06);
-    }
-    .work-card.is-dark .card-title,
-    .work-card.is-dark .card-desc { color: rgba(255,255,255,0.82); }
-    .work-card.is-dark .meta,
-    .work-card.is-dark .pill {
-      color: rgba(255,255,255,0.38);
-      border-color: rgba(255,255,255,0.10);
-    }
-    .work-card.is-dark .text-reactive.is-hovered,
-    .work-card.is-dark .text-reactive.is-exiting { color: transparent; }
-
-    .work-card:focus-visible {
-      box-shadow: 0 0 0 2px rgba(18,18,18,0.2) inset;
-    }
-
-    .card-image {
-      position: relative;
-      overflow: hidden;
-      background: #efebe6;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .card-image::before {
-      content: "";
+      display: none;
       position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 3;
-      opacity: 0;
-      /* Rich gradient — coloured glass */
-      background:
-        radial-gradient(circle at 18% 24%, rgba(255,255,255,0.30) 0%, rgba(255,255,255,0.12) 18%, transparent 42%),
-        radial-gradient(circle at 76% 68%, rgba(255,255,255,0.18) 0%, transparent 34%),
-        linear-gradient(126deg,
-          hsla(196 92% 74% / 0.94) 0%,
-          hsla(226 94% 60% / 0.96) 22%,
-          hsla(268 88% 74% / 0.96) 46%,
-          hsla(322 86% 74% / 0.94) 72%,
-          hsla(38 96% 78% / 0.90) 100%);
-      box-shadow:
-        26px 0 56px rgba(255,255,255,0.14),
-        0 0 38px rgba(133,145,255,0.10);
-      width: var(--image-hover-width, 174%);
-      inset: 0 auto 0 0;
-      transform: translate3d(var(--image-hover-from, -96%), 0, 0);
-      transition:
-        opacity 320ms ease,
-        transform var(--image-hover-enter-ms, 1260ms) cubic-bezier(0.22, 0.84, 0.22, 1),
-        background 180ms ease;
-    }
-
-    .card-image.hover-active::before {
-      opacity: var(--image-hover-opacity, 0.985);
-      transform: translate3d(var(--image-hover-to, -4%), 0, 0);
-    }
-
-    .card-image.hover-leaving::before {
-      opacity: 0;
-      animation: gradient-image-leave var(--image-hover-leave-ms, 920ms) cubic-bezier(0.22, 0.84, 0.22, 1) forwards;
-    }
-
-    .card-image > .rr,
-    .card-image > .rr > .inner {
-      height: 100%;
-    }
-
-    .card-img-bg {
-      width: 100%;
-      height: 100%;
-      background-size: cover;
-      background-position: center top;
-      transition: transform 640ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-
-    .work-card.is-hovering .card-img-bg {
-      transform: scale(1.025);
-    }
-
-    /* placeholder card */
-    .card-img-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #e8e4df 0%, #d8d2ca 100%);
-    }
-
-    .placeholder-label {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(18,18,18,0.28);
-    }
-
-    .card-body {
-      padding: 18px 16px 10px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 8px 16px 20px;
-    }
-
-    .card-title {
-      font-size: clamp(22px, 2.2vw, 28px);
-      line-height: 1.02;
-      letter-spacing: -0.028em;
-      font-weight: 600;
-    }
-
-    .card-desc {
-      font-size: 14px;
-      line-height: 1.58;
-      color: var(--ink-mid);
-    }
-
-    .chips {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .pill {
-      padding: 6px 9px;
-      border: 1px solid rgba(18,18,18,0.10);
-      background: transparent;
-    }
-
-    /* ─── press-frame ─── */
-    .press-frame {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0;
-    }
-
-    .work-card.is-pressing .press-frame,
-    .work-card.is-held .press-frame {
-      opacity: 1;
-      animation: press-frame var(--press-ms) cubic-bezier(0.24, 0.86, 0.24, 1) forwards;
-      background:
-        linear-gradient(90deg, var(--a1), var(--a2)) 0 0 / 0 1px no-repeat,
-        linear-gradient(90deg, var(--a2), var(--a3)) 100% 0 / 1px 0 no-repeat,
-        linear-gradient(90deg, var(--a3), var(--a4)) 100% 100% / 0 1px no-repeat,
-        linear-gradient(90deg, var(--a4), var(--a1)) 0 100% / 1px 0 no-repeat;
-    }
-
-    /* ─── text-reactive ─── */
-    .text-reactive { transition: color 180ms ease; }
-
-    .text-reactive.is-hovered {
-      background-image: linear-gradient(var(--hover-angle, var(--angle)), #121212 0%, var(--t1) 24%, var(--t2) 46%, var(--t3) 70%, var(--t4) 92%, #121212 100%);
-      background-size: 240% 100%;
-      background-position: var(--hover-shift, 0%) 50%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: text-flow 1s ease forwards;
-    }
-
-    .text-reactive.is-exiting {
-      background-image: linear-gradient(var(--hover-angle, var(--angle)), #121212 0%, var(--t1) 24%, var(--t2) 46%, var(--t3) 70%, var(--t4) 92%, #121212 100%);
-      background-size: 240% 100%;
-      background-position: var(--hover-shift, 0%) 50%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      animation: text-flow-out 560ms cubic-bezier(0.22, 0.84, 0.22, 1) forwards;
-    }
-
-    /* ─── rr reveal ─── */
-    .rr {
-      position: relative;
-      overflow: hidden;
-      --delay: 0ms;
-      --dur: 900ms;
-      --from-x: -7%;
-      --from-y: 0%;
-    }
-
-    .rr > .cover {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 2;
-      opacity: 0;
-      width: var(--bar-width, 70%);
-      inset: 0 auto 0 0;
-      background: linear-gradient(var(--angle), var(--a1) 0%, var(--a2) 32%, var(--a3) 66%, var(--a4) 100%);
-      box-shadow: 20px 0 30px rgba(255,255,255,0.08);
-      transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%));
-      will-change: transform, opacity;
-    }
-
-    .rr > .inner {
-      position: relative;
-      z-index: 1;
-      opacity: 0;
-      clip-path: inset(0 100% 0 0);
-      transform: translate3d(var(--from-x), var(--from-y), 0);
-    }
-
-    .rr.is-on > .cover {
-      animation: gradient-band-sweep var(--dur) cubic-bezier(0.22, 0.84, 0.22, 1) var(--delay) forwards;
-    }
-
-    .rr.is-on > .inner {
-      animation: mask-reveal var(--dur) cubic-bezier(0.22, 0.84, 0.22, 1) var(--delay) forwards;
-    }
-
-    /* ─── Initiatives section ─── */
-    .initiatives-section {
-      padding: 72px 0 80px;
-      border-top: 1px solid var(--line);
-    }
-
-    .initiatives-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2px;
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .initiative-card {
-      position: relative;
-      padding: 40px 36px 36px;
-      overflow: hidden;
-      isolation: isolate;
-      min-height: 280px;
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 16px;
-      cursor: pointer;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .initiative-card::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--ink);
-      opacity: 0;
-      transition: opacity 320ms ease;
-    }
-
-    .initiative-card:hover::before { opacity: 0.12; }
-
-    .initiative-tag {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-    }
-
-    .initiative-title {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(26px, 3vw, 38px);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      line-height: 0.96;
-    }
-
-    .initiative-desc {
-      font-size: 15px;
-      line-height: 1.60;
-      color: var(--ink-mid);
-    }
-
-    .initiative-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .initiative-clients {
-      font-size: 12px;
-      color: var(--ink-dim);
-    }
-
-    .initiative-arrow {
-      font-size: 18px;
-      color: var(--ink-dim);
-      transition: transform 240ms ease, color 240ms ease;
-    }
-
-    .initiative-card:hover .initiative-arrow {
-      transform: translate(4px, -4px);
-      color: var(--ink);
-    }
-
-    /* ─── AI Tools & Infrastructure ─── */
-    .tools-section {
-      padding: 78px 0 86px;
-      border-top: 1px solid var(--line);
-    }
-
-    .tools-head { align-items: flex-end; }
-    .tools-head > div { max-width: 720px; }
-
-    .tools-intro {
-      margin-top: 18px;
-      max-width: 680px;
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--ink-mid);
-    }
-
-    .tools-list {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 32px;
-      border-top: 1px solid var(--line);
-    }
-
-    .tools-row {
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1.28fr) minmax(260px, 0.72fr);
-      gap: clamp(32px, 7vw, 104px);
-      padding: 38px 0 42px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .tools-row:nth-child(2) {
-      grid-template-columns: minmax(0, 0.92fr) minmax(300px, 1.08fr);
-    }
-
-    .tools-row::before {
-      content: "";
-      position: absolute;
-      top: -1px;
-      left: 0;
-      width: 100%;
-      height: 2px;
-      background: linear-gradient(90deg, var(--t1), var(--t2), var(--t3), var(--t4));
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 460ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-
-    .tools-row:hover::before,
-    .tools-row:focus-within::before { transform: scaleX(1); }
-
-    .tools-primary {
-      display: flex;
-      gap: 22px;
-      align-items: flex-start;
-    }
-
-    .tools-swatch {
-      flex: 0 0 46px;
-      width: 46px;
-      height: 46px;
-      margin-top: 3px;
-      border-radius: 11px;
-    }
-
-    .tools-swatch--snap { background: linear-gradient(140deg, #123b82, #2563eb 55%, #7fb7ff); }
-    .tools-swatch--superforge { background: radial-gradient(circle at 74% 26%, rgba(253,224,71,0.34), transparent 44%), linear-gradient(140deg, #13161f, #8a6a12 48%, #fde047); }
-    .tools-swatch--handoff { background: linear-gradient(140deg, #2d1a51, #7042b8 55%, #b9a2ed); }
-    .tools-swatch--fail { background: linear-gradient(140deg, #4b2217, #d6572a 54%, #f7b74c); }
-    .tools-swatch--readme { background: linear-gradient(140deg, #2a0e22, #be185d 52%, #fbcfe8); }
-    .tools-swatch--motionskills { background: radial-gradient(ellipse at 50% 118%, rgba(94,234,212,0.46), transparent 54%), linear-gradient(140deg, #05191e, #0d7c74 46%, #7dd3fc); }
-
-    .tools-index {
-      margin-bottom: 22px;
-      font-size: 10px;
-      letter-spacing: 0.16em;
-      color: var(--ink-dim);
-    }
-
-    .tools-name {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(28px, 3.4vw, 46px);
-      font-weight: 400;
-      letter-spacing: -0.025em;
-      line-height: 1;
-    }
-
-    .tools-outcome {
-      margin-top: 16px;
-      max-width: 650px;
-      font-size: clamp(17px, 1.8vw, 22px);
-      line-height: 1.45;
-      color: var(--ink-mid);
-    }
-
-    .tools-meta {
-      align-self: end;
-      display: grid;
-      gap: 12px;
-    }
-
-    .tools-classification {
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink);
-    }
-
-    .tools-stack {
-      font-size: 12px;
-      line-height: 1.55;
-      color: var(--ink-dim);
-    }
-
-    .tools-link {
-      justify-self: start;
-      margin-top: 10px;
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-mid);
-      text-decoration: none;
-      transition: color 160ms ease, transform 240ms ease;
-    }
-
-    .tools-link:hover { color: var(--ink); transform: translateX(3px); }
-
-    .tools-link:focus-visible,
-    .tools-head .section-link:focus-visible {
-      outline: 2px solid var(--ink);
-      outline-offset: 4px;
-    }
-
-    /* ─── AI Products section ─── */
-    .ai-section {
-      padding: 72px 0 80px;
-      border-top: 1px solid var(--line);
-    }
-
-    .ai-intro {
-      max-width: 760px;
-      padding: 0 32px;
-      margin: 0 auto 34px;
-      font-size: 16px;
-      line-height: 1.7;
-      color: var(--ink-mid);
-    }
-
-    .ai-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 2px;
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .ai-card {
-      position: relative;
-      display: grid;
-      grid-template-rows: auto auto 1fr auto;
-      gap: 13px;
-      padding: 26px 24px 22px;
-      border: 1px solid var(--line);
-      background: var(--surface);
-      text-decoration: none;
-      color: inherit;
-      overflow: hidden;
-      isolation: isolate;
-      transition: border-color 240ms ease, box-shadow 240ms ease;
-    }
-
-    .ai-card::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--t1) 0%, var(--t2) 34%, var(--t3) 68%, var(--t4) 100%);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 460ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-
-    .ai-card:hover::before { transform: scaleX(1); }
-    .ai-card:hover {
-      border-color: rgba(18,18,18,0.16);
-      box-shadow: var(--shadow);
-    }
-
-    .ai-badge {
-      justify-self: start;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      padding: 4px 9px;
-      border: 1px solid var(--border);
-    }
-
-    .ai-badge::before {
-      content: "";
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--ink-dim);
-    }
-
-    .ai-badge.shipped::before { background: hsl(158 42% 46%); }
-    .ai-badge.near::before    { background: hsl(36 64% 52%); }
-    .ai-badge.proto::before   { background: hsl(248 46% 62%); }
-    .ai-badge.case::before    { background: hsl(198 54% 50%); }
-
-    .ai-name {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: 25px;
-      font-weight: 400;
-      letter-spacing: -0.015em;
-      line-height: 1.04;
-    }
-
-    .ai-tagline {
-      font-size: 13.5px;
-      line-height: 1.56;
-      color: var(--ink-mid);
-    }
-
-    .ai-card-foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .ai-stack {
-      font-size: 11px;
-      letter-spacing: 0.02em;
-      color: var(--ink-dim);
-    }
-
-    .ai-arrow {
-      font-size: 15px;
-      color: var(--ink-dim);
-      transition: transform 240ms ease, color 240ms ease;
-      flex-shrink: 0;
-    }
-
-    .ai-card:hover .ai-arrow { transform: translate(3px, -3px); color: var(--ink); }
-
-    .ai-card.is-case { grid-template-rows: auto auto auto 1fr auto; }
-    .ai-thumb {
-      margin: -26px -24px 4px;
-      aspect-ratio: 5 / 2;
-      background-size: cover;
-      background-position: center;
-      transition: transform 640ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-    .ai-card:hover .ai-thumb { transform: scale(1.035); }
-
-    /* ─── Capabilities strip ─── */
-    .capabilities-section {
-      padding: 72px 0 80px;
-      border-top: 1px solid var(--line);
-    }
-
-    .capabilities-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 28px auto 0;
-    }
-
-    .capability-block {
-      padding: 32px 0;
-      border-right: 1px solid var(--line);
-    }
-
-    .capability-block:last-child { border-right: 0; }
-    .capability-block:not(:first-child) { padding-left: 32px; }
-
-    .capability-num {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      margin-bottom: 16px;
-    }
-
-    .capability-title {
-      font-size: 20px;
-      font-weight: 600;
-      letter-spacing: -0.022em;
-      margin-bottom: 12px;
-    }
-
-    .capability-desc {
-      font-size: 14px;
-      line-height: 1.62;
-      color: var(--ink-mid);
-    }
-
-    .capability-list {
-      list-style: none;
-      margin-top: 16px;
-      display: flex;
+      top: 100%; left: 0; right: 0;
       flex-direction: column;
-      gap: 6px;
-    }
-
-    .capability-list li {
-      font-size: 13px;
-      color: var(--ink-dim);
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-    }
-
-    .capability-list li::before {
-      content: "—";
-      color: rgba(18,18,18,0.24);
-      flex-shrink: 0;
-    }
-
-    /* ─── Footer ─── */
-    .site-footer {
-      border-top: 1px solid var(--line);
-      padding: 40px 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .footer-logo {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.018em;
-    }
-
-    .footer-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px 24px;
-      list-style: none;
-    }
-
-    .footer-links a {
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      color: var(--ink-dim);
-      text-decoration: none;
-      transition: color 160ms ease;
-    }
-
-    .footer-links a:hover { color: var(--ink); }
-
-    .footer-copy {
-      font-size: 12px;
-      color: var(--ink-dim);
-    }
-
-    .footer-llc {
-      font-size: 11px;
-      color: var(--ink-dim);
-      margin-top: 5px;
-      letter-spacing: 0.01em;
-    }
-
-    .footer-llc strong {
-      color: var(--ink-mid);
-      font-weight: 500;
-    }
-
-    /* ─── Animations ─── */
-    @keyframes gradient-band-sweep {
-      0%   { transform: translateX(calc(-1 * var(--bar-width, 70%) - 8%)); opacity: 0; }
-      8%   { transform: translateX(0); opacity: 0.94; }
-      24%  { transform: translateX(0); opacity: 0.94; }
-      100% { transform: translateX(232%); opacity: 0.92; }
-    }
-
-    @keyframes mask-reveal {
-      0%   { clip-path: inset(0 100% 0 0); opacity: 0; transform: translate3d(var(--from-x), var(--from-y), 0); }
-      14%  { clip-path: inset(0 100% 0 0); opacity: 0; transform: translate3d(var(--from-x), var(--from-y), 0); }
-      30%  { opacity: 0.24; }
-      100% { clip-path: inset(0 0 0 0); opacity: 1; transform: translate3d(0, 0, 0); }
-    }
-
-    @keyframes gradient-image-leave {
-      0%   { transform: translate3d(-4%, 0, 0); opacity: 0.9; }
-      100% { transform: translate3d(124%, 0, 0); opacity: 0; }
-    }
-
-    @keyframes press-frame {
-      0%   { background-size: 0 1px, 1px 0, 0 1px, 1px 0; opacity: 0; }
-      18%  { opacity: 1; }
-      100% { background-size: 100% 1px, 1px 100%, 100% 1px, 1px 100%; opacity: 1; }
-    }
-
-    @keyframes text-flow {
-      0%   { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
-
-    @keyframes text-flow-out {
-      0%   { background-position: var(--hover-shift, 50%) 50%; opacity: 1; }
-      100% { background-position: 140% 50%; opacity: 1; }
-    }
-
-    @keyframes hero-in {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-kicker  { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 80ms both; }
-    .hero-headline{ animation: hero-in 900ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both; }
-    .hero-body    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 280ms both; }
-    .hero-cta     { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 400ms both; }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 1000px) {
-      .work-card.is-featured { grid-column: span 3; grid-template-rows: 340px auto auto; }
-    }
-
-    @media (max-width: 900px) {
-      .project-grid { grid-template-columns: 1fr 1fr; }
-      .work-card.is-featured { grid-column: span 2; grid-template-rows: 320px auto auto; }
-      .initiatives-grid { grid-template-columns: 1fr; }
-      .ai-grid { grid-template-columns: 1fr 1fr; }
-      .capabilities-grid { grid-template-columns: 1fr; }
-      .capability-block { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px 0; }
-      .capability-block:not(:first-child) { padding-left: 0; }
-      .hero-body { grid-template-columns: 1fr; gap: 28px; }
-    }
-
-    @media (max-width: 767px) {
-      .tools-head { align-items: flex-start; }
-      .tools-list { padding: 0 20px; }
-      .tools-row,
-      .tools-row:nth-child(2) {
-        grid-template-columns: 1fr;
-        gap: 24px;
-        padding: 32px 0 36px;
-      }
-      .tools-meta { align-self: auto; }
-    }
-
-    @media (max-width: 600px) {
-      .project-grid { grid-template-columns: 1fr; padding: 0 20px; }
-      .work-card.is-featured { grid-column: span 1; grid-template-rows: 260px auto auto; }
-      .ai-grid { grid-template-columns: 1fr; }
-      .site-nav { padding: 16px 20px; }
-      .hero { padding: 64px 20px 56px; }
-      .section-head, .initiatives-grid, .capabilities-grid, .ai-grid, .ai-intro { padding: 0 20px; }
-    }
-
-    /* ─── EN/JP lang switch ─── */
-    .lang-switch {
-      position: fixed;
-      right: 0;
-      bottom: 80px;
-      z-index: 100;
-      writing-mode: vertical-rl;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 16px 9px;
-      background: rgba(255,255,255,0.94);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-left: 1px solid rgba(18,18,18,0.10);
-      border-top: 1px solid rgba(18,18,18,0.07);
-      border-bottom: 1px solid rgba(18,18,18,0.07);
-      border-radius: 6px 0 0 6px;
-    }
-    .lang-btn {
-      appearance: none; background: none; border: none;
-      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
-      text-transform: uppercase; cursor: pointer;
-      color: var(--ink-dim); padding: 0;
-      transition: color 160ms ease;
-    }
-    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
-    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
-
-    /* bilingual content */
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-
-    /* JP typography overrides */
-    html.lang-jp body { font-family: var(--ff-jp); }
-    html.lang-jp .hero-headline {
-      font-family: "DM Serif Display", "Noto Sans JP", Georgia, serif;
-      line-height: 1.18;
-      font-size: clamp(36px, 5.5vw, 72px);
-      font-style: normal;
-    }
-    html.lang-jp .initiative-title {
-      line-height: 1.12;
-    }
-    html.lang-jp .card-title {
-      line-height: 1.14;
-      letter-spacing: -0.02em;
-    }
-    html.lang-jp .section-title {
-      line-height: 1.14;
-    }
-    html.lang-jp .ai-name {
-      line-height: 1.18;
-    }
-
-    /* ─── Reduced motion ─── */
-    @media (prefers-reduced-motion: reduce) {
-      .rr > .inner  { animation: none !important; opacity: 1 !important; clip-path: inset(0 0 0 0) !important; transform: none !important; }
-      .rr > .cover  { animation: none !important; opacity: 0 !important; }
-      .card-image::before { animation: none !important; transition: none !important; }
-      .hero-kicker, .hero-headline, .hero-body, .hero-cta { animation: none !important; opacity: 1 !important; }
-      .tools-row::before,
-      .tools-link { transition: none !important; }
-      .tools-link:hover { transform: none; }
-      .nav-toggle span { transition: none !important; }
-      .nav-links a { transition: none !important; }
-      .lang-btn { transition: none !important; }
-    }
-  </style>
-
-  <!-- ══════════════════════════════════════════════════════════════
-       Landing v4 — Intent Console hero, playable proof, hire clarity
-       ══════════════════════════════════════════════════════════════ -->
-  <style>
-    /* ─── Shared rail ─── */
-    .rail { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
-    .band { padding: 76px 0 84px; border-top: 1px solid var(--line); }
-    .band-lede {
-      max-width: 1200px; margin: 0 auto 34px; padding: 0 32px;
-      font-size: 16px; line-height: 1.72; color: var(--ink-mid);
-    }
-    /* keep the measure readable without floating the block to the centre.
-       the language toggle still owns which of the two is shown. */
-    .band-lede .t-en, .ai-intro .t-en { display: block; max-width: 68ch; }
-    .band-lede .t-jp, .ai-intro .t-jp { display: none;  max-width: 68ch; }
-    html.lang-jp .band-lede .t-en, html.lang-jp .ai-intro .t-en { display: none; }
-    html.lang-jp .band-lede .t-jp, html.lang-jp .ai-intro .t-jp { display: block; }
-    .ai-intro { max-width: 1200px; }
-
-    /* ══ Hero — Intent Console ══════════════════════════════════ */
-    .hero--console { padding: 68px 32px 56px; }
-
-    .hero-id {
-      font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--ink-dim); margin-bottom: 22px;
-    }
-    .hero-id b { color: var(--ink); font-weight: 600; letter-spacing: 0.14em; }
-
-    .hero-line {
-      font-family: "DM Serif Display", Georgia, "Times New Roman", serif;
-      font-style: italic; font-weight: 400;
-      font-size: clamp(34px, 4.6vw, 58px);
-      line-height: 1.02; letter-spacing: -0.024em;
-      max-width: 17ch; margin-bottom: 18px; color: var(--ink);
-    }
-    html.lang-jp .hero-line {
-      font-family: "DM Serif Display", "Noto Sans JP", Georgia, serif;
-      font-style: normal; line-height: 1.24; letter-spacing: -0.01em;
-      font-size: clamp(28px, 3.8vw, 48px); max-width: 20ch;
-    }
-
-    .hero-sub {
-      font-size: 16px; line-height: 1.7; color: var(--ink-mid);
-      max-width: 60ch; margin-bottom: 40px;
-    }
-
-    /* ── the console itself ── */
-    .console {
-      border: 1px solid var(--border);
-      background: var(--surface);
-      max-width: 1136px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
-    }
-
-    .console-left { padding: 22px 24px 24px; border-right: 1px solid var(--line); }
-
-    .console-label {
-      font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--ink-dim); margin-bottom: 12px;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .console-label::before {
-      content: ""; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--t1);
-      box-shadow: 0 0 0 4px color-mix(in srgb, var(--t1) 18%, transparent);
-    }
-
-    .console-bar {
-      display: flex; align-items: center; gap: 2px; min-height: 46px;
-      padding: 11px 14px; margin-bottom: 18px;
-      border: 1px solid var(--border);
-      background: #fff;
-      font-size: 16px; line-height: 1.35; color: var(--ink);
-      letter-spacing: -0.008em;
-    }
-    .console-typed { white-space: pre-wrap; }
-    .console-typed:empty::before {
-      content: attr(data-placeholder); color: var(--ink-dim);
-    }
-    .console-caret {
-      display: inline-block; width: 2px; height: 1.15em; flex: none;
-      background: var(--ink);
-      animation: caret-blink 1.06s steps(1, end) infinite;
-    }
-    @keyframes caret-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
-
-    .console-chips { display: flex; flex-wrap: wrap; gap: 6px; }
-
-    .console-note {
-      margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line);
-      font-size: 11.5px; line-height: 1.6; color: var(--ink-dim);
-    }
-
-    .chip {
-      appearance: none; cursor: pointer;
-      font-family: inherit; font-size: 13px; line-height: 1.3;
-      padding: 9px 13px; text-align: left;
-      color: var(--ink-mid);
-      background: transparent;
-      border: 1px solid var(--border);
-      transition: border-color 180ms ease, color 180ms ease, background 180ms ease;
-    }
-    .chip:hover { border-color: rgba(18,18,18,0.28); color: var(--ink); }
-    .chip:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-    .chip[aria-pressed="true"] {
-      color: var(--ink); border-color: transparent;
-      background: color-mix(in srgb, var(--t1) 15%, #fff);
-      box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--t1) 42%, transparent);
-    }
-    .chip:active { transform: translateY(1px); }
-
-    /* ── right: routing + answer ── */
-    .console-right {
-      position: relative; padding: 22px 24px 24px;
-      display: grid; grid-template-rows: auto 1fr; gap: 16px;
-      min-height: 268px;
-    }
-
-    .route { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-    .route-step {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 9.5px; letter-spacing: 0.13em; text-transform: uppercase;
-      color: var(--ink-dim);
-      padding: 4px 8px; border: 1px solid var(--line);
-      opacity: 0.42;
-      transition: opacity 200ms linear, color 200ms linear, border-color 200ms linear;
-    }
-    .route-step::before {
-      content: ""; width: 4px; height: 4px; border-radius: 50%;
-      background: currentColor; opacity: 0.5;
-    }
-    .route-step.is-lit {
-      opacity: 1; color: var(--ink); border-color: rgba(18,18,18,0.22);
-    }
-    .route-step.is-lit::before { background: var(--t1); opacity: 1; }
-    .route-arrow { font-size: 10px; color: rgba(18,18,18,0.22); }
-
-    .answer { display: grid; align-content: start; gap: 11px; }
-    .answer.is-swapping { opacity: 0; transform: translateY(6px); }
-    .answer {
-      transition: opacity 260ms ease, transform 260ms cubic-bezier(0.22,0.84,0.22,1);
-    }
-
-    .answer-badge {
-      justify-self: start; display: inline-flex; align-items: center; gap: 6px;
-      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--ink-dim); padding: 4px 9px; border: 1px solid var(--border);
-    }
-    .answer-badge::before {
-      content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--t1);
-    }
-
-    .answer-name {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(24px, 2.6vw, 31px); font-weight: 400;
-      letter-spacing: -0.018em; line-height: 1.06;
-    }
-    html.lang-jp .answer-name { line-height: 1.2; }
-
-    .answer-line { font-size: 14px; line-height: 1.6; color: var(--ink-mid); }
-
-    .answer-metrics {
-      display: flex; flex-wrap: wrap; gap: 0; margin-top: 2px;
-      border-top: 1px solid var(--line);
-    }
-    .metric {
-      padding: 11px 18px 0 0; margin-right: 18px;
-      border-right: 1px solid var(--line);
-    }
-    .metric:last-child { border-right: 0; margin-right: 0; padding-right: 0; }
-    .metric-v {
-      display: block; font-size: 19px; font-weight: 600; letter-spacing: -0.02em;
-      font-variant-numeric: tabular-nums; color: var(--ink); line-height: 1.1;
-    }
-    .metric-k {
-      display: block; margin-top: 4px;
-      font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim);
-    }
-
-    .answer-link {
-      justify-self: start; align-self: start; margin-top: 4px;
-      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--ink); text-decoration: none;
-      border-bottom: 1px solid rgba(18,18,18,0.25); padding-bottom: 3px;
-      transition: border-color 160ms ease;
-    }
-    .answer-link:hover { border-color: var(--ink); }
-
-    .hero-actions {
-      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
-      margin-top: 30px;
-    }
-    .hero-alt {
-      font-size: 13px; color: var(--ink-mid); text-decoration: none;
-      border-bottom: 1px solid var(--line); padding-bottom: 2px;
-      transition: border-color 160ms ease, color 160ms ease;
-    }
-    .hero-alt:hover { color: var(--ink); border-color: rgba(18,18,18,0.3); }
-
-    /* ══ Proof strip ════════════════════════════════════════════ */
-    .proof {
-      border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-      background: rgba(255,255,255,0.5);
-    }
-    .proof-inner {
-      max-width: 1200px; margin: 0 auto; padding: 26px 32px;
-      display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center;
-    }
-    .proof-nums { display: flex; gap: 34px; flex-wrap: wrap; }
-    .proof-num { line-height: 1.15; }
-    .proof-num b {
-      display: block; font-size: 24px; font-weight: 600; letter-spacing: -0.025em;
-      font-variant-numeric: tabular-nums;
-    }
-    .proof-num > span {
-      display: block; margin-top: 5px;
-      font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-dim);
-    }
-    .proof-clients {
-      font-size: 11.5px; line-height: 1.9; color: var(--ink-dim);
-      letter-spacing: 0.04em; text-align: right;
-    }
-    .proof-clients b { color: var(--ink-mid); font-weight: 500; }
-
-    /* ══ Spine labels on the AI band ════════════════════════════ */
-    .spine {
-      display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
-      max-width: 1200px; margin: 0 auto 22px; padding: 0 32px;
-    }
-    .spine-item {
-      font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: var(--ink-dim); padding: 5px 10px; border: 1px solid var(--line);
-    }
-    .spine-sep { color: rgba(18,18,18,0.2); font-size: 11px; }
-
-    /* ══ Playable proof ═════════════════════════════════════════ */
-    .play-grid {
-      display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 2px;
-      max-width: 1200px; margin: 0 auto; padding: 0 32px;
-    }
-
-    .play-tile {
-      position: relative; display: grid; grid-template-rows: auto 1fr auto;
-      border: 1px solid var(--line); background: var(--surface);
-      text-decoration: none; color: inherit; overflow: hidden; isolation: isolate;
-      transition: border-color 240ms ease, box-shadow 240ms ease;
-    }
-    .play-tile:hover { border-color: rgba(18,18,18,0.16); box-shadow: var(--shadow); }
-    .play-tile:focus-visible { outline: 2px solid var(--ink); outline-offset: -2px; }
-
-    .play-stage {
-      position: relative; aspect-ratio: 16 / 10;
-      background: #101014; overflow: hidden;
-    }
-    .play-stage canvas { display: block; width: 100%; height: 100%; }
-    .play-hint {
-      position: absolute; left: 12px; bottom: 11px; z-index: 2;
-      font-size: 9.5px; letter-spacing: 0.14em; text-transform: uppercase;
-      color: rgba(255,255,255,0.62); pointer-events: none;
-      transition: color 200ms ease;
-    }
-    .play-tile:hover .play-hint { color: rgba(255,255,255,0.9); }
-
-    .play-body { padding: 18px 20px 10px; display: grid; gap: 8px; align-content: start; }
-    .play-name {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: 21px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.08;
-    }
-    html.lang-jp .play-name { line-height: 1.2; }
-    .play-desc { font-size: 13px; line-height: 1.58; color: var(--ink-mid); }
-
-    .play-foot {
-      display: flex; justify-content: space-between; align-items: center; gap: 12px;
-      padding: 12px 20px 16px;
-    }
-    .play-stack { font-size: 10.5px; letter-spacing: 0.02em; color: var(--ink-dim); }
-    .play-go {
-      font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase;
-      color: var(--ink-dim); display: inline-flex; align-items: center; gap: 5px;
-      transition: color 200ms ease;
-    }
-    .play-go::before {
-      content: ""; width: 5px; height: 5px; border-radius: 50%;
-      background: hsl(158 42% 46%);
-    }
-    .play-go.is-static::before { background: var(--ink-dim); }
-    .play-tile:hover .play-go { color: var(--ink); }
-
-    /* ── Snap Pair explainer banner ── */
-    .snap-banner {
-      max-width: 1200px; margin: 2px auto 0; padding: 26px 32px;
-      border: 1px solid var(--line); background: var(--surface);
-      display: grid; grid-template-columns: 1fr auto; gap: 40px; align-items: center;
-    }
-    .snap-copy { max-width: 62ch; }
-    .snap-copy h3 {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: 22px; font-weight: 400; letter-spacing: -0.015em; margin-bottom: 8px;
-    }
-    .snap-copy p { font-size: 13.5px; line-height: 1.66; color: var(--ink-mid); }
-    .snap-copy a {
-      display: inline-block; margin-top: 12px;
-      font-size: 11px; letter-spacing: 0.13em; text-transform: uppercase;
-      color: var(--ink); text-decoration: none;
-      border-bottom: 1px solid rgba(18,18,18,0.25); padding-bottom: 3px;
-    }
-    .snap-copy a:hover { border-color: var(--ink); }
-
-    .snap-diagram {
-      display: flex; align-items: flex-end; gap: 9px; flex: none;
-    }
-    .snap-phone {
-      width: 26px; height: 44px; border: 1px solid var(--border); background: #fff;
-      position: relative;
-    }
-    .snap-phone::after {
-      content: ""; position: absolute; inset: 4px;
-      background: linear-gradient(160deg, var(--t1), var(--t3));
-      opacity: 0; animation: snap-join 3.4s ease-in-out infinite;
-    }
-    .snap-phone:nth-child(2)::after { animation-delay: 0.28s; }
-    .snap-phone:nth-child(3)::after { animation-delay: 0.56s; }
-    .snap-screen {
-      width: 92px; height: 60px; margin-left: 6px;
-      border: 1px solid var(--border); background: #101014; position: relative; overflow: hidden;
-    }
-    .snap-screen::after {
-      content: ""; position: absolute; inset: 0;
-      background: linear-gradient(120deg, var(--t1), var(--t2), var(--t3));
-      opacity: 0.15; animation: snap-live 3.4s ease-in-out infinite;
-    }
-    @keyframes snap-join { 0%, 12% { opacity: 0; } 34%, 88% { opacity: 0.85; } 100% { opacity: 0; } }
-    @keyframes snap-live { 0%, 20% { opacity: 0.1; } 50%, 86% { opacity: 0.55; } 100% { opacity: 0.1; } }
-
-    /* ══ Hire — what you can actually commission ════════════════ */
-    .hire-grid {
-      display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 2px;
-      max-width: 1200px; margin: 0 auto; padding: 0 32px;
-    }
-    .hire-block {
-      border: 1px solid var(--line); background: var(--surface);
-      padding: 28px 24px 26px; display: flex; flex-direction: column; gap: 12px;
-      position: relative; overflow: hidden;
-    }
-    .hire-block::before {
-      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-      background: linear-gradient(90deg, var(--t1), var(--t2) 40%, var(--t3) 75%, var(--t4));
-    }
-    .hire-num {
-      font-size: 10px; letter-spacing: 0.16em; color: var(--ink-dim);
-      font-variant-numeric: tabular-nums;
-    }
-    .hire-title {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: 23px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.1;
-    }
-    html.lang-jp .hire-title { line-height: 1.24; }
-    .hire-desc { font-size: 13.5px; line-height: 1.66; color: var(--ink-mid); }
-    .hire-list { list-style: none; display: grid; gap: 7px; margin-top: 2px; }
-    .hire-list li {
-      font-size: 12.5px; line-height: 1.5; color: var(--ink-mid);
-      padding-left: 14px; position: relative;
-    }
-    .hire-list li::before {
-      content: ""; position: absolute; left: 0; top: 0.6em;
-      width: 6px; height: 1px; background: rgba(18,18,18,0.3);
-    }
-    .hire-meta {
-      margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line);
-      font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim);
-      line-height: 1.7;
-    }
-    .hire-meta b { color: var(--ink-mid); font-weight: 600; }
-
-    /* ══ Who ════════════════════════════════════════════════════ */
-    .who-grid {
-      display: grid; grid-template-columns: 220px minmax(0,1fr); gap: 48px;
-      max-width: 1200px; margin: 0 auto; padding: 0 32px; align-items: start;
-    }
-    .who-portrait {
-      width: 100%; height: auto; aspect-ratio: 4 / 5;
-      object-fit: cover; object-position: center 18%;
-      border: 1px solid var(--line); filter: grayscale(1) contrast(1.04);
-      transition: filter 420ms ease;
-      background: rgba(18,18,18,0.04);
-    }
-    .who-portrait:hover { filter: grayscale(0) contrast(1); }
-    .who-body { max-width: 68ch; display: grid; gap: 18px; }
-    .who-body p { font-size: 15.5px; line-height: 1.78; color: var(--ink-mid); }
-    .who-body p strong { color: var(--ink); font-weight: 600; }
-    .who-facts {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 0; border-top: 1px solid var(--line); margin-top: 6px;
-    }
-    .who-fact { padding: 14px 20px 0 0; }
-    .who-fact dt {
-      font-size: 10px; letter-spacing: 0.13em; text-transform: uppercase; color: var(--ink-mid);
-    }
-    .who-fact dd { margin-top: 6px; font-size: 13.5px; line-height: 1.55; color: var(--ink-mid); }
-
-    /* ══ Closing CTA ════════════════════════════════════════════ */
-    .end {
-      border-top: 1px solid var(--line);
-      padding: 84px 32px 92px; text-align: center;
-    }
-    .end-line {
-      font-family: "DM Serif Display", Georgia, serif; font-style: italic;
-      font-size: clamp(28px, 3.6vw, 46px); font-weight: 400;
-      letter-spacing: -0.022em; line-height: 1.08;
-      max-width: 20ch; margin: 0 auto 18px;
-    }
-    html.lang-jp .end-line {
-      font-family: "DM Serif Display", "Noto Sans JP", Georgia, serif;
-      font-style: normal; line-height: 1.3; max-width: 24ch;
-    }
-    .end-sub {
-      font-size: 15px; line-height: 1.7; color: var(--ink-mid);
-      max-width: 54ch; margin: 0 auto 30px;
-    }
-    .end-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; align-items: center; }
-
-    /* ══ Responsive ═════════════════════════════════════════════ */
-    @media (max-width: 1000px) {
-      .console { grid-template-columns: 1fr; }
-      .console-left { border-right: 0; border-bottom: 1px solid var(--line); }
-      .console-right { min-height: 0; }
-      .play-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-      .hire-grid { grid-template-columns: 1fr; }
-      .proof-inner { grid-template-columns: 1fr; gap: 22px; }
-      .proof-clients { text-align: left; }
-      .snap-banner { grid-template-columns: 1fr; gap: 26px; }
-    }
-
-    @media (max-width: 860px) {
-      .who-grid { grid-template-columns: 1fr; gap: 28px; }
-      .who-portrait { max-width: 180px; }
-    }
-
-    @media (max-width: 600px) {
-      /* the CTA has to sit in the fold, so it moves above the console */
-      .hero--console { padding: 40px 20px 44px; display: flex; flex-direction: column; }
-      .hero-id      { order: 1; margin-bottom: 16px; }
-      .hero-line    { order: 2; margin-bottom: 14px; }
-      .hero-sub     { order: 3; font-size: 15px; line-height: 1.66; margin-bottom: 24px; }
-      .hero-actions { order: 4; margin-top: 0; margin-bottom: 30px; gap: 14px; }
-      .console      { order: 5; }
-      .hero-alt { font-size: 12.5px; }
-      .console-left, .console-right { padding: 18px 16px 20px; }
-      .console-bar { font-size: 15px; }
-      .chip { font-size: 12.5px; padding: 10px 12px; }
-      .play-grid { grid-template-columns: 1fr; padding: 0 20px; }
-      .hire-grid, .who-grid { padding: 0 20px; }
-      .band-lede, .spine { padding: 0 20px; }
-      .proof-inner { padding: 22px 20px; }
-      .proof-nums { gap: 22px 26px; }
-      .snap-banner { margin: 2px 20px 0; padding: 22px 20px; }
-      .snap-diagram { transform: scale(0.86); transform-origin: left bottom; }
-      .end { padding: 64px 20px 72px; }
-      .band { padding: 60px 0 66px; }
-    }
-
-    /* ══ Hero entrance ══════════════════════════════════════════ */
-    .hero-id      { animation: hero-in 600ms cubic-bezier(0.22,0.84,0.22,1)  60ms both; }
-    .hero-line    { animation: hero-in 820ms cubic-bezier(0.22,0.84,0.22,1) 110ms both; }
-    .hero-sub     { animation: hero-in 700ms cubic-bezier(0.22,0.84,0.22,1) 230ms both; }
-    .console      { animation: hero-in 760ms cubic-bezier(0.22,0.84,0.22,1) 330ms both; }
-    .hero-actions { animation: hero-in 600ms cubic-bezier(0.22,0.84,0.22,1) 470ms both; }
-
-    /* ══ Reduced motion ═════════════════════════════════════════ */
-    @media (prefers-reduced-motion: reduce) {
-      .hero-id, .hero-line, .hero-sub, .console, .hero-actions {
-        animation: none !important; opacity: 1 !important;
-      }
-      .console-caret { animation: none !important; opacity: 1; }
-      .snap-phone::after, .snap-screen::after { animation: none !important; opacity: 0.55; }
-      .answer { transition: none !important; }
-      .route-step { transition: none !important; }
-      .chip, .play-tile, .who-portrait, .answer-link, .hero-alt { transition: none !important; }
-    }
+      align-items: flex-start;
+      gap: var(--s-16);
+      padding: var(--s-16);
+      background: var(--pure-black);
+    }
+    .nav-links.is-open { display: flex; }
+  }
+
+  /* ══ Hero ══ */
+  .hero {
+    padding: clamp(56px, 9vw, 160px) var(--measure) var(--break);
+  }
+
+  .eyebrow {
+    color: var(--fog-gray);
+    margin-bottom: var(--gap);
+  }
+
+  .display {
+    font-size: clamp(38px, 7.2vw, 112px);
+    font-weight: var(--w-light);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    max-width: 18ch;
+  }
+
+  .hero-sub {
+    margin-top: var(--gap);
+    max-width: 56ch;
+    color: var(--fog-gray);
+  }
+
+  /* ══ Console ══════════════════════════════════════════════════════════
+     The framework, still running — but re-set in this room's vocabulary.
+     The intents were chips with borders; here they are a plain stack of
+     strings, which is how the reference sets a services list. The active
+     one carries the scarlet dot, and the dot is the only chrome. ══ */
+  .console {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--gap);
+    padding: 0 var(--measure) var(--break);
+    align-items: start;
+  }
+
+  .console-label,
+  .console-note { color: var(--fog-gray); }
+
+  .console-bar {
+    margin: var(--s-48) 0;
+    font-size: var(--text-sub);
+    line-height: var(--leading-sub);
+    letter-spacing: var(--tracking-sub);
+    min-height: calc(var(--text-sub) * var(--leading-sub));
+  }
+
+  .console-caret {
+    display: inline-block;
+    width: 1px;
+    height: 1em;
+    margin-left: 2px;
+    background: var(--scarlet);
+    vertical-align: -0.12em;
+    animation: caret 1100ms steps(1) infinite;
+  }
+  @keyframes caret { 50% { opacity: 0; } }
+
+  .console-chips {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s-16);
+    margin-bottom: var(--s-48);
+  }
+
+  /* No bullets, no borders, no fill. The reference is explicit: raw
+     stacked text carries more weight than a decorated list. */
+  .chip {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0;
+    font: inherit;
+    letter-spacing: inherit;
+    color: var(--fog-gray);
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    padding-left: 20px;
+    transition: color 160ms linear;
+  }
+  .chip::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.44em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--graphite);
+    transition: background 160ms linear;
+  }
+  .chip:hover { color: var(--bone-white); }
+  .chip[aria-pressed="true"] { color: var(--bone-white); }
+  .chip[aria-pressed="true"]::before { background: var(--scarlet); }
+
+  .route {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-8);
+    color: var(--graphite);
+    margin-bottom: var(--s-48);
+  }
+  .route-step { transition: color 200ms linear; }
+  .route-step.is-lit { color: var(--fog-gray); }
+  .route-arrow { color: var(--graphite); }
+
+  .answer { transition: opacity 200ms linear; }
+  .answer.is-swapping { opacity: 0; }
+
+  .answer-badge { display: block; color: var(--fog-gray); }
+
+  .answer-name {
+    margin-top: var(--s-16);
+    font-size: var(--text-heading-sm);
+    font-weight: var(--w-light);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .answer-line {
+    margin-top: var(--s-16);
+    max-width: 48ch;
+    color: var(--fog-gray);
+  }
+
+  /* Stat block — label/value pairs, no borders, no boxes. Typography
+     does the structuring. */
+  .answer-metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-48);
+    margin-top: var(--s-48);
+  }
+  .metric { display: flex; flex-direction: column; }
+  .metric-v { font-size: var(--text-sub); font-weight: var(--w-light); line-height: 1; letter-spacing: var(--tracking-tight); }
+  .metric-k { color: var(--fog-gray); margin-top: var(--s-8); }
+
+  /* ── Link with red dot. The dot does the work of a button
+        without a button shape. ── */
+  .dot-link {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--s-8);
+    margin-top: var(--s-48);
+    color: var(--bone-white);
+  }
+  .dot-link::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--scarlet);
+    flex: 0 0 auto;
+    transform: translateY(-0.15em);
+  }
+  .dot-link span { border-bottom: 1px solid transparent; transition: border-color 160ms linear; }
+  .dot-link:hover span { border-bottom-color: var(--fog-gray); }
+
+  /* ══ Section heading ══ */
+  .section {
+    padding: 0 var(--measure) var(--break);
+  }
+  .section--bleed { padding-inline: var(--edge); }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--gap);
+    flex-wrap: wrap;
+    margin-bottom: var(--gap);
+  }
+
+  .section-title {
+    font-size: clamp(30px, 4.6vw, 80px);
+    font-weight: var(--w-light);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .section-note { color: var(--fog-gray); max-width: 44ch; }
+
+  /* ══ The wall ═════════════════════════════════════════════════════════
+     Asymmetric tile grid, 16px gutters, no border, no padding, no radius.
+     The edge of the artwork IS the edge of the card. ══ */
+  /* The tiles are sized in row units rather than by their own
+     aspect-ratio. Aspect-ratio makes each tile correct and the wall
+     wrong — rows take the height of their tallest member and the
+     shorter ones leave holes. A shared row unit plus dense packing
+     gives the asymmetry the reference wants with no gaps in it. */
+  .wall {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: clamp(104px, 11.5vw, 188px);
+    grid-auto-flow: dense;
+    gap: var(--gutter);
+  }
+
+  /* Every tile carries a hairline. On Oker's wall the tiles are
+     photographs, so the edge of the image is the edge of the card and a
+     border would be noise. Six of these tiles are near-black live
+     canvases with no edge of their own — without a line they dissolve
+     into the canvas and the wall reads as one black smear. The
+     reference sanctions exactly this remedy: when separation is needed,
+     a single hairline at #484848, never a shadow or a tonal lift. */
+  .tile {
+    position: relative;
+    display: block;
+    grid-row: span 2;
+    background: var(--pure-black);
+    overflow: hidden;
+    /* A border, not an outline: the canvas is an absolutely positioned
+       child and would paint straight over an outline. */
+    border: 1px solid var(--graphite);
+    transition: border-color 200ms linear;
+  }
+  .tile:hover { border-color: var(--fog-gray); }
+
+  .tile--w2   { grid-column: span 2; }
+  .tile--tall { grid-row: span 3; }
+
+  .tile-stage { position: absolute; inset: 0; display: block; }
+  .tile-stage canvas { display: block; width: 100%; height: 100%; }
+
+  /* Photographs are left alone — natural, unmanipulated, edge to edge,
+     with no scrim and no overlay treatment. The room is achromatic; the
+     work inside it does not have to be. */
+  .tile-photo {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Caption sits inside the tile at 16px, over the void — no scrim,
+     no gradient overlay. The reference forbids overlay treatments on
+     photography, so photo tiles carry their caption below instead. */
+  .tile-cap {
+    position: absolute;
+    left: var(--s-16);
+    right: var(--s-16);
+    bottom: var(--s-16);
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-16);
+    color: var(--fog-gray);
+    pointer-events: none;
+  }
+  .tile-name { color: var(--bone-white); }
+  .tile-go { opacity: 0; transition: opacity 200ms linear; }
+  .tile:hover .tile-go,
+  .tile:focus-visible .tile-go { opacity: 1; }
+
+  /* ── The one place colour shouts ── */
+  .tile--red {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--s-16);
+  }
+  .tile-shout {
+    display: block;
+    font-size: clamp(38px, 5.2vw, 88px);
+    font-weight: var(--w-light);
+    line-height: 0.92;
+    letter-spacing: var(--tracking-tight);
+    color: var(--scarlet);
+  }
+  html.lang-jp .tile-shout { line-height: 1.1; letter-spacing: 0; }
+
+  /* Type-only tile — a piece with no artwork yet still belongs on the
+     wall; the reference lets one oversized word fill a panel. */
+  .tile--type {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--s-16);
+  }
+  .tile-word {
+    display: block;
+    font-size: clamp(28px, 3.4vw, 64px);
+    font-weight: var(--w-light);
+    line-height: 0.96;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  /* ══ Categories — the five, as a stack ══ */
+  .cats { border-top: 1px solid var(--graphite); }
+
+  .cat {
+    display: grid;
+    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: var(--s-16);
+    padding: var(--s-48) 0;
+    border-bottom: 1px solid var(--graphite);
+  }
+
+  .cat-no { color: var(--graphite); }
+  .cat-name {
+    font-size: clamp(24px, 3.2vw, 56px);
+    font-weight: var(--w-light);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    transition: color 160ms linear;
+  }
+  .cat:hover .cat-name { color: var(--fog-gray); }
+  .cat-count { color: var(--fog-gray); white-space: nowrap; }
+  .cat-desc { grid-column: 2 / -1; color: var(--fog-gray); margin-top: var(--s-16); max-width: 52ch; }
+
+  /* ══ Studio — three columns, left aligned, no boxes ══ */
+  .studio {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap);
+  }
+  .studio p + p { margin-top: var(--s-16); }
+  .studio-col > p { color: var(--fog-gray); }
+  .studio-col strong { color: var(--bone-white); font-weight: var(--w-regular); }
+
+  .studio-label { color: var(--fog-gray); margin-bottom: var(--s-16); }
+
+  .stack { list-style: none; }
+  .stack li { line-height: var(--leading-body); }
+
+  .stats { margin-top: var(--s-48); }
+  .stat + .stat { margin-top: var(--s-16); }
+  .stat dt { color: var(--fog-gray); }
+  .stat dd { color: var(--bone-white); }
+
+  /* ══ Feed — image, then caption. No border, no shadow. ══ */
+  .feed {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--gap) var(--gutter);
+  }
+
+  /* The caption parts are spans inside an anchor, so each one has to be
+     blockified before aspect-ratio and the vertical rhythm apply at all. */
+  .post { display: block; }
+  .post-img {
+    display: block;
+    aspect-ratio: 4 / 3;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--soft-black);
+  }
+  .post-body { display: block; padding: var(--s-16) 0 0; }
+  .post-client {
+    display: block;
+    font-size: var(--text-sub);
+    font-weight: var(--w-regular);
+    line-height: var(--leading-sub);
+    letter-spacing: var(--tracking-sub);
+  }
+  .post-desc { display: block; color: var(--fog-gray); margin-top: var(--s-8); max-width: 46ch; }
+  .post-disc { display: block; color: var(--fog-gray); margin-top: var(--s-16); }
+
+  /* ══ End ══ */
+  .end { padding: 0 var(--measure) var(--break); }
+  .end-line {
+    font-size: clamp(30px, 4.6vw, 80px);
+    font-weight: var(--w-light);
+    line-height: 1;
+    letter-spacing: var(--tracking-tight);
+    max-width: 20ch;
+  }
+  .end-sub { margin-top: var(--gap); max-width: 52ch; color: var(--fog-gray); }
+  .end-actions { display: flex; flex-wrap: wrap; gap: var(--s-48); }
+
+  /* ══ Footer ══ */
+  .footer {
+    border-top: 1px solid var(--graphite);
+    padding: var(--s-16);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s-16);
+    color: var(--fog-gray);
+  }
+  .footer-mark { color: var(--bone-white); }
+  .footer-links { display: flex; flex-wrap: wrap; gap: var(--s-16); list-style: none; }
+  .footer-links a:hover { color: var(--bone-white); }
+
+  /* ══ Language switch ══ */
+  .lang {
+    position: fixed;
+    right: 0;
+    bottom: var(--s-48);
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s-8);
+    padding: var(--s-16) var(--s-8);
+    background: var(--pure-black);
+    border-left: 1px solid var(--graphite);
+    border-top: 1px solid var(--graphite);
+    border-bottom: 1px solid var(--graphite);
+  }
+  .lang button {
+    appearance: none; background: none; border: 0; padding: 0;
+    font: inherit; letter-spacing: inherit;
+    color: var(--graphite); cursor: pointer;
+    transition: color 160ms linear;
+  }
+  .lang button:hover { color: var(--fog-gray); }
+  .lang button.is-active { color: var(--bone-white); }
+  .lang span { color: var(--graphite); }
+
+  /* ══ Responsive ══════════════════════════════════════════════════════
+     Density collapses before the rhythm does — the tile grid narrows
+     first, then the text columns stack. ══ */
+  @media (max-width: 1080px) {
+    .studio { grid-template-columns: 1fr 1fr; }
+    .studio-col:last-child { grid-column: 1 / -1; }
+  }
+
+  @media (max-width: 900px) {
+    .console { grid-template-columns: 1fr; }
+    .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tile--w2 { grid-column: span 2; }
+  }
+
+  @media (max-width: 640px) {
+    .studio, .feed { grid-template-columns: 1fr; }
+    .wall { grid-template-columns: 1fr; }
+    .tile--w2 { grid-column: span 1; }
+    .tile--tall, .tile--wide { aspect-ratio: 4 / 3; }
+    .cat { grid-template-columns: 2.5rem minmax(0, 1fr); }
+    .cat-count { grid-column: 2; }
+    .lang { bottom: 0; flex-direction: row; border-bottom: 0; }
+  }
+
+  /* ══ Reduced motion ══ */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation: none !important; transition: none !important; }
+    .console-caret { opacity: 1; }
+  }
   </style>
 </head>
 <body>
 
-  <!-- ── Nav ── -->
-  <nav class="site-nav">
-    <a href="index.html" class="nav-logo">
-      <span class="nav-logo-name">Takao Umehara</span>
-      <span class="nav-logo-tag">creativity is everywhere</span>
-    </a>
-    <ul class="nav-links" id="primary-nav-links">
-      <li><a href="ai-products.html">Agentic UX</a></li>
-      <li><a href="ai-tools.html">AI Tools</a></li>
+  <!-- ══ Nav ══ -->
+  <nav class="nav">
+    <a href="index.html" class="nav-mark">Takao Umehara</a>
+    <span class="nav-clock" id="nav-clock" aria-hidden="true"></span>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="interactive.html">Interactive Experience</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="ai-tools.html">AI Tools &amp; Skills</a></li>
       <li><a href="work.html">Product Design</a></li>
-      <li><a href="brand.html">Brand &amp; Visual</a></li>
+      <li><a href="brand.html">Branded Experience</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-      <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav-links"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
+      <i></i><i></i><i></i><i></i>
+    </button>
   </nav>
 
-  <!-- ── Hero — Intent Console ── -->
-  <section class="hero hero--console">
-    <p class="hero-id">
-      <b>Takao Umehara</b>
-      <span class="t-en"> · Product Designer, Agentic UX · New York · Creativity Is Everywhere LLC</span>
-      <span class="t-jp"> · プロダクトデザイナー / Agentic UX · ニューヨーク · Creativity Is Everywhere LLC</span>
+  <!-- ══ Hero ══ -->
+  <header class="hero">
+    <p class="eyebrow">
+      <span class="t-en">Product Designer · New York · Creativity Is Everywhere LLC</span>
+      <span class="t-jp">プロダクトデザイナー · ニューヨーク · Creativity Is Everywhere LLC</span>
     </p>
-
-    <h1 class="hero-line">
+    <h1 class="display">
       <span class="t-en">I design how people and AI agents share the work.</span>
       <span class="t-jp">人と AI エージェントが、仕事を分け合う設計をする。</span>
     </h1>
-
     <p class="hero-sub">
       <span class="t-en">Twenty years of shipping products for Amplify, T-Mobile and Verizon, now spent on AI. Below is a console, not a paragraph — pick what you are trying to build and it answers with the evidence.</span>
       <span class="t-jp is-block">Amplify、T-Mobile、Verizon にプロダクトを届けてきた20年を、いまは AI に使っています。以下は文章ではなくコンソールです。作りたいものを選ぶと、説明ではなく証拠が返ります。</span>
     </p>
+  </header>
 
-    <div class="console" id="console">
-      <div class="console-left">
-        <p class="console-label">
-          <span class="t-en">Intent Console — my own framework, running</span>
-          <span class="t-jp">Intent Console — 自分のフレームワークを、動かしています</span>
-        </p>
+  <!-- ══ Intent Console ══ -->
+  <section class="console" id="console" aria-label="Intent console">
+    <div>
+      <p class="console-label">
+        <span class="t-en">Intent Console — my own framework, running</span>
+        <span class="t-jp">Intent Console — 自分のフレームワークを、動かしています</span>
+      </p>
 
-        <div class="console-bar">
-          <span class="console-typed" id="console-typed"
-                data-placeholder-en="What are you trying to build?"
-                data-placeholder-jp="何を作りたいですか？"
-                data-placeholder="What are you trying to build?"></span><span class="console-caret" aria-hidden="true"></span>
-        </div>
-
-        <div class="console-chips" id="console-chips" role="group"
-             aria-label="Pick an intent">
-          <button type="button" class="chip" data-intent="fleet" aria-pressed="true">
-            <span class="t-en">Put AI agents inside my design org</span>
-            <span class="t-jp">AI エージェントを組織に入れたい</span>
-          </button>
-          <button type="button" class="chip" data-intent="proto" aria-pressed="false">
-            <span class="t-en">Build a prototype people can touch</span>
-            <span class="t-jp">触れるプロトタイプが要る</span>
-          </button>
-          <button type="button" class="chip" data-intent="principles" aria-pressed="false">
-            <span class="t-en">Decide our AI design principles first</span>
-            <span class="t-jp">AI の設計原則から決めたい</span>
-          </button>
-          <button type="button" class="chip" data-intent="think" aria-pressed="false">
-            <span class="t-en">Change how my team thinks</span>
-            <span class="t-jp">チームの発想そのものを変えたい</span>
-          </button>
-          <button type="button" class="chip" data-intent="brand" aria-pressed="false">
-            <span class="t-en">Rebuild the brand, not just the UI</span>
-            <span class="t-jp">UI ではなくブランドから作り直したい</span>
-          </button>
-        </div>
-
-        <p class="console-note">
-          <span class="t-en">Five routes. Every answer is a real project with a link — nothing here is a mock-up.</span>
-          <span class="t-jp is-block">5つのルート。返ってくるのはすべて実在のプロジェクトとリンクです。ダミーはありません。</span>
-        </p>
+      <div class="console-bar">
+        <span class="console-typed" id="console-typed"
+              data-placeholder-en="What are you trying to build?"
+              data-placeholder-jp="何を作りたいですか？"
+              data-placeholder="What are you trying to build?"></span><span class="console-caret" aria-hidden="true"></span>
       </div>
 
-      <div class="console-right">
-        <div class="route" id="console-route" aria-hidden="true">
-          <span class="route-step is-lit">Intent</span>
-          <span class="route-arrow">→</span>
-          <span class="route-step is-lit">Context</span>
-          <span class="route-arrow">→</span>
-          <span class="route-step is-lit">Match</span>
-          <span class="route-arrow">→</span>
-          <span class="route-step is-lit">Evidence</span>
-        </div>
-
-        <div class="answer" id="console-answer" aria-live="polite">
-          <span class="answer-badge" id="answer-badge">Enterprise · Shipped</span>
-          <p class="answer-name" id="answer-name">Verizon AI Workflow</p>
-          <p class="answer-line" id="answer-line">A 10-agent fleet built inside Verizon’s design organisation — briefing, research synthesis, spec writing and QA, handled by agents designers actually use.</p>
-          <div class="answer-metrics" id="answer-metrics">
-            <div class="metric"><span class="metric-v">10</span><span class="metric-k">agents</span></div>
-            <div class="metric"><span class="metric-v">42</span><span class="metric-k">designers</span></div>
-            <div class="metric"><span class="metric-v">6</span><span class="metric-k">brands</span></div>
-          </div>
-          <a class="answer-link" id="answer-link" href="projects/verizon-ai-agents.html">Read the case study →</a>
-        </div>
+      <div class="console-chips" id="console-chips" role="group" aria-label="Pick an intent">
+        <button type="button" class="chip" data-intent="fleet" aria-pressed="true">
+          <span class="t-en">Put AI agents inside my design org</span>
+          <span class="t-jp">AI エージェントを組織に入れたい</span>
+        </button>
+        <button type="button" class="chip" data-intent="proto" aria-pressed="false">
+          <span class="t-en">Build a prototype people can touch</span>
+          <span class="t-jp">触れるプロトタイプが要る</span>
+        </button>
+        <button type="button" class="chip" data-intent="principles" aria-pressed="false">
+          <span class="t-en">Decide our AI design principles first</span>
+          <span class="t-jp">AI の設計原則から決めたい</span>
+        </button>
+        <button type="button" class="chip" data-intent="think" aria-pressed="false">
+          <span class="t-en">Change how my team thinks</span>
+          <span class="t-jp">チームの発想そのものを変えたい</span>
+        </button>
+        <button type="button" class="chip" data-intent="brand" aria-pressed="false">
+          <span class="t-en">Rebuild the brand, not just the UI</span>
+          <span class="t-jp">UI ではなくブランドから作り直したい</span>
+        </button>
       </div>
-    </div>
 
-    <div class="hero-actions">
-      <a href="contact.html" class="btn-primary">
-        <span class="t-en">Start a project</span><span class="t-jp">プロジェクトを相談する</span>
-      </a>
-      <a href="work.html" class="hero-alt">
-        <span class="t-en">Or see the 20 years behind it →</span>
-        <span class="t-jp">その土台になっている20年を見る →</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ── Proof strip ── -->
-  <div class="proof">
-    <div class="proof-inner">
-      <div class="proof-nums">
-        <div class="proof-num">
-          <b>20</b><span><span class="t-en">years shipping</span><span class="t-jp">年、出荷し続けて</span></span>
-        </div>
-        <div class="proof-num">
-          <b>10</b><span><span class="t-en">agents in production</span><span class="t-jp">エージェントが稼働中</span></span>
-        </div>
-        <div class="proof-num">
-          <b>42</b><span><span class="t-en">designers affected</span><span class="t-jp">名のデザイナーに影響</span></span>
-        </div>
-        <div class="proof-num">
-          <b>4</b><span><span class="t-en">demos you can open now</span><span class="t-jp">つ、いま開けるデモ</span></span>
-        </div>
-      </div>
-      <p class="proof-clients">
-        <span class="t-en"><b>Products shipped for</b> Amplify · T-Mobile · Verizon · Coca-Cola · Carnegie Foundation · XQ<br><b>BreakBias run for</b> Microsoft · Tiffany &amp; Co. · Havas · Dentsu · Google</span>
-        <span class="t-jp is-block"><b>プロダクトを届けた先</b> Amplify · T-Mobile · Verizon · Coca-Cola · Carnegie Foundation · XQ<br><b>BreakBias 実施先</b> Microsoft · Tiffany &amp; Co. · Havas · 電通 · Google</span>
+      <p class="console-note">
+        <span class="t-en">Five routes. Every answer is a real project with a link — nothing here is a mock-up.</span>
+        <span class="t-jp is-block">5つのルート。返ってくるのはすべて実在のプロジェクトとリンクです。ダミーはありません。</span>
       </p>
     </div>
-  </div>
 
-  <!-- ── Agentic UX ── -->
-  <section class="ai-section" id="agentic-ux">
+    <div>
+      <div class="route" id="console-route" aria-hidden="true">
+        <span class="route-step is-lit">Intent</span>
+        <span class="route-arrow">→</span>
+        <span class="route-step is-lit">Context</span>
+        <span class="route-arrow">→</span>
+        <span class="route-step is-lit">Match</span>
+        <span class="route-arrow">→</span>
+        <span class="route-step is-lit">Evidence</span>
+      </div>
+
+      <div class="answer" id="console-answer" aria-live="polite">
+        <span class="answer-badge" id="answer-badge">Enterprise · Shipped</span>
+        <p class="answer-name" id="answer-name">Verizon AI Workflow</p>
+        <p class="answer-line" id="answer-line">A 10-agent fleet built inside Verizon’s design organisation — briefing, research synthesis, spec writing and QA, handled by agents designers actually use.</p>
+        <div class="answer-metrics" id="answer-metrics">
+          <div class="metric"><span class="metric-v">10</span><span class="metric-k">agents</span></div>
+          <div class="metric"><span class="metric-v">42</span><span class="metric-k">designers</span></div>
+          <div class="metric"><span class="metric-v">6</span><span class="metric-k">brands</span></div>
+        </div>
+        <a class="dot-link" id="answer-link" href="projects/verizon-ai-agents.html"><span>Read the case study →</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ The wall ═════════════════════════════════════════════════════
+       Every tile with a canvas is live code drawing right now, at tile
+       size. The photographs sit at the same plane — no elevation, no
+       chrome, the edge of the artwork is the edge of the card. ══ -->
+  <section class="section section--bleed" id="wall" aria-labelledby="wall-title">
     <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">Agentic UX — research, shipped, prototyped</span>
-        <span class="t-jp">Agentic UX — 研究し、導入し、動かす</span>
+      <h2 class="section-title" id="wall-title">
+        <span class="t-en">Running right now</span>
+        <span class="t-jp">いま動いています</span>
       </h2>
-      <a href="ai-products.html" class="section-link">
-        <span class="t-en">All Agentic UX work →</span>
-        <span class="t-jp">Agentic UX をすべて見る →</span>
-      </a>
+      <p class="section-note">
+        <span class="t-en">Not screenshots. Every tile with motion is live code drawing in your browser at this moment. Six of them open as full apps in one tap.</span>
+        <span class="t-jp is-block">スクリーンショットではありません。動いているタイルはすべて、いまブラウザで描画されているコードです。うち6つはワンタップで本体が開きます。</span>
+      </p>
     </div>
-    <div class="spine">
-      <span class="spine-item"><span class="t-en">01 · Research the framework</span><span class="t-jp">01 · 原則を研究する</span></span>
-      <span class="spine-sep">→</span>
-      <span class="spine-item"><span class="t-en">02 · Ship it at enterprise scale</span><span class="t-jp">02 · 企業規模で導入する</span></span>
-      <span class="spine-sep">→</span>
-      <span class="spine-item"><span class="t-en">03 · Prove it in something you can touch</span><span class="t-jp">03 · 触れるもので証明する</span></span>
-    </div>
-    <p class="ai-intro">
-      <span class="t-en">Most people working in this space do one of these three. Doing all three is the point: the framework is what makes the enterprise rollout survive contact with 42 designers, and the prototypes are what stop the framework from being a slide deck.</span>
-      <span class="t-jp is-block">この領域の多くの人は、3つのうち1つをやっています。3つ全部やることに意味があります。原則があるから42名のデザイナーに配っても崩れない。動くものがあるから原則がスライドで終わらない。</span>
-    </p>
-    <div class="ai-grid">
 
-      <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="ai-card">
-        <span class="ai-badge case"><span class="t-en">Research · Framework</span><span class="t-jp">研究・フレームワーク</span></span>
-        <div class="ai-name">intentfirst.ai</div>
-        <p class="ai-tagline">
-          <span class="t-en">Start from intent, not screens — a design framework for the AI era.</span>
-          <span class="t-jp is-block">画面ではなく意図から始める、AI 時代のデザインフレームワーク。</span>
-        </p>
-        <div class="ai-card-foot">
-          <span class="ai-stack">Context Grammar · 8 Context Tokens</span>
-          <span class="ai-arrow">↗</span>
-        </div>
+    <div class="wall">
+
+      <a class="tile tile--w2" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener">
+        <span class="tile-stage"><canvas data-play="typespace" aria-hidden="true"></canvas></span>
+        <span class="tile-cap">
+          <span class="tile-name">Typespace</span>
+          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
+        </span>
       </a>
 
-      <a href="projects/verizon-ai-agents.html" class="ai-card is-case">
-        <div class="ai-thumb" style="background-image:url('assets/verizon-ai-agents/hero-agents-network.jpg');"></div>
-        <span class="ai-badge case"><span class="t-en">Enterprise · Shipped</span><span class="t-jp">エンタープライズ・導入済み</span></span>
-        <div class="ai-name">Verizon AI Workflow</div>
-        <p class="ai-tagline">
-          <span class="t-en">A 10-agent fleet changing how 42 designers work across 6 brands.</span>
-          <span class="t-jp is-block">42 名・6 ブランドのデザイン組織の働き方を変えた 10 エージェントの艦隊。</span>
-        </p>
-        <div class="ai-card-foot">
-          <span class="ai-stack">Agent fleet · Design Ops</span>
-          <span class="ai-arrow">→</span>
-        </div>
+      <a class="tile tile--red" href="https://intentfirst.ai" target="_blank" rel="noopener">
+        <span class="tile-shout">
+          <span class="t-en">Intent<br>first.</span>
+          <span class="t-jp">意図が<br>先。</span>
+        </span>
+        <span class="dot-link" style="margin-top:0;">
+          <span class="t-en">Read the framework ↗</span><span class="t-jp">フレームワークを読む ↗</span>
+        </span>
       </a>
 
-      <a href="projects/amazon-firetv.html" class="ai-card">
-        <span class="ai-badge proto"><span class="t-en">Live prototype</span><span class="t-jp">公開中のプロトタイプ</span></span>
-        <div class="ai-name">Amazon Shopping on Fire TV</div>
-        <p class="ai-tagline">
-          <span class="t-en">Agentic commerce for the living room — Alexa voice, phone as remote, one-scan pairing.</span>
-          <span class="t-jp is-block">リビングのエージェンティック・コマース。Alexa 音声、スマホがリモコンに、ワンスキャンで接続。</span>
-        </p>
-        <div class="ai-card-foot">
-          <span class="ai-stack">
-            <span class="t-en">Independent concept · Voice UX · Snap Pair</span>
-            <span class="t-jp">自主制作コンセプト · 音声 UX · Snap Pair</span>
-          </span>
-          <span class="ai-arrow">→</span>
-        </div>
+      <a class="tile tile--tall" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener">
+        <span class="tile-stage"><canvas data-play="rakugaki" aria-hidden="true"></canvas></span>
+        <span class="tile-cap">
+          <span class="tile-name">Rakugaki Jam</span>
+          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
+        </span>
+      </a>
+
+      <a class="tile tile--w2" href="projects/verizon-ai-agents.html">
+        <span class="tile-photo" style="background-image:url('assets/verizon-ai-agents/hero-agents-network.jpg');"></span>
+        <span class="tile-cap">
+          <span class="tile-name">Verizon AI Workflow</span>
+          <span class="tile-go"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></span>
+        </span>
+      </a>
+
+      <a class="tile" href="https://resona-motion.vercel.app" target="_blank" rel="noopener">
+        <span class="tile-stage"><canvas data-play="resona" aria-hidden="true"></canvas></span>
+        <span class="tile-cap">
+          <span class="tile-name">Resona 響</span>
+          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
+        </span>
+      </a>
+
+      <a class="tile" href="https://marubatsu20.vercel.app/" target="_blank" rel="noopener">
+        <span class="tile-stage"><canvas data-play="marubatsu" aria-hidden="true"></canvas></span>
+        <span class="tile-cap">
+          <span class="tile-name">Marubatsu 2.0</span>
+          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
+        </span>
+      </a>
+
+      <a class="tile" href="https://emoji-drop-ultimate.vercel.app" target="_blank" rel="noopener">
+        <span class="tile-stage"><canvas data-play="emojidrop" aria-hidden="true"></canvas></span>
+        <span class="tile-cap">
+          <span class="tile-name">EmojiDrop</span>
+          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
+        </span>
+      </a>
+
+      <a class="tile" href="interactive.html">
+        <span class="tile-stage"><canvas data-play="koebaku" aria-hidden="true"></canvas></span>
+        <span class="tile-cap">
+          <span class="tile-name">Koe Baku 声爆</span>
+          <span class="tile-go"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></span>
+        </span>
+      </a>
+
+      <a class="tile tile--type tile--w2" href="https://kao-game.vercel.app" target="_blank" rel="noopener">
+        <span class="tile-word">
+          <span class="t-en">Your face is<br>the controller.</span>
+          <span class="t-jp">顔が、<br>コントローラー。</span>
+        </span>
+        <span class="tile-cap" style="position:static;">
+          <span class="tile-name">Kao Game 顔ゲーム</span>
+          <span class="tile-go" style="opacity:1;"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
+        </span>
       </a>
 
     </div>
   </section>
 
-  <!-- ── Playable proof — the interactive band ── -->
-  <section class="band" id="playable">
+  <!-- ══ The five ══ -->
+  <section class="section" id="categories" aria-labelledby="cats-title">
     <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">These are running right now</span>
-        <span class="t-jp">これは、いま動いています</span>
+      <h2 class="section-title" id="cats-title">
+        <span class="t-en">Five kinds of work</span>
+        <span class="t-jp">5つの仕事</span>
       </h2>
-      <a href="ai-products.html#snap-title" class="section-link">
-        <span class="t-en">All interactive work →</span>
-        <span class="t-jp">インタラクティブ作品をすべて見る →</span>
-      </a>
-    </div>
-    <p class="band-lede">
-      <span class="t-en">Not screenshots. Every tile below is live code drawing in your browser at this moment — the same behaviour as the real thing, running at tile size. Move your cursor across them. Five of them open as full apps in one tap, and you can put them on a room full of phones with a QR code.</span>
-      <span class="t-jp is-block">スクリーンショットではありません。下のタイルはすべて、いまこの瞬間あなたのブラウザで描画されているコードです。実物と同じ挙動を、タイルの大きさで動かしています。カーソルを乗せてみてください。うち5つはワンタップで本体が開き、QR コードでその場のスマホ全部に配れます。</span>
-    </p>
-
-    <div class="play-grid">
-
-      <a class="play-tile" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener">
-        <div class="play-stage"><canvas data-play="typespace" aria-hidden="true"></canvas>
-          <span class="play-hint"><span class="t-en">Words become constellations</span><span class="t-jp">言葉が星座になる</span></span>
-        </div>
-        <div class="play-body">
-          <h3 class="play-name">Typespace</h3>
-          <p class="play-desc">
-            <span class="t-en">Type a word and it forms a constellation, then drifts back to the cosmos. No AI here — just WebGL and patience.</span>
-            <span class="t-jp is-block">言葉を打つと星座を結び、やがて宇宙へ還る。AI は使っていません — WebGL と根気だけ。</span>
-          </p>
-        </div>
-        <div class="play-foot">
-          <span class="play-stack">Next.js · r3f · GLSL</span>
-          <span class="play-go"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></span>
-        </div>
-      </a>
-
-      <a class="play-tile" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener">
-        <div class="play-stage"><canvas data-play="rakugaki" aria-hidden="true"></canvas>
-          <span class="play-hint"><span class="t-en">Drag inside the tile to draw</span><span class="t-jp">タイルの中をなぞると描けます</span></span>
-        </div>
-        <div class="play-body">
-          <h3 class="play-name">Rakugaki Jam</h3>
-          <p class="play-desc">
-            <span class="t-en">Doodle on your phone, fling it onto the shared wall. A crowd-drawn VJ jam that needs no app install.</span>
-            <span class="t-jp is-block">スマホで落書きして、みんなの壁画面へ投げ込む。アプリ不要で、観客みんなで描く VJ ジャム。</span>
-          </p>
-        </div>
-        <div class="play-foot">
-          <span class="play-stack">Snap Pair · Firebase RTDB</span>
-          <span class="play-go"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></span>
-        </div>
-      </a>
-
-      <a class="play-tile" href="https://resona-motion.vercel.app" target="_blank" rel="noopener">
-        <div class="play-stage"><canvas data-play="resona" aria-hidden="true"></canvas>
-          <span class="play-hint"><span class="t-en">Motion that has weight</span><span class="t-jp">重さのある動き</span></span>
-        </div>
-        <div class="play-body">
-          <h3 class="play-name">Resona <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);">響</span></h3>
-          <p class="play-desc">
-            <span class="t-en">Pseudo-haptics: animation that makes you feel mass and friction through a screen that has neither.</span>
-            <span class="t-jp is-block">擬似ハプティクス。質量も摩擦もない画面越しに、それを感じさせる動きの実験場。</span>
-          </p>
-        </div>
-        <div class="play-foot">
-          <span class="play-stack">Web animation · Pseudo-haptics</span>
-          <span class="play-go"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></span>
-        </div>
-      </a>
-
-      <a class="play-tile" href="https://marubatsu20.vercel.app/" target="_blank" rel="noopener">
-        <div class="play-stage"><canvas data-play="marubatsu" aria-hidden="true"></canvas>
-          <span class="play-hint"><span class="t-en">Playing itself</span><span class="t-jp">勝手に対戦しています</span></span>
-        </div>
-        <div class="play-body">
-          <h3 class="play-name">Marubatsu 2.0</h3>
-          <p class="play-desc">
-            <span class="t-en">Real-time online tic-tac-toe with an AI opponent — the smallest complete multiplayer product I could build.</span>
-            <span class="t-jp is-block">AI 対戦もできる、リアルタイム・オンライン対戦の○×。作れる限り最小の「完成したマルチプレイ製品」。</span>
-          </p>
-        </div>
-        <div class="play-foot">
-          <span class="play-stack">Next.js 16 · Firebase · Gemini</span>
-          <span class="play-go"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></span>
-        </div>
-      </a>
-
-      <a class="play-tile" href="ai-products.html#snap-title">
-        <div class="play-stage"><canvas data-play="koebaku" aria-hidden="true"></canvas>
-          <span class="play-hint"><span class="t-en">Your voice, as onomatopoeia</span><span class="t-jp">声が、擬音になる</span></span>
-        </div>
-        <div class="play-body">
-          <h3 class="play-name">Koe Baku <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);">声爆</span></h3>
-          <p class="play-desc">
-            <span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on the big screen. Measured on-device — no audio ever leaves the phone.</span>
-            <span class="t-jp is-block">叫べば、声が漫画の擬音になって大画面で弾ける。判定は端末内で完結し、音声は外に出ません。</span>
-          </p>
-        </div>
-        <div class="play-foot">
-          <span class="play-stack">Snap Pair · Web Audio · Canvas</span>
-          <span class="play-go is-static"><span class="t-en">Case study →</span><span class="t-jp">解説を見る →</span></span>
-        </div>
-      </a>
-
-      <a class="play-tile" href="https://emoji-drop-ultimate.vercel.app" target="_blank" rel="noopener">
-        <div class="play-stage"><canvas data-play="emojidrop" aria-hidden="true"></canvas>
-          <span class="play-hint"><span class="t-en">Up to four players</span><span class="t-jp">最大4人で対戦</span></span>
-        </div>
-        <div class="play-body">
-          <h3 class="play-name">EmojiDrop</h3>
-          <p class="play-desc">
-            <span class="t-en">An emoji-only arcade shooter for up to four players at once, over WebRTC. One file.</span>
-            <span class="t-jp is-block">絵文字だけの対戦アーケードシューター。WebRTC で最大4人同時プレイ。ファイル1つ。</span>
-          </p>
-        </div>
-        <div class="play-foot">
-          <span class="play-stack">Canvas · WebRTC · single file</span>
-          <span class="play-go"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></span>
-        </div>
-      </a>
-
     </div>
 
-    <div class="snap-banner">
-      <div class="snap-copy">
-        <h3><span class="t-en">The thing underneath all of them: Snap Pair</span><span class="t-jp">全部の下にあるもの — Snap Pair</span></h3>
+    <div class="cats">
+      <a class="cat" href="interactive.html">
+        <span class="cat-no">01</span>
+        <span class="cat-name"><span class="t-en">Interactive Experience</span><span class="t-jp">インタラクティブ体験</span></span>
+        <span class="cat-count">8</span>
+        <span class="cat-desc"><span class="t-en">Your voice, your face, your body, your handwriting, or every phone in the room at once — used as the input.</span><span class="t-jp is-block">声、表情、身体、手描きの線、あるいはその場のスマホ全部を、入力として使う。</span></span>
+      </a>
+      <a class="cat" href="ai-products.html">
+        <span class="cat-no">02</span>
+        <span class="cat-name"><span class="t-en">AI Products</span><span class="t-jp">AI プロダクト</span></span>
+        <span class="cat-count">5</span>
+        <span class="cat-desc"><span class="t-en">Products where the AI is inside the thing rather than bolted next to it — designed and built, not specified and handed off.</span><span class="t-jp is-block">AI が製品の隣ではなく中に入っているもの。仕様を渡すのではなく、設計して実装する。</span></span>
+      </a>
+      <a class="cat" href="ai-tools.html">
+        <span class="cat-no">03</span>
+        <span class="cat-name"><span class="t-en">AI Tools &amp; Skills</span><span class="t-jp">AI ツール・スキル</span></span>
+        <span class="cat-count">7</span>
+        <span class="cat-desc"><span class="t-en">The tools I build to do the work — Claude skills, CLIs and libraries, all of them in daily use before anyone else sees them.</span><span class="t-jp is-block">仕事のために自分で作る道具。Claude スキル、CLI、ライブラリ。どれも公開前から毎日使っています。</span></span>
+      </a>
+      <a class="cat" href="work.html">
+        <span class="cat-no">04</span>
+        <span class="cat-name"><span class="t-en">Product Design</span><span class="t-jp">プロダクトデザイン</span></span>
+        <span class="cat-count">13</span>
+        <span class="cat-desc"><span class="t-en">Twenty years of client work — EdTech, telecom, retail CX and design systems, research through launch.</span><span class="t-jp is-block">20年分のクライアントワーク。EdTech、通信、リテール CX、デザインシステム。調査から公開まで。</span></span>
+      </a>
+      <a class="cat" href="brand.html">
+        <span class="cat-no">05</span>
+        <span class="cat-name"><span class="t-en">Branded Experience</span><span class="t-jp">ブランド体験</span></span>
+        <span class="cat-count">12</span>
+        <span class="cat-desc"><span class="t-en">Identity, campaign worlds, space and film — the brand as something people walk into, not a logo sheet.</span><span class="t-jp is-block">アイデンティティ、キャンペーンの世界観、空間、映像。ロゴ集ではなく、人が入っていける場所としてのブランド。</span></span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ Studio ══ -->
+  <section class="section" id="studio" aria-labelledby="studio-title">
+    <div class="section-head">
+      <h2 class="section-title" id="studio-title">
+        <span class="t-en">Studio</span>
+        <span class="t-jp">スタジオ</span>
+      </h2>
+      <a class="dot-link" style="margin-top:0;" href="about.html">
+        <span><span class="t-en">Full background →</span><span class="t-jp">経歴を詳しく →</span></span>
+      </a>
+    </div>
+
+    <div class="studio">
+      <div class="studio-col">
         <p>
-          <span class="t-en">Scan one QR code and every phone in the room joins the same live session. No app store, no accounts, no setup on the day. I built it as a reusable library because I kept rebuilding it for each installation — it is now the reason a workshop, a party game and a VJ wall can all be demoed in the first two minutes of a meeting.</span>
-          <span class="t-jp is-block">QR コードを1つ読むだけで、その場のスマホ全部が同じライブセッションに参加します。アプリストアもアカウントも当日のセットアップも不要。毎回作り直していたので、再利用できるライブラリにしました。おかげでワークショップもパーティゲームも VJ の壁も、打ち合わせの最初の2分でデモできます。</span>
+          <span class="t-en">I started in Tokyo and have spent the last twenty years in New York. At <strong>Amplify</strong> I designed learning experiences used by millions of children; at <strong>T-Mobile</strong> a buy-online-pick-up-in-store system spanning kiosk, staff app and voice; at <strong>Verizon</strong> the post-login experience for a prepaid platform with millions of subscribers.</span>
+          <span class="t-jp is-block">東京で始め、この20年はニューヨークにいます。<strong>Amplify</strong> では数百万人の子どもが使う学習体験を、<strong>T-Mobile</strong> ではキオスク・店員アプリ・音声にまたがる店舗受け取り体験を、<strong>Verizon</strong> では数百万契約のプリペイド基盤のログイン後体験を設計しました。</span>
         </p>
-        <a href="ai-tools.html#snap-pair"><span class="t-en">How Snap Pair works →</span><span class="t-jp">Snap Pair の仕組み →</span></a>
-      </div>
-      <div class="snap-diagram" aria-hidden="true">
-        <span class="snap-phone"></span>
-        <span class="snap-phone"></span>
-        <span class="snap-phone"></span>
-        <span class="snap-screen"></span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── AI Tools ── -->
-  <section class="tools-section" id="ai-tools" aria-labelledby="ai-tools-title">
-    <div class="section-head tools-head">
-      <div>
-        <h2 class="section-title" id="ai-tools-title"><span class="t-en">I don’t just use AI tools. I build them.</span><span class="t-jp">AI を使うだけでなく、AI の道具をつくる。</span></h2>
-        <p class="tools-intro">
-          <span class="t-en">Six open-source tools that agents run — Claude skills, a CLI, a realtime library. This is what separates “designs for AI” from “has shipped the thing the AI runs on”. All MIT, all installable today.</span>
-          <span class="t-jp is-block">エージェントが実行する、6つのオープンソースの道具。Claude スキル、CLI、リアルタイムライブラリ。「AI 向けにデザインする」と「AI が動く土台そのものを出荷した」を分けるのがここです。すべて MIT、今日インストールできます。</span>
-        </p>
-      </div>
-      <a href="ai-tools.html" class="section-link">
-        <span class="t-en">Explore AI tools →</span>
-        <span class="t-jp">AI Tools を見る →</span>
-      </a>
-    </div>
-
-    <div class="tools-list">
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--snap" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">01</p>
-            <h3 class="tools-name">Snap Pair</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Every phone in the room joins your app in one scan.</span>
-              <span class="t-jp is-block">その場のスマホが、ワンスキャンでアプリの一部になる。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Realtime library · React + Firebase · Claude skill</p>
-          <p class="tools-stack">Firebase Auth · Cloud Functions · Realtime Database</p>
-          <a href="ai-tools.html#snap-pair" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--superforge" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">02</p>
-            <h3 class="tools-name">superforge</h3>
-            <p class="tools-outcome">
-              <span class="t-en">One sentence in. Twelve skills take it from idea to ship.</span>
-              <span class="t-jp is-block">一文を渡せば、12 のスキルが着想から公開まで運ぶ。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Skill system · 12 Claude Code skills · Model routing</p>
-          <p class="tools-stack">Codex / Gemini / Kimi mapping · docs/ output · MIT</p>
-          <a href="ai-tools.html#superforge" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--handoff" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">03</p>
-            <h3 class="tools-name">cross-model-handoff</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Switch AI tools mid-task. Keep the whole context.</span>
-              <span class="t-jp is-block">AI ツールを途中で乗り換えても、文脈はそのまま。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Claude Code plugin · Skill system · Codex / Gemini / Cursor</p>
-          <p class="tools-stack">AGENTS.md · Claude Code hooks · Markdown</p>
-          <a href="ai-tools.html#cross-model-handoff" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--fail" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">04</p>
-            <h3 class="tools-name">failforward</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Your coding agent stops repeating yesterday's mistakes.</span>
-              <span class="t-jp is-block">エージェントが、昨日と同じ失敗を繰り返さなくなる。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">CLI · Claude Code skill + hook · Codex / Gemini ready</p>
-          <p class="tools-stack">Python stdlib · Markdown store · MIT</p>
-          <a href="ai-tools.html#failforward" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--readme" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">05</p>
-            <h3 class="tools-name">multilingual-readme</h3>
-            <p class="tools-outcome">
-              <span class="t-en">A README a stranger understands in ten seconds — technical or not.</span>
-              <span class="t-jp is-block">初めて見た人が 10 秒で分かる README を、技術者かどうかを問わず。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">Claude Code skill · EN · 日本語 · 简体中文 · Español · 한국어</p>
-          <p class="tools-stack">Source inspection · check_readme.py · MIT</p>
-          <a href="ai-tools.html#multilingual-readme" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="tools-row">
-        <div class="tools-primary">
-          <div class="tools-swatch tools-swatch--motionskills" aria-hidden="true"></div>
-          <div>
-            <p class="tools-index" aria-hidden="true">06</p>
-            <h3 class="tools-name">interactive-experience-skills</h3>
-            <p class="tools-outcome">
-              <span class="t-en">Settle artwork-or-tool first, then answer in lumens and milliseconds.</span>
-              <span class="t-jp is-block">作品か道具かを先に決め、そのあとルーメンとミリ秒で答える。</span>
-            </p>
-          </div>
-        </div>
-        <div class="tools-meta">
-          <p class="tools-classification">3 Claude Code skills · Camera &amp; sensors · Human movement</p>
-          <p class="tools-stack">Director + 2 specialists · 2 commands · MIT</p>
-          <a href="ai-tools.html#interactive-experience-skills" class="tools-link">
-            <span class="t-en">View project →</span><span class="t-jp">プロジェクトを見る →</span>
-          </a>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <!-- ── Featured Work ── -->
-  <section class="work-section" id="selected-work">
-    <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">The 20 years the AI work stands on</span>
-        <span class="t-jp">AI の仕事が乗っている、20年の土台</span>
-      </h2>
-      <a href="work.html" class="section-link">
-        <span class="t-en">All projects →</span><span class="t-jp">すべての実績 →</span>
-      </a>
-    </div>
-    <p class="band-lede">
-      <span class="t-en">Agentic UX is new. Knowing what a classroom of thirty children does to an interface, or what a 150-year-old shop loses when you modernise it, is not — and it is the part that decides whether the AI work is any good.</span>
-      <span class="t-jp is-block">Agentic UX は新しい。けれど、30人の教室がインターフェースに何をするか、150年の店を現代化すると何が失われるか — これは新しくありません。そして AI の仕事の良し悪しを決めるのは、こちらです。</span>
-    </p>
-
-    <div class="project-grid" id="project-grid">
-
-      <!-- 1. ELA Quests — Featured (spans 2 cols) -->
-      <article class="work-card is-featured" tabindex="0" data-href="projects/ela-quests.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1020">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/Quest_teaser_tr.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="560"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">EdTech</span><span class="pill text-reactive">Product Design</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="760"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Amplify ELA Quests</div></div></div>
-          <div class="rr" data-role="body" data-speed="900"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Immersive in-classroom learning experiences using AR and storytelling, reaching millions of students across the US.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="640"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Amplify Education</div></div></div>
-          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- 2. Verizon TotalWireless -->
-      <article class="work-card" tabindex="0" data-href="projects/verizon-totalwireless.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1060">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png'); background-position: center top;"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="580"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Telecom</span><span class="pill text-reactive">UX Design</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="790"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Verizon TotalWireless</div></div></div>
-          <div class="rr" data-role="body" data-speed="930"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Post-login experience design for a major prepaid wireless platform — streamlining account management for millions of subscribers.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Verizon / TotalWireless</div></div></div>
-          <div class="rr" data-role="meta" data-speed="680"><div class="cover"></div><div class="inner"><div class="meta text-reactive">UX Design</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- 3. T-Mobile BOPIS -->
-      <article class="work-card" tabindex="0" data-href="projects/tmobile.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1040">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/M−Mobile_teaser2.jpg')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="570"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Retail CX</span><span class="pill text-reactive">Multi-touchpoint</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="780"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">T-Mobile BOPIS</div></div></div>
-          <div class="rr" data-role="body" data-speed="920"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">An integrated Buy Online Pick Up In Store system — kiosk, staff app, and voice AI — that made T-Mobile a preferred innovation partner.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="650"><div class="cover"></div><div class="inner"><div class="meta text-reactive">T-Mobile</div></div></div>
-          <div class="rr" data-role="meta" data-speed="670"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead UX</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- 4. CLI Studios -->
-      <article class="work-card" tabindex="0" data-href="projects/cli-studios.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1030">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/cli-studios/CLI_UI_Screens.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="560"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">App Design</span><span class="pill text-reactive">Design System</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="760"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">CLI Studios App</div></div></div>
-          <div class="rr" data-role="body" data-speed="900"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Complete mobile app redesign — heuristic analysis, IA restructuring, and a design system that reduced future dev time by 25%.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="640"><div class="cover"></div><div class="inner"><div class="meta text-reactive">CLI Studios</div></div></div>
-          <div class="rr" data-role="meta" data-speed="660"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- 5. Web3 Custodial Wallet -->
-      <article class="work-card" tabindex="0" data-href="projects/web3-wallet.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1010">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/EventStack-Mobile.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="555"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Web3</span><span class="pill text-reactive">Award</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="755"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Web3 Custodial Wallet</div></div></div>
-          <div class="rr" data-role="body" data-speed="895"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">NFT-enhanced event management wallet. 2023 Merit Gold Award — Metaverse &amp; AI.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="635"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Lead Designer</div></div></div>
-          <div class="rr" data-role="meta" data-speed="655"><div class="cover"></div><div class="inner"><div class="meta text-reactive">2023</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- 6. Kitadoko -->
-      <article class="work-card" tabindex="0" data-href="projects/kitadoko.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1050">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/Space_Design_kitadoko.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="565"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Rebranding</span><span class="pill text-reactive">Service Design</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">Kitadoko</div></div></div>
-          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">A 150-year-old hair salon rebranded end to end. Female clientele grew 10%→50%, repeat rate 0%→90%.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="645"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Kitadoko Hair Salon</div></div></div>
-          <div class="rr" data-role="meta" data-speed="665"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Creative Director</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- 7. KOJI FIZZ -->
-      <article class="work-card" tabindex="0" data-href="projects/koji-fizz.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1050">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/Screenshot_2023-12-21_at_9.53.28_PM.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="565"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Film</span><span class="pill text-reactive">Brand</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="770"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">KOJI FIZZ Films</div></div></div>
-          <div class="rr" data-role="body" data-speed="910"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Produced a short film series featuring New York designers and artists, showcasing KOJI FIZZ's influence on creative life and work.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="645"><div class="cover"></div><div class="inner"><div class="meta text-reactive">See the Sun / KOJI FIZZ</div></div></div>
-          <div class="rr" data-role="meta" data-speed="665"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Film Producer</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-      <!-- 8. extra•ordinary -->
-      <article class="work-card" tabindex="0" data-href="projects/extraordinary.html">
-        <div class="card-image">
-          <div class="rr" data-role="image" data-speed="1015">
-            <div class="cover"></div>
-            <div class="inner">
-              <div class="card-img-bg" style="background-image: url('assets/shared/exmag-01.png')"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="rr" data-role="meta" data-speed="552"><div class="cover"></div><div class="inner"><div class="chips"><span class="pill text-reactive">Book</span><span class="pill text-reactive">Art Direction</span></div></div></div>
-          <div class="rr" data-role="title" data-speed="752"><div class="cover"></div><div class="inner"><div class="card-title text-reactive">extra•ordinary</div></div></div>
-          <div class="rr" data-role="body" data-speed="892"><div class="cover"></div><div class="inner"><div class="card-desc text-reactive">Co-authored and art-directed a book on everyday creativity published by Rockport. Over 11,000 copies sold worldwide.</div></div></div>
-        </div>
-        <div class="card-footer">
-          <div class="rr" data-role="meta" data-speed="632"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Rockport Publishing</div></div></div>
-          <div class="rr" data-role="meta" data-speed="652"><div class="cover"></div><div class="inner"><div class="meta text-reactive">Co-author &amp; Designer</div></div></div>
-        </div>
-        <div class="press-frame"></div>
-      </article>
-
-    </div><!-- /project-grid -->
-  </section>
-
-  <!-- ── What you can actually commission ── -->
-  <section class="band" id="hire">
-    <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">What you can actually put on a contract</span>
-        <span class="t-jp">実際に発注できる形</span>
-      </h2>
-      <a href="contact.html" class="section-link">
-        <span class="t-en">Start a project →</span><span class="t-jp">相談する →</span>
-      </a>
-    </div>
-
-    <div class="hire-grid">
-      <div class="hire-block">
-        <p class="hire-num">01</p>
-        <h3 class="hire-title">
-          <span class="t-en">Agentic products &amp; AI features</span>
-          <span class="t-jp">エージェント製品と AI 機能の設計</span>
-        </h3>
-        <p class="hire-desc">
-          <span class="t-en">Deciding what the human keeps, what the agent takes, and what happens when the agent is wrong — then designing all the way down to the screen.</span>
-          <span class="t-jp is-block">人が持ち続けるもの、エージェントに渡すもの、エージェントが間違えたときに起きること。それを決めて、画面まで設計します。</span>
-        </p>
-        <ul class="hire-list">
-          <li><span class="t-en">Agent experience design — roles, permissions, handoff</span><span class="t-jp">エージェント体験の設計 — 役割・権限・引き継ぎ</span></li>
-          <li><span class="t-en">AI features, including how they fail in front of a user</span><span class="t-jp">AI 機能の UX と、ユーザーの前で失敗したときの設計</span></li>
-          <li><span class="t-en">Rolling an agent fleet into an existing design org</span><span class="t-jp">既存のデザイン組織へのエージェント導入</span></li>
-        </ul>
-        <p class="hire-meta">
-          <span class="t-en"><b>Engagement</b> 3–6 months, embedded<br><b>You get</b> principles, flows, UI, buildable spec</span>
-          <span class="t-jp is-block"><b>関わり方</b> 3〜6ヶ月の伴走<br><b>成果物</b> 原則・フロー・UI・実装できる仕様</span>
-        </p>
-        <a class="answer-link" href="projects/verizon-ai-agents.html">
-          <span class="t-en">Proof: Verizon AI Workflow →</span><span class="t-jp">証拠：Verizon AI Workflow →</span>
-        </a>
-      </div>
-
-      <div class="hire-block">
-        <p class="hire-num">02</p>
-        <h3 class="hire-title">
-          <span class="t-en">Prototypes people can touch</span>
-          <span class="t-jp">触れるプロトタイプ</span>
-        </h3>
-        <p class="hire-desc">
-          <span class="t-en">A working thing instead of a deck, in weeks instead of quarters — demoable in the first two minutes of a meeting, on the devices already in the room.</span>
-          <span class="t-jp is-block">資料の代わりに動くものを、四半期ではなく数週間で。その場にある端末で、会議の最初の2分にデモできる状態にします。</span>
-        </p>
-        <ul class="hire-list">
-          <li><span class="t-en">Live prototypes for web, phone and big-screen</span><span class="t-jp">動くプロトタイプ（Web・スマホ・大画面）</span></li>
-          <li><span class="t-en">Many-phone experiences over Snap Pair — no app install</span><span class="t-jp">Snap Pair による多人数同時体験 — アプリ不要</span></li>
-          <li><span class="t-en">Installations, events, and pitch demos that must not fail live</span><span class="t-jp">展示・イベント・提案用の、落ちてはいけないデモ</span></li>
-        </ul>
-        <p class="hire-meta">
-          <span class="t-en"><b>Engagement</b> 2–6 weeks, one-off<br><b>You get</b> a public URL and the source, yours to keep</span>
-          <span class="t-jp is-block"><b>関わり方</b> 2〜6週間・単発<br><b>成果物</b> 公開 URL と、そのまま渡せるソース</span>
-        </p>
-        <a class="answer-link" href="#playable">
-          <span class="t-en">Proof: the six tiles above →</span><span class="t-jp">証拠：上の6つのタイル →</span>
-        </a>
-      </div>
-
-      <div class="hire-block">
-        <p class="hire-num">03</p>
-        <h3 class="hire-title">
-          <span class="t-en">Brand, product, and breaking how a team thinks</span>
-          <span class="t-jp">ブランド、プロダクト、そして発想の転換</span>
-        </h3>
-        <p class="hire-desc">
-          <span class="t-en">The twenty years. Full identity rebuilds, end-to-end product design, and BreakBias — a workshop that attacks the cognitive habits stopping a team from having a new idea.</span>
-          <span class="t-jp is-block">20年分のほう。ブランドの作り直し、プロダクトの一貫設計、そして BreakBias — 新しい発想を止めている思考の癖そのものを壊すワークショップ。</span>
-        </p>
-        <ul class="hire-list">
-          <li><span class="t-en">Brand strategy, identity systems, creative direction</span><span class="t-jp">ブランド戦略・アイデンティティ・クリエイティブディレクション</span></li>
-          <li><span class="t-en">Product design and design systems, research to launch</span><span class="t-jp">プロダクトデザインとデザインシステム（調査から公開まで）</span></li>
-          <li><span class="t-en">BreakBias — eight tools, run for Microsoft, Dentsu, Google</span><span class="t-jp">BreakBias — 8つのツール。Microsoft・電通・Google で実施</span></li>
-        </ul>
-        <p class="hire-meta">
-          <span class="t-en"><b>Engagement</b> per project · workshops from one day<br><b>You get</b> identity system, experience design, or trained team</span>
-          <span class="t-jp is-block"><b>関わり方</b> プロジェクト単位 / ワークショップは1日から<br><b>成果物</b> アイデンティティ一式・体験設計・研修</span>
-        </p>
-        <a class="answer-link" href="breakbias.html">
-          <span class="t-en">Proof: BreakBias →</span><span class="t-jp">証拠：BreakBias →</span>
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ── Who ── -->
-  <section class="band" id="who">
-    <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">Who is actually doing the work</span>
-        <span class="t-jp">実際に手を動かしているのは</span>
-      </h2>
-      <a href="about.html" class="section-link">
-        <span class="t-en">Full background →</span><span class="t-jp">経歴を詳しく →</span>
-      </a>
-    </div>
-
-    <div class="who-grid">
-      <img class="who-portrait" src="assets/about/TakaoUmehara_passport.png"
-           width="440" height="550" loading="lazy" decoding="async"
-           alt="Takao Umehara">
-      <div class="who-body">
         <p>
-          <span class="t-en">I started in Tokyo and have spent the last twenty years in New York. At <strong>Amplify</strong> I designed learning experiences used by millions of children; at <strong>T-Mobile</strong> a buy-online-pick-up-in-store system spanning kiosk, staff app and voice; at <strong>Verizon</strong> the post-login experience for a prepaid platform with millions of subscribers. Alongside that, a 150-year-old Tokyo barbershop and visual directions for Coca-Cola.</span>
-          <span class="t-jp is-block">東京で始め、この20年はニューヨークにいます。<strong>Amplify</strong> では数百万人の子どもが使う学習体験を、<strong>T-Mobile</strong> ではキオスク・店員アプリ・音声にまたがる店舗受け取り体験を、<strong>Verizon</strong> では数百万契約のプリペイド基盤のログイン後体験を設計しました。並行して、150年続く東京の理髪店の立て直しや、Coca-Cola のビジュアル方向の提案も。</span>
+          <span class="t-en">Alongside that, a 150-year-old Tokyo barbershop and visual directions for Coca-Cola.</span>
+          <span class="t-jp is-block">並行して、150年続く東京の理髪店の立て直しや、Coca-Cola のビジュアル方向の提案も。</span>
         </p>
+      </div>
+
+      <div class="studio-col">
         <p>
           <span class="t-en">Around 2023 the centre of gravity moved to AI, for a simple reason: that is where the unsolved problems are. But I did not start there. <strong>I know what was hard before agents existed</strong> — which is the only way to tell whether an agent has actually made something better, or just made it faster to produce something worse.</span>
           <span class="t-jp is-block">2023年ごろから重心が AI に移りました。理由は単純で、未解決の面白い問題がそこにあるからです。ただ、私は AI から始めていません。<strong>エージェントが無かった頃に何が難しかったかを知っています</strong>。エージェントが本当に良くしたのか、それとも悪いものを速く作れるようにしただけなのか — それを見分けられるのは、そこだけです。</span>
         </p>
-        <dl class="who-facts">
-          <div class="who-fact">
-            <dt><span class="t-en">Based in</span><span class="t-jp">拠点</span></dt>
+      </div>
+
+      <div class="studio-col">
+        <p class="studio-label"><span class="t-en">Services</span><span class="t-jp">提供</span></p>
+        <ul class="stack">
+          <li><span class="t-en">Agentic product design</span><span class="t-jp">エージェント製品の設計</span></li>
+          <li><span class="t-en">Live prototypes</span><span class="t-jp">動くプロトタイプ</span></li>
+          <li><span class="t-en">Interactive installations</span><span class="t-jp">インタラクティブ・インスタレーション</span></li>
+          <li><span class="t-en">Product design &amp; design systems</span><span class="t-jp">プロダクトデザイン／デザインシステム</span></li>
+          <li><span class="t-en">Brand strategy &amp; identity</span><span class="t-jp">ブランド戦略・アイデンティティ</span></li>
+          <li><span class="t-en">BreakBias workshops</span><span class="t-jp">BreakBias ワークショップ</span></li>
+        </ul>
+
+        <dl class="stats">
+          <div class="stat">
+            <dt><span class="t-en">Location</span><span class="t-jp">拠点</span></dt>
             <dd><span class="t-en">New York City</span><span class="t-jp">ニューヨーク</span></dd>
           </div>
-          <div class="who-fact">
+          <div class="stat">
             <dt><span class="t-en">Working through</span><span class="t-jp">活動体</span></dt>
             <dd>Creativity Is Everywhere LLC</dd>
           </div>
-          <div class="who-fact">
+          <div class="stat">
+            <dt><span class="t-en">Years shipping</span><span class="t-jp">出荷し続けて</span></dt>
+            <dd>20</dd>
+          </div>
+          <div class="stat">
+            <dt><span class="t-en">Agents in production</span><span class="t-jp">稼働中のエージェント</span></dt>
+            <dd>10</dd>
+          </div>
+          <div class="stat">
             <dt><span class="t-en">Languages</span><span class="t-jp">言語</span></dt>
             <dd><span class="t-en">English · 日本語</span><span class="t-jp">日本語 · English</span></dd>
-          </div>
-          <div class="who-fact">
-            <dt><span class="t-en">Also writes at</span><span class="t-jp">書いている場所</span></dt>
-            <dd>intentfirst.ai · Medium</dd>
           </div>
         </dl>
       </div>
     </div>
   </section>
 
-  <!-- ── Closing ── -->
+  <!-- ══ Feed ══ -->
+  <section class="section" id="feed" aria-labelledby="feed-title">
+    <div class="section-head">
+      <h2 class="section-title" id="feed-title">
+        <span class="t-en">Feed</span>
+        <span class="t-jp">実績</span>
+      </h2>
+      <p class="section-note">
+        <span class="t-en">Agentic UX is new. Knowing what a classroom of thirty children does to an interface, or what a 150-year-old shop loses when you modernise it, is not — and it is the part that decides whether the AI work is any good.</span>
+        <span class="t-jp is-block">Agentic UX は新しい。けれど、30人の教室がインターフェースに何をするか、150年の店を現代化すると何が失われるか — これは新しくありません。そして AI の仕事の良し悪しを決めるのは、こちらです。</span>
+      </p>
+    </div>
+
+    <div class="feed">
+
+      <a class="post" href="projects/ela-quests.html">
+        <span class="post-img" style="background-image:url('assets/shared/Quest_teaser_tr.png');"></span>
+        <span class="post-body">
+          <span class="post-client">Amplify ELA Quests</span>
+          <span class="post-desc"><span class="t-en">Immersive in-classroom learning experiences using AR and storytelling, reaching millions of students across the US.</span><span class="t-jp is-block">AR と物語による、教室内の没入型学習体験。全米で数百万人の生徒に届きました。</span></span>
+          <span class="post-disc">Lead Designer · EdTech · AR</span>
+        </span>
+      </a>
+
+      <a class="post" href="projects/verizon-totalwireless.html">
+        <span class="post-img" style="background-image:url('assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png'); background-position: center top;"></span>
+        <span class="post-body">
+          <span class="post-client">Verizon TotalWireless</span>
+          <span class="post-desc"><span class="t-en">Post-login experience design for a major prepaid wireless platform — streamlining account management for millions of subscribers.</span><span class="t-jp is-block">数百万契約のプリペイド通信基盤の、ログイン後体験の設計。アカウント管理を整理しました。</span></span>
+          <span class="post-disc">UX Design · Telecom · Design System</span>
+        </span>
+      </a>
+
+      <a class="post" href="projects/tmobile.html">
+        <span class="post-img" style="background-image:url('assets/shared/M−Mobile_teaser2.jpg');"></span>
+        <span class="post-body">
+          <span class="post-client">T-Mobile BOPIS</span>
+          <span class="post-desc"><span class="t-en">An integrated Buy Online Pick Up In Store system — kiosk, staff app, and voice AI — that made T-Mobile a preferred innovation partner.</span><span class="t-jp is-block">キオスク・店員アプリ・音声 AI を統合した店舗受け取り体験。T-Mobile の優先イノベーションパートナーに。</span></span>
+          <span class="post-disc">Lead UX · Retail CX · Multi-touchpoint</span>
+        </span>
+      </a>
+
+      <a class="post" href="projects/cli-studios.html">
+        <span class="post-img" style="background-image:url('assets/cli-studios/CLI_UI_Screens.png');"></span>
+        <span class="post-body">
+          <span class="post-client">CLI Studios</span>
+          <span class="post-desc"><span class="t-en">Complete mobile app redesign — heuristic analysis, IA restructuring, and a design system that reduced future dev time by 25%.</span><span class="t-jp is-block">モバイルアプリの全面再設計。ヒューリスティック分析、IA の再構築、そして開発時間を25%削減するデザインシステム。</span></span>
+          <span class="post-disc">Lead Designer · App Design · Design System</span>
+        </span>
+      </a>
+
+      <a class="post" href="projects/kitadoko.html">
+        <span class="post-img" style="background-image:url('assets/shared/Space_Design_kitadoko.png');"></span>
+        <span class="post-body">
+          <span class="post-client">Kitadoko</span>
+          <span class="post-desc"><span class="t-en">A 150-year-old hair salon rebranded end to end. Female clientele grew 10%→50%, repeat rate 0%→90%.</span><span class="t-jp is-block">創業150年の理髪店を丸ごとリブランディング。女性客 10%→50%、リピート率 0%→90%。</span></span>
+          <span class="post-disc">Creative Director · Rebranding · Service Design</span>
+        </span>
+      </a>
+
+      <a class="post" href="projects/web3-wallet.html">
+        <span class="post-img" style="background-image:url('assets/shared/EventStack-Mobile.png');"></span>
+        <span class="post-body">
+          <span class="post-client">Web3 Custodial Wallet</span>
+          <span class="post-desc"><span class="t-en">NFT-enhanced event management wallet. 2023 Merit Gold Award — Metaverse &amp; AI.</span><span class="t-jp is-block">NFT を組み込んだイベント管理ウォレット。2023 Merit Gold Award（Metaverse &amp; AI）受賞。</span></span>
+          <span class="post-disc">Lead Designer · Web3 · 2023</span>
+        </span>
+      </a>
+
+      <a class="post" href="projects/extraordinary.html">
+        <span class="post-img" style="background-image:url('assets/shared/exmag-01.png');"></span>
+        <span class="post-body">
+          <span class="post-client">extra•ordinary</span>
+          <span class="post-desc"><span class="t-en">Co-authored and art-directed a book on everyday creativity published by Rockport. Over 11,000 copies sold worldwide.</span><span class="t-jp is-block">日常の創造性についての書籍を共著・アートディレクション（Rockport 刊）。世界で11,000部以上。</span></span>
+          <span class="post-disc">Co-author &amp; Designer · Rockport Publishing</span>
+        </span>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- ══ End ══ -->
   <section class="end">
     <h2 class="end-line">
       <span class="t-en">Five minutes is faster than this page.</span>
@@ -2495,224 +1045,90 @@
       <span class="t-jp is-block">作りたいものがまだ言葉になっていなくても大丈夫です。むしろ、そこがいちばん得意で、そういう時こそ提案書より動くものが早い。</span>
     </p>
     <div class="end-actions">
-      <a href="contact.html" class="btn-primary">
-        <span class="t-en">Start a project</span><span class="t-jp">プロジェクトを相談する</span>
+      <a class="dot-link" href="contact.html">
+        <span><span class="t-en">Start a project</span><span class="t-jp">プロジェクトを相談する</span></span>
       </a>
-      <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" class="hero-alt">
-        <span class="t-en">Hiring instead? Same inbox, or reach me on LinkedIn →</span>
-        <span class="t-jp">採用のご相談も同じ窓口、または LinkedIn へ →</span>
+      <a class="dot-link" href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">
+        <span><span class="t-en">Hiring instead? LinkedIn →</span><span class="t-jp">採用のご相談は LinkedIn へ →</span></span>
       </a>
     </div>
   </section>
 
-  <!-- ── Lang Switch ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
+  <!-- ══ Language ══ -->
+  <div class="lang" id="lang-switch">
+    <button type="button" class="is-active" data-lang="en">EN</button>
+    <span aria-hidden="true">·</span>
+    <button type="button" data-lang="jp">JP</button>
   </div>
 
-  <!-- ── Footer ── -->
-  <footer>
-    <div class="site-footer">
-      <div>
-        <div class="footer-logo">Takao Umehara</div>
-        <div class="footer-llc">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div>
-      </div>
-      <ul class="footer-links">
-        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li>
-        <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
-        <li><a href="intentfirst.html">intentfirst.ai</a></li>
-      </ul>
-      <div class="footer-copy">New York City</div>
-    </div>
+  <!-- ══ Footer ══ -->
+  <footer class="footer">
+    <span class="footer-mark">Takao Umehara</span>
+    <ul class="footer-links">
+      <li><a href="interactive.html">Interactive Experience</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="ai-tools.html">AI Tools &amp; Skills</a></li>
+      <li><a href="work.html">Product Design</a></li>
+      <li><a href="brand.html">Branded Experience</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+      <li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li>
+      <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
+      <li><a href="intentfirst.html">intentfirst.ai</a></li>
+    </ul>
+    <span>New York City · Creativity Is Everywhere LLC</span>
   </footer>
 
+  <!-- ══ Shell — language, menu, clock ══ -->
   <script>
   (() => {
-    const CDN = "assets/";
+    const root = document.documentElement;
 
-    // ── Palette presets (from 5-3C family) ──
-    const presets = [
-      { angle:"102deg", a1:"hsla(198 82% 72% / 0.44)", a2:"hsla(248 74% 80% / 0.36)", a3:"hsla(324 72% 81% / 0.40)", a4:"hsla(36 80% 78% / 0.34)", t1:"hsl(198 58% 56%)", t2:"hsl(248 58% 70%)", t3:"hsl(324 60% 72%)", t4:"hsl(36 58% 62%)" },
-      { angle:"96deg",  a1:"hsla(222 84% 62% / 0.48)", a2:"hsla(198 80% 74% / 0.34)", a3:"hsla(274 62% 80% / 0.32)", a4:"hsla(36 74% 80% / 0.28)",  t1:"hsl(222 62% 52%)", t2:"hsl(198 56% 60%)", t3:"hsl(274 50% 72%)", t4:"hsl(36 54% 66%)" },
-      { angle:"110deg", a1:"hsla(40 80% 74% / 0.38)",  a2:"hsla(320 70% 76% / 0.42)", a3:"hsla(266 62% 80% / 0.34)", a4:"hsla(194 78% 74% / 0.32)", t1:"hsl(40 56% 62%)",  t2:"hsl(320 58% 68%)", t3:"hsl(266 52% 72%)", t4:"hsl(194 56% 60%)" },
-      { angle:"90deg",  a1:"hsla(206 86% 70% / 0.46)", a2:"hsla(232 86% 60% / 0.42)", a3:"hsla(274 62% 78% / 0.28)", a4:"hsla(42 72% 82% / 0.22)",  t1:"hsl(206 62% 56%)", t2:"hsl(232 62% 52%)", t3:"hsl(274 50% 72%)", t4:"hsl(42 54% 70%)" },
-      { angle:"108deg", a1:"hsla(42 78% 78% / 0.34)",  a2:"hsla(28 84% 72% / 0.28)",  a3:"hsla(314 68% 76% / 0.40)", a4:"hsla(196 78% 76% / 0.30)", t1:"hsl(42 58% 68%)",  t2:"hsl(28 60% 62%)",  t3:"hsl(314 58% 70%)", t4:"hsl(196 56% 62%)" },
-      { angle:"100deg", a1:"hsla(202 70% 84% / 0.30)", a2:"hsla(248 62% 82% / 0.32)", a3:"hsla(330 62% 84% / 0.28)", a4:"hsla(48 70% 84% / 0.24)",  t1:"hsl(202 52% 66%)", t2:"hsl(248 50% 72%)", t3:"hsl(330 52% 74%)", t4:"hsl(48 52% 72%)" }
-    ];
-
-    const pickPreset = () => presets[Math.floor(Math.random() * presets.length)];
-    const whole = (min, max) => Math.round(min + Math.random() * (max - min));
-
-    const applyPreset = (target, preset) => {
-      target.style.setProperty("--angle", preset.angle);
-      target.style.setProperty("--a1", preset.a1);
-      target.style.setProperty("--a2", preset.a2);
-      target.style.setProperty("--a3", preset.a3);
-      target.style.setProperty("--a4", preset.a4);
-      target.style.setProperty("--t1", preset.t1);
-      target.style.setProperty("--t2", preset.t2);
-      target.style.setProperty("--t3", preset.t3);
-      target.style.setProperty("--t4", preset.t4);
-    };
-
-    // ── Reveal system ──
-    const revealItems = [...document.querySelectorAll(".rr")];
-
-    const triggerReveal = (item, delay) => {
-      const speed = parseInt(item.dataset.speed || "900", 10);
-      item.style.setProperty("--delay", `${delay}ms`);
-      item.style.setProperty("--dur", `${speed}ms`);
-      item.classList.remove("is-on");
-      requestAnimationFrame(() => requestAnimationFrame(() => item.classList.add("is-on")));
-    };
-
-    // Apply a preset to each card's rr items on reveal
-    const revealCard = (card, baseDelay) => {
-      applyPreset(card, pickPreset());
-      const items = [...card.querySelectorAll(".rr")];
-      let cursor = baseDelay;
-      const order = { image: 0, meta: 1, title: 2, body: 3 };
-      const sorted = [...items].sort((a, b) => {
-        const ra = order[a.dataset.role] ?? 2;
-        const rb = order[b.dataset.role] ?? 2;
-        return ra - rb;
-      });
-      sorted.forEach((item, i) => {
-        cursor += whole(20, 48) + (i === 0 ? 0 : 0);
-        triggerReveal(item, cursor);
-      });
-    };
-
-    // IntersectionObserver for cards
-    const cardObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const card = entry.target;
-        if (card._revealed) return;
-        card._revealed = true;
-        cardObserver.unobserve(card);
-        // Stagger cards in same row
-        const allCards = [...document.querySelectorAll(".work-card")];
-        const idx = allCards.indexOf(card);
-        revealCard(card, idx * 40);
-      });
-    }, { threshold: 0.12, rootMargin: "0px 0px -60px 0px" });
-
-    document.querySelectorAll(".work-card").forEach((card) => {
-      cardObserver.observe(card);
-    });
-
-    // ── Hover interactions ──
-    document.querySelectorAll(".work-card").forEach((card) => {
-      const cardImage = card.querySelector(".card-image");
-      const trioTexts = [...card.querySelectorAll(".card-title, .card-desc, .pill")];
-
-      const clearTextState = () => {
-        trioTexts.forEach((el) => {
-          el.classList.remove("is-hovered", "is-exiting");
-          clearTimeout(el._exitTimer);
-        });
-      };
-
-      const startTextHover = () => {
-        applyPreset(card, pickPreset());
-        trioTexts.forEach((el) => {
-          el.style.setProperty("--hover-shift", `${whole(18, 78)}%`);
-          el.classList.remove("is-exiting");
-          el.classList.add("is-hovered");
-        });
-        if (cardImage) {
-          cardImage.classList.remove("hover-leaving");
-          cardImage.classList.add("hover-active");
-        }
-      };
-
-      const startTextExit = () => {
-        trioTexts.forEach((el) => {
-          el.classList.remove("is-hovered");
-          el.classList.add("is-exiting");
-          clearTimeout(el._exitTimer);
-          el._exitTimer = setTimeout(() => {
-            el.classList.remove("is-exiting");
-            el.style.removeProperty("--hover-shift");
-          }, 560);
-        });
-        if (cardImage) {
-          cardImage.classList.remove("hover-active");
-          cardImage.classList.add("hover-leaving");
-          clearTimeout(cardImage._leaveTimer);
-          cardImage._leaveTimer = setTimeout(() => {
-            cardImage.classList.remove("hover-leaving");
-          }, 920);
-        }
-      };
-
-      card.addEventListener("pointerenter", () => {
-        card.classList.add("is-hovering");
-        startTextHover();
-      });
-
-      card.addEventListener("pointerleave", () => {
-        card.classList.remove("is-hovering", "is-pressing", "is-held");
-        startTextExit();
-      });
-
-      card.addEventListener("pointerdown", () => card.classList.add("is-pressing"));
-      card.addEventListener("pointerup",   () => card.classList.remove("is-pressing"));
-
-      card.addEventListener("click", () => {
-        const href = card.dataset.href;
-        if (!href) return;
-        card.classList.add("is-held");
-        clearTimeout(card._holdTimer);
-        card._holdTimer = setTimeout(() => card.classList.remove("is-held"), 920);
-        setTimeout(() => {
-          if (card.dataset.external === "true") {
-            window.open(href, "_blank", "noopener");
-          } else {
-            window.location.href = href;
-          }
-        }, 120);
-      });
-    });
-
-  })();
-
-  // ── Lang switch ──
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll(".lang-btn")];
-    const saved = localStorage.getItem("tu-lang") || "en";
+    /* ── Language ── */
+    const btns = [...document.querySelectorAll('.lang button')];
     const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
-      html.lang = lang === "jp" ? "ja" : "en";
-      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-      localStorage.setItem("tu-lang", lang);
+      root.classList.toggle('lang-jp', lang === 'jp');
+      root.lang = lang === 'jp' ? 'ja' : 'en';
+      btns.forEach((b) => b.classList.toggle('is-active', b.dataset.lang === lang));
+      try { localStorage.setItem('tu-lang', lang); } catch (e) {}
     };
+    let saved = 'en';
+    try { saved = localStorage.getItem('tu-lang') || 'en'; } catch (e) {}
     setLang(saved);
-    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
-  })();
-  
-  // ── Mobile Nav ──
-  (() => {
+    btns.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+
+    /* ── Menu ── */
     const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (!toggle || !links) return;
-    const close = () => {
-      toggle.classList.remove('is-open');
-      links.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-    };
-    toggle.addEventListener('click', () => {
-      const open = !links.classList.contains('is-open');
-      toggle.classList.toggle('is-open', open);
-      links.classList.toggle('is-open', open);
-      toggle.setAttribute('aria-expanded', String(open));
-    });
-    links.querySelectorAll('a').forEach((link) => link.addEventListener('click', close));
+    const links = document.getElementById('nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        const open = links.classList.toggle('is-open');
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', String(open));
+      });
+      links.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
+        links.classList.remove('is-open');
+        toggle.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+      }));
+    }
+
+    /* ── Clock. The reference puts a timestamp in the centre of the bar;
+          on a page whose whole claim is "this is running right now", the
+          honest version of that is the actual time where the work is. ── */
+    const clock = document.getElementById('nav-clock');
+    if (clock) {
+      const tick = () => {
+        const t = new Date().toLocaleTimeString('en-US', {
+          timeZone: 'America/New_York', hour12: false,
+          hour: '2-digit', minute: '2-digit'
+        });
+        clock.textContent = 'NEW YORK ' + t;
+      };
+      tick();
+      setInterval(tick, 30000);
+    }
   })();
   </script>
 
@@ -2805,6 +1221,10 @@
       return (span ? span.textContent : btn.textContent).trim();
     };
 
+    /* The link's label lives inside a <span> so the dot pseudo-element
+       survives the swap — write to that span, never to the anchor. */
+    const linkText = () => el.link.querySelector('span') || el.link;
+
     const render = (key) => {
       const d = DATA[key];
       if (!d) return;
@@ -2812,7 +1232,7 @@
       el.badge.textContent = c.badge;
       el.name.textContent  = c.name;
       el.line.textContent  = c.line;
-      el.link.textContent  = c.cta;
+      linkText().textContent = c.cta;
       el.link.href = d.href;
       if (d.external) { el.link.target = '_blank'; el.link.rel = 'noopener'; }
       else { el.link.removeAttribute('target'); el.link.removeAttribute('rel'); }
@@ -2891,531 +1311,8 @@
   })();
   </script>
 
-  <!-- ══ Playable tiles — live miniatures ══ -->
-  <script>
-  (() => {
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const TAU = Math.PI * 2;
-
-    /* ── scenes: factory(w, h) → { draw(ctx, w, h, t, ptr) } ── */
-    const scenes = {
-
-      /* Typespace — points gather into a constellation, then return */
-      typespace(w, h) {
-        const shape = [[.16,.62],[.22,.36],[.28,.62],[.25,.50],[.19,.50],
-                       [.38,.62],[.38,.36],[.45,.36],[.50,.44],[.45,.50],[.50,.62],
-                       [.60,.36],[.60,.62],[.68,.62],[.76,.36],[.82,.50],[.76,.62]];
-        const targets = shape.map(([a, b]) => ({ x: a * w, y: b * h }));
-        const stars = [];
-        for (let i = 0; i < 62; i++) {
-          stars.push({
-            x: Math.random() * w, y: Math.random() * h,
-            vx: (Math.random() - 0.5) * 0.12, vy: (Math.random() - 0.5) * 0.12,
-            r: Math.random() * 1.0 + 0.45,
-            t: i < targets.length ? targets[i] : null
-          });
-        }
-        return { draw(ctx, w, h, t, ptr) {
-          const c = (t % 8200) / 8200;
-          let pull = 0;
-          if (c < 0.14) pull = 0;
-          else if (c < 0.34) pull = (c - 0.14) / 0.20;
-          else if (c < 0.74) pull = 1;
-          else if (c < 0.92) pull = 1 - (c - 0.74) / 0.18;
-          pull = pull * pull * (3 - 2 * pull);
-
-          ctx.fillStyle = '#0d0d12';
-          ctx.fillRect(0, 0, w, h);
-
-          for (const s of stars) {
-            s.x += s.vx; s.y += s.vy;
-            if (s.x < 0 || s.x > w) s.vx *= -1;
-            if (s.y < 0 || s.y > h) s.vy *= -1;
-            if (ptr.active) {
-              const dx = s.x - ptr.x, dy = s.y - ptr.y;
-              const d2 = dx * dx + dy * dy;
-              if (d2 < 3200 && d2 > 1) {
-                const f = (1 - d2 / 3200) * 0.9;
-                s.x += dx / Math.sqrt(d2) * f; s.y += dy / Math.sqrt(d2) * f;
-              }
-            }
-            s.px = s.t ? s.x + (s.t.x - s.x) * pull : s.x;
-            s.py = s.t ? s.y + (s.t.y - s.y) * pull : s.y;
-          }
-
-          if (pull > 0.24) {
-            ctx.strokeStyle = 'rgba(150,196,236,' + ((pull - 0.24) * 0.5).toFixed(3) + ')';
-            ctx.lineWidth = 0.7;
-            ctx.beginPath();
-            for (let i = 0; i < targets.length - 1; i++) {
-              const a = stars[i], b = stars[i + 1];
-              if (Math.hypot(a.px - b.px, a.py - b.py) > w * 0.2) continue;
-              ctx.moveTo(a.px, a.py); ctx.lineTo(b.px, b.py);
-            }
-            ctx.stroke();
-          }
-
-          for (const s of stars) {
-            const lit = s.t ? 0.66 + pull * 0.34 : 0.46;
-            ctx.fillStyle = 'rgba(236,244,255,' + lit.toFixed(3) + ')';
-            ctx.beginPath();
-            ctx.arc(s.px, s.py, s.r * (s.t ? 1.25 + pull * 0.85 : 1.1), 0, TAU);
-            ctx.fill();
-          }
-        }};
-      },
-
-      /* Rakugaki Jam — draw with the pointer, strokes land on the shared wall */
-      rakugaki(w, h) {
-        const wallX = w * 0.7;
-        const live = [];          // active strokes
-        const wall = [];          // strokes sent to the wall
-        let cur = null, hue = 200, autoT = 0, autoPh = 0, wasDrawing = false;
-
-        const push = (x, y) => {
-          if (!cur) { cur = { pts: [], hue: (hue += 47) % 360, born: 0 }; live.push(cur); }
-          const p = cur.pts;
-          if (!p.length || Math.hypot(x - p[p.length - 1].x, y - p[p.length - 1].y) > 2) {
-            p.push({ x, y });
-            if (p.length > 90) p.shift();
-          }
-        };
-        const send = () => {
-          if (cur && cur.pts.length > 3) {
-            wall.push({ pts: cur.pts.map((p) => ({ x: p.x / wallX, y: p.y / h })), hue: cur.hue });
-            if (wall.length > 4) wall.shift();
-          }
-          if (cur) cur.dying = true;
-          cur = null;
-        };
-
-        return { draw(ctx, w, h, t, ptr) {
-          const dt = 16;
-          ctx.fillStyle = '#0d0d12';
-          ctx.fillRect(0, 0, w, h);
-
-          const drawing = ptr.down && ptr.x < wallX;
-          if (drawing) {
-            if (!wasDrawing && cur) send();     /* a hand takes over from the demo */
-            push(ptr.x, ptr.y);
-            wasDrawing = true;
-            autoT = -2400; autoPh = 0;
-          } else if (wasDrawing) {
-            send();
-            wasDrawing = false;
-          } else {
-            autoT += dt;
-            if (autoT > 0) {
-              autoPh += 0.06;
-              const x = wallX * 0.5 + Math.cos(autoPh * 1.7) * wallX * 0.3;
-              const y = h * 0.5 + Math.sin(autoPh * 2.6) * h * 0.26;
-              push(x, y);
-              if (autoPh > 3.8) { send(); autoPh = 0; autoT = -700; }
-            }
-          }
-
-          ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-          for (let i = live.length - 1; i >= 0; i--) {
-            const s = live[i];
-            s.born += dt;
-            const a = s.dying ? Math.max(0, 1 - (s.born - (s.deadAt || (s.deadAt = s.born))) / 620) : 1;
-            if (a <= 0) { live.splice(i, 1); continue; }
-            ctx.strokeStyle = 'hsla(' + s.hue + ' 78% 66% / ' + a.toFixed(2) + ')';
-            ctx.lineWidth = 2.6;
-            ctx.beginPath();
-            s.pts.forEach((p, j) => j ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y));
-            ctx.stroke();
-          }
-
-          /* the shared wall */
-          ctx.fillStyle = 'rgba(255,255,255,0.035)';
-          ctx.fillRect(wallX + 8, h * 0.12, w - wallX - 16, h * 0.76);
-          ctx.strokeStyle = 'rgba(255,255,255,0.14)';
-          ctx.lineWidth = 1;
-          ctx.strokeRect(wallX + 8.5, h * 0.12 + 0.5, w - wallX - 17, h * 0.76);
-          const bx = wallX + 14, by = h * 0.16, bw = w - wallX - 28, bh = h * 0.68;
-          ctx.lineWidth = 1.4;
-          wall.forEach((s, i) => {
-            ctx.strokeStyle = 'hsla(' + s.hue + ' 74% 66% / ' + (0.32 + i * 0.16) + ')';
-            ctx.beginPath();
-            s.pts.forEach((p, j) => {
-              const x = bx + p.x * bw, y = by + p.y * bh;
-              j ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
-            });
-            ctx.stroke();
-          });
-        }};
-      },
-
-      /* Resona — pseudo-haptics: a body with mass, squash and trail */
-      resona(w, h) {
-        const b = { x: w / 2, y: h / 2, vx: 0, vy: 0 };
-        const trail = [];
-        return { draw(ctx, w, h, t, ptr) {
-          const tx = ptr.active ? ptr.x : w / 2 + Math.cos(t / 1500) * w * 0.26;
-          const ty = ptr.active ? ptr.y : h / 2 + Math.sin(t / 940)  * h * 0.20;
-          b.vx = (b.vx + (tx - b.x) * 0.052) * 0.87;
-          b.vy = (b.vy + (ty - b.y) * 0.052) * 0.87;
-          b.x += b.vx; b.y += b.vy;
-
-          trail.unshift({ x: b.x, y: b.y });
-          if (trail.length > 7) trail.pop();
-
-          const sp = Math.hypot(b.vx, b.vy);
-          const st = Math.min(sp * 0.032, 0.46);
-          const ang = sp > 0.4 ? Math.atan2(b.vy, b.vx) : 0;
-          const size = Math.min(w, h) * 0.21;
-
-          ctx.fillStyle = '#0d0d12';
-          ctx.fillRect(0, 0, w, h);
-
-          trail.forEach((p, i) => {
-            if (!i) return;
-            const a = (1 - i / trail.length) * 0.13;
-            ctx.fillStyle = 'rgba(196,214,255,' + a.toFixed(3) + ')';
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, size * 0.5 * (1 - i * 0.06), 0, TAU);
-            ctx.fill();
-          });
-
-          ctx.save();
-          ctx.translate(b.x, b.y);
-          ctx.rotate(ang);
-          ctx.scale(1 + st, 1 - st * 0.72);
-          ctx.fillStyle = '#eef3fb';
-          const r = size * 0.24;
-          ctx.beginPath();
-          if (ctx.roundRect) ctx.roundRect(-size / 2, -size / 2, size, size, r);
-          else ctx.rect(-size / 2, -size / 2, size, size);
-          ctx.fill();
-          ctx.restore();
-
-          ctx.strokeStyle = 'rgba(255,255,255,0.10)';
-          ctx.lineWidth = 1;
-          ctx.beginPath(); ctx.arc(tx, ty, 5, 0, TAU); ctx.stroke();
-        }};
-      },
-
-      /* Marubatsu — games play themselves */
-      marubatsu(w, h) {
-        const GAMES = [
-          { moves: [0, 4, 1, 7, 2], win: [0, 1, 2] },
-          { moves: [4, 1, 0, 7, 8], win: [0, 4, 8] },
-          { moves: [0, 4, 2, 1, 6, 7], win: [1, 4, 7] }
-        ];
-        let gi = 0, t0 = null;
-        const MOVE = 460, STRIKE = 420, HOLD = 1100;
-
-        return { draw(ctx, w, h, t) {
-          const g = GAMES[gi];
-          if (t0 === null) t0 = t;
-          const e = t - t0;
-          const total = g.moves.length * MOVE + STRIKE + HOLD;
-          if (e > total) { gi = (gi + 1) % GAMES.length; t0 = t; }
-
-          const s = Math.min(w, h) * 0.74;
-          const ox = (w - s) / 2, oy = (h - s) / 2, c = s / 3;
-          const cx = (i) => ox + (i % 3) * c + c / 2;
-          const cy = (i) => oy + Math.floor(i / 3) * c + c / 2;
-
-          ctx.fillStyle = '#0d0d12';
-          ctx.fillRect(0, 0, w, h);
-
-          ctx.strokeStyle = 'rgba(255,255,255,0.16)';
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          for (let i = 1; i < 3; i++) {
-            ctx.moveTo(ox + i * c, oy);      ctx.lineTo(ox + i * c, oy + s);
-            ctx.moveTo(ox, oy + i * c);      ctx.lineTo(ox + s, oy + i * c);
-          }
-          ctx.stroke();
-
-          const placed = Math.min(g.moves.length, Math.floor(e / MOVE));
-          const r = c * 0.27;
-          ctx.lineWidth = 2.2; ctx.lineCap = 'round';
-          for (let i = 0; i < placed; i++) {
-            const cell = g.moves[i];
-            const grow = Math.min(1, (e - i * MOVE) / 260);
-            const k = grow * grow * (3 - 2 * grow);
-            const x = cx(cell), y = cy(cell);
-            if (i % 2 === 0) {
-              ctx.strokeStyle = 'rgba(238,244,252,0.94)';
-              ctx.beginPath(); ctx.arc(x, y, r * k, 0, TAU); ctx.stroke();
-            } else {
-              ctx.strokeStyle = 'rgba(150,196,236,0.94)';
-              const q = r * 0.82 * k;
-              ctx.beginPath();
-              ctx.moveTo(x - q, y - q); ctx.lineTo(x + q, y + q);
-              ctx.moveTo(x + q, y - q); ctx.lineTo(x - q, y + q);
-              ctx.stroke();
-            }
-          }
-
-          if (placed >= g.moves.length) {
-            const p = Math.min(1, (e - g.moves.length * MOVE) / STRIKE);
-            const a = g.win[0], b = g.win[2];
-            ctx.strokeStyle = 'rgba(255,214,120,0.9)';
-            ctx.lineWidth = 3;
-            ctx.beginPath();
-            ctx.moveTo(cx(a), cy(a));
-            ctx.lineTo(cx(a) + (cx(b) - cx(a)) * p, cy(a) + (cy(b) - cy(a)) * p);
-            ctx.stroke();
-          }
-        }};
-      },
-
-      /* Koe Baku — a shout becomes onomatopoeia */
-      koebaku(w, h) {
-        const WORDS = ['ドン', 'バン', 'ズドン', 'ゴォ', 'ワッ', 'パッ', 'ドカン'];
-        const bursts = [];
-        const bars = new Array(28).fill(0);
-        let next = 600, acc = 0, wi = 0;
-
-        const spawn = (x, y) => {
-          bursts.push({
-            x: x != null ? x : w * (0.22 + Math.random() * 0.56),
-            y: y != null ? y : h * (0.24 + Math.random() * 0.5),
-            word: WORDS[wi++ % WORDS.length],
-            rot: (Math.random() - 0.5) * 0.44,
-            age: 0
-          });
-          if (bursts.length > 4) bursts.shift();
-          for (let i = 0; i < bars.length; i++) bars[i] = 0.35 + Math.random() * 0.65;
-        };
-
-        return { draw(ctx, w, h, t, ptr) {
-          const dt = 16;
-          acc += dt;
-          if (acc > next) { acc = 0; next = 780 + Math.random() * 700; spawn(); }
-          if (ptr.down && !ptr._fired) { ptr._fired = true; spawn(ptr.x, ptr.y); }
-          if (!ptr.down) ptr._fired = false;
-
-          ctx.fillStyle = '#0d0d12';
-          ctx.fillRect(0, 0, w, h);
-
-          /* on-device level meter */
-          const bw = w / bars.length;
-          for (let i = 0; i < bars.length; i++) {
-            bars[i] *= 0.93;
-            const bh = 3 + bars[i] * h * 0.20;
-            ctx.fillStyle = 'rgba(150,196,236,' + (0.14 + bars[i] * 0.4).toFixed(3) + ')';
-            ctx.fillRect(i * bw + 1, h - bh - 6, bw - 2, bh);
-          }
-
-          for (let i = bursts.length - 1; i >= 0; i--) {
-            const b = bursts[i];
-            b.age += dt;
-            const p = b.age / 1500;
-            if (p >= 1) { bursts.splice(i, 1); continue; }
-            const pop = p < 0.18 ? p / 0.18 : 1;
-            const k = 1 - Math.pow(1 - pop, 3);
-            const a = p > 0.62 ? 1 - (p - 0.62) / 0.38 : 1;
-            const size = Math.min(w, h) * (0.14 + k * 0.11);
-
-            ctx.save();
-            ctx.translate(b.x, b.y);
-            ctx.rotate(b.rot);
-            ctx.globalAlpha = a;
-
-            ctx.strokeStyle = 'rgba(255,214,120,0.55)';
-            ctx.lineWidth = 1.4;
-            ctx.beginPath();
-            for (let s = 0; s < 10; s++) {
-              const ang = (s / 10) * TAU + b.rot;
-              const r0 = size * (0.72 + k * 0.5), r1 = r0 + size * 0.34 * k;
-              ctx.moveTo(Math.cos(ang) * r0, Math.sin(ang) * r0);
-              ctx.lineTo(Math.cos(ang) * r1, Math.sin(ang) * r1);
-            }
-            ctx.stroke();
-
-            ctx.font = '700 ' + size.toFixed(1) + 'px "Noto Sans JP", "Hiragino Kaku Gothic ProN", sans-serif';
-            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-            ctx.lineWidth = size * 0.16;
-            ctx.strokeStyle = '#0d0d12';
-            ctx.strokeText(b.word, 0, 0);
-            ctx.fillStyle = '#f4f7fc';
-            ctx.fillText(b.word, 0, 0);
-            ctx.restore();
-          }
-          ctx.globalAlpha = 1;
-        }};
-      },
-
-      /* EmojiDrop — four shooters, one per corner */
-      emojidrop(w, h) {
-        const CH = ['🍕', '🌵', '🐙', '🍋', '🛸', '🐸', '⚡', '🍄'];
-        /* One origin per player. The tile claims four, so it fires from four. */
-        const ORIGINS = [[0.16, 1], [0.84, 1], [0.16, 0], [0.84, 0]];
-        const drops = [], shots = [], pops = [];
-        let acc = 0, fire = 0, ci = 0;
-        const size = Math.max(13, Math.min(w, h) * 0.11);
-        for (let i = 0; i < 4; i++) {
-          drops.push({
-            x: w * (0.16 + Math.random() * 0.68), y: h * (0.1 + Math.random() * 0.6),
-            vy: 1.3 + Math.random() * 0.9,
-            ch: CH[ci++ % CH.length], spin: (Math.random() - 0.5) * 0.05, a: 0
-          });
-        }
-
-        return { draw(ctx, w, h, t) {
-          const dt = 16;
-          ctx.fillStyle = '#0d0d12';
-          ctx.fillRect(0, 0, w, h);
-
-          acc += dt;
-          if (acc > 320 && drops.length < 7) {
-            acc = 0;
-            drops.push({
-              x: w * (0.16 + Math.random() * 0.68),
-              y: -size - Math.random() * h * 0.5,
-              vy: 1.3 + Math.random() * 0.9,
-              ch: CH[ci++ % CH.length], spin: (Math.random() - 0.5) * 0.05, a: 0
-            });
-          }
-
-          fire += dt;
-          if (fire > 380 && drops.length) {
-            fire = 0;
-            const target = drops[Math.floor(Math.random() * drops.length)];
-            const o = ORIGINS[Math.floor(Math.random() * ORIGINS.length)];
-            const sx = w * o[0];
-            const sy = o[1] ? h - 10 : 10;
-            const d = Math.hypot(target.x - sx, target.y - sy) || 1;
-            shots.push({ x: sx, y: sy, vx: (target.x - sx) / d * 4.2, vy: (target.y - sy) / d * 4.2 });
-          }
-
-          ctx.font = size + 'px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif';
-          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-
-          for (let i = drops.length - 1; i >= 0; i--) {
-            const d = drops[i];
-            d.y += d.vy; d.a += d.spin;
-            if (d.y > h + size) { drops.splice(i, 1); continue; }
-            ctx.save(); ctx.translate(d.x, d.y); ctx.rotate(d.a);
-            ctx.fillText(d.ch, 0, 0); ctx.restore();
-          }
-
-          ctx.fillStyle = 'rgba(255,214,120,0.95)';
-          for (let i = shots.length - 1; i >= 0; i--) {
-            const s = shots[i];
-            s.x += s.vx; s.y += s.vy;
-            if (s.x < -20 || s.x > w + 20 || s.y < -20 || s.y > h + 20) { shots.splice(i, 1); continue; }
-            let hitAt = -1;
-            for (let j = 0; j < drops.length; j++) {
-              if (Math.hypot(drops[j].x - s.x, drops[j].y - s.y) < size * 0.55) { hitAt = j; break; }
-            }
-            if (hitAt >= 0) {
-              pops.push({ x: drops[hitAt].x, y: drops[hitAt].y, age: 0 });
-              drops.splice(hitAt, 1); shots.splice(i, 1);
-              continue;
-            }
-            ctx.beginPath(); ctx.arc(s.x, s.y, 2.4, 0, TAU); ctx.fill();
-          }
-
-          for (let i = pops.length - 1; i >= 0; i--) {
-            const p = pops[i];
-            p.age += dt;
-            const k = p.age / 420;
-            if (k >= 1) { pops.splice(i, 1); continue; }
-            ctx.strokeStyle = 'rgba(255,214,120,' + (1 - k).toFixed(2) + ')';
-            ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.arc(p.x, p.y, size * 0.4 + k * size * 0.7, 0, TAU); ctx.stroke();
-          }
-
-          /* the four players — one bar per origin, so the tile shows the
-             same count the copy claims */
-          ctx.fillStyle = 'rgba(236,244,255,0.5)';
-          for (const o of ORIGINS) ctx.fillRect(w * o[0] - 11, o[1] ? h - 8 : 5, 22, 3);
-        }};
-      }
-    };
-
-    /* ── harness: DPR, visibility, reduced motion, pointer ── */
-    const mount = (canvas) => {
-      const factory = scenes[canvas.dataset.play];
-      if (!factory) return;
-      const ctx = canvas.getContext('2d', { alpha: false });
-      if (!ctx) return;
-
-      const ptr = { x: -999, y: -999, active: false, down: false };
-      let w = 0, h = 0, scene = null, raf = 0, onScreen = false, last = 0, start = 0;
-
-      const paint = (now) => {
-        if (!scene) return;
-        ctx.save();
-        scene.draw(ctx, w, h, now - start, ptr);
-        ctx.restore();
-      };
-
-      const loop = (now) => {
-        raf = requestAnimationFrame(loop);
-        if (now - last < 30) return;      /* ~32fps is plenty at this size */
-        last = now;
-        paint(now);
-      };
-
-      const stop = () => { if (raf) { cancelAnimationFrame(raf); raf = 0; } };
-      const play = () => {
-        if (raf || !scene) return;
-        if (reduced.matches) { paint(performance.now()); return; }
-        last = 0;
-        raf = requestAnimationFrame(loop);
-      };
-
-      const resize = () => {
-        const r = canvas.getBoundingClientRect();
-        if (!r.width || !r.height) return;
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        w = Math.round(r.width); h = Math.round(r.height);
-        canvas.width = Math.round(w * dpr);
-        canvas.height = Math.round(h * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        scene = factory(w, h);
-        start = performance.now();
-        paint(start);
-      };
-
-      new IntersectionObserver((entries) => {
-        onScreen = entries[0].isIntersecting;
-        if (onScreen) { if (!w) resize(); play(); } else stop();
-      }, { rootMargin: '80px' }).observe(canvas);
-
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) stop(); else if (onScreen) play();
-      });
-
-      let rt = 0;
-      window.addEventListener('resize', () => {
-        clearTimeout(rt);
-        rt = setTimeout(() => { if (onScreen) { resize(); } else { w = 0; } }, 180);
-      });
-
-      reduced.addEventListener('change', () => { stop(); if (onScreen) play(); });
-
-      /* pointer — and don't navigate when the visitor was drawing */
-      const stage = canvas.parentElement;
-      const tile = canvas.closest('.play-tile');
-      let downX = 0, downY = 0, moved = 0;
-
-      const at = (e) => {
-        const r = canvas.getBoundingClientRect();
-        ptr.x = e.clientX - r.left; ptr.y = e.clientY - r.top;
-      };
-      stage.addEventListener('pointermove', (e) => { at(e); ptr.active = true; if (ptr.down) moved = Math.max(moved, Math.hypot(e.clientX - downX, e.clientY - downY)); });
-      stage.addEventListener('pointerenter', (e) => { at(e); ptr.active = true; });
-      stage.addEventListener('pointerleave', () => { ptr.active = false; ptr.down = false; ptr.x = -999; ptr.y = -999; });
-      stage.addEventListener('pointerdown', (e) => { at(e); ptr.active = true; ptr.down = true; downX = e.clientX; downY = e.clientY; moved = 0; });
-      window.addEventListener('pointerup', () => { ptr.down = false; });
-      if (tile) {
-        tile.addEventListener('click', (e) => {
-          if (moved > 10) { e.preventDefault(); moved = 0; }
-        });
-      }
-    };
-
-    document.querySelectorAll('canvas[data-play]').forEach(mount);
-  })();
-  </script>
+  <!-- ══ Live tiles ══ -->
+  <script src="assets/play-tiles.js" defer></script>
 
 </body>
 </html>

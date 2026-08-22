@@ -66,7 +66,10 @@ function hasFinalClosedMobileNavOverride(html) {
   const lastBaseFlex = baseFlexRules.at(-1);
   if (!lastBaseFlex) return false;
   const cssAfterBaseFlex = html.slice(lastBaseFlex.index + lastBaseFlex[0].length);
-  return /@media\s*\(max-width:\s*76[78]px\)\s*\{[\s\S]*?\.nav-links\s*\{[^}]*\bdisplay\s*:\s*none\b[^}]*\}[\s\S]*?\.nav-links\.is-open\s*\{[^}]*\bdisplay\s*:\s*flex\b[^}]*\}/i.test(cssAfterBaseFlex);
+  // The invariant is "hidden until is-open", not the pixel it happens at.
+  // The landing page collapses at 940px because its five category labels
+  // are words rather than abbreviations; the rest still collapse at 768.
+  return /@media\s*\(max-width:\s*\d{3,4}px\)\s*\{[\s\S]*?\.nav-links\s*\{[^}]*\bdisplay\s*:\s*none\b[^}]*\}[\s\S]*?\.nav-links\.is-open\s*\{[^}]*\bdisplay\s*:\s*flex\b[^}]*\}/i.test(cssAfterBaseFlex);
 }
 
 function navDestinations(html, page) {
@@ -81,15 +84,25 @@ function navDestinations(html, page) {
 
 // Six equal nav items read as a generalist. The three the work is sold as now
 // lead at full ink; the two decades underneath sit behind a hairline rule.
+//
+// The five category names are the owner's, and they are the same five words
+// on every page — a section that is called one thing in the nav and another
+// on its own page is two sections as far as a visitor is concerned.
+const CATEGORY_NAV = [
+  ['interactive.html', 'Interactive Experience'],
+  ['ai-products.html', 'AI Products'],
+  ['ai-tools.html', 'AI Tools &amp; Skills'],
+  ['work.html', 'Product Design'],
+  ['brand.html', 'Branded Experience'],
+];
+
 test('all main-page navs carry the two-tier order, with the lead three marked', () => {
-  const expected = [
-    ['interactive.html', 'Interactive'], ['ai-products.html', 'AI Products'], ['ai-tools.html', 'AI Tools'],
-    ['work.html', 'Product Design'], ['brand.html', 'Brand &amp; Visual'],
-    ['about.html', 'About'], ['contact.html', 'Contact'],
-  ];
+  const expected = [...CATEGORY_NAV, ['about.html', 'About'], ['contact.html', 'Contact']];
   const lead = new Set(['interactive.html', 'ai-products.html', 'ai-tools.html']);
 
-  for (const page of mainPages) {
+  // index.html runs the Studio Oker shell, whose nav is deliberately flat —
+  // it is asserted separately below until the other pages are ported to it.
+  for (const page of mainPages.filter((name) => name !== 'index.html')) {
     const html = read(page);
     const nav = navDestinations(html, page);
     assert.deepEqual(nav.slice(0, 7).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
@@ -101,6 +114,13 @@ test('all main-page navs carry the two-tier order, with the lead three marked', 
     assert.match(html, /<li\b[^>]*\bclass\s*=\s*["']is-tierbreak["'][^>]*><a href="(?:\.\.\/)?work\.html"/i, `${page}: needs the tier separator`);
     assert.equal(/class\s*=\s*["']nav-rule["']/i.test(html), false, `${page}: the separator must not occupy a nav slot`);
   }
+});
+
+test('the landing page nav carries the same five categories in the same order', () => {
+  const nav = navDestinations(read('index.html'), 'index.html');
+  assert.deepEqual(nav.map(({ href, label }) => [href, label]),
+    [...CATEGORY_NAV, ['about.html', 'About'], ['contact.html', 'Contact']],
+    'index.html: the five categories, then About and Contact');
 });
 
 test('each themed page marks its own nav item active', () => {
@@ -126,58 +146,66 @@ test('final polish: repeated main-page mobile navs remain closed by default', ()
   assert.ok(hasFinalClosedMobileNavOverride(read('ai-tools.html')), 'ai-tools.html must hide .nav-links until it is-open');
 });
 
-// ── Homepage: a curated few, then the full set by category ──
+// ── The landing page: a gallery wall, the five, then the feed ──
 
-// The visitor decides in three seconds whether this person is at their level,
-// and that decision is made on the strongest few. Stacking every section on
-// the landing page buried them, so the homepage now leads with seven and
-// hands the rest to the category pages.
-test('homepage leads with Selected Work, then the category index', () => {
+// The page shows the work rather than indexing it. The wall is the first
+// screen of evidence, the five categories are the way in, and the feed is
+// the twenty years the AI work stands on.
+test('the landing page is the wall, the five, then the feed', () => {
   const html = read('index.html');
-  const selected = html.indexOf('id="selected-work"');
-  const categories = html.indexOf('id="categories"');
-  assert.ok(selected >= 0, 'homepage needs id="selected-work"');
-  assert.ok(categories > selected, 'the category index must follow Selected Work');
-  for (const removed of ['id="agentic-ux"', 'id="playable"', 'id="ai-tools"']) {
-    assert.equal(html.includes(removed), false, `${removed} belongs on its category page, not the homepage`);
+  const wall = html.indexOf('id="wall"');
+  const cats = html.indexOf('id="categories"');
+  const feed = html.indexOf('id="feed"');
+  assert.ok(wall >= 0 && cats > wall && feed > cats,
+    'the landing page runs wall → categories → feed');
+
+  // The sections that used to be stacked here now live on their category
+  // pages; the landing page shows the work, not an index of the work.
+  for (const removed of ['id="agentic-ux"', 'id="playable"', 'id="ai-tools"', 'id="selected-work"']) {
+    assert.equal(html.includes(removed), false, `${removed} belongs on its category page, not the landing page`);
   }
 });
 
-test('homepage Selected Work is seven cards spanning all five categories', () => {
+test('the wall is nine tiles, six of them live canvases', () => {
   const html = read('index.html');
-  const section = html.match(/<section\b[^>]*\bid\s*=\s*["']selected-work["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
-  assert.ok(section, 'homepage needs a Selected Work section');
-  assert.equal([...section.matchAll(openWithClass('article', 'work-card'))].length, 7, 'Selected Work is seven, not twenty-four');
+  const wall = html.match(/<div\b[^>]*\bclass\s*=\s*["']wall["'][^>]*>([\s\S]*?)<\/div>/i)?.[0] ?? '';
+  assert.ok(wall, 'the landing page needs a wall');
 
-  // One drawn from each category, so the range is visible without scrolling.
-  for (const href of [
-    'projects/verizon-ai-agents.html', 'projects/amazon-firetv.html', 'ai-tools.html',
-    'projects/marubatsu.html', 'projects/cli-studios.html', 'projects/coca-cola.html',
-    'projects/ela-quests.html',
-  ]) {
-    assert.match(section, new RegExp(`data-href\\s*=\\s*["']${escape(href)}["']`), `Selected Work must include ${href}`);
-  }
-  assertNoUnsupportedClaims(section, 'homepage Selected Work');
+  const tiles = [...wall.matchAll(openWithClass('a', 'tile'))].map((m) => m[0]);
+  assert.equal(tiles.length, 9, 'nine tiles — four columns, no half-empty row');
+
+  const canvases = [...wall.matchAll(/<canvas\b[^>]*\bdata-play\s*=\s*["']([a-z]+)["']/gi)].map((m) => m[1]);
+  assert.deepEqual(canvases,
+    ['typespace', 'rakugaki', 'resona', 'marubatsu', 'emojidrop', 'koebaku'],
+    'every live tile names the scene it draws');
+
+  // Exactly one scarlet panel. The reference rations the colour to one
+  // drop per screen, and more than one panel spends the whole budget.
+  assert.equal([...wall.matchAll(openWithClass('a', 'tile--red'))].length, 1, 'one red panel, not two');
 });
 
-test('homepage category index carries five categories in two tiers with live counts', () => {
+test('the landing page lists the five categories with counts its pages can back', () => {
   const html = read('index.html');
   const section = html.match(/<section\b[^>]*\bid\s*=\s*["']categories["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
-  assert.ok(section, 'homepage needs a category index');
+  assert.ok(section, 'the landing page needs the five');
 
-  const cards = [...section.matchAll(/<a\b[^>]*\bclass\s*=\s*["']cat-card["'][^>]*>/gi)].map((m) => m[0]);
-  assert.equal(cards.length, 5, 'five categories — Innovation Workshop stays out until it has a case study');
-  assert.deepEqual(cards.map((tag) => attr(tag, 'href')),
-    ['interactive.html', 'ai-products.html', 'ai-tools.html', 'work.html', 'brand.html'],
-    'lead three first, then the two foundations');
+  const cards = [...section.matchAll(/<a\b[^>]*\bclass\s*=\s*["']cat["'][^>]*>/gi)].map((m) => m[0]);
+  assert.deepEqual(cards.map((tag) => attr(tag, 'href')), CATEGORY_NAV.map(([href]) => href),
+    'the five, in the order the nav uses');
 
-  // The base tier is a separate grid so it reads as support, not as a peer.
-  assert.match(section, /<div\b[^>]*\bclass\s*=\s*["']cat-tier cat-tier--base["']/i, 'the two foundations need their own tier');
-
-  // Counts must match what each category page actually holds.
-  const counts = { 'interactive.html': 8, 'ai-products.html': 5, 'ai-tools.html': 7, 'work.html': 13, 'brand.html': 11 };
-  for (const [page, count] of Object.entries(counts)) {
-    assert.match(section, new RegExp(`href\\s*=\\s*["']${escape(page)}["'][\\s\\S]*?${count} projects`), `${page} must be listed as ${count} projects`);
+  // A count on the landing page is a promise the category page has to keep.
+  const holds = {
+    'interactive.html': [8, /class="work-card/g],
+    'ai-products.html': [5, /class="work-card/g],
+    'ai-tools.html': [7, /class="work-card/g],
+    'work.html': [13, /idx-tile-name/g],
+    'brand.html': [12, /idx-tile-name/g],
+  };
+  for (const [page, [claimed, pattern]] of Object.entries(holds)) {
+    assert.match(section, new RegExp(`href\\s*=\\s*["']${escape(page)}["'][\\s\\S]*?<span class="cat-count">${claimed}<`),
+      `the landing page must list ${page} as ${claimed}`);
+    assert.equal((read(page).match(pattern) ?? []).length, claimed,
+      `${page} must actually hold the ${claimed} it is advertised as`);
   }
 
   assert.equal(section.includes('Innovation Workshop'), false, 'a category with no case study must not be advertised');
@@ -333,10 +361,10 @@ test('AI Products page no longer lists failforward, cross-model-handoff, or Kono
 
 // brand.html is now a banded index rather than a card grid: .idx-tile anchors
 // carrying a thumbnail from assets/thumbs/, not <article class="work-card">.
-test('Brand & Visual page lists twelve projects and keeps Konosaki on its live URL', () => {
+test('Branded Experience page lists twelve projects and keeps Konosaki on its live URL', () => {
   assert.ok(existsSync(join(v3, 'brand.html')), 'v3/brand.html must exist');
   const html = read('brand.html');
-  assert.match(html, /<title>\s*Brand &amp; Visual — Takao Umehara\s*<\/title>/);
+  assert.match(html, /<title>\s*Branded Experience — Takao Umehara\s*<\/title>/);
   assert.equal([...html.matchAll(/<a\b[^>]*\bclass\s*=\s*["']idx-tile["']/gi)].length, 12, 'Brand & Visual page needs twelve tiles');
   const konosaki = html.match(/<a\b[^>]*href\s*=\s*["']https:\/\/konosaki-co\.vercel\.app\/?["'][\s\S]*?<\/a>/i)?.[0];
   assert.ok(konosaki, 'the Konosaki tile must still point at konosaki-co.vercel.app');
