@@ -112,6 +112,91 @@ test('skip link is the first keyboard stop and reaches main content', async ({ p
   await expect(page).toHaveURL(/#main-content$/);
 });
 
+test('the complete desktop tab order stays visible and reaches every control', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  const seen = new Set();
+
+  for (let step = 0; step < 60; step += 1) {
+    await page.keyboard.press('Tab');
+    await page.evaluate(() => new Promise((resolve) => {
+      requestAnimationFrame(() => requestAnimationFrame(resolve));
+    }));
+    const focus = await page.evaluate(() => {
+      const active = document.activeElement;
+      const focusable = [...document.querySelectorAll('a[href], button, summary')]
+        .filter((element) => {
+          const closedDialog = element.closest('dialog:not([open])');
+          const closedDetails = element.closest('details:not([open])');
+          return !closedDialog && (!closedDetails || element.tagName === 'SUMMARY') && element.getClientRects().length;
+        });
+      const rect = active.getBoundingClientRect();
+      const headerBottom = document.querySelector('.site-header').getBoundingClientRect().bottom;
+      const exemptFromHeader = Boolean(active.closest('.site-header') || active.matches('.skip-link'));
+      return {
+        index: focusable.indexOf(active),
+        count: focusable.length,
+        name: active.textContent.trim().replace(/\s+/g, ' ').slice(0, 80),
+        outlineWidth: Number.parseFloat(getComputedStyle(active).outlineWidth),
+        visible: rect.bottom > 0 && rect.top < window.innerHeight,
+        obscured: !exemptFromHeader && rect.bottom <= headerBottom,
+      };
+    });
+
+    if (focus.index === -1 || seen.has(focus.index)) break;
+    expect(focus.index, focus.name).toBeGreaterThanOrEqual(0);
+    expect(focus.outlineWidth, focus.name).toBeGreaterThanOrEqual(3);
+    expect(focus.visible, focus.name).toBe(true);
+    expect(focus.obscured, focus.name).toBe(false);
+    seen.add(focus.index);
+  }
+
+  const expectedCount = await page.evaluate(() => [...document.querySelectorAll('a[href], button, summary')]
+    .filter((element) => {
+      const closedDialog = element.closest('dialog:not([open])');
+      const closedDetails = element.closest('details:not([open])');
+      return !closedDialog && (!closedDetails || element.tagName === 'SUMMARY') && element.getClientRects().length;
+    }).length);
+  expect(seen.size).toBe(expectedCount);
+});
+
+test('the accessibility tree exposes a coherent outline and named landmarks', async ({ page, context }) => {
+  await page.goto('/');
+  const session = await context.newCDPSession(page);
+  const { nodes } = await session.send('Accessibility.getFullAXTree');
+  const roles = nodes.map((node) => node.role?.value).filter(Boolean);
+  const headings = nodes
+    .filter((node) => node.role?.value === 'heading')
+    .map((node) => ({ name: node.name?.value, level: node.properties?.find((item) => item.name === 'level')?.value?.value }));
+
+  expect(roles.filter((role) => role === 'banner')).toHaveLength(1);
+  expect(roles.filter((role) => role === 'main')).toHaveLength(1);
+  expect(roles.filter((role) => role === 'contentinfo')).toHaveLength(1);
+  expect(roles.filter((role) => role === 'navigation').length).toBeGreaterThanOrEqual(3);
+  expect(headings[0]).toEqual({
+    name: 'Designing the interface. Building the system behind it.',
+    level: 1,
+  });
+  expect(headings.filter((heading) => heading.level === 2)).toHaveLength(6);
+  expect(headings.filter((heading) => heading.level === 3)).toHaveLength(14);
+});
+
+test('forced-colors mode preserves content and a visible keyboard focus indicator', async ({ page }) => {
+  await page.emulateMedia({ forcedColors: 'active' });
+  await page.goto('/');
+  const card = page.locator('[data-project="resona"]');
+  await card.focus();
+
+  await expect(card).toBeVisible();
+  const focusStyle = await card.evaluate((element) => ({
+    outlineStyle: getComputedStyle(element).outlineStyle,
+    outlineWidth: Number.parseFloat(getComputedStyle(element).outlineWidth),
+  }));
+  expect(focusStyle.outlineStyle).not.toBe('none');
+  expect(focusStyle.outlineWidth).toBeGreaterThanOrEqual(3);
+});
+
 test('reduced motion opens the detail without a spatial transition surface', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
@@ -144,4 +229,18 @@ test('Back restores the original scroll position', async ({ page }) => {
   await expect(page.locator('#project-dialog')).not.toBeVisible();
 
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(before);
+});
+
+test('Next project keeps one reversible history step', async ({ page }) => {
+  await page.goto('/');
+  const originCard = page.locator('[data-project="superforge"]');
+  await originCard.click();
+  await page.locator('[data-dialog-next]').click();
+
+  await expect(page.locator('[data-dialog-title]')).toHaveText('Snap Pair');
+  await expect(page).toHaveURL(/project=snap-pair/);
+  await page.goBack();
+
+  await expect(page.locator('#project-dialog')).not.toBeVisible();
+  await expect(originCard).toBeFocused();
 });

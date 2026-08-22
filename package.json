@@ -6,7 +6,8 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "test:e2e": "playwright test",
-    "check:links": "node --test tests/portfolio.test.mjs"
+    "check:links": "node --test tests/portfolio.test.mjs",
+    "check:syntax": "node --check scripts/app.mjs && node --check scripts/history.mjs && node --check scripts/project-data.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",

@@ -43,6 +43,9 @@ test('page exposes approved navigation and progressive fallback links', () => {
   for (const entry of PROJECTS) {
     assert.match(html, new RegExp(`data-project="${escapeRegExp(entry.slug)}"`));
     assert.match(html, new RegExp(`href="${escapeRegExp(entry.href)}"`));
+    if (!/^https?:/.test(entry.href)) {
+      assert.ok(existsSync(new URL(entry.href, indexUrl)), `${entry.href} should resolve on disk`);
+    }
   }
 });
 
