@@ -13,7 +13,7 @@
 
 ## Wave 1 — shared foundation
 
-- [ ] Verified project registry and test foundation
+- [x] Verified project registry and test foundation
   - Files: `package.json`, `.gitignore`, `tests/portfolio.test.mjs`, `scripts/project-data.mjs`, `assets/thumbs/*`
   - Proof: `npm test` exits 0 and every selected local image exists.
 - [ ] Mirrored design system and static page structure
@@ -38,3 +38,4 @@
 ## Progress log
 
 - 2026-08-23: Design specification approved by the user. Implementation plan created; execution starts from Wave 1.
+- 2026-08-23: Registry RED reproduced as a missing module, then GREEN with 14 verified projects and 12 local thumbnails (`npm test`: 1/1 passing).
