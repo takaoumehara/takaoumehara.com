@@ -29,10 +29,11 @@
   --focus-offset: 4px;
   --motion-feedback: 120ms;
   --motion-small: 220ms;
-  --motion-expand: 420ms;
-  --motion-collapse: 300ms;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+  --motion-expand: 460ms;
+  --motion-collapse: 340ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
+  --ease-spatial: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
 *,
@@ -815,11 +816,26 @@ main,
 [data-transition-surface] {
   position: fixed;
   z-index: 120;
-  inset: 0;
+  inset-block-start: 0;
+  inset-inline-start: 0;
   pointer-events: none;
   overflow: hidden;
   background: var(--color-ground);
   transform-origin: top left;
+  contain: strict;
+}
+
+[data-transition-preview] {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  transform-origin: center;
+}
+
+[data-transition-preview] img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 @media (prefers-reduced-motion: no-preference) {

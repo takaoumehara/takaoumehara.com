@@ -26,6 +26,39 @@ test('card opens spatial detail and Back restores focus', async ({ page }) => {
   await expect(card).toBeFocused();
 });
 
+test('spatial transition stays in the dialog layer and choreographs the project content', async ({ page }) => {
+  await page.goto('/');
+  const card = page.locator('[data-project="superforge"]');
+  await card.scrollIntoViewIfNeeded();
+  await card.click();
+
+  const dialog = page.locator('#project-dialog');
+  const surface = dialog.locator(':scope > [data-transition-surface]');
+  await expect(surface).toBeVisible();
+  await expect(surface.locator('[data-transition-preview]')).toHaveCount(1);
+
+  const animatedProperties = await surface.evaluate((element) => {
+    const ignored = new Set(['offset', 'computedOffset', 'easing', 'composite']);
+    return [...new Set(
+      element.getAnimations()
+        .flatMap((animation) => animation.effect.getKeyframes())
+        .flatMap((frame) => Object.keys(frame))
+        .filter((property) => !ignored.has(property)),
+    )].sort();
+  });
+  expect(animatedProperties).toEqual(['opacity', 'transform']);
+
+  const firstRevealOffset = await surface.evaluate((element) => {
+    const frames = element.getAnimations()[0]?.effect.getKeyframes() ?? [];
+    return frames.find((frame) => Number(frame.opacity) < 1)?.offset ?? 1;
+  });
+  expect(firstRevealOffset).toBeLessThanOrEqual(0.55);
+
+  await expect.poll(() => page.locator('[data-dialog-title]').evaluate((element) => element.getAnimations().length))
+    .toBeGreaterThan(0);
+  await expect(surface).toHaveCount(0);
+});
+
 test('default, dialog, and expanded menu states have no automated WCAG A/AA violations', async ({ page }) => {
   await page.goto('/');
   await expectNoAxeViolations(page);

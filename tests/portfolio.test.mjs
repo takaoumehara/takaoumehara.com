@@ -60,6 +60,7 @@ test('CSS includes semantic tokens and accessibility states', () => {
     '--color-accent',
     '--space-8',
     '--motion-expand',
+    '--ease-spatial',
   ]) {
     assert.ok(css.includes(token), `${token} should be declared`);
   }
@@ -67,9 +68,17 @@ test('CSS includes semantic tokens and accessibility states', () => {
   assert.match(css, /:focus-visible/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
   assert.match(css, /@media\s*\(max-width:\s*40rem\)/);
+  assert.match(css, /\[data-transition-preview\]/);
 });
 
 test('machine and human design-system artifacts are both present', () => {
-  assert.ok(existsSync(new URL('../docs/design.md', import.meta.url)));
-  assert.ok(existsSync(new URL('../docs/design.html', import.meta.url)));
+  const markdownUrl = new URL('../docs/design.md', import.meta.url);
+  const htmlUrl = new URL('../docs/design.html', import.meta.url);
+  assert.ok(existsSync(markdownUrl));
+  assert.ok(existsSync(htmlUrl));
+  for (const artifact of [readFileSync(markdownUrl, 'utf8'), readFileSync(htmlUrl, 'utf8')]) {
+    assert.match(artifact, /460ms/);
+    assert.match(artifact, /340ms/);
+    assert.match(artifact, /easeSpatial/);
+  }
 });

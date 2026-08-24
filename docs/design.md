@@ -1,6 +1,6 @@
 # Structured Tech Editorial
 
-> Written by: superforge-ui · Last updated: 2026-08-23
+> Written by: superforge-ui · Last updated: 2026-08-24
 
 ## Surface
 
@@ -115,10 +115,11 @@ border:
 motion:
   feedback: "120ms"
   small: "220ms"
-  expand: "420ms"
-  collapse: "300ms"
-  easeOut: "cubic-bezier(0.16, 1, 0.3, 1)"
-  easeIn: "cubic-bezier(0.55, 0, 1, 0.45)"
+  expand: "460ms"
+  collapse: "340ms"
+  easeOut: "cubic-bezier(0.22, 1, 0.36, 1)"
+  easeIn: "cubic-bezier(0.7, 0, 0.84, 0)"
+  easeSpatial: "cubic-bezier(0.65, 0, 0.35, 1)"
 
 components:
   projectCard:
@@ -141,6 +142,8 @@ components:
 ## Intent
 
 The page should feel like someone who can set the system and make the surface: direct enough for engineering, spacious enough for design. The signature is not an effect added to the page; it is the selected rectangle becoming the reading space.
+
+The spatial transition begins from the selected card's media rectangle inside the dialog top layer. Its preview releases early while the expanding warm ground progressively reveals the project hierarchy beneath it, which enters in a restrained 20ms stagger. Closing uses the same `easeSpatial` trajectory in reverse, with a shorter duration. Only `transform` and `opacity` animate; reduced-motion users get the final state immediately.
 
 ## Colour rationale
 

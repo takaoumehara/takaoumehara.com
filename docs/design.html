@@ -57,14 +57,14 @@
     .button:disabled { color: var(--disabled-ink); background: var(--disabled-surface); }
     .note { padding: 1rem; border: 1px solid var(--border); background: var(--surface); }
     @media (prefers-reduced-motion: no-preference) {
-      .demo-card, .demo-card__media, .button { transition: transform 120ms cubic-bezier(.16,1,.3,1); }
+      .demo-card, .demo-card__media, .button { transition: transform 120ms cubic-bezier(.22,1,.36,1); }
     }
   </style>
 </head>
 <body>
   <header>
     <div class="wrap">
-      <div class="kicker">Design system · 2026-08-23</div>
+      <div class="kicker">Design system · 2026-08-24</div>
       <h1>Structured Tech Editorial</h1>
       <p class="lede">A firm sans-serif portfolio system where one aligned rectangle becomes the project detail.</p>
       <button class="button" type="button" disabled aria-describedby="mode-note">Light mode only</button>
@@ -99,6 +99,16 @@
       <div class="spacing-row"><code>24px</code><span class="spacing-block" style="--size:1.5rem"></span></div>
       <div class="spacing-row"><code>32px</code><span class="spacing-block" style="--size:2rem"></span></div>
       <div class="spacing-row"><code>64px</code><span class="spacing-block" style="--size:4rem"></span></div>
+    </div></section>
+    <section><div class="wrap">
+      <h2>Motion</h2>
+      <p class="lede">One shared-element transition carries a project media rectangle into the full reading surface and reverses the same path on Back.</p>
+      <div class="state-grid">
+        <div class="note"><code>expand: 460ms</code><br>Preview releases early; project content follows in a restrained stagger.</div>
+        <div class="note"><code>collapse: 340ms</code><br>Exit is shorter and returns to the original media rectangle.</div>
+        <div class="note"><code>easeSpatial: cubic-bezier(0.65, 0, 0.35, 1)</code><br>Symmetric spatial easing; transform and opacity only.</div>
+        <div class="note"><code>prefers-reduced-motion</code><br>No spatial surface or content translation is created.</div>
+      </div>
     </div></section>
     <section><div class="wrap">
       <h2>Component states</h2>

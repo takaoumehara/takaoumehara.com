@@ -64,7 +64,7 @@ Forced-colors emulation preserved content and a visible 3px focus outline. Meani
 
 ### 6. Motion and time
 
-With `prefers-reduced-motion: reduce`, the card-to-viewport transition surface is not created and CSS animation/transition duration collapses to 0.01ms. Default motion is limited to transform, colour feedback, and one spatial open/close transition (420ms/300ms). There is no autoplay, flashing, auto-update, audio, or time limit.
+With `prefers-reduced-motion: reduce`, the card-to-viewport transition surface is not created and CSS animation/transition duration collapses to 0.01ms. Default motion is limited to transform, colour feedback, and one spatial open/close transition (460ms/340ms). There is no autoplay, flashing, auto-update, audio, or time limit.
 
 Result: pass for the implemented motion.
 
