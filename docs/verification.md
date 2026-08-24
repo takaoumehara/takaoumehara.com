@@ -1,12 +1,12 @@
-# Verification — portfolio v4 @ `bd34c25`
+# Verification — portfolio v4 @ `00b89dc`
 
-> Written by: superforge-verify · Last updated: 2026-08-23
-> Mode: single-pass (grader = implementer)
-> Ran on: macOS · Node.js + Chromium · Source build: `bd34c25`
+> Written by: superforge-verify · Last updated: 2026-08-24
+> Mode: incremental (grader = implementer)
+> Ran on: macOS · Node.js + Chromium · Source build: `00b89dc` · Baseline: `bd34c25`
 
 ## Verdict
 
-**PASS for the requested local v4 handoff.** The complete reproducible suite passed twice from newly started web servers and new browser contexts. This verdict is not permission to deploy, and it is not a WCAG conformance claim.
+**PASS for the requested local v4 handoff.** The baseline suite passed twice; the motion refinement then passed one complete fresh run from a new web server and browser context. This verdict is not permission to deploy, and it is not a WCAG conformance claim.
 
 ## Claim-to-evidence table
 
@@ -14,22 +14,56 @@
 |---|---|---|---|
 | JavaScript syntax | A | `npm run check:syntax`, twice | 3 modules parsed; 0 errors |
 | Registry, URL state, source contracts | A | `npm test`, twice | 7 passed / 0 failed / 0 skipped |
-| Rendered desktop/mobile behaviour | A | `npm run test:e2e`, twice | 13 passed / 0 failed / 0 skipped |
+| Rendered desktop/mobile behaviour | A | `npm run test:e2e`; baseline twice, motion delta once | 14 passed / 0 failed / 0 skipped |
 | Project and local fallback links | A | `npm run check:links`, twice | 4 passed / 0 failed / 0 skipped |
-| Seamless open → Next/Back/Escape | A | Playwright cases 1, 3, 12, 13 | URL, dialog, scroll, and focus restored |
-| 320px mobile and 200% text | A | Playwright cases 4 and 5 | No page-level horizontal overflow |
-| WCAG automated states | A | Playwright case 2, axe-core 4.13.0 | 0 A/AA violations in default, dialog, expanded-menu states |
-| Keyboard and focus | A | Playwright cases 3, 6, 7 | Full desktop Tab order reached; 3px focus; no sticky-header occlusion |
-| Accessibility tree | A | Playwright case 8, Chromium CDP | 1 banner/main/footer, named navs, coherent H1/H2/H3 outline |
-| Reduced motion / forced colours | A | Playwright cases 9 and 10 | Motion surface absent; focus remains visible |
+| Spatial open/close transition | A | Playwright case 2 + desktop/mobile midpoint captures | Dialog top-layer surface; transform/opacity only; progressive reveal by 52% |
+| Seamless open → Next/Back/Escape | A | Playwright cases 1, 4, 13, 14 | URL, dialog, scroll, and focus restored |
+| 320px mobile and 200% text | A | Playwright cases 5 and 6 | No page-level horizontal overflow |
+| WCAG automated states | A | Playwright case 3, axe-core 4.13.0 | 0 A/AA violations in default, dialog, expanded-menu states |
+| Keyboard and focus | A | Playwright cases 4, 7, 8 | Full desktop Tab order reached; 3px focus; no sticky-header occlusion |
+| Accessibility tree | A | Playwright case 9, Chromium CDP | 1 banner/main/footer, named navs, coherent H1/H2/H3 outline |
+| Reduced motion / forced colours | A | Playwright cases 10 and 11 | Motion surface absent; focus remains visible |
 | Desktop composition | B | `docs/evidence/portfolio-desktop-1440.jpg` | 1440×6932 capture; aligned three-column/two-column grid |
 | Mobile composition | B | `docs/evidence/portfolio-mobile-390.jpg` | 390×11710 capture; single-column flow |
 | Mobile project detail | B | `docs/evidence/project-dialog-mobile-390.jpg` | 390×844 capture; bar, hierarchy, metadata visible |
 | WCAG 2.2 A/AA ledger | C | Derived from the A/B evidence above in `docs/accessibility.md` | 55/55 rows marked Pass or Not present; no Blocker |
 | Text payload budget | A | `wc -c index.html styles.css scripts/*.mjs` | 57,436 bytes, below 150KB budget |
-| Whitespace and repository state | A | `git diff --check` and `git status --short` at source commit | no output before evidence artifacts were added |
+| Whitespace and repository state | A | `git diff --check` and `git status --short` at source commit | no output |
 
-## Cold run 1 — raw relevant output
+## 2026-08-24 motion refinement run
+
+```text
+$ npm test
+1..7
+# tests 7
+# pass 7
+# fail 0
+
+$ npm run test:e2e
+Running 14 tests using 1 worker
+[1/14] card opens spatial detail and Back restores focus
+[2/14] spatial transition stays in the dialog layer and choreographs the project content
+[3/14] default, dialog, and expanded menu states have no automated WCAG A/AA violations
+[4/14] keyboard opens and dismisses a project without losing the trigger
+[5/14] 320px reflow and forced text spacing preserve the page
+[6/14] 200% text-only zoom does not introduce page-level horizontal scrolling
+[7/14] skip link is the first keyboard stop and reaches main content
+[8/14] the complete desktop tab order stays visible and reaches every control
+[9/14] the accessibility tree exposes a coherent outline and named landmarks
+[10/14] forced-colors mode preserves content and a visible keyboard focus indicator
+[11/14] reduced motion opens the detail without a spatial transition surface
+[12/14] direct project URLs open predictably and invalid slugs recover
+[13/14] Back restores the original scroll position
+[14/14] Next project keeps one reversible history step
+14 passed (11.8s)
+
+$ npm run check:syntax && npm run check:links && git diff --check
+3 modules parsed; 4 source-contract tests passed; no whitespace errors
+```
+
+The 230ms midpoint was inspected at 1440×1000 and 390×844. The selected media remains spatially connected while the detail hierarchy is already legible; the previous blank warm-ground interval is absent.
+
+## Baseline cold run 1 — raw relevant output
 
 ```text
 $ npm run check:syntax
@@ -82,7 +116,7 @@ $ git diff --check && git status --short
 [no output]
 ```
 
-## Cold run 2 — raw relevant output
+## Baseline cold run 2 — raw relevant output
 
 ```text
 $ npm run check:syntax
