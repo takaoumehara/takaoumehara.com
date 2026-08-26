@@ -37,25 +37,52 @@ test('spatial transition stays in the dialog layer and choreographs the project 
   await expect(surface).toBeVisible();
   await expect(surface.locator('[data-transition-preview]')).toHaveCount(1);
 
-  const animatedProperties = await surface.evaluate((element) => {
+  const { motionTracks, previewReleaseOffset } = await surface.evaluate((element) => {
     const ignored = new Set(['offset', 'computedOffset', 'easing', 'composite']);
-    return [...new Set(
-      element.getAnimations()
-        .flatMap((animation) => animation.effect.getKeyframes())
-        .flatMap((frame) => Object.keys(frame))
-        .filter((property) => !ignored.has(property)),
-    )].sort();
+    const tracks = element.getAnimations().map((animation) => {
+      const frames = animation.effect.getKeyframes();
+      return {
+        properties: [...new Set(
+          frames.flatMap((frame) => Object.keys(frame))
+            .filter((property) => !ignored.has(property)),
+        )].sort(),
+        offsets: frames.map((frame) => frame.offset),
+        opacities: frames.map((frame) => frame.opacity ?? null),
+      };
+    });
+    const preview = element.querySelector('[data-transition-preview]');
+    const previewFrames = preview?.getAnimations()[0]?.effect.getKeyframes() ?? [];
+    const offset = previewFrames.find((frame) => Number(frame.opacity) === 0)?.offset ?? 1;
+    return { motionTracks: tracks, previewReleaseOffset: offset };
   });
-  expect(animatedProperties).toEqual(['opacity', 'transform']);
-
-  const firstRevealOffset = await surface.evaluate((element) => {
-    const frames = element.getAnimations()[0]?.effect.getKeyframes() ?? [];
-    return frames.find((frame) => Number(frame.opacity) < 1)?.offset ?? 1;
-  });
+  const geometryTrack = motionTracks.find(({ properties }) => properties.join() === 'transform');
+  expect(geometryTrack?.offsets).toEqual([0, 1]);
+  const revealTrack = motionTracks.find(({ properties }) => properties.join() === 'opacity');
+  const firstRevealOffset = revealTrack?.offsets.find((offset, index) => Number(revealTrack.opacities[index]) < 1) ?? 1;
   expect(firstRevealOffset).toBeLessThanOrEqual(0.55);
+  expect(previewReleaseOffset).toBeLessThanOrEqual(0.32);
 
-  await expect.poll(() => page.locator('[data-dialog-title]').evaluate((element) => element.getAnimations().length))
-    .toBeGreaterThan(0);
+  await expect.poll(() => page.locator('[data-dialog-title]').evaluate((element) => {
+    const animation = element.getAnimations()[0];
+    if (!animation) return null;
+    return {
+      delay: animation.effect.getComputedTiming().delay,
+      duration: animation.effect.getComputedTiming().duration,
+      startTransform: animation.effect.getKeyframes()[0]?.transform,
+    };
+  })).not.toBeNull();
+  const measuredTitleMotion = await page.locator('[data-dialog-title]').evaluate((element) => {
+    const animation = element.getAnimations()[0];
+    return {
+      delay: animation.effect.getComputedTiming().delay,
+      duration: animation.effect.getComputedTiming().duration,
+      startTransform: animation.effect.getKeyframes()[0]?.transform,
+    };
+  });
+  expect(measuredTitleMotion.delay).toBeGreaterThanOrEqual(120);
+  expect(measuredTitleMotion.delay).toBeLessThanOrEqual(130);
+  expect(measuredTitleMotion.duration).toBeGreaterThanOrEqual(340);
+  expect(measuredTitleMotion.startTransform).toContain('0.375rem');
   await expect(surface).toHaveCount(0);
 });
 
@@ -216,39 +243,35 @@ test('the accessibility tree exposes a coherent outline and named landmarks', as
     level: 1,
   });
   expect(headings.filter((heading) => heading.level === 2)).toHaveLength(6);
-  expect(headings.filter((heading) => heading.level === 3)).toHaveLength(14);
+  expect(headings.filter((heading) => heading.level === 3)).toHaveLength(15);
 });
 
 test('forced-colors mode preserves content and a visible keyboard focus indicator', async ({ page }) => {
   await page.emulateMedia({ forcedColors: 'active' });
   await page.goto('/');
-  const card = page.locator('[data-project="resona"]');
-  await card.focus();
+  const target = page.locator('.hero .button-action');
+  await target.focus();
 
-  await expect(card).toBeVisible();
-  const focusStyle = await card.evaluate((element) => ({
-    outlineStyle: getComputedStyle(element).outlineStyle,
-    outlineWidth: Number.parseFloat(getComputedStyle(element).outlineWidth),
-  }));
-  expect(focusStyle.outlineStyle).not.toBe('none');
-  expect(focusStyle.outlineWidth).toBeGreaterThanOrEqual(3);
+  await expect(target).toBeVisible();
+  const outline = await target.evaluate((element) => Number.parseFloat(getComputedStyle(element).outlineWidth));
+  expect(outline).toBeGreaterThanOrEqual(3);
 });
 
 test('reduced motion opens the detail without a spatial transition surface', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await page.locator('[data-project="superforge"]').click();
+  await page.locator('[data-project="resona"]').click();
 
   await expect(page.locator('#project-dialog')).toBeVisible();
   await expect(page.locator('[data-transition-surface]')).toHaveCount(0);
 });
 
 test('direct project URLs open predictably and invalid slugs recover', async ({ page }) => {
-  await page.goto('/?project=snap-pair');
+  await page.goto('/?project=superforge');
   await expect(page.locator('#project-dialog')).toBeVisible();
-  await expect(page.locator('[data-dialog-title]')).toHaveText('Snap Pair');
+  await expect(page.locator('[data-dialog-title]')).toHaveText('superforge');
 
-  await page.goto('/?project=not-a-project');
+  await page.goto('/?project=does-not-exist');
   await expect(page).not.toHaveURL(/project=/);
   await expect(page.locator('#project-dialog')).not.toBeVisible();
   await expect(page.locator('[data-status]')).toContainText('Project not found');
@@ -280,4 +303,22 @@ test('Next project keeps one reversible history step', async ({ page }) => {
 
   await expect(page.locator('#project-dialog')).not.toBeVisible();
   await expect(originCard).toBeFocused();
+});
+
+test('Space key cycles through the 5 full-screen featured slides', async ({ page }) => {
+  await page.goto('/');
+  const tracker = page.locator('[data-showcase-tracker]');
+  await expect(page.locator('[data-featured-slide]')).toHaveCount(5);
+
+  // Press Space to advance to slide 2 (Rakugaki Jam)
+  await page.keyboard.press('Space');
+  await page.waitForTimeout(300);
+  const slide2 = page.locator('[data-featured-slug="rakugaki-jam"]');
+  await expect(slide2).toBeInViewport();
+
+  // Press Space to advance to slide 3 (Kao Game)
+  await page.keyboard.press('Space');
+  await page.waitForTimeout(300);
+  const slide3 = page.locator('[data-featured-slug="kao-game"]');
+  await expect(slide3).toBeInViewport();
 });

@@ -52,243 +52,701 @@
 
   <main id="main-content">
     <section class="hero" id="top" aria-labelledby="hero-title">
-      <p class="hero__meta">New York · Product design · AI systems · Interactive</p>
-      <h1 id="hero-title">Designing the interface. Building the system behind it.</h1>
+      <div class="hero__header-strip">
+        <p class="hero__meta">New York · Product Design · AI Systems · Interactive Experience</p>
+      </div>
+      <h1 id="hero-title">Designing the interface.<br>Building the system behind it.</h1>
       <div class="hero__foot">
-        <p>Takao Umehara is a product designer and builder working across interactive experiences, AI products, tools, product design, and brand.</p>
-        <a class="text-action" href="#interactive-experience">Explore selected work <span aria-hidden="true">↓</span></a>
+        <p class="hero__lead">Takao Umehara is a product designer and creative technologist orchestrating multi-agent systems, sensory physics, and spatial digital products.</p>
+        <div class="hero__actions">
+          <a class="button-action" href="#featured-showcase">
+            <span>Explore Featured Work</span>
+            <span class="action-icon" aria-hidden="true">↓</span>
+          </a>
+          <a class="text-action" href="#category-overview">
+            <span>Browse All Categories (01–05)</span>
+            <span aria-hidden="true">→</span>
+          </a>
+        </div>
       </div>
     </section>
 
-    <nav class="category-index" aria-label="Jump to a category">
-      <a href="#interactive-experience"><span>01</span>Interactive Experience</a>
-      <a href="#ai-products"><span>02</span>AI Products</a>
-      <a href="#ai-tools"><span>03</span>AI Tools</a>
-      <a href="#product-design"><span>04</span>Product Design</a>
-      <a href="#brand-experience"><span>05</span>Brand Experience</a>
+    <!-- Phase 1: Full-Viewport Featured Showcase -->
+    <section class="featured-showcase" id="featured-showcase" aria-label="Featured Projects Showcase" data-featured-showcase>
+      <nav class="showcase-tracker" aria-label="Featured projects quick navigation" data-showcase-tracker>
+        <div class="showcase-tracker__counter"><span data-showcase-current>01</span> / 05</div>
+        <div class="showcase-tracker__nav">
+          <button class="showcase-tracker__btn is-active" type="button" data-showcase-goto="0" aria-label="Jump to Resona">01</button>
+          <button class="showcase-tracker__btn" type="button" data-showcase-goto="1" aria-label="Jump to Rakugaki Jam">02</button>
+          <button class="showcase-tracker__btn" type="button" data-showcase-goto="2" aria-label="Jump to Kao Game">03</button>
+          <button class="showcase-tracker__btn" type="button" data-showcase-goto="3" aria-label="Jump to Verizon AI Workflow">04</button>
+          <button class="showcase-tracker__btn" type="button" data-showcase-goto="4" aria-label="Jump to Moime.app">05</button>
+        </div>
+        <div class="showcase-tracker__space-hint" aria-hidden="true">
+          <kbd>Space</kbd> <span>to cycle</span>
+        </div>
+      </nav>
+
+      <!-- Slide 01: Resona -->
+      <article class="featured-slide" data-featured-slide="0" data-featured-slug="resona" id="featured-resona">
+        <div class="featured-slide__inner">
+          <div class="featured-slide__header">
+            <span class="featured-slide__badge">Featured 01 / 05</span>
+            <span class="featured-slide__category">Interactive Experience · Live</span>
+          </div>
+          <div class="featured-slide__grid">
+            <div class="featured-slide__content">
+              <p class="featured-slide__tagline">Pseudo-haptic sensory physics for flat glass</p>
+              <p class="featured-slide__title">Resona 響</p>
+              <p class="featured-slide__summary">Animation that makes you feel mass, resistance, and friction through a screen that has neither physical weight nor mechanical haptics.</p>
+              
+              <div class="featured-slide__meta-grid">
+                <div class="meta-item">
+                  <span class="meta-label">Role</span>
+                  <span class="meta-value">Motion Design &amp; Engineering</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Stack</span>
+                  <div class="tech-tags">
+                    <span class="tech-tag">Web Animation API</span>
+                    <span class="tech-tag">Pseudo-Haptics</span>
+                    <span class="tech-tag">Pure CSS</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="featured-slide__actions">
+                <a class="button-primary" href="https://resona-motion.vercel.app" target="_blank" rel="noopener noreferrer">
+                  <span>Launch Live Experience</span>
+                  <span aria-hidden="true">↗</span>
+                  <span class="sr-only"> (opens in a new tab)</span>
+                </a>
+                <button class="button-secondary" type="button" data-open-detail="resona">
+                  <span>View Project Specs</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="featured-slide__media">
+              <div class="featured-preview featured-preview--resona" role="img" aria-label="Resona dynamic orbit motion physics visualization">
+                <div class="resona-interactive-stage">
+                  <span class="resona-orbit-ring"></span>
+                  <span class="resona-orbit-point"></span>
+                  <span class="resona-core-pulse"></span>
+                </div>
+                <span class="preview-caption">Mass · Friction · Pseudo-Haptics</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Slide 02: Rakugaki Jam -->
+      <article class="featured-slide" data-featured-slide="1" data-featured-slug="rakugaki-jam" id="featured-rakugaki">
+        <div class="featured-slide__inner">
+          <div class="featured-slide__header">
+            <span class="featured-slide__badge">Featured 02 / 05</span>
+            <span class="featured-slide__category">Interactive Experience · Live</span>
+          </div>
+          <div class="featured-slide__grid">
+            <div class="featured-slide__content">
+              <p class="featured-slide__tagline">Multi-device realtime collaborative canvas</p>
+              <p class="featured-slide__title">Rakugaki Jam</p>
+              <p class="featured-slide__summary">Doodle on your phone, fling it onto the shared wall. A crowd-drawn VJ jam that connects dozens of devices simultaneously with zero app install.</p>
+              
+              <div class="featured-slide__meta-grid">
+                <div class="meta-item">
+                  <span class="meta-label">Role</span>
+                  <span class="meta-value">Creative Technologist &amp; Lead Architect</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Stack</span>
+                  <div class="tech-tags">
+                    <span class="tech-tag">Snap Pair</span>
+                    <span class="tech-tag">Firebase RTDB</span>
+                    <span class="tech-tag">Canvas 2D</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="featured-slide__actions">
+                <a class="button-primary" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener noreferrer">
+                  <span>Launch Live Jam</span>
+                  <span aria-hidden="true">↗</span>
+                  <span class="sr-only"> (opens in a new tab)</span>
+                </a>
+                <button class="button-secondary" type="button" data-open-detail="rakugaki-jam">
+                  <span>View System Architecture</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="featured-slide__media">
+              <div class="featured-preview featured-preview--rakugaki" role="img" aria-label="Rakugaki Jam doodle fling and realtime shared wall visual">
+                <div class="rakugaki-stage">
+                  <span class="rakugaki-wave rakugaki-wave--one"></span>
+                  <span class="rakugaki-wave rakugaki-wave--two"></span>
+                  <span class="rakugaki-node"></span>
+                </div>
+                <span class="preview-caption">Instant QR · Phone → Shared Projection</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Slide 03: Kao Game -->
+      <article class="featured-slide" data-featured-slide="2" data-featured-slug="kao-game" id="featured-kao-game">
+        <div class="featured-slide__inner">
+          <div class="featured-slide__header">
+            <span class="featured-slide__badge">Featured 03 / 05</span>
+            <span class="featured-slide__category">Interactive Experience · In Progress</span>
+          </div>
+          <div class="featured-slide__grid">
+            <div class="featured-slide__content">
+              <p class="featured-slide__tagline">Your face is the game controller</p>
+              <p class="featured-slide__title">Kao Game 顔ゲーム</p>
+              <p class="featured-slide__summary">A game you play with your face. Pull the expressions the game asks for — and facial muscles you never train get an engaging workout you actually want to repeat.</p>
+              
+              <div class="featured-slide__meta-grid">
+                <div class="meta-item">
+                  <span class="meta-label">Role</span>
+                  <span class="meta-value">Interaction Designer &amp; Vision Engineer</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Stack</span>
+                  <div class="tech-tags">
+                    <span class="tech-tag">Face Tracking</span>
+                    <span class="tech-tag">Vision ML</span>
+                    <span class="tech-tag">Web Audio</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="featured-slide__actions">
+                <button class="button-primary" type="button" data-open-detail="kao-game">
+                  <span>Explore Project Specs</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+                <a class="button-secondary" href="../v3/interactive.html#experiences" target="_blank" rel="noopener noreferrer">
+                  <span>Category Archive</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="featured-slide__media">
+              <div class="featured-preview featured-preview--kao" role="img" aria-label="Kao Game facial expression mesh tracking simulation">
+                <div class="kao-stage">
+                  <span class="kao-mesh-contour"></span>
+                  <span class="kao-eye kao-eye--left"></span>
+                  <span class="kao-eye kao-eye--right"></span>
+                  <span class="kao-expression-curve"></span>
+                </div>
+                <span class="preview-caption">Realtime Face Mesh · Expression Tracking</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Slide 04: Verizon AI Workflow -->
+      <article class="featured-slide" data-featured-slide="3" data-featured-slug="verizon-ai-agents" id="featured-verizon-ai">
+        <div class="featured-slide__inner">
+          <div class="featured-slide__header">
+            <span class="featured-slide__badge">Featured 04 / 05</span>
+            <span class="featured-slide__category">AI Products · Enterprise Systems</span>
+          </div>
+          <div class="featured-slide__grid">
+            <div class="featured-slide__content">
+              <p class="featured-slide__tagline">Enterprise multi-agent UX system for 42 designers</p>
+              <p class="featured-slide__title">Verizon AI Workflow</p>
+              <p class="featured-slide__summary">A coordinated fleet of ten purpose-built AI agents seamlessly woven into the daily design workflows of a six-brand organization.</p>
+              
+              <div class="featured-slide__meta-grid">
+                <div class="meta-item">
+                  <span class="meta-label">Role</span>
+                  <span class="meta-value">Lead Product Designer · Agentic UX</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Stack</span>
+                  <div class="tech-tags">
+                    <span class="tech-tag">Agent Teams</span>
+                    <span class="tech-tag">Figma API</span>
+                    <span class="tech-tag">Design Tokens</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="featured-slide__actions">
+                <button class="button-primary" type="button" data-open-detail="verizon-ai-agents">
+                  <span>Explore Case Study</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+                <a class="button-secondary" href="../v3/projects/verizon-ai-agents.html" target="_blank" rel="noopener noreferrer">
+                  <span>Full Article</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="featured-slide__media">
+              <div class="featured-preview featured-preview--image">
+                <img src="assets/thumbs/verizon-ai-agents.jpg" alt="Verizon AI agent architecture interface" width="1200" height="630" loading="lazy">
+                <span class="preview-caption">Multi-Agent Workflow &amp; Token Pipeline</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- Slide 05: Moime.app -->
+      <article class="featured-slide" data-featured-slide="4" data-featured-slug="moime-app" id="featured-moime">
+        <div class="featured-slide__inner">
+          <div class="featured-slide__header">
+            <span class="featured-slide__badge">Featured 05 / 05</span>
+            <span class="featured-slide__category">AI Products · In Production</span>
+          </div>
+          <div class="featured-slide__grid">
+            <div class="featured-slide__content">
+              <p class="featured-slide__tagline">Multimodal AI link-in-bio reading physical flyers</p>
+              <p class="featured-slide__title">Moime.app</p>
+              <p class="featured-slide__summary">A link-in-bio platform for events and promo codes. Point it at a physical flyer and it extracts dates, discount codes, and venue metadata automatically without manual entry.</p>
+              
+              <div class="featured-slide__meta-grid">
+                <div class="meta-item">
+                  <span class="meta-label">Role</span>
+                  <span class="meta-value">Founder &amp; Full-Stack Product Architect</span>
+                </div>
+                <div class="meta-item">
+                  <span class="meta-label">Stack</span>
+                  <div class="tech-tags">
+                    <span class="tech-tag">React 19</span>
+                    <span class="tech-tag">Gemini Multimodal</span>
+                    <span class="tech-tag">Voice AI</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="featured-slide__actions">
+                <button class="button-primary" type="button" data-open-detail="moime-app">
+                  <span>Explore Project Specs</span>
+                  <span aria-hidden="true">→</span>
+                </button>
+                <a class="button-secondary" href="../v3/ai-products.html" target="_blank" rel="noopener noreferrer">
+                  <span>Category Archive</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </div>
+
+            <div class="featured-slide__media">
+              <div class="featured-preview featured-preview--moime" role="img" aria-label="Moime.app multimodal flyer scanning visualization">
+                <div class="moime-stage">
+                  <span class="moime-scan-card"></span>
+                  <span class="moime-laser"></span>
+                  <span class="moime-tag-token moime-tag-token--1">Date: 2026.09.12</span>
+                  <span class="moime-tag-token moime-tag-token--2">Code: MOIME25</span>
+                </div>
+                <span class="preview-caption">Flyer OCR &amp; Vision Extraction · React 19</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Navigation jump bar -->
+    <nav class="category-index" id="category-overview" aria-label="Jump to category sections">
+      <a href="#interactive-experience"><span class="cat-num">01</span><span class="cat-name">Interactive Experience</span></a>
+      <a href="#ai-products"><span class="cat-num">02</span><span class="cat-name">AI Products</span></a>
+      <a href="#ai-tools"><span class="cat-num">03</span><span class="cat-name">AI Tools</span></a>
+      <a href="#product-design"><span class="cat-num">04</span><span class="cat-name">Product Design</span></a>
+      <a href="#brand-experience"><span class="cat-num">05</span><span class="cat-name">Brand Experience</span></a>
     </nav>
 
+    <!-- Phase 2: Categorized Deep-Dive Grid (2-Column & 3-Column Editorial) -->
+
+    <!-- Section 01: Interactive Experience -->
     <section class="work-section" id="interactive-experience" aria-labelledby="interactive-title">
       <header class="section-head">
         <p class="section-head__index">01 / 05</p>
         <h2 id="interactive-title">Interactive Experience</h2>
-        <p>Voice, movement, handwriting, and multiple phones become the input. The output is an experience larger than the screen in your hand.</p>
+        <p>Voice, movement, tactile pseudo-physics, and multi-device synchronization. Interfaces that break out of single screens.</p>
       </header>
-      <div class="project-grid">
-        <a class="project-card" href="https://resona-motion.vercel.app" data-project="resona">
+      <div class="editorial-grid editorial-grid--three-col">
+        <!-- Resona Card -->
+        <a class="project-card project-card--featured-tone" href="https://resona-motion.vercel.app" data-project="resona">
           <div class="project-card__media project-card__art project-card__art--resona" aria-hidden="true">
             <span class="resona-orbit"></span><span class="resona-core"></span><span class="art-label">Mass / friction / response</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>Interactive Experience</span><span>Live</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">Interactive Experience</span>
+              <span class="meta-status">Live</span>
+            </div>
             <h3>Resona 響</h3>
-            <p>Pseudo-haptics: animation that makes you feel mass and friction through a screen that has neither.</p>
-            <span class="project-card__cue">Open project <span aria-hidden="true">↗</span></span>
+            <p class="project-card__tagline">Pseudo-haptic sensory physics for flat glass</p>
+            <p class="project-card__summary">Animation that makes you feel weight, inertia, and friction through a standard touch screen.</p>
+            <div class="project-card__tech">
+              <span>Web Animation API</span><span>Pseudo-Haptics</span><span>Canvas</span>
+            </div>
+            <span class="project-card__cue">Launch Live <span aria-hidden="true">↗</span></span>
           </div>
         </a>
 
-        <a class="project-card" href="https://rakugaki-jam.vercel.app" data-project="rakugaki-jam">
+        <!-- Rakugaki Jam Card -->
+        <a class="project-card project-card--featured-tone" href="https://rakugaki-jam.vercel.app" data-project="rakugaki-jam">
           <div class="project-card__media project-card__art project-card__art--rakugaki" aria-hidden="true">
             <span class="rakugaki-line rakugaki-line--one"></span><span class="rakugaki-line rakugaki-line--two"></span><span class="art-label">Phone → shared wall</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>Interactive Experience</span><span>Live</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">Interactive Experience</span>
+              <span class="meta-status">Live</span>
+            </div>
             <h3>Rakugaki Jam</h3>
-            <p>Doodle on your phone, fling it onto the shared wall. A crowd-drawn VJ jam that needs no app install.</p>
-            <span class="project-card__cue">Open project <span aria-hidden="true">↗</span></span>
+            <p class="project-card__tagline">Multi-device realtime collaborative canvas</p>
+            <p class="project-card__summary">Doodle on your phone, fling it onto the shared wall. A crowd-drawn VJ jam connecting dozens of devices.</p>
+            <div class="project-card__tech">
+              <span>Snap Pair</span><span>Firebase RTDB</span><span>Canvas 2D</span>
+            </div>
+            <span class="project-card__cue">Launch Live <span aria-hidden="true">↗</span></span>
           </div>
         </a>
 
-        <a class="project-card" href="../v3/projects/marubatsu.html" data-project="marubatsu">
-          <div class="project-card__media">
-            <img src="assets/thumbs/marubatsu.jpg" alt="" width="760" height="570" loading="lazy">
-            <span class="project-card__fallback" aria-hidden="true">Marubatsu 2.0</span>
+        <!-- Kao Game Card -->
+        <a class="project-card project-card--featured-tone" href="../v3/interactive.html#experiences" data-project="kao-game">
+          <div class="project-card__media project-card__art project-card__art--kao" aria-hidden="true">
+            <span class="kao-mesh-contour"></span><span class="kao-eye kao-eye--left"></span><span class="kao-eye kao-eye--right"></span><span class="art-label">Face tracking controller</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>Interactive Experience</span><span>Shipped</span></div>
-            <h3>Marubatsu 2.0</h3>
-            <p>A real-time 4×4 tic-tac-toe game with pass-and-play, online pairing, and a Gemini-powered opponent.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
+            <div class="project-card__meta">
+              <span class="meta-tag">Interactive Experience</span>
+              <span class="meta-status">In Progress</span>
+            </div>
+            <h3>Kao Game 顔ゲーム</h3>
+            <p class="project-card__tagline">Your face is the game controller</p>
+            <p class="project-card__summary">A game played with facial expressions, turning facial muscle exercise into something you want to repeat.</p>
+            <div class="project-card__tech">
+              <span>Face Tracking</span><span>Vision ML</span><span>Web Audio</span>
+            </div>
+            <span class="project-card__cue">View Specs <span aria-hidden="true">→</span></span>
           </div>
+        </a>
+      </div>
+      <div class="category-foot">
+        <a class="category-portal-link" href="../v3/interactive.html">
+          <span>Explore all Interactive Experience projects</span>
+          <span class="portal-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </section>
 
+    <!-- Section 02: AI Products -->
     <section class="work-section" id="ai-products" aria-labelledby="ai-products-title">
       <header class="section-head">
         <p class="section-head__index">02 / 05</p>
         <h2 id="ai-products-title">AI Products</h2>
-        <p>AI is part of the product logic, not a label added to the interface. The person stays able to understand and direct the system.</p>
+        <p>AI deeply integrated into product logic. The person stays in control, orchestrating agents with clarity and speed.</p>
       </header>
-      <div class="project-grid project-grid--two">
+      <div class="editorial-grid editorial-grid--three-col">
+        <!-- Verizon AI Workflow -->
         <a class="project-card" href="../v3/projects/verizon-ai-agents.html" data-project="verizon-ai-agents">
           <div class="project-card__media">
-            <img src="assets/thumbs/verizon-ai-agents.jpg" alt="" width="760" height="570" loading="lazy">
+            <img src="assets/thumbs/verizon-ai-agents.jpg" alt="Verizon AI Agents" width="760" height="570" loading="lazy">
             <span class="project-card__fallback" aria-hidden="true">Verizon AI Workflow</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>AI Products</span><span>2025–Present</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">AI Products</span>
+              <span class="meta-status">2025–Present</span>
+            </div>
             <h3>Verizon AI Workflow</h3>
-            <p>A fleet of ten purpose-built AI agents woven into the existing workflow of a 42-designer, six-brand organization.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
+            <p class="project-card__tagline">Enterprise multi-agent UX system for 42 designers</p>
+            <p class="project-card__summary">A fleet of ten specialized AI agents integrated into the daily workflows of a large enterprise design organization.</p>
+            <div class="project-card__tech">
+              <span>Agentic UX</span><span>Figma API</span><span>Design Tokens</span>
+            </div>
+            <span class="project-card__cue">View Case Study <span aria-hidden="true">→</span></span>
           </div>
         </a>
 
+        <!-- Moime.app -->
+        <a class="project-card" href="../v3/ai-products.html" data-project="moime-app">
+          <div class="project-card__media project-card__art project-card__art--moime" aria-hidden="true">
+            <span class="moime-card-icon"></span><span class="art-label">Flyer vision extraction</span>
+          </div>
+          <div class="project-card__body">
+            <div class="project-card__meta">
+              <span class="meta-tag">AI Products</span>
+              <span class="meta-status">In Production</span>
+            </div>
+            <h3>Moime.app</h3>
+            <p class="project-card__tagline">Multimodal AI link-in-bio reading physical flyers</p>
+            <p class="project-card__summary">Point it at a physical flyer and it extracts dates, discount codes, and venue metadata automatically without manual typing.</p>
+            <div class="project-card__tech">
+              <span>React 19</span><span>Gemini Multimodal</span><span>Voice AI</span>
+            </div>
+            <span class="project-card__cue">View Specs <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+
+        <!-- Amazon Fire TV -->
         <a class="project-card" href="../v3/projects/amazon-firetv.html" data-project="amazon-firetv">
           <div class="project-card__media">
-            <img src="assets/thumbs/amazon-firetv.jpg" alt="" width="760" height="570" loading="lazy">
+            <img src="assets/thumbs/amazon-firetv.jpg" alt="Amazon Shopping on Fire TV" width="760" height="570" loading="lazy">
             <span class="project-card__fallback" aria-hidden="true">Amazon Shopping on Fire TV</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>AI Products</span><span>2026</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">AI Products</span>
+              <span class="meta-status">2026</span>
+            </div>
             <h3>Amazon Shopping on Fire TV</h3>
-            <p>A living prototype of agentic commerce: D-pad browsing, Alexa voice shopping, and one-scan phone pairing.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
+            <p class="project-card__tagline">Living room agentic commerce prototype</p>
+            <p class="project-card__summary">A living prototype of agentic commerce: 10-foot D-pad browsing, Alexa voice shopping, and seamless phone pairing.</p>
+            <div class="project-card__tech">
+              <span>Voice UX</span><span>Firebase RTDB</span><span>10-Foot UI</span>
+            </div>
+            <span class="project-card__cue">View Case Study <span aria-hidden="true">→</span></span>
           </div>
+        </a>
+      </div>
+      <div class="category-foot">
+        <a class="category-portal-link" href="../v3/ai-products.html">
+          <span>Explore all AI Products</span>
+          <span class="portal-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </section>
 
+    <!-- Section 03: AI Tools (3-Column Rapid Scan) -->
     <section class="work-section" id="ai-tools" aria-labelledby="ai-tools-title">
       <header class="section-head">
         <p class="section-head__index">03 / 05</p>
         <h2 id="ai-tools-title">AI Tools</h2>
-        <p>Open-source systems that came out of building the work: repeatable process, multi-device infrastructure, and a memory for failures.</p>
+        <p>Open-source systems born from actual craft: agent orchestration suites, instant device pairing, and memory for failures.</p>
       </header>
-      <div class="project-grid">
+      <div class="editorial-grid editorial-grid--three-col">
+        <!-- superforge -->
         <a class="project-card" href="../v3/projects/superforge.html" data-project="superforge">
           <div class="project-card__media">
-            <img src="assets/thumbs/superforge.jpg" alt="" width="1200" height="630" loading="lazy">
+            <img src="assets/thumbs/superforge.jpg" alt="superforge architecture" width="1200" height="630" loading="lazy">
             <span class="project-card__fallback" aria-hidden="true">superforge</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>AI Tools</span><span>2026–ongoing</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">AI Tools</span>
+              <span class="meta-status">2026</span>
+            </div>
             <h3>superforge</h3>
-            <p>Fourteen specialist skills that route a build from one sentence through implementation, accessibility, and pre-launch checks.</p>
-            <span class="project-card__cue">View project <span aria-hidden="true">→</span></span>
+            <p class="project-card__summary">Fourteen specialist skills that route a build from one sentence through implementation, accessibility, and pre-launch checks.</p>
+            <div class="project-card__tech">
+              <span>Claude</span><span>Gemini</span><span>Agent Teams</span>
+            </div>
+            <span class="project-card__cue">View Tool <span aria-hidden="true">→</span></span>
           </div>
         </a>
 
+        <!-- Snap Pair -->
         <a class="project-card" href="../v3/projects/snap-pair.html" data-project="snap-pair">
           <div class="project-card__media">
-            <img src="assets/thumbs/snap-pair.jpg" alt="" width="1200" height="630" loading="lazy">
+            <img src="assets/thumbs/snap-pair.jpg" alt="Snap Pair" width="1200" height="630" loading="lazy">
             <span class="project-card__fallback" aria-hidden="true">Snap Pair</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>AI Tools</span><span>Open source</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">AI Tools</span>
+              <span class="meta-status">Open Source</span>
+            </div>
             <h3>Snap Pair</h3>
-            <p>A React and Firebase pairing layer that lets every phone in the room join an app in one scan.</p>
-            <span class="project-card__cue">View project <span aria-hidden="true">→</span></span>
+            <p class="project-card__summary">Instant multi-device state sync SDK with zero config. Powers Amazon, Rakugaki Jam, and Typespace.</p>
+            <div class="project-card__tech">
+              <span>React</span><span>Firebase</span><span>QR Pairing</span>
+            </div>
+            <span class="project-card__cue">View Library <span aria-hidden="true">→</span></span>
           </div>
         </a>
 
+        <!-- failforward -->
         <a class="project-card" href="../v3/projects/failforward.html" data-project="failforward">
           <div class="project-card__media">
-            <img src="assets/thumbs/failforward.jpg" alt="" width="1200" height="630" loading="lazy">
+            <img src="assets/thumbs/failforward.jpg" alt="failforward" width="1200" height="630" loading="lazy">
             <span class="project-card__fallback" aria-hidden="true">failforward</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>AI Tools</span><span>Open source</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">AI Tools</span>
+              <span class="meta-status">Open Source</span>
+            </div>
             <h3>failforward</h3>
-            <p>A zero-dependency CLI that records failures and recalls the useful lessons before similar work starts.</p>
-            <span class="project-card__cue">View project <span aria-hidden="true">→</span></span>
+            <p class="project-card__summary">A zero-dependency CLI that records debugging failures and recalls useful lessons before similar work starts.</p>
+            <div class="project-card__tech">
+              <span>Python</span><span>Codex</span><span>Local Memory</span>
+            </div>
+            <span class="project-card__cue">View CLI <span aria-hidden="true">→</span></span>
           </div>
+        </a>
+      </div>
+      <div class="category-foot">
+        <a class="category-portal-link" href="../v3/ai-tools.html">
+          <span>Explore all AI Tools &amp; Skills</span>
+          <span class="portal-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </section>
 
+    <!-- Section 04: Product Design (3-Column Grid) -->
     <section class="work-section" id="product-design" aria-labelledby="product-design-title">
       <header class="section-head">
         <p class="section-head__index">04 / 05</p>
         <h2 id="product-design-title">Product Design</h2>
-        <p>Enterprise platforms, service ecosystems, and learning products shaped from information architecture through shipped interface.</p>
+        <p>E-commerce conversion systems, learning mobile apps, and multi-touchpoint service design.</p>
       </header>
-      <div class="project-grid">
-        <a class="project-card" href="../v3/projects/verizon-totalwireless.html" data-project="verizon-totalwireless">
-          <div class="project-card__media">
-            <img src="assets/thumbs/verizon-totalwireless.jpg" alt="" width="760" height="570" loading="lazy">
-            <span class="project-card__fallback" aria-hidden="true">Verizon Total Wireless</span>
-          </div>
-          <div class="project-card__body">
-            <div class="project-card__meta"><span>Product Design</span><span>2024</span></div>
-            <h3>Verizon Total Wireless</h3>
-            <p>A shopping-flow redesign that made pricing, compatibility, and e-commerce decisions easier to understand.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
-          </div>
-        </a>
-
+      <div class="editorial-grid editorial-grid--three-col">
+        <!-- CLI Studios -->
         <a class="project-card" href="../v3/projects/cli-studios.html" data-project="cli-studios">
           <div class="project-card__media">
-            <img src="assets/thumbs/cli-studios.jpg" alt="" width="760" height="570" loading="lazy">
+            <img src="assets/thumbs/cli-studios.jpg" alt="CLI Studios" width="760" height="570" loading="lazy">
             <span class="project-card__fallback" aria-hidden="true">CLI Studios</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>Product Design</span><span>2024</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">Product Design</span>
+              <span class="meta-status">2024</span>
+            </div>
             <h3>CLI Studios</h3>
-            <p>A mobile UX overhaul that began with information architecture and became a unified design system.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
+            <p class="project-card__summary">A mobile UX overhaul starting with information architecture and culminating in a cross-platform design system.</p>
+            <div class="project-card__tech">
+              <span>Mobile UX</span><span>Design Tokens</span>
+            </div>
+            <span class="project-card__cue">View Case Study <span aria-hidden="true">→</span></span>
           </div>
         </a>
 
-        <a class="project-card" href="../v3/projects/tmobile.html" data-project="tmobile">
+        <!-- ELA Quests -->
+        <a class="project-card" href="../v3/work.html" data-project="ela-quests">
           <div class="project-card__media">
-            <img src="assets/thumbs/tmobile.jpg" alt="" width="760" height="570" loading="lazy">
-            <span class="project-card__fallback" aria-hidden="true">T-Mobile BOPIS</span>
+            <img src="assets/thumbs/ela-quests.jpg" alt="ELA Quests" width="760" height="570" loading="lazy">
+            <span class="project-card__fallback" aria-hidden="true">ELA Quests</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>Product Design</span><span>2024</span></div>
-            <h3>T-Mobile BOPIS</h3>
-            <p>An integrated buy-online, pick-up-in-store experience spanning customer app, kiosk, staff tools, and voice.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
+            <div class="project-card__meta">
+              <span class="meta-tag">Product Design</span>
+              <span class="meta-status">2023</span>
+            </div>
+            <h3>ELA Quests</h3>
+            <p class="project-card__summary">An engaging quest narrative interface transforming reading and writing lessons into interactive student adventures.</p>
+            <div class="project-card__tech">
+              <span>EdTech</span><span>Gamified UX</span><span>Responsive</span>
+            </div>
+            <span class="project-card__cue">View Case Study <span aria-hidden="true">→</span></span>
           </div>
+        </a>
+
+        <!-- Verizon Total Wireless -->
+        <a class="project-card" href="../v3/projects/verizon-totalwireless.html" data-project="verizon-totalwireless">
+          <div class="project-card__media">
+            <img src="assets/thumbs/verizon-totalwireless.jpg" alt="Verizon Total Wireless" width="760" height="570" loading="lazy">
+            <span class="project-card__fallback" aria-hidden="true">Verizon Total Wireless</span>
+          </div>
+          <div class="project-card__body">
+            <div class="project-card__meta">
+              <span class="meta-tag">Product Design</span>
+              <span class="meta-status">2024</span>
+            </div>
+            <h3>Verizon Total Wireless</h3>
+            <p class="project-card__summary">A shopping-flow redesign that made pricing tiers, device compatibility, and plan checkout effortless.</p>
+            <div class="project-card__tech">
+              <span>E-commerce UX</span><span>Prototyping</span>
+            </div>
+            <span class="project-card__cue">View Case Study <span aria-hidden="true">→</span></span>
+          </div>
+        </a>
+      </div>
+      <div class="category-foot">
+        <a class="category-portal-link" href="../v3/work.html">
+          <span>Explore all Product Design case studies</span>
+          <span class="portal-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </section>
 
+    <!-- Section 05: Brand Experience (3-Column Grid) -->
     <section class="work-section" id="brand-experience" aria-labelledby="brand-experience-title">
       <header class="section-head">
         <p class="section-head__index">05 / 05</p>
         <h2 id="brand-experience-title">Brand Experience</h2>
-        <p>Identity systems built to survive campaigns, physical spaces, products, and the people who have to use them.</p>
+        <p>Identity systems built to flex across global campaigns, physical spaces, and human interactions.</p>
       </header>
-      <div class="project-grid">
+      <div class="editorial-grid editorial-grid--three-col">
+        <!-- Coca-Cola -->
         <a class="project-card" href="../v3/projects/coca-cola.html" data-project="coca-cola">
           <div class="project-card__media">
-            <img src="assets/thumbs/coca-cola.jpg" alt="" width="760" height="570" loading="lazy">
+            <img src="assets/thumbs/coca-cola.jpg" alt="Coca-Cola" width="760" height="570" loading="lazy">
             <span class="project-card__fallback" aria-hidden="true">Coca-Cola</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>Brand Experience</span><span>Global markets</span></div>
+            <div class="project-card__meta">
+              <span class="meta-tag">Brand Experience</span>
+              <span class="meta-status">Global</span>
+            </div>
             <h3>Coca-Cola</h3>
-            <p>Two global visual campaign worlds designed to flex across markets, formats, and cultural contexts.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
+            <p class="project-card__summary">Two global visual campaign worlds designed to flex across diverse international markets and formats.</p>
+            <div class="project-card__tech">
+              <span>Campaign Visuals</span><span>Brand System</span>
+            </div>
+            <span class="project-card__cue">View Case Study <span aria-hidden="true">→</span></span>
           </div>
         </a>
 
-        <a class="project-card" href="../v3/projects/value-frontier.html" data-project="value-frontier">
+        <!-- Odell Education -->
+        <a class="project-card" href="../v3/projects/odell-education.html" data-project="odell-education">
           <div class="project-card__media">
-            <img src="assets/thumbs/value-frontier.jpg" alt="" width="760" height="570" loading="lazy">
-            <span class="project-card__fallback" aria-hidden="true">Value Frontier</span>
+            <img src="assets/thumbs/odell-education.jpg" alt="Odell Education" width="760" height="570" loading="lazy">
+            <span class="project-card__fallback" aria-hidden="true">Odell Education</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>Brand Experience</span><span>2019</span></div>
-            <h3>Value Frontier</h3>
-            <p>A strategic rebrand from sustainability consultancy to a premium, multi-industry identity system.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
+            <div class="project-card__meta">
+              <span class="meta-tag">Brand Experience</span>
+              <span class="meta-status">2023</span>
+            </div>
+            <h3>Odell Education</h3>
+            <p class="project-card__summary">Comprehensive visual identity, typographic design system, and multi-state curriculum publishing brand.</p>
+            <div class="project-card__tech">
+              <span>Brand Identity</span><span>Editorial Design</span>
+            </div>
+            <span class="project-card__cue">View Case Study <span aria-hidden="true">→</span></span>
           </div>
         </a>
 
-        <a class="project-card" href="../v3/projects/festival-design.html" data-project="festival-design">
+        <!-- Kitadoko -->
+        <a class="project-card" href="../v3/projects/kitadoko.html" data-project="kitadoko">
           <div class="project-card__media">
-            <img src="assets/thumbs/festival-design.jpg" alt="" width="760" height="570" loading="lazy">
-            <span class="project-card__fallback" aria-hidden="true">Akimatsuri Festival Design</span>
+            <img src="assets/thumbs/kitadoko.jpg" alt="Kitadoko" width="760" height="570" loading="lazy">
+            <span class="project-card__fallback" aria-hidden="true">Kitadoko</span>
           </div>
           <div class="project-card__body">
-            <div class="project-card__meta"><span>Brand Experience</span><span>2022–2024</span></div>
-            <h3>Akimatsuri Festival Design</h3>
-            <p>Original games, branding, and volunteer systems designed as one coherent Japanese school-festival experience.</p>
-            <span class="project-card__cue">View case study <span aria-hidden="true">→</span></span>
+            <div class="project-card__meta">
+              <span class="meta-tag">Brand Experience</span>
+              <span class="meta-status">2023</span>
+            </div>
+            <h3>Kitadoko</h3>
+            <p class="project-card__summary">Full CX and space redesign of a 150-year-old Tokyo salon into personal hair styling, lifting repeat rate to 90%.</p>
+            <div class="project-card__tech">
+              <span>Space Design</span><span>CX Architecture</span>
+            </div>
+            <span class="project-card__cue">View Case Study <span aria-hidden="true">→</span></span>
           </div>
+        </a>
+      </div>
+      <div class="category-foot">
+        <a class="category-portal-link" href="../v3/brand.html">
+          <span>Explore all Brand &amp; Space Design</span>
+          <span class="portal-arrow" aria-hidden="true">→</span>
         </a>
       </div>
     </section>
@@ -297,11 +755,15 @@
       <p class="about__index">About</p>
       <div class="about__body">
         <h2 id="about-title">Strategy in the room. Craft in the file.</h2>
-        <p>Takao Umehara is a product designer, innovation strategist, and creative thinker based in New York City. His work combines strategic vision with hands-on design and prototyping.</p>
-        <p>He started in Tokyo and has spent the last twenty years in New York, designing products and experiences for organizations including Amplify, T-Mobile, Verizon, Coca-Cola, and XQ.</p>
-        <a class="button-link" href="https://linkedin.com/in/takaoumehara" target="_blank" rel="noopener noreferrer">
-          Connect on LinkedIn <span aria-hidden="true">↗</span><span class="sr-only"> (opens in a new tab)</span>
-        </a>
+        <p>Takao Umehara is a product designer, innovation strategist, and creative technologist based in New York City. His work combines strategic vision with hands-on design, rapid prototyping, and production-grade engineering.</p>
+        <p>He started in Tokyo and has spent the last twenty years in New York, designing products and systems for organizations including Amplify, T-Mobile, Verizon, Coca-Cola, and XQ.</p>
+        <div class="about__actions">
+          <a class="button-primary" href="https://linkedin.com/in/takaoumehara" target="_blank" rel="noopener noreferrer">
+            <span>Connect on LinkedIn</span>
+            <span aria-hidden="true">↗</span>
+            <span class="sr-only"> (opens in a new tab)</span>
+          </a>
+        </div>
       </div>
     </section>
   </main>

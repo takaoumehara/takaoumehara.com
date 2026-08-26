@@ -42,16 +42,17 @@ description: A firm sans-serif portfolio system where an aligned rectangle becom
 mode: light-only
 
 colors:
-  ground: "#F2F0EA"
+  ground: "#FBFAF7"
   surface: "#FFFFFF"
-  ink: "#11110F"
-  inkSecondary: "#4F514C"
-  accent: "#165DFF"
+  surfaceSubtle: "#F2EFE6"
+  ink: "#111210"
+  inkSecondary: "#585A53"
+  accent: "#0E56FA"
   accentInk: "#FFFFFF"
-  borderSubtle: "rgba(17, 17, 15, 0.20)"
-  borderStrong: "#11110F"
-  disabledSurface: "#D8D6D0"
-  disabledInk: "#5E605B"
+  borderSubtle: "rgba(17, 18, 16, 0.08)"
+  borderStrong: "#111210"
+  disabledSurface: "#DEDCD4"
+  disabledInk: "#6E706A"
   error: "#B42318"
 
 typography:
