@@ -4,1315 +4,290 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>Takao Umehara — Product Designer &amp; Innovation Strategist</title>
-  <meta name="description" content="Takao Umehara — NYC-based product designer and innovation strategist. Interactive experience, AI products, AI tools, product design and branded experience through Creativity Is Everywhere LLC.">
-  <meta property="og:title" content="Takao Umehara — Product Designer &amp; Innovation Strategist">
-  <meta property="og:description" content="I design how people and AI agents share the work. Twenty years of shipping products, now spent on AI.">
+  <title>Takao Umehara — Product Designer, New York</title>
+  <meta name="description" content="Takao Umehara — a product designer building interfaces, AI systems and interactive experiences. New York.">
+  <meta property="og:title" content="Takao Umehara — Product Designer, New York">
+  <meta property="og:description" content="A product designer building interfaces, AI systems and interactive experiences.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://takaoumehara.com/">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
+  <meta property="og:image" content="https://takaoumehara.com/assets/verizon-ai-agents/hero-agents-network.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Takao Umehara — Product Designer &amp; Innovation Strategist">
-  <meta name="twitter:description" content="I design how people and AI agents share the work.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
-  <meta name="theme-color" content="#000000">
+  <meta name="twitter:title" content="Takao Umehara — Product Designer, New York">
+  <meta name="twitter:description" content="A product designer building interfaces, AI systems and interactive experiences.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/verizon-ai-agents/hero-agents-network.jpg">
+  <meta name="theme-color" content="#f3f2ed">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&family=Noto+Sans+JP:wght@300;400&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=Noto+Sans+JP:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/editorial.css">
   <style>
-  /* ══════════════════════════════════════════════════════════════════════
-     Studio Oker direction — a darkened gallery with scarlet punctuation.
-
-     The rules this file follows, taken from the reference and not softened:
-       · #000000 is the only background. No gray surfaces, no tints.
-       · Radius is 0 everywhere. Cards, images, tags, actions.
-       · Elevation is replaced by the void — no shadow, no glow, ever.
-       · Scarlet is rationed. One drop per screen: the panel, or a 6px dot.
-       · Weights are 300 and 400 only. The whisper weight is the signature.
-       · Actions are dots and text. A button with a fill would break the room.
-       · 120 / 240px is the structural rhythm, not decoration.
-
-     NextBook is the studio's own face and is not licensable here; the
-     reference names Söhne or Inter as the substitute. Inter it is — same
-     humanist-geometric balance, and it holds the negative tracking.
-     ══════════════════════════════════════════════════════════════════════ */
-
-  :root {
-    /* Colors */
-    --pure-black:     #000000;
-    --soft-black:     #101010;
-    --bone-white:     #ffffff;
-    --fog-gray:       #a0a0a0;
-    --graphite:       #484848;
-    --scarlet:        #e4002b;
-
-    /* Type */
-    --ff:    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-    --w-light:   300;
-    --w-regular: 400;
-
-    --text-body:       16px;
-    --leading-body:    1.25;
-    --tracking-body:   -0.01em;
-    --text-sub:        24px;
-    --leading-sub:     1.13;
-    --tracking-sub:    -0.01em;
-    --text-heading-sm: 32px;
-    --tracking-tight:  -0.02em;
-
-    /* Spacing */
-    --s-8:   8px;
-    --s-16:  16px;
-    --s-48:  48px;
-    --s-120: 120px;
-    --s-240: 240px;
-
-    /* Rhythm. The reference calls these the page's primary structural
-       tool, so they scale with the viewport rather than collapsing. */
-    --gutter:  16px;
-    --edge:    clamp(16px, 4vw, 64px);
-    --measure: clamp(16px, 11vw, 264px);
-    --break:   clamp(72px, 12vw, 240px);
-    --gap:     clamp(48px, 7vw, 120px);
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-
-  body {
-    background: var(--pure-black);
-    color: var(--bone-white);
-    font-family: var(--ff);
-    font-weight: var(--w-regular);
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
-    letter-spacing: var(--tracking-body);
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
-  a { color: inherit; text-decoration: none; }
-  img { display: block; max-width: 100%; }
-
-  ::selection { background: var(--scarlet); color: var(--bone-white); }
-
-  :focus-visible { outline: 1px solid var(--bone-white); outline-offset: 3px; }
-
-  /* ─── Bilingual ─── */
-  .t-jp { display: none; }
-  html.lang-jp .t-en { display: none; }
-  html.lang-jp .t-jp { display: inline; }
-  html.lang-jp .t-jp.is-block { display: block; }
-
-  /* Japanese does not take negative tracking — it closes gaps the script
-     needs. Everything else about the system stays identical. */
-  html.lang-jp body,
-  html.lang-jp .display,
-  html.lang-jp .section-title { font-family: var(--ff-jp); letter-spacing: 0; }
-  html.lang-jp .display { line-height: 1.16; }
-  html.lang-jp .section-title { line-height: 1.2; }
-
-  /* ══ Nav ══════════════════════════════════════════════════════════════
-     Full-bleed black, ~48px, three zones, no border-bottom — the bar
-     blends into the canvas rather than sitting on top of it. ══ */
-  .nav {
-    position: sticky;
-    top: 0;
-    z-index: 60;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s-16);
-    min-height: 48px;
-    padding: var(--s-16);
-    background: var(--pure-black);
-  }
-
-  .nav-mark { font-weight: var(--w-regular); white-space: nowrap; }
-
-  .nav-clock {
-    color: var(--fog-gray);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-  }
-
-  .nav-links {
-    display: flex;
-    align-items: center;
-    gap: var(--s-16);
-    list-style: none;
-  }
-
-  .nav-links a { color: var(--fog-gray); white-space: nowrap; transition: color 160ms linear; }
-  .nav-links a:hover,
-  .nav-links a.is-active { color: var(--bone-white); }
-
-  .nav-toggle {
-    display: none;
-    appearance: none;
-    background: none;
-    border: 0;
-    padding: 0;
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    position: relative;
-  }
-  /* The 2×2 expand glyph the reference uses — the only icon in the system */
-  .nav-toggle i {
-    position: absolute;
-    width: 8px; height: 8px;
-    border: 1px solid var(--bone-white);
-    transition: transform 200ms ease;
-  }
-  .nav-toggle i:nth-child(1) { top: 0; left: 0; }
-  .nav-toggle i:nth-child(2) { top: 0; right: 0; }
-  .nav-toggle i:nth-child(3) { bottom: 0; left: 0; }
-  .nav-toggle i:nth-child(4) { bottom: 0; right: 0; }
-  .nav-toggle.is-open i:nth-child(1) { transform: translate(4px, 4px); }
-  .nav-toggle.is-open i:nth-child(2) { transform: translate(-4px, 4px); }
-  .nav-toggle.is-open i:nth-child(3) { transform: translate(4px, -4px); }
-  .nav-toggle.is-open i:nth-child(4) { transform: translate(-4px, -4px); }
-
-  @media (max-width: 1180px) { .nav-clock { display: none; } }
-
-  @media (max-width: 940px) {
-    .nav-toggle { display: block; }
-    .nav-links {
-      display: none;
-      position: absolute;
-      top: 100%; left: 0; right: 0;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--s-16);
-      padding: var(--s-16);
-      background: var(--pure-black);
+    /* ── Page-local: the hero is the only place the display type runs, and
+          it is allowed to take the top of the page on its own. ── */
+    .lead {
+      padding: clamp(var(--break-s), 7vw, 128px) var(--edge) var(--break-s);
     }
-    .nav-links.is-open { display: flex; }
-  }
+    /* The statement's four lines are set by hand — the reference's rhythm
+       is the break pattern, not the measure. Below the fold-width where
+       "interactive experiences." stops fitting, the breaks come out and
+       the line wraps on its own. */
+    .lead__statement { max-width: 26ch; }
+    @media (max-width: 780px) { .brk { display: none; } }
 
-  /* ══ Hero ══ */
-  .hero {
-    padding: clamp(56px, 9vw, 160px) var(--measure) var(--break);
-  }
+    .lead__where { margin-top: var(--s-8); }
 
-  .eyebrow {
-    color: var(--fog-gray);
-    margin-bottom: var(--gap);
-  }
+    /* The practice block: three short columns, no icons, no cards. */
+    .practice {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--break-s) var(--gutter);
+    }
+    .practice h3 { margin-bottom: var(--s-4); }
+    .practice p { color: var(--carbon-mid); max-width: 34ch; }
 
-  .display {
-    font-size: clamp(38px, 7.2vw, 112px);
-    font-weight: var(--w-light);
-    line-height: 1;
-    letter-spacing: var(--tracking-tight);
-    max-width: 18ch;
-  }
+    .about { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: var(--break-s) clamp(32px, 6vw, 120px); }
 
-  .hero-sub {
-    margin-top: var(--gap);
-    max-width: 56ch;
-    color: var(--fog-gray);
-  }
-
-  /* ══ Console ══════════════════════════════════════════════════════════
-     The framework, still running — but re-set in this room's vocabulary.
-     The intents were chips with borders; here they are a plain stack of
-     strings, which is how the reference sets a services list. The active
-     one carries the scarlet dot, and the dot is the only chrome. ══ */
-  .console {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--gap);
-    padding: 0 var(--measure) var(--break);
-    align-items: start;
-  }
-
-  .console-label,
-  .console-note { color: var(--fog-gray); }
-
-  .console-bar {
-    margin: var(--s-48) 0;
-    font-size: var(--text-sub);
-    line-height: var(--leading-sub);
-    letter-spacing: var(--tracking-sub);
-    min-height: calc(var(--text-sub) * var(--leading-sub));
-  }
-
-  .console-caret {
-    display: inline-block;
-    width: 1px;
-    height: 1em;
-    margin-left: 2px;
-    background: var(--scarlet);
-    vertical-align: -0.12em;
-    animation: caret 1100ms steps(1) infinite;
-  }
-  @keyframes caret { 50% { opacity: 0; } }
-
-  .console-chips {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s-16);
-    margin-bottom: var(--s-48);
-  }
-
-  /* No bullets, no borders, no fill. The reference is explicit: raw
-     stacked text carries more weight than a decorated list. */
-  .chip {
-    appearance: none;
-    background: none;
-    border: 0;
-    padding: 0;
-    font: inherit;
-    letter-spacing: inherit;
-    color: var(--fog-gray);
-    text-align: left;
-    cursor: pointer;
-    position: relative;
-    padding-left: 20px;
-    transition: color 160ms linear;
-  }
-  .chip::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.44em;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--graphite);
-    transition: background 160ms linear;
-  }
-  .chip:hover { color: var(--bone-white); }
-  .chip[aria-pressed="true"] { color: var(--bone-white); }
-  .chip[aria-pressed="true"]::before { background: var(--scarlet); }
-
-  .route {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-8);
-    color: var(--graphite);
-    margin-bottom: var(--s-48);
-  }
-  .route-step { transition: color 200ms linear; }
-  .route-step.is-lit { color: var(--fog-gray); }
-  .route-arrow { color: var(--graphite); }
-
-  .answer { transition: opacity 200ms linear; }
-  .answer.is-swapping { opacity: 0; }
-
-  .answer-badge { display: block; color: var(--fog-gray); }
-
-  .answer-name {
-    margin-top: var(--s-16);
-    font-size: var(--text-heading-sm);
-    font-weight: var(--w-light);
-    line-height: 1;
-    letter-spacing: var(--tracking-tight);
-  }
-
-  .answer-line {
-    margin-top: var(--s-16);
-    max-width: 48ch;
-    color: var(--fog-gray);
-  }
-
-  /* Stat block — label/value pairs, no borders, no boxes. Typography
-     does the structuring. */
-  .answer-metrics {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--s-48);
-    margin-top: var(--s-48);
-  }
-  .metric { display: flex; flex-direction: column; }
-  .metric-v { font-size: var(--text-sub); font-weight: var(--w-light); line-height: 1; letter-spacing: var(--tracking-tight); }
-  .metric-k { color: var(--fog-gray); margin-top: var(--s-8); }
-
-  /* ── Link with red dot. The dot does the work of a button
-        without a button shape. ── */
-  .dot-link {
-    display: inline-flex;
-    align-items: baseline;
-    gap: var(--s-8);
-    margin-top: var(--s-48);
-    color: var(--bone-white);
-  }
-  .dot-link::before {
-    content: "";
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--scarlet);
-    flex: 0 0 auto;
-    transform: translateY(-0.15em);
-  }
-  .dot-link span { border-bottom: 1px solid transparent; transition: border-color 160ms linear; }
-  .dot-link:hover span { border-bottom-color: var(--fog-gray); }
-
-  /* ══ Section heading ══ */
-  .section {
-    padding: 0 var(--measure) var(--break);
-  }
-  .section--bleed { padding-inline: var(--edge); }
-
-  .section-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--gap);
-    flex-wrap: wrap;
-    margin-bottom: var(--gap);
-  }
-
-  .section-title {
-    font-size: clamp(30px, 4.6vw, 80px);
-    font-weight: var(--w-light);
-    line-height: 1;
-    letter-spacing: var(--tracking-tight);
-  }
-
-  .section-note { color: var(--fog-gray); max-width: 44ch; }
-
-  /* ══ The wall ═════════════════════════════════════════════════════════
-     Asymmetric tile grid, 16px gutters, no border, no padding, no radius.
-     The edge of the artwork IS the edge of the card. ══ */
-  /* The tiles are sized in row units rather than by their own
-     aspect-ratio. Aspect-ratio makes each tile correct and the wall
-     wrong — rows take the height of their tallest member and the
-     shorter ones leave holes. A shared row unit plus dense packing
-     gives the asymmetry the reference wants with no gaps in it. */
-  .wall {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-auto-rows: clamp(104px, 11.5vw, 188px);
-    grid-auto-flow: dense;
-    gap: var(--gutter);
-  }
-
-  /* Every tile carries a hairline. On Oker's wall the tiles are
-     photographs, so the edge of the image is the edge of the card and a
-     border would be noise. Six of these tiles are near-black live
-     canvases with no edge of their own — without a line they dissolve
-     into the canvas and the wall reads as one black smear. The
-     reference sanctions exactly this remedy: when separation is needed,
-     a single hairline at #484848, never a shadow or a tonal lift. */
-  .tile {
-    position: relative;
-    display: block;
-    grid-row: span 2;
-    background: var(--pure-black);
-    overflow: hidden;
-    /* A border, not an outline: the canvas is an absolutely positioned
-       child and would paint straight over an outline. */
-    border: 1px solid var(--graphite);
-    transition: border-color 200ms linear;
-  }
-  .tile:hover { border-color: var(--fog-gray); }
-
-  .tile--w2   { grid-column: span 2; }
-  .tile--tall { grid-row: span 3; }
-
-  .tile-stage { position: absolute; inset: 0; display: block; }
-  .tile-stage canvas { display: block; width: 100%; height: 100%; }
-
-  /* Photographs are left alone — natural, unmanipulated, edge to edge,
-     with no scrim and no overlay treatment. The room is achromatic; the
-     work inside it does not have to be. */
-  .tile-photo {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-  }
-
-  /* Caption sits inside the tile at 16px, over the void — no scrim,
-     no gradient overlay. The reference forbids overlay treatments on
-     photography, so photo tiles carry their caption below instead. */
-  .tile-cap {
-    position: absolute;
-    left: var(--s-16);
-    right: var(--s-16);
-    bottom: var(--s-16);
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--s-16);
-    color: var(--fog-gray);
-    pointer-events: none;
-  }
-  .tile-name { color: var(--bone-white); }
-  .tile-go { opacity: 0; transition: opacity 200ms linear; }
-  .tile:hover .tile-go,
-  .tile:focus-visible .tile-go { opacity: 1; }
-
-  /* ── The one place colour shouts ── */
-  .tile--red {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: var(--s-16);
-  }
-  .tile-shout {
-    display: block;
-    font-size: clamp(38px, 5.2vw, 88px);
-    font-weight: var(--w-light);
-    line-height: 0.92;
-    letter-spacing: var(--tracking-tight);
-    color: var(--scarlet);
-  }
-  html.lang-jp .tile-shout { line-height: 1.1; letter-spacing: 0; }
-
-  /* Type-only tile — a piece with no artwork yet still belongs on the
-     wall; the reference lets one oversized word fill a panel. */
-  .tile--type {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: var(--s-16);
-  }
-  .tile-word {
-    display: block;
-    font-size: clamp(28px, 3.4vw, 64px);
-    font-weight: var(--w-light);
-    line-height: 0.96;
-    letter-spacing: var(--tracking-tight);
-  }
-
-  /* ══ Categories — the five, as a stack ══ */
-  .cats { border-top: 1px solid var(--graphite); }
-
-  .cat {
-    display: grid;
-    grid-template-columns: 3.5rem minmax(0, 1fr) auto;
-    align-items: baseline;
-    gap: var(--s-16);
-    padding: var(--s-48) 0;
-    border-bottom: 1px solid var(--graphite);
-  }
-
-  .cat-no { color: var(--graphite); }
-  .cat-name {
-    font-size: clamp(24px, 3.2vw, 56px);
-    font-weight: var(--w-light);
-    line-height: 1;
-    letter-spacing: var(--tracking-tight);
-    transition: color 160ms linear;
-  }
-  .cat:hover .cat-name { color: var(--fog-gray); }
-  .cat-count { color: var(--fog-gray); white-space: nowrap; }
-  .cat-desc { grid-column: 2 / -1; color: var(--fog-gray); margin-top: var(--s-16); max-width: 52ch; }
-
-  /* ══ Studio — three columns, left aligned, no boxes ══ */
-  .studio {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--gap);
-  }
-  .studio p + p { margin-top: var(--s-16); }
-  .studio-col > p { color: var(--fog-gray); }
-  .studio-col strong { color: var(--bone-white); font-weight: var(--w-regular); }
-
-  .studio-label { color: var(--fog-gray); margin-bottom: var(--s-16); }
-
-  .stack { list-style: none; }
-  .stack li { line-height: var(--leading-body); }
-
-  .stats { margin-top: var(--s-48); }
-  .stat + .stat { margin-top: var(--s-16); }
-  .stat dt { color: var(--fog-gray); }
-  .stat dd { color: var(--bone-white); }
-
-  /* ══ Feed — image, then caption. No border, no shadow. ══ */
-  .feed {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--gap) var(--gutter);
-  }
-
-  /* The caption parts are spans inside an anchor, so each one has to be
-     blockified before aspect-ratio and the vertical rhythm apply at all. */
-  .post { display: block; }
-  .post-img {
-    display: block;
-    aspect-ratio: 4 / 3;
-    background-size: cover;
-    background-position: center;
-    background-color: var(--soft-black);
-  }
-  .post-body { display: block; padding: var(--s-16) 0 0; }
-  .post-client {
-    display: block;
-    font-size: var(--text-sub);
-    font-weight: var(--w-regular);
-    line-height: var(--leading-sub);
-    letter-spacing: var(--tracking-sub);
-  }
-  .post-desc { display: block; color: var(--fog-gray); margin-top: var(--s-8); max-width: 46ch; }
-  .post-disc { display: block; color: var(--fog-gray); margin-top: var(--s-16); }
-
-  /* ══ End ══ */
-  .end { padding: 0 var(--measure) var(--break); }
-  .end-line {
-    font-size: clamp(30px, 4.6vw, 80px);
-    font-weight: var(--w-light);
-    line-height: 1;
-    letter-spacing: var(--tracking-tight);
-    max-width: 20ch;
-  }
-  .end-sub { margin-top: var(--gap); max-width: 52ch; color: var(--fog-gray); }
-  .end-actions { display: flex; flex-wrap: wrap; gap: var(--s-48); }
-
-  /* ══ Footer ══ */
-  .footer {
-    border-top: 1px solid var(--graphite);
-    padding: var(--s-16);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: var(--s-16);
-    color: var(--fog-gray);
-  }
-  .footer-mark { color: var(--bone-white); }
-  .footer-links { display: flex; flex-wrap: wrap; gap: var(--s-16); list-style: none; }
-  .footer-links a:hover { color: var(--bone-white); }
-
-  /* ══ Language switch ══ */
-  .lang {
-    position: fixed;
-    right: 0;
-    bottom: var(--s-48);
-    z-index: 70;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--s-8);
-    padding: var(--s-16) var(--s-8);
-    background: var(--pure-black);
-    border-left: 1px solid var(--graphite);
-    border-top: 1px solid var(--graphite);
-    border-bottom: 1px solid var(--graphite);
-  }
-  .lang button {
-    appearance: none; background: none; border: 0; padding: 0;
-    font: inherit; letter-spacing: inherit;
-    color: var(--graphite); cursor: pointer;
-    transition: color 160ms linear;
-  }
-  .lang button:hover { color: var(--fog-gray); }
-  .lang button.is-active { color: var(--bone-white); }
-  .lang span { color: var(--graphite); }
-
-  /* ══ Responsive ══════════════════════════════════════════════════════
-     Density collapses before the rhythm does — the tile grid narrows
-     first, then the text columns stack. ══ */
-  @media (max-width: 1080px) {
-    .studio { grid-template-columns: 1fr 1fr; }
-    .studio-col:last-child { grid-column: 1 / -1; }
-  }
-
-  @media (max-width: 900px) {
-    .console { grid-template-columns: 1fr; }
-    .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .tile--w2 { grid-column: span 2; }
-  }
-
-  @media (max-width: 640px) {
-    .studio, .feed { grid-template-columns: 1fr; }
-    .wall { grid-template-columns: 1fr; }
-    .tile--w2 { grid-column: span 1; }
-    .tile--tall, .tile--wide { aspect-ratio: 4 / 3; }
-    .cat { grid-template-columns: 2.5rem minmax(0, 1fr); }
-    .cat-count { grid-column: 2; }
-    .lang { bottom: 0; flex-direction: row; border-bottom: 0; }
-  }
-
-  /* ══ Reduced motion ══ */
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    * { animation: none !important; transition: none !important; }
-    .console-caret { opacity: 1; }
-  }
+    @media (max-width: 900px) {
+      .practice { grid-template-columns: 1fr 1fr; }
+      .about { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .practice { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- ══ Nav ══ -->
-  <nav class="nav">
-    <a href="index.html" class="nav-mark">Takao Umehara</a>
-    <span class="nav-clock" id="nav-clock" aria-hidden="true"></span>
-    <ul class="nav-links" id="nav-links">
-      <li><a href="interactive.html">Interactive Experience</a></li>
-      <li><a href="ai-products.html">AI Products</a></li>
-      <li><a href="ai-tools.html">AI Tools &amp; Skills</a></li>
-      <li><a href="work.html">Product Design</a></li>
-      <li><a href="brand.html">Branded Experience</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="nav-links">
-      <i></i><i></i><i></i><i></i>
-    </button>
-  </nav>
-
-  <!-- ══ Hero ══ -->
-  <header class="hero">
-    <p class="eyebrow">
-      <span class="t-en">Product Designer · New York · Creativity Is Everywhere LLC</span>
-      <span class="t-jp">プロダクトデザイナー · ニューヨーク · Creativity Is Everywhere LLC</span>
-    </p>
-    <h1 class="display">
-      <span class="t-en">I design how people and AI agents share the work.</span>
-      <span class="t-jp">人と AI エージェントが、仕事を分け合う設計をする。</span>
-    </h1>
-    <p class="hero-sub">
-      <span class="t-en">Twenty years of shipping products for Amplify, T-Mobile and Verizon, now spent on AI. Below is a console, not a paragraph — pick what you are trying to build and it answers with the evidence.</span>
-      <span class="t-jp is-block">Amplify、T-Mobile、Verizon にプロダクトを届けてきた20年を、いまは AI に使っています。以下は文章ではなくコンソールです。作りたいものを選ぶと、説明ではなく証拠が返ります。</span>
-    </p>
+  <header class="masthead">
+    <a href="index.html" class="masthead__mark">Takao Umehara</a>
+    <nav>
+      <ul class="masthead__nav">
+        <li><a href="#work">Work</a></li>
+        <li><a href="#practice">Practice</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn&nbsp;↗</a></li>
+      </ul>
+    </nav>
   </header>
 
-  <!-- ══ Intent Console ══ -->
-  <section class="console" id="console" aria-label="Intent console">
-    <div>
-      <p class="console-label">
-        <span class="t-en">Intent Console — my own framework, running</span>
-        <span class="t-jp">Intent Console — 自分のフレームワークを、動かしています</span>
-      </p>
-
-      <div class="console-bar">
-        <span class="console-typed" id="console-typed"
-              data-placeholder-en="What are you trying to build?"
-              data-placeholder-jp="何を作りたいですか？"
-              data-placeholder="What are you trying to build?"></span><span class="console-caret" aria-hidden="true"></span>
-      </div>
-
-      <div class="console-chips" id="console-chips" role="group" aria-label="Pick an intent">
-        <button type="button" class="chip" data-intent="fleet" aria-pressed="true">
-          <span class="t-en">Put AI agents inside my design org</span>
-          <span class="t-jp">AI エージェントを組織に入れたい</span>
-        </button>
-        <button type="button" class="chip" data-intent="proto" aria-pressed="false">
-          <span class="t-en">Build a prototype people can touch</span>
-          <span class="t-jp">触れるプロトタイプが要る</span>
-        </button>
-        <button type="button" class="chip" data-intent="principles" aria-pressed="false">
-          <span class="t-en">Decide our AI design principles first</span>
-          <span class="t-jp">AI の設計原則から決めたい</span>
-        </button>
-        <button type="button" class="chip" data-intent="think" aria-pressed="false">
-          <span class="t-en">Change how my team thinks</span>
-          <span class="t-jp">チームの発想そのものを変えたい</span>
-        </button>
-        <button type="button" class="chip" data-intent="brand" aria-pressed="false">
-          <span class="t-en">Rebuild the brand, not just the UI</span>
-          <span class="t-jp">UI ではなくブランドから作り直したい</span>
-        </button>
-      </div>
-
-      <p class="console-note">
-        <span class="t-en">Five routes. Every answer is a real project with a link — nothing here is a mock-up.</span>
-        <span class="t-jp is-block">5つのルート。返ってくるのはすべて実在のプロジェクトとリンクです。ダミーはありません。</span>
-      </p>
-    </div>
-
-    <div>
-      <div class="route" id="console-route" aria-hidden="true">
-        <span class="route-step is-lit">Intent</span>
-        <span class="route-arrow">→</span>
-        <span class="route-step is-lit">Context</span>
-        <span class="route-arrow">→</span>
-        <span class="route-step is-lit">Match</span>
-        <span class="route-arrow">→</span>
-        <span class="route-step is-lit">Evidence</span>
-      </div>
-
-      <div class="answer" id="console-answer" aria-live="polite">
-        <span class="answer-badge" id="answer-badge">Enterprise · Shipped</span>
-        <p class="answer-name" id="answer-name">Verizon AI Workflow</p>
-        <p class="answer-line" id="answer-line">A 10-agent fleet built inside Verizon’s design organisation — briefing, research synthesis, spec writing and QA, handled by agents designers actually use.</p>
-        <div class="answer-metrics" id="answer-metrics">
-          <div class="metric"><span class="metric-v">10</span><span class="metric-k">agents</span></div>
-          <div class="metric"><span class="metric-v">42</span><span class="metric-k">designers</span></div>
-          <div class="metric"><span class="metric-v">6</span><span class="metric-k">brands</span></div>
-        </div>
-        <a class="dot-link" id="answer-link" href="projects/verizon-ai-agents.html"><span>Read the case study →</span></a>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ The wall ═════════════════════════════════════════════════════
-       Every tile with a canvas is live code drawing right now, at tile
-       size. The photographs sit at the same plane — no elevation, no
-       chrome, the edge of the artwork is the edge of the card. ══ -->
-  <section class="section section--bleed" id="wall" aria-labelledby="wall-title">
-    <div class="section-head">
-      <h2 class="section-title" id="wall-title">
-        <span class="t-en">Running right now</span>
-        <span class="t-jp">いま動いています</span>
-      </h2>
-      <p class="section-note">
-        <span class="t-en">Not screenshots. Every tile with motion is live code drawing in your browser at this moment. Six of them open as full apps in one tap.</span>
-        <span class="t-jp is-block">スクリーンショットではありません。動いているタイルはすべて、いまブラウザで描画されているコードです。うち6つはワンタップで本体が開きます。</span>
-      </p>
-    </div>
-
-    <div class="wall">
-
-      <a class="tile tile--w2" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener">
-        <span class="tile-stage"><canvas data-play="typespace" aria-hidden="true"></canvas></span>
-        <span class="tile-cap">
-          <span class="tile-name">Typespace</span>
-          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
-        </span>
-      </a>
-
-      <a class="tile tile--red" href="https://intentfirst.ai" target="_blank" rel="noopener">
-        <span class="tile-shout">
-          <span class="t-en">Intent<br>first.</span>
-          <span class="t-jp">意図が<br>先。</span>
-        </span>
-        <span class="dot-link" style="margin-top:0;">
-          <span class="t-en">Read the framework ↗</span><span class="t-jp">フレームワークを読む ↗</span>
-        </span>
-      </a>
-
-      <a class="tile tile--tall" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener">
-        <span class="tile-stage"><canvas data-play="rakugaki" aria-hidden="true"></canvas></span>
-        <span class="tile-cap">
-          <span class="tile-name">Rakugaki Jam</span>
-          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
-        </span>
-      </a>
-
-      <a class="tile tile--w2" href="projects/verizon-ai-agents.html">
-        <span class="tile-photo" style="background-image:url('assets/verizon-ai-agents/hero-agents-network.jpg');"></span>
-        <span class="tile-cap">
-          <span class="tile-name">Verizon AI Workflow</span>
-          <span class="tile-go"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></span>
-        </span>
-      </a>
-
-      <a class="tile" href="https://resona-motion.vercel.app" target="_blank" rel="noopener">
-        <span class="tile-stage"><canvas data-play="resona" aria-hidden="true"></canvas></span>
-        <span class="tile-cap">
-          <span class="tile-name">Resona 響</span>
-          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
-        </span>
-      </a>
-
-      <a class="tile" href="https://marubatsu20.vercel.app/" target="_blank" rel="noopener">
-        <span class="tile-stage"><canvas data-play="marubatsu" aria-hidden="true"></canvas></span>
-        <span class="tile-cap">
-          <span class="tile-name">Marubatsu 2.0</span>
-          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
-        </span>
-      </a>
-
-      <a class="tile" href="https://emoji-drop-ultimate.vercel.app" target="_blank" rel="noopener">
-        <span class="tile-stage"><canvas data-play="emojidrop" aria-hidden="true"></canvas></span>
-        <span class="tile-cap">
-          <span class="tile-name">EmojiDrop</span>
-          <span class="tile-go"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
-        </span>
-      </a>
-
-      <a class="tile" href="interactive.html">
-        <span class="tile-stage"><canvas data-play="koebaku" aria-hidden="true"></canvas></span>
-        <span class="tile-cap">
-          <span class="tile-name">Koe Baku 声爆</span>
-          <span class="tile-go"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></span>
-        </span>
-      </a>
-
-      <a class="tile tile--type tile--w2" href="https://kao-game.vercel.app" target="_blank" rel="noopener">
-        <span class="tile-word">
-          <span class="t-en">Your face is<br>the controller.</span>
-          <span class="t-jp">顔が、<br>コントローラー。</span>
-        </span>
-        <span class="tile-cap" style="position:static;">
-          <span class="tile-name">Kao Game 顔ゲーム</span>
-          <span class="tile-go" style="opacity:1;"><span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span></span>
-        </span>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ══ The five ══ -->
-  <section class="section" id="categories" aria-labelledby="cats-title">
-    <div class="section-head">
-      <h2 class="section-title" id="cats-title">
-        <span class="t-en">Five kinds of work</span>
-        <span class="t-jp">5つの仕事</span>
-      </h2>
-    </div>
-
-    <div class="cats">
-      <a class="cat" href="interactive.html">
-        <span class="cat-no">01</span>
-        <span class="cat-name"><span class="t-en">Interactive Experience</span><span class="t-jp">インタラクティブ体験</span></span>
-        <span class="cat-count">8</span>
-        <span class="cat-desc"><span class="t-en">Your voice, your face, your body, your handwriting, or every phone in the room at once — used as the input.</span><span class="t-jp is-block">声、表情、身体、手描きの線、あるいはその場のスマホ全部を、入力として使う。</span></span>
-      </a>
-      <a class="cat" href="ai-products.html">
-        <span class="cat-no">02</span>
-        <span class="cat-name"><span class="t-en">AI Products</span><span class="t-jp">AI プロダクト</span></span>
-        <span class="cat-count">5</span>
-        <span class="cat-desc"><span class="t-en">Products where the AI is inside the thing rather than bolted next to it — designed and built, not specified and handed off.</span><span class="t-jp is-block">AI が製品の隣ではなく中に入っているもの。仕様を渡すのではなく、設計して実装する。</span></span>
-      </a>
-      <a class="cat" href="ai-tools.html">
-        <span class="cat-no">03</span>
-        <span class="cat-name"><span class="t-en">AI Tools &amp; Skills</span><span class="t-jp">AI ツール・スキル</span></span>
-        <span class="cat-count">7</span>
-        <span class="cat-desc"><span class="t-en">The tools I build to do the work — Claude skills, CLIs and libraries, all of them in daily use before anyone else sees them.</span><span class="t-jp is-block">仕事のために自分で作る道具。Claude スキル、CLI、ライブラリ。どれも公開前から毎日使っています。</span></span>
-      </a>
-      <a class="cat" href="work.html">
-        <span class="cat-no">04</span>
-        <span class="cat-name"><span class="t-en">Product Design</span><span class="t-jp">プロダクトデザイン</span></span>
-        <span class="cat-count">13</span>
-        <span class="cat-desc"><span class="t-en">Twenty years of client work — EdTech, telecom, retail CX and design systems, research through launch.</span><span class="t-jp is-block">20年分のクライアントワーク。EdTech、通信、リテール CX、デザインシステム。調査から公開まで。</span></span>
-      </a>
-      <a class="cat" href="brand.html">
-        <span class="cat-no">05</span>
-        <span class="cat-name"><span class="t-en">Branded Experience</span><span class="t-jp">ブランド体験</span></span>
-        <span class="cat-count">12</span>
-        <span class="cat-desc"><span class="t-en">Identity, campaign worlds, space and film — the brand as something people walk into, not a logo sheet.</span><span class="t-jp is-block">アイデンティティ、キャンペーンの世界観、空間、映像。ロゴ集ではなく、人が入っていける場所としてのブランド。</span></span>
-      </a>
-    </div>
-  </section>
-
-  <!-- ══ Studio ══ -->
-  <section class="section" id="studio" aria-labelledby="studio-title">
-    <div class="section-head">
-      <h2 class="section-title" id="studio-title">
-        <span class="t-en">Studio</span>
-        <span class="t-jp">スタジオ</span>
-      </h2>
-      <a class="dot-link" style="margin-top:0;" href="about.html">
-        <span><span class="t-en">Full background →</span><span class="t-jp">経歴を詳しく →</span></span>
-      </a>
-    </div>
-
-    <div class="studio">
-      <div class="studio-col">
-        <p>
-          <span class="t-en">I started in Tokyo and have spent the last twenty years in New York. At <strong>Amplify</strong> I designed learning experiences used by millions of children; at <strong>T-Mobile</strong> a buy-online-pick-up-in-store system spanning kiosk, staff app and voice; at <strong>Verizon</strong> the post-login experience for a prepaid platform with millions of subscribers.</span>
-          <span class="t-jp is-block">東京で始め、この20年はニューヨークにいます。<strong>Amplify</strong> では数百万人の子どもが使う学習体験を、<strong>T-Mobile</strong> ではキオスク・店員アプリ・音声にまたがる店舗受け取り体験を、<strong>Verizon</strong> では数百万契約のプリペイド基盤のログイン後体験を設計しました。</span>
-        </p>
-        <p>
-          <span class="t-en">Alongside that, a 150-year-old Tokyo barbershop and visual directions for Coca-Cola.</span>
-          <span class="t-jp is-block">並行して、150年続く東京の理髪店の立て直しや、Coca-Cola のビジュアル方向の提案も。</span>
-        </p>
-      </div>
-
-      <div class="studio-col">
-        <p>
-          <span class="t-en">Around 2023 the centre of gravity moved to AI, for a simple reason: that is where the unsolved problems are. But I did not start there. <strong>I know what was hard before agents existed</strong> — which is the only way to tell whether an agent has actually made something better, or just made it faster to produce something worse.</span>
-          <span class="t-jp is-block">2023年ごろから重心が AI に移りました。理由は単純で、未解決の面白い問題がそこにあるからです。ただ、私は AI から始めていません。<strong>エージェントが無かった頃に何が難しかったかを知っています</strong>。エージェントが本当に良くしたのか、それとも悪いものを速く作れるようにしただけなのか — それを見分けられるのは、そこだけです。</span>
-        </p>
-      </div>
-
-      <div class="studio-col">
-        <p class="studio-label"><span class="t-en">Services</span><span class="t-jp">提供</span></p>
-        <ul class="stack">
-          <li><span class="t-en">Agentic product design</span><span class="t-jp">エージェント製品の設計</span></li>
-          <li><span class="t-en">Live prototypes</span><span class="t-jp">動くプロトタイプ</span></li>
-          <li><span class="t-en">Interactive installations</span><span class="t-jp">インタラクティブ・インスタレーション</span></li>
-          <li><span class="t-en">Product design &amp; design systems</span><span class="t-jp">プロダクトデザイン／デザインシステム</span></li>
-          <li><span class="t-en">Brand strategy &amp; identity</span><span class="t-jp">ブランド戦略・アイデンティティ</span></li>
-          <li><span class="t-en">BreakBias workshops</span><span class="t-jp">BreakBias ワークショップ</span></li>
-        </ul>
-
-        <dl class="stats">
-          <div class="stat">
-            <dt><span class="t-en">Location</span><span class="t-jp">拠点</span></dt>
-            <dd><span class="t-en">New York City</span><span class="t-jp">ニューヨーク</span></dd>
-          </div>
-          <div class="stat">
-            <dt><span class="t-en">Working through</span><span class="t-jp">活動体</span></dt>
-            <dd>Creativity Is Everywhere LLC</dd>
-          </div>
-          <div class="stat">
-            <dt><span class="t-en">Years shipping</span><span class="t-jp">出荷し続けて</span></dt>
-            <dd>20</dd>
-          </div>
-          <div class="stat">
-            <dt><span class="t-en">Agents in production</span><span class="t-jp">稼働中のエージェント</span></dt>
-            <dd>10</dd>
-          </div>
-          <div class="stat">
-            <dt><span class="t-en">Languages</span><span class="t-jp">言語</span></dt>
-            <dd><span class="t-en">English · 日本語</span><span class="t-jp">日本語 · English</span></dd>
-          </div>
-        </dl>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ Feed ══ -->
-  <section class="section" id="feed" aria-labelledby="feed-title">
-    <div class="section-head">
-      <h2 class="section-title" id="feed-title">
-        <span class="t-en">Feed</span>
-        <span class="t-jp">実績</span>
-      </h2>
-      <p class="section-note">
-        <span class="t-en">Agentic UX is new. Knowing what a classroom of thirty children does to an interface, or what a 150-year-old shop loses when you modernise it, is not — and it is the part that decides whether the AI work is any good.</span>
-        <span class="t-jp is-block">Agentic UX は新しい。けれど、30人の教室がインターフェースに何をするか、150年の店を現代化すると何が失われるか — これは新しくありません。そして AI の仕事の良し悪しを決めるのは、こちらです。</span>
-      </p>
-    </div>
-
-    <div class="feed">
-
-      <a class="post" href="projects/ela-quests.html">
-        <span class="post-img" style="background-image:url('assets/shared/Quest_teaser_tr.png');"></span>
-        <span class="post-body">
-          <span class="post-client">Amplify ELA Quests</span>
-          <span class="post-desc"><span class="t-en">Immersive in-classroom learning experiences using AR and storytelling, reaching millions of students across the US.</span><span class="t-jp is-block">AR と物語による、教室内の没入型学習体験。全米で数百万人の生徒に届きました。</span></span>
-          <span class="post-disc">Lead Designer · EdTech · AR</span>
-        </span>
-      </a>
-
-      <a class="post" href="projects/verizon-totalwireless.html">
-        <span class="post-img" style="background-image:url('assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png'); background-position: center top;"></span>
-        <span class="post-body">
-          <span class="post-client">Verizon TotalWireless</span>
-          <span class="post-desc"><span class="t-en">Post-login experience design for a major prepaid wireless platform — streamlining account management for millions of subscribers.</span><span class="t-jp is-block">数百万契約のプリペイド通信基盤の、ログイン後体験の設計。アカウント管理を整理しました。</span></span>
-          <span class="post-disc">UX Design · Telecom · Design System</span>
-        </span>
-      </a>
-
-      <a class="post" href="projects/tmobile.html">
-        <span class="post-img" style="background-image:url('assets/shared/M−Mobile_teaser2.jpg');"></span>
-        <span class="post-body">
-          <span class="post-client">T-Mobile BOPIS</span>
-          <span class="post-desc"><span class="t-en">An integrated Buy Online Pick Up In Store system — kiosk, staff app, and voice AI — that made T-Mobile a preferred innovation partner.</span><span class="t-jp is-block">キオスク・店員アプリ・音声 AI を統合した店舗受け取り体験。T-Mobile の優先イノベーションパートナーに。</span></span>
-          <span class="post-disc">Lead UX · Retail CX · Multi-touchpoint</span>
-        </span>
-      </a>
-
-      <a class="post" href="projects/cli-studios.html">
-        <span class="post-img" style="background-image:url('assets/cli-studios/CLI_UI_Screens.png');"></span>
-        <span class="post-body">
-          <span class="post-client">CLI Studios</span>
-          <span class="post-desc"><span class="t-en">Complete mobile app redesign — heuristic analysis, IA restructuring, and a design system that reduced future dev time by 25%.</span><span class="t-jp is-block">モバイルアプリの全面再設計。ヒューリスティック分析、IA の再構築、そして開発時間を25%削減するデザインシステム。</span></span>
-          <span class="post-disc">Lead Designer · App Design · Design System</span>
-        </span>
-      </a>
-
-      <a class="post" href="projects/kitadoko.html">
-        <span class="post-img" style="background-image:url('assets/shared/Space_Design_kitadoko.png');"></span>
-        <span class="post-body">
-          <span class="post-client">Kitadoko</span>
-          <span class="post-desc"><span class="t-en">A 150-year-old hair salon rebranded end to end. Female clientele grew 10%→50%, repeat rate 0%→90%.</span><span class="t-jp is-block">創業150年の理髪店を丸ごとリブランディング。女性客 10%→50%、リピート率 0%→90%。</span></span>
-          <span class="post-disc">Creative Director · Rebranding · Service Design</span>
-        </span>
-      </a>
-
-      <a class="post" href="projects/web3-wallet.html">
-        <span class="post-img" style="background-image:url('assets/shared/EventStack-Mobile.png');"></span>
-        <span class="post-body">
-          <span class="post-client">Web3 Custodial Wallet</span>
-          <span class="post-desc"><span class="t-en">NFT-enhanced event management wallet. 2023 Merit Gold Award — Metaverse &amp; AI.</span><span class="t-jp is-block">NFT を組み込んだイベント管理ウォレット。2023 Merit Gold Award（Metaverse &amp; AI）受賞。</span></span>
-          <span class="post-disc">Lead Designer · Web3 · 2023</span>
-        </span>
-      </a>
-
-      <a class="post" href="projects/extraordinary.html">
-        <span class="post-img" style="background-image:url('assets/shared/exmag-01.png');"></span>
-        <span class="post-body">
-          <span class="post-client">extra•ordinary</span>
-          <span class="post-desc"><span class="t-en">Co-authored and art-directed a book on everyday creativity published by Rockport. Over 11,000 copies sold worldwide.</span><span class="t-jp is-block">日常の創造性についての書籍を共著・アートディレクション（Rockport 刊）。世界で11,000部以上。</span></span>
-          <span class="post-disc">Co-author &amp; Designer · Rockport Publishing</span>
-        </span>
-      </a>
-
-    </div>
-  </section>
-
-  <!-- ══ End ══ -->
-  <section class="end">
-    <h2 class="end-line">
-      <span class="t-en">Five minutes is faster than this page.</span>
-      <span class="t-jp">このページより、5分話すほうが早い。</span>
-    </h2>
-    <p class="end-sub">
-      <span class="t-en">It is fine if the thing you want does not have a name yet. That is the part I am best at — and the part where a live prototype beats a proposal document every time.</span>
-      <span class="t-jp is-block">作りたいものがまだ言葉になっていなくても大丈夫です。むしろ、そこがいちばん得意で、そういう時こそ提案書より動くものが早い。</span>
+  <!-- ══ The statement ══ -->
+  <section class="lead">
+    <h1 class="display lead__statement rise">
+      A product designer<br class="brk">building interfaces,<br class="brk">AI systems &amp;<br class="brk">interactive experiences.
+    </h1>
+    <p class="meta lead__where rise rise--2">
+      New York / Product Design /<br>Creative Technology
     </p>
-    <div class="end-actions">
-      <a class="dot-link" href="contact.html">
-        <span><span class="t-en">Start a project</span><span class="t-jp">プロジェクトを相談する</span></span>
+  </section>
+
+  <!-- ══ Selected work ══════════════════════════════════════════════════
+       Six, shown large and at their own ratio. The full set is in the
+       index below — this is the argument, that is the archive. ══ -->
+  <section class="section wrap rise rise--3" id="work">
+    <div class="section__label">
+      <span class="meta meta--ink">Selected Work</span>
+      <span class="meta">2014 — 2026</span>
+    </div>
+
+    <div class="work">
+
+      <a class="piece" href="projects/verizon-ai-agents.html">
+        <span class="piece__frame">
+          <img src="assets/verizon-ai-agents/hero-agents-network.jpg" width="1600" height="900"
+               alt="A network of ten linked agent nodes rendered in colour on black.">
+        </span>
+        <span class="piece__name">Verizon AI Workflow</span>
+        <span class="piece__meta meta">AI Products / Enterprise AI / Design Systems</span>
       </a>
-      <a class="dot-link" href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">
-        <span><span class="t-en">Hiring instead? LinkedIn →</span><span class="t-jp">採用のご相談は LinkedIn へ →</span></span>
+
+      <a class="piece" href="projects/ela-quests.html">
+        <span class="piece__frame">
+          <img src="assets/shared/Quest_teaser_tr.png" width="1600" height="900" loading="lazy"
+               alt="Amplify ELA Quests title screens shown across several tablets.">
+        </span>
+        <span class="piece__name">Amplify ELA Quests</span>
+        <span class="piece__meta meta">Product Design / EdTech / AR &amp; Storytelling</span>
       </a>
+
+      <a class="piece" href="projects/kitadoko.html">
+        <span class="piece__frame">
+          <img src="assets/kitadoko/kitadoko-retail-interior.jpg" width="1600" height="900" loading="lazy"
+               alt="The rebuilt Kitadoko salon floor, bright and open.">
+        </span>
+        <span class="piece__name">Kitadoko</span>
+        <span class="piece__meta meta">Branded Experience / Service Design / Space</span>
+      </a>
+
+      <a class="piece" href="projects/tmobile.html">
+        <span class="piece__frame">
+          <img src="assets/shared/M−Mobile_teaser2.jpg" width="1600" height="900" loading="lazy"
+               alt="T-Mobile buy-online-pick-up-in-store kiosk and staff app screens.">
+        </span>
+        <span class="piece__name">T-Mobile BOPIS</span>
+        <span class="piece__meta meta">Product Design / Retail CX / Multi-touchpoint</span>
+      </a>
+
+      <a class="piece" href="projects/coca-cola.html">
+        <span class="piece__frame">
+          <img src="assets/coca-cola/Billboard_0045_2019-01-14_1_2_3_4.jpeg" width="1600" height="900" loading="lazy"
+               alt="A Coca-Cola campaign billboard in situ.">
+        </span>
+        <span class="piece__name">Coca-Cola</span>
+        <span class="piece__meta meta">Branded Experience / Campaign Worlds / Art Direction</span>
+      </a>
+
+      <a class="piece" href="interactive.html">
+        <span class="piece__frame">
+          <img src="assets/koebaku/hero.jpg" width="1600" height="900" loading="lazy"
+               alt="Koe Baku: a shouted voice bursting into comic-book onomatopoeia on screen.">
+        </span>
+        <span class="piece__name">Koe Baku 声爆</span>
+        <span class="piece__meta meta">Interactive Experience / Voice / Snap Pair</span>
+      </a>
+
     </div>
   </section>
 
-  <!-- ══ Language ══ -->
-  <div class="lang" id="lang-switch">
-    <button type="button" class="is-active" data-lang="en">EN</button>
-    <span aria-hidden="true">·</span>
-    <button type="button" data-lang="jp">JP</button>
-  </div>
+  <!-- ══ Practice ══ -->
+  <section class="section wrap" id="practice">
+    <div class="section__label">
+      <span class="meta meta--ink">Practice</span>
+      <span class="meta">What a project looks like</span>
+    </div>
 
-  <!-- ══ Footer ══ -->
-  <footer class="footer">
-    <span class="footer-mark">Takao Umehara</span>
-    <ul class="footer-links">
-      <li><a href="interactive.html">Interactive Experience</a></li>
-      <li><a href="ai-products.html">AI Products</a></li>
-      <li><a href="ai-tools.html">AI Tools &amp; Skills</a></li>
-      <li><a href="work.html">Product Design</a></li>
-      <li><a href="brand.html">Branded Experience</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
-      <li><a href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub</a></li>
-      <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
-      <li><a href="intentfirst.html">intentfirst.ai</a></li>
+    <div class="practice">
+      <div>
+        <h3 class="title">Agentic products</h3>
+        <p>Deciding what the person keeps, what the agent takes, and what happens when the agent is wrong — then designing it down to the screen. Three to six months, embedded.</p>
+      </div>
+      <div>
+        <h3 class="title">Live prototypes</h3>
+        <p>A working thing instead of a deck, in weeks rather than quarters. Demoable in the first two minutes of a meeting, on the devices already in the room.</p>
+      </div>
+      <div>
+        <h3 class="title">Brand &amp; product</h3>
+        <p>Twenty years of identity systems, product design and service design — the part that decides whether the AI work is any good.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Work index — the five categories, as text ══ -->
+  <section class="section wrap" id="index">
+    <div class="section__label">
+      <span class="meta meta--ink">Work Index</span>
+      <span class="meta">45 projects / 5 categories</span>
+    </div>
+
+    <a class="index__row" href="interactive.html">
+      <span class="meta">01</span>
+      <span class="title">Interactive Experience</span>
+      <span class="meta">8</span>
+      <span class="index__names">Typespace · Resona · Rakugaki Jam · Koe Baku · Kao Game · EmojiDrop · Marubatsu 2.0 · Werewolf</span>
+    </a>
+
+    <a class="index__row" href="ai-products.html">
+      <span class="meta">02</span>
+      <span class="title">AI Products</span>
+      <span class="meta">5</span>
+      <span class="index__names">Verizon AI Workflow · intentfirst.ai · MyBrainSpec · Moime.app · Amazon Fire TV concept</span>
+    </a>
+
+    <a class="index__row" href="ai-tools.html">
+      <span class="meta">03</span>
+      <span class="title">AI Tools &amp; Skills</span>
+      <span class="meta">7</span>
+      <span class="index__names">superforge · Snap Pair · failforward · cross-model-handoff · multilingual-readme · interactive-experience-skills · intuitive-game-design</span>
+    </a>
+
+    <a class="index__row" href="work.html">
+      <span class="meta">04</span>
+      <span class="title">Product Design</span>
+      <span class="meta">13</span>
+      <span class="index__names">Amplify ELA Quests · T-Mobile BOPIS · Verizon TotalWireless · CLI Studios · Carnegie Foundation · XQ · Web3 Wallet · and more</span>
+    </a>
+
+    <a class="index__row" href="brand.html">
+      <span class="meta">05</span>
+      <span class="title">Branded Experience</span>
+      <span class="meta">12</span>
+      <span class="index__names">Coca-Cola · Kitadoko · Odell Education · Value Frontier · Konosaki · KOJI FIZZ · extra•ordinary · and more</span>
+    </a>
+  </section>
+
+  <!-- ══ About ══ -->
+  <section class="section wrap" id="about">
+    <div class="section__label">
+      <span class="meta meta--ink">About</span>
+      <span class="meta">New York / Creativity Is Everywhere LLC</span>
+    </div>
+
+    <div class="about">
+      <div class="prose">
+        <p class="lede">I started in Tokyo and have spent the last twenty years in New York.</p>
+        <p>At Amplify I designed learning experiences used by millions of children; at T-Mobile a buy-online-pick-up-in-store system spanning kiosk, staff app and voice; at Verizon the post-login experience for a prepaid platform with millions of subscribers. Alongside that, a 150-year-old Tokyo barbershop and visual directions for Coca-Cola.</p>
+        <p>Around 2023 the centre of gravity moved to AI, for a simple reason: that is where the unsolved problems are. But I did not start there. I know what was hard before agents existed — which is the only way to tell whether an agent has actually made something better, or just made it faster to produce something worse.</p>
+      </div>
+
+      <dl class="facts">
+        <div>
+          <dt class="meta">Based in</dt>
+          <dd>New York City</dd>
+        </div>
+        <div>
+          <dt class="meta">Working through</dt>
+          <dd>Creativity Is Everywhere LLC</dd>
+        </div>
+        <div>
+          <dt class="meta">Agents in production</dt>
+          <dd>10, across 6 brands</dd>
+        </div>
+        <div>
+          <dt class="meta">Open source</dt>
+          <dd>14 Claude skills, a CLI, a realtime library</dd>
+        </div>
+        <div>
+          <dt class="meta">Languages</dt>
+          <dd>English · 日本語</dd>
+        </div>
+        <div>
+          <dt class="meta">Also writes at</dt>
+          <dd>intentfirst.ai · Medium</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ══ Contact — the one dark surface on the page ══ -->
+  <section class="stage" id="contact">
+    <p class="display" style="max-width:16ch;">Five minutes is faster than this page.</p>
+    <p class="prose" style="margin-top:var(--break-s); color:rgba(243,242,237,0.72);">
+      It is fine if the thing you want does not have a name yet. That is the part I am best at — and the part where a live prototype beats a proposal document every time.
+    </p>
+    <p style="margin-top:var(--s-12); display:flex; flex-wrap:wrap; gap:var(--s-12);">
+      <a class="action" href="contact.html">Start a project</a>
+      <a class="action" href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">Hiring — LinkedIn ↗</a>
+    </p>
+  </section>
+
+  <footer class="foot">
+    <span class="meta meta--ink">Takao Umehara</span>
+    <ul>
+      <li><a class="meta" href="interactive.html">Interactive Experience</a></li>
+      <li><a class="meta" href="ai-products.html">AI Products</a></li>
+      <li><a class="meta" href="ai-tools.html">AI Tools &amp; Skills</a></li>
+      <li><a class="meta" href="work.html">Product Design</a></li>
+      <li><a class="meta" href="brand.html">Branded Experience</a></li>
+      <li><a class="meta" href="about.html">About</a></li>
+      <li><a class="meta" href="contact.html">Contact</a></li>
+      <li><a class="meta" href="https://github.com/takaoumehara" target="_blank" rel="noopener">GitHub&nbsp;↗</a></li>
     </ul>
-    <span>New York City · Creativity Is Everywhere LLC</span>
+    <span class="meta">New York City</span>
   </footer>
 
-  <!-- ══ Shell — language, menu, clock ══ -->
   <script>
-  (() => {
-    const root = document.documentElement;
-
-    /* ── Language ── */
-    const btns = [...document.querySelectorAll('.lang button')];
-    const setLang = (lang) => {
-      root.classList.toggle('lang-jp', lang === 'jp');
-      root.lang = lang === 'jp' ? 'ja' : 'en';
-      btns.forEach((b) => b.classList.toggle('is-active', b.dataset.lang === lang));
-      try { localStorage.setItem('tu-lang', lang); } catch (e) {}
-    };
-    let saved = 'en';
-    try { saved = localStorage.getItem('tu-lang') || 'en'; } catch (e) {}
-    setLang(saved);
-    btns.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
-
-    /* ── Menu ── */
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.getElementById('nav-links');
-    if (toggle && links) {
-      toggle.addEventListener('click', () => {
-        const open = links.classList.toggle('is-open');
-        toggle.classList.toggle('is-open', open);
-        toggle.setAttribute('aria-expanded', String(open));
-      });
-      links.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => {
-        links.classList.remove('is-open');
-        toggle.classList.remove('is-open');
-        toggle.setAttribute('aria-expanded', 'false');
-      }));
-    }
-
-    /* ── Clock. The reference puts a timestamp in the centre of the bar;
-          on a page whose whole claim is "this is running right now", the
-          honest version of that is the actual time where the work is. ── */
-    const clock = document.getElementById('nav-clock');
-    if (clock) {
-      const tick = () => {
-        const t = new Date().toLocaleTimeString('en-US', {
-          timeZone: 'America/New_York', hour12: false,
-          hour: '2-digit', minute: '2-digit'
-        });
-        clock.textContent = 'NEW YORK ' + t;
-      };
-      tick();
-      setInterval(tick, 30000);
-    }
-  })();
+    /* The first-paint rise, armed only once the document has actually
+       rendered. See the note in assets/editorial.css. */
+    addEventListener('load', () => document.documentElement.classList.add('is-ready'));
   </script>
-
-  <!-- ══ Intent Console ══ -->
-  <script>
-  (() => {
-    const root  = document.documentElement;
-    const chips = document.getElementById('console-chips');
-    const typed = document.getElementById('console-typed');
-    const route = document.getElementById('console-route');
-    const box   = document.getElementById('console-answer');
-    if (!chips || !typed || !route || !box) return;
-
-    const el = {
-      badge:   document.getElementById('answer-badge'),
-      name:    document.getElementById('answer-name'),
-      line:    document.getElementById('answer-line'),
-      metrics: document.getElementById('answer-metrics'),
-      link:    document.getElementById('answer-link')
-    };
-
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const isJP = () => root.classList.contains('lang-jp');
-
-    const DATA = {
-      fleet: {
-        href: 'projects/verizon-ai-agents.html',
-        metrics: [['10','agents','エージェント'], ['42','designers','名のデザイナー'], ['6','brands','ブランド']],
-        en: { badge: 'Enterprise · Shipped', name: 'Verizon AI Workflow',
-              line: 'A 10-agent fleet built inside Verizon’s design organisation — briefing, research synthesis, spec writing and QA, handled by agents designers actually use.',
-              cta: 'Read the case study →' },
-        jp: { badge: 'エンタープライズ · 導入済み', name: 'Verizon AI Workflow',
-              line: 'Verizon のデザイン組織の中に作った10エージェントの艦隊。ブリーフ、リサーチ統合、仕様書、QA を、デザイナーが実際に使うエージェントが担います。',
-              cta: 'ケーススタディを読む →' }
-      },
-      proto: {
-        href: 'projects/amazon-firetv.html',
-        metrics: [['1','scan to join','スキャンで参加'], ['0','app installs','アプリ導入'], ['3','ways to input','入力手段']],
-        en: { badge: 'Live prototype · Independent', name: 'Agentic commerce on Fire TV',
-              line: 'Shopping from the sofa: Alexa handles intent by voice, the D-pad handles browsing, and one QR scan turns the phone in your hand into the remote. An independent concept, not affiliated with Amazon.',
-              cta: 'See the prototype →' },
-        jp: { badge: '動くプロトタイプ · 自主制作', name: 'Fire TV のエージェンティック・コマース',
-              line: 'ソファからの買い物。意図は Alexa が音声で受け、閲覧は D-pad、QR ひとつで手元のスマホがリモコンになります。Amazon とは無関係の自主制作コンセプトです。',
-              cta: 'プロトタイプを見る →' }
-      },
-      principles: {
-        href: 'https://intentfirst.ai', external: true,
-        metrics: [['8','context tokens','コンテキスト・トークン'], ['3','memory layers','記憶レイヤー']],
-        en: { badge: 'Research · Framework', name: 'intentfirst.ai',
-              line: 'Start from intent, not screens. Context Grammar gives a system the vocabulary for what a person actually needs — not just what they typed.',
-              cta: 'Read the framework ↗' },
-        jp: { badge: '研究 · フレームワーク', name: 'intentfirst.ai',
-              line: '画面ではなく意図から始める。Context Grammar は、入力された言葉ではなく「その人が本当に必要としているもの」を、システムが扱える言葉にします。',
-              cta: 'フレームワークを読む ↗' }
-      },
-      think: {
-        href: 'breakbias.html',
-        metrics: [['8','structured tools','構造化ツール'], ['5','global clients','グローバル企業']],
-        en: { badge: 'Workshop · Training', name: 'BreakBias',
-              line: 'Eight structured tools aimed at the cognitive biases that stop a team from having a new idea. Run for Microsoft, Tiffany & Co., Havas, Dentsu and Google, online and in person.',
-              cta: 'See the programme →' },
-        jp: { badge: 'ワークショップ · 研修', name: 'BreakBias',
-              line: 'チームが新しい発想に至るのを止めている認知バイアスに、正面から当てる8つのツール。Microsoft、Tiffany & Co.、Havas、電通、Google でオンライン／対面で実施。',
-              cta: 'プログラムを見る →' }
-      },
-      brand: {
-        href: 'projects/kitadoko.html',
-        metrics: [['150','years old','年続く店'], ['0→90','% repeat rate','% リピート率']],
-        en: { badge: 'Brand · CX · Space', name: 'Kitadoko',
-              line: 'A 150-year-old Tokyo barbershop, underground and invisible from the street, with zero repeat customers. Rebuilt end to end — brand, service, and the room itself.',
-              cta: 'Read the case study →' },
-        jp: { badge: 'ブランド · CX · 空間', name: '北床（Kitadoko）',
-              line: '創業150年、地下にあり通りから見えず、リピート客ゼロだった東京の理髪店。ブランド・サービス・空間まで、丸ごと作り直しました。',
-              cta: 'ケーススタディを読む →' }
-      }
-    };
-
-    let current = 'fleet';
-    let typeTimer = 0;
-    let routeTimers = [];
-
-    const clearTimers = () => {
-      clearTimeout(typeTimer);
-      routeTimers.forEach(clearTimeout);
-      routeTimers = [];
-    };
-
-    const chipLabel = (btn) => {
-      const span = btn.querySelector(isJP() ? '.t-jp' : '.t-en');
-      return (span ? span.textContent : btn.textContent).trim();
-    };
-
-    /* The link's label lives inside a <span> so the dot pseudo-element
-       survives the swap — write to that span, never to the anchor. */
-    const linkText = () => el.link.querySelector('span') || el.link;
-
-    const render = (key) => {
-      const d = DATA[key];
-      if (!d) return;
-      const c = isJP() ? d.jp : d.en;
-      el.badge.textContent = c.badge;
-      el.name.textContent  = c.name;
-      el.line.textContent  = c.line;
-      linkText().textContent = c.cta;
-      el.link.href = d.href;
-      if (d.external) { el.link.target = '_blank'; el.link.rel = 'noopener'; }
-      else { el.link.removeAttribute('target'); el.link.removeAttribute('rel'); }
-      el.metrics.innerHTML = '';
-      d.metrics.forEach(([v, ken, kjp]) => {
-        const w = document.createElement('div');
-        w.className = 'metric';
-        w.innerHTML = '<span class="metric-v"></span><span class="metric-k"></span>';
-        w.firstChild.textContent = v;
-        w.lastChild.textContent = isJP() ? kjp : ken;
-        el.metrics.appendChild(w);
-      });
-    };
-
-    const typeOut = (text) => {
-      clearTimeout(typeTimer);
-      if (reduced.matches) { typed.textContent = text; return; }
-      typed.textContent = '';
-      let i = 0;
-      const step = () => {
-        typed.textContent = text.slice(0, ++i);
-        if (i < text.length) typeTimer = setTimeout(step, 22);
-      };
-      step();
-    };
-
-    const steps = () => [...route.querySelectorAll('.route-step')];
-
-    const runRoute = (key) => {
-      const list = steps();
-      if (reduced.matches) {
-        list.forEach((s) => s.classList.add('is-lit'));
-        render(key);
-        return;
-      }
-      list.forEach((s) => s.classList.remove('is-lit'));
-      box.classList.add('is-swapping');
-      list.forEach((s, i) => {
-        routeTimers.push(setTimeout(() => s.classList.add('is-lit'), 120 + i * 130));
-      });
-      routeTimers.push(setTimeout(() => {
-        render(key);
-        box.classList.remove('is-swapping');
-      }, 120 + list.length * 130));
-    };
-
-    const select = (key, btn) => {
-      current = key;
-      clearTimers();
-      [...chips.querySelectorAll('.chip')].forEach((b) => {
-        b.setAttribute('aria-pressed', String(b === btn));
-      });
-      typeOut(chipLabel(btn));
-      runRoute(key);
-    };
-
-    chips.addEventListener('click', (e) => {
-      const btn = e.target.closest('.chip');
-      if (!btn) return;
-      select(btn.dataset.intent, btn);
-    });
-
-    const syncLang = () => {
-      typed.dataset.placeholder = isJP()
-        ? typed.dataset.placeholderJp
-        : typed.dataset.placeholderEn;
-      const active = chips.querySelector('.chip[aria-pressed="true"]');
-      if (typed.textContent && active) typed.textContent = chipLabel(active);
-      render(current);
-    };
-
-    new MutationObserver(syncLang)
-      .observe(root, { attributes: true, attributeFilter: ['class'] });
-
-    syncLang();
-  })();
-  </script>
-
-  <!-- ══ Live tiles ══ -->
-  <script src="assets/play-tiles.js" defer></script>
 
 </body>
 </html>

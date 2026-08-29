@@ -1,0 +1,381 @@
+/* ══════════════════════════════════════════════════════════════════════════
+   Monumental Editorial — the shared system.
+
+   Approved 2026-08-26 against docs/evidence/monumental-editorial-preview.png
+   and specced in docs/superpowers/specs/2026-08-26-monumental-editorial-
+   redesign-design.md. The rules, taken from that spec and not softened:
+
+     · One ground (Bone), one ink (Carbon Black). Colour lives in the work
+       only — never in a badge, a tag, or a control.
+     · Hierarchy is built from size and space. Weight barely moves.
+     · Four type steps and no more: meta / body / project title / display.
+     · Images carry no radius, no border, no shadow, no overlay. The
+       photograph is the artwork, shown at its own ratio.
+     · Motion is rhythmic crisp: first paint, and opening or closing a
+       project. Never a fade per scroll.
+     · 80–144px of air around every major element. That air is the layout.
+
+   Founders Grotesk is the reference's face and is not licensed here. The
+   spec names Instrument Sans, run mostly at regular, as the replacement.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ── Ground and ink ── */
+  --bone:        #f3f2ed;
+  --bone-deep:   #e9e7e0;   /* the one step down, for a full-bleed band */
+  --carbon:      #14140f;
+  --carbon-mid:  #5c5c55;
+  --rule:        rgba(20, 20, 15, 0.18);
+  --rule-soft:   rgba(20, 20, 15, 0.10);
+  --stage:       #0b0b09;   /* the black surface a project opens through */
+
+  /* ── Type ── */
+  --ff: "Instrument Sans", ui-sans-serif, system-ui, -apple-system,
+        "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+
+  --meta:        clamp(10.5px, 0.78vw, 12px);
+  --meta-track:  0.09em;
+  --body:        clamp(15px, 1.12vw, 17.5px);
+  --body-lead:   1.52;
+  --title:       clamp(24px, 2.9vw, 42px);
+  --display:     clamp(34px, 7.1vw, 104px);
+
+  /* ── Space. 4px base; small : medium : large ≈ 1 : 3 : 8. ── */
+  --s-1:  4px;
+  --s-2:  8px;
+  --s-3:  12px;
+  --s-4:  16px;
+  --s-6:  24px;
+  --s-8:  32px;
+  --s-12: 48px;
+
+  --edge:   clamp(20px, 2.3vw, 34px);
+  --gutter: clamp(16px, 1.9vw, 28px);
+  --break:  clamp(64px, 9.4vw, 144px);
+  --break-s: clamp(40px, 5.6vw, 88px);
+
+  /* ── Motion ── */
+  --ease: cubic-bezier(0.22, 0.84, 0.26, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bone);
+  color: var(--carbon);
+  font-family: var(--ff);
+  font-size: var(--body);
+  line-height: var(--body-lead);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+::selection { background: var(--carbon); color: var(--bone); }
+:focus-visible { outline: 2px solid var(--carbon); outline-offset: 3px; }
+
+/* ── Type steps ─────────────────────────────────────────────────────────
+   Four, and the display is the only one that shouts. ── */
+
+.meta {
+  font-size: var(--meta);
+  line-height: 1.45;
+  letter-spacing: var(--meta-track);
+  text-transform: uppercase;
+  color: var(--carbon-mid);
+}
+.meta--ink { color: var(--carbon); }
+
+.display {
+  font-size: var(--display);
+  line-height: 0.94;
+  letter-spacing: -0.021em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.title {
+  font-size: var(--title);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  font-weight: 400;
+}
+
+.lede {
+  font-size: clamp(17px, 1.55vw, 24px);
+  line-height: 1.42;
+  letter-spacing: -0.008em;
+  max-width: 30ch;
+}
+
+.prose { max-width: 62ch; }
+.prose p + p { margin-top: var(--s-6); }
+
+/* Japanese never takes the Latin's negative tracking, and it does not
+   go uppercase — the transform is a no-op that only breaks the rhythm. */
+:lang(ja), .jp {
+  font-family: var(--ff-jp);
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+/* ── Shell ── */
+
+.wrap { padding-inline: var(--edge); }
+
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-6);
+  padding: var(--s-6) var(--edge);
+  background: var(--bone);
+}
+
+.masthead__mark {
+  font-size: var(--meta);
+  letter-spacing: var(--meta-track);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.masthead__nav {
+  display: flex;
+  gap: clamp(var(--s-6), 2.4vw, var(--s-12));
+  list-style: none;
+}
+
+.masthead__nav a {
+  font-size: var(--meta);
+  letter-spacing: var(--meta-track);
+  text-transform: uppercase;
+  color: var(--carbon-mid);
+  white-space: nowrap;
+  transition: color 180ms var(--ease);
+}
+.masthead__nav a:hover,
+.masthead__nav a[aria-current] { color: var(--carbon); }
+
+/* ── Section furniture ── */
+
+.section { padding-block: 0 var(--break); }
+
+.section__label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-6);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: var(--s-8);
+}
+
+.rule { border: 0; border-top: 1px solid var(--rule); }
+
+/* ── The work grid ─────────────────────────────────────────────────────
+   Two columns of real work. No card, no border, no padding — the edge of
+   the photograph is the edge of the piece, and the caption sits under it
+   rather than on top of it. ── */
+
+.work {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--break-s) var(--gutter);
+}
+
+.piece { display: block; }
+
+.piece__frame {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bone-deep);
+}
+
+.piece__frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.001);
+  transition: transform 620ms var(--ease);
+}
+.piece:hover .piece__frame img { transform: scale(1.028); }
+
+.piece__name {
+  display: block;
+  margin-top: var(--s-4);
+  font-size: var(--title);
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+
+.piece__meta { display: block; margin-top: var(--s-2); }
+
+/* ── Index: the five categories as text, not as cards ── */
+
+.index__row {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: var(--s-6);
+  padding-block: var(--s-8);
+  border-bottom: 1px solid var(--rule-soft);
+  transition: opacity 200ms var(--ease);
+}
+.index__row:first-child { border-top: 1px solid var(--rule); }
+.index__row:hover { opacity: 0.55; }
+
+.index__names {
+  grid-column: 2 / -1;
+  margin-top: var(--s-3);
+  color: var(--carbon-mid);
+  font-size: var(--meta);
+  letter-spacing: var(--meta-track);
+  text-transform: uppercase;
+  line-height: 1.9;
+}
+
+/* ── Facts: label over value, no boxes ── */
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--break-s) var(--gutter);
+}
+.facts dt { margin-bottom: var(--s-2); }
+.facts dd { font-size: clamp(17px, 1.5vw, 22px); line-height: 1.25; }
+
+.figures {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--break-s) var(--gutter);
+}
+.figure__value {
+  display: block;
+  font-size: clamp(38px, 5.4vw, 84px);
+  line-height: 0.92;
+  letter-spacing: -0.025em;
+}
+.figure__key { display: block; margin-top: var(--s-4); }
+
+/* ── Plates: a full-width image with its caption underneath ── */
+
+.plate { margin-block: var(--break-s); }
+.plate img { width: 100%; height: auto; }
+.plate figcaption { margin-top: var(--s-4); }
+
+.plate--pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--gutter);
+}
+/* A pair is one statement, so the two frames share a ratio. Left to their
+   own heights the shorter one leaves a hole beside the taller and the pair
+   stops reading as a comparison. */
+.plate--pair img { aspect-ratio: 4 / 3; object-fit: cover; }
+.plate--pair figcaption { grid-column: 1 / -1; }
+
+.plate--bleed {
+  margin-inline: calc(var(--edge) * -1);
+}
+.plate--bleed figcaption { padding-inline: var(--edge); }
+
+/* ── The one dark surface ── */
+
+.stage {
+  background: var(--stage);
+  color: var(--bone);
+  padding: var(--break) var(--edge);
+  margin-top: var(--break);
+}
+.stage .meta { color: rgba(243, 242, 237, 0.62); }
+.stage a:hover { opacity: 0.7; }
+
+/* ── Actions are text with a rule under them, never a filled box ── */
+
+.action {
+  display: inline-block;
+  font-size: var(--meta);
+  letter-spacing: var(--meta-track);
+  text-transform: uppercase;
+  padding-bottom: var(--s-1);
+  border-bottom: 1px solid currentColor;
+  transition: opacity 180ms var(--ease);
+}
+.action:hover { opacity: 0.55; }
+
+/* ── Foot ── */
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-6);
+  padding: var(--s-8) var(--edge) var(--break-s);
+  border-top: 1px solid var(--rule);
+}
+.foot ul { display: flex; flex-wrap: wrap; gap: var(--s-8); list-style: none; }
+
+/* ── First paint. The only motion on the page besides opening a project.
+      Nothing here is scroll-triggered; the spec forbids per-scroll fades.
+
+      No fill-mode, and the keyframes only declare `from`. That is
+      deliberate: the element's resting state is visible, and the
+      animation interpolates *out of* a hidden state rather than into
+      one. If the animation never starts — a paused timeline, a browser
+      that defers the first frame, a print — the text is simply there.
+      Gating the headline's opacity on an animation that has to run is
+      how a landing page ends up blank. ── */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The animation is attached only once `load` has fired, by the one line of
+   script in the page. A CSS-only version is not safe here: a render-blocking
+   stylesheet that stalls — a slow or unreachable font CDN — leaves the
+   document timeline unstarted, and an unstarted animation still applies its
+   first keyframe. The headline then sits at opacity 0 with nothing coming to
+   raise it. Measured, not theorised: that is exactly what this page did. */
+html.is-ready .rise { animation: rise 760ms var(--ease) both; }
+html.is-ready .rise--2 { animation-delay: 90ms; }
+html.is-ready .rise--3 { animation-delay: 170ms; }
+
+/* Opening a project is the other motion, and it is the browser's. */
+@view-transition { navigation: auto; }
+
+/* ── Responsive. The grid folds before the rhythm does. ── */
+
+@media (max-width: 900px) {
+  .work { gap: var(--break-s) var(--gutter); }
+}
+
+@media (max-width: 640px) {
+  .work,
+  .plate--pair { grid-template-columns: 1fr; }
+  .masthead { flex-wrap: wrap; gap: var(--s-4); }
+  .masthead__nav { gap: var(--s-6); }
+  .index__row { grid-template-columns: 2rem minmax(0, 1fr); }
+  .index__row > .meta:last-child { grid-column: 2; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .piece:hover .piece__frame img { transform: none; }
+}

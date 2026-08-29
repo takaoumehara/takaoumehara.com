@@ -116,11 +116,36 @@ test('all main-page navs carry the two-tier order, with the lead three marked', 
   }
 });
 
-test('the landing page nav carries the same five categories in the same order', () => {
-  const nav = navDestinations(read('index.html'), 'index.html');
-  assert.deepEqual(nav.map(({ href, label }) => [href, label]),
-    [...CATEGORY_NAV, ['about.html', 'About'], ['contact.html', 'Contact']],
-    'index.html: the five categories, then About and Contact');
+// The landing page runs the Monumental Editorial shell. Its masthead is
+// deliberately four items — the approved reference's own nav — and the five
+// categories are reached through the Work Index and the footer instead.
+// Two tiers, which is what the spec asks for; the five still have to be
+// there, in order, and spelled the same way.
+test('the landing page masthead is the four, and the five live in the index', () => {
+  const html = read('index.html');
+
+  const masthead = html.match(/<ul\b[^>]*\bclass\s*=\s*["']masthead__nav["'][^>]*>([\s\S]*?)<\/ul>/i)?.[1];
+  assert.ok(masthead, 'index.html: missing the masthead nav');
+  const labels = [...masthead.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)]
+    .map((m) => m[1].replace(/<[^>]+>/g, '').replace(/&nbsp;|&#160;/g, ' ').replace(/\s+/g, ' ').trim());
+  assert.deepEqual(labels, ['Work', 'Practice', 'About', 'LinkedIn ↗'],
+    'index.html: the masthead is Work / Practice / About / LinkedIn');
+
+  const index = html.match(/<section\b[^>]*\bid\s*=\s*["']index["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
+  assert.ok(index, 'index.html: needs the Work Index');
+  const rows = [...index.matchAll(/<a\b[^>]*\bclass\s*=\s*["']index__row["'][^>]*>/gi)].map((m) => m[0]);
+  assert.deepEqual(rows.map((tag) => attr(tag, 'href')), CATEGORY_NAV.map(([href]) => href),
+    'the Work Index carries the five, in order');
+  for (const [, label] of CATEGORY_NAV) {
+    assert.ok(index.includes(label), `the Work Index must name "${label}" exactly`);
+  }
+
+  // The footer is the other way in, and it must not disagree with the index.
+  const foot = html.match(/<footer\b[^>]*>([\s\S]*?)<\/footer>/i)?.[0] ?? '';
+  for (const [href, label] of CATEGORY_NAV) {
+    assert.match(foot, new RegExp(`href\\s*=\\s*["']${escape(href)}["'][^>]*>${escape(label)}<`),
+      `the footer must link ${label} → ${href}`);
+  }
 });
 
 test('each themed page marks its own nav item active', () => {
@@ -140,60 +165,67 @@ test('each themed page marks its own nav item active', () => {
 });
 
 test('final polish: repeated main-page mobile navs remain closed by default', () => {
-  const pages = mainPages.filter((page) => page !== 'ai-tools.html');
+  // index.html carries no .nav-links at all — the editorial masthead is four
+  // short items that wrap rather than collapse behind a toggle, so there is
+  // no disclosure to leave open. Its width is asserted below instead.
+  const pages = mainPages.filter((page) => page !== 'ai-tools.html' && page !== 'index.html');
   const missingOverrides = pages.filter((page) => !hasFinalClosedMobileNavOverride(read(page)));
   assert.deepEqual(missingOverrides, [], `mobile override must hide .nav-links until it is-open: ${missingOverrides.join(', ')}`);
   assert.ok(hasFinalClosedMobileNavOverride(read('ai-tools.html')), 'ai-tools.html must hide .nav-links until it is-open');
 });
 
-// ── The landing page: a gallery wall, the five, then the feed ──
+// ── The landing page: Monumental Editorial ──
 
-// The page shows the work rather than indexing it. The wall is the first
-// screen of evidence, the five categories are the way in, and the feed is
-// the twenty years the AI work stands on.
-test('the landing page is the wall, the five, then the feed', () => {
+// Approved 2026-08-26 against docs/evidence/monumental-editorial-preview.png.
+// One ground, one ink, four type steps, real work shown large. These tests
+// guard the rules that are easy to erode one commit at a time.
+
+test('the landing page runs statement → selected work → practice → index → about → contact', () => {
   const html = read('index.html');
-  const wall = html.indexOf('id="wall"');
-  const cats = html.indexOf('id="categories"');
-  const feed = html.indexOf('id="feed"');
-  assert.ok(wall >= 0 && cats > wall && feed > cats,
-    'the landing page runs wall → categories → feed');
+  const at = (id) => html.indexOf(`id="${id}"`);
+  const order = ['work', 'practice', 'index', 'about', 'contact'].map(at);
+  assert.ok(order.every((i) => i >= 0), 'the landing page needs all five sections');
+  assert.deepEqual(order, [...order].sort((a, b) => a - b), 'sections must run in order');
 
-  // The sections that used to be stacked here now live on their category
-  // pages; the landing page shows the work, not an index of the work.
-  for (const removed of ['id="agentic-ux"', 'id="playable"', 'id="ai-tools"', 'id="selected-work"']) {
-    assert.equal(html.includes(removed), false, `${removed} belongs on its category page, not the landing page`);
+  // The statement carries the page; it is the only display-size run above
+  // the fold, and it is one h1.
+  assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, 'one h1');
+  assert.match(html, /class="display lead__statement/, 'the statement is the display step');
+
+  // Everything the previous landing pages stacked here now lives on its
+  // category page. The archive is the Work Index, not the front door.
+  for (const removed of ['id="agentic-ux"', 'id="playable"', 'id="ai-tools"', 'id="selected-work"', 'class="wall"']) {
+    assert.equal(html.includes(removed), false, `${removed} belongs on a category page, not the landing page`);
   }
 });
 
-test('the wall is nine tiles, six of them live canvases', () => {
+test('selected work is six real pieces, every one an image the site actually holds', () => {
   const html = read('index.html');
-  const wall = html.match(/<div\b[^>]*\bclass\s*=\s*["']wall["'][^>]*>([\s\S]*?)<\/div>/i)?.[0] ?? '';
-  assert.ok(wall, 'the landing page needs a wall');
+  const section = html.match(/<section\b[^>]*\bid\s*=\s*["']work["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
+  assert.ok(section, 'the landing page needs Selected Work');
 
-  const tiles = [...wall.matchAll(openWithClass('a', 'tile'))].map((m) => m[0]);
-  assert.equal(tiles.length, 9, 'nine tiles — four columns, no half-empty row');
+  const pieces = [...section.matchAll(openWithClass('a', 'piece'))].map((m) => m[0]);
+  assert.equal(pieces.length, 6, 'six, not sixteen — the archive is the index below');
 
-  const canvases = [...wall.matchAll(/<canvas\b[^>]*\bdata-play\s*=\s*["']([a-z]+)["']/gi)].map((m) => m[1]);
-  assert.deepEqual(canvases,
-    ['typespace', 'rakugaki', 'resona', 'marubatsu', 'emojidrop', 'koebaku'],
-    'every live tile names the scene it draws');
+  const imgs = [...section.matchAll(/<img\b[^>]*>/gi)].map((m) => m[0]);
+  assert.equal(imgs.length, 6, 'every piece is carried by a photograph');
+  for (const tag of imgs) {
+    const src = attr(tag, 'src');
+    assert.ok(src && existsSync(join(v3, src)), `selected work image missing from the repo: ${src}`);
+    assert.ok((attr(tag, 'alt') ?? '').length > 12, `${src} needs a real alt, not a filename`);
+  }
 
-  // Exactly one scarlet panel. The reference rations the colour to one
-  // drop per screen, and more than one panel spends the whole budget.
-  assert.equal([...wall.matchAll(openWithClass('a', 'tile--red'))].length, 1, 'one red panel, not two');
+  // The spec rejects CSS-drawn stand-ins in the work slots: a generated
+  // panel with the project's own name set on it is a label, not the work.
+  assert.equal(/card-art|play-art|tile-shout/.test(section), false,
+    'no generated stand-in art in a work slot');
+  assertNoUnsupportedClaims(section, 'landing page selected work');
 });
 
-test('the landing page lists the five categories with counts its pages can back', () => {
+test('the Work Index counts match what each category page actually holds', () => {
   const html = read('index.html');
-  const section = html.match(/<section\b[^>]*\bid\s*=\s*["']categories["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
-  assert.ok(section, 'the landing page needs the five');
+  const section = html.match(/<section\b[^>]*\bid\s*=\s*["']index["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
 
-  const cards = [...section.matchAll(/<a\b[^>]*\bclass\s*=\s*["']cat["'][^>]*>/gi)].map((m) => m[0]);
-  assert.deepEqual(cards.map((tag) => attr(tag, 'href')), CATEGORY_NAV.map(([href]) => href),
-    'the five, in the order the nav uses');
-
-  // A count on the landing page is a promise the category page has to keep.
   const holds = {
     'interactive.html': [8, /class="work-card/g],
     'ai-products.html': [5, /class="work-card/g],
@@ -202,13 +234,44 @@ test('the landing page lists the five categories with counts its pages can back'
     'brand.html': [12, /idx-tile-name/g],
   };
   for (const [page, [claimed, pattern]] of Object.entries(holds)) {
-    assert.match(section, new RegExp(`href\\s*=\\s*["']${escape(page)}["'][\\s\\S]*?<span class="cat-count">${claimed}<`),
-      `the landing page must list ${page} as ${claimed}`);
+    assert.match(section, new RegExp(`href\\s*=\\s*["']${escape(page)}["'][\\s\\S]*?<span class="meta">${claimed}<`),
+      `the Work Index must list ${page} as ${claimed}`);
     assert.equal((read(page).match(pattern) ?? []).length, claimed,
       `${page} must actually hold the ${claimed} it is advertised as`);
   }
-
   assert.equal(section.includes('Innovation Workshop'), false, 'a category with no case study must not be advertised');
+});
+
+test('the editorial system keeps one ground, no elevation, and no rounded corners', () => {
+  const css = readFileSync(join(v3, 'assets/editorial.css'), 'utf8');
+
+  // Elevation is replaced by the void; radius is 0 everywhere. Both are
+  // absolute in the spec, so absence is the assertion.
+  assert.equal(/box-shadow\s*:/i.test(css), false, 'no shadows — the system separates with space and hairlines');
+  assert.equal(/border-radius\s*:/i.test(css), false, 'no radius anywhere');
+
+  // Colour lives in the work. Any hex that is not the greyscale ground,
+  // ink or rule is an accent the spec does not allow.
+  const allowed = new Set(['#f3f2ed', '#e9e7e0', '#14140f', '#5c5c55', '#0b0b09']);
+  const hexes = [...css.matchAll(/#[0-9a-f]{3,8}\b/gi)].map((m) => m[0].toLowerCase());
+  const stray = [...new Set(hexes)].filter((h) => !allowed.has(h));
+  assert.deepEqual(stray, [], 'the palette is the ground, the ink and the rule — colour belongs to the work');
+});
+
+test('the first-paint animation cannot leave the page blank', () => {
+  const css = readFileSync(join(v3, 'assets/editorial.css'), 'utf8');
+  const html = read('index.html');
+
+  // A render-blocking stylesheet that stalls leaves the document timeline
+  // unstarted, and an unstarted animation still paints its first keyframe.
+  // Gate the animation behind a class the page only adds once `load` has
+  // fired, so a stall means "no animation", never "no headline".
+  assert.match(css, /html\.is-ready\s+\.rise\s*\{[^}]*animation\s*:/i,
+    'the rise animation must be gated on html.is-ready');
+  assert.equal(/^\s*\.rise\s*\{[^}]*animation\s*:/mi.test(css), false,
+    '.rise must not animate on its own — that is the blank-page path');
+  assert.match(html, /addEventListener\(\s*'load'\s*,[\s\S]{0,90}is-ready/,
+    'the page must arm is-ready on load');
 });
 
 // ── AI Tools dedicated page (ai-tools.html) ──
