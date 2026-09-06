@@ -11,6 +11,14 @@ HTML化のときに効く判断をここにまとめる。
 会社サイト側（creativityiseverywhere.com）には、同じ5件について**会社の立場から書いた1枚の
 中間ページ**が別に存在する。役割分担は §4。
 
+**2026-09-06 追記 — 会社サイトのデザインが替わっていた。** このブランチは
+`claude/company-site-build-begu28` から切っていたが、`main` は別系統で
+「one board（ブロックが育ってページになる）」に作り直されていた。両者は `dadecce` で
+分岐したきり合流していない。本人確認のうえ `main` を正とし、会社側の5ページは
+board の語彙（`panel` / `panel__title` / `stats` / `sub` / `row__see`、2色のみ）で
+作り直した。**ここ（takaoumehara.com）側の素材・スパイン・判定は影響を受けない** —
+変わったのは会社側の見た目と、下の §4 の表の3行だけ。
+
 ---
 
 ## 1. 所在と判定
@@ -19,7 +27,7 @@ HTML化のときに効く判断をここにまとめる。
 |---|---|---|---|---|---|---|
 | Rakugaki Jam | `rakugaki-jam/portfolio-case-study-rakugaki-jam/` | **B** 物語先行 | 12 | `Handwriting` | `rakugaki-jam.vercel.app`（本セッションからは未開封） | 実イベントで一度でも回したか（CONCEPT は pre-first-event、7/29の文書は会場フィードバックに言及） |
 | Typespace | `typespace/portfolio-case-study-typespace/` | **B** | 12 | `Typing` | `typespace-rho.vercel.app` | **本番が現行ビルドを配信しているか**（7/28のブロッカーが未解決のまま） |
-| Resona | `resona/portfolio-case-study-resona/` | **B**（8/12作成分を更新） | 12 | `Body` | `resona-motion.vercel.app` | 凍結宣言後の再開理由（本人判断）。**掲載は公開済み7作のみ**（本人指示 2026-09-06） |
+| Resona | `resona/portfolio-case-study-resona/` | **B**（8/12作成分を更新） | 12 | `Body` | `www.resonamotion.com` | 凍結宣言後の再開理由（本人判断）。**掲載は公開済み7作のみ**（本人指示 2026-09-06） |
 | Marubatsu 2.0 | `marubatsu-arena-local/portfolio-case-study-marubatsu/` | **A** 証拠先行 | 11 | `Two phones` | `marubatsu20.vercel.app`（スクショの URL バーで確認） | 旧ドメインの生死・息子の名乗り方 |
 | EmojiDrop Ultimate | `EmojiDropUltimate/portfolio-case-study-emojidrop/` | **B** | 12 | `Two phones` | **無し**（未確認・推測禁止） | 公開URL・名称（Emoji Blast か） |
 
@@ -77,8 +85,9 @@ Rakugaki Q-2（実イベント有無）→ 全件の「使える機材」→ 全
   そのまま使ってよい。ただし「リポジトリの」と明記する。
 - 実画面 `mass-*.png` の 塊 MASS は **`wip`**。**公開作の画像は1枚も無い**ので、
   サムネイルは撮り下ろし（`MEDIA.md` T-1、TENSION と AYA）が必須。
-- `interactive.html` のカード文と会社サイトの3か所（`resona.html` / `playable.html` /
-  `index.html`）は 2026-09-06 に7作の記述へ差し替え済み。
+- `interactive.html` のカード文と会社サイトの2か所（`resona.html` / `index.html` の
+  Playable パネル）は 2026-09-06 に7作の記述へ差し替え済み。会社側の `playable.html` は
+  board 化でリダイレクト用スタブになったので、対象から外れた。
 
 ## 3. この家族（Interactive Experience）に固有の決めごと
 
@@ -121,11 +130,11 @@ Rakugaki Q-2（実イベント有無）→ 全件の「使える機材」→ 全
 | | takaoumehara.com（ここ） | creativityiseverywhere.com |
 |---|---|---|
 | 主語 | 私（一人称） | we（スタジオ） |
-| 形 | 10〜12枚のスライド型ケーススタディ（スパイン v2） | 350〜700語の1枚。質問→決定→証明→顧客の形 |
-| 画像 | 実画面・実写真（必須） | 画像ゼロ（作品自身のライブ canvas のみ） |
+| 形 | 10〜12枚のスライド型ケーススタディ（スパイン v2） | 350〜1,000語の1枚。質問→決定→証明→顧客の形 |
+| 画像 | 実画面・実写真（必須） | 画像ゼロ。**canvas も無い**（計測のうえ廃止済み）。文字と2色だけ |
 | 言語 | EN/JP 切替 | EN のみ |
 | 読者 | 採用担当・協業相手（30秒〜2分） | イベント制作者・ブランド・信用の確認に来た人 |
-| リンク | 会社ページ → 個人ケーススタディへ（**個人側のページが公開されたら**会社側に足す） | 会社ページ → 本体アプリ |
+| リンク | 会社ページ → 個人ケーススタディへ（**個人側のページが公開されたら**会社側に足す） | ボードの Playable 行 → `Read` → 会社ページ → 本体アプリ |
 | 素材の源 | `portfolio-case-study-<slug>/README.md` | 同フォルダの `DISTRIBUTION-FACTS.md` |
 
 会社側の仕様は `creativityiseverywhere.com/docs/project-pages.md`、配信計画は同 `docs/distribution/`。
