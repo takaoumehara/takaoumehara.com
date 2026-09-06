@@ -19,7 +19,7 @@ HTML化のときに効く判断をここにまとめる。
 |---|---|---|---|---|---|---|
 | Rakugaki Jam | `rakugaki-jam/portfolio-case-study-rakugaki-jam/` | **B** 物語先行 | 12 | `Handwriting` | `rakugaki-jam.vercel.app`（本セッションからは未開封） | 実イベントで一度でも回したか（CONCEPT は pre-first-event、7/29の文書は会場フィードバックに言及） |
 | Typespace | `typespace/portfolio-case-study-typespace/` | **B** | 12 | `Typing` | `typespace-rho.vercel.app` | **本番が現行ビルドを配信しているか**（7/28のブロッカーが未解決のまま） |
-| Resona | `resona/portfolio-case-study-resona/` | **B**（8/12作成分を更新） | 12 | `Body` | `resona-motion.vercel.app` | 作品数（11→17?）・凍結宣言後の再開理由 → 更新結果は同フォルダの README 参照 |
+| Resona | `resona/portfolio-case-study-resona/` | **B**（8/12作成分を更新） | 12 | `Body` | `resona-motion.vercel.app` | 凍結宣言後の再開理由（本人判断）。**掲載は公開済み7作のみ**（本人指示 2026-09-06） |
 | Marubatsu 2.0 | `marubatsu-arena-local/portfolio-case-study-marubatsu/` | **A** 証拠先行 | 11 | `Two phones` | `marubatsu20.vercel.app`（スクショの URL バーで確認） | 旧ドメインの生死・息子の名乗り方 |
 | EmojiDrop Ultimate | `EmojiDropUltimate/portfolio-case-study-emojidrop/` | **B** | 12 | `Two phones` | **無し**（未確認・推測禁止） | 公開URL・名称（Emoji Blast か） |
 
@@ -49,6 +49,36 @@ Rakugaki Q-2（実イベント有無）→ 全件の「使える機材」→ 全
 「6体」のまま（コードは16体）。
 
 ---
+
+## 2-2. Resona は公開済みの7作だけを載せる（本人指示 2026-09-06）
+
+`src/brand/works.ts` の登記簿では 21 件（Resona 本体 00 ＋ 連作 01〜20）が登録されていて、
+状態は **`published` 7 / `wip` 11 / `retired` 3**。本人の指示は「公開しているものだけに絞る」。
+
+公開済みの7作（すべてカメラ入力・登記簿の順）:
+
+| no | 漢字 | Latin | URL | 動詞 |
+|---|---|---|---|---|
+| 01 | 張 | TENSION | `/studies/tension.html` | Reach · Grab · Pull · Release · Strum |
+| 02 | 声 | VOICE | `/studies/voice.html` | Shape · Sustain · Harmonize |
+| 04 | 間 | BETWEEN | `/studies/between.html` | Approach · Dwell |
+| 05 | 墨 | INK | `/studies/ink.html` | Paint · Pour |
+| 07 | 眼 | GAZE | `/studies/gaze.html` | Look · Dwell |
+| 09 | 灯 | SPARKLER | `/studies/sparkler.html` | Pinch · Burn |
+| 20 | 綾 | AYA | `/studies/aya.html` | Weave · Twist · Resonate |
+
+この判断が波及する先（**数字は7作で数え直す**）:
+
+- ケーススタディの主語は「連作20作」ではなく「完成した7作」。未公開作は §1 の状態欄に
+  1行だけ（制作中のものがあり、掲載しない）。作品名は出さない。
+- **地図（atlas）の踏破率は7作で数え直す。** 「描画◯種のうち△、音◯種のうち□」は
+  全作で数えた値だった。**この案件で一番強い主張なので、概算は禁止。**
+- リポジトリ全体の数字（テスト数・行数・コミット・期間）はリポジトリの数字として
+  そのまま使ってよい。ただし「リポジトリの」と明記する。
+- 実画面 `mass-*.png` の 塊 MASS は **`wip`**。**公開作の画像は1枚も無い**ので、
+  サムネイルは撮り下ろし（`MEDIA.md` T-1、TENSION と AYA）が必須。
+- `interactive.html` のカード文と会社サイトの3か所（`resona.html` / `playable.html` /
+  `index.html`）は 2026-09-06 に7作の記述へ差し替え済み。
 
 ## 3. この家族（Interactive Experience）に固有の決めごと
 
