@@ -332,6 +332,34 @@ test("the Japanese avoids the transliterations that made it unreadable", () => {
   assert.deepEqual(offenders, [], `transliterated katakana in the Japanese:\n  ${offenders.join("\n  ")}`);
 });
 
+test("Latin and Japanese are separated by a space, the way the rest of the site sets them", () => {
+  // The site's own convention, set by the hand-built pages: 「ほぼ AI ではありません」
+  // 「42 名・6 ブランド」. Without it the machine-written copy reads as 「COVIDで2年」.
+  // Punctuation is excluded — 「AI 。」 would be wrong.
+  const JP = "\\u3041-\\u309F\\u30A1-\\u30FA\\u30FC-\\u30FF\\u4E00-\\u9FFF\\u3005-\\u3007";
+  const unspaced = new RegExp(`(?:[A-Za-z0-9%)\\]][${JP}]|[${JP}][A-Za-z0-9$(\\[])`);
+  const offenders = [];
+  const scan = (path, value) => {
+    if (value == null || typeof value === "string") return;
+    if (Array.isArray(value)) return value.forEach((v, i) => scan(`${path}[${i}]`, v));
+    if (typeof value !== "object") return;
+    if (typeof value.jp === "string") {
+      const hit = value.jp.match(unspaced);
+      if (hit) offenders.push(`${path}: 「${hit[0]}」`);
+      return;
+    }
+    for (const [key, v] of Object.entries(value)) scan(`${path}.${key}`, v);
+  };
+  for (const [slug, item] of lib.evidence) scan(slug, item);
+  scan("profile", lib.profile);
+  scan("capabilities", lib.capabilities);
+  lib.theses.forEach((t) => scan(`thesis:${t.id}`, t));
+  lib.chapters.forEach((c) => scan(`chapter:${c.id}`, c));
+  lib.roles.forEach((r) => scan(`role:${r.id}`, r));
+  lenses.forEach((l) => scan(`lens:${l.slug}`, l));
+  assert.deepEqual(offenders, [], `missing space between Latin and Japanese:\n  ${offenders.join("\n  ")}`);
+});
+
 test("the Claim Guard no longer forces bad writing to get past it", () => {
   // It rejected the "30" in "a question worth thirty minutes", which is not a
   // claim about experience. A guard that degrades the copy is a broken guard.

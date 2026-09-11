@@ -1,102 +1,301 @@
 {
   "$comment": "能力タクソノミー。28 項目から増やさない。label は英語のまま（技術用語として通用し、訳すと劣化する）。note は EN/JP 両方を必ず書く — note の無い項目は、日本語表示で英語のラベルだけが並ぶことになる。日本語の書き方は docs/japanese-voice.md に従う。",
   "groups": [
-    { "id": "creative",   "label": { "en": "Creative",   "jp": "クリエイティブ" } },
-    { "id": "product",    "label": { "en": "Product",    "jp": "プロダクト" } },
-    { "id": "business",   "label": { "en": "Business",   "jp": "事業" } },
-    { "id": "technology", "label": { "en": "Technology", "jp": "技術" } },
-    { "id": "leadership", "label": { "en": "Leadership", "jp": "率いること" } },
-    { "id": "context",    "label": { "en": "Context",    "jp": "どこで効くか" } }
+    {
+      "id": "creative",
+      "label": {
+        "en": "Creative",
+        "jp": "クリエイティブ"
+      }
+    },
+    {
+      "id": "product",
+      "label": {
+        "en": "Product",
+        "jp": "プロダクト"
+      }
+    },
+    {
+      "id": "business",
+      "label": {
+        "en": "Business",
+        "jp": "事業"
+      }
+    },
+    {
+      "id": "technology",
+      "label": {
+        "en": "Technology",
+        "jp": "技術"
+      }
+    },
+    {
+      "id": "leadership",
+      "label": {
+        "en": "Leadership",
+        "jp": "率いること"
+      }
+    },
+    {
+      "id": "context",
+      "label": {
+        "en": "Context",
+        "jp": "どこで効くか"
+      }
+    }
   ],
   "capabilities": [
-    { "id": "creative-direction", "group": "creative", "label": "Creative Direction",
-      "note": { "en": "Setting the idea, and holding it all the way through other people's execution.",
-                "jp": "アイデアを決め、人の手に渡ってからも狙いを保つ。" } },
-    { "id": "brand", "group": "creative", "label": "Brand",
-      "note": { "en": "Name, mark, colour, words — the whole texture of what a thing is.",
-                "jp": "名前・印・色・言葉づかい。そのものの手ざわり全部。" } },
-    { "id": "storytelling", "group": "creative", "label": "Storytelling",
-      "note": { "en": "Deciding whose story this is, and what it is actually about.",
-                "jp": "誰の話にするか、本当は何の話なのかを決める。" } },
-    { "id": "film-production", "group": "creative", "label": "Film / Production",
-      "note": { "en": "Choosing the director, sharing the intent, getting it shot. Not cinematography, not editing.",
-                "jp": "監督を選び、狙いを共有して撮り切る。撮影と編集は自分の仕事ではない。" } },
-    { "id": "interactive", "group": "creative", "label": "Interactive",
-      "note": { "en": "Experiences where the input is a voice, a face, a drawn line, or every phone in the room.",
-                "jp": "入力が声・表情・手描きの線・その場のスマホ全部、という体験。" } },
-
-    { "id": "product-strategy", "group": "product", "label": "Product Strategy",
-      "note": { "en": "Deciding what the product is — and, harder, what it is not.",
-                "jp": "何を作らないかを含めて、プロダクトの筋を決める。" } },
-    { "id": "ux-cx", "group": "product", "label": "UX / CX",
-      "note": { "en": "The whole path, not just the screen: choosing, buying, using, getting stuck.",
-                "jp": "画面の中だけでなく、選ぶ・買う・使う・困るまでの全体。" } },
-    { "id": "service-design", "group": "product", "label": "Service Design",
-      "note": { "en": "The parts that are not software: people, places, steps, what happens when it fails.",
-                "jp": "ソフトでない部分。人・場所・手順、そして失敗したときの段取り。" } },
-    { "id": "zero-to-one", "group": "product", "label": "0→1",
-      "note": { "en": "Taking something with no shape yet to the point where it can be tested.",
-                "jp": "まだ形のないものを、試せるところまで持っていく。" } },
-    { "id": "design-systems", "group": "product", "label": "Design Systems",
-      "note": { "en": "Components and rules, taken all the way into code so they stop drifting.",
-                "jp": "部品と規則をそろえ、コードに落として揺れを止める。" } },
-
-    { "id": "growth", "group": "business", "label": "Growth",
-      "note": { "en": "Finding where the growth actually comes from, then going and getting it.",
-                "jp": "どこを押せば伸びるかを見つけ、実際に伸ばす。" } },
-    { "id": "business-transformation", "group": "business", "label": "Business Transformation",
-      "note": { "en": "Changing how the money is made, when the old way has stopped working.",
-                "jp": "儲け方そのものを組み替える。前のやり方が使えなくなったときに。" } },
-    { "id": "new-ventures", "group": "business", "label": "New Ventures",
-      "note": { "en": "Starting things — my own, and ones that have to live inside an organisation.",
-                "jp": "事業を立ち上げる。自分のものも、組織の中のものも。" } },
-    { "id": "operations", "group": "business", "label": "Operations",
-      "note": { "en": "Running it: people, flow, budget — and doing it again better the next year.",
-                "jp": "人・流れ・予算を回す。翌年もう一度、前より良くやる。" } },
-    { "id": "revenue-strategy", "group": "business", "label": "Revenue Strategy",
-      "note": { "en": "Deciding where the money is going to come from.",
-                "jp": "どこからお金が入る形にするかを決める。" } },
-
-    { "id": "ai", "group": "technology", "label": "AI",
-      "note": { "en": "Designing, building and putting AI into real work — including inside locked-down enterprises.",
-                "jp": "AI を設計し、作り、実際の仕事に入れる。制約の強い企業の中でも。" } },
-    { "id": "agentic-ux", "group": "technology", "label": "Agentic UX",
-      "note": { "en": "Designing how a person and an AI agent divide the work between them.",
-                "jp": "人と AI が仕事をどう分け合うかを設計する。" } },
-    { "id": "creative-technology", "group": "technology", "label": "Creative Technology",
-      "note": { "en": "Treating technology as a material to make things out of, not as a feature to add.",
-                "jp": "技術を、機能ではなく素材として扱う。" } },
-    { "id": "prototyping", "group": "technology", "label": "Prototyping",
-      "note": { "en": "Building something people can touch in the room, instead of arguing over a deck.",
-                "jp": "その場で触れるものを作って議論を進める。資料ではなく。" } },
-
-    { "id": "executive-partnership", "group": "leadership", "label": "Executive Partnership",
-      "note": { "en": "Working next to the people who decide, and giving them what they decide with.",
-                "jp": "決める人の隣で働き、決めるための材料を渡す。" } },
-    { "id": "cross-functional-leadership", "group": "leadership", "label": "Cross-functional Leadership",
-      "note": { "en": "Moving people across departments by being useful to them, not by issuing a decree.",
-                "jp": "部署をまたいで人を動かす。命令ではなく、使ってもらう形で。" } },
-    { "id": "team-leadership", "group": "leadership", "label": "Team Leadership",
-      "note": { "en": "Building a team, handing the work over, carrying the result.",
-                "jp": "チームを組み、任せ、結果を引き受ける。" } },
-    { "id": "partner-direction", "group": "leadership", "label": "External Partner Direction",
-      "note": { "en": "Getting production companies, directors, vendors and volunteers pointed at the same thing.",
-                "jp": "制作会社・監督・協力者に狙いを伝えて、同じ方を向いてもらう。" } },
-
-    { "id": "enterprise", "group": "context", "label": "Enterprise",
-      "note": { "en": "Large organisations, where both the approvals and the available tools are limited.",
-                "jp": "大企業の中。承認も、使える道具も限られる。" } },
-    { "id": "b2b", "group": "context", "label": "B2B",
-      "note": { "en": "Built for people at work, where the buyer and the user are not the same person.",
-                "jp": "仕事で使う人に向けたもの。買う人と使う人が違う。" } },
-    { "id": "b2c", "group": "context", "label": "B2C",
-      "note": { "en": "Built for the public, where nothing can be explained in advance.",
-                "jp": "生活者に向けたもの。説明なしで伝わる必要がある。" } },
-    { "id": "global", "group": "context", "label": "Global",
-      "note": { "en": "Making one thing hold up in several countries at once.",
-                "jp": "ひとつのものを、複数の国で同時に成立させる。" } },
-    { "id": "japan-us", "group": "context", "label": "Japan ↔ US",
-      "note": { "en": "At home in both — as an interpreter, not a translator.",
-                "jp": "日本とアメリカの両方がわかる。翻訳ではなく、通訳として。" } }
+    {
+      "id": "creative-direction",
+      "group": "creative",
+      "label": "Creative Direction",
+      "note": {
+        "en": "Setting the idea, and holding it all the way through other people's execution.",
+        "jp": "アイデアを決め、人の手に渡ってからも狙いを保つ。"
+      }
+    },
+    {
+      "id": "brand",
+      "group": "creative",
+      "label": "Brand",
+      "note": {
+        "en": "Name, mark, colour, words — the whole texture of what a thing is.",
+        "jp": "名前・印・色・言葉づかい。そのものの手ざわり全部。"
+      }
+    },
+    {
+      "id": "storytelling",
+      "group": "creative",
+      "label": "Storytelling",
+      "note": {
+        "en": "Deciding whose story this is, and what it is actually about.",
+        "jp": "誰の話にするか、本当は何の話なのかを決める。"
+      }
+    },
+    {
+      "id": "film-production",
+      "group": "creative",
+      "label": "Film / Production",
+      "note": {
+        "en": "Choosing the director, sharing the intent, getting it shot. Not cinematography, not editing.",
+        "jp": "監督を選び、狙いを共有して撮り切る。撮影と編集は自分の仕事ではない。"
+      }
+    },
+    {
+      "id": "interactive",
+      "group": "creative",
+      "label": "Interactive",
+      "note": {
+        "en": "Experiences where the input is a voice, a face, a drawn line, or every phone in the room.",
+        "jp": "入力が声・表情・手描きの線・その場のスマホ全部、という体験。"
+      }
+    },
+    {
+      "id": "product-strategy",
+      "group": "product",
+      "label": "Product Strategy",
+      "note": {
+        "en": "Deciding what the product is — and, harder, what it is not.",
+        "jp": "何を作らないかを含めて、プロダクトの筋を決める。"
+      }
+    },
+    {
+      "id": "ux-cx",
+      "group": "product",
+      "label": "UX / CX",
+      "note": {
+        "en": "The whole path, not just the screen: choosing, buying, using, getting stuck.",
+        "jp": "画面の中だけでなく、選ぶ・買う・使う・困るまでの全体。"
+      }
+    },
+    {
+      "id": "service-design",
+      "group": "product",
+      "label": "Service Design",
+      "note": {
+        "en": "The parts that are not software: people, places, steps, what happens when it fails.",
+        "jp": "ソフトでない部分。人・場所・手順、そして失敗したときの段取り。"
+      }
+    },
+    {
+      "id": "zero-to-one",
+      "group": "product",
+      "label": "0→1",
+      "note": {
+        "en": "Taking something with no shape yet to the point where it can be tested.",
+        "jp": "まだ形のないものを、試せるところまで持っていく。"
+      }
+    },
+    {
+      "id": "design-systems",
+      "group": "product",
+      "label": "Design Systems",
+      "note": {
+        "en": "Components and rules, taken all the way into code so they stop drifting.",
+        "jp": "部品と規則をそろえ、コードに落として揺れを止める。"
+      }
+    },
+    {
+      "id": "growth",
+      "group": "business",
+      "label": "Growth",
+      "note": {
+        "en": "Finding where the growth actually comes from, then going and getting it.",
+        "jp": "どこを押せば伸びるかを見つけ、実際に伸ばす。"
+      }
+    },
+    {
+      "id": "business-transformation",
+      "group": "business",
+      "label": "Business Transformation",
+      "note": {
+        "en": "Changing how the money is made, when the old way has stopped working.",
+        "jp": "儲け方そのものを組み替える。前のやり方が使えなくなったときに。"
+      }
+    },
+    {
+      "id": "new-ventures",
+      "group": "business",
+      "label": "New Ventures",
+      "note": {
+        "en": "Starting things — my own, and ones that have to live inside an organisation.",
+        "jp": "事業を立ち上げる。自分のものも、組織の中のものも。"
+      }
+    },
+    {
+      "id": "operations",
+      "group": "business",
+      "label": "Operations",
+      "note": {
+        "en": "Running it: people, flow, budget — and doing it again better the next year.",
+        "jp": "人・流れ・予算を回す。翌年もう一度、前より良くやる。"
+      }
+    },
+    {
+      "id": "revenue-strategy",
+      "group": "business",
+      "label": "Revenue Strategy",
+      "note": {
+        "en": "Deciding where the money is going to come from.",
+        "jp": "どこからお金が入る形にするかを決める。"
+      }
+    },
+    {
+      "id": "ai",
+      "group": "technology",
+      "label": "AI",
+      "note": {
+        "en": "Designing, building and putting AI into real work — including inside locked-down enterprises.",
+        "jp": "AI を設計し、作り、実際の仕事に入れる。制約の強い企業の中でも。"
+      }
+    },
+    {
+      "id": "agentic-ux",
+      "group": "technology",
+      "label": "Agentic UX",
+      "note": {
+        "en": "Designing how a person and an AI agent divide the work between them.",
+        "jp": "人と AI が仕事をどう分け合うかを設計する。"
+      }
+    },
+    {
+      "id": "creative-technology",
+      "group": "technology",
+      "label": "Creative Technology",
+      "note": {
+        "en": "Treating technology as a material to make things out of, not as a feature to add.",
+        "jp": "技術を、機能ではなく素材として扱う。"
+      }
+    },
+    {
+      "id": "prototyping",
+      "group": "technology",
+      "label": "Prototyping",
+      "note": {
+        "en": "Building something people can touch in the room, instead of arguing over a deck.",
+        "jp": "その場で触れるものを作って議論を進める。資料ではなく。"
+      }
+    },
+    {
+      "id": "executive-partnership",
+      "group": "leadership",
+      "label": "Executive Partnership",
+      "note": {
+        "en": "Working next to the people who decide, and giving them what they decide with.",
+        "jp": "決める人の隣で働き、決めるための材料を渡す。"
+      }
+    },
+    {
+      "id": "cross-functional-leadership",
+      "group": "leadership",
+      "label": "Cross-functional Leadership",
+      "note": {
+        "en": "Moving people across departments by being useful to them, not by issuing a decree.",
+        "jp": "部署をまたいで人を動かす。命令ではなく、使ってもらう形で。"
+      }
+    },
+    {
+      "id": "team-leadership",
+      "group": "leadership",
+      "label": "Team Leadership",
+      "note": {
+        "en": "Building a team, handing the work over, carrying the result.",
+        "jp": "チームを組み、任せ、結果を引き受ける。"
+      }
+    },
+    {
+      "id": "partner-direction",
+      "group": "leadership",
+      "label": "External Partner Direction",
+      "note": {
+        "en": "Getting production companies, directors, vendors and volunteers pointed at the same thing.",
+        "jp": "制作会社・監督・協力者に狙いを伝えて、同じ方を向いてもらう。"
+      }
+    },
+    {
+      "id": "enterprise",
+      "group": "context",
+      "label": "Enterprise",
+      "note": {
+        "en": "Large organisations, where both the approvals and the available tools are limited.",
+        "jp": "大企業の中。承認も、使える道具も限られる。"
+      }
+    },
+    {
+      "id": "b2b",
+      "group": "context",
+      "label": "B2B",
+      "note": {
+        "en": "Built for people at work, where the buyer and the user are not the same person.",
+        "jp": "仕事で使う人に向けたもの。買う人と使う人が違う。"
+      }
+    },
+    {
+      "id": "b2c",
+      "group": "context",
+      "label": "B2C",
+      "note": {
+        "en": "Built for the public, where nothing can be explained in advance.",
+        "jp": "生活者に向けたもの。説明なしで伝わる必要がある。"
+      }
+    },
+    {
+      "id": "global",
+      "group": "context",
+      "label": "Global",
+      "note": {
+        "en": "Making one thing hold up in several countries at once.",
+        "jp": "ひとつのものを、複数の国で同時に成立させる。"
+      }
+    },
+    {
+      "id": "japan-us",
+      "group": "context",
+      "label": "Japan ↔ US",
+      "note": {
+        "en": "At home in both — as an interpreter, not a translator.",
+        "jp": "日本とアメリカの両方がわかる。翻訳ではなく、通訳として。"
+      }
+    }
   ]
 }
