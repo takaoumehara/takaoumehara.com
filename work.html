@@ -107,6 +107,9 @@
       --image-hover-leave-ms: 920ms;
       --hover-ms: 880ms;
       --press-ms: 760ms;
+      /* Shared column: every page on the site reads at the same width. */
+      --col: 1200px;
+      --gutter: clamp(20px, 3vw, 32px);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -139,7 +142,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 32px;
+      padding: 14px var(--gutter);
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -673,6 +676,23 @@
     }
     @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
+  <style>
+    /* assets/index-grid.css sets .idx-head/.idx-band/.idx-foot to a wider,
+       separate column (1680px) and .idx-grid to 4 columns; this page reads
+       at the shared --col with the same 3-column grid every description
+       card on the site uses, so its left edge and its rhythm line up. */
+    .idx-head,
+    .idx-band,
+    .idx-foot { max-width: var(--col); padding-left: var(--gutter); padding-right: var(--gutter); }
+    .idx-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 28px; }
+    .idx-tile-frame { aspect-ratio: 3 / 2; }
+    @media (max-width: 900px) {
+      .idx-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 600px) {
+      .idx-grid { grid-template-columns: 1fr; gap: 36px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -846,7 +866,7 @@
   </div>
 
   <footer
-    style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+    style="border-top:1px solid var(--line); padding:36px var(--gutter); max-width:var(--col); margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
     <div>
       <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
       <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">Design &amp; consulting through <strong

@@ -96,6 +96,9 @@
       --t2: hsl(248 58% 70%);
       --t3: hsl(324 60% 72%);
       --t4: hsl(36 58% 62%);
+      /* Shared column: every page on the site reads at the same width. */
+      --col: 1200px;
+      --gutter: clamp(20px, 3vw, 32px);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -120,7 +123,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 32px;
+      padding: 14px var(--gutter);
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -385,9 +388,9 @@
        on a line 480px narrower than every line above it. */
     .lab-cta {
       border-top: 1px solid var(--line);
-      max-width: 1680px;
+      max-width: var(--col);
       margin: 0 auto;
-      padding: 72px clamp(20px, 3vw, 40px) 96px;
+      padding: 72px var(--gutter) 96px;
       text-align: center;
     }
     .lab-cta-title, .lab-cta-desc { max-width: 44ch; margin-left: auto; margin-right: auto; }
@@ -552,14 +555,19 @@
 
   
     /* The intro is set to the same column as the grid and the identity
-       strip — 1680px, matching work.html — so every left edge on the page
-       lines up with every other. */
-    .lab-intro { max-width: 1680px; margin-left: auto; margin-right: auto;
-                 padding-left: clamp(20px, 3vw, 40px); padding-right: clamp(20px, 3vw, 40px); }
+       strip — the shared --col — so every left edge on the page lines up
+       with every other. */
+    .lab-intro { max-width: var(--col); margin-left: auto; margin-right: auto;
+                 padding-left: var(--gutter); padding-right: var(--gutter); }
     /* Measure is held with padding rather than a display override on the
        spans — those spans are how the EN/JP switch works, and setting
        display on them shows both languages at once. */
     @media (min-width: 900px) { .lab-intro { padding-right: 48%; } }
+
+    /* assets/index-grid.css sets .idx-head to a wider, separate column
+       (1680px); this page reads at the shared --col instead, so the
+       wordmark lines up with the grid below it and every other page. */
+    .idx-head { max-width: var(--col); padding-left: var(--gutter); padding-right: var(--gutter); }
   </style>
   <style>
     /* ── Nav tiers ── The three offers read first at full ink; the two
@@ -625,26 +633,26 @@
     <div class="work-grid" aria-label="AI Products projects">
       <article class="work-card" tabindex="0" data-href="https://intentfirst.ai" data-external="true">
         <div class="card-image"><div class="card-art card-art--intent"><span class="card-art-label">intent<br>first</span><span class="card-art-note">AI design research</span></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Research</span><span class="pill">Framework</span></div><h2 class="card-title">intentfirst.ai</h2><p class="card-desc"><span class="t-en">Not a product — a thesis. How an AI should read what a person actually means, and a practical method for turning that into something a machine can learn.</span><span class="t-jp is-block">プロダクトではなく、主張です。AI は人の意図をどう読むべきか。そしてそれを機械が学習できる形にどう落とすか、という実務的な方法まで。</span></p></div>
-        <div class="card-footer"><span class="card-meta">Context Grammar · AI Design Research</span><span class="card-meta card-meta--link"><span class="t-en">Now under production</span><span class="t-jp">現在制作中</span></span></div>
+        <div class="card-body"><div class="chips"><span class="pill">Research</span><span class="pill">Framework</span></div><h2 class="card-title">intentfirst.ai</h2><span class="card-meta">Context Grammar · AI Design Research</span><p class="card-desc"><span class="t-en">Not a product — a thesis. How an AI should read what a person actually means, and a practical method for turning that into something a machine can learn.</span><span class="t-jp is-block">プロダクトではなく、主張です。AI は人の意図をどう読むべきか。そしてそれを機械が学習できる形にどう落とすか、という実務的な方法まで。</span></p></div>
+        <div class="card-footer"><span class="card-meta card-meta--link"><span class="t-en">Now under production</span><span class="t-jp">現在制作中</span></span></div>
       </article>
 
       <article class="work-card" tabindex="0" data-href="projects/verizon-ai-agents.html">
         <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/verizon-ai-agents/hero-agents-network.jpg'); background-position:center;"></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Enterprise</span><span class="pill">Shipped</span></div><h2 class="card-title">Verizon AI Workflow</h2><p class="card-desc"><span class="t-en">A 10-agent fleet changing how 42 designers work across six brands.</span><span class="t-jp is-block">42 名・6 ブランドのデザイン組織の働き方を変えた、10 エージェントの艦隊。</span></p></div>
-        <div class="card-footer"><span class="card-meta">Agent fleet · Design Ops</span><span class="card-meta card-meta--link">Case study →</span></div>
+        <div class="card-body"><div class="chips"><span class="pill">Enterprise</span><span class="pill">Shipped</span></div><h2 class="card-title">Verizon AI Workflow</h2><span class="card-meta">Agent fleet · Design Ops</span><p class="card-desc"><span class="t-en">A 10-agent fleet changing how 42 designers work across six brands.</span><span class="t-jp is-block">42 名・6 ブランドのデザイン組織の働き方を変えた、10 エージェントの艦隊。</span></p></div>
+        <div class="card-footer"><span class="card-meta card-meta--link">Case study →</span></div>
       </article>
 
       <article class="work-card" tabindex="0" data-href="projects/amazon-firetv.html">
         <div class="card-image"><div class="card-img-bg" style="background-image:url('assets/amazon-firetv/hero.jpg');"></div></div>
-        <div class="card-body"><div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Agentic commerce</span></div><h2 class="card-title">Amazon Shopping on Fire TV</h2><p class="card-desc"><span class="t-en">Agentic commerce for the living room: Alexa voice AI does the shopping, D-pad handles browsing, Snap Pair turns your phone into a remote — no AI required for that last part.</span><span class="t-jp is-block">リビングのエージェンティック・コマース。買い物は Alexa の音声 AI が担当、閲覧は D-pad、そしてスマホをリモコンに変えるのは Snap Pair — こちらは AI を使っていません。</span></p></div>
-        <div class="card-footer"><span class="card-meta">10-foot UI · Voice UX · Snap Pair</span><span class="card-meta card-meta--link">Prototype →</span></div>
+        <div class="card-body"><div class="chips"><span class="pill">Live prototype</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Agentic commerce</span></div><h2 class="card-title">Amazon Shopping on Fire TV</h2><span class="card-meta">10-foot UI · Voice UX · Snap Pair</span><p class="card-desc"><span class="t-en">Agentic commerce for the living room: Alexa voice AI does the shopping, D-pad handles browsing, Snap Pair turns your phone into a remote — no AI required for that last part.</span><span class="t-jp is-block">リビングのエージェンティック・コマース。買い物は Alexa の音声 AI が担当、閲覧は D-pad、そしてスマホをリモコンに変えるのは Snap Pair — こちらは AI を使っていません。</span></p></div>
+        <div class="card-footer"><span class="card-meta card-meta--link">Prototype →</span></div>
       </article>
 
 
-      <article class="work-card"><div class="card-image"><div class="card-art card-art--brain"><span class="card-art-label">My Brain<br>Spec</span><span class="card-art-note">Personalized self-check</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">AI app</span></div><h2 class="card-title">MyBrainSpec</h2><p class="card-desc"><span class="t-en">A short cognitive self-check. AI scores it and returns a written profile of how your own attention and memory actually behave.</span><span class="t-jp is-block">短い認知セルフチェックを AI が採点し、自分の注意と記憶が実際どう働くかを文章のプロファイルにして返します。</span></p></div><div class="card-footer"><span class="card-meta">React/Vite · Firebase · Gemini</span></div></article>
+      <article class="work-card"><div class="card-image"><div class="card-art card-art--brain"><span class="card-art-label">My Brain<br>Spec</span><span class="card-art-note">Personalized self-check</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">AI app</span></div><h2 class="card-title">MyBrainSpec</h2><span class="card-meta">React/Vite · Firebase · Gemini</span><p class="card-desc"><span class="t-en">A short cognitive self-check. AI scores it and returns a written profile of how your own attention and memory actually behave.</span><span class="t-jp is-block">短い認知セルフチェックを AI が採点し、自分の注意と記憶が実際どう働くかを文章のプロファイルにして返します。</span></p></div><div class="card-footer"></div></article>
 
-      <article class="work-card is-wip"><div class="card-image"><div class="card-art card-art--insta"><span class="card-art-label">Moime<br>.app</span><span class="card-art-note">Elegant link-in-bio</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">Design tool</span></div><h2 class="card-title">Moime.app</h2><p class="card-desc"><span class="t-en">A link-in-bio page for promo codes and events. Point it at a flyer and it reads the dates, codes and venue off the image instead of asking you to type them.</span><span class="t-jp is-block">プロモコードやイベント用のリンク・イン・バイオ。チラシを読み込ませれば、日付・コード・会場を画像から取り出します。入力は不要です。</span></p></div><div class="card-footer"><span class="card-meta">React 19 · Gemini · Serverless</span></div></article>
+      <article class="work-card is-wip"><div class="card-image"><div class="card-art card-art--insta"><span class="card-art-label">Moime<br>.app</span><span class="card-art-note">Elegant link-in-bio</span></div></div><div class="card-body"><div class="chips"><span class="pill">In production</span><span class="pill">Design tool</span></div><h2 class="card-title">Moime.app</h2><span class="card-meta">React 19 · Gemini · Serverless</span><p class="card-desc"><span class="t-en">A link-in-bio page for promo codes and events. Point it at a flyer and it reads the dates, codes and venue off the image instead of asking you to type them.</span><span class="t-jp is-block">プロモコードやイベント用のリンク・イン・バイオ。チラシを読み込ませれば、日付・コード・会場を画像から取り出します。入力は不要です。</span></p></div><div class="card-footer"></div></article>
     </div>
   </div>
 
@@ -668,7 +676,7 @@
 
   <!-- ── Footer ── -->
   <footer
-    style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+    style="border-top:1px solid var(--line); padding:36px var(--gutter); max-width:var(--col); margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
     <div>
       <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
       <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">Design &amp; consulting through <strong

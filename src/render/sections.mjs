@@ -28,6 +28,10 @@ const INPUT_LABEL = {
 };
 const inputLabel = (value) => t(INPUT_LABEL[value] ?? value);
 
+/** A card heading. Several "titles" are sentences, not names, so they need Japanese. */
+export const displayTitle = (item) =>
+  item.jpTitle && item.jpTitle !== item.title ? t({ en: item.title, jp: item.jpTitle }) : esc(item.title);
+
 /** A project's name for display: English, with the Japanese title when one exists. */
 function evidenceName(items) {
   const en = items.map((i) => i.shortTitle ?? i.title).join(" · ");
@@ -79,7 +83,7 @@ export function experimentsSection({ section, lib, ctx }) {
         <div class="exp-media">${art}</div>
         <div class="card-body">
           <p class="chips"><span class="pill pill--in">${inputLabel(item.input)}</span>${status(item.status)}</p>
-          <h3 class="card-title">${esc(item.title)}</h3>
+          <h3 class="card-title">${displayTitle(item)}</h3>
           <p class="card-desc">${tb(summary)}</p>
           ${link}
         </div>
@@ -104,7 +108,7 @@ export function venturesSection({ section, lib, ctx }) {
       [{ en: "Question", jp: "問い" }, v.question],
     ].map(([label, value]) => `<div class="venture-row"><dt>${t(label)}</dt><dd>${tb(value)}</dd></div>`).join("");
     return `      <article class="venture-card">
-        <div class="venture-head"><h3 class="card-title">${esc(v.title)}</h3>${status(v.status)}</div>
+        <div class="venture-head"><h3 class="card-title">${displayTitle(v)}</h3>${status(v.status)}</div>
         <dl class="venture-rows">${rows}</dl>
         ${link ? `<a class="card-link" href="${esc(href(ctx, link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${/^https?:/.test(link) ? `<span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span>` : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`}</a>` : ""}
       </article>`;

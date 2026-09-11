@@ -39,7 +39,7 @@
   --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
   --serif: "DM Serif Display", Georgia, "Times New Roman", serif;
   --col: 1200px;
-  --gutter: 32px;
+  --gutter: clamp(20px, 3vw, 32px);
   /* 5-3C'02 palette — used only as a quiet wash and on hover */
   --a1: hsla(198 82% 72% / 0.44);
   --a2: hsla(248 74% 80% / 0.36);
@@ -62,6 +62,9 @@ img { max-width: 100%; display: block; }
 a { color: inherit; }
 
 /* ── Language toggle convention ─────────────────────────────────────────── */
+/* 言語切替。レイアウト側が .t-en / .t-jp に display を指定するときは必ず :where() で
+   包むこと — 包まないと詳細度が並び、後に書いたほうが勝って、片方の言語に
+   両方の言語が出る。tests/lens-system.test.mjs がこれを検査する。 */
 .t-jp { display: none; }
 html.lang-jp .t-en { display: none; }
 html.lang-jp .t-jp { display: inline; }
@@ -119,7 +122,7 @@ html.lang-jp .t-jp.is-block { display: block; }
 .section-title { font-family: var(--serif); font-size: clamp(30px, 3.6vw, 44px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.05; }
 html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; }
 .section-lede { margin-top: 14px; max-width: 68ch; font-size: 15.5px; line-height: 1.7; color: var(--ink-mid); }
-.section-lede .t-en { display: block; }
+.section-lede :where(.t-en) { display: block; }
 
 .btn-primary { display: inline-block; padding: 13px 20px; background: var(--ink); color: #fff; font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--ink); transition: background 180ms ease; }
 .btn-primary:hover { background: #2a2a2a; }
@@ -128,7 +131,7 @@ html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 500; lette
 .hero-alt { font-size: 13px; color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.18); padding-bottom: 2px; transition: color 160ms ease, border-color 160ms ease; }
 .hero-alt:hover { color: var(--ink); border-color: rgba(18,18,18,0.3); }
 
-.pill { display: inline-block; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink-mid); }
+.pill { display: inline-block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink-dim); }
 .pill--in { background: var(--ink); color: #fff; border-color: var(--ink); }
 .pill--status { color: var(--ink-dim); }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -154,7 +157,7 @@ html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 500; lette
 }
 html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-weight: 500; letter-spacing: -0.01em; font-size: clamp(34px, 5.4vw, 68px); line-height: 1.18; max-width: 22ch; }
 .hero-sub { font-size: 17.5px; line-height: 1.68; color: var(--ink-mid); max-width: 62ch; }
-.hero-sub .t-en { display: block; }
+.hero-sub :where(.t-en) { display: block; }
 .hero-note { margin-top: 16px; font-size: 14px; color: var(--ink-dim); max-width: 62ch; line-height: 1.6; }
 .hero-cta { margin-top: 36px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
 
@@ -164,7 +167,7 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 .proof-card[data-href] { cursor: pointer; }
 .proof-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 .proof-card.is-lead { grid-column: span 2; }
-.card-media { aspect-ratio: 16 / 10; overflow: hidden; background: #ece9e3; margin-bottom: 18px; }
+.card-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 18px; }
 .proof-card.is-lead .card-media { aspect-ratio: 16 / 8.5; }
 .card-media img, .exp-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
 .proof-card[data-href]:hover .card-media img, .exp-card[data-href]:hover .exp-media img { transform: scale(1.03); }
@@ -197,7 +200,7 @@ html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 500; letter-s
 .card-meta { font-size: 12.5px; color: var(--ink-dim); }
 .card-flag { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--border); border-radius: 999px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
 .card-desc { font-size: 15px; line-height: 1.66; color: var(--ink-mid); }
-.card-desc .t-en { display: block; }
+.card-desc :where(.t-en) { display: block; }
 .card-link { align-self: flex-start; font-size: 12.5px; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.22); padding-bottom: 1px; margin-top: 4px; }
 .card-link:hover { border-color: var(--ink); }
 
@@ -222,14 +225,14 @@ html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 500; letter-s
 .explore-statement { font-family: var(--serif); font-size: 26px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.15; }
 html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; font-size: 22px; }
 .explore-body { font-size: 14.5px; line-height: 1.65; color: var(--ink-mid); }
-.explore-body .t-en { display: block; }
+.explore-body :where(.t-en) { display: block; }
 
 /* ── Experiments ────────────────────────────────────────────────────────── */
 .exp-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 22px; }
 .exp-card { border-top: 1px solid var(--line); padding-top: 12px; outline: none; }
 .exp-card[data-href] { cursor: pointer; }
 .exp-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
-.exp-media { aspect-ratio: 4 / 3; overflow: hidden; background: #ece9e3; margin-bottom: 14px; }
+.exp-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 14px; }
 .exp-card .card-title { font-size: 20px; }
 .exp-card .card-desc { font-size: 14px; }
 
@@ -241,14 +244,14 @@ html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; l
 .venture-row { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
 .venture-row dt { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); padding-top: 4px; }
 .venture-row dd { font-size: 14.5px; line-height: 1.6; color: var(--ink-mid); }
-.venture-row dd .t-en { display: block; }
+.venture-row dd :where(.t-en) { display: block; }
 
 /* ── Tools ──────────────────────────────────────────────────────────────── */
 .tool-list { list-style: none; border-top: 1px solid var(--line); }
 .tool-row { display: grid; grid-template-columns: 220px 1fr 220px; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
 .tool-name { font-family: var(--serif); font-size: 20px; text-decoration: none; color: var(--ink); }
 .tool-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
-.tool-desc .t-en { display: block; }
+.tool-desc :where(.t-en) { display: block; }
 .tool-meta { font-size: 12px; color: var(--ink-dim); text-align: right; }
 
 /* ── Career arc ─────────────────────────────────────────────────────────── */
@@ -262,7 +265,7 @@ html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; l
 html.lang-jp .arc-label { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; font-size: 19px; }
 .arc-period { font-family: var(--ff); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); margin-left: 6px; }
 .arc-summary { font-size: 13.5px; line-height: 1.6; color: var(--ink-mid); }
-.arc-summary .t-en { display: block; }
+.arc-summary :where(.t-en) { display: block; }
 .arc-roles { list-style: none; margin-top: 12px; font-size: 12.5px; color: var(--ink-mid); display: grid; gap: 6px; }
 .arc-roles b { font-weight: 500; color: var(--ink); }
 .arc-title { color: var(--ink-dim); }
@@ -282,14 +285,14 @@ html.lang-jp .arc-label { font-family: var(--ff-jp); font-weight: 500; letter-sp
 /* ── Studio ─────────────────────────────────────────────────────────────── */
 .studio-row { display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
 .studio-note { font-size: 15.5px; line-height: 1.7; color: var(--ink-mid); max-width: 62ch; }
-.studio-note .t-en { display: block; }
+.studio-note :where(.t-en) { display: block; }
 
 /* ── Closing ────────────────────────────────────────────────────────────── */
 .end { max-width: var(--col); margin: 0 auto; padding: 96px var(--gutter) 88px; border-top: 1px solid var(--line); text-align: center; }
 .end-line { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(30px, 4.4vw, 54px); letter-spacing: -0.02em; line-height: 1.08; max-width: 22ch; margin: 0 auto 20px; }
 html.lang-jp .end-line { font-family: var(--ff-jp); font-style: normal; font-weight: 500; letter-spacing: 0; font-size: clamp(24px, 3.4vw, 40px); line-height: 1.3; }
 .end-sub { max-width: 58ch; margin: 0 auto 32px; font-size: 15.5px; line-height: 1.7; color: var(--ink-mid); }
-.end-sub .t-en { display: block; }
+.end-sub :where(.t-en) { display: block; }
 .end-actions { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; align-items: center; }
 .end-mail { margin-top: 22px; font-size: 13px; }
 .end-mail a { color: var(--ink-dim); text-decoration: none; }
@@ -309,28 +312,35 @@ footer { border-top: 1px solid var(--line); }
 .footer-copy { font-size: 12px; color: var(--ink-dim); }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1100px) {
   .exp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1024px) {
   .arc { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .arc-cell + .arc-cell::after { display: none; }
   .tool-row { grid-template-columns: 180px 1fr; }
   .tool-meta { grid-column: 2; text-align: left; }
 }
+@media (max-width: 900px) {
+  .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 768px) {
-  :root { --gutter: 20px; }
   .site-nav { padding: 12px var(--gutter); }
   .hero { padding: 64px var(--gutter) 56px; }
   .hero-id { margin-bottom: 28px; }
   .band { padding: 56px var(--gutter) 60px; }
   .end { padding: 64px var(--gutter) 64px; }
-  .proof-grid { grid-template-columns: 1fr; gap: 36px; }
-  .proof-card.is-lead { grid-column: auto; }
-  .explore-grid, .exp-grid, .venture-grid, .cap-grid { grid-template-columns: 1fr; }
-  .exp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .explore-grid, .venture-grid, .cap-grid { grid-template-columns: 1fr; }
   .arc { grid-template-columns: 1fr; }
   .tool-row { grid-template-columns: 1fr; gap: 6px; }
   .venture-row { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (max-width: 760px) {
+  .exp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .proof-grid { grid-template-columns: 1fr; gap: 36px; }
+  .proof-card.is-lead { grid-column: auto; }
 }
 @media (max-width: 480px) {
   .exp-grid { grid-template-columns: 1fr; }
@@ -362,13 +372,13 @@ footer { border-top: 1px solid var(--line); }
   <section class="hero" id="top">
     <p class="hero-id">
       <b>Takao Umehara</b>
-      <span class="hero-id-sep">·</span> <span class="t-en">Creative Director · Design &amp; AI Executive</span><span class="t-jp">クリエイティブディレクター · デザイン &amp; AI エグゼクティブ</span>
+      <span class="hero-id-sep">·</span> <span class="t-en">Creative Director · Design &amp; AI Executive</span><span class="t-jp">クリエイティブディレクター · デザインと AI</span>
       <span class="hero-id-sep">·</span> <span class="t-en">New York ↔ Japan</span><span class="t-jp">ニューヨーク ↔ 日本</span>
     </p>
-    <p class="hero-eyebrow"><span class="t-en">Creative leadership, across mediums</span><span class="t-jp">媒体をまたぐクリエイティブリーダーシップ</span></p>
+    <p class="hero-eyebrow"><span class="t-en">Creative leadership, across mediums</span><span class="t-jp">媒体をまたいで、つくる</span></p>
     <h1 class="hero-line"><span class="t-en">Different medium. Same instinct.</span><span class="t-jp">媒体は違っても、勘は同じ。</span></h1>
     <p class="hero-sub"><span class="t-en">A brand film told through real New York creatives. A room full of phones drawing on one wall. A festival rebuilt from scratch around games. A design organisation working with AI agents. They look unrelated. They are the same move: find the real question, make it tangible early, and let people react to it.</span><span class="t-jp is-block">ニューヨークのクリエイターたちが語るブランドフィルム。部屋中のスマホがひとつの壁に描く体験。ゲームを軸にゼロから作り直した祭り。AI エージェントと働くデザイン組織。無関係に見えて、動きは同じ。本当の問いを見つけ、早く形にして、人の反応を見る。</span></p>
-    <p class="hero-note"><span class="t-en">I like the beginning of things — the part where the idea is still soft and needs someone to make it real enough to react to.</span><span class="t-jp is-block">はじまりが好きだ。アイデアがまだ柔らかくて、反応できるくらい現実にする人が要る段階が。</span></p>
+    <p class="hero-note"><span class="t-en">I like the beginning of things — the part where the idea is still soft and needs someone to make it real enough to react to.</span><span class="t-jp is-block">はじまりが好きだ。アイデアがまだ柔らかく、誰かが手で触れる形にしないと先へ進まない段階。</span></p>
     <div class="hero-cta">
       <a href="../../contact.html" class="btn-primary"><span class="t-en">Talk to Takao</span><span class="t-jp">話してみる</span></a>
       
@@ -386,7 +396,7 @@ footer { border-top: 1px solid var(--line); }
           <p class="card-emphasis"><span class="t-en">Interactive · Live now</span><span class="t-jp">インタラクティブ · 公開中</span></p>
           <h3 class="card-title">Rakugaki Jam</h3>
           <p class="card-meta">Designer &amp; builder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
-          <p class="card-desc">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</p>
+          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホに描いた落書きを、壁の共有画面へ投げ飛ばす。みんなで描くライブ VJ。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Designed the doodle-to-wall-screen concept — draw on your phone, fling it onto a shared display</li><li>Built the realtime multi-device pairing and sync on Snap Pair and Firebase RTDB</li><li>Built the canvas rendering and fling interaction</li></ul></div></details>
@@ -397,10 +407,10 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-media"><img src="../../assets/thumbs/koji-fizz.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Film · Brand · Storytelling</span><span class="t-jp">フィルム · ブランド · ストーリーテリング</span></p>
-          <h3 class="card-title">KOJI FIZZ — New York Edition</h3>
+          <h3 class="card-title"><span class="t-en">KOJI FIZZ — New York Edition</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム</span></h3>
           <p class="card-meta">See the Sun / Morinaga &amp; Company · Producer / Creative Partner <span class="card-flag"><span class="t-en">Independent</span><span class="t-jp">独立案件</span></span></p>
-          <p class="card-desc">Instead of an ad, a portrait: four short films where New York creatives talk about how they work, with the product in the room rather than in the script. I shaped the concept, chose the director and decided whose stories these would be.</p>
-          <dl class="metrics"><div class="metric"><dt>4</dt><dd>films — a compilation and three portraits</dd></div></dl>
+          <p class="card-desc"><span class="t-en">Instead of an ad, a portrait: four short films where New York creatives talk about how they work, with the product in the room rather than in the script. I shaped the concept, chose the director and decided whose stories these would be.</span><span class="t-jp is-block">広告ではなく人物紹介として作った。ニューヨークのクリエイター 4 人が自分の仕事を語る短編にした。製品は台詞でなくその場に置いた。</span></p>
+          <dl class="metrics"><div class="metric"><dt>4</dt><dd><span class="t-en">films — a compilation and three portraits</span><span class="t-jp">映像 4 本を制作</span></dd></div></dl>
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Client communication with the agency and the brand owner</li><li>Helping shape the overall concept — creatives in their own environments, no scripts</li><li>Selecting and hiring the film director</li><li>Deciding who the story should focus on</li><li>Shaping the narrative of each short story</li><li>Guiding creative intention with the director and production team</li><li>Scouting and coordinating on-location filming across studios</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>T.J. Misny — film director: directed and shot the films</li><li>Production team — cinematography, sound, editing</li><li>Mai Oyama — translator</li><li>Akifumi Yamada (Morinaga &amp; Co.) — KOJI FIZZ inventor; Masato Nagumo — packaging designer</li></ul></div></details>
           <a class="card-link" href="../../projects/koji-fizz.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
@@ -410,10 +420,10 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-media"><img src="../../assets/thumbs/festival-design.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Experience · Brand · Operations · Revenue</span><span class="t-jp">体験 · ブランド · 運営 · 収益</span></p>
-          <h3 class="card-title">Reinventing a Festival After COVID</h3>
+          <h3 class="card-title"><span class="t-en">Reinventing a Festival After COVID</span><span class="t-jp">秋祭りのデザイン</span></h3>
           <p class="card-meta">New York Japanese Saturday School — Akimatsuri · Festival Chairperson &amp; Creative Director (volunteer) · 2022–2024 <span class="card-flag"><span class="t-en">Volunteer role</span><span class="t-jp">ボランティア</span></span></p>
-          <p class="card-desc">Experience · Brand · Operations · Revenue. One identity — the character 祭 and the school&#39;s motto 知行合一 — carried through logo, patterns, noren, signage, a treasure-card system that ties every booth together, and eleven games designed so that the rules can be learned by watching.</p>
-          <dl class="metrics"><div class="metric"><dt>3×+</dt><dd>game revenue growth over three years</dd></div><div class="metric"><dt>3 → 11</dt><dd>games, inherited → designed and built</dd></div></dl>
+          <p class="card-desc"><span class="t-en">Experience · Brand · Operations · Revenue. One identity — the character 祭 and the school&#39;s motto 知行合一 — carried through logo, patterns, noren, signage, a treasure-card system that ties every booth together, and eleven games designed so that the rules can be learned by watching.</span><span class="t-jp is-block">体験・ブランド・運営・収益。「祭」の文字と校訓「知行合一」を軸にした。ロゴから暖簾、宝物カードまで 1 つの世界観で通し、見て分かる 11 のゲームを設計した。</span></p>
+          <dl class="metrics"><div class="metric"><dt>3×+</dt><dd><span class="t-en">game revenue growth over three years</span><span class="t-jp">ゲーム収益、3 年で 3 倍超</span></dd></div><div class="metric"><dt>3 → 11</dt><dd><span class="t-en">games, inherited → designed and built</span><span class="t-jp">ゲーム数、3→11 に拡大</span></dd></div></dl>
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Took the chair role with one strategic goal: shift the revenue pillar from food to games</li><li>Researched Japanese ennichi festival games and set design criteria (learnable by watching, 1–2 minute rounds, kindergarten to high school)</li><li>Game concepts and the expansion of the game portfolio from 3 inherited booths to 11+ original games</li><li>Designed, prototyped and tested individual game experiences, some over several yearly iterations</li><li>Booth concepts, customer flow, signage and wayfinding</li><li>Festival brand identity — 祭 character, 知行合一 motto, patterns, noren, environmental graphics</li><li>Operations, budget and revenue thinking; coordinated 110+ volunteers</li><li>Invited students to propose game ideas and co-designed them with adult volunteers</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>A small build crew constructed the games from the designs</li><li>Parent volunteers ran every station on the day; a separate team managed the shopping area</li><li>Students proposed and helped validate new game ideas</li></ul></div></details>
           <a class="card-link" href="../../projects/festival-design.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
@@ -423,9 +433,9 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-media"><img src="../../assets/thumbs/coca-cola.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Global brand</span><span class="t-jp">グローバルブランド</span></p>
-          <h3 class="card-title">Coca-Cola — Global Visual Directions</h3>
+          <h3 class="card-title"><span class="t-en">Coca-Cola — Global Visual Directions</span><span class="t-jp">Coca-Cola — グローバルビジュアルディレクション</span></h3>
           <p class="card-meta">The Coca-Cola Company (via Ogilvy Brand Integration Group) · Senior Designer, Ogilvy Brand Integration Group</p>
-          <p class="card-desc">As Senior Designer at Ogilvy&#39;s Brand Integration Group, developed two parallel global visual directions for Coca-Cola: &#39;Coke-Animal World,&#39; whimsical creatures built from bottle silhouettes including a giant-swan Times Square billboard, and &#39;SketchVibe World,&#39; a hand-sketched aesthetic — deployed across billboards, vehicles, packaging, coolers and stationery internationally.</p>
+          <p class="card-desc"><span class="t-en">As Senior Designer at Ogilvy&#39;s Brand Integration Group, developed two parallel global visual directions for Coca-Cola: &#39;Coke-Animal World,&#39; whimsical creatures built from bottle silhouettes including a giant-swan Times Square billboard, and &#39;SketchVibe World,&#39; a hand-sketched aesthetic — deployed across billboards, vehicles, packaging, coolers and stationery internationally.</span><span class="t-jp is-block">Ogilvy のブランド統合チームで、Coca-Cola 向けに 2 つの世界観を作った。瓶の形から生まれた動物のキャラクター群と、手描きの絵柄。看板から便箋まで国際展開した。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Developed two parallel global visual directions at Ogilvy&#39;s Brand Integration Group</li><li>Direction 1 &#39;Coke-Animal World&#39;: whimsical creatures built from Coke bottle silhouettes, including a giant swan billboard in Times Square, deployed on billboards, buses and coolers</li><li>Direction 2 &#39;SketchVibe World&#39;: a hand-sketched aesthetic applied to cans, letterhead, wall murals, transit lightboxes, coolers and vehicle wraps</li><li>Created the illustration systems behind both directions</li><li>Designed applications across consumer touchpoints — billboards, vehicles, packaging, environment, stationery</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>Not separated on the source page — team scope to be confirmed. The page credits the Ogilvy Brand Integration Group and notes guidance from VP of Design David Butler.</li></ul></div></details>
@@ -436,9 +446,9 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-media"><img src="../../assets/thumbs/kitadoko.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Brand · Service · Space</span><span class="t-jp">ブランド · サービス · 空間</span></p>
-          <h3 class="card-title">Kitadoko — Hair Salon Rebranding</h3>
+          <h3 class="card-title"><span class="t-en">Kitadoko — Hair Salon Rebranding</span><span class="t-jp">Kitadoko — ヘアサロン・リブランディング</span></h3>
           <p class="card-meta">Kitadoko Hair Salon · Creative Director &amp; Design Strategist <span class="card-flag"><span class="t-en">Independent</span><span class="t-jp">独立案件</span></span></p>
-          <p class="card-desc">Rebranded a 150-year-old underground family barbershop — 90% male clientele, zero repeat customers — into a modern salon for women and younger clients. Started with a business-model redesign anchored on the idea &#39;Kitadoko as a group of personal hair stylists,&#39; then built identity, service flow and renovated interiors from it.</p>
+          <p class="card-desc"><span class="t-en">Rebranded a 150-year-old underground family barbershop — 90% male clientele, zero repeat customers — into a modern salon for women and younger clients. Started with a business-model redesign anchored on the idea &#39;Kitadoko as a group of personal hair stylists,&#39; then built identity, service flow and renovated interiors from it.</span><span class="t-jp is-block">150 年続く理容店は地下にあり、客の 9 割が男性でリピーターはゼロだった。まずロゴでなく事業の形から考え直した。「北床は専属美容師の集まり」という一言に軸を定め、内装まで作り直した。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Ran an innovation bootcamp with the CEO and journey-mapped the business before any aesthetic work</li><li>Redesigned the business model around ongoing customer relationships rather than one-off haircuts</li><li>Anchored the strategy on the tagline &#39;Kitadoko as a group of personal hair stylists&#39; — positioning the salon as people, not a place</li><li>Derived the identity, letterforms, service flow and renovated interior from that one idea</li><li>Led brand direction, business-model redesign, service design and visual identity</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>Client leadership team and an interior design company — credited on the page without individual task breakdown</li></ul></div></details>
@@ -449,10 +459,10 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-media"><img src="../../assets/thumbs/verizon-ai-agents.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">AI as creative material</span><span class="t-jp">AI を素材として</span></p>
-          <h3 class="card-title">Reimagining how product teams make decisions with AI</h3>
+          <h3 class="card-title"><span class="t-en">Reimagining how product teams make decisions with AI</span><span class="t-jp">AI による UX ワークフローの変革</span></h3>
           <p class="card-meta">Verizon Value (6 brands) · Lead Product Designer (Agentic UX &amp; AI Systems) · 2025–present</p>
-          <p class="card-desc">Working inside hard constraints — no custom models, no API access, Gemini and NotebookLM only — as a design brief. Agents authored as small filesystems of workflow, definition and knowledge files; Figma wired to code through MCP so prototypes stay on the real design system.</p>
-          <dl class="metrics"><div class="metric"><dt>10</dt><dd>agents designed and shipped</dd></div><div class="metric"><dt>40+</dt><dd>designers using the agents</dd></div></dl>
+          <p class="card-desc"><span class="t-en">Working inside hard constraints — no custom models, no API access, Gemini and NotebookLM only — as a design brief. Agents authored as small filesystems of workflow, definition and knowledge files; Figma wired to code through MCP so prototypes stay on the real design system.</span><span class="t-jp is-block">独自モデルも API 接続もない制約を、設計条件にした。エージェントは手順・定義・知識の小さなファイル群として書いた。Figma は MCP でコードとつなぎ、試作が設計基盤から外れないようにした。</span></p>
+          <dl class="metrics"><div class="metric"><dt>10</dt><dd><span class="t-en">agents designed and shipped</span><span class="t-jp">エージェント 10 体を実装</span></dd></div><div class="metric"><dt>40+</dt><dd><span class="t-en">designers using the agents</span><span class="t-jp">利用デザイナー 40 人超</span></dd></div></dl>
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>16+ one-hour interviews with designers and strategists; transcripts clustered with NotebookLM into a searchable pain map</li><li>Effort × impact × opportunity prioritisation and selection of bets with leadership</li><li>Designed and built all ten agents: Master Brain (3-layer project knowledge hub), Justin Case (edge-case detector), Sally (CX strategist / heuristic evaluator), the five-agent WDS studio, Clara (UX-writing evaluator), Alex (agent architect)</li><li>Authored agents as filesystems of workflow, definition and knowledge files; iterated each &#39;Gem&#39; version after version</li><li>Wired Figma to VS Code via MCP so AI prototypes run on real design-system code</li><li>Weekly hands-on workshops for ~40 designers; every agent shared live</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>The XM product-strategy team took ownership of Master Brain and ran it across multiple real projects</li><li>Design leadership selected which bets to pilot</li><li>Designers, PMs, researchers and content people adopted the agents in their own projects</li></ul></div></details>
           <a class="card-link" href="../../projects/verizon-ai-agents.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
@@ -470,36 +480,36 @@ footer { border-top: 1px solid var(--line); }
       <article class="exp-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
         <div class="exp-media"><div class="card-art card-art--motion"><span class="card-art-label">Resona 響</span></div></div>
         <div class="card-body">
-          <p class="chips"><span class="pill pill--in">Pointer</span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
-          <h3 class="card-title">Resona</h3>
-          <p class="card-desc">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</p>
+          <p class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
+          <h3 class="card-title"><span class="t-en">Resona</span><span class="t-jp">響</span></h3>
+          <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">疑似触覚にもとづく Web アニメーションの実験場。文字を読む前に、動きだけで意味が伝わる。</span></p>
           <a class="card-link" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
       <article class="exp-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
         <div class="exp-media"><div class="card-art card-art--typespace"><span class="card-art-label">Typespace</span></div></div>
         <div class="card-body">
-          <p class="chips"><span class="pill pill--in">Typing</span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
+          <p class="chips"><span class="pill pill--in"><span class="t-en">Typing</span><span class="t-jp">タイピング</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
           <h3 class="card-title">Typespace</h3>
-          <p class="card-desc">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</p>
+          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打った言葉が星座になり、やがて宇宙へ還っていく。AI は使っていない。打って、眺めるだけ。</span></p>
           <a class="card-link" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
       <article class="exp-card" tabindex="0">
         <div class="exp-media"><img src="../../assets/koebaku/hero.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
-          <p class="chips"><span class="pill pill--in">Voice</span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
-          <h3 class="card-title">Koe Baku</h3>
-          <p class="card-desc">Shout, and your voice bursts into comic-book onomatopoeia on screen — a QR-join VJ, measured on-device, no audio ever leaves the phone.</p>
+          <p class="chips"><span class="pill pill--in"><span class="t-en">Voice</span><span class="t-jp">声</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
+          <h3 class="card-title"><span class="t-en">Koe Baku</span><span class="t-jp">声爆</span></h3>
+          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — joined by QR, measured on-device, audio never leaves the phone.</span><span class="t-jp is-block">叫ぶと声が擬音になって画面に弾ける。QR で参加する VJ で、音声は端末から出ない。</span></p>
           
         </div>
       </article>
       <article class="exp-card" tabindex="0">
         <div class="exp-media"><div class="card-art card-art--kao"><span class="card-art-label">Kao Game 顔ゲーム</span></div></div>
         <div class="card-body">
-          <p class="chips"><span class="pill pill--in">Face</span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
-          <h3 class="card-title">Kao Game</h3>
-          <p class="card-desc">A game you play with your face — a workout you actually want to repeat.</p>
+          <p class="chips"><span class="pill pill--in"><span class="t-en">Face</span><span class="t-jp">表情</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
+          <h3 class="card-title"><span class="t-en">Kao Game</span><span class="t-jp">顔ゲーム</span></h3>
+          <p class="card-desc"><span class="t-en">A game you play with your face — a workout you actually want to repeat.</span><span class="t-jp is-block">顔だけで遊ぶゲーム。ふつうは続かない運動を、続けたくなる形にした。</span></p>
           
         </div>
       </article>
@@ -517,68 +527,68 @@ footer { border-top: 1px solid var(--line); }
         <ul class="cap-list">
         <li class="cap">
           <span class="cap-label">Creative Direction</span>
-          <span class="cap-note">Setting the idea and holding it through execution — with agencies, directors, builders.</span>
-          <span class="cap-evidence">KOJI FIZZ · Festival Reinvention · Coca-Cola — Global Visual Directions</span>
+          <span class="cap-note"><span class="t-en">Setting the idea, and holding it all the way through other people&#39;s execution.</span><span class="t-jp">アイデアを決め、人の手に渡ってからも狙いを保つ。</span></span>
+          <span class="cap-evidence"><span class="t-en">KOJI FIZZ · Festival Reinvention · Coca-Cola — Global Visual Directions</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム · 秋祭りのデザイン · Coca-Cola — グローバルビジュアルディレクション</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Brand</span>
-          <span class="cap-note">Identity systems, brand DNA, the visual and verbal texture of a thing.</span>
-          <span class="cap-evidence">KOJI FIZZ · Festival Reinvention · Coca-Cola — Global Visual Directions</span>
+          <span class="cap-note"><span class="t-en">Name, mark, colour, words — the whole texture of what a thing is.</span><span class="t-jp">名前・印・色・言葉づかい。そのものの手ざわり全部。</span></span>
+          <span class="cap-evidence"><span class="t-en">KOJI FIZZ · Festival Reinvention · Coca-Cola — Global Visual Directions</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム · 秋祭りのデザイン · Coca-Cola — グローバルビジュアルディレクション</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Storytelling</span>
-          <span class="cap-note">Deciding whose story it is and what it is really about.</span>
-          <span class="cap-evidence">KOJI FIZZ</span>
+          <span class="cap-note"><span class="t-en">Deciding whose story this is, and what it is actually about.</span><span class="t-jp">誰の話にするか、本当は何の話なのかを決める。</span></span>
+          <span class="cap-evidence"><span class="t-en">KOJI FIZZ</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Film / Production</span>
-          <span class="cap-note">Producing and creative-partnering with directors and crews. Not cinematography, not editing.</span>
-          <span class="cap-evidence">KOJI FIZZ</span>
+          <span class="cap-note"><span class="t-en">Choosing the director, sharing the intent, getting it shot. Not cinematography, not editing.</span><span class="t-jp">監督を選び、狙いを共有して撮り切る。撮影と編集は自分の仕事ではない。</span></span>
+          <span class="cap-evidence"><span class="t-en">KOJI FIZZ</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Interactive</span>
-          <span class="cap-note">Experiences where the input is a voice, a face, a drawn line, or every phone in the room.</span>
-          <span class="cap-evidence">Rakugaki Jam · Resona · Typespace</span>
+          <span class="cap-note"><span class="t-en">Experiences where the input is a voice, a face, a drawn line, or every phone in the room.</span><span class="t-jp">入力が声・表情・手描きの線・その場のスマホ全部、という体験。</span></span>
+          <span class="cap-evidence"><span class="t-en">Rakugaki Jam · Resona · Typespace</span><span class="t-jp">Rakugaki Jam · 響 · Typespace</span></span>
         </li>
         </ul>
       </div>
       <div class="cap-group">
-        <h3 class="cap-group-label"><span class="t-en">Technology</span><span class="t-jp">テクノロジー</span></h3>
+        <h3 class="cap-group-label"><span class="t-en">Technology</span><span class="t-jp">技術</span></h3>
         <ul class="cap-list">
         <li class="cap">
           <span class="cap-label">Creative Technology</span>
-          
-          <span class="cap-evidence">Rakugaki Jam · Resona · Typespace</span>
+          <span class="cap-note"><span class="t-en">Treating technology as a material to make things out of, not as a feature to add.</span><span class="t-jp">技術を、機能ではなく素材として扱う。</span></span>
+          <span class="cap-evidence"><span class="t-en">Rakugaki Jam · Resona · Typespace</span><span class="t-jp">Rakugaki Jam · 響 · Typespace</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">AI</span>
-          <span class="cap-note">Designing, building and deploying AI systems — including inside locked-down enterprises.</span>
-          <span class="cap-evidence">Verizon AI Workflow</span>
+          <span class="cap-note"><span class="t-en">Designing, building and putting AI into real work — including inside locked-down enterprises.</span><span class="t-jp">AI を設計し、作り、実際の仕事に入れる。制約の強い企業の中でも。</span></span>
+          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow</span><span class="t-jp">AI による UX ワークフローの変革</span></span>
         </li>
         </ul>
       </div>
       <div class="cap-group">
-        <h3 class="cap-group-label"><span class="t-en">Leadership</span><span class="t-jp">リーダーシップ</span></h3>
+        <h3 class="cap-group-label"><span class="t-en">Leadership</span><span class="t-jp">率いること</span></h3>
         <ul class="cap-list">
         <li class="cap">
           <span class="cap-label">External Partner Direction</span>
-          <span class="cap-note">Directing agencies, directors, vendors and volunteers.</span>
-          <span class="cap-evidence">KOJI FIZZ</span>
+          <span class="cap-note"><span class="t-en">Getting production companies, directors, vendors and volunteers pointed at the same thing.</span><span class="t-jp">制作会社・監督・協力者に狙いを伝えて、同じ方を向いてもらう。</span></span>
+          <span class="cap-evidence"><span class="t-en">KOJI FIZZ</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム</span></span>
         </li>
         </ul>
       </div>
       <div class="cap-group">
-        <h3 class="cap-group-label"><span class="t-en">Context</span><span class="t-jp">文脈</span></h3>
+        <h3 class="cap-group-label"><span class="t-en">Context</span><span class="t-jp">どこで効くか</span></h3>
         <ul class="cap-list">
         <li class="cap">
           <span class="cap-label">Global</span>
-          
-          <span class="cap-evidence">Coca-Cola — Global Visual Directions</span>
+          <span class="cap-note"><span class="t-en">Making one thing hold up in several countries at once.</span><span class="t-jp">ひとつのものを、複数の国で同時に成立させる。</span></span>
+          <span class="cap-evidence"><span class="t-en">Coca-Cola — Global Visual Directions</span><span class="t-jp">Coca-Cola — グローバルビジュアルディレクション</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Japan ↔ US</span>
-          
-          <span class="cap-evidence">KOJI FIZZ · Festival Reinvention</span>
+          <span class="cap-note"><span class="t-en">At home in both — as an interpreter, not a translator.</span><span class="t-jp">日本とアメリカの両方がわかる。翻訳ではなく、通訳として。</span></span>
+          <span class="cap-evidence"><span class="t-en">KOJI FIZZ · Festival Reinvention</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム · 秋祭りのデザイン</span></span>
         </li>
         </ul>
       </div>
@@ -587,33 +597,33 @@ footer { border-top: 1px solid var(--line); }
 
   <section class="band career" id="career">
     <div class="section-head">
-      <h2 class="section-title"><span class="t-en">Career arc</span><span class="t-jp">キャリアの流れ</span></h2>
+      <h2 class="section-title"><span class="t-en">Career arc</span><span class="t-jp">これまでの流れ</span></h2>
       <p class="section-lede"><span class="t-en">Twenty years, one instinct. The mediums changed; the move — find the real question, make it tangible, let people react — did not.</span><span class="t-jp is-block">20年、ひとつの勘。媒体は変わっても、本当の問いを見つけ、形にして、人の反応を見るという動きは変わらなかった。</span></p>
     </div>
     <ol class="arc">
       <li class="arc-cell is-emphasised">
         <h3 class="arc-label"><span class="t-en">Brand</span><span class="t-jp">ブランド</span></h3>
-        <p class="arc-summary">Global brand work at Ogilvy and a run of identity, book and campaign projects. Learning that a brand is a decision about what something is for.</p>
+        <p class="arc-summary"><span class="t-en">Global brand work at Ogilvy and a run of identity, book and campaign projects. Learning that a brand is a decision about what something is for.</span><span class="t-jp is-block">Ogilvy でのグローバルブランド案件と、ロゴ・書籍・キャンペーンの仕事群。ブランドとは何のためにあるかを決めることだと学んだ。</span></p>
         <ul class="arc-roles"><li><b>Ogilvy Brand Integration Group</b> <span class="arc-title">Senior Designer</span></li></ul>
       </li>
       <li class="arc-cell is-emphasised">
         <h3 class="arc-label"><span class="t-en">Interactive</span><span class="t-jp">インタラクティブ</span></h3>
-        <p class="arc-summary">Experiences where the input is a body, a voice or a room full of phones. The instinct that runs through everything after: make it, then see what people do.</p>
+        <p class="arc-summary"><span class="t-en">Experiences where the input is a body, a voice or a room full of phones. The instinct that runs through everything after: make it, then see what people do.</span><span class="t-jp is-block">入力が身体・声・部屋いっぱいのスマホになる体験づくり。作ってから人の反応を見るという勘は、この先ずっと変わらない。</span></p>
         
       </li>
       <li class="arc-cell is-quiet">
         <h3 class="arc-label"><span class="t-en">Product / EdTech</span><span class="t-jp">プロダクト / EdTech</span></h3>
-        <p class="arc-summary">Leading product design at Amplify — AR-powered literacy quests reaching millions of students — and a string of education and productivity products.</p>
+        <p class="arc-summary"><span class="t-en">Leading product design at Amplify — AR-powered literacy quests reaching millions of students — and a string of education and productivity products.</span><span class="t-jp is-block">Amplify でプロダクトデザインを率いた。AR を使った読解クエストは数百万人の生徒に届き、教育・業務効率化のプロダクトが続いた。</span></p>
         <ul class="arc-roles"><li><b>Amplify Education</b> <span class="arc-title">Product Design Lead</span></li></ul>
       </li>
       <li class="arc-cell is-quiet">
         <h3 class="arc-label"><span class="t-en">Enterprise / CX</span><span class="t-jp">エンタープライズ / CX</span></h3>
-        <p class="arc-summary">Banks, telecoms and retail: design systems at scale, live-coded prototypes as the spec, and the customer experience across digital and physical.</p>
+        <p class="arc-summary"><span class="t-en">Banks, telecoms and retail: design systems at scale, live-coded prototypes as the spec, and the customer experience across digital and physical.</span><span class="t-jp is-block">銀行・通信・小売。大規模なデザインシステムと、仕様書代わりのライブコード試作、デジタルと店舗をまたぐ顧客体験を手がけた。</span></p>
         <ul class="arc-roles"><li><b>Concentrix Catalyst</b> <span class="arc-title">Lead Product Designer</span></li><li><b>Creativity Is Everywhere LLC</b> <span class="arc-title">Founder</span></li></ul>
       </li>
       <li class="arc-cell is-emphasised">
         <h3 class="arc-label"><span class="t-en">AI / Ventures</span><span class="t-jp">AI / ベンチャー</span></h3>
-        <p class="arc-summary">AI agents inside a locked-down enterprise, a design language for agentic products, open-source tools, and a portfolio of ventures at the validating stage.</p>
+        <p class="arc-summary"><span class="t-en">AI agents inside a locked-down enterprise, a design language for agentic products, open-source tools, and a portfolio of ventures at the validating stage.</span><span class="t-jp is-block">制約の強い企業に組み込む AI エージェント、AI が介在するプロダクトの設計言語、オープンソースのツール、そして検証段階のベンチャー群。</span></p>
         <ul class="arc-roles"><li><b>Verizon Value</b> <span class="arc-title">Lead Product Designer (Agentic UX &amp; AI Systems)</span><span class="arc-period">2024–present</span></li><li><b>intentfirst.ai</b> <span class="arc-title">Founder</span></li><li><b>BreakBias</b> <span class="arc-title">Creator</span></li></ul>
       </li>
     </ol>
@@ -622,7 +632,7 @@ footer { border-top: 1px solid var(--line); }
 
   <section class="band studio" id="studio">
     <div class="section-head">
-      <h2 class="section-title"><span class="t-en">Creativity is everywhere</span><span class="t-jp">創造性はどこにでもある</span></h2>
+      <h2 class="section-title"><span class="t-en">Creativity is everywhere</span><span class="t-jp">Creativity is everywhere</span></h2>
       
     </div>
     <div class="studio-row">

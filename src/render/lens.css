@@ -19,7 +19,7 @@
   --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
   --serif: "DM Serif Display", Georgia, "Times New Roman", serif;
   --col: 1200px;
-  --gutter: 32px;
+  --gutter: clamp(20px, 3vw, 32px);
   /* 5-3C'02 palette — used only as a quiet wash and on hover */
   --a1: hsla(198 82% 72% / 0.44);
   --a2: hsla(248 74% 80% / 0.36);
@@ -42,6 +42,9 @@ img { max-width: 100%; display: block; }
 a { color: inherit; }
 
 /* ── Language toggle convention ─────────────────────────────────────────── */
+/* 言語切替。レイアウト側が .t-en / .t-jp に display を指定するときは必ず :where() で
+   包むこと — 包まないと詳細度が並び、後に書いたほうが勝って、片方の言語に
+   両方の言語が出る。tests/lens-system.test.mjs がこれを検査する。 */
 .t-jp { display: none; }
 html.lang-jp .t-en { display: none; }
 html.lang-jp .t-jp { display: inline; }
@@ -99,7 +102,7 @@ html.lang-jp .t-jp.is-block { display: block; }
 .section-title { font-family: var(--serif); font-size: clamp(30px, 3.6vw, 44px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.05; }
 html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; }
 .section-lede { margin-top: 14px; max-width: 68ch; font-size: 15.5px; line-height: 1.7; color: var(--ink-mid); }
-.section-lede .t-en { display: block; }
+.section-lede :where(.t-en) { display: block; }
 
 .btn-primary { display: inline-block; padding: 13px 20px; background: var(--ink); color: #fff; font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--ink); transition: background 180ms ease; }
 .btn-primary:hover { background: #2a2a2a; }
@@ -108,7 +111,7 @@ html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 500; lette
 .hero-alt { font-size: 13px; color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.18); padding-bottom: 2px; transition: color 160ms ease, border-color 160ms ease; }
 .hero-alt:hover { color: var(--ink); border-color: rgba(18,18,18,0.3); }
 
-.pill { display: inline-block; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink-mid); }
+.pill { display: inline-block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink-dim); }
 .pill--in { background: var(--ink); color: #fff; border-color: var(--ink); }
 .pill--status { color: var(--ink-dim); }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
@@ -134,7 +137,7 @@ html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 500; lette
 }
 html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-weight: 500; letter-spacing: -0.01em; font-size: clamp(34px, 5.4vw, 68px); line-height: 1.18; max-width: 22ch; }
 .hero-sub { font-size: 17.5px; line-height: 1.68; color: var(--ink-mid); max-width: 62ch; }
-.hero-sub .t-en { display: block; }
+.hero-sub :where(.t-en) { display: block; }
 .hero-note { margin-top: 16px; font-size: 14px; color: var(--ink-dim); max-width: 62ch; line-height: 1.6; }
 .hero-cta { margin-top: 36px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
 
@@ -144,7 +147,7 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 .proof-card[data-href] { cursor: pointer; }
 .proof-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 .proof-card.is-lead { grid-column: span 2; }
-.card-media { aspect-ratio: 16 / 10; overflow: hidden; background: #ece9e3; margin-bottom: 18px; }
+.card-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 18px; }
 .proof-card.is-lead .card-media { aspect-ratio: 16 / 8.5; }
 .card-media img, .exp-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
 .proof-card[data-href]:hover .card-media img, .exp-card[data-href]:hover .exp-media img { transform: scale(1.03); }
@@ -177,7 +180,7 @@ html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 500; letter-s
 .card-meta { font-size: 12.5px; color: var(--ink-dim); }
 .card-flag { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--border); border-radius: 999px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
 .card-desc { font-size: 15px; line-height: 1.66; color: var(--ink-mid); }
-.card-desc .t-en { display: block; }
+.card-desc :where(.t-en) { display: block; }
 .card-link { align-self: flex-start; font-size: 12.5px; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.22); padding-bottom: 1px; margin-top: 4px; }
 .card-link:hover { border-color: var(--ink); }
 
@@ -202,14 +205,14 @@ html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 500; letter-s
 .explore-statement { font-family: var(--serif); font-size: 26px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.15; }
 html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; font-size: 22px; }
 .explore-body { font-size: 14.5px; line-height: 1.65; color: var(--ink-mid); }
-.explore-body .t-en { display: block; }
+.explore-body :where(.t-en) { display: block; }
 
 /* ── Experiments ────────────────────────────────────────────────────────── */
 .exp-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px 22px; }
 .exp-card { border-top: 1px solid var(--line); padding-top: 12px; outline: none; }
 .exp-card[data-href] { cursor: pointer; }
 .exp-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
-.exp-media { aspect-ratio: 4 / 3; overflow: hidden; background: #ece9e3; margin-bottom: 14px; }
+.exp-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 14px; }
 .exp-card .card-title { font-size: 20px; }
 .exp-card .card-desc { font-size: 14px; }
 
@@ -221,14 +224,14 @@ html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; l
 .venture-row { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
 .venture-row dt { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); padding-top: 4px; }
 .venture-row dd { font-size: 14.5px; line-height: 1.6; color: var(--ink-mid); }
-.venture-row dd .t-en { display: block; }
+.venture-row dd :where(.t-en) { display: block; }
 
 /* ── Tools ──────────────────────────────────────────────────────────────── */
 .tool-list { list-style: none; border-top: 1px solid var(--line); }
 .tool-row { display: grid; grid-template-columns: 220px 1fr 220px; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
 .tool-name { font-family: var(--serif); font-size: 20px; text-decoration: none; color: var(--ink); }
 .tool-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
-.tool-desc .t-en { display: block; }
+.tool-desc :where(.t-en) { display: block; }
 .tool-meta { font-size: 12px; color: var(--ink-dim); text-align: right; }
 
 /* ── Career arc ─────────────────────────────────────────────────────────── */
@@ -242,7 +245,7 @@ html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; l
 html.lang-jp .arc-label { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; font-size: 19px; }
 .arc-period { font-family: var(--ff); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); margin-left: 6px; }
 .arc-summary { font-size: 13.5px; line-height: 1.6; color: var(--ink-mid); }
-.arc-summary .t-en { display: block; }
+.arc-summary :where(.t-en) { display: block; }
 .arc-roles { list-style: none; margin-top: 12px; font-size: 12.5px; color: var(--ink-mid); display: grid; gap: 6px; }
 .arc-roles b { font-weight: 500; color: var(--ink); }
 .arc-title { color: var(--ink-dim); }
@@ -262,14 +265,14 @@ html.lang-jp .arc-label { font-family: var(--ff-jp); font-weight: 500; letter-sp
 /* ── Studio ─────────────────────────────────────────────────────────────── */
 .studio-row { display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
 .studio-note { font-size: 15.5px; line-height: 1.7; color: var(--ink-mid); max-width: 62ch; }
-.studio-note .t-en { display: block; }
+.studio-note :where(.t-en) { display: block; }
 
 /* ── Closing ────────────────────────────────────────────────────────────── */
 .end { max-width: var(--col); margin: 0 auto; padding: 96px var(--gutter) 88px; border-top: 1px solid var(--line); text-align: center; }
 .end-line { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(30px, 4.4vw, 54px); letter-spacing: -0.02em; line-height: 1.08; max-width: 22ch; margin: 0 auto 20px; }
 html.lang-jp .end-line { font-family: var(--ff-jp); font-style: normal; font-weight: 500; letter-spacing: 0; font-size: clamp(24px, 3.4vw, 40px); line-height: 1.3; }
 .end-sub { max-width: 58ch; margin: 0 auto 32px; font-size: 15.5px; line-height: 1.7; color: var(--ink-mid); }
-.end-sub .t-en { display: block; }
+.end-sub :where(.t-en) { display: block; }
 .end-actions { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; align-items: center; }
 .end-mail { margin-top: 22px; font-size: 13px; }
 .end-mail a { color: var(--ink-dim); text-decoration: none; }
@@ -289,28 +292,35 @@ footer { border-top: 1px solid var(--line); }
 .footer-copy { font-size: 12px; color: var(--ink-dim); }
 
 /* ── Responsive ─────────────────────────────────────────────────────────── */
-@media (max-width: 1024px) {
-  .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 1100px) {
   .exp-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 1024px) {
   .arc { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .arc-cell + .arc-cell::after { display: none; }
   .tool-row { grid-template-columns: 180px 1fr; }
   .tool-meta { grid-column: 2; text-align: left; }
 }
+@media (max-width: 900px) {
+  .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 @media (max-width: 768px) {
-  :root { --gutter: 20px; }
   .site-nav { padding: 12px var(--gutter); }
   .hero { padding: 64px var(--gutter) 56px; }
   .hero-id { margin-bottom: 28px; }
   .band { padding: 56px var(--gutter) 60px; }
   .end { padding: 64px var(--gutter) 64px; }
-  .proof-grid { grid-template-columns: 1fr; gap: 36px; }
-  .proof-card.is-lead { grid-column: auto; }
-  .explore-grid, .exp-grid, .venture-grid, .cap-grid { grid-template-columns: 1fr; }
-  .exp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .explore-grid, .venture-grid, .cap-grid { grid-template-columns: 1fr; }
   .arc { grid-template-columns: 1fr; }
   .tool-row { grid-template-columns: 1fr; gap: 6px; }
   .venture-row { grid-template-columns: 1fr; gap: 2px; }
+}
+@media (max-width: 760px) {
+  .exp-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .proof-grid { grid-template-columns: 1fr; gap: 36px; }
+  .proof-card.is-lead { grid-column: auto; }
 }
 @media (max-width: 480px) {
   .exp-grid { grid-template-columns: 1fr; }

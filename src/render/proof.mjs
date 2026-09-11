@@ -2,7 +2,7 @@
 // framing the Lens chose, the metrics the Lens chose to surface, and — behind
 // a <details> — the honest split of what Takao did and what the team did.
 import { esc, t, tb, plain, href } from "./html.mjs";
-import { sectionHead } from "./sections.mjs";
+import { sectionHead, displayTitle } from "./sections.mjs";
 
 const ENGAGEMENT_LABEL = {
   volunteer: { en: "Volunteer role", jp: "ボランティア" },
@@ -57,7 +57,7 @@ export function proofCard({ ref, item, ctx, index }) {
         ${cardMedia(item, ctx)}
         <div class="card-body">
           ${ref.emphasis ? `<p class="card-emphasis">${t(ref.emphasis)}</p>` : ""}
-          <h3 class="card-title">${esc(item.title)}</h3>
+          <h3 class="card-title">${displayTitle(item)}</h3>
           <p class="card-meta">${meta}${engagement ? ` <span class="card-flag">${t(engagement)}</span>` : ""}</p>
           <p class="card-desc">${tb(summary)}</p>
           ${metricRow(item, ref.metricIds)}

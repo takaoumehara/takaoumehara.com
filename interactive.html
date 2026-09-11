@@ -96,6 +96,9 @@
       --t2: hsl(248 58% 70%);
       --t3: hsl(324 60% 72%);
       --t4: hsl(36 58% 62%);
+      /* Shared column: every page on the site reads at the same width. */
+      --col: 1200px;
+      --gutter: clamp(20px, 3vw, 32px);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -120,7 +123,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 14px 32px;
+      padding: 14px var(--gutter);
       background: rgba(255,255,255,0.92);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -381,13 +384,13 @@
     .lab-link:hover { color: var(--ink); }
 
     /* ─── CTA ─── */
-    /* The rule has to start where the grid's rules start, or the page ends
-       on a line 480px narrower than every line above it. */
+    /* Same column as the grid above it and every other page on the site,
+       so every left edge on the page lines up. */
     .lab-cta {
       border-top: 1px solid var(--line);
-      max-width: 1680px;
+      max-width: var(--col);
       margin: 0 auto;
-      padding: 72px clamp(20px, 3vw, 40px) 96px;
+      padding: 72px var(--gutter) 96px;
       text-align: center;
     }
     .lab-cta-title, .lab-cta-desc { max-width: 44ch; margin-left: auto; margin-right: auto; }
@@ -575,9 +578,9 @@
        the same vocabulary then leads every card as a solid label, so the
        grid can be scanned for "which one uses my voice". */
     .io-strip {
-      max-width: 1680px;
+      max-width: var(--col);
       margin: 0 auto;
-      padding: clamp(22px, 2.6vw, 38px) clamp(20px, 3vw, 40px) 0;
+      padding: clamp(22px, 2.6vw, 38px) var(--gutter) 0;
     }
     .io-row {
       display: grid;
@@ -623,6 +626,12 @@
       .io-row { grid-template-columns: 1fr; gap: 4px; padding: 11px 0; }
       .io-label { line-height: 1.4; }
     }
+
+    /* assets/index-grid.css sets .idx-head/.idx-band to a wider, separate
+       column (1680px); this page reads at the shared --col instead, so its
+       wordmark, bands and grid line up with every other page's left edge. */
+    .idx-head,
+    .idx-band { max-width: var(--col); padding-left: var(--gutter); padding-right: var(--gutter); }
   </style>
 </head>
 <body>
@@ -690,9 +699,10 @@
         <div class="card-body">
           <div class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill">Live</span><span class="pill">Motion design</span></div>
           <h2 class="card-title">Resona <span style="font-size:0.6em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">響</span></h2>
+          <span class="card-meta">Web animation · Pseudo-haptics</span>
           <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">擬似ハプティクスにもとづく、意図を伝えるウェブアニメーションの実験場。言葉を読む前に、動きが意味を伝える。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">Web animation · Pseudo-haptics</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+        <div class="card-footer"><span class="card-meta card-meta--link">Try it ↗</span></div>
       </article>
 
       <article class="work-card">
@@ -700,9 +710,10 @@
         <div class="card-body">
           <div class="chips"><span class="pill pill--in"><span class="t-en">Face</span><span class="t-jp">表情</span></span><span class="pill">In progress</span><span class="pill">Face tracking</span></div>
           <h2 class="card-title">Kao Game <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">顔ゲーム</span></h2>
+          <span class="card-meta">Face tracking · Web</span>
           <p class="card-desc"><span class="t-en">A game you play with your face. Pull the expressions the game asks for — and the muscles you never train get a workout you actually want to repeat.</span><span class="t-jp is-block">顔で遊ぶゲーム。指示された表情をつくると、普段は鍛えない表情筋が動く。続けたくなる形にした表情筋トレーニング。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">Face tracking · Web</span></div>
+        <div class="card-footer"></div>
       </article>
 
       <article class="work-card" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
@@ -710,9 +721,10 @@
         <div class="card-body">
           <div class="chips"><span class="pill pill--in"><span class="t-en">Handwriting</span><span class="t-jp">手描き</span></span><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">VJ</span></div>
           <h2 class="card-title">Rakugaki Jam</h2>
+          <span class="card-meta">Snap Pair · Firebase RTDB · Canvas</span>
           <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホで落書きして、みんなの壁画面へ投げ込む。観客みんなで描く、ライブな VJ ジャム。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · Firebase RTDB · Canvas</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+        <div class="card-footer"><span class="card-meta card-meta--link">Try it ↗</span></div>
       </article>
 
       <article class="work-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
@@ -720,9 +732,10 @@
         <div class="card-body">
           <div class="chips"><span class="pill pill--in"><span class="t-en">Typing</span><span class="t-jp">タイピング</span></span><span class="pill">Live</span><span class="pill pill--snap">Snap Pair</span><span class="pill">WebGL</span></div>
           <h2 class="card-title">Typespace</h2>
+          <span class="card-meta">Next.js · r3f · GLSL · Web Audio</span>
           <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打ち込んだ言葉が星座を結び、やがてゆっくりと宇宙へ還る。AI は使っていません — 打って、眺めるだけ。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">Next.js · r3f · GLSL · Web Audio</span><span class="card-meta card-meta--link">Try it ↗</span></div>
+        <div class="card-footer"><span class="card-meta card-meta--link">Try it ↗</span></div>
       </article>
 
       <article class="work-card">
@@ -730,9 +743,10 @@
         <div class="card-body">
           <div class="chips"><span class="pill pill--in"><span class="t-en">Voice</span><span class="t-jp">声</span></span><span class="pill">In progress</span><span class="pill pill--snap">Snap Pair</span></div>
           <h2 class="card-title">Koe Baku <span style="font-size:0.62em;letter-spacing:0.04em;color:var(--ink-dim);font-weight:500;">声爆</span></h2>
+          <span class="card-meta">Snap Pair · Web Audio · Canvas</span>
           <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — a QR-join VJ, measured on-device, no audio ever leaves the phone.</span><span class="t-jp is-block">叫べば、声が漫画の擬音になって画面で弾ける。QR で参加する VJ。判定は端末内で完結し、音声は外に出ません。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · Web Audio · Canvas</span></div>
+        <div class="card-footer"></div>
       </article>
 
     </div>
@@ -751,9 +765,10 @@
         <div class="card-body">
           <div class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2台のスマホ</span></span><span class="pill">Prototype</span><span class="pill">Game</span><span class="pill">WebRTC</span></div>
           <h2 class="card-title">EmojiDrop</h2>
+          <span class="card-meta">HTML5 Canvas · WebRTC · single-file</span>
           <p class="card-desc"><span class="t-en">An emoji-only arcade shooter, two players side by side over WebRTC with shared lives and a tether between their ships — no Snap Pair here, and no server in the game loop.</span><span class="t-jp is-block">絵文字だけの、2人協力プレイのアーケードシューター。残機は共有、2機の間には糸が張られる。WebRTC で端末同士が直結 — Snap Pair は使わず、ゲーム中はサーバーを通りません。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">HTML5 Canvas · WebRTC · single-file</span></div>
+        <div class="card-footer"></div>
       </article>
 
       <article class="work-card" tabindex="0" data-href="projects/marubatsu.html">
@@ -761,9 +776,10 @@
         <div class="card-body">
           <div class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2台のスマホ</span></span><span class="pill">Shipped</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
           <h2 class="card-title">Marubatsu 2.0</h2>
+          <span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span>
           <p class="card-desc"><span class="t-en">Tic-tac-toe with one rule changed — a 4×4 board and two marks per turn — playable on one phone, against an AI, or online with a second phone.</span><span class="t-jp is-block">ルールを一つだけ変えた○×ゲーム — 4×4 の盤で一手に二つ置く。1台で2人、AI 対戦、オンラインで2台。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">Next.js 16 · Firebase RTDB · Gemini</span><span class="card-meta card-meta--link">Case study →</span></div>
+        <div class="card-footer"><span class="card-meta card-meta--link">Case study →</span></div>
       </article>
 
       <article class="work-card">
@@ -771,9 +787,10 @@
         <div class="card-body">
           <div class="chips"><span class="pill pill--in"><span class="t-en">Every phone</span><span class="t-jp">その場の全端末</span></span><span class="pill">In progress</span><span class="pill pill--snap">Snap Pair</span><span class="pill">Game</span></div>
           <h2 class="card-title">Werewolf Card Game</h2>
+          <span class="card-meta">Snap Pair · 27 illustrated roles</span>
           <p class="card-desc"><span class="t-en">A digital Werewolf (Mafia) party game — hand-illustrated role cards dealt to each player's phone, one table on the big screen.</span><span class="t-jp is-block">デジタル版の人狼ゲーム。手描きの役職カードが各プレイヤーのスマホに配られ、卓は大画面にひとつ。</span></p>
         </div>
-        <div class="card-footer"><span class="card-meta">Snap Pair · 27 illustrated roles</span></div>
+        <div class="card-footer"></div>
       </article>
 
     </div>
@@ -798,7 +815,7 @@
 
   <!-- ── Footer ── -->
   <footer
-    style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+    style="border-top:1px solid var(--line); padding:36px var(--gutter); max-width:var(--col); margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
     <div>
       <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
       <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">Design &amp; consulting through <strong

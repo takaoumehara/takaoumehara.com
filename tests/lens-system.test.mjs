@@ -371,3 +371,18 @@ test("the Claim Guard no longer forces bad writing to get past it", () => {
   lens.cta.body = { en: "I have led 400 designers.", jp: "400 人のデザイナーを率いた。" };
   assert.ok(validateLens(lens, lib).some((e) => /Claim Guard/.test(e)));
 });
+
+test("nothing can out-specify the language switch", () => {
+  // `.venture-row dd .t-en` scored the same specificity as `html.lang-jp .t-en`
+  // and came later in the file, so it won — and the Japanese page showed the
+  // English text for all four ventures. Layout rules that touch .t-en or .t-jp
+  // must wrap them in :where(), which contributes no specificity.
+  const css = readFileSync(join(ROOT, "src", "render", "lens.css"), "utf8");
+  const offenders = [];
+  for (const match of css.matchAll(/^([^{@\n][^{\n]*)\{/gm)) {
+    const selector = match[1].trim();
+    if (selector.startsWith("html.lang-jp") || selector === ".t-jp") continue;
+    if (/(^|[\s,])\.t-(en|jp)\b/.test(selector)) offenders.push(selector);
+  }
+  assert.deepEqual(offenders, [], `these must wrap .t-en / .t-jp in :where():\n  ${offenders.join("\n  ")}`);
+});
