@@ -20,6 +20,9 @@ const byslug = (slug) => lenses.find((l) => l.slug === slug);
 const clone = (value) => JSON.parse(JSON.stringify(value));
 const assetExists = (path) => existsSync(join(ROOT, path));
 const text = (html) => html.replace(/<style>[\s\S]*?<\/style>/g, "").replace(/<script>[\s\S]*?<\/script>/g, "");
+const escapeHtml = (value) => value
+  .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+  .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
 // ── Evidence base ───────────────────────────────────────────────────────────
 
@@ -121,6 +124,10 @@ test("the hero itself is subject to the Claim Guard", () => {
 test("numeric tokens compare the way a reader reads them", () => {
   assert.deepEqual([...numericTokens("3× growth, 40+ people, $10K+, 90%")], ["3×", "40+", "$10K+", "90%"]);
   assert.deepEqual([...numericTokens("3x growth")], ["3×"]);
+  // A magnitude suffix cannot be the first letter of the next word: "30 minutes"
+  // is thirty, not thirty million. This read as "30m" and matched nothing.
+  assert.deepEqual([...numericTokens("a question worth 30 minutes")], ["30"]);
+  assert.deepEqual([...numericTokens("10M users")], ["10M"]);
 });
 
 // ── One project, many narratives ────────────────────────────────────────────
@@ -148,8 +155,9 @@ test("changing only the lens config changes hero, order, framing, sections and C
   assert.match(firstProof(aiProduct), /verizon-ai-agents/);
   // framing: the same Festival evidence is described with a different approved angle
   const festival = lib.evidence.get("festival-reinvention");
-  assert.ok(home.includes(festival.angles.business.slice(0, 60)));
-  assert.ok(creative.includes(festival.angles.creative.slice(0, 60)));
+  const en = (value) => (typeof value === "string" ? value : value.en);
+  assert.ok(home.includes(escapeHtml(en(festival.angles.business)).slice(0, 60)));
+  assert.ok(creative.includes(escapeHtml(en(festival.angles.creative)).slice(0, 60)));
   assert.ok(!aiProduct.includes("festival-design.html"), "the ai-product lens omits the festival entirely");
   // sections toggled
   assert.ok(home.includes('id="ventures"') && !creative.includes('id="ventures"'));
@@ -221,4 +229,117 @@ test("the committed pages are exactly what the build produces (run: node src/bui
     assert.ok(existsSync(file), `${path} is not committed — run node src/build.mjs`);
     assert.equal(readFileSync(file, "utf8"), html, `${path} is stale — run node src/build.mjs`);
   }
+});
+
+// ── Japanese is not an afterthought ─────────────────────────────────────────
+//
+// Before these tests, 216 of 273 reader-facing strings were plain English, so
+// the Japanese page rendered 79% English. A plain string shows in BOTH
+// languages, which makes the leak invisible until someone reads the page in
+// Japanese. These tests make it visible in CI instead.
+// The rules the Japanese itself follows are in docs/japanese-voice.md.
+
+/** Walk the reader-facing Localized fields and report which ones carry no Japanese. */
+function englishOnlyPaths(lib, lenses) {
+  const missing = [];
+  const check = (path, value) => {
+    if (value == null) return;
+    if (typeof value === "string") { missing.push(path); return; }
+    if (!value.jp) missing.push(path);
+  };
+  const checkMany = (path, obj) => {
+    for (const [key, value] of Object.entries(obj ?? {})) check(`${path}.${key}`, value);
+  };
+
+  for (const [slug, item] of lib.evidence) {
+    check(`${slug}.summary`, item.summary);
+    checkMany(`${slug}.angles`, item.angles);
+    for (const metric of item.metrics ?? []) check(`${slug}.metrics[${metric.id}].label`, metric.label);
+    for (const field of ["thesis", "experiment", "question"]) {
+      if (item[field] != null) check(`${slug}.${field}`, item[field]);
+    }
+  }
+  // Capability labels stay English on purpose (0→1, UX, AI read as terms, not as
+  // untranslated text). Their notes are what has to carry the Japanese.
+  for (const cap of lib.capabilities.capabilities) check(`capability:${cap.id}.note`, cap.note);
+  for (const group of lib.capabilities.groups) check(`capability-group:${group.id}.label`, group.label);
+  for (const chapter of lib.chapters) { check(`chapter:${chapter.id}.label`, chapter.label); check(`chapter:${chapter.id}.summary`, chapter.summary); }
+  for (const role of lib.roles) check(`role:${role.id}.summary`, role.summary);
+  for (const thesis of lib.theses) { check(`thesis:${thesis.id}.statement`, thesis.statement); check(`thesis:${thesis.id}.body`, thesis.body); }
+  check("profile.tagline", lib.profile.tagline);
+  check("profile.location", lib.profile.location);
+  check("profile.studio.note", lib.profile.studio.note);
+  lib.profile.positioning.forEach((p, i) => check(`profile.positioning[${i}]`, p));
+
+  for (const lens of lenses) {
+    for (const field of ["eyebrow", "title", "body", "note"]) {
+      if (lens.hero?.[field] != null) check(`lens:${lens.slug}.hero.${field}`, lens.hero[field]);
+    }
+    for (const field of ["title", "body"]) {
+      if (lens.cta?.[field] != null) check(`lens:${lens.slug}.cta.${field}`, lens.cta[field]);
+    }
+    check(`lens:${lens.slug}.cta.primary.label`, lens.cta.primary.label);
+    if (lens.cta.secondary) check(`lens:${lens.slug}.cta.secondary.label`, lens.cta.secondary.label);
+    if (lens.identity?.tagline != null) check(`lens:${lens.slug}.identity.tagline`, lens.identity.tagline);
+    for (const [index, section] of lens.sections.entries()) {
+      for (const field of ["title", "lede"]) {
+        if (section[field] != null) check(`lens:${lens.slug}.sections[${index}].${field}`, section[field]);
+      }
+      for (const ref of section.items ?? []) {
+        if (typeof ref === "string") continue;
+        for (const field of ["emphasis", "summaryOverride"]) {
+          if (ref[field] != null) check(`lens:${lens.slug}.${ref.id}.${field}`, ref[field]);
+        }
+      }
+    }
+  }
+  return missing;
+}
+
+test("every reader-facing string carries Japanese, so the JP page is not English", () => {
+  const missing = englishOnlyPaths(lib, lenses);
+  assert.deepEqual(missing, [], `no Japanese on ${missing.length} field(s):\n  ${missing.join("\n  ")}`);
+});
+
+test("the Japanese avoids the transliterations that made it unreadable", () => {
+  // docs/japanese-voice.md §3.2. Each of these is an English job-title or
+  // buzzword written in katakana: it occupies space without carrying meaning.
+  const banned = [
+    "ベンチャービルディング", "エグゼクティブアドバイザリー", "フラクショナル",
+    "ビジネストランスフォーメーション", "ステークホルダー", "ソリューション",
+    "オペレーション", "コミットメント", "アサイン", "エンゲージメント",
+    "三十分",  // a workaround for the Claim Guard; the guard now allows "30"
+  ];
+  const offenders = [];
+  const scan = (path, value) => {
+    if (value == null) return;
+    if (typeof value === "string") return;              // plain strings are English by definition
+    if (Array.isArray(value)) return value.forEach((v, i) => scan(`${path}[${i}]`, v));
+    if (typeof value !== "object") return;
+    if (typeof value.jp === "string") {
+      for (const word of banned) if (value.jp.includes(word)) offenders.push(`${path}: 「${word}」`);
+      return;
+    }
+    for (const [key, v] of Object.entries(value)) scan(`${path}.${key}`, v);
+  };
+  for (const [slug, item] of lib.evidence) scan(slug, item);
+  scan("profile", lib.profile);
+  scan("capabilities", lib.capabilities);
+  lib.theses.forEach((t) => scan(`thesis:${t.id}`, t));
+  lib.chapters.forEach((c) => scan(`chapter:${c.id}`, c));
+  lib.roles.forEach((r) => scan(`role:${r.id}`, r));
+  lenses.forEach((l) => scan(`lens:${l.slug}`, l));
+  assert.deepEqual(offenders, [], `transliterated katakana in the Japanese:\n  ${offenders.join("\n  ")}`);
+});
+
+test("the Claim Guard no longer forces bad writing to get past it", () => {
+  // It rejected the "30" in "a question worth thirty minutes", which is not a
+  // claim about experience. A guard that degrades the copy is a broken guard.
+  const lens = clone(byslug("default"));
+  lens.cta.body = { en: "Or a question worth 30 minutes.", jp: "あるいは、30 分話すだけの価値がある問い。" };
+  assert.deepEqual(validateLens(lens, lib).filter((e) => /Claim Guard/.test(e)), []);
+
+  // It must still reject an invented achievement.
+  lens.cta.body = { en: "I have led 400 designers.", jp: "400 人のデザイナーを率いた。" };
+  assert.ok(validateLens(lens, lib).some((e) => /Claim Guard/.test(e)));
 });

@@ -17,6 +17,24 @@ const STATUS_LABEL = {
 };
 const status = (value) => `<span class="pill pill--status">${t(STATUS_LABEL[value] ?? value)}</span>`;
 
+// The input vocabulary is the argument on these cards, so it is bilingual.
+// These are the exact words the hand-built interactive.html uses.
+const INPUT_LABEL = {
+  Voice: { en: "Voice", jp: "声" }, Face: { en: "Face", jp: "表情" },
+  Handwriting: { en: "Handwriting", jp: "手描き" }, Typing: { en: "Typing", jp: "タイピング" },
+  Pointer: { en: "Pointer", jp: "ポインタ" }, Body: { en: "Body", jp: "身体" },
+  "Two phones": { en: "Two phones", jp: "2 台のスマホ" },
+  "Every phone": { en: "Every phone", jp: "その場の全端末" },
+};
+const inputLabel = (value) => t(INPUT_LABEL[value] ?? value);
+
+/** A project's name for display: English, with the Japanese title when one exists. */
+function evidenceName(items) {
+  const en = items.map((i) => i.shortTitle ?? i.title).join(" · ");
+  const jp = items.map((i) => i.jpTitle ?? i.shortTitle ?? i.title).join(" · ");
+  return en === jp ? esc(en) : t({ en, jp });
+}
+
 // ── What I'm exploring now ──────────────────────────────────────────────────
 export function exploringSection({ section, lib, ctx }) {
   const cells = section.items.map((id) => {
@@ -60,7 +78,7 @@ export function experimentsSection({ section, lib, ctx }) {
     return `      <article class="exp-card" tabindex="0"${target}>
         <div class="exp-media">${art}</div>
         <div class="card-body">
-          <p class="chips"><span class="pill pill--in">${esc(item.input)}</span>${status(item.status)}</p>
+          <p class="chips"><span class="pill pill--in">${inputLabel(item.input)}</span>${status(item.status)}</p>
           <h3 class="card-title">${esc(item.title)}</h3>
           <p class="card-desc">${tb(summary)}</p>
           ${link}
@@ -92,7 +110,7 @@ export function venturesSection({ section, lib, ctx }) {
       </article>`;
   }).join("\n");
   return `  <section class="band ventures" id="ventures">
-${sectionHead(section.title ?? { en: "Things I'm betting on", jp: "賭けていること" }, section.lede ?? { en: "Not a gallery of side projects. Each one is a belief, the thing built to test it, and the question still open.", jp: "サイドプロジェクトの一覧ではない。それぞれが、ひとつの信念と、それを試すために作ったものと、まだ開いている問い。" })}
+${sectionHead(section.title ?? { en: "Things I'm betting on", jp: "いま賭けていること" }, section.lede ?? { en: "Not a gallery of side projects. Each one is a belief, the thing built to test it, and the question still open.", jp: "サイドプロジェクトの一覧ではない。それぞれが、ひとつの信念と、それを試すために作ったものと、まだ開いている問い。" })}
     <div class="venture-grid">
 ${cards}
     </div>
@@ -111,7 +129,7 @@ export function toolsSection({ section, lib, ctx }) {
       </li>`;
   }).join("\n");
   return `  <section class="band tools" id="tools">
-${sectionHead(section.title ?? { en: "I build the tools I build with", jp: "つくるための道具も、つくる" }, section.lede)}
+${sectionHead(section.title ?? { en: "I build the tools I build with", jp: "道具のほうも、自分でつくる" }, section.lede)}
     <ul class="tool-list">
 ${rows}
     </ul>
@@ -135,7 +153,7 @@ export function careerArcSection({ section, lens, lib, ctx }) {
       </li>`;
   }).join("\n");
   return `  <section class="band career" id="career">
-${sectionHead(section.title ?? { en: "Career arc", jp: "キャリアの流れ" }, section.lede ?? { en: "Twenty years, one instinct. The mediums changed; the move — find the real question, make it tangible, let people react — did not.", jp: "20年、ひとつの勘。媒体は変わっても、本当の問いを見つけ、形にして、人の反応を見るという動きは変わらなかった。" })}
+${sectionHead(section.title ?? { en: "Career arc", jp: "これまでの流れ" }, section.lede ?? { en: "Twenty years, one instinct. The mediums changed; the move — find the real question, make it tangible, let people react — did not.", jp: "20年、ひとつの勘。媒体は変わっても、本当の問いを見つけ、形にして、人の反応を見るという動きは変わらなかった。" })}
     <ol class="arc">
 ${cells}
     </ol>
@@ -151,7 +169,7 @@ export function capabilitiesSection({ section, lens, lib, ctx, usedEvidence }) {
   for (const capId of lens.capabilityPriority) {
     const cap = byId.get(capId);
     const backing = usedEvidence.filter((item) => item.capabilities.some((c) => c.id === capId && c.strength === "strong"));
-    const examples = backing.slice(0, 3).map((item) => esc(item.shortTitle ?? item.title)).join(" · ");
+    const examples = backing.length ? evidenceName(backing.slice(0, 3)) : "";
     rows.get(cap.group).push(`        <li class="cap">
           <span class="cap-label">${t(cap.label)}</span>
           ${cap.note ? `<span class="cap-note">${t(cap.note)}</span>` : ""}
@@ -165,7 +183,7 @@ ${rows.get(g.id).join("\n")}
         </ul>
       </div>`).join("\n");
   return `  <section class="band capabilities" id="capabilities">
-${sectionHead(section.title ?? { en: "Where I can be useful to leadership", jp: "リーダーシップに対して役に立てるところ" }, section.lede)}
+${sectionHead(section.title ?? { en: "Where I can be useful to leadership", jp: "どこで役に立てるか" }, section.lede)}
     <div class="cap-grid">
 ${columns}
     </div>
@@ -176,7 +194,7 @@ ${columns}
 export function studioSection({ section, lib }) {
   const s = lib.profile.studio;
   return `  <section class="band studio" id="studio">
-${sectionHead(section.title ?? { en: "Creativity is everywhere", jp: "創造性はどこにでもある" }, section.lede)}
+${sectionHead(section.title ?? { en: "Creativity is everywhere", jp: "Creativity is everywhere" }, section.lede)}
     <div class="studio-row">
       <p class="studio-note">${tb(s.note)}</p>
       <a class="btn-secondary" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)} ↗</a>

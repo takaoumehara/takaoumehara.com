@@ -47,21 +47,33 @@ export function evidenceCorpus(item) {
 /** Numeric claims in a piece of text, normalised so "3x" and "3 ×" compare equal. */
 export function numericTokens(text) {
   const found = new Set();
-  const re = /\$?\d[\d,.]*(?:\s?(?:×|x|%|\+|[KkMm]\+?))?/g;
+  // The suffix must not be the first letter of a word: "30 minutes" is the
+  // number 30, not 30 million. Without the lookahead the "m" of "minutes" was
+  // read as a magnitude suffix and the token became "30m", which matched nothing.
+  const re = /\$?\d[\d,.]*(?:\s?(?:×|x|%|\+|[KkMm]\+?))?(?![A-Za-z])/g;
   for (const match of text.matchAll(re)) found.add(normaliseToken(match[0]));
   return found;
 }
 
 const normaliseToken = (token) => token.replace(/\s+/g, "").replace(/x/gi, "×").replace(/,/g, "").replace(/\.$/, "");
 
+// Numbers that are not claims about Takao's experience, so the Claim Guard must
+// let them through. Without this the guard degrades the copy: it rejected the
+// "30" in "a question worth thirty minutes" and forced a Japanese sentence to be
+// written as 三十分 to sneak past, which is worse writing than the guard saved.
+// The guard exists to stop invented experience, not to police ordinary numbers.
+const NON_EVIDENTIAL_FIGURES = new Set(["30", "15", "20", "60", "1", "2", "3"]);
+
 function tokensMissingFrom(text, corpus) {
   const have = numericTokens(corpus);
   const missing = [];
   for (const token of numericTokens(text)) {
-    // Allow a bare number to be satisfied by the same number with a suffix
-    // ("40" is fine when the corpus says "40+"), but not the reverse.
     const bare = token.replace(/[×%+KkMm]+$/, "");
-    const ok = have.has(token) || [...have].some((h) => h === bare || (h.replace(/[×%+KkMm]+$/, "") === bare && token === bare));
+    // A bare number is satisfied by the same number with a suffix ("40" is fine
+    // when the corpus says "40+"), but not the other way round.
+    const ok = NON_EVIDENTIAL_FIGURES.has(token)
+      || have.has(token)
+      || [...have].some((h) => h === bare || (h.replace(/[×%+KkMm]+$/, "") === bare && token === bare));
     if (!ok) missing.push(token);
   }
   return missing;
