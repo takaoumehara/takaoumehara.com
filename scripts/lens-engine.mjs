@@ -564,19 +564,348 @@ export function analyzeJobDescription({ jdText, targetRole = '', targetCompany =
   };
 }
 
-// ── 03. OPTIONAL GEMINI LLM REASONING HOOK ──
+// ── 03. MULTI-PROVIDER LLM HOOK (GLOBAL, CHINESE & FREE TIER MODELS) ──
+
+export const LLM_PROVIDERS = {
+  offline: {
+    id: 'offline',
+    name: 'Offline Deterministic (100% Free · No Key)',
+    category: 'Built-in',
+    badge: '100% Private & Free',
+    isFree: true,
+    requiresKey: false,
+    endpoint: '',
+    defaultModel: '',
+    note: 'Runs completely inside your browser. Instant, private, zero cost, zero API keys.'
+  },
+  groq: {
+    id: 'groq',
+    name: 'Groq (100% Free Tier · Ultra-fast)',
+    category: 'Global',
+    badge: 'Free Tier Available',
+    isFree: true,
+    requiresKey: true,
+    endpoint: 'https://api.groq.com/openai/v1/chat/completions',
+    defaultModel: 'llama-3.3-70b-versatile',
+    keyPlaceholder: 'gsk_...',
+    signupUrl: 'https://console.groq.com/keys',
+    note: 'Free tier with ultra-fast inference speeds. Powered by LPU technology.'
+  },
+  openrouter: {
+    id: 'openrouter',
+    name: 'OpenRouter (Free Models Available)',
+    category: 'Aggregator',
+    badge: 'Free Models Available',
+    isFree: true,
+    requiresKey: true,
+    endpoint: 'https://openrouter.ai/api/v1/chat/completions',
+    defaultModel: 'meta-llama/llama-3.3-70b-instruct:free',
+    keyPlaceholder: 'sk-or-v1-...',
+    signupUrl: 'https://openrouter.ai/keys',
+    note: 'Access models marked with :free (Llama 3.3 70B, DeepSeek R1, Qwen 2.5).'
+  },
+  siliconflow: {
+    id: 'siliconflow',
+    name: 'SiliconFlow 硅基流动 (Free Chinese Models)',
+    category: 'Chinese Aggregator',
+    badge: 'Free Hosted Models',
+    isFree: true,
+    requiresKey: true,
+    endpoint: 'https://api.siliconflow.cn/v1/chat/completions',
+    defaultModel: 'Qwen/Qwen2.5-7B-Instruct',
+    keyPlaceholder: 'sk-...',
+    signupUrl: 'https://cloud.siliconflow.cn/account/ak',
+    note: 'Chinese API aggregator hosting free models (Qwen 2.5 7B, GLM-4 9B) with zero token fees.'
+  },
+  gemini: {
+    id: 'gemini',
+    name: 'Google Gemini (Free Tier on AI Studio)',
+    category: 'Global',
+    badge: 'Free Tier Available',
+    isFree: true,
+    requiresKey: true,
+    endpoint: 'https://generativelanguage.googleapis.com/v1beta/models',
+    defaultModel: 'gemini-2.5-flash',
+    keyPlaceholder: 'AIzaSy...',
+    signupUrl: 'https://aistudio.google.com/app/apikey',
+    note: 'Google AI Studio offers a generous free rate-limited tier.'
+  },
+  deepseek: {
+    id: 'deepseek',
+    name: 'DeepSeek 深度求索 (Ultra-Low Cost)',
+    category: 'Chinese Leader',
+    badge: 'Ultra Cheap / Credits',
+    isFree: false,
+    requiresKey: true,
+    endpoint: 'https://api.deepseek.com/chat/completions',
+    defaultModel: 'deepseek-chat',
+    keyPlaceholder: 'sk-...',
+    signupUrl: 'https://platform.deepseek.com/api_keys',
+    note: 'State-of-the-art Chinese frontier model. Extremely economical token pricing.'
+  },
+  kimi: {
+    id: 'kimi',
+    name: 'Kimi / Moonshot AI 月之暗面',
+    category: 'Chinese Leader',
+    badge: 'Free Trial Credits',
+    isFree: false,
+    requiresKey: true,
+    endpoint: 'https://api.moonshot.cn/v1/chat/completions',
+    defaultModel: 'moonshot-v1-8k',
+    keyPlaceholder: 'sk-...',
+    signupUrl: 'https://platform.moonshot.cn/console/api-keys',
+    note: 'Renowned for nuanced context synthesis and bilingual precision.'
+  },
+  openai: {
+    id: 'openai',
+    name: 'OpenAI (GPT-4o mini / GPT-4o)',
+    category: 'Global',
+    badge: 'Paid',
+    isFree: false,
+    requiresKey: true,
+    endpoint: 'https://api.openai.com/v1/chat/completions',
+    defaultModel: 'gpt-4o-mini',
+    keyPlaceholder: 'sk-proj-...',
+    signupUrl: 'https://platform.openai.com/api-keys',
+    note: 'Standard industry benchmark.'
+  },
+  anthropic: {
+    id: 'anthropic',
+    name: 'Anthropic Claude (Haiku / Sonnet)',
+    category: 'Global',
+    badge: 'Paid',
+    isFree: false,
+    requiresKey: true,
+    endpoint: 'https://api.anthropic.com/v1/messages',
+    defaultModel: 'claude-3-5-haiku-20241022',
+    keyPlaceholder: 'sk-ant-api03-...',
+    signupUrl: 'https://console.anthropic.com/settings/keys',
+    note: 'World-class reasoning and design judgment.'
+  },
+  custom: {
+    id: 'custom',
+    name: 'Custom OpenAI-Compatible (Ollama, LM Studio, etc.)',
+    category: 'Custom / Local',
+    badge: 'Universal',
+    isFree: true,
+    requiresKey: false,
+    endpoint: 'http://localhost:11434/v1/chat/completions',
+    defaultModel: 'llama3.2',
+    keyPlaceholder: 'Optional for local',
+    note: 'Connect to any local or self-hosted server adhering to OpenAI specifications.'
+  }
+};
 
 /**
- * Calls the Google Gemini API directly from the client if an API key is present.
- * Falls back transparently to analyzeJobDescription on any network error or missing key.
+ * Extracts and parses a JSON object from any LLM response string.
  */
-export async function analyzeJobDescriptionWithGemini({
+export function extractJsonFromLlm(rawText) {
+  if (!rawText || typeof rawText !== 'string') return null;
+  const match = rawText.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  const candidate = match ? match[1] : rawText.trim();
+  try {
+    return JSON.parse(candidate);
+  } catch {
+    const firstBrace = candidate.indexOf('{');
+    const lastBrace = candidate.lastIndexOf('}');
+    if (firstBrace !== -1 && lastBrace > firstBrace) {
+      return JSON.parse(candidate.slice(firstBrace, lastBrace + 1));
+    }
+    throw new Error('Failed to parse JSON response from LLM');
+  }
+}
+
+/**
+ * Unified LLM client executing direct client-side browser API calls.
+ */
+export async function callLLM({
+  provider = 'offline',
+  apiKey = '',
+  model = '',
+  endpoint = '',
+  systemPrompt = '',
+  userPrompt = '',
+  temperature = 0.2
+}) {
+  if (provider === 'offline' || (!apiKey && provider !== 'custom')) {
+    throw new Error('Offline provider or missing API key');
+  }
+
+  // 1. Google Gemini API
+  if (provider === 'gemini') {
+    const targetModel = model || 'gemini-2.5-flash';
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${targetModel}:generateContent?key=${apiKey}`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [
+          {
+            role: 'user',
+            parts: [
+              { text: systemPrompt },
+              { text: userPrompt }
+            ]
+          }
+        ],
+        generationConfig: {
+          temperature,
+          responseMimeType: 'application/json'
+        }
+      })
+    });
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Gemini API error (${res.status}): ${errText}`);
+    }
+    const data = await res.json();
+    return data.candidates?.[0]?.content?.parts?.[0]?.text;
+  }
+
+  // 2. Anthropic Messages API
+  if (provider === 'anthropic') {
+    const targetModel = model || 'claude-3-5-haiku-20241022';
+    const url = endpoint || 'https://api.anthropic.com/v1/messages';
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: targetModel,
+        max_tokens: 2048,
+        temperature,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Anthropic API error (${res.status}): ${errText}`);
+    }
+    const data = await res.json();
+    return data.content?.[0]?.text;
+  }
+
+  // 3. OpenAI and all OpenAI-compatible endpoints (Groq, OpenRouter, SiliconFlow, DeepSeek, Kimi, Custom)
+  const provConfig = LLM_PROVIDERS[provider] || {};
+  const targetEndpoint = endpoint || provConfig.endpoint || 'https://api.openai.com/v1/chat/completions';
+  const targetModel = model || provConfig.defaultModel || 'gpt-4o-mini';
+
+  const headers = {
+    'Content-Type': 'application/json'
+  };
+  if (apiKey) {
+    headers['Authorization'] = `Bearer ${apiKey}`;
+  }
+  if (provider === 'openrouter') {
+    try {
+      headers['HTTP-Referer'] = window.location.origin;
+      headers['X-Title'] = 'Takao Umehara Lens Studio';
+    } catch {
+      // Node/test environment
+    }
+  }
+
+  const payload = {
+    model: targetModel,
+    temperature,
+    messages: [
+      { role: 'system', content: systemPrompt },
+      { role: 'user', content: userPrompt }
+    ]
+  };
+
+  // Structured json_object where supported
+  if (['openai', 'groq', 'deepseek', 'siliconflow'].includes(provider)) {
+    payload.response_format = { type: 'json_object' };
+  }
+
+  const res = await fetch(targetEndpoint, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify(payload)
+  });
+
+  if (!res.ok) {
+    const errText = await res.text();
+    throw new Error(`${provider.toUpperCase()} API error (${res.status}): ${errText}`);
+  }
+
+  const data = await res.json();
+  return data.choices?.[0]?.message?.content;
+}
+
+/**
+ * Tests connectivity and credentials for a selected LLM provider.
+ */
+export async function testLLMConnection({
+  provider = 'offline',
+  apiKey = '',
+  model = '',
+  endpoint = ''
+}) {
+  if (provider === 'offline') {
+    return { success: true, message: 'Offline deterministic engine is active. Zero configuration needed.' };
+  }
+
+  if (!apiKey && provider !== 'custom') {
+    return { success: false, message: 'Please provide an API key.' };
+  }
+
+  const startTime = Date.now();
+  try {
+    const raw = await callLLM({
+      provider,
+      apiKey,
+      model,
+      endpoint,
+      systemPrompt: 'You are a test service. Output valid JSON ONLY: {"status":"ok"}. No other text.',
+      userPrompt: 'Ping test. Output {"status":"ok"}',
+      temperature: 0
+    });
+
+    const parsed = extractJsonFromLlm(raw);
+    const latencyMs = Date.now() - startTime;
+    const provInfo = LLM_PROVIDERS[provider] || { name: provider };
+
+    if (parsed && typeof parsed === 'object') {
+      return {
+        success: true,
+        latencyMs,
+        message: `✓ Connected to ${provInfo.name} successfully! (${latencyMs}ms)`
+      };
+    }
+    return {
+      success: true,
+      latencyMs,
+      message: `✓ Connected to ${provInfo.name} (${latencyMs}ms)`
+    };
+  } catch (err) {
+    return {
+      success: false,
+      message: `Connection failed: ${err.message}`
+    };
+  }
+}
+
+/**
+ * Comprehensive Job Description narrative analysis with any chosen LLM provider.
+ * Automatically falls back to deterministic analyzeJobDescription on any error.
+ */
+export async function analyzeJobDescriptionWithLLM({
   jdText,
   targetRole = '',
   targetCompany = '',
-  apiKey = ''
+  provider = 'offline',
+  apiKey = '',
+  model = '',
+  endpoint = ''
 }) {
-  if (!apiKey) {
+  if (provider === 'offline' || (!apiKey && provider !== 'custom')) {
     return analyzeJobDescription({ jdText, targetRole, targetCompany });
   }
 
@@ -620,40 +949,25 @@ Analyze the user's Job Description and output a strictly valid JSON object match
 }
 Return raw JSON ONLY. No markdown fences.`;
 
+  const userPrompt = `Target Company: ${targetCompany}\nTarget Role: ${targetRole}\n\nJob Description / Brief:\n${jdText}`;
+
   try {
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [
-          {
-            role: 'user',
-            parts: [
-              { text: systemPrompt },
-              { text: `Target Company: ${targetCompany}\nTarget Role: ${targetRole}\n\nJob Description / Brief:\n${jdText}` }
-            ]
-          }
-        ],
-        generationConfig: {
-          temperature: 0.2,
-          responseMimeType: 'application/json'
-        }
-      })
+    const rawJson = await callLLM({
+      provider,
+      apiKey,
+      model,
+      endpoint,
+      systemPrompt,
+      userPrompt,
+      temperature: 0.2
     });
 
-    if (!response.ok) {
-      console.warn('Gemini API call failed, falling back to deterministic matcher:', response.status);
-      return analyzeJobDescription({ jdText, targetRole, targetCompany });
-    }
-
-    const data = await response.json();
-    const rawJson = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!rawJson) {
+      console.warn(`LLM (${provider}) returned empty response, falling back to deterministic matcher`);
       return analyzeJobDescription({ jdText, targetRole, targetCompany });
     }
 
-    const parsed = JSON.parse(rawJson);
+    const parsed = extractJsonFromLlm(rawJson);
 
     // Validate that project IDs exist in DB
     const validatedProjects = (parsed.featuredProjects || [])
@@ -661,12 +975,14 @@ Return raw JSON ONLY. No markdown fences.`;
       .slice(0, 5);
 
     if (validatedProjects.length === 0) {
+      console.warn(`LLM (${provider}) produced 0 valid project IDs, falling back to deterministic matcher`);
       return analyzeJobDescription({ jdText, targetRole, targetCompany });
     }
 
     const companyName = targetCompany.trim();
     const roleName = targetRole.trim() || 'Role Perspective';
     const eyebrow = parsed.eyebrow || (companyName ? `${companyName} · ${roleName}` : roleName);
+    const providerName = LLM_PROVIDERS[provider]?.name || provider;
 
     return {
       id: `lens-${Date.now().toString(36)}`,
@@ -735,11 +1051,29 @@ Return raw JSON ONLY. No markdown fences.`;
         directMatches: parsed.directMatches || [],
         transferable: parsed.transferable || [],
         gaps: parsed.gaps || [],
-        reasoning: 'Synthesized via Gemini API with strict fact-boundary enforcement.'
+        reasoning: `Synthesized via ${providerName} (${model || 'default'}) with strict fact-boundary enforcement.`
       }
     };
   } catch (err) {
-    console.warn('Error during Gemini API inference, falling back:', err);
+    console.warn(`Error during ${provider} inference, falling back:`, err);
     return analyzeJobDescription({ jdText, targetRole, targetCompany });
   }
+}
+
+/**
+ * Backward compatibility wrapper for Gemini
+ */
+export async function analyzeJobDescriptionWithGemini({
+  jdText,
+  targetRole = '',
+  targetCompany = '',
+  apiKey = ''
+}) {
+  return analyzeJobDescriptionWithLLM({
+    jdText,
+    targetRole,
+    targetCompany,
+    provider: 'gemini',
+    apiKey
+  });
 }

@@ -12,7 +12,9 @@ import {
 
 import {
   analyzeJobDescription,
-  analyzeJobDescriptionWithGemini,
+  analyzeJobDescriptionWithLLM,
+  testLLMConnection,
+  LLM_PROVIDERS,
   encodeLensToUrlParam,
   decodeLensFromUrlParam
 } from './lens-engine.mjs';
@@ -47,10 +49,31 @@ You will architect complex state systems, cross-platform design tokens, interact
 
 // ── APPLICATION STATE ──
 let currentLens = null;
-let geminiApiKey = '';
+
+// ── MULTI-PROVIDER LLM CONFIGURATION ──
+const LLM_CONFIG_STORAGE_KEY = 'takao_studio_llm_config';
+
+let llmConfig = {
+  provider: 'offline',
+  model: '',
+  endpoint: '',
+  keys: {}
+};
 
 try {
-  geminiApiKey = localStorage.getItem('takao_gemini_api_key') || '';
+  const saved = localStorage.getItem(LLM_CONFIG_STORAGE_KEY);
+  if (saved) {
+    const parsed = JSON.parse(saved);
+    llmConfig = { ...llmConfig, ...parsed, keys: { ...llmConfig.keys, ...(parsed.keys || {}) } };
+  } else {
+    // Backward compatibility: import old takao_gemini_api_key if present
+    const legacyKey = localStorage.getItem('takao_gemini_api_key');
+    if (legacyKey) {
+      llmConfig.provider = 'gemini';
+      llmConfig.keys.gemini = legacyKey;
+      llmConfig.model = 'gemini-2.5-flash';
+    }
+  }
 } catch {
   // Ignore local storage error
 }
@@ -87,9 +110,24 @@ const exportCodeBlock = document.querySelector('#export-code-block');
 const copyCodeBtn = document.querySelector('#copy-code-btn');
 const closeExportBtn = document.querySelector('#close-export-btn');
 
+// Multi-Provider Settings Modal Elements
+const activeProviderBadge = document.querySelector('#active-provider-badge');
+const openSettingsBtn = document.querySelector('#open-settings-btn');
+const closeSettingsBtn = document.querySelector('#close-settings-btn');
+const settingsDialog = document.querySelector('#settings-dialog');
+const providerSelect = document.querySelector('#llm-provider-select');
+const providerBadge = document.querySelector('#provider-badge');
+const providerSignupLink = document.querySelector('#provider-signup-link');
+const providerNote = document.querySelector('#provider-note');
+const apiKeyGroup = document.querySelector('#api-key-group');
 const apiKeyInput = document.querySelector('#api-key-input');
-const saveApiKeyBtn = document.querySelector('#save-api-key-btn');
-const apiKeyNotice = document.querySelector('#api-key-notice');
+const toggleKeyVisibilityBtn = document.querySelector('#toggle-key-visibility');
+const advancedDetails = document.querySelector('#llm-advanced-details');
+const modelNameInput = document.querySelector('#model-name-input');
+const endpointUrlInput = document.querySelector('#endpoint-url-input');
+const testConnectionBtn = document.querySelector('#test-connection-btn');
+const testStatusDisplay = document.querySelector('#connection-test-status');
+const saveLlmSettingsBtn = document.querySelector('#save-llm-settings-btn');
 
 const toast = document.querySelector('#studio-toast');
 
@@ -478,25 +516,155 @@ document.querySelectorAll('[data-sample]').forEach((btn) => {
   });
 });
 
-// ── API KEY MANAGEMENT ──
-if (apiKeyInput) apiKeyInput.value = geminiApiKey;
+// ── MULTI-PROVIDER SETTINGS MANAGEMENT ──
+function updateActiveProviderBadge() {
+  if (!activeProviderBadge) return;
+  const prov = LLM_PROVIDERS[llmConfig.provider] || LLM_PROVIDERS.offline;
+  if (llmConfig.provider === 'offline') {
+    activeProviderBadge.textContent = '🔒 Offline Engine';
+    activeProviderBadge.title = 'Deterministic matching · 100% Free · No network';
+  } else if (llmConfig.provider === 'groq') {
+    activeProviderBadge.textContent = '⚡ Groq (Llama 3.3 Free)';
+    activeProviderBadge.title = `Model: ${llmConfig.model || prov.defaultModel}`;
+  } else if (llmConfig.provider === 'openrouter') {
+    activeProviderBadge.textContent = '🌐 OpenRouter (Free)';
+    activeProviderBadge.title = `Model: ${llmConfig.model || prov.defaultModel}`;
+  } else if (llmConfig.provider === 'siliconflow') {
+    activeProviderBadge.textContent = '🇨🇳 硅基流动 (Qwen Free)';
+    activeProviderBadge.title = `Model: ${llmConfig.model || prov.defaultModel}`;
+  } else if (llmConfig.provider === 'kimi') {
+    activeProviderBadge.textContent = '🇨🇳 Kimi 月之暗面';
+    activeProviderBadge.title = `Model: ${llmConfig.model || prov.defaultModel}`;
+  } else if (llmConfig.provider === 'deepseek') {
+    activeProviderBadge.textContent = '🇨🇳 DeepSeek 深度求索';
+    activeProviderBadge.title = `Model: ${llmConfig.model || prov.defaultModel}`;
+  } else if (llmConfig.provider === 'gemini') {
+    activeProviderBadge.textContent = '✨ Gemini (Google)';
+    activeProviderBadge.title = `Model: ${llmConfig.model || prov.defaultModel}`;
+  } else if (llmConfig.provider === 'openai') {
+    activeProviderBadge.textContent = '🧠 OpenAI (GPT)';
+    activeProviderBadge.title = `Model: ${llmConfig.model || prov.defaultModel}`;
+  } else if (llmConfig.provider === 'anthropic') {
+    activeProviderBadge.textContent = '🎭 Claude (Anthropic)';
+    activeProviderBadge.title = `Model: ${llmConfig.model || prov.defaultModel}`;
+  } else {
+    activeProviderBadge.textContent = '⚙️ Custom API';
+    activeProviderBadge.title = `Model: ${llmConfig.model || 'Custom'}`;
+  }
+}
 
-saveApiKeyBtn?.addEventListener('click', () => {
-  const key = apiKeyInput?.value.trim() || '';
-  geminiApiKey = key;
-  try {
-    if (key) {
-      localStorage.setItem('takao_gemini_api_key', key);
-      showToast('✓ Gemini API Key saved locally!');
-      if (apiKeyNotice) apiKeyNotice.textContent = 'Active: Using Gemini 2.5 Flash for deep synthesis.';
+function syncSettingsModal(providerId) {
+  const prov = LLM_PROVIDERS[providerId] || LLM_PROVIDERS.offline;
+  if (providerBadge) providerBadge.textContent = prov.badge || '';
+  if (providerNote) providerNote.textContent = prov.note || '';
+
+  if (providerSignupLink) {
+    if (prov.signupUrl) {
+      providerSignupLink.href = prov.signupUrl;
+      providerSignupLink.style.display = 'inline';
     } else {
-      localStorage.removeItem('takao_gemini_api_key');
-      showToast('Gemini API Key removed. Using offline deterministic engine.');
-      if (apiKeyNotice) apiKeyNotice.textContent = 'Mode: Offline deterministic semantic matcher.';
+      providerSignupLink.style.display = 'none';
     }
+  }
+
+  if (providerId === 'offline') {
+    if (apiKeyGroup) apiKeyGroup.style.display = 'none';
+    if (advancedDetails) advancedDetails.style.display = 'none';
+    if (testConnectionBtn) testConnectionBtn.style.display = 'none';
+  } else {
+    if (apiKeyGroup) apiKeyGroup.style.display = 'block';
+    if (advancedDetails) advancedDetails.style.display = 'block';
+    if (testConnectionBtn) testConnectionBtn.style.display = 'inline-block';
+    if (apiKeyInput) {
+      apiKeyInput.placeholder = prov.keyPlaceholder || 'Paste API Key here...';
+      apiKeyInput.value = llmConfig.keys[providerId] || '';
+    }
+    if (modelNameInput) {
+      modelNameInput.value = (llmConfig.provider === providerId && llmConfig.model) ? llmConfig.model : (prov.defaultModel || '');
+    }
+    if (endpointUrlInput) {
+      endpointUrlInput.value = (llmConfig.provider === providerId && llmConfig.endpoint) ? llmConfig.endpoint : (prov.endpoint || '');
+    }
+  }
+
+  if (testStatusDisplay) {
+    testStatusDisplay.className = 'connection-test-status';
+    testStatusDisplay.textContent = '';
+  }
+}
+
+openSettingsBtn?.addEventListener('click', () => {
+  if (providerSelect) providerSelect.value = llmConfig.provider || 'offline';
+  syncSettingsModal(llmConfig.provider || 'offline');
+  settingsDialog?.showModal();
+});
+
+closeSettingsBtn?.addEventListener('click', () => {
+  settingsDialog?.close();
+});
+
+providerSelect?.addEventListener('change', (e) => {
+  syncSettingsModal(e.target.value);
+});
+
+toggleKeyVisibilityBtn?.addEventListener('click', () => {
+  if (!apiKeyInput) return;
+  const isPassword = apiKeyInput.type === 'password';
+  apiKeyInput.type = isPassword ? 'text' : 'password';
+  toggleKeyVisibilityBtn.textContent = isPassword ? 'Hide' : 'Show';
+});
+
+testConnectionBtn?.addEventListener('click', async () => {
+  const provider = providerSelect?.value || 'offline';
+  const apiKey = apiKeyInput?.value.trim() || '';
+  const model = modelNameInput?.value.trim() || '';
+  const endpoint = endpointUrlInput?.value.trim() || '';
+
+  if (!testStatusDisplay) return;
+  testStatusDisplay.className = 'connection-test-status is-visible connection-test-status--pending';
+  testStatusDisplay.textContent = 'Testing connection and authentication...';
+  testConnectionBtn.disabled = true;
+
+  try {
+    const result = await testLLMConnection({ provider, apiKey, model, endpoint });
+    if (result.success) {
+      testStatusDisplay.className = 'connection-test-status is-visible connection-test-status--success';
+      testStatusDisplay.textContent = result.message;
+    } else {
+      testStatusDisplay.className = 'connection-test-status is-visible connection-test-status--error';
+      testStatusDisplay.textContent = result.message;
+    }
+  } catch (err) {
+    testStatusDisplay.className = 'connection-test-status is-visible connection-test-status--error';
+    testStatusDisplay.textContent = `Connection error: ${err.message}`;
+  } finally {
+    testConnectionBtn.disabled = false;
+  }
+});
+
+saveLlmSettingsBtn?.addEventListener('click', () => {
+  const provider = providerSelect?.value || 'offline';
+  const apiKey = apiKeyInput?.value.trim() || '';
+  const model = modelNameInput?.value.trim() || '';
+  const endpoint = endpointUrlInput?.value.trim() || '';
+
+  llmConfig.provider = provider;
+  if (provider !== 'offline') {
+    llmConfig.keys[provider] = apiKey;
+    llmConfig.model = model;
+    llmConfig.endpoint = endpoint;
+  }
+
+  try {
+    localStorage.setItem(LLM_CONFIG_STORAGE_KEY, JSON.stringify(llmConfig));
   } catch (err) {
     console.error('Storage error:', err);
   }
+
+  updateActiveProviderBadge();
+  const provName = LLM_PROVIDERS[provider]?.name || provider;
+  showToast(`✓ AI Engine configured: ${provName}`);
+  settingsDialog?.close();
 });
 
 // ── MAIN ANALYZE ACTION ──
@@ -513,16 +681,23 @@ analyzeBtn?.addEventListener('click', async () => {
 
   analyzeBtn.disabled = true;
   analyzeBtn.textContent = 'Analyzing & Framing...';
-  setLiveStatus('Analyzing job description against career evidence library...');
+  const provider = llmConfig.provider || 'offline';
+  const provInfo = LLM_PROVIDERS[provider] || LLM_PROVIDERS.offline;
+  setLiveStatus(`Analyzing job description using ${provInfo.name}...`);
 
   try {
     let resultLens = null;
-    if (geminiApiKey) {
-      resultLens = await analyzeJobDescriptionWithGemini({
+    const activeKey = llmConfig.keys[provider] || '';
+
+    if (provider !== 'offline' && (activeKey || provider === 'custom')) {
+      resultLens = await analyzeJobDescriptionWithLLM({
         jdText,
         targetRole,
         targetCompany,
-        apiKey: geminiApiKey
+        provider,
+        apiKey: activeKey,
+        model: llmConfig.model || provInfo.defaultModel,
+        endpoint: llmConfig.endpoint || provInfo.endpoint
       });
     } else {
       resultLens = analyzeJobDescription({
@@ -549,7 +724,7 @@ analyzeBtn?.addEventListener('click', async () => {
 
     await updatePublishPreview();
     setLiveStatus('Analysis complete. Lens created with tailored evidence.');
-    showToast('✓ Analysis complete! Review and adjust framing below.');
+    showToast(`✓ Analysis complete using ${provInfo.name}!`);
   } catch (err) {
     console.error('Analysis failed:', err);
     showToast('Analysis error occurred. Falling back to default.');
@@ -561,6 +736,8 @@ analyzeBtn?.addEventListener('click', async () => {
 
 // Initialize empty or restore from URL if present
 async function initStudio() {
+  updateActiveProviderBadge();
+
   const params = new URLSearchParams(window.location.search);
   const customParam = params.get('c') || params.get('lens_data');
   if (customParam) {

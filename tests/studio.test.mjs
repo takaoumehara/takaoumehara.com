@@ -94,4 +94,41 @@ describe('Lens Studio Engine', () => {
     const resultEmpty = await decodeLensFromUrlParam('');
     assert.equal(resultEmpty, null);
   });
+
+  it('exposes all expected LLM providers including Chinese and Free tier options', async () => {
+    const { LLM_PROVIDERS, testLLMConnection, analyzeJobDescriptionWithLLM } = await import('../scripts/lens-engine.mjs');
+    
+    // Check required providers exist
+    const expected = ['offline', 'groq', 'openrouter', 'siliconflow', 'gemini', 'kimi', 'deepseek', 'openai', 'anthropic', 'custom'];
+    for (const key of expected) {
+      assert.ok(LLM_PROVIDERS[key], `Provider ${key} must exist in LLM_PROVIDERS`);
+      assert.ok(LLM_PROVIDERS[key].name, `Provider ${key} must have a name`);
+    }
+
+    // Check free tier metadata
+    assert.equal(LLM_PROVIDERS.offline.isFree, true);
+    assert.equal(LLM_PROVIDERS.groq.isFree, true);
+    assert.equal(LLM_PROVIDERS.openrouter.isFree, true);
+    assert.equal(LLM_PROVIDERS.siliconflow.isFree, true);
+
+    // Test offline connection test
+    const testResult = await testLLMConnection({ provider: 'offline' });
+    assert.equal(testResult.success, true);
+
+    // Test missing key error for paid/key-requiring provider
+    const missingKeyResult = await testLLMConnection({ provider: 'openai', apiKey: '' });
+    assert.equal(missingKeyResult.success, false);
+
+    // Test analyzeJobDescriptionWithLLM fallback when offline or error
+    const lens = await analyzeJobDescriptionWithLLM({
+      jdText: 'Lead AI product architecture for enterprise customers',
+      targetRole: 'VP Product',
+      targetCompany: 'Acme',
+      provider: 'offline'
+    });
+    assert.ok(lens);
+    assert.equal(lens.isCustom, true);
+    assert.equal(lens.analysis.targetCompany, 'Acme');
+  });
 });
+

@@ -30,6 +30,7 @@
     </a>
 
     <nav class="utility-nav" aria-label="Studio controls">
+      <span id="active-provider-badge" class="studio-badge studio-badge--active-llm" title="Active Reasoning Engine">🔒 Offline Engine</span>
       <button type="button" class="studio-pill-btn" id="open-settings-btn">
         <span aria-hidden="true">⚙</span> AI Settings
       </button>
@@ -217,23 +218,87 @@
     </div>
   </dialog>
 
-  <!-- API KEY SETTINGS MODAL -->
+  <!-- API KEY & MULTI-PROVIDER LLM SETTINGS MODAL -->
   <dialog id="settings-dialog" class="studio-dialog" aria-labelledby="settings-dialog-title">
     <div class="studio-dialog__content">
       <header class="studio-dialog__header">
-        <h3 id="settings-dialog-title">AI Engine Settings</h3>
+        <h3 id="settings-dialog-title">AI Engine &amp; Model Selection</h3>
         <button type="button" id="close-settings-btn" class="icon-button" aria-label="Close dialog">×</button>
       </header>
       <p class="studio-dialog__desc">
-        By default, Lens Studio uses an offline deterministic semantic matching engine (100% private, zero API key needed). You can optionally provide a Google Gemini API Key for deep LLM narrative synthesis. The key is stored locally in your browser only.
+        Select your AI provider or use the built-in offline engine. Free global and Chinese models (Groq, OpenRouter, SiliconFlow) are supported with zero token costs. All keys are stored locally in your browser.
       </p>
+
       <label class="studio-field">
-        <span class="studio-field__label">Google Gemini API Key (Optional)</span>
-        <input type="password" id="api-key-input" class="studio-input" placeholder="AIzaSy...">
+        <span class="studio-field__label">Select AI Provider</span>
+        <select id="llm-provider-select" class="studio-select">
+          <optgroup label="Free &amp; Offline (Zero Token Cost)">
+            <option value="offline">🔒 Offline Deterministic Matcher (100% Free · No Key)</option>
+            <option value="groq">⚡ Groq Cloud (100% Free Tier · Ultra-fast Llama 3.3 70B)</option>
+            <option value="openrouter">🌐 OpenRouter (Free Models :free · Llama / DeepSeek / Qwen)</option>
+            <option value="siliconflow">🇨🇳 硅基流动 SiliconFlow (Free Chinese Models · Qwen 2.5 / GLM)</option>
+            <option value="gemini">✨ Google Gemini (Free Tier on Google AI Studio)</option>
+          </optgroup>
+          <optgroup label="Chinese Frontier Models (中華系 高コスパ)">
+            <option value="kimi">🇨🇳 Moonshot AI / Kimi 月之暗面 (Free Trial Credits)</option>
+            <option value="deepseek">🇨🇳 DeepSeek 深度求索 (Ultra-low cost)</option>
+          </optgroup>
+          <optgroup label="Global Commercial Models">
+            <option value="openai">🧠 OpenAI (GPT-4o mini / GPT-4o)</option>
+            <option value="anthropic">🎭 Anthropic Claude (Haiku / Sonnet 3.5)</option>
+          </optgroup>
+          <optgroup label="Custom / Local">
+            <option value="custom">⚙️ Custom OpenAI-Compatible (Ollama, LM Studio, etc.)</option>
+          </optgroup>
+        </select>
       </label>
-      <p id="api-key-notice" class="studio-micro-note">Mode: Offline deterministic semantic matcher.</p>
-      <div class="studio-dialog__actions">
-        <button type="button" id="save-api-key-btn" class="button-action">Save Settings</button>
+
+      <!-- PROVIDER INFO CARD -->
+      <div id="provider-info-card" class="provider-info-card" style="margin-top: var(--space-3);">
+        <div class="provider-info-card__header">
+          <span id="provider-badge" class="studio-badge">100% Free</span>
+          <a id="provider-signup-link" href="#" target="_blank" rel="noopener noreferrer" class="provider-link" style="display: none;">Get API Key ↗</a>
+        </div>
+        <p id="provider-note" class="provider-info-card__note">Runs completely inside your browser. Instant, private, zero cost, zero API keys.</p>
+      </div>
+
+      <!-- KEY INPUT -->
+      <div id="api-key-group" class="studio-field" style="margin-top: var(--space-4); display: none;">
+        <div class="studio-field__header-row">
+          <span class="studio-field__label">API Key</span>
+          <button type="button" id="toggle-key-visibility" class="text-btn-subtle" aria-label="Toggle password visibility">Show</button>
+        </div>
+        <input type="password" id="api-key-input" class="studio-input studio-input--mono" placeholder="Paste API Key here...">
+      </div>
+
+      <!-- ADVANCED / MODEL & ENDPOINT -->
+      <details class="studio-details" id="llm-advanced-details" style="margin-top: var(--space-4); display: none;">
+        <summary class="studio-details__summary">Advanced Model &amp; Endpoint Options</summary>
+        <div class="studio-details__body">
+          <label class="studio-field" style="margin-top: var(--space-3);">
+            <span class="studio-field__label">Model Identifier</span>
+            <input type="text" id="model-name-input" class="studio-input studio-input--mono" placeholder="e.g. llama-3.3-70b-versatile">
+          </label>
+
+          <label class="studio-field" style="margin-top: var(--space-3);">
+            <span class="studio-field__label">API Endpoint Base URL</span>
+            <input type="text" id="endpoint-url-input" class="studio-input studio-input--mono" placeholder="https://api...">
+          </label>
+        </div>
+      </details>
+
+      <!-- TEST STATUS -->
+      <div id="connection-test-status" class="connection-test-status" aria-live="polite"></div>
+
+      <div class="studio-dialog__actions studio-dialog__actions--split" style="margin-top: var(--space-6);">
+        <div class="action-left">
+          <button type="button" id="test-connection-btn" class="studio-pill-btn" style="display: none;">
+            Test Connection 🔌
+          </button>
+        </div>
+        <div class="action-right">
+          <button type="button" id="save-llm-settings-btn" class="button-action">Save Settings</button>
+        </div>
       </div>
     </div>
   </dialog>
@@ -241,15 +306,6 @@
   <div id="studio-toast" class="studio-toast" role="status" aria-live="polite"></div>
   <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-studio-status></div>
 
-  <script>
-    // Settings dialog toggles
-    const settingsDialog = document.querySelector('#settings-dialog');
-    document.querySelector('#open-settings-btn')?.addEventListener('click', () => settingsDialog?.showModal());
-    document.querySelector('#close-settings-btn')?.addEventListener('click', () => settingsDialog?.close());
-    document.querySelector('#save-api-key-btn')?.addEventListener('click', () => {
-      setTimeout(() => settingsDialog?.close(), 300);
-    });
-  </script>
   <script type="module" src="./scripts/studio-app.mjs"></script>
 </body>
 </html>

@@ -2958,3 +2958,120 @@ main,
   transform: translateY(0);
 }
 
+/* Multi-Provider LLM Modal Additions */
+.studio-badge--active-llm {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
+  font-size: 0.75rem;
+  padding: 0.25rem 0.625rem;
+  white-space: nowrap;
+}
+
+.studio-dialog__actions--split {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.provider-info-card {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: var(--space-3) var(--space-4);
+}
+
+.provider-info-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.provider-info-card__note {
+  font-size: 0.8125rem;
+  color: var(--color-ink-secondary);
+  line-height: 1.4;
+  margin: 0;
+}
+
+.provider-link {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.studio-field__header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-1);
+}
+
+.text-btn-subtle {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-ink-secondary);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.text-btn-subtle:hover,
+.text-btn-subtle:focus-visible {
+  color: var(--color-ink);
+}
+
+.studio-details {
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-3);
+}
+
+.studio-details__summary {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-ink-secondary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.studio-details__summary:hover {
+  color: var(--color-ink);
+}
+
+.connection-test-status {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  margin-top: var(--space-4);
+  padding: var(--space-2) var(--space-3);
+  border-radius: 4px;
+  display: none;
+}
+
+.connection-test-status.is-visible {
+  display: block;
+}
+
+.connection-test-status--success {
+  background: rgba(46, 125, 50, 0.1);
+  border: 1px solid #2e7d32;
+  color: #1b5e20;
+}
+
+.connection-test-status--error {
+  background: rgba(198, 40, 40, 0.1);
+  border: 1px solid #c62828;
+  color: #b71c1c;
+}
+
+.connection-test-status--pending {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink-secondary);
+}
+
