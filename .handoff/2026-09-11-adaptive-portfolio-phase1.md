@@ -7,11 +7,11 @@ Handoff: `.handoff/2026-09-11-adaptive-portfolio-phase1.md`
 Passphrase: 「一人の梅原、ひとつの証拠、複数のレンズ」
 Goal: サイトを adaptive career narrative system に作り替える。Phase 1 =
   構造化された Career Evidence Library から `/` と `/lens/<slug>` を生成する仕組み。
-State: **実装完了・push 済み・Draft PR #15 open。** テスト 44/44 通過、
-  Vercel preview Ready、マージ競合なし、レビューコメント 0。
-  ブランチ `claude/stoic-pasteur-zhusuy`、HEAD `d5e6c6f`。
-Next: **下の「Immediate next steps」1 番**（Gemini 製 studio.html のエンジン部分レビュー）。
-  これは中断されたまま未着手。
+State: **Phase 1 実装 + 日本語の全面書き直し + レイアウト統一まで完了・push 済み。**
+  Draft PR #15 open、テスト **49/49 通過**、マージ競合なし、レビューコメント 0。
+  ブランチ `claude/stoic-pasteur-zhusuy`、HEAD `d3141e9`。
+Next: **本人の判断待ちが 2 つ**（下記「本人が決めること」と「未決」）。
+  コードとして着手待ちのものは無い。
 Read first: `docs/adaptive-portfolio-architecture.md`, `src/schema.d.ts`, `src/validate.mjs`
 Running: このセッションは PR #15 を subscribe 中。1 時間ごとの self check-in を
   `send_later` で再武装している（trigger は毎回 ID が変わる。PR が merge/close
@@ -23,6 +23,8 @@ Running: このセッションは PR #15 を subscribe 中。1 時間ごとの s
 |---|---|---|---|
 | superforge.md | agreed | 2026-09-11 | — **会話=日本語 / ファイル=日本語**。pin: 推測数値を書かない・カテゴリ名（AI Products / Playable）・Agentic UX は能力/thesis ラベルとしては可 |
 | adaptive-portfolio-architecture.md | agreed（§12 に実装状況） | 2026-09-11 | 5 件、本人確認待ち（下記「本人が決めること」） |
+| japanese-voice.md | agreed | 2026-09-11 | — 日本語の基準。テストが強制する |
+| gemini-studio-salvage-review.md | agreed | 2026-09-11 | §5 の「2 実装のどちらを畳むか」が未決 |
 | portfolio-ia.md | agreed | 2026-08-12 | Innovation Workshop は証拠写真が入るまで 6 番目のカテゴリにしない |
 | landing-design.md | **superseded** | 2026-08-09 | 対象だった `index.html` は生成物になった。旧版は `index-console.html` |
 | landing-hero.md | **superseded** | 2026-08-10 | 同上 |
@@ -35,7 +37,7 @@ Running: このセッションは PR #15 を subscribe 中。1 時間ごとの s
 | verification.md | — | — | **未実施**。ただし Chromium 実測は PR #15 に記録（1440/390px 横スクロール 0、JS エラー 0） |
 | security.md | — | — | **未実施**（静的サイト・秘密情報なし） |
 | ship-readiness.md | — | — | **未実施** |
-| a11y / accessibility.md | — | — | **未実施**。lens ページは未監査 |
+| a11y / accessibility.md | — | — | **未実施**。lens ページは未監査。`codex` ブランチに Playwright+axe の実装あり（回収候補） |
 | failforward.md | — | — | **存在しない**（0 件） |
 
 ## 本人が決めること（コードではなくデータ）
@@ -46,17 +48,27 @@ Running: このセッションは PR #15 を subscribe 中。1 時間ごとの s
 4. `projects/koji-fizz.html` の "produce and direct" 表記 vs データの producer / creative partner
 5. MyBrainSpec・Moime の thesis / question は `_notes` に「要確認」と記載
 
-## Immediate next steps
+## 未決（コードではなく判断）
 
-1. **未着手・中断**: Gemini が作った別デプロイのレビュー。
-   `https://takaoumehara-j7j3yoaqu-...vercel.app/studio.html` と
-   `https://takaoumehara-b0dlivc1l-...vercel.app/`。
-   見た目ではなく **エンジン・動く部分に流用できるものがあるか**。
-   ⚠️ `studio.html` は **この repo に存在しない**（別プロジェクトか別ブランチ）。
-   ⚠️ このセッションのネットワークポリシーは `*.vercel.app` を遮断する
-   （CONNECT 403）。ソースを repo に持ってくるか、HTML を貼ってもらう必要がある。
-2. Preview で `/`・`/lens/creative`・`/lens/ai-product` を目視確認 → PR #15 の判断。
-3. Phase 2（JD → 解析 → Lens 草案）は `src/analyze/` に閉じて乗る。Phase 1 は触らない。
+1. **カテゴリページ（interactive / ai-products / brand）を新方針で残すか。**
+   今回は「存在を前提に揃える」だけ実施。幅・列数・サムネイル比率は統一済み。
+   残す/畳むの判断はまだ。
+2. **`codex/monumental-editorial-redesign` をどうするか。**
+   同じ問題を解く競合実装。`docs/gemini-studio-salvage-review.md` §5 が比較表。
+   結論は「そちらを畳む。ただし JD 解析の実装経験と Playwright+axe テストは回収する」。
+3. Preview で `/`・`/lens/creative`・`/lens/ai-product` を目視確認 → PR #15 のマージ判断。
+
+## 完了済み（このセッション）
+
+- Gemini/Codex 製 Lens Studio のサルベージレビュー → `docs/gemini-studio-salvage-review.md`
+- 日本語の全面書き直し。**読者が見る文字列の英語残り 216 → 0**。基準は `docs/japanese-voice.md`
+- レイアウト統一。全 6 ページで 1440px のグリッド左端 152px、390px で 20px、横スクロール 0
+- 見つけて直したバグ 4 件（Claim Guard の数字抽出・検査範囲、CSS 詳細度で言語切替が負ける、
+  カード見出しが日本語タイトルを使わない）。すべてテスト化
+
+## Phase 2 の置き場
+
+JD → 解析 → Lens 草案は `src/analyze/` に閉じて乗る。Phase 1 のファイルは触らない。
 
 ## Files to read first
 

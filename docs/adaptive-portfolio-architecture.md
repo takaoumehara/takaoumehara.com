@@ -498,3 +498,25 @@ Phase 2（JD 解析）は **`src/analyze/`** に閉じる。Phase 1 のファイ
 | Lens | default → `/`、creative → `/lens/creative`、ai-product → `/lens/ai-product` |
 | 検証 | `tests/lens-system.test.mjs` 22 件 + 既存 22 件 = 44 件すべて通過。Chromium で 1440 / 390px の横スクロール 0、JS エラー 0 |
 | 要確認（本人） | ① `roles.json` の在籍年（about.html に年が無い）② `executive-partnership` は moderate の証拠しか無い ③ AgentReady Local はサイトに事実が無いため未登録 ④ KOJI FIZZ のケーススタディページの "produce and direct" 表記をデータ側の記録に合わせる ⑤ `_notes` に "should be confirmed" と書かれた venture の thesis / question |
+
+## 13. 日本語とレイアウト（2026-09-11 追記）
+
+Phase 1 の直後に見つかった 2 つの欠陥と、その対処。
+
+| 欠陥 | 実態 | 対処 |
+|---|---|---|
+| 日本語ページが日本語でない | 読者が見る 273 文字列のうち **216 が素の英語**。`Localized` の素の文字列は両言語で表示されるため、日本語表示でも英語が出ていた | 全件 `{en, jp}` 化。基準は `docs/japanese-voice.md`。テストが強制 |
+| 本文の幅が 3 種類 | 1200 / 1240 / **1680**px。1680px は 1440px 画面より広く、実質フルブリード | 全ページ `--col: 1200px`。実測で全 6 ページの grid 左端が一致 |
+
+列数は個別指定ではなく規則で決める。**説明文つき = 3 列 / 名前と 1 行 = 4 列。** 4 列だと
+1 枚 279px になり、日本語が 13 字で折り返す。
+
+副産物として直したバグ:
+
+1. Claim Guard の数字抽出器が `30 minutes` の `m` を百万の接尾辞と誤読していた
+2. Claim Guard が経歴と無関係な数字まで弾き、日本語を壊す回避策を書かせていた
+3. `.venture-row dd .t-en` が `html.lang-jp .t-en` と同詳細度・後勝ちで、日本語表示に
+   英語が出ていた。**データは正しいのに画面だけ英語**という、データ検査では見つからない型
+4. カード見出しが `jpTitle` を持っていながら英語を出していた
+
+3 番目が示す教訓: **描画結果を測らないと見つからない欠陥がある。** データのテストだけでは足りない。
