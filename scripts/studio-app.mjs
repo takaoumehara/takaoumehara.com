@@ -377,9 +377,11 @@ async function updatePublishPreview() {
 
   const urlParam = await encodeLensToUrlParam(currentLens);
   const origin = window.location.origin;
-  // Point to root index.html with ?c=...
-  const path = window.location.pathname.replace(/studio\.html$/, '').replace(/\/$/, '') + '/';
-  const fullUrl = `${origin}${path}?c=${urlParam}`;
+  // Cleanly strip /studio, /studio.html, or /studio/ to point to the canonical portfolio root
+  const rootPath = window.location.pathname
+    .replace(/\/studio(\.html)?\/?$/, '')
+    .replace(/\/+$/, '') + '/';
+  const fullUrl = `${origin}${rootPath}?c=${urlParam}`;
 
   if (publishUrlInput) publishUrlInput.value = fullUrl;
   if (openPreviewLink) openPreviewLink.href = fullUrl;
