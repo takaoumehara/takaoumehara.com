@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Lens Studio — Adaptive career portfolio engine. Analyze job descriptions, curate tailored evidence, and publish instant shareable perspectives.">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Lens Studio — Takao Umehara</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&amp;family=Instrument+Sans:wdth,wght@75..100,400..700&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+</head>
+<body class="studio-body">
+  <a class="skip-link" href="#studio-main">Skip to studio input</a>
+
+  <header class="site-header studio-header">
+    <a class="site-mark" href="./" aria-label="Takao Umehara — Back to Portfolio">
+      <span class="site-mark__name">Takao Umehara</span>
+      <span class="site-mark__tag">Lens Studio · Adaptive Cockpit</span>
+    </a>
+
+    <nav class="utility-nav" aria-label="Studio controls">
+      <button type="button" class="studio-pill-btn" id="open-settings-btn">
+        <span aria-hidden="true">⚙</span> AI Settings
+      </button>
+      <a href="./" class="studio-pill-btn studio-pill-btn--primary">
+        ← View Canonical Site
+      </a>
+    </nav>
+  </header>
+
+  <main id="studio-main" class="studio-main">
+    <!-- HERO INTRO -->
+    <header class="studio-hero">
+      <span class="studio-badge">Case Study #0 · Agentic Narrative Engine</span>
+      <h1 class="studio-title">Turn any Job Description into a tailored executive portfolio.</h1>
+      <p class="studio-lead">
+        One immutable career evidence library. Zero fabricated claims. Paste a Job Description or role brief below—the engine analyzes capability alignment, establishes honest fact boundaries, and synthesizes a tailored Role Lens ready for instant sharing.
+      </p>
+    </header>
+
+    <!-- INPUT COCKPIT -->
+    <section class="studio-section studio-cockpit" aria-labelledby="cockpit-heading">
+      <div class="studio-section__header">
+        <h2 id="cockpit-heading" class="studio-section__title">01. Job Description &amp; Target Mandate</h2>
+        <div class="sample-pills" aria-label="Load sample job descriptions">
+          <span class="sample-pills__label">Try sample:</span>
+          <button type="button" class="sample-pill" data-sample="ai_executive">Enterprise AI VP</button>
+          <button type="button" class="sample-pill" data-sample="creative_director">Creative Director</button>
+          <button type="button" class="sample-pill" data-sample="venture_turnaround">0→1 Venture Operator</button>
+          <button type="button" class="sample-pill" data-sample="edtech_product">EdTech Product Lead</button>
+        </div>
+      </div>
+
+      <div class="studio-grid studio-grid--2col">
+        <label class="studio-field">
+          <span class="studio-field__label">Target Organization / Company</span>
+          <input type="text" id="studio-company" class="studio-input" placeholder="e.g. Anthropic, Apple, Stripe, HyperVenture">
+        </label>
+
+        <label class="studio-field">
+          <span class="studio-field__label">Target Role / Mandate</span>
+          <input type="text" id="studio-role" class="studio-input" placeholder="e.g. Head of AI Systems, VP Design, Venture Partner">
+        </label>
+      </div>
+
+      <label class="studio-field" style="margin-top: var(--space-4);">
+        <span class="studio-field__label">Job Description / Opportunity Brief</span>
+        <textarea id="studio-jd" class="studio-textarea" rows="6" placeholder="Paste full JD text, key responsibilities, or challenge statement here..."></textarea>
+      </label>
+
+      <div class="studio-actions" style="margin-top: var(--space-6);">
+        <button type="button" id="studio-analyze-btn" class="button-action studio-analyze-btn">
+          <span>Analyze &amp; Form Lens</span>
+          <span class="action-icon" aria-hidden="true">→</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- RESULTS & CURATION WORKSPACE -->
+    <div id="studio-results" class="studio-results sr-only">
+      
+      <!-- 02. ALIGNMENT & HONEST BOUNDARIES -->
+      <section class="studio-section" aria-labelledby="alignment-heading">
+        <div class="studio-section__header">
+          <h2 id="alignment-heading" class="studio-section__title">02. Alignment &amp; Honest Boundaries</h2>
+          <p class="studio-section__desc">Evidence matching across 13 projects. Distinguishes direct operational proof from adjacent strengths and honest gaps.</p>
+        </div>
+
+        <div class="analysis-columns">
+          <div class="analysis-column">
+            <h3 class="analysis-column__title analysis-column__title--direct">
+              <span class="indicator-dot indicator-dot--direct" aria-hidden="true"></span>
+              Direct Proof Matches
+            </h3>
+            <ul class="match-list" id="analysis-direct-list"></ul>
+          </div>
+
+          <div class="analysis-column">
+            <h3 class="analysis-column__title analysis-column__title--transfer">
+              <span class="indicator-dot indicator-dot--transfer" aria-hidden="true"></span>
+              Transferable Strengths
+            </h3>
+            <ul class="match-list" id="analysis-transfer-list"></ul>
+          </div>
+
+          <div class="analysis-column">
+            <h3 class="analysis-column__title analysis-column__title--gap">
+              <span class="indicator-dot indicator-dot--gap" aria-hidden="true"></span>
+              Honest Fact Boundaries
+            </h3>
+            <ul class="match-list" id="analysis-gaps-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03. CONTEXTUAL HERO FRAMING -->
+      <section class="studio-section" aria-labelledby="framing-heading">
+        <div class="studio-section__header">
+          <h2 id="framing-heading" class="studio-section__title">03. Narrative Framing</h2>
+          <p class="studio-section__desc">Adjust the overarching thesis and positioning statement for this opportunity.</p>
+        </div>
+
+        <div class="studio-framing-box">
+          <label class="studio-field">
+            <span class="studio-field__label">Eyebrow (Lens Label)</span>
+            <input type="text" id="hero-eyebrow-input" class="studio-input">
+          </label>
+
+          <label class="studio-field" style="margin-top: var(--space-4);">
+            <span class="studio-field__label">Hero Title (Resonant Thesis Statement)</span>
+            <input type="text" id="hero-title-input" class="studio-input studio-input--lg">
+          </label>
+
+          <label class="studio-field" style="margin-top: var(--space-4);">
+            <span class="studio-field__label">Hero Lead Paragraph (Executive Pitch)</span>
+            <textarea id="hero-lead-input" class="studio-textarea" rows="3"></textarea>
+          </label>
+        </div>
+      </section>
+
+      <!-- 04. FEATURED PROJECTS CURATION -->
+      <section class="studio-section" aria-labelledby="curation-heading">
+        <div class="studio-section__header">
+          <h2 id="curation-heading" class="studio-section__title">04. Curated Showcase (Drag &amp; Drop to Order)</h2>
+          <p class="studio-section__desc">Reorder projects to emphasize the most impactful story first. Fine-tune contextual angles without altering factual records.</p>
+        </div>
+
+        <ol class="curated-list" id="curated-projects-list"></ol>
+
+        <div class="add-project-bar">
+          <select id="add-project-select" class="studio-select" aria-label="Select project from archive"></select>
+          <button type="button" id="add-project-btn" class="studio-pill-btn studio-pill-btn--primary">
+            + Add to Showcase
+          </button>
+        </div>
+      </section>
+
+      <!-- 05. PUBLISH & SHARING COCKPIT -->
+      <section class="studio-section studio-publish-cockpit" aria-labelledby="publish-heading">
+        <div class="studio-section__header">
+          <h2 id="publish-heading" class="studio-section__title">05. Instant URL Generation (Zero-Backend)</h2>
+          <p class="studio-section__desc">Click publish to serialize the entire lens into a compact, self-contained URL. Anyone opening this link will see this custom lens reconstructed in real time.</p>
+        </div>
+
+        <div class="publish-controls">
+          <button type="button" id="publish-instant-btn" class="button-action button-action--publish">
+            <span>Publish Shareable Link</span>
+            <span class="action-icon" aria-hidden="true">⚡</span>
+          </button>
+          
+          <button type="button" id="export-code-btn" class="text-action">
+            <span>Export Config Code for Static Build</span>
+            <span aria-hidden="true">{}</span>
+          </button>
+        </div>
+
+        <div id="publish-url-display" class="publish-url-display sr-only">
+          <label class="studio-field">
+            <span class="studio-field__label">Generated Shareable Lens URL</span>
+            <div class="publish-input-group">
+              <input type="text" id="publish-url-input" class="studio-input studio-input--mono" readonly>
+              <button type="button" id="copy-url-btn" class="studio-pill-btn studio-pill-btn--primary">Copy Link</button>
+              <a id="open-preview-link" href="#" target="_blank" rel="noopener noreferrer" class="studio-pill-btn">Open Live ↗</a>
+            </div>
+          </label>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- EXPORT CODE MODAL -->
+  <dialog id="export-dialog" class="studio-dialog" aria-labelledby="export-dialog-title">
+    <div class="studio-dialog__content">
+      <header class="studio-dialog__header">
+        <h3 id="export-dialog-title">Export Lens Configuration</h3>
+        <button type="button" id="close-export-btn" class="icon-button" aria-label="Close dialog">×</button>
+      </header>
+      <p class="studio-dialog__desc">
+        To make this lens a permanent static page (e.g. <code>/lens/stripe/</code>), copy this snippet into <code>scripts/lenses.mjs</code> and run <code>npm run build:lenses</code>.
+      </p>
+      <pre class="studio-code-preview"><code id="export-code-block"></code></pre>
+      <div class="studio-dialog__actions">
+        <button type="button" id="copy-code-btn" class="button-action">Copy Code</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- API KEY SETTINGS MODAL -->
+  <dialog id="settings-dialog" class="studio-dialog" aria-labelledby="settings-dialog-title">
+    <div class="studio-dialog__content">
+      <header class="studio-dialog__header">
+        <h3 id="settings-dialog-title">AI Engine Settings</h3>
+        <button type="button" id="close-settings-btn" class="icon-button" aria-label="Close dialog">×</button>
+      </header>
+      <p class="studio-dialog__desc">
+        By default, Lens Studio uses an offline deterministic semantic matching engine (100% private, zero API key needed). You can optionally provide a Google Gemini API Key for deep LLM narrative synthesis. The key is stored locally in your browser only.
+      </p>
+      <label class="studio-field">
+        <span class="studio-field__label">Google Gemini API Key (Optional)</span>
+        <input type="password" id="api-key-input" class="studio-input" placeholder="AIzaSy...">
+      </label>
+      <p id="api-key-notice" class="studio-micro-note">Mode: Offline deterministic semantic matcher.</p>
+      <div class="studio-dialog__actions">
+        <button type="button" id="save-api-key-btn" class="button-action">Save Settings</button>
+      </div>
+    </div>
+  </dialog>
+
+  <div id="studio-toast" class="studio-toast" role="status" aria-live="polite"></div>
+  <div class="sr-only" role="status" aria-live="polite" aria-atomic="true" data-studio-status></div>
+
+  <script>
+    // Settings dialog toggles
+    const settingsDialog = document.querySelector('#settings-dialog');
+    document.querySelector('#open-settings-btn')?.addEventListener('click', () => settingsDialog?.showModal());
+    document.querySelector('#close-settings-btn')?.addEventListener('click', () => settingsDialog?.close());
+    document.querySelector('#save-api-key-btn')?.addEventListener('click', () => {
+      setTimeout(() => settingsDialog?.close(), 300);
+    });
+  </script>
+  <script type="module" src="./scripts/studio-app.mjs"></script>
+</body>
+</html>

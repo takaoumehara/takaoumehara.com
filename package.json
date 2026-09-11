@@ -6,8 +6,9 @@
   "scripts": {
     "test": "node --test tests/*.test.mjs",
     "test:e2e": "playwright test",
+    "build:lenses": "node scripts/build-lenses.mjs",
     "check:links": "node --test tests/portfolio.test.mjs",
-    "check:syntax": "node --check scripts/app.mjs && node --check scripts/history.mjs && node --check scripts/project-data.mjs"
+    "check:syntax": "node --check scripts/app.mjs && node --check scripts/history.mjs && node --check scripts/evidence-db.mjs && node --check scripts/lenses.mjs && node --check scripts/renderer.mjs && node --check scripts/build-lenses.mjs && node --check scripts/lens-engine.mjs && node --check scripts/studio-app.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.13.0",
