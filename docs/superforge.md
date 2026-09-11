@@ -23,3 +23,9 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
     - 「インタラクティブ」だけでは、ボタンを押すことも該当してしまう。傘の名前に加えて
       **定義文をページ本文に書いている**（入力が声・手・線・その場の全端末であること）。
       名前だけで誤解を消そうとせず、名前＋1文で消す方針。
+- **Adaptive portfolio**（2026-09-11）: `index.html` と `lens/*/index.html` は生成物。
+  手で編集せず `src/data` / `src/lenses` を直して `node src/build.mjs`。
+  設計は `docs/adaptive-portfolio-architecture.md`。
+  - 「Agentic UX」は **能力タクソノミーと thesis のラベルとしては使用可**（本人のブリーフに明記）。
+    カテゴリ名としては引き続き `AI Products`。
+  - 旧ホームページは `index-console.html` として保存。
