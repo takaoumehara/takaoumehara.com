@@ -1,5 +1,7 @@
 # Adaptive Career Portfolio — Phase 1 shipped, PR open
 
+> **Superseded by `.handoff/2026-09-12-adaptive-portfolio-phase1.md`。** そちらを読むこと。
+
 ## Resume Capsule
 
 Project: takaoumehara.com
