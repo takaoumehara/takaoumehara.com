@@ -133,10 +133,20 @@ export function validateLibrary(lib, { assetExists } = {}) {
     }
     if (item.kind === "tool" && !TOOL_STATUS.has(item.status)) errors.push(`${where}: invalid tool status "${item.status}"`);
     if (assetExists) {
-      for (const key of ["thumb", "hero", "preview"]) {
+      for (const key of ["thumb", "hero"]) {
         const path = item.assets?.[key];
         if (path && !assetExists(path)) errors.push(`${where}: assets.${key} "${path}" does not exist on disk`);
       }
+      const preview = item.assets?.preview;
+      if (preview) {
+        for (const format of ["webm", "mp4"]) {
+          const path = preview[format];
+          if (!path) errors.push(`${where}: assets.preview needs a ${format} — one encoding does not reach every browser`);
+          else if (!assetExists(path)) errors.push(`${where}: assets.preview.${format} "${path}" does not exist on disk`);
+        }
+        if (!(item.assets.thumb ?? item.assets.hero)) errors.push(`${where}: assets.preview needs a still behind it`);
+      }
+
       const caseStudy = item.links?.caseStudy;
       if (caseStudy && !assetExists(caseStudy)) errors.push(`${where}: links.caseStudy "${caseStudy}" does not exist on disk`);
     }

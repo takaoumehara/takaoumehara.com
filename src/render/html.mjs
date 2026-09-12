@@ -43,5 +43,9 @@ export function mediaFill(item, ctx) {
   const still = `<img src="${esc(href(ctx, image))}" alt="" loading="lazy">`;
   const clip = item.assets?.preview;
   if (!clip) return still;
-  return `${still}<video class="card-clip" src="${esc(href(ctx, clip))}" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"></video>`;
+  // WebM first: the Chromium builds without H.264 stop at the first source they
+  // can decode, and Safari falls through to the MP4.
+  const sources = [["webm", "video/webm"], ["mp4", "video/mp4"]]
+    .map(([format, type]) => `<source src="${esc(href(ctx, clip[format]))}" type="${type}">`).join("");
+  return `${still}<video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">${sources}</video>`;
 }

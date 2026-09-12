@@ -389,31 +389,38 @@ test("nothing can out-specify the language switch", () => {
 
 // ── Preview clips ───────────────────────────────────────────────────────────
 
-test("a preview clip is an MP4 that exists, and it never replaces the still", () => {
+test("a preview ships both encodings, and never replaces the still", () => {
   for (const [slug, item] of lib.evidence) {
     const clip = item.assets?.preview;
     if (!clip) continue;
-    assert.ok(clip.endsWith(".mp4"), `${slug}: assets.preview must be H.264 MP4 — every browser plays it`);
-    assert.ok(assetExists(clip), `${slug}: assets.preview "${clip}" is not on disk`);
+    // One encoding does not reach every browser: the open-source Chromium
+    // builds carry no H.264, and Safari's VP9 support is too recent to lean on.
+    assert.ok(clip.webm?.endsWith(".webm"), `${slug}: assets.preview.webm`);
+    assert.ok(clip.mp4?.endsWith(".mp4"), `${slug}: assets.preview.mp4`);
+    assert.ok(assetExists(clip.webm), `${slug}: "${clip.webm}" is not on disk`);
+    assert.ok(assetExists(clip.mp4), `${slug}: "${clip.mp4}" is not on disk`);
     assert.ok(item.assets.thumb ?? item.assets.hero,
       `${slug}: a clip needs a still behind it — the page must read with video off`);
   }
 });
 
-test("no card clip autoplays, and every one of them is hidden from assistive tech", () => {
+test("no card clip autoplays, every one is hidden from assistive tech, and each offers both encodings", () => {
   // A grid of cards that all start playing on load is a bandwidth bill and a
   // motion hazard. They play on hover or focus, from src/render/shell.mjs.
   const pages = [outputPath(byslug("default")), ...lenses.filter((l) => l.slug !== "default").map(outputPath), join(ROOT, "interactive.html")];
   let seen = 0;
   for (const page of pages) {
     const html = readFileSync(page, "utf8");
-    for (const tag of html.matchAll(/<video[^>]*class="card-clip"[^>]*>/g)) {
+    for (const tag of html.matchAll(/<video[^>]*class="card-clip"[^>]*>([\s\S]*?)<\/video>/g)) {
       seen += 1;
-      const attrs = tag[0];
+      const [attrs, inner] = [tag[0].slice(0, tag[0].indexOf(">")), tag[1]];
       assert.ok(!/\bautoplay\b/.test(attrs), `${page}: a card clip must not autoplay`);
       assert.ok(/preload="none"/.test(attrs), `${page}: a card clip must not be fetched before it is asked for`);
       assert.ok(/\bmuted\b/.test(attrs) && /\bloop\b/.test(attrs) && /\bplaysinline\b/.test(attrs), `${page}: card clip attributes`);
       assert.ok(/aria-hidden="true"/.test(attrs), `${page}: the clip is decoration — the still and the copy carry the meaning`);
+      assert.ok(!/\bsrc=/.test(attrs), `${page}: use <source> elements, so a browser that cannot decode one falls through to the other`);
+      const types = [...inner.matchAll(/type="(video\/[a-z0-9]+)"/g)].map((m) => m[1]);
+      assert.deepEqual(types, ["video/webm", "video/mp4"], `${page}: WebM must come first — Chromium without H.264 takes the first source it can decode`);
     }
   }
   assert.ok(seen >= 5, `expected the Interactive recordings to be wired up, found ${seen} clips`);

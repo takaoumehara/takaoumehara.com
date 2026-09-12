@@ -135,8 +135,12 @@ export interface EvidenceBase {
   assets?: {
     thumb?: string;           // site-relative path, e.g. "assets/thumbs/koji-fizz.jpg"
     hero?: string;
-    /** Muted, looping H.264 clip played on hover/focus over `thumb`. */
-    preview?: string;
+    /**
+     * A muted loop played on hover/focus over `thumb`. Both encodings are
+     * required: open-source Chromium builds carry no H.264, and Safari's
+     * VP9 support is too recent to rely on alone.
+     */
+    preview?: { webm: string; mp4: string };
     /** CSS art class from assets/work-card-grid.css when there is no image. */
     art?: string;
     artLabel?: string;
