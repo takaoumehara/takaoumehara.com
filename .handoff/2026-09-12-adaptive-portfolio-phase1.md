@@ -1,6 +1,6 @@
-# Adaptive Career Portfolio — Phase 1 出荷済み、PR #15 レビュー待ち
+# Adaptive Career Portfolio — Phase 1 + Interactive のメディア + a11y
 
-> これは `.handoff/2026-09-11-adaptive-portfolio-phase1.md` の更新版。古い方は読まなくてよい。
+> `.handoff/2026-09-11-*` と、同じ日付の旧版を置き換える。古い方は読まなくてよい。
 
 ## Resume Capsule
 
@@ -9,41 +9,48 @@ Handoff: `.handoff/2026-09-12-adaptive-portfolio-phase1.md`
 Passphrase: 「一人の梅原、ひとつの証拠、複数のレンズ」
 Goal: サイトを adaptive career narrative system に作り替える。Phase 1 =
   構造化された Career Evidence Library から `/` と `/lens/<slug>` を生成する仕組み。
-State: **Phase 1 実装 + 日本語の全面書き直し + レイアウト統一まで完了・push 済み。**
-  Draft PR #15 open。HEAD `da30854`、Vercel `success`、テスト **49/49 通過**（本日再実行）、
-  `origin/main` は HEAD の祖先（マージ競合なし）、レビューコメント 0、作業ツリー clean。
-Next: **本人の判断待ちが 2 つ**（「未決」参照）。コードとして着手待ちのものは無い。
-  再開時は先に PR #15 の状態を確認すること（人がレビューした可能性がある）。
-Read first: `docs/adaptive-portfolio-architecture.md`, `docs/japanese-voice.md`,
-  `src/schema.d.ts`, `src/validate.mjs`
-Running: プロセスは無し（ローカル http.server は停止済み、ポート開放なし）。
-  このセッションは PR #15 を subscribe 中。1 時間ごとの self check-in を `send_later` で
-  再武装している（trigger ID は毎回変わる。直近 `trig_01Q7qL5RXsarQNLQtS8jiKua`、
-  08:21 UTC 発火予定）。PR が merge/close されるまで継続。
+State: **Phase 1 + 日本語書き直し + レイアウト統一 + Interactive のメディア +
+  Phase 1.5（a11y）まで完了・push 済み。** Draft PR #15 open、HEAD `87ad13c`。
+  テスト **52/52**（`npm test`）＋ **26/26**（`npm run test:e2e`、1440/390px）。
+  `origin/main` はマージ済みで競合なし。レビューコメント 0。作業ツリー clean。
+Next: **本人の目視確認と、データの空欄 5 件のみ。** コードとして着手待ちのものは無い。
+  再開時は先に PR #15 の状態を確認すること。
+Read first: `docs/adaptive-portfolio-architecture.md`（§14 決定・§15 a11y）、
+  `docs/accessibility.md`、`docs/japanese-voice.md`、`src/schema.d.ts`、`src/validate.mjs`
+Running: プロセスは無し。このセッションは PR #15 を subscribe 中。
 
-## docs/
+## 2026-09-12 に決まったこと・やったこと
 
-| File | Status | Last updated | Open questions |
-|---|---|---|---|
-| superforge.md | agreed | ヘッダは 2026-08-02（**古い** — 本文の pin は 2026-09-11 まで更新済み） | — **会話＝日本語 / docs＝日本語**。pin: 推測数値を書かない・カテゴリ名（AI Products / Playable）・Agentic UX は能力/thesis ラベルとしては可・日本語の書き方・レイアウト規則 |
-| adaptive-portfolio-architecture.md | agreed（§12 実装状況、§13 日本語とレイアウト） | 2026-09-11 | 本人確認 5 件（下記「本人が決めること」） |
-| japanese-voice.md | agreed | 2026-09-11 | — テストが強制する |
-| gemini-studio-salvage-review.md | agreed | 2026-09-11 | §5「2 実装のどちらを畳むか」が未決 |
-| portfolio-ia.md | agreed | 2026-08-12 | Innovation Workshop は証拠写真が入るまで 6 番目のカテゴリにしない |
-| portfolio-content-intake-prompt.md | agreed（v3） | 2026-08-12 | 各案件の AI セッションに貼る用 |
-| portfolio-template-system.md | agreed | 2026-08-01 | 既存ケーススタディ 30 ページ用。lens とは別系統 |
-| portfolio-interactive-content.md | agreed | 2026-09-06 | Interactive 5 件の素材所在 |
-| case-study-format-audit.md | draft | 2026-08-02 | 8 章フォーマットとのギャップ未解消 |
-| portfolio-generative-upgrade.md | draft | 2026-08-06 | 描画技術の方向づけ。未実装 |
-| landing-design.md | **superseded** | 2026-08-09 | 対象だった `index.html` は生成物になった。旧版は `index-console.html` |
-| landing-hero.md | **superseded** | 2026-08-10 | 同上 |
-| brief.md | — | — | **存在しない**（intake 未実施） |
-| verification.md | — | — | **未実施**。ただし Chromium 実測は PR #15 に記録（1440/390px 横スクロール 0、JS エラー 0） |
-| a11y / accessibility.md | — | — | **未実施**。lens ページ未監査。`codex` ブランチに Playwright+axe の実装あり（回収候補） |
-| security.md | — | — | **未実施**（静的サイト・秘密情報なし） |
-| ship-readiness.md | — | — | **未実施** |
-| failforward.md | — | — | **存在しない（0 件）**。このセッションで直したバグ 4 件は PR #15 の本文とテストにのみ記録 |
-| docs/superpowers/ | — | 2026-07 | 旧 plans/specs のアーカイブ。現行の設計には効いていない |
+### 決定（本人: 「基本的にクロードが作った方法を採用」）
+
+1. **カテゴリページは残す。** `/` と `/lens/<slug>` が主張、カテゴリページが全件の索引。
+   歯止めは 1 行 — **事実がカテゴリページにしか存在してはならない**（先に `src/data/`）。
+   → `docs/adaptive-portfolio-architecture.md` §14.1
+2. **`codex/monumental-editorial-redesign` は畳む。** 紐づく PR は無いので閉じるものも無い。
+   **ブランチの削除はしていない**（本人の判断用に残置）。回収は完了 — Playwright + axe は
+   実施済み、JD 解析は設計原則として記録済み。→ §14.2
+
+### Interactive のメディア（本人が `main` の `33f5c2f` に 12 本アップロード）
+
+- 5 件が CSS のアートワークから**実物の画面**に。`assets/<slug>/` に
+  `thumb.jpg`（3:2）/ `still.jpg`（16:9）/ `preview.webm` + `preview.mp4`。
+  マスターは `assets/<slug>/masters/`（`.vercelignore` で配信対象外）
+- 動画はホバー／フォーカスでのみ再生。`preload="none"`・`aria-hidden`・
+  `prefers-reduced-motion` で無効。**読み込み時は 1 本も取りに行かない**（実測）
+- **MP4 単独は不可**（オープンソース版 Chromium に H.264 が無い、実測）。WebM を先に置く
+- **EmojiDrop → Emoji Blast**（本人）。収録の URL バーから `emojiblast.vercel.app` を
+  `links.live` に入れ `status: live` に。日本語が「2 人対戦」だったのを協力プレイに訂正
+
+### Phase 1.5 — a11y（`docs/accessibility.md`）
+
+初回走行で欠陥 4 件。すべて修正済み:
+
+| 欠陥 | 対処 |
+|---|---|
+| `--ink-dim` が 4.44:1（AA 未達） | `#76716a`（4.64:1）へ。55 ファイル一括 |
+| 言語切替が `<html lang>` を変えない | 54 ファイルの `setLang` で属性も切替 |
+| `.idx-meta-col a` が 17.5px（§2.5.8 未達） | メタ行全体を 24px リズムに |
+| lens の静かなセルが `opacity: .55` で 2.09:1 | 不透明度をやめ**インクの段**で表現 |
 
 ## 本人が決めること（コードではなくデータ）
 
@@ -52,25 +59,30 @@ Running: プロセスは無し（ローカル http.server は停止済み、ポ�
 3. AgentReady Local はサイトに事実が無いため未登録
 4. `projects/koji-fizz.html` の "produce and direct" 表記 vs データの producer / creative partner
 5. MyBrainSpec・Moime の thesis / question は `_notes` に「要確認」と記載
+6. **`emojiblast.vercel.app` が実際に開くか**（ビルド環境から外向き通信が塞がれていて未確認）
 
-## 未決（コードではなく判断）
+## 目視で見てほしいもの
 
-1. **カテゴリページ（interactive / ai-products / brand）を新方針で残すか。**
-   今回は「存在を前提に揃える」だけ実施。幅・列数・サムネイル比率は統一済み。
-2. **`codex/monumental-editorial-redesign` をどうするか。**
-   `docs/gemini-studio-salvage-review.md` §5 の結論は「畳む。ただし JD 解析の実装経験と
-   Playwright+axe テストは回収する」。
-3. Preview で `/`・`/lens/creative`・`/lens/ai-product` を目視 → PR #15 のマージ判断。
+Vercel プレビューで `/`・`/lens/creative`・`/lens/ai-product`・`/interactive.html`。
+とくに **Interactive のカードにホバーしたときの動き**と、lens の Career Arc の
+「静かなセル」の見え方（不透明度から色に変えた箇所）。
 
-## Phase 2 の置き場
+## まだ手を付けていない
 
-JD → 解析 → Lens 草案は `src/analyze/` に閉じて乗る。Phase 1 のファイルは触らない。
+| 項目 | 状態 |
+|---|---|
+| `projects/*.html` 35 ページの axe 走査 | 未実施（色と lang の修正自体は届いている） |
+| 実機スクリーンリーダー・400% リフロー・forced-colors | 未実施 |
+| カテゴリページの生成化 | Phase 3。今はやらない |
+| JD 解析 | Phase 2。`src/analyze/` に閉じて乗る。Phase 1 のファイルは触らない |
+| `index-console.html` 等の旧版スナップショット | 対象外。Emoji Blast の旧名もそのまま |
+| `failforward.md` | 未作成。今回直した欠陥は PR #15 とテストにのみ記録 |
 
 ## Files to read first
 
-- `docs/adaptive-portfolio-architecture.md` — 設計・ワイヤーフレーム・§12 実装状況
+- `docs/adaptive-portfolio-architecture.md` — 設計・§12 実装状況・§14 決定・§15 a11y
+- `docs/accessibility.md` — 測ったことと、測っていないこと
 - `docs/japanese-voice.md` — 日本語の基準（テストが強制する）
-- `src/schema.d.ts` — Evidence / Lens の型と、なぜその形なのか
-- `src/validate.mjs` — Claim Guard / NotMine Guard
-- `tests/lens-system.test.mjs` — 成功基準の実行可能な形
+- `src/schema.d.ts` / `src/validate.mjs` — 型と Claim Guard / NotMine Guard
+- `tests/lens-system.test.mjs` / `tests/a11y.spec.mjs` — 成功基準の実行可能な形
 - `README.md` — 編集手順（`node src/build.mjs` → commit）
