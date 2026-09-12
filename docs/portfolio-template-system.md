@@ -17,8 +17,9 @@ counterpart is `docs/portfolio-content-intake-prompt.md`(各プロジェクト�
 | B. Keynote-slide フル | `verizon-ai-agents.html` | 1 | スキム性・物語性が最強。NDAで実画面が出せない案件の正解 | 2057行・スライド過多(システム深掘り4連)。採用担当の30秒〜2分スキャンには長い |
 | C. Keynote-slide コンパクト | `superforge.html` 等スキル/ツール系 | 7 | 3〜4枚で完結。密度が適正 | — (現状ほぼ完成形) |
 
-さらに孤立した試作が2枚: `ela-quests-slides-preview.html`(ビジュアル多案件のkeynote化実験
-— 画像34→7枚に圧縮)と `verizon-totalwireless-slides-preview.html`。本番導線から未リンク。
+keynote 化の試作 2 枚（`ela-quests-slides-preview.html` / `verizon-totalwireless-slides-preview.html`）は
+**2026-09-12 に削除**。本人判断「スライドは結局うまく機能しない」。`projects/cli-studios.html` の
+ページ送り式デッキ（`<main class="deck">`）も同じ理由で通常のスクロールページに直す。
 
 ### 1-2. シェル(共通枠)が2世代に分裂している
 
