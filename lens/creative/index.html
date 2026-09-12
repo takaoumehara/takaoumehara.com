@@ -166,8 +166,12 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 .proof-card[data-href] { cursor: pointer; }
 .proof-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 .proof-card.is-lead { grid-column: span 2; }
+/* One card per page may take the whole column. It is the loudest thing the
+   grid can say, so it stays rare — the lens decides, never the record. */
+.proof-card.is-feature { grid-column: 1 / -1; }
 .card-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 18px; }
 .proof-card.is-lead .card-media { aspect-ratio: 16 / 8.5; }
+.proof-card.is-feature .card-media { aspect-ratio: 21 / 9; }
 .card-media img, .exp-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
 /* The muted loop sits on top of the still and fades in once it is playing. */
 .card-media, .exp-media { position: relative; }
@@ -202,6 +206,14 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 .card-emphasis { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
 .card-title { font-family: var(--serif); font-size: 24px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.15; }
 .proof-card.is-lead .card-title { font-size: clamp(28px, 3vw, 38px); }
+.proof-card.is-feature .card-title { font-size: clamp(34px, 4.4vw, 54px); }
+/* Full width is not a reason to set a 90-character line. */
+.proof-card.is-feature .card-body { max-width: 72ch; }
+/* A card this size with no photograph is a large empty field unless the art is
+   treated as a title plate: the wordmark centred and set at hero scale, rather
+   than the small bottom-left label a 3:2 tile wants. */
+.proof-card.is-feature .card-art { align-items: center; justify-content: center; padding: 32px; }
+.proof-card.is-feature .card-art-label { font-size: clamp(40px, 6.4vw, 92px); text-align: center; }
 html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; }
 .card-meta { font-size: 12.5px; color: var(--ink-dim); }
 .card-flag { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--border); border-radius: 999px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -356,6 +368,7 @@ footer { border-top: 1px solid var(--line); }
 @media (max-width: 600px) {
   .proof-grid { grid-template-columns: 1fr; gap: 36px; }
   .proof-card.is-lead { grid-column: auto; }
+  .proof-card.is-feature .card-media { aspect-ratio: 16 / 9; }
 }
 @media (max-width: 480px) {
   .exp-grid { grid-template-columns: 1fr; }
@@ -418,6 +431,42 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
 
 @media (max-width: 900px) {
   .cat-grid { grid-template-columns: 1fr; gap: 44px; }
+}
+
+/* ── Page transitions ──────────────────────────────────────────────────────
+   docs/page-transitions.md. Opening a card is not a cut: the thumbnail that
+   was clicked grows into the hero band of the page it opens, and everything
+   around it cross-fades. It takes two halves and both have to be present —
+   this file is the listing half, the detail page carries the other.
+   `view-transition-name` has to be unique within a document, so the name is
+   put on one card at a time from script (shell.mjs), never on all of them up
+   front: a duplicate name aborts the whole transition, silently.
+   Browsers without the API simply navigate. Nothing here is load-bearing. */
+@view-transition { navigation: auto; }
+
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+/* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+   `object-fit: fill` stretches one into the other on the way across; cropping
+   both snapshots instead is what makes the move read as one element rather
+   than two pictures swapping. */
+::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+::view-transition-old(hero-media),
+::view-transition-new(hero-media) {
+  height: 100%; width: 100%; object-fit: cover;
+  animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+}
+
+/* Reduced motion keeps the navigation instant. The morph is never assigned in
+   the first place — shell.mjs checks the same query before it names a card. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(hero-media),
+  ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
 }
 
   </style>
@@ -805,6 +854,54 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       card.addEventListener("pointerleave", stop);
       card.addEventListener("focusin", start);
       card.addEventListener("focusout", stop);
+    });
+  })();
+
+  // ── Page transitions (the other half of the rules in lens.css) ──
+  // The thumbnail that was clicked grows into the hero band of the page it
+  // opens. view-transition-name has to be unique in the document, so exactly
+  // one card carries it, and only around the navigation itself: naming every
+  // card up front would abort the transition instead of improving it.
+  // pageswap/pagereveal are used rather than a click handler so that every way
+  // of leaving is covered — the card, the "Case study" link inside it, and the
+  // back button on the way home. Browsers without them just navigate.
+  (() => {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const CARD = ".proof-card, .exp-card, .cat-card";
+    const MEDIA = ".card-media, .exp-media, .cat-card-media";
+    let named = null;
+    const clear = () => { if (named) named.style.viewTransitionName = ""; named = null; };
+    const cardFor = (url) => {
+      for (const card of document.querySelectorAll(CARD)) {
+        if (card.dataset.external === "true") continue;
+        const own = card.dataset.href;
+        const hit = own
+          ? new URL(own, location.href).href === url
+          : [...card.querySelectorAll("a[href]")].some((a) => a.href === url);
+        if (hit) return card;
+      }
+      return null;
+    };
+    // Cards without a picture (a text row, a card-art tile on a page that has
+    // none) are left alone: the page still cross-fades, nothing morphs.
+    const name = (url) => {
+      clear();
+      if (!url || still.matches) return;
+      const media = cardFor(url)?.querySelector(MEDIA);
+      if (!media) return;
+      media.style.viewTransitionName = "hero-media";
+      named = media;
+    };
+
+    addEventListener("pageswap", (event) => {
+      if (event.viewTransition) name(event.activation?.entry?.url);
+    });
+    addEventListener("pagereveal", (event) => {
+      // Coming back: the hero settles into the card it was opened from. This
+      // also clears a name left behind by a page restored from the bfcache.
+      if (!event.viewTransition) return clear();
+      name(event.activation?.from?.url);
+      event.viewTransition.finished.then(clear, clear);
     });
   })();
 

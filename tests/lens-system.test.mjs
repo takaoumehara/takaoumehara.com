@@ -151,7 +151,7 @@ test("changing only the lens config changes hero, order, framing, sections and C
   assert.notEqual(h1(home), h1(creative));
   assert.notEqual(h1(home), h1(aiProduct));
   // order: the lead card differs between default and ai-product
-  assert.match(firstProof(home), /rakugaki/);
+  assert.match(firstProof(home), /resona/);
   assert.match(firstProof(aiProduct), /verizon-ai-agents/);
   // framing: the same Festival evidence is described with a different approved angle
   const festival = lib.evidence.get("festival-reinvention");

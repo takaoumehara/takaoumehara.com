@@ -205,22 +205,35 @@
       .story-cta, .rail-item, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
   
-    /* ─── Cross-document view transition ───────────────────────────────
-       The tile the visitor clicked on the index expands into this page's
-       hero. Both documents have to opt in for the morph to happen, and the
-       transition name has to match the one the index assigns to the tile it
-       was launched from. Browsers without support simply navigate — nothing
-       here is load-bearing. */
+    /* ─── Cross-document view transition — docs/page-transitions.md ───────
+       The card the visitor clicked grows into this page's hero band while the
+       rest of the page cross-fades under it. It takes both documents: the
+       listing page puts `hero-media` on the one card it was launched from,
+       this page puts the same name on the hero. Browsers without support
+       simply navigate — nothing here is load-bearing. */
     @view-transition { navigation: auto; }
-    @media (prefers-reduced-motion: no-preference) {
-      .project-hero, .wds-hero { view-transition-name: hero-media; }
-      ::view-transition-old(hero-media),
-      ::view-transition-new(hero-media) {
-        animation-duration: 520ms;
-        animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
-      }
+    [data-vt-hero] { view-transition-name: hero-media; }
+
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+       `object-fit: fill` stretches one into the other on the way across;
+       cropping both snapshots is what makes the move read as one element
+       rather than two pictures swapping. */
+    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+    ::view-transition-old(hero-media),
+    ::view-transition-new(hero-media) {
+      height: 100%; width: 100%; object-fit: cover;
+      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-vt-hero] { view-transition-name: none; }
       ::view-transition-old(root),
-      ::view-transition-new(root) { animation-duration: 300ms; }
+      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
     }
 </style>
   <style>
@@ -266,7 +279,7 @@
   <main class="deck">
 
     <!-- ═══ Slide 1 · Hero (dark, violet + pink glow) ═══ -->
-    <header class="wds-hero wds-slide reveal-on-scroll">
+    <header data-vt-hero class="wds-hero wds-slide reveal-on-scroll">
       <p class="wds-kick"><span class="t-en">4×4 · Two marks per turn · Realtime Multiplayer · AI opponent</span><span class="t-jp">4×4 · 一手で二つ · リアルタイム対戦 · AI 対戦</span></p>
       <h1 class="wds-serif"><span class="t-en">A ferry-ride game with my son, turned into a <em>sixteen-square</em> arena.</span><span class="t-jp is-block">息子との登校フェリーから生まれた、<em>16マス</em>のアリーナ。</span></h1>
       <p class="wds-hero-lead"><span class="t-en">Every ferry to his school in Manhattan, we played the same napkin game — tic-tac-toe stretched to a 4×4 grid where you place <strong>two marks per turn</strong>, strategic enough to fill an hour, simple enough to draw anywhere. <strong>Marubatsu 2.0</strong> is that game, shipped: pass-and-play on one phone, challenge an AI across four difficulty levels, or pair up with anyone — nearby or remote — in one scan.</span><span class="t-jp is-block">息子が通うマンハッタンの学校へ向かうフェリーで、僕らは毎回同じ紙のゲームをやっていました。マルバツを4×4に広げて、<strong>一手で二つ置く</strong>。1時間でも飽きないくらい戦略があって、どこでも紙に描けるほど単純です。<strong>Marubatsu 2.0</strong> は、そのゲームをそのままアプリにしたもの。1台の端末で交代で遊ぶこともできますし、4段階の AI とも対戦できて、近くにいても離れていても QR を1回読むだけでオンライン対戦が始まります。</span></p>

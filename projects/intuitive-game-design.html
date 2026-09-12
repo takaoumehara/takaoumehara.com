@@ -171,7 +171,37 @@
       .diagram .pulse { animation: none !important; opacity: 1 !important; }
       .story-cta, .nav-toggle span, .nav-links a, .lang-btn { transition: none !important; }
     }
-  </style>
+      /* ─── Cross-document view transition — docs/page-transitions.md ───────
+       The card the visitor clicked grows into this page's hero band while the
+       rest of the page cross-fades under it. It takes both documents: the
+       listing page puts `hero-media` on the one card it was launched from,
+       this page puts the same name on the hero. Browsers without support
+       simply navigate — nothing here is load-bearing. */
+    @view-transition { navigation: auto; }
+    [data-vt-hero] { view-transition-name: hero-media; }
+
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+       `object-fit: fill` stretches one into the other on the way across;
+       cropping both snapshots is what makes the move read as one element
+       rather than two pictures swapping. */
+    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+    ::view-transition-old(hero-media),
+    ::view-transition-new(hero-media) {
+      height: 100%; width: 100%; object-fit: cover;
+      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-vt-hero] { view-transition-name: none; }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
+    }
+</style>
   <style>
     /* ── Nav tiers ── The three offers read first at full ink; the two
        foundations sit behind a hairline. The hairline is drawn inside the
@@ -215,7 +245,7 @@
   <main class="deck">
 
     <!-- ═══ Slide 1 · Hero (dark, orange glow) ═══ -->
-    <header class="wds-hero wds-slide reveal-on-scroll">
+    <header data-vt-hero class="wds-hero wds-slide reveal-on-scroll">
       <p class="wds-kick"><span class="t-en">Claude Code Skill · Game design · Game feel · Web audio</span><span class="t-jp">Claude Code スキル · ゲームデザイン · 手ざわり · Web の音</span></p>
       <h1 class="wds-serif"><span class="t-en">A game nobody has to <em>explain</em>.</span><span class="t-jp is-block">誰も<em>説明しなくていい</em>ゲームを。</span></h1>
       <p class="wds-hero-lead"><span class="t-en"><strong>intuitive-game-design</strong> is a Claude Code skill for games and interactive experiences a first-time player understands without a tutorial — and that feel right under the hand. It carries three bodies of work: designing and diagnosing intuitiveness, building games around a single mechanic, and implementing sound on the web.</span><span class="t-jp is-block"><strong>intuitive-game-design</strong> は、初めて触った人がチュートリアルなしで分かり、しかも操作していて気持ちがいいゲームや体験をつくるための Claude Code スキルです。中身は3つ。分かりやすさをどう設計し、どう診断するか。ひとつの仕掛けに絞ってゲームを組み立てること。そして Web での音の実装です。</span></p>

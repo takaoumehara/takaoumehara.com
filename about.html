@@ -578,7 +578,37 @@
       .nav-links li { border-top: 1px solid var(--line); }
       .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
     }
-  </style>
+      /* ─── Cross-document view transition — docs/page-transitions.md ───────
+       The card the visitor clicked grows into this page's hero band while the
+       rest of the page cross-fades under it. It takes both documents: the
+       listing page puts `hero-media` on the one card it was launched from,
+       this page puts the same name on the hero. Browsers without support
+       simply navigate — nothing here is load-bearing. */
+    @view-transition { navigation: auto; }
+    [data-vt-hero] { view-transition-name: hero-media; }
+
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+       `object-fit: fill` stretches one into the other on the way across;
+       cropping both snapshots is what makes the move read as one element
+       rather than two pictures swapping. */
+    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+    ::view-transition-old(hero-media),
+    ::view-transition-new(hero-media) {
+      height: 100%; width: 100%; object-fit: cover;
+      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-vt-hero] { view-transition-name: none; }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
+    }
+</style>
   <style>
     /* ── Nav tiers ── The three offers read first at full ink; the two
        foundations sit behind a hairline. The hairline is drawn inside the

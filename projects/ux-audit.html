@@ -54,7 +54,37 @@
       .nav-links li { border-top: 1px solid var(--line); }
       .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
     }
-  </style>  <style>
+      /* ─── Cross-document view transition — docs/page-transitions.md ───────
+       The card the visitor clicked grows into this page's hero band while the
+       rest of the page cross-fades under it. It takes both documents: the
+       listing page puts `hero-media` on the one card it was launched from,
+       this page puts the same name on the hero. Browsers without support
+       simply navigate — nothing here is load-bearing. */
+    @view-transition { navigation: auto; }
+    [data-vt-hero] { view-transition-name: hero-media; }
+
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+       `object-fit: fill` stretches one into the other on the way across;
+       cropping both snapshots is what makes the move read as one element
+       rather than two pictures swapping. */
+    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+    ::view-transition-old(hero-media),
+    ::view-transition-new(hero-media) {
+      height: 100%; width: 100%; object-fit: cover;
+      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-vt-hero] { view-transition-name: none; }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
+    }
+</style>  <style>
     :root { --bg: #fbfaf7; --ink: #121212; --ink-mid: #4c4841; --ink-dim: #76716a; --line: rgba(18,18,18,0.08); --border: rgba(18,18,18,0.10); --surface: rgba(255,255,255,0.92); --shadow: 0 18px 42px rgba(18,18,18,0.04); --ff: "Geist Sans", system-ui, -apple-system, sans-serif; --angle: 102deg; --a1: hsla(198 82% 72% / 0.44); --a2: hsla(248 74% 80% / 0.36); --a3: hsla(324 72% 81% / 0.40); --a4: hsla(36 80% 78% / 0.34); --t1: hsl(198 58% 56%); --t2: hsl(248 58% 70%); --t3: hsl(324 60% 72%); --t4: hsl(36 58% 62%); --hover-angle: 98deg; --bar-width: 70%; --image-hover-opacity: 0.985; --image-hover-width: 174%; --image-hover-from: -96%; --image-hover-to: -4%; --image-hover-leave-to: 124%; --image-hover-enter-ms: 1260ms; --image-hover-leave-ms: 920ms; --hover-ms: 880ms; --press-ms: 760ms; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -182,7 +212,7 @@
 
   <div class="breadcrumb"><a href="../work.html">Product Design</a><span>/</span><a href="#">USAA UX Audit</a></div>
 
-  <section class="project-hero">
+  <section data-vt-hero class="project-hero">
     <div class="project-hero-img" style="background-image:url('../assets/shared/image-asset.jpeg');"></div>
     <div class="project-hero-overlay"></div>
     <div class="project-hero-content">

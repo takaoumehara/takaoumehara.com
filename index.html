@@ -12,7 +12,7 @@
   <meta property="og:title" content="Takao Umehara — Design &amp; AI Executive · Venture Builder">
   <meta property="og:description" content="I like the beginning of things. Design &amp; AI executive and venture builder working across product, design, business and emerging technology between New York and Japan.">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="assets/rakugaki-jam/still.jpg">
+  <meta property="og:image" content="assets/resona/still.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -166,8 +166,12 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 .proof-card[data-href] { cursor: pointer; }
 .proof-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 .proof-card.is-lead { grid-column: span 2; }
+/* One card per page may take the whole column. It is the loudest thing the
+   grid can say, so it stays rare — the lens decides, never the record. */
+.proof-card.is-feature { grid-column: 1 / -1; }
 .card-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 18px; }
 .proof-card.is-lead .card-media { aspect-ratio: 16 / 8.5; }
+.proof-card.is-feature .card-media { aspect-ratio: 21 / 9; }
 .card-media img, .exp-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
 /* The muted loop sits on top of the still and fades in once it is playing. */
 .card-media, .exp-media { position: relative; }
@@ -202,6 +206,14 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 .card-emphasis { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
 .card-title { font-family: var(--serif); font-size: 24px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.15; }
 .proof-card.is-lead .card-title { font-size: clamp(28px, 3vw, 38px); }
+.proof-card.is-feature .card-title { font-size: clamp(34px, 4.4vw, 54px); }
+/* Full width is not a reason to set a 90-character line. */
+.proof-card.is-feature .card-body { max-width: 72ch; }
+/* A card this size with no photograph is a large empty field unless the art is
+   treated as a title plate: the wordmark centred and set at hero scale, rather
+   than the small bottom-left label a 3:2 tile wants. */
+.proof-card.is-feature .card-art { align-items: center; justify-content: center; padding: 32px; }
+.proof-card.is-feature .card-art-label { font-size: clamp(40px, 6.4vw, 92px); text-align: center; }
 html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; }
 .card-meta { font-size: 12.5px; color: var(--ink-dim); }
 .card-flag { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--border); border-radius: 999px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
@@ -356,6 +368,7 @@ footer { border-top: 1px solid var(--line); }
 @media (max-width: 600px) {
   .proof-grid { grid-template-columns: 1fr; gap: 36px; }
   .proof-card.is-lead { grid-column: auto; }
+  .proof-card.is-feature .card-media { aspect-ratio: 16 / 9; }
 }
 @media (max-width: 480px) {
   .exp-grid { grid-template-columns: 1fr; }
@@ -420,6 +433,42 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
   .cat-grid { grid-template-columns: 1fr; gap: 44px; }
 }
 
+/* ── Page transitions ──────────────────────────────────────────────────────
+   docs/page-transitions.md. Opening a card is not a cut: the thumbnail that
+   was clicked grows into the hero band of the page it opens, and everything
+   around it cross-fades. It takes two halves and both have to be present —
+   this file is the listing half, the detail page carries the other.
+   `view-transition-name` has to be unique within a document, so the name is
+   put on one card at a time from script (shell.mjs), never on all of them up
+   front: a duplicate name aborts the whole transition, silently.
+   Browsers without the API simply navigate. Nothing here is load-bearing. */
+@view-transition { navigation: auto; }
+
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+/* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+   `object-fit: fill` stretches one into the other on the way across; cropping
+   both snapshots instead is what makes the move read as one element rather
+   than two pictures swapping. */
+::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+::view-transition-old(hero-media),
+::view-transition-new(hero-media) {
+  height: 100%; width: 100%; object-fit: cover;
+  animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+}
+
+/* Reduced motion keeps the navigation instant. The morph is never assigned in
+   the first place — shell.mjs checks the same query before it names a card. */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(hero-media),
+  ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
+}
+
   </style>
 </head>
 <body>
@@ -457,10 +506,23 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
   <section class="band proof" id="proof">
     <div class="section-head">
       <h2 class="section-title"><span class="t-en">Selected proof</span><span class="t-jp">選んだ証拠</span></h2>
-      <p class="section-lede"><span class="t-en">Five pieces of work, chosen for range as much as strength. Open any of them for what I did and what the team did.</span><span class="t-jp is-block">強さと同じくらい幅で選んだ 5 つの仕事。それぞれに、自分がしたこととチームがしたことを書いてある。</span></p>
+      <p class="section-lede"><span class="t-en">Six pieces of work, chosen for range as much as strength. Open any of them for what I did and what the team did.</span><span class="t-jp is-block">強さと同じくらい幅で選んだ 6 つの仕事。それぞれに、自分がしたこととチームがしたことを書いてある。</span></p>
     </div>
     <div class="proof-grid">
-      <article class="proof-card is-lead" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
+      <article class="proof-card is-lead" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
+        <div class="card-media"><img src="assets/resona/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/resona/preview.webm" type="video/webm"><source src="assets/resona/preview.mp4" type="video/mp4"></video></div>
+        <div class="card-body">
+          <p class="card-emphasis"><span class="t-en">Web animation · Live now</span><span class="t-jp">ウェブアニメーション · 公開中</span></p>
+          <h3 class="card-title"><span class="t-en">Resona</span><span class="t-jp">響</span></h3>
+          <p class="card-meta">Designer &amp; builder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
+          <p class="card-desc"><span class="t-en">Motion that tells you what something means before you read a word.</span><span class="t-jp is-block">言葉を読む前に、動きが意味を伝える。</span></p>
+          
+          <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
+      <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Designed and built a showcase of purposeful web animation grounded in pseudo-haptics</li><li>Explored motion that signals meaning before the user reads any text</li><li>Built the pointer-driven interaction patterns</li></ul></div></details>
+          <a class="card-link" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></a>
+        </div>
+      </article>
+      <article class="proof-card is-standard" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
         <div class="card-media"><img src="assets/rakugaki-jam/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/rakugaki-jam/preview.webm" type="video/webm"><source src="assets/rakugaki-jam/preview.mp4" type="video/mp4"></video></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Interactive · Live now</span><span class="t-jp">インタラクティブ · 公開中</span></p>
@@ -471,6 +533,19 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Designed the doodle-to-wall-screen concept — draw on your phone, fling it onto a shared display</li><li>Built the realtime multi-device pairing and sync on Snap Pair and Firebase RTDB</li><li>Built the canvas rendering and fling interaction</li></ul></div></details>
           <a class="card-link" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></a>
+        </div>
+      </article>
+      <article class="proof-card is-feature" tabindex="0" data-href="intentfirst.html">
+        <div class="card-media"><div class="card-art card-art--intent"><span class="card-art-label">intentfirst.ai</span></div></div>
+        <div class="card-body">
+          <p class="card-emphasis"><span class="t-en">AI venture · Active</span><span class="t-jp">AI ベンチャー · 進行中</span></p>
+          <h3 class="card-title">intentfirst.ai</h3>
+          <p class="card-meta">Founder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
+          <p class="card-desc"><span class="t-en">A thesis, not a product: the vocabulary AI needs to read intent, not just input.</span><span class="t-jp is-block">プロダクトではなく主張。AI が入力ではなく意図を読むための語彙。</span></p>
+          <dl class="metrics"><div class="metric"><dt>8</dt><dd><span class="t-en">Context Tokens defining a user&#39;s state</span><span class="t-jp">利用者の状態を示す項目</span></dd></div><div class="metric"><dt>3</dt><dd><span class="t-en">memory layers — Identity, Accumulated Learning, Right Now</span><span class="t-jp">記憶モデルの層</span></dd></div></dl>
+          <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
+      <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Defined the Context Grammar framework: 8 structured Context Tokens describing who a user is in the moment, not just what they said</li><li>Designed the 3-layer memory model — Identity, Accumulated Learning, Right Now</li><li>Built 3 applied demonstration projects: The Living Home, The Family Trip, Fluid Handoff</li><li>Published the framework and site at intentfirst.ai</li></ul></div></details>
+          <a class="card-link" href="intentfirst.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
         </div>
       </article>
       <article class="proof-card is-standard" tabindex="0" data-href="projects/verizon-ai-agents.html">
@@ -497,19 +572,6 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Took the chair role with one strategic goal: shift the revenue pillar from food to games</li><li>Researched Japanese ennichi festival games and set design criteria (learnable by watching, 1–2 minute rounds, kindergarten to high school)</li><li>Game concepts and the expansion of the game portfolio from 3 inherited booths to 11+ original games</li><li>Designed, prototyped and tested individual game experiences, some over several yearly iterations</li><li>Booth concepts, customer flow, signage and wayfinding</li><li>Festival brand identity — 祭 character, 知行合一 motto, patterns, noren, environmental graphics</li><li>Operations, budget and revenue thinking; coordinated 110+ volunteers</li><li>Invited students to propose game ideas and co-designed them with adult volunteers</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>A small build crew constructed the games from the designs</li><li>Parent volunteers ran every station on the day; a separate team managed the shopping area</li><li>Students proposed and helped validate new game ideas</li></ul></div></details>
           <a class="card-link" href="projects/festival-design.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
-        </div>
-      </article>
-      <article class="proof-card is-standard" tabindex="0" data-href="intentfirst.html">
-        <div class="card-media"><div class="card-art card-art--intent"><span class="card-art-label">intentfirst.ai</span></div></div>
-        <div class="card-body">
-          <p class="card-emphasis"><span class="t-en">AI venture · Active</span><span class="t-jp">AI ベンチャー · 進行中</span></p>
-          <h3 class="card-title">intentfirst.ai</h3>
-          <p class="card-meta">Founder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
-          <p class="card-desc"><span class="t-en">A thesis, not a product: the vocabulary AI needs to read intent, not just input.</span><span class="t-jp is-block">プロダクトではなく主張。AI が入力ではなく意図を読むための語彙。</span></p>
-          
-          <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
-      <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Defined the Context Grammar framework: 8 structured Context Tokens describing who a user is in the moment, not just what they said</li><li>Designed the 3-layer memory model — Identity, Accumulated Learning, Right Now</li><li>Built 3 applied demonstration projects: The Living Home, The Family Trip, Fluid Handoff</li><li>Published the framework and site at intentfirst.ai</li></ul></div></details>
-          <a class="card-link" href="intentfirst.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
         </div>
       </article>
       <article class="proof-card is-standard" tabindex="0" data-href="projects/ela-quests.html">
@@ -555,13 +617,13 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       <p class="section-lede"><span class="t-en">Input: a voice, a face, a drawn line, every phone in the room. Output: a screen bigger than the one you are holding. Almost none of it is AI — it is networking, tracking and timing.</span><span class="t-jp is-block">入力は声・表情・手描きの線・その場のスマホ全部。出力は手元より大きな画面。ほとんど AI ではなく、通信とトラッキングとタイミングの仕事。</span></p>
     </div>
     <div class="exp-grid">
-      <article class="exp-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
-        <div class="exp-media"><img src="assets/resona/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/resona/preview.webm" type="video/webm"><source src="assets/resona/preview.mp4" type="video/mp4"></video></div>
+      <article class="exp-card" tabindex="0" data-href="https://emojiblast.vercel.app" data-external="true">
+        <div class="exp-media"><img src="assets/emoji-blast/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/emoji-blast/preview.webm" type="video/webm"><source src="assets/emoji-blast/preview.mp4" type="video/mp4"></video></div>
         <div class="card-body">
-          <p class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
-          <h3 class="card-title"><span class="t-en">Resona</span><span class="t-jp">響</span></h3>
-          <p class="card-desc"><span class="t-en">Motion that tells you what something means before you read a word.</span><span class="t-jp is-block">言葉を読む前に、動きが意味を伝える。</span></p>
-          <a class="card-link" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
+          <p class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2 台のスマホ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
+          <h3 class="card-title">Emoji Blast</h3>
+          <p class="card-desc"><span class="t-en">Two phones, one emoji shooter. Shared lives, no server.</span><span class="t-jp is-block">スマホ 2 台の絵文字シューティング。残機は共有、サーバーなし。</span></p>
+          <a class="card-link" href="https://emojiblast.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
       <article class="exp-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
@@ -709,7 +771,7 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
         <li class="cap">
           <span class="cap-label">Interactive</span>
           <span class="cap-note"><span class="t-en">Experiences where the input is a voice, a face, a drawn line, or every phone in the room.</span><span class="t-jp">入力が声・表情・手描きの線・その場のスマホ全部、という体験。</span></span>
-          <span class="cap-evidence"><span class="t-en">Rakugaki Jam · Resona · Typespace</span><span class="t-jp">Rakugaki Jam · 響 · Typespace</span></span>
+          <span class="cap-evidence"><span class="t-en">Resona · Rakugaki Jam · Emoji Blast</span><span class="t-jp">響 · Rakugaki Jam · Emoji Blast</span></span>
         </li>
         </ul>
       </div>
@@ -719,12 +781,12 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
         <li class="cap">
           <span class="cap-label">0→1</span>
           <span class="cap-note"><span class="t-en">Taking something with no shape yet to the point where it can be tested.</span><span class="t-jp">まだ形のないものを、試せるところまで持っていく。</span></span>
-          <span class="cap-evidence"><span class="t-en">Festival Reinvention · intentfirst.ai · MyBrainSpec</span><span class="t-jp">秋祭りのデザイン · intentfirst.ai · MyBrainSpec</span></span>
+          <span class="cap-evidence"><span class="t-en">intentfirst.ai · Festival Reinvention · MyBrainSpec</span><span class="t-jp">intentfirst.ai · 秋祭りのデザイン · MyBrainSpec</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Product Strategy</span>
           <span class="cap-note"><span class="t-en">Deciding what the product is — and, harder, what it is not.</span><span class="t-jp">何を作らないかを含めて、プロダクトの筋を決める。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · intentfirst.ai · ELA Quests</span><span class="t-jp">AI による UX ワークフローの変革 · intentfirst.ai · Amplify Education ELA クエスト</span></span>
+          <span class="cap-evidence"><span class="t-en">intentfirst.ai · Verizon AI Workflow · ELA Quests</span><span class="t-jp">intentfirst.ai · AI による UX ワークフローの変革 · Amplify Education ELA クエスト</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">UX / CX</span>
@@ -759,12 +821,12 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
         <li class="cap">
           <span class="cap-label">AI</span>
           <span class="cap-note"><span class="t-en">Designing, building and putting AI into real work — including inside locked-down enterprises.</span><span class="t-jp">AI を設計し、作り、実際の仕事に入れる。制約の強い企業の中でも。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · intentfirst.ai · Marubatsu 2.0</span><span class="t-jp">AI による UX ワークフローの変革 · intentfirst.ai · Marubatsu 2.0</span></span>
+          <span class="cap-evidence"><span class="t-en">intentfirst.ai · Verizon AI Workflow · Marubatsu 2.0</span><span class="t-jp">intentfirst.ai · AI による UX ワークフローの変革 · Marubatsu 2.0</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Agentic UX</span>
           <span class="cap-note"><span class="t-en">Designing how a person and an AI agent divide the work between them.</span><span class="t-jp">人と AI が仕事をどう分け合うかを設計する。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · intentfirst.ai</span><span class="t-jp">AI による UX ワークフローの変革 · intentfirst.ai</span></span>
+          <span class="cap-evidence"><span class="t-en">intentfirst.ai · Verizon AI Workflow</span><span class="t-jp">intentfirst.ai · AI による UX ワークフローの変革</span></span>
         </li>
         </ul>
       </div>
@@ -911,6 +973,54 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       card.addEventListener("pointerleave", stop);
       card.addEventListener("focusin", start);
       card.addEventListener("focusout", stop);
+    });
+  })();
+
+  // ── Page transitions (the other half of the rules in lens.css) ──
+  // The thumbnail that was clicked grows into the hero band of the page it
+  // opens. view-transition-name has to be unique in the document, so exactly
+  // one card carries it, and only around the navigation itself: naming every
+  // card up front would abort the transition instead of improving it.
+  // pageswap/pagereveal are used rather than a click handler so that every way
+  // of leaving is covered — the card, the "Case study" link inside it, and the
+  // back button on the way home. Browsers without them just navigate.
+  (() => {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const CARD = ".proof-card, .exp-card, .cat-card";
+    const MEDIA = ".card-media, .exp-media, .cat-card-media";
+    let named = null;
+    const clear = () => { if (named) named.style.viewTransitionName = ""; named = null; };
+    const cardFor = (url) => {
+      for (const card of document.querySelectorAll(CARD)) {
+        if (card.dataset.external === "true") continue;
+        const own = card.dataset.href;
+        const hit = own
+          ? new URL(own, location.href).href === url
+          : [...card.querySelectorAll("a[href]")].some((a) => a.href === url);
+        if (hit) return card;
+      }
+      return null;
+    };
+    // Cards without a picture (a text row, a card-art tile on a page that has
+    // none) are left alone: the page still cross-fades, nothing morphs.
+    const name = (url) => {
+      clear();
+      if (!url || still.matches) return;
+      const media = cardFor(url)?.querySelector(MEDIA);
+      if (!media) return;
+      media.style.viewTransitionName = "hero-media";
+      named = media;
+    };
+
+    addEventListener("pageswap", (event) => {
+      if (event.viewTransition) name(event.activation?.entry?.url);
+    });
+    addEventListener("pagereveal", (event) => {
+      // Coming back: the hero settles into the card it was opened from. This
+      // also clears a name left behind by a page restored from the bfcache.
+      if (!event.viewTransition) return clear();
+      name(event.activation?.from?.url);
+      event.viewTransition.finished.then(clear, clear);
     });
   })();
 
