@@ -386,3 +386,43 @@ test("nothing can out-specify the language switch", () => {
   }
   assert.deepEqual(offenders, [], `these must wrap .t-en / .t-jp in :where():\n  ${offenders.join("\n  ")}`);
 });
+
+// ── Preview clips ───────────────────────────────────────────────────────────
+
+test("a preview clip is an MP4 that exists, and it never replaces the still", () => {
+  for (const [slug, item] of lib.evidence) {
+    const clip = item.assets?.preview;
+    if (!clip) continue;
+    assert.ok(clip.endsWith(".mp4"), `${slug}: assets.preview must be H.264 MP4 — every browser plays it`);
+    assert.ok(assetExists(clip), `${slug}: assets.preview "${clip}" is not on disk`);
+    assert.ok(item.assets.thumb ?? item.assets.hero,
+      `${slug}: a clip needs a still behind it — the page must read with video off`);
+  }
+});
+
+test("no card clip autoplays, and every one of them is hidden from assistive tech", () => {
+  // A grid of cards that all start playing on load is a bandwidth bill and a
+  // motion hazard. They play on hover or focus, from src/render/shell.mjs.
+  const pages = [outputPath(byslug("default")), ...lenses.filter((l) => l.slug !== "default").map(outputPath), join(ROOT, "interactive.html")];
+  let seen = 0;
+  for (const page of pages) {
+    const html = readFileSync(page, "utf8");
+    for (const tag of html.matchAll(/<video[^>]*class="card-clip"[^>]*>/g)) {
+      seen += 1;
+      const attrs = tag[0];
+      assert.ok(!/\bautoplay\b/.test(attrs), `${page}: a card clip must not autoplay`);
+      assert.ok(/preload="none"/.test(attrs), `${page}: a card clip must not be fetched before it is asked for`);
+      assert.ok(/\bmuted\b/.test(attrs) && /\bloop\b/.test(attrs) && /\bplaysinline\b/.test(attrs), `${page}: card clip attributes`);
+      assert.ok(/aria-hidden="true"/.test(attrs), `${page}: the clip is decoration — the still and the copy carry the meaning`);
+    }
+  }
+  assert.ok(seen >= 5, `expected the Interactive recordings to be wired up, found ${seen} clips`);
+});
+
+test("reduced motion turns the clips off rather than merely slowing them", () => {
+  for (const file of [join(ROOT, "src", "render", "lens.css"), join(ROOT, "assets", "work-card-grid.css")]) {
+    const css = readFileSync(file, "utf8");
+    const block = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
+    assert.ok(/\.card-clip\s*\{[^}]*display:\s*none/.test(block), `${file}: .card-clip must be display:none under reduced motion`);
+  }
+});

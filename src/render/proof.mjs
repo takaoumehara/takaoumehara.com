@@ -1,7 +1,7 @@
 // Selected proof: the cards that carry the argument. Each card shows the
 // framing the Lens chose, the metrics the Lens chose to surface, and — behind
 // a <details> — the honest split of what Takao did and what the team did.
-import { esc, t, tb, plain, href } from "./html.mjs";
+import { esc, t, tb, plain, href, mediaFill } from "./html.mjs";
 import { sectionHead, displayTitle } from "./sections.mjs";
 
 const ENGAGEMENT_LABEL = {
@@ -20,11 +20,8 @@ export const periodLabel = (period) => {
 };
 
 export function cardMedia(item, ctx) {
-  const image = item.assets?.thumb ?? item.assets?.hero;
-  if (image) return `<div class="card-media"><img src="${esc(href(ctx, image))}" alt="" loading="lazy"></div>`;
-  const art = item.assets?.art ?? "card-art--intent";
-  const label = item.assets?.artLabel ?? item.shortTitle ?? item.title;
-  return `<div class="card-media"><div class="card-art ${esc(art)}"><span class="card-art-label">${esc(label)}</span></div></div>`;
+  const fallback = { ...item, assets: { art: "card-art--intent", ...item.assets } };
+  return `<div class="card-media">${mediaFill(fallback, ctx)}</div>`;
 }
 
 export function metricRow(item, metricIds) {

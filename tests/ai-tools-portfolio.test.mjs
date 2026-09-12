@@ -295,7 +295,7 @@ test('Interactive Experience is its own category page of eight projects', () => 
   assert.deepEqual(inputs, ['Pointer', 'Face', 'Handwriting', 'Typing', 'Voice', 'Two phones', 'Two phones', 'Every phone'], 'every card leads with its input');
 
   const titles = [...html.matchAll(/<h2 class="card-title">([A-Za-z0-9. ]+)/g)].map((m) => m[1].trim());
-  assert.deepEqual(titles, ['Resona', 'Kao Game', 'Rakugaki Jam', 'Typespace', 'Koe Baku', 'EmojiDrop', 'Marubatsu 2.0', 'Werewolf Card Game'], 'card order');
+  assert.deepEqual(titles, ['Resona', 'Kao Game', 'Rakugaki Jam', 'Typespace', 'Koe Baku', 'Emoji Blast', 'Marubatsu 2.0', 'Werewolf Card Game'], 'card order');
   assertNoUnsupportedClaims(html, 'Interactive Experience page');
 });
 

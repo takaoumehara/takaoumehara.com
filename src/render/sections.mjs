@@ -1,5 +1,5 @@
 // The remaining sections. Each takes { section, lens, lib, ctx } and returns HTML.
-import { esc, t, tb, plain, href } from "./html.mjs";
+import { esc, t, tb, plain, href, mediaFill } from "./html.mjs";
 
 export function sectionHead(title, lede, opts = {}) {
   const lead = lede ? `<p class="section-lede">${tb(lede)}</p>` : "";
@@ -76,9 +76,7 @@ export function experimentsSection({ section, lib, ctx }) {
       ? `<a class="card-link" href="${esc(item.links.live)}" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>`
       : item.links?.caseStudy ? `<a class="card-link" href="${esc(href(ctx, item.links.caseStudy))}"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>` : "";
     const target = live ? ` data-href="${esc(item.links.live)}" data-external="true"` : item.links?.caseStudy ? ` data-href="${esc(href(ctx, item.links.caseStudy))}"` : "";
-    const art = item.assets?.thumb ?? item.assets?.hero
-      ? `<img src="${esc(href(ctx, item.assets.thumb ?? item.assets.hero))}" alt="" loading="lazy">`
-      : `<div class="card-art ${esc(item.assets?.art ?? "card-art--motion")}"><span class="card-art-label">${esc(item.assets?.artLabel ?? item.shortTitle ?? item.title)}</span></div>`;
+    const art = mediaFill(item, ctx);
     return `      <article class="exp-card" tabindex="0"${target}>
         <div class="exp-media">${art}</div>
         <div class="card-body">

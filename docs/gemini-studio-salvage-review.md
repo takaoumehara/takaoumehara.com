@@ -220,7 +220,16 @@ const validatedProjects = (parsed.featuredProjects || [])
 
 ---
 
-## 7. 次の一手（本人の判断待ち）
+## 7. 決定（2026-09-12）
+
+本人の判断: **§5 の結論どおり `codex/monumental-editorial-redesign` を畳む。**
+記録は `docs/adaptive-portfolio-architecture.md` §14.2。
+
+- 紐づく未マージ PR は無いので、閉じる対象も無い。ブランチの削除は回収確認後に本人が行う
+- §2-C（Playwright + axe）は **Phase 1.5 として実施**。移植ではなくこのリポジトリ向けの新規執筆
+- §4 の設計原則（LLM には選択とタグ付けだけをさせる）は Phase 2 の出発点として確定
+
+## 7-旧. 次の一手（判断前に書いたもの）
 
 1. **PR #15 はこのまま出せる。** このレビューで手戻りは発生しない
 2. Playwright + axe のテストを Phase 1.5 として足すか（§2-C）— ハンドオフの「a11y 未実施」の解消

@@ -135,6 +135,8 @@ export interface EvidenceBase {
   assets?: {
     thumb?: string;           // site-relative path, e.g. "assets/thumbs/koji-fizz.jpg"
     hero?: string;
+    /** Muted, looping H.264 clip played on hover/focus over `thumb`. */
+    preview?: string;
     /** CSS art class from assets/work-card-grid.css when there is no image. */
     art?: string;
     artLabel?: string;

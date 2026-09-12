@@ -115,6 +115,35 @@ export const scripts = () => `  <script>
     }));
   })();
 
+  // ── Card preview clips (hover or keyboard focus; never on load, never with reduced motion) ──
+  (() => {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (still.matches) return;
+    document.querySelectorAll(".card-clip").forEach((clip) => {
+      const card = clip.closest(".proof-card, .exp-card") || clip.parentElement;
+      if (!card) return;
+      let playing = false;
+      const start = () => {
+        if (playing || still.matches) return;
+        playing = true;
+        const started = clip.play();
+        if (started && started.catch) started.catch(() => { playing = false; });
+        clip.classList.add("is-playing");
+      };
+      const stop = () => {
+        if (!playing) return;
+        playing = false;
+        clip.classList.remove("is-playing");
+        clip.pause();
+        clip.currentTime = 0;
+      };
+      card.addEventListener("pointerenter", start);
+      card.addEventListener("pointerleave", stop);
+      card.addEventListener("focusin", start);
+      card.addEventListener("focusout", stop);
+    });
+  })();
+
   // ── Card click-through (whole card is a link target; real <a> inside stays keyboard-reachable) ──
   (() => {
     document.querySelectorAll("[data-href]").forEach((card) => {

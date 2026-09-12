@@ -170,6 +170,13 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 .card-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 18px; }
 .proof-card.is-lead .card-media { aspect-ratio: 16 / 8.5; }
 .card-media img, .exp-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
+/* The muted loop sits on top of the still and fades in once it is playing. */
+.card-media, .exp-media { position: relative; }
+.card-clip {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
+  opacity: 0; transition: opacity 260ms ease; pointer-events: none;
+}
+.card-clip.is-playing { opacity: 1; }
 .proof-card[data-href]:hover .card-media img, .exp-card[data-href]:hover .exp-media img { transform: scale(1.03); }
 .card-art { width: 100%; height: 100%; display: flex; align-items: flex-end; padding: 18px; color: #fff; background: linear-gradient(138deg, #152334, #4b6584 52%, #a7c5eb); }
 .card-art-label { font-family: var(--serif); font-size: clamp(22px, 2.6vw, 34px); line-height: 1; letter-spacing: -0.02em; text-shadow: 0 1px 12px rgba(0,0,0,0.25); }
@@ -348,6 +355,7 @@ footer { border-top: 1px solid var(--line); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .card-media img, .exp-media img { transition: none; }
+  .card-clip { display: none; }
 }
 
   </style>
@@ -716,6 +724,35 @@ footer { border-top: 1px solid var(--line); }
       links.classList.remove("is-open");
       toggle.setAttribute("aria-expanded", "false");
     }));
+  })();
+
+  // ── Card preview clips (hover or keyboard focus; never on load, never with reduced motion) ──
+  (() => {
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (still.matches) return;
+    document.querySelectorAll(".card-clip").forEach((clip) => {
+      const card = clip.closest(".proof-card, .exp-card") || clip.parentElement;
+      if (!card) return;
+      let playing = false;
+      const start = () => {
+        if (playing || still.matches) return;
+        playing = true;
+        const started = clip.play();
+        if (started && started.catch) started.catch(() => { playing = false; });
+        clip.classList.add("is-playing");
+      };
+      const stop = () => {
+        if (!playing) return;
+        playing = false;
+        clip.classList.remove("is-playing");
+        clip.pause();
+        clip.currentTime = 0;
+      };
+      card.addEventListener("pointerenter", start);
+      card.addEventListener("pointerleave", stop);
+      card.addEventListener("focusin", start);
+      card.addEventListener("focusout", stop);
+    });
   })();
 
   // ── Card click-through (whole card is a link target; real <a> inside stays keyboard-reachable) ──

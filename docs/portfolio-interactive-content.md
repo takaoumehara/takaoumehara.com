@@ -29,11 +29,28 @@ board の語彙（`panel` / `panel__title` / `stats` / `sub` / `row__see`、2色
 | Typespace | `typespace/portfolio-case-study-typespace/` | **B** | 12 | `Typing` | `typespace-rho.vercel.app` | **本番が現行ビルドを配信しているか**（7/28のブロッカーが未解決のまま） |
 | Resona | `resona/portfolio-case-study-resona/` | **B**（8/12作成分を更新） | 12 | `Body` | `www.resonamotion.com` | 凍結宣言後の再開理由（本人判断）。**掲載は公開済み7作のみ**（本人指示 2026-09-06） |
 | Marubatsu 2.0 | `marubatsu-arena-local/portfolio-case-study-marubatsu/` | **A** 証拠先行 | 11 | `Two phones` | `marubatsu20.vercel.app`（スクショの URL バーで確認） | 旧ドメインの生死・息子の名乗り方 |
-| EmojiDrop Ultimate | `EmojiDropUltimate/portfolio-case-study-emojidrop/` | **B** | 12 | `Two phones` | **無し**（未確認・推測禁止） | 公開URL・名称（Emoji Blast か） |
+| **Emoji Blast**（旧 EmojiDrop Ultimate） | `EmojiDropUltimate/portfolio-case-study-emojidrop/` | **B** | 12 | `Two phones` | `emojiblast.vercel.app`（2026-09 の画面収録の URL バーで確認。ビルド環境からは開けない） | 名称・公開URL とも **解決済み**（2026-09-12） |
 
 各フォルダの `OPEN-QUESTIONS.md` の ★ 項目が、本人にしか答えられない最短経路。
-5件で合計 **約80問**。先に効く順は: Typespace Q-1（本番確認）→ EmojiDrop Q-1（URL）→
+5件で合計 **約80問**。先に効く順は: Typespace Q-1（本番確認）→ ~~EmojiDrop Q-1（URL）~~ **解決済み** →
 Rakugaki Q-2（実イベント有無）→ 全件の「使える機材」→ 全件の「② 生成の着手可否」。
+
+### 1.1 2026-09-12 に本人から届いたもの
+
+本人が GitHub の `main` に画面収録とスクリーンショットを 12 本アップロードした
+（`33f5c2f`）。ここで解決した未確定:
+
+| 未確定だったもの | 解決 |
+|---|---|
+| Emoji Blast の名称 | 本人判断で **EmojiDrop → Emoji Blast**。データ・`interactive.html`・テストを改名済み |
+| Emoji Blast の公開URL | 収録の URL バーが `emojiblast.vercel.app`。`links.live` に入れ、`status` を `live` に。**ビルド環境からは外向き通信が塞がれていて開けないので、本人の目視確認だけ残っている** |
+| Marubatsu 2.0 のサムネイル | 壁画面と手元のスマホが 1 枚に写った収録に差し替え。旧 `assets/marubatsu/hero.jpg` は残置 |
+| Interactive 5 件のカード画像 | CSS のアートワークから**実物の画面**へ。ホバー／フォーカスで動く |
+
+素材は `assets/<slug>/masters/` に置き、配信されるのは派生物
+（`thumb.jpg` 3:2 / `still.jpg` 16:9 / `preview.mp4` H.264）だけ。
+Resona は収録が 2 本あり（花火・Tension）、カードは花火、Tension は
+`assets/resona/tension-*` として控えている。
 
 ---
 
@@ -48,7 +65,7 @@ Rakugaki Q-2（実イベント有無）→ 全件の「使える機材」→ 全
 | 同 | "Gemini reads your patterns" | Gemini は第一候補で、鍵欠落・不正応答時は端末内ミニマックスが代打（`use-computer-player.ts` L586-603） | 文言を「まず Gemini、使えないときは端末内の探索」に |
 | 同 | "rooms live 24h · reconnect-safe" | 24h 失効を実装するコードは無い。ゲスト ID は sessionStorage なのでブラウザ再起動で席を失う | 「リロードしても席は残る」に縮めた |
 | 同 | "Powered by Snap Pair / Built with Snap Pair" | このリポジトリに Snap Pair 依存は無い（ペアリングは自前 `use-online-room.ts`） | 「Snap Pair の出発点」に言い換え |
-| `interactive.html` EmojiDrop | "head-to-head" "no server relay either" | 協力プレイ（残機共有・ボスHP共有・糸）。任意の中継サーバーが実装済み（既定オフ） | カード文言を協力プレイに修正 |
+| `interactive.html` Emoji Blast | "head-to-head" "no server relay either" | 協力プレイ（残機共有・ボスHP共有・糸）。任意の中継サーバーが実装済み（既定オフ） | カード文言を協力プレイに修正。2026-09-12 に `src/data/experiments/emoji-blast.json` の日本語（「2 人対戦」と書かれていた）も同じ事実に合わせた |
 | `interactive.html` Marubatsu | "Real-time online tic-tac-toe with an AI opponent" | ルール変更が一切書かれていない | 「4×4・一手で二つ」を1文説明に |
 | `interactive.html` Typespace | 「AI は使っていません」 | 作品の**中**に AI は無い（正しい）。制作にはエージェントを大量使用 | **残した**。ケーススタディ §6.5 と並べるときに「作品の中には」と補う（Typespace Q-8） |
 

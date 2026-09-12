@@ -133,7 +133,7 @@ export function validateLibrary(lib, { assetExists } = {}) {
     }
     if (item.kind === "tool" && !TOOL_STATUS.has(item.status)) errors.push(`${where}: invalid tool status "${item.status}"`);
     if (assetExists) {
-      for (const key of ["thumb", "hero"]) {
+      for (const key of ["thumb", "hero", "preview"]) {
         const path = item.assets?.[key];
         if (path && !assetExists(path)) errors.push(`${where}: assets.${key} "${path}" does not exist on disk`);
       }

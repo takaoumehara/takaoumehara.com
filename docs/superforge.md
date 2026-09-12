@@ -38,3 +38,16 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
 - **レイアウト**（2026-09-11）: 本文の列は **1200px** 一択（`--col`）。左右は `clamp(20px, 3vw, 32px)`。
   グリッドは 2 種類だけ — **説明文つきカード = 3 列 / 名前と 1 行のタイル = 4 列**。
   サムネイルは **3:2**（先頭の大カードのみ 16:8.5）。列数は個別指定ではなくこの規則で決める。
+- **カテゴリページ**（2026-09-12）: `interactive.html` 等の**カテゴリページは索引として残す**。
+  `/` と `/lens/<slug>` が主張、カテゴリページが全件。ただし
+  **事実がカテゴリページにしか存在してはならない** — 先に `src/data/` に入れる。
+  詳細は `docs/adaptive-portfolio-architecture.md` §14.1。
+- **`codex/monumental-editorial-redesign`**（2026-09-12）: **畳む。**
+  Playwright + axe は回収して新規執筆、JD 解析は設計原則だけ Phase 2 へ。§14.2。
+- **Emoji Blast**（2026-09-12、本人）: 旧称 **EmojiDrop** から改名。
+  `src/data/experiments/emoji-blast.json`。旧ホームページの保存版 `index-console.html` は
+  スナップショットなので旧名のまま。
+- **カードのプレビュー動画**（2026-09-12）: 静止画（`assets.thumb`）が主、
+  `assets.preview` の H.264 MP4 はホバー／フォーカスで重ねて再生するだけ。
+  自動再生しない・`preload="none"`・`aria-hidden`・`prefers-reduced-motion` で無効。
+  素材のマスターは `assets/<slug>/masters/`（`.vercelignore` で配信対象外）。
