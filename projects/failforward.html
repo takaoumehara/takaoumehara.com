@@ -28,7 +28,7 @@
       --bg: #fbfaf7;
       --ink: #121212;
       --ink-mid: #4c4841;
-      --ink-dim: #79746d;
+      --ink-dim: #76716a;
       --line: rgba(18,18,18,0.08);
       --border: rgba(18,18,18,0.10);
       --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
@@ -288,7 +288,7 @@
     const btns = [...document.querySelectorAll(".lang-btn")];
     const saved = localStorage.getItem("tu-lang") || "en";
     const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
+      html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
       html.lang = lang === "jp" ? "ja" : "en";
       btns.forEach((button) => button.classList.toggle("is-active", button.dataset.lang === lang));
       localStorage.setItem("tu-lang", lang);

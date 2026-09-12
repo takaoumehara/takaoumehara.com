@@ -90,7 +90,9 @@ export const scripts = () => `  <script>
     let saved = "en";
     try { saved = localStorage.getItem("tu-lang") || "en"; } catch (e) {}
     const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
+      // The lang attribute travels with the class: without it a screen reader
+      // reads the Japanese aloud in an English voice.
+      html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
       btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
       try { localStorage.setItem("tu-lang", lang); } catch (e) {}
     };

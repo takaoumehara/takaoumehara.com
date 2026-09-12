@@ -11,7 +11,7 @@
   --bg: #fbfaf7;
   --ink: #121212;
   --ink-mid: #4c4841;
-  --ink-dim: #79746d;
+  --ink-dim: #76716a;
   --line: rgba(18,18,18,0.08);
   --border: rgba(18,18,18,0.10);
   --surface: rgba(255,255,255,0.92);
@@ -80,7 +80,7 @@ html.lang-jp .t-jp.is-block { display: block; }
 .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
 .nav-links .is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--line); }
 .nav-toggle { display: none; appearance: none; background: none; border: none; cursor: pointer; width: 44px; height: 44px; position: relative; padding: 0; }
-.nav-toggle span { display: block; position: absolute; left: 8px; width: 28px; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
+.nav-toggle > span { display: block; position: absolute; left: 8px; width: 28px; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
 .nav-toggle span:nth-child(1) { top: 12px; }
 .nav-toggle span:nth-child(2) { top: 21px; }
 .nav-toggle span:nth-child(3) { top: 30px; }
@@ -243,10 +243,19 @@ html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; l
 
 /* ── Career arc ─────────────────────────────────────────────────────────── */
 .arc { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 22px; counter-reset: arc; }
-.arc-cell { position: relative; border-top: 1px solid var(--ink); padding-top: 14px; counter-increment: arc; transition: opacity 200ms ease; }
+.arc-cell { position: relative; border-top: 1px solid var(--ink); padding-top: 14px; counter-increment: arc; transition: color 200ms ease; }
 .arc-cell::before { content: counter(arc, decimal-leading-zero); font-size: 11px; letter-spacing: 0.14em; color: var(--ink-dim); display: block; margin-bottom: 10px; }
 .arc-cell + .arc-cell::after { content: "→"; position: absolute; left: -17px; top: 8px; font-size: 13px; color: var(--ink-dim); }
-.arc-cell.is-quiet { opacity: 0.55; }
+/* A chapter this lens does not lead with recedes by one step of ink, not by
+   opacity. At 0.55 opacity the roles inside measured 2.09:1 — a lens is still
+   a page somebody has to read, and "de-emphasised" is not an exemption from
+   WCAG 1.4.3. Each role moves one step lighter and every step still passes. */
+.arc-cell.is-quiet .arc-label,
+.arc-cell.is-quiet .arc-roles b { color: var(--ink-mid); }
+.arc-cell.is-quiet .arc-summary,
+.arc-cell.is-quiet .arc-roles,
+.arc-cell.is-quiet .arc-title { color: var(--ink-dim); }
+.arc-cell.is-quiet { border-top-color: var(--ink-mid); }
 .arc-cell.is-emphasised { opacity: 1; }
 .arc-label { font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.1; margin-bottom: 8px; }
 html.lang-jp .arc-label { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; font-size: 19px; }

@@ -51,3 +51,9 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   `assets.preview` の H.264 MP4 はホバー／フォーカスで重ねて再生するだけ。
   自動再生しない・`preload="none"`・`aria-hidden`・`prefers-reduced-motion` で無効。
   素材のマスターは `assets/<slug>/masters/`（`.vercelignore` で配信対象外）。
+- **アクセシビリティ**（2026-09-12）: 基準は WCAG 2.2 AA。`npm run test:e2e` が強制する。
+  - `--ink-dim` = `#76716a`（4.64:1）が**最も薄い文字色**。これより薄い色を文字に使わない。
+  - **不透明度で文字を沈めない。** 静けさはインクの段（`ink → ink-mid → ink-dim`）で表す。
+  - 言語スイッチは `<html lang>` も `ja` / `en` に切り替える。
+  - `display` を指定する**子孫** `span` セレクタは `.t-en` / `.t-jp` に届く。`> span` を使う。
+  - タップ目標は 24px（WCAG 2.2 §2.5.8）。

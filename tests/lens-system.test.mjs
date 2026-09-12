@@ -377,14 +377,30 @@ test("nothing can out-specify the language switch", () => {
   // and came later in the file, so it won — and the Japanese page showed the
   // English text for all four ventures. Layout rules that touch .t-en or .t-jp
   // must wrap them in :where(), which contributes no specificity.
-  const css = readFileSync(join(ROOT, "src", "render", "lens.css"), "utf8");
+  // Every stylesheet the site ships, not just the generated one: the same bug
+  // reappeared in assets/index-grid.css, where `.idx-meta-col span { display:
+  // flex }` out-specified `.t-jp { display: none }` and printed both languages.
+  const sheets = [
+    join(ROOT, "src", "render", "lens.css"),
+    join(ROOT, "assets", "index-grid.css"),
+    join(ROOT, "assets", "work-card-grid.css"),
+    join(ROOT, "assets", "deck-quiet.css"),
+  ].filter((file) => existsSync(file));
   const offenders = [];
-  for (const match of css.matchAll(/^([^{@\n][^{\n]*)\{/gm)) {
-    const selector = match[1].trim();
-    if (selector.startsWith("html.lang-jp") || selector === ".t-jp") continue;
-    if (/(^|[\s,])\.t-(en|jp)\b/.test(selector)) offenders.push(selector);
+  for (const file of sheets) {
+    const css = readFileSync(file, "utf8");
+    for (const match of css.matchAll(/^([^{@\n][^{\n]*)\{/gm)) {
+      const selector = match[1].trim();
+      if (selector.startsWith("html.lang-jp") || selector === ".t-jp") continue;
+      // A descendant selector ending in a bare `span` reaches the translation
+      // spans too; only a direct-child selector is safe to give a display to.
+      const body = css.slice(match.index + match[0].length, css.indexOf("}", match.index));
+      const setsDisplay = /(^|[;\s])display\s*:/.test(body);
+      if (/(^|[\s,])\.t-(en|jp)\b/.test(selector)) offenders.push(`${file}: ${selector}`);
+      else if (setsDisplay && /[^>\s]\s+span\s*$/.test(selector)) offenders.push(`${file}: ${selector} (descendant span + display reaches .t-en/.t-jp — use > span)`);
+    }
   }
-  assert.deepEqual(offenders, [], `these must wrap .t-en / .t-jp in :where():\n  ${offenders.join("\n  ")}`);
+  assert.deepEqual(offenders, [], `these must wrap .t-en / .t-jp in :where(), or target a direct child:\n  ${offenders.join("\n  ")}`);
 });
 
 // ── Preview clips ───────────────────────────────────────────────────────────

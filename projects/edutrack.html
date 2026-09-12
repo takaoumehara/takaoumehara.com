@@ -55,7 +55,7 @@
       .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
     }
   </style>  <style>
-    :root { --bg: #fbfaf7; --ink: #121212; --ink-mid: #4c4841; --ink-dim: #79746d; --line: rgba(18,18,18,0.08); --border: rgba(18,18,18,0.10); --surface: rgba(255,255,255,0.92); --shadow: 0 18px 42px rgba(18,18,18,0.04); --ff: "Geist Sans", system-ui, -apple-system, sans-serif; --angle: 102deg; --a1: hsla(198 82% 72% / 0.44); --a2: hsla(248 74% 80% / 0.36); --a3: hsla(324 72% 81% / 0.40); --a4: hsla(36 80% 78% / 0.34); --t1: hsl(198 58% 56%); --t2: hsl(248 58% 70%); --t3: hsl(324 60% 72%); --t4: hsl(36 58% 62%); --hover-angle: 98deg; --bar-width: 70%; --image-hover-opacity: 0.985; --image-hover-width: 174%; --image-hover-from: -96%; --image-hover-to: -4%; --image-hover-leave-to: 124%; --image-hover-enter-ms: 1260ms; --image-hover-leave-ms: 920ms; --hover-ms: 880ms; --press-ms: 760ms; }
+    :root { --bg: #fbfaf7; --ink: #121212; --ink-mid: #4c4841; --ink-dim: #76716a; --line: rgba(18,18,18,0.08); --border: rgba(18,18,18,0.10); --surface: rgba(255,255,255,0.92); --shadow: 0 18px 42px rgba(18,18,18,0.04); --ff: "Geist Sans", system-ui, -apple-system, sans-serif; --angle: 102deg; --a1: hsla(198 82% 72% / 0.44); --a2: hsla(248 74% 80% / 0.36); --a3: hsla(324 72% 81% / 0.40); --a4: hsla(36 80% 78% / 0.34); --t1: hsl(198 58% 56%); --t2: hsl(248 58% 70%); --t3: hsl(324 60% 72%); --t4: hsl(36 58% 62%); --hover-angle: 98deg; --bar-width: 70%; --image-hover-opacity: 0.985; --image-hover-width: 174%; --image-hover-from: -96%; --image-hover-to: -4%; --image-hover-leave-to: 124%; --image-hover-enter-ms: 1260ms; --image-hover-leave-ms: 920ms; --hover-ms: 880ms; --press-ms: 760ms; }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { font-family: var(--ff); color: var(--ink); background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); min-height: 100vh; }
@@ -436,7 +436,7 @@
       const html = document.documentElement;
       const btns = [...document.querySelectorAll(".lang-btn")];
       const saved = localStorage.getItem("tu-lang") || "en";
-      const setLang = (lang) => { html.classList.toggle("lang-jp", lang === "jp"); btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang)); localStorage.setItem("tu-lang", lang); };
+      const setLang = (lang) => { html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en"; btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang)); localStorage.setItem("tu-lang", lang); };
       setLang(saved);
       btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
     })();
