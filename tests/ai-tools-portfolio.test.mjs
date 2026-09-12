@@ -77,28 +77,32 @@ function navDestinations(html, page) {
   }));
 }
 
-// ── Nav consistency across the four-theme reorg ──
+// ── Nav consistency ──
 
-// Six equal nav items read as a generalist. The three the work is sold as now
-// lead at full ink; the two decades underneath sit behind a hairline rule.
-test('all main-page navs carry the two-tier order, with the lead three marked', () => {
+// The nav used to mark Interactive / AI Products / AI Tools as a "lead tier" at
+// full ink and leave the rest grey. On a Brand & Visual page that rendered
+// Product Design as though it were disabled, for a reason no reader could
+// infer. One rule now: every item is equal, and only the page you are on is
+// emphasised. The divider separates the five sections of work from the two
+// pages about the person.
+test('every nav item carries the same weight — only the current page is marked', () => {
   const expected = [
     ['interactive.html', 'Interactive'], ['ai-products.html', 'AI Products'], ['ai-tools.html', 'AI Tools'],
     ['work.html', 'Product Design'], ['brand.html', 'Brand &amp; Visual'],
     ['about.html', 'About'], ['contact.html', 'Contact'],
   ];
-  const lead = new Set(['interactive.html', 'ai-products.html', 'ai-tools.html']);
 
   for (const page of mainPages) {
     const html = read(page);
     const nav = navDestinations(html, page);
     assert.deepEqual(nav.slice(0, 7).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
     for (const { href, tag } of nav.slice(0, 7)) {
-      assert.equal(hasClass(tag, 'is-lead'), lead.has(href), `${page}: ${href} lead-tier marking`);
+      assert.equal(hasClass(tag, 'is-lead'), false, `${page}: ${href} must not carry the retired lead tier`);
     }
-    // Drawn as a pseudo-element on the first base-tier item, so the nav's
-    // spacing stays even — a separator element made that one gap double-width.
-    assert.match(html, /<li\b[^>]*\bclass\s*=\s*["']is-tierbreak["'][^>]*><a href="(?:\.\.\/)?work\.html"/i, `${page}: needs the tier separator`);
+    assert.equal(/\.nav-links a\.is-lead\s*\{/.test(html), false, `${page}: the lead-tier rule must be gone from the CSS too`);
+    // Drawn as a pseudo-element on the item after the work sections, so the
+    // nav's spacing stays even — a separator element made that gap double-width.
+    assert.match(html, /<li\b[^>]*\bclass\s*=\s*["']is-tierbreak["'][^>]*><a href="(?:\.\.\/)?about\.html"/i, `${page}: the divider sits before About`);
     assert.equal(/class\s*=\s*["']nav-rule["']/i.test(html), false, `${page}: the separator must not occupy a nav slot`);
   }
 });

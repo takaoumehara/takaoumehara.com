@@ -3,15 +3,20 @@
 // canonical shell — so generated pages sit in the same site as the hand-built ones.
 import { esc, href, plain } from "./html.mjs";
 
+// Five sections of work, then the two pages about the person. Every item
+// carries the same weight — only the page you are on is emphasised. The old
+// three-item "lead" tier made Product Design read as disabled from a Brand &
+// Visual page, which is the kind of thing nobody can explain out loud.
 const NAV = [
-  ["interactive.html", "Interactive", "is-lead"],
-  ["ai-products.html", "AI Products", "is-lead"],
-  ["ai-tools.html", "AI Tools", "is-lead"],
-  ["work.html", "Product Design", ""],
-  ["brand.html", "Brand &amp; Visual", ""],
-  ["about.html", "About", ""],
-  ["contact.html", "Contact", ""],
+  ["interactive.html", "Interactive"],
+  ["ai-products.html", "AI Products"],
+  ["ai-tools.html", "AI Tools"],
+  ["work.html", "Product Design"],
+  ["brand.html", "Brand &amp; Visual"],
+  ["about.html", "About"],
+  ["contact.html", "Contact"],
 ];
+const NAV_DIVIDER_AT = 5;   // before About
 
 export function head({ lens, ctx, css }) {
   const og = ctx.ogImage ? `<meta property="og:image" content="${esc(href(ctx, ctx.ogImage))}">` : "";
@@ -40,10 +45,9 @@ ${css}
 }
 
 export function nav(ctx) {
-  const items = NAV.map(([path, label, cls], index) => {
-    const li = index === 3 ? ` class="is-tierbreak"` : "";
-    const a = cls ? ` class="${cls}"` : "";
-    return `      <li${li}><a href="${esc(href(ctx, path))}"${a}>${label}</a></li>`;
+  const items = NAV.map(([path, label], index) => {
+    const li = index === NAV_DIVIDER_AT ? ` class="is-tierbreak"` : "";
+    return `      <li${li}><a href="${esc(href(ctx, path))}">${label}</a></li>`;
   }).join("\n");
   return `  <nav class="site-nav">
     <a href="${esc(href(ctx, "index.html"))}" class="nav-logo">
