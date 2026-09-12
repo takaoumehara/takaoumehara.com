@@ -216,7 +216,7 @@ Craft スライドに置くべき情報（一人で全工程を持った、と�
 | Structure | 3層のモーダル階層（Home → Courses → Course detail → Video player） | 既存の "modal overload" / "no way back" / 5つのfixから再構成。**実際の旧IAと一致するか要確認** |
 | Structure | 4セクション、Learning Path / Playlists の命名 | 既存の fix 01・02 の記述そのまま |
 | Craft | 2024年・単独・Figmaのみ・AI不使用 | **本人回答（2026-08-02）** |
-| Craft | 採用しなかった3案（見た目のリフレッシュ / モーダル改善 / 個別対応） | 既存の "every problem was a symptom of the same architectural flaw"、"eliminate modals entirely"、"each fix follows from the same structural decision" から導出。**実際に検討した案かは要確認** |
+| Craft | 採用しなかった3案（見た目だけの刷新 / モーダル改善 / 個別対応） | 既存の "every problem was a symptom of the same architectural flaw"、"eliminate modals entirely"、"each fix follows from the same structural decision" から導出。**実際に検討した案かは要確認** |
 | Retrospective 01 | 25%は見込みであって実測ではない | 既存 Proof の "Projected" 表記そのもの。事実 |
 | Retrospective 02 | 構造優先は序盤に見せる画面が無い期間を作る | 一般論としては正しいが、**この案件で実際にそうだったかは本人しか言えない** |
 | Retrospective 03 | デザインシステムの採用は納品後で手を離れる | 受託の一般構造からの推定。**関与範囲が違えば要修正** |
