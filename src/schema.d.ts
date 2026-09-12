@@ -120,6 +120,10 @@ export interface EvidenceBase {
   role: string;
   engagement: Engagement;
   summary: Localized;         // ≤ 60 words; used when a Lens picks no angle
+  /** One sentence for a card. The full summary is for the page behind it. */
+  cardLine?: Localized;
+  /** Two or three words under a card's name: what it is, not what it does. */
+  cardKind?: Localized;
   /** Approved alternative framings of the SAME facts, keyed by angle name. */
   angles?: Record<string, Localized>;
   capabilities: CapabilityClaim[];

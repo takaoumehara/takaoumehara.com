@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 export const DATA_DIR = join(ROOT, "src", "data");
 export const LENS_DIR = join(ROOT, "src", "lenses");
+export const CATEGORY_DIR = join(ROOT, "src", "categories");
 
 const readJson = (path) => JSON.parse(readFileSync(path, "utf8"));
 
@@ -42,4 +43,8 @@ export function loadLibrary(dataDir = DATA_DIR) {
 
 export function loadLenses(lensDir = LENS_DIR) {
   return readDir(lensDir).map(({ file, data }) => ({ ...data, _file: file }));
+}
+
+export function loadCategories(categoryDir = CATEGORY_DIR) {
+  return readDir(categoryDir).map(({ file, data }) => ({ ...data, _file: file }));
 }

@@ -258,13 +258,51 @@ export function validateLens(lens, lib) {
   return errors;
 }
 
-export function validateAll(lib, lenses, options = {}) {
+/**
+ * A category page is an index, so the bar is different from a lens: it may not
+ * invent copy about the work (it has none — every card's words come from the
+ * record), but it must not point at anything that is not there, and it must not
+ * quietly drop a project by misspelling its id.
+ */
+export function validateCategory(category, lib, { assetExists = () => true } = {}) {
+  const errors = [];
+  const where = `category:${category.slug}`;
+  if (!category.output?.endsWith(".html")) errors.push(`${where}: output must be a .html path at the site root`);
+  if (!category.title?.en || !category.title?.jp) errors.push(`${where}: title needs both languages`);
+  if (!category.lede?.en || !category.lede?.jp) errors.push(`${where}: lede needs both languages`);
+  if (!category.groups?.length) errors.push(`${where}: needs at least one group`);
+
+  const seen = new Set();
+  for (const [index, group] of (category.groups ?? []).entries()) {
+    if (group.title && (!group.title.en || !group.title.jp)) errors.push(`${where}: group ${index} title needs both languages`);
+    if (group.note && (!group.note.en || !group.note.jp)) errors.push(`${where}: group ${index} note needs both languages`);
+    if (!group.items?.length) errors.push(`${where}: group ${index} is empty`);
+    for (const id of group.items ?? []) {
+      if (!lib.evidence.has(id)) errors.push(`${where}: unknown evidence "${id}"`);
+      else if (seen.has(id)) errors.push(`${where}: "${id}" is listed twice`);
+      seen.add(id);
+      const item = lib.evidence.get(id);
+      if (item && item.visibility !== "public") errors.push(`${where}: "${id}" is ${item.visibility}, so it cannot sit on a public index`);
+      const caseStudy = item?.links?.caseStudy;
+      if (caseStudy && !assetExists(caseStudy)) errors.push(`${where}: "${id}" links to "${caseStudy}", which is not on disk`);
+    }
+  }
+  return errors;
+}
+
+export function validateAll(lib, lenses, options = {}, categories = []) {
   const errors = validateLibrary(lib, options);
   const slugs = new Set();
   for (const lens of lenses) {
     if (slugs.has(lens.slug)) errors.push(`lens/${lens.slug}: duplicate slug`);
     slugs.add(lens.slug);
     errors.push(...validateLens(lens, lib));
+  }
+  const outputs = new Set();
+  for (const category of categories) {
+    if (outputs.has(category.output)) errors.push(`category:${category.slug}: two categories write ${category.output}`);
+    outputs.add(category.output);
+    errors.push(...validateCategory(category, lib, options));
   }
   return errors;
 }

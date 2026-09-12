@@ -15,7 +15,7 @@ const STATUS_LABEL = {
   live: { en: "Live", jp: "公開中" }, "in-progress": { en: "In progress", jp: "制作中" }, shipped: { en: "Shipped", jp: "リリース済み" },
   released: { en: "Released", jp: "公開済み" },
 };
-const status = (value) => `<span class="pill pill--status">${t(STATUS_LABEL[value] ?? value)}</span>`;
+export const status = (value) => `<span class="pill pill--status">${t(STATUS_LABEL[value] ?? value)}</span>`;
 
 // The input vocabulary is the argument on these cards, so it is bilingual.
 // These are the exact words the hand-built interactive.html uses.
@@ -26,7 +26,7 @@ const INPUT_LABEL = {
   "Two phones": { en: "Two phones", jp: "2 台のスマホ" },
   "Every phone": { en: "Every phone", jp: "その場の全端末" },
 };
-const inputLabel = (value) => t(INPUT_LABEL[value] ?? value);
+export const inputLabel = (value) => t(INPUT_LABEL[value] ?? value);
 
 /** A card heading. Several "titles" are sentences, not names, so they need Japanese. */
 export const displayTitle = (item) =>
@@ -70,7 +70,9 @@ ${cells}
 export function experimentsSection({ section, lib, ctx }) {
   const cards = section.items.map((ref) => {
     const item = lib.evidence.get(ref.id);
-    const summary = ref.summaryOverride ?? (ref.angle ? item.angles[ref.angle] : item.summary);
+    // A card gets one line. The lens may still reframe it with an approved angle;
+  // the full summary belongs on the page behind the card, not on the card.
+  const summary = ref.summaryOverride ?? (ref.angle ? item.angles[ref.angle] : item.cardLine ?? item.summary);
     const live = item.playable && item.links?.live;
     const link = live
       ? `<a class="card-link" href="${esc(item.links.live)}" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>`

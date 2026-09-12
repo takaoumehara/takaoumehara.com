@@ -363,7 +363,61 @@ footer { border-top: 1px solid var(--line); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .card-media img, .exp-media img { transition: none; }
+  .cat-card-media img { transition: none; }
   .card-clip { display: none; }
+}
+
+/* ── Category pages ───────────────────────────────────────────────────────
+   One index of one section of the work. Two columns, because a card here
+   carries a description and a 3-up card is 279px wide, where Japanese wraps
+   every 13 characters. The same rule that put `/` on three columns puts this
+   on two: the thumbnail is the point, so it gets the width. */
+.cat-page { max-width: var(--col); margin: 0 auto; padding: 0 clamp(20px, 3vw, 32px) 120px; }
+
+.cat-head { padding: clamp(56px, 7vw, 104px) 0 clamp(32px, 4vw, 52px); }
+.cat-title {
+  font-family: var(--serif);
+  font-size: clamp(44px, 8vw, 104px);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 0 0 20px;
+}
+html.lang-jp .cat-title { font-family: var(--ff-jp); font-weight: 600; font-size: clamp(34px, 6vw, 72px); letter-spacing: -0.01em; }
+.cat-lede { max-width: 34em; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: var(--ink-mid); margin: 0; }
+.cat-count { margin: 18px 0 0; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
+
+.cat-group + .cat-group { margin-top: clamp(56px, 6vw, 88px); }
+.cat-group-head {
+  display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  border-top: 1px solid var(--ink); padding-top: 12px; margin-bottom: 28px;
+}
+.cat-group-title { font-size: 15px; font-weight: 600; letter-spacing: 0.01em; margin: 0; }
+.cat-group-note { font-size: 12.5px; color: var(--ink-dim); margin: 0; }
+
+.cat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 52px 32px; }
+
+.cat-card { outline: none; }
+.cat-card[data-href] { cursor: pointer; }
+.cat-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
+.cat-card-media {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #ece9e3;
+  margin-bottom: 18px;
+}
+.cat-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
+.cat-card[data-href]:hover .cat-card-media img { transform: scale(1.03); }
+.cat-card-title { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 28px); font-weight: 400; line-height: 1.15; letter-spacing: -0.015em; margin: 10px 0 6px; }
+html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font-size: clamp(19px, 1.9vw, 24px); }
+.cat-card-kind { font-size: 12.5px; color: var(--ink-dim); margin: 0 0 10px; }
+.cat-card-desc { font-size: 14.5px; line-height: 1.65; color: var(--ink-mid); margin: 0; }
+.cat-card-cta { display: inline-block; margin-top: 14px; font-size: 13px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.cat-card-cta:hover { border-bottom-color: var(--ink); }
+
+@media (max-width: 900px) {
+  .cat-grid { grid-template-columns: 1fr; gap: 44px; }
 }
 
   </style>
@@ -412,7 +466,7 @@ footer { border-top: 1px solid var(--line); }
           <p class="card-emphasis"><span class="t-en">Interactive · Live now</span><span class="t-jp">インタラクティブ · 公開中</span></p>
           <h3 class="card-title">Rakugaki Jam</h3>
           <p class="card-meta">Designer &amp; builder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
-          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホに描いた落書きを、壁の共有画面へ投げ飛ばす。みんなで描くライブ VJ。</span></p>
+          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto the wall screen.</span><span class="t-jp is-block">スマホで落書きして、壁の画面へ投げ込む。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Designed the doodle-to-wall-screen concept — draw on your phone, fling it onto a shared display</li><li>Built the realtime multi-device pairing and sync on Snap Pair and Firebase RTDB</li><li>Built the canvas rendering and fling interaction</li></ul></div></details>
@@ -451,7 +505,7 @@ footer { border-top: 1px solid var(--line); }
           <p class="card-emphasis"><span class="t-en">Global brand</span><span class="t-jp">グローバルブランド</span></p>
           <h3 class="card-title"><span class="t-en">Coca-Cola — Global Visual Directions</span><span class="t-jp">Coca-Cola — グローバルビジュアルディレクション</span></h3>
           <p class="card-meta">The Coca-Cola Company (via Ogilvy Brand Integration Group) · Senior Designer, Ogilvy Brand Integration Group</p>
-          <p class="card-desc"><span class="t-en">As Senior Designer at Ogilvy&#39;s Brand Integration Group, developed two parallel global visual directions for Coca-Cola: &#39;Coke-Animal World,&#39; whimsical creatures built from bottle silhouettes including a giant-swan Times Square billboard, and &#39;SketchVibe World,&#39; a hand-sketched aesthetic — deployed across billboards, vehicles, packaging, coolers and stationery internationally.</span><span class="t-jp is-block">Ogilvy のブランド統合チームで、Coca-Cola 向けに 2 つの世界観を作った。瓶の形から生まれた動物のキャラクター群と、手描きの絵柄。看板から便箋まで国際展開した。</span></p>
+          <p class="card-desc"><span class="t-en">Two global visual worlds for Coca-Cola — one built out of bottle silhouettes.</span><span class="t-jp is-block">コカ・コーラの 2 つのグローバルビジュアル。ひとつはボトルの輪郭からできている。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Developed two parallel global visual directions at Ogilvy&#39;s Brand Integration Group</li><li>Direction 1 &#39;Coke-Animal World&#39;: whimsical creatures built from Coke bottle silhouettes, including a giant swan billboard in Times Square, deployed on billboards, buses and coolers</li><li>Direction 2 &#39;SketchVibe World&#39;: a hand-sketched aesthetic applied to cans, letterhead, wall murals, transit lightboxes, coolers and vehicle wraps</li><li>Created the illustration systems behind both directions</li><li>Designed applications across consumer touchpoints — billboards, vehicles, packaging, environment, stationery</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>Not separated on the source page — team scope to be confirmed. The page credits the Ogilvy Brand Integration Group and notes guidance from VP of Design David Butler.</li></ul></div></details>
@@ -464,7 +518,7 @@ footer { border-top: 1px solid var(--line); }
           <p class="card-emphasis"><span class="t-en">Brand · Service · Space</span><span class="t-jp">ブランド · サービス · 空間</span></p>
           <h3 class="card-title"><span class="t-en">Kitadoko — Hair Salon Rebranding</span><span class="t-jp">Kitadoko — ヘアサロン・リブランディング</span></h3>
           <p class="card-meta">Kitadoko Hair Salon · Creative Director &amp; Design Strategist <span class="card-flag"><span class="t-en">Independent</span><span class="t-jp">独立案件</span></span></p>
-          <p class="card-desc"><span class="t-en">Rebranded a 150-year-old underground family barbershop — 90% male clientele, zero repeat customers — into a modern salon for women and younger clients. Started with a business-model redesign anchored on the idea &#39;Kitadoko as a group of personal hair stylists,&#39; then built identity, service flow and renovated interiors from it.</span><span class="t-jp is-block">150 年続く理容店は地下にあり、客の 9 割が男性でリピーターはゼロだった。まずロゴでなく事業の形から考え直した。「北床は専属美容師の集まり」という一言に軸を定め、内装まで作り直した。</span></p>
+          <p class="card-desc"><span class="t-en">A 150-year-old barbershop with no repeat customers, rebuilt as a salon.</span><span class="t-jp is-block">常連がいなかった 150 年続く床屋を、サロンとして建て直した。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Ran an innovation bootcamp with the CEO and journey-mapped the business before any aesthetic work</li><li>Redesigned the business model around ongoing customer relationships rather than one-off haircuts</li><li>Anchored the strategy on the tagline &#39;Kitadoko as a group of personal hair stylists&#39; — positioning the salon as people, not a place</li><li>Derived the identity, letterforms, service flow and renovated interior from that one idea</li><li>Led brand direction, business-model redesign, service design and visual identity</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>Client leadership team and an interior design company — credited on the page without individual task breakdown</li></ul></div></details>
@@ -498,7 +552,7 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
           <h3 class="card-title"><span class="t-en">Resona</span><span class="t-jp">響</span></h3>
-          <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">疑似触覚にもとづく Web アニメーションの実験場。文字を読む前に、動きだけで意味が伝わる。</span></p>
+          <p class="card-desc"><span class="t-en">Motion that tells you what something means before you read a word.</span><span class="t-jp is-block">言葉を読む前に、動きが意味を伝える。</span></p>
           <a class="card-link" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
@@ -507,7 +561,7 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Typing</span><span class="t-jp">タイピング</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
           <h3 class="card-title">Typespace</h3>
-          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打った言葉が星座になり、やがて宇宙へ還っていく。AI は使っていない。打って、眺めるだけ。</span></p>
+          <p class="card-desc"><span class="t-en">Type a word; it becomes a constellation, then drifts away.</span><span class="t-jp is-block">打った言葉が星座になり、やがて離れていく。</span></p>
           <a class="card-link" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
@@ -516,7 +570,7 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Voice</span><span class="t-jp">声</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
           <h3 class="card-title"><span class="t-en">Koe Baku</span><span class="t-jp">声爆</span></h3>
-          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — joined by QR, measured on-device, audio never leaves the phone.</span><span class="t-jp is-block">叫ぶと声が擬音になって画面に弾ける。QR で参加する VJ で、音声は端末から出ない。</span></p>
+          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia.</span><span class="t-jp is-block">叫ぶと、声が漫画の擬音になって弾ける。</span></p>
           
         </div>
       </article>
@@ -525,7 +579,7 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Face</span><span class="t-jp">表情</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
           <h3 class="card-title"><span class="t-en">Kao Game</span><span class="t-jp">顔ゲーム</span></h3>
-          <p class="card-desc"><span class="t-en">A game you play with your face — a workout you actually want to repeat.</span><span class="t-jp is-block">顔だけで遊ぶゲーム。ふつうは続かない運動を、続けたくなる形にした。</span></p>
+          <p class="card-desc"><span class="t-en">A game you play with your face.</span><span class="t-jp is-block">顔で遊ぶゲーム。</span></p>
           
         </div>
       </article>
@@ -544,12 +598,12 @@ footer { border-top: 1px solid var(--line); }
         <li class="cap">
           <span class="cap-label">Creative Direction</span>
           <span class="cap-note"><span class="t-en">Setting the idea, and holding it all the way through other people&#39;s execution.</span><span class="t-jp">アイデアを決め、人の手に渡ってからも狙いを保つ。</span></span>
-          <span class="cap-evidence"><span class="t-en">KOJI FIZZ · Festival Reinvention · Coca-Cola — Global Visual Directions</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム · 秋祭りのデザイン · Coca-Cola — グローバルビジュアルディレクション</span></span>
+          <span class="cap-evidence"><span class="t-en">KOJI FIZZ · Festival Reinvention · Coca-Cola</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム · 秋祭りのデザイン · Coca-Cola — グローバルビジュアルディレクション</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Brand</span>
           <span class="cap-note"><span class="t-en">Name, mark, colour, words — the whole texture of what a thing is.</span><span class="t-jp">名前・印・色・言葉づかい。そのものの手ざわり全部。</span></span>
-          <span class="cap-evidence"><span class="t-en">KOJI FIZZ · Festival Reinvention · Coca-Cola — Global Visual Directions</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム · 秋祭りのデザイン · Coca-Cola — グローバルビジュアルディレクション</span></span>
+          <span class="cap-evidence"><span class="t-en">KOJI FIZZ · Festival Reinvention · Coca-Cola</span><span class="t-jp">KOJI FIZZ — ブランドプロモーションフィルム · 秋祭りのデザイン · Coca-Cola — グローバルビジュアルディレクション</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Storytelling</span>
@@ -599,7 +653,7 @@ footer { border-top: 1px solid var(--line); }
         <li class="cap">
           <span class="cap-label">Global</span>
           <span class="cap-note"><span class="t-en">Making one thing hold up in several countries at once.</span><span class="t-jp">ひとつのものを、複数の国で同時に成立させる。</span></span>
-          <span class="cap-evidence"><span class="t-en">Coca-Cola — Global Visual Directions</span><span class="t-jp">Coca-Cola — グローバルビジュアルディレクション</span></span>
+          <span class="cap-evidence"><span class="t-en">Coca-Cola</span><span class="t-jp">Coca-Cola — グローバルビジュアルディレクション</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">Japan ↔ US</span>
@@ -730,7 +784,7 @@ footer { border-top: 1px solid var(--line); }
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (still.matches) return;
     document.querySelectorAll(".card-clip").forEach((clip) => {
-      const card = clip.closest(".proof-card, .exp-card") || clip.parentElement;
+      const card = clip.closest(".proof-card, .exp-card, .cat-card") || clip.parentElement;
       if (!card) return;
       let playing = false;
       const start = () => {

@@ -44,10 +44,11 @@ ${css}
 </head>`;
 }
 
-export function nav(ctx) {
+export function nav(ctx, activePath) {
   const items = NAV.map(([path, label], index) => {
     const li = index === NAV_DIVIDER_AT ? ` class="is-tierbreak"` : "";
-    return `      <li${li}><a href="${esc(href(ctx, path))}">${label}</a></li>`;
+    const here = path === activePath ? ` class="is-active" aria-current="page"` : "";
+    return `      <li${li}><a href="${esc(href(ctx, path))}"${here}>${label}</a></li>`;
   }).join("\n");
   return `  <nav class="site-nav">
     <a href="${esc(href(ctx, "index.html"))}" class="nav-logo">
@@ -126,7 +127,7 @@ export const scripts = () => `  <script>
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (still.matches) return;
     document.querySelectorAll(".card-clip").forEach((clip) => {
-      const card = clip.closest(".proof-card, .exp-card") || clip.parentElement;
+      const card = clip.closest(".proof-card, .exp-card, .cat-card") || clip.parentElement;
       if (!card) return;
       let playing = false;
       const start = () => {

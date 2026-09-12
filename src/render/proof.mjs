@@ -40,7 +40,9 @@ export function contributionDetails(item) {
 }
 
 export function proofCard({ ref, item, ctx, index }) {
-  const summary = ref.summaryOverride ?? (ref.angle ? item.angles[ref.angle] : item.summary);
+  // A card gets one line. The lens may still reframe it with an approved angle;
+  // the full summary belongs on the page behind the card, not on the card.
+  const summary = ref.summaryOverride ?? (ref.angle ? item.angles[ref.angle] : item.cardLine ?? item.summary);
   const size = ref.size ?? (index === 0 ? "lead" : "standard");
   const engagement = ENGAGEMENT_LABEL[item.engagement];
   const meta = [item.organization, item.role, periodLabel(item.period)].filter(Boolean).map(esc).join(" · ");

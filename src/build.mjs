@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Deterministic publishing: src/data + src/lenses → index.html and lens/<slug>/index.html.
+// Deterministic publishing: src/data + src/lenses + src/categories → the site.
 //
 //   node src/build.mjs            write the pages
 //   node src/build.mjs --check    validate only, write nothing
@@ -9,9 +9,10 @@
 // are skipped. Any validation error aborts the whole build.
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { loadLibrary, loadLenses, ROOT } from "./lib/load.mjs";
+import { loadLibrary, loadLenses, loadCategories, ROOT } from "./lib/load.mjs";
 import { validateAll } from "./validate.mjs";
 import { renderLens } from "./render/page.mjs";
+import { renderCategory } from "./render/category.mjs";
 
 export const SITE_URL = "https://takaoumehara.com";
 
@@ -20,8 +21,8 @@ export function outputPath(lens) {
 }
 
 /** Render every published lens. Returns Map<relativePath, html>. Throws on validation errors. */
-export function renderAll({ lib = loadLibrary(), lenses = loadLenses() } = {}) {
-  const errors = validateAll(lib, lenses, { assetExists: (path) => existsSync(join(ROOT, path)) });
+export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categories = loadCategories() } = {}) {
+  const errors = validateAll(lib, lenses, { assetExists: (path) => existsSync(join(ROOT, path)) }, categories);
   if (errors.length) {
     const error = new Error(`Validation failed (${errors.length}):\n  - ${errors.join("\n  - ")}`);
     error.details = errors;
@@ -38,6 +39,13 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses() } = {}) {
       canonical: lens.slug === "default" ? `${SITE_URL}/` : `${SITE_URL}/lens/${lens.slug}`,
     };
     pages.set(path, renderLens({ lens, lib, css, ctx }));
+  }
+  // Category pages sit at the site root, so their depth is always 0.
+  for (const category of categories) {
+    pages.set(category.output, renderCategory({
+      category, lib, css,
+      ctx: { base: "", canonical: `${SITE_URL}/${category.output}` },
+    }));
   }
   return pages;
 }

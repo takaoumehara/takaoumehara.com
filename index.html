@@ -363,7 +363,61 @@ footer { border-top: 1px solid var(--line); }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .card-media img, .exp-media img { transition: none; }
+  .cat-card-media img { transition: none; }
   .card-clip { display: none; }
+}
+
+/* ── Category pages ───────────────────────────────────────────────────────
+   One index of one section of the work. Two columns, because a card here
+   carries a description and a 3-up card is 279px wide, where Japanese wraps
+   every 13 characters. The same rule that put `/` on three columns puts this
+   on two: the thumbnail is the point, so it gets the width. */
+.cat-page { max-width: var(--col); margin: 0 auto; padding: 0 clamp(20px, 3vw, 32px) 120px; }
+
+.cat-head { padding: clamp(56px, 7vw, 104px) 0 clamp(32px, 4vw, 52px); }
+.cat-title {
+  font-family: var(--serif);
+  font-size: clamp(44px, 8vw, 104px);
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  margin: 0 0 20px;
+}
+html.lang-jp .cat-title { font-family: var(--ff-jp); font-weight: 600; font-size: clamp(34px, 6vw, 72px); letter-spacing: -0.01em; }
+.cat-lede { max-width: 34em; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: var(--ink-mid); margin: 0; }
+.cat-count { margin: 18px 0 0; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
+
+.cat-group + .cat-group { margin-top: clamp(56px, 6vw, 88px); }
+.cat-group-head {
+  display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
+  border-top: 1px solid var(--ink); padding-top: 12px; margin-bottom: 28px;
+}
+.cat-group-title { font-size: 15px; font-weight: 600; letter-spacing: 0.01em; margin: 0; }
+.cat-group-note { font-size: 12.5px; color: var(--ink-dim); margin: 0; }
+
+.cat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 52px 32px; }
+
+.cat-card { outline: none; }
+.cat-card[data-href] { cursor: pointer; }
+.cat-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; }
+.cat-card-media {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #ece9e3;
+  margin-bottom: 18px;
+}
+.cat-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
+.cat-card[data-href]:hover .cat-card-media img { transform: scale(1.03); }
+.cat-card-title { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 28px); font-weight: 400; line-height: 1.15; letter-spacing: -0.015em; margin: 10px 0 6px; }
+html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font-size: clamp(19px, 1.9vw, 24px); }
+.cat-card-kind { font-size: 12.5px; color: var(--ink-dim); margin: 0 0 10px; }
+.cat-card-desc { font-size: 14.5px; line-height: 1.65; color: var(--ink-mid); margin: 0; }
+.cat-card-cta { display: inline-block; margin-top: 14px; font-size: 13px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.cat-card-cta:hover { border-bottom-color: var(--ink); }
+
+@media (max-width: 900px) {
+  .cat-grid { grid-template-columns: 1fr; gap: 44px; }
 }
 
   </style>
@@ -412,7 +466,7 @@ footer { border-top: 1px solid var(--line); }
           <p class="card-emphasis"><span class="t-en">Interactive · Live now</span><span class="t-jp">インタラクティブ · 公開中</span></p>
           <h3 class="card-title">Rakugaki Jam</h3>
           <p class="card-meta">Designer &amp; builder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
-          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto a shared wall screen — a live, crowd-drawn VJ jam.</span><span class="t-jp is-block">スマホに描いた落書きを、壁の共有画面へ投げ飛ばす。みんなで描くライブ VJ。</span></p>
+          <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto the wall screen.</span><span class="t-jp is-block">スマホで落書きして、壁の画面へ投げ込む。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Designed the doodle-to-wall-screen concept — draw on your phone, fling it onto a shared display</li><li>Built the realtime multi-device pairing and sync on Snap Pair and Firebase RTDB</li><li>Built the canvas rendering and fling interaction</li></ul></div></details>
@@ -425,7 +479,7 @@ footer { border-top: 1px solid var(--line); }
           <p class="card-emphasis"><span class="t-en">Enterprise AI · Product operations</span><span class="t-jp">エンタープライズ AI · プロダクト運用</span></p>
           <h3 class="card-title"><span class="t-en">Reimagining how product teams make decisions with AI</span><span class="t-jp">AI による UX ワークフローの変革</span></h3>
           <p class="card-meta">Verizon Value (6 brands) · Lead Product Designer (Agentic UX &amp; AI Systems) · 2025–present</p>
-          <p class="card-desc"><span class="t-en">Inside a locked-down enterprise where Gemini and NotebookLM were the only AI allowed, I interviewed the team, mapped 40+ friction points, and built ten purpose-built agents into the workflow people already used. Rolled out from 42 designers to 80+ cross-functional stakeholders.</span><span class="t-jp is-block">閉じた企業環境で使える AI は Gemini と NotebookLM のみ。取材で 40 件超のつまずきを地図にした。既存業務に 10 体のエージェントを組み込み、42 人から 80 人超まで広がった。</span></p>
+          <p class="card-desc"><span class="t-en">Ten agents built into the tools 42 designers already used.</span><span class="t-jp is-block">42 人のデザイナーが既に使っている道具の中に、10 のエージェントを入れた。</span></p>
           <dl class="metrics"><div class="metric"><dt>10</dt><dd><span class="t-en">agents designed and shipped</span><span class="t-jp">エージェント 10 体を実装</span></dd></div><div class="metric"><dt>40+</dt><dd><span class="t-en">designers using the agents</span><span class="t-jp">利用デザイナー 40 人超</span></dd></div><div class="metric"><dt>80+</dt><dd><span class="t-en">cross-functional stakeholders in the expanded rollout</span><span class="t-jp">関係者 80 人超に拡大</span></dd></div></dl>
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>16+ one-hour interviews with designers and strategists; transcripts clustered with NotebookLM into a searchable pain map</li><li>Effort × impact × opportunity prioritisation and selection of bets with leadership</li><li>Designed and built all ten agents: Master Brain (3-layer project knowledge hub), Justin Case (edge-case detector), Sally (CX strategist / heuristic evaluator), the five-agent WDS studio, Clara (UX-writing evaluator), Alex (agent architect)</li><li>Authored agents as filesystems of workflow, definition and knowledge files; iterated each &#39;Gem&#39; version after version</li><li>Wired Figma to VS Code via MCP so AI prototypes run on real design-system code</li><li>Weekly hands-on workshops for ~40 designers; every agent shared live</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>The XM product-strategy team took ownership of Master Brain and ran it across multiple real projects</li><li>Design leadership selected which bets to pilot</li><li>Designers, PMs, researchers and content people adopted the agents in their own projects</li></ul></div></details>
@@ -451,7 +505,7 @@ footer { border-top: 1px solid var(--line); }
           <p class="card-emphasis"><span class="t-en">AI venture · Active</span><span class="t-jp">AI ベンチャー · 進行中</span></p>
           <h3 class="card-title">intentfirst.ai</h3>
           <p class="card-meta">Founder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
-          <p class="card-desc"><span class="t-en">intentfirst.ai is a design-language framework, Context Grammar, giving AI systems the vocabulary to understand intent, not just input. Defines 8 Context Tokens and a 3-layer memory model, demonstrated across three applied projects.</span><span class="t-jp is-block">Context Grammar という設計言語で、AI に「入力」ではなく「意図」を読む語彙を与える。8 つの Context Token と 3 層の記憶モデルを定義し、3 つの実プロジェクトで検証した。</span></p>
+          <p class="card-desc"><span class="t-en">A thesis, not a product: the vocabulary AI needs to read intent, not just input.</span><span class="t-jp is-block">プロダクトではなく主張。AI が入力ではなく意図を読むための語彙。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Defined the Context Grammar framework: 8 structured Context Tokens describing who a user is in the moment, not just what they said</li><li>Designed the 3-layer memory model — Identity, Accumulated Learning, Right Now</li><li>Built 3 applied demonstration projects: The Living Home, The Family Trip, Fluid Handoff</li><li>Published the framework and site at intentfirst.ai</li></ul></div></details>
@@ -464,7 +518,7 @@ footer { border-top: 1px solid var(--line); }
           <p class="card-emphasis"><span class="t-en">Product leadership · EdTech</span><span class="t-jp">プロダクトリーダーシップ · EdTech</span></p>
           <h3 class="card-title"><span class="t-en">Amplify ELA Quests</span><span class="t-jp">Amplify Education ELA クエスト</span></h3>
           <p class="card-meta">Amplify Education · Lead Product Designer · 2014–2025</p>
-          <p class="card-desc"><span class="t-en">Ready-to-use AR and multimedia &#39;Quest&#39; learning modules — 5-day ELA lesson sequences with scripts, teacher guides and embedded assessments — so any teacher, not just the most skilled, could deliver engaging literacy instruction. Seven-plus quests spanning grades 3–7, plus a teacher-facing companion app, reached millions of students.</span><span class="t-jp is-block">熟練教師にしかできない授業を、誰でも運用できる形に変えた。5 日間の AR 教材「Quest」を 7 つ以上、学年 3〜7 向けに制作した。台本・指導書・評価も組み込み、全米で数百万人の生徒に届いた。</span></p>
+          <p class="card-desc"><span class="t-en">Five-day lesson sequences any teacher can run, not just the best ones.</span><span class="t-jp is-block">一番うまい先生でなくても回せる、5 日分の授業一式。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Designed ready-to-use immersive AR/multimedia Quest modules empowering any teacher to deliver engaging ELA instruction</li><li>Built each quest as a complete 5-day lesson sequence with scripts, teacher guides and embedded assessments</li><li>Integrated AR technology for experiential classroom learning</li><li>Designed the teacher-facing companion app for classroom implementation</li><li>Designed drawer-based navigation systems inspired by quest content, e.g. the Congress &#39;Declare Yourself!&#39; drawer UI</li><li>Led UX research, persona creation and customer journey mapping across the quest portfolio</li></ul><h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul><li>Not separated on the source page — team scope to be confirmed. The page credits an &#39;Amplify ELA Quest Team&#39; without an individual role breakdown.</li></ul></div></details>
@@ -506,7 +560,7 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
           <h3 class="card-title"><span class="t-en">Resona</span><span class="t-jp">響</span></h3>
-          <p class="card-desc"><span class="t-en">A living showcase of purposeful web animation grounded in pseudo-haptics — motion that signals meaning before you read a word.</span><span class="t-jp is-block">疑似触覚にもとづく Web アニメーションの実験場。文字を読む前に、動きだけで意味が伝わる。</span></p>
+          <p class="card-desc"><span class="t-en">Motion that tells you what something means before you read a word.</span><span class="t-jp is-block">言葉を読む前に、動きが意味を伝える。</span></p>
           <a class="card-link" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
@@ -515,7 +569,7 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Typing</span><span class="t-jp">タイピング</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
           <h3 class="card-title">Typespace</h3>
-          <p class="card-desc"><span class="t-en">Typed words form a constellation, then slowly return to the cosmos. No AI — just type and watch.</span><span class="t-jp is-block">打った言葉が星座になり、やがて宇宙へ還っていく。AI は使っていない。打って、眺めるだけ。</span></p>
+          <p class="card-desc"><span class="t-en">Type a word; it becomes a constellation, then drifts away.</span><span class="t-jp is-block">打った言葉が星座になり、やがて離れていく。</span></p>
           <a class="card-link" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
@@ -524,7 +578,7 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Voice</span><span class="t-jp">声</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
           <h3 class="card-title"><span class="t-en">Koe Baku</span><span class="t-jp">声爆</span></h3>
-          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia on screen — joined by QR, measured on-device, audio never leaves the phone.</span><span class="t-jp is-block">叫ぶと声が擬音になって画面に弾ける。QR で参加する VJ で、音声は端末から出ない。</span></p>
+          <p class="card-desc"><span class="t-en">Shout, and your voice bursts into comic-book onomatopoeia.</span><span class="t-jp is-block">叫ぶと、声が漫画の擬音になって弾ける。</span></p>
           
         </div>
       </article>
@@ -533,7 +587,7 @@ footer { border-top: 1px solid var(--line); }
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2 台のスマホ</span></span><span class="pill pill--status"><span class="t-en">Shipped</span><span class="t-jp">リリース済み</span></span></p>
           <h3 class="card-title">Marubatsu 2.0</h3>
-          <p class="card-desc"><span class="t-en">Tic-tac-toe with one rule changed — a 4×4 board, two marks a turn — playable solo, against an AI, or online with a second phone.</span><span class="t-jp is-block">○×を一部変え、4×4・1 手 2 個置き。1 台でも AI 相手でも、2 台でも遊べる。</span></p>
+          <p class="card-desc"><span class="t-en">Tic-tac-toe on a 4×4 board, two marks a turn.</span><span class="t-jp is-block">4×4 の盤で一手に二つ置く、○×ゲーム。</span></p>
           <a class="card-link" href="https://marubatsu20.vercel.app/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
@@ -670,12 +724,12 @@ footer { border-top: 1px solid var(--line); }
         <li class="cap">
           <span class="cap-label">Product Strategy</span>
           <span class="cap-note"><span class="t-en">Deciding what the product is — and, harder, what it is not.</span><span class="t-jp">何を作らないかを含めて、プロダクトの筋を決める。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · intentfirst.ai · Amplify ELA Quests</span><span class="t-jp">AI による UX ワークフローの変革 · intentfirst.ai · Amplify Education ELA クエスト</span></span>
+          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · intentfirst.ai · ELA Quests</span><span class="t-jp">AI による UX ワークフローの変革 · intentfirst.ai · Amplify Education ELA クエスト</span></span>
         </li>
         <li class="cap">
           <span class="cap-label">UX / CX</span>
           <span class="cap-note"><span class="t-en">The whole path, not just the screen: choosing, buying, using, getting stuck.</span><span class="t-jp">画面の中だけでなく、選ぶ・買う・使う・困るまでの全体。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · Amplify ELA Quests</span><span class="t-jp">AI による UX ワークフローの変革 · Amplify Education ELA クエスト</span></span>
+          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · ELA Quests</span><span class="t-jp">AI による UX ワークフローの変革 · Amplify Education ELA クエスト</span></span>
         </li>
         </ul>
       </div>
@@ -836,7 +890,7 @@ footer { border-top: 1px solid var(--line); }
     const still = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (still.matches) return;
     document.querySelectorAll(".card-clip").forEach((clip) => {
-      const card = clip.closest(".proof-card, .exp-card") || clip.parentElement;
+      const card = clip.closest(".proof-card, .exp-card, .cat-card") || clip.parentElement;
       if (!card) return;
       let playing = false;
       const start = () => {

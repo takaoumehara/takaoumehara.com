@@ -383,7 +383,6 @@ test("nothing can out-specify the language switch", () => {
   const sheets = [
     join(ROOT, "src", "render", "lens.css"),
     join(ROOT, "assets", "index-grid.css"),
-    join(ROOT, "assets", "work-card-grid.css"),
     join(ROOT, "assets", "deck-quiet.css"),
   ].filter((file) => existsSync(file));
   const offenders = [];
@@ -443,7 +442,7 @@ test("no card clip autoplays, every one is hidden from assistive tech, and each 
 });
 
 test("reduced motion turns the clips off rather than merely slowing them", () => {
-  for (const file of [join(ROOT, "src", "render", "lens.css"), join(ROOT, "assets", "work-card-grid.css")]) {
+  for (const file of [join(ROOT, "src", "render", "lens.css")]) {
     const css = readFileSync(file, "utf8");
     const block = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
     assert.ok(/\.card-clip\s*\{[^}]*display:\s*none/.test(block), `${file}: .card-clip must be display:none under reduced motion`);
