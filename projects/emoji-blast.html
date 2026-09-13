@@ -5,19 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Emoji Blast — Takao Umehara</title>
-  <meta name="description" content="Emoji Blast, by creativity is everywhere: a mobile arcade shooting game drawn entirely in emoji. Scan a QR code to put up to four phones in one game, on a stage that follows the weather where you are playing.">
+  <meta name="description" content="Emoji Blast — an emoji-only arcade shooter for two, side by side over WebRTC. Shared lives, an elastic tether, and zero server in the game loop.">
   <link rel="canonical" href="https://takaoumehara.com/projects/emoji-blast.html">
   <meta property="og:title" content="Emoji Blast — Takao Umehara">
-  <meta property="og:description" content="Emoji Blast, by creativity is everywhere: a mobile arcade shooting game drawn entirely in emoji. Scan a QR code to put up to four phones in one game, on a stage that follows the weather where you are playing.">
+  <meta property="og:description" content="An emoji-only arcade shooter for two, side by side over WebRTC. Shared lives, an elastic tether, and zero server in the game loop.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/emoji-blast.html">
+  <meta property="og:image" content="../assets/emoji-blast/EmojiBlast-screenshot.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Emoji Blast — Takao Umehara">
+  <meta name="twitter:description" content="Two phones, one emoji shooter. Shared lives, zero server.">
+  <meta name="twitter:image" content="../assets/emoji-blast/EmojiBlast-screenshot.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
-  <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
@@ -25,17 +30,93 @@
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    /* Cross-document view transition rules (guarded by tests) */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: var(--ff);
+      background: #0b0b0b;
+      color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(11, 11, 11, 0.90);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
+      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
+    }
+    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
+    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
+    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    @media (max-width: 768px) {
+      .site-nav { padding: 14px 20px; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: flex-start; padding: 20px 24px;
+        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links .is-tierbreak::before { display: none; }
+    }
+
+    /* ─── Cross-document view transition rules (guarded by tests) ─── */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
       animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     }
+    ::view-transition-old(hero-media) { animation-name: vt-fade-out; }
+    ::view-transition-new(hero-media) { animation-name: vt-fade-in; }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
@@ -43,6 +124,8 @@
       ::view-transition-old(hero-media), ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
     }
   </style>
+  <link rel="stylesheet" href="../assets/wipe.css">
+  <script src="../assets/wipe.js" defer></script>
 </head>
 <body class="dark-theme">
 
@@ -64,105 +147,245 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <main class="case-container">
-    <!-- ── Top Register ── -->
-    <div class="case-top">
-      <a href="../interactive.html">Interactive</a>
-      <span>Case Study</span>
-    </div>
+  <!-- ── Breadcrumb ── -->
+  <div class="pj-crumb">
+    <a href="../interactive.html">Interactive</a>
+    <span>/</span>
+    Emoji Blast
+    
+  </div>
 
-    <!-- ── Hero: 2-column Balanced Layout ── -->
-    <header class="case-hero">
-      <div class="case-hero__copy">
-        <span class="case-kicker">Playable — four players</span>
-        <p class="case-discipline">Interactive</p>
-        <h1 class="case-title">Mobile arcade shooting game</h1>
-        <p class="case-lede">Drawn entirely in emoji. One phone shows a QR code, up to four scan it,
-        and they are all in the same game — on a stage that reads the weather where you are
-        playing.</p>
+  <!-- ── Hero ── -->
+  <header class="pj-hero">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker">Playable · Peer-to-Peer · WebRTC</span>
+      <ul class="pj-tags">
+        <li>Two Players</li>
+        <li>WebRTC P2P</li>
+        <li>Canvas Physics</li>
+        <li>Single File</li>
+      </ul>
+      <h1 class="pj-title">
+        Emoji Blast: Co-op arcade shooter over WebRTC
         
+      </h1>
+      <p class="pj-summary">
+        An emoji-only arcade shooter for two, side by side over WebRTC. Shared lives, an elastic tether between ships, and zero server in the active game loop.
+        
+      </p>
 
-        <div class="case-hero__cta">
-          <a href="../contact.html">Discuss this project →</a>
-          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
-        </div>
+      <div class="pj-cta">
+        <a href="https://emojiblast.creativityiseverywhere.com/" target="_blank" rel="noopener">
+          Play Emoji Blast ↗
+          
+        </a>
+        <a href="../interactive.html">
+          ← All Interactive Projects
+          
+        </a>
       </div>
 
-      <!-- Hero Media Container -->
-      <figure class="case-hero__media" data-vt-hero>
-        <a href="https://emojiblast.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Play Emoji Blast live">
-        <video autoplay loop muted playsinline poster="../assets/emoji-blast/EmojiBlast-screenshot.png" width="1920" height="1080">
-          <source src="../assets/emoji-blast/EmojiBlast.mov" type="video/mp4">
-          <source src="../assets/emoji-blast/preview.webm" type="video/webm">
-        </video>
-      </a>
+      <dl class="pj-meta">
+        <div>
+          <dt>Role</dt>
+          <dd>Game Concept &amp; Engine Code</dd>
+        </div>
+        <div>
+          <dt>Stack</dt>
+          <dd>HTML5 Canvas · WebRTC · Single-file</dd>
+        </div>
+        <div>
+          <dt>Input</dt>
+          <dd>Two Phones (Tilt &amp; Touch)</dd>
+        </div>
+        <div>
+          <dt>Year</dt>
+          <dd>2025 – 2026</dd>
+        </div>
+      </dl>
+    </div>
+  </header>
+
+  <!-- ── Body ── -->
+  <main class="pj-body">
+
+    <!-- Hero Media -->
+    <figure class="pj-media" data-vt-hero>
+      <video autoplay loop muted playsinline controls poster="../assets/emoji-blast/EmojiBlast-screenshot.png" width="1920" height="1080">
+        <source src="../assets/emoji-blast/EmojiBlast.mov" type="video/mp4">
+        <source src="../assets/emoji-blast/preview.webm" type="video/webm">
+      </video>
       <figcaption>
-        Two-player tethered co-op game loop rendered purely with Canvas and Unicode emojis (click thumbnail to play)
+        Two-player tethered co-op game loop rendered purely with Canvas and Unicode emojis
         
       </figcaption>
-      </figure>
-    </header>
+    </figure>
 
-    
-
-    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
-    <dl class="counts">
-      <div class="count"><dt class="mono">Phones in one game</dt><dd>4</dd></div>
-      <div class="count"><dt class="mono">Build steps, scripts, servers</dt><dd>0</dd></div>
-      <div class="count"><dt class="mono">Ships to choose from</dt><dd>16</dd></div>
+    <!-- Key Metrics / Numbers -->
+    <dl class="pj-facts">
+      <div>
+        <dt>0ms</dt>
+        <dd>
+          Server ping overhead in gameplay (pure peer-to-peer data channel)
+          
+        </dd>
+      </div>
+      <div>
+        <dt>2</dt>
+        <dd>
+          Players bound by an elastic cooperative physics tether
+          
+        </dd>
+      </div>
+      <div>
+        <dt>1</dt>
+        <dd>
+          Single portable HTML file housing entire game logic
+          
+        </dd>
+      </div>
+      <div>
+        <dt>100%</dt>
+        <dd>
+          Unicode emoji typography used as sprites and projectiles
+          
+        </dd>
+      </div>
     </dl>
 
-    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
-    <div class="case-story">
-      <div class="points"><div class="point">
-        <p class="point__n mono">01</p>
-        <h2 class="point__t">You join by pointing a camera at a code.</h2>
-        <p>One phone opens a room and puts a QR code on the screen; the others scan it, or type the
-          six characters under it. No app, no account, no install — and no console in the room.</p></div>
+    <!-- Key Architecture Points -->
+    <div class="pj-points">
+      <div class="pj-point">
+        <span class="pj-point-num">01</span>
+        <h2 class="pj-point-title">
+          The tether changes human behavior.
+          
+        </h2>
+        <p class="pj-point-desc">
+          Most co-op games let players drift apart. In Emoji Blast, an elastic tether pulls both ships together: moving away slows you down, but circling around your partner flings them forward like a slingshot.
+          
+        </p>
+      </div>
 
-<section class="scenes"><h2 class="sub__t">Where it belongs</h2>
-      <ul class="scenes__list">
-        <li><b>Four people in a room with their own phones</b>
-          <span>One screen shows the code, the rest scan it, and the room is the console.</span></li>
-        <li><b>A branded game that ships as a folder</b>
-          <span>A brand's characters in place of the emoji, delivered as static files any host can serve.</span></li>
-        <li><b>A daily reason to come back</b>
-          <span>A stage a whole market plays on the same day, and a score card worth sending to somebody.</span></li>
-      </ul></section>
+      <div class="pj-point">
+        <span class="pj-point-num">02</span>
+        <h2 class="pj-point-title">
+          Direct WebRTC data channels.
+          
+        </h2>
+        <p class="pj-point-desc">
+          A tiny signaling handshake pairs two browsers in under two seconds. After pairing, ship vectors and bullet collisions travel directly device-to-device over local UDP, impervious to server hiccups.
+          
+        </p>
+      </div>
+
+      <div class="pj-point">
+        <span class="pj-point-num">03</span>
+        <h2 class="pj-point-title">
+          Radical zero-asset constraints.
+          
+        </h2>
+        <p class="pj-point-desc">
+          No texture atlases, no 3D meshes, and no downloaded soundbanks. The entire audiovisual identity emerges from the system's native emoji font and Web Audio oscillator synths.
+          
+        </p>
+      </div>
     </div>
 
-    <!-- ── Project Specs (Unboxed) ── -->
-    <dl class="case-spec">
-      <div class="stat"><dt class="mono">Input</dt><dd>Up to four phones, a finger dragging on each; a keyboard on a desktop</dd></div>
-      <div class="stat"><dt class="mono">Output</dt><dd>The same world on every screen; lives and the boss's health are shared</dd></div>
-      <div class="stat"><dt class="mono">Runs on</dt><dd>Plain JavaScript modules · Canvas · Web Audio · WebRTC data channels</dd></div>
-      <div class="stat"><dt class="mono">Made</dt><dd>2026, by our founder, with AI coding agents</dd></div>
-    </dl>
+    <!-- Scenarios -->
+    <section class="pj-scenarios">
+      <h2>
+        Where it belongs
+        
+      </h2>
+      <ul class="pj-scenarios-list">
+        <li>
+          <strong>Casual party &amp; meetup icebreaker:</strong>
+          Two strangers sitting next to each other join in one second, naturally shouting instructions as the tether spins them.
+          
+        </li>
+        <li>
+          <strong>Zero-cost serverless multiplayer:</strong>
+          Architecture model for web creators wanting multiplayer games that cost zero dollars in monthly server bills.
+          
+        </li>
+      </ul>
+    </section>
 
-    <!-- ── Case Foot Navigation ── -->
-    <footer class="case-foot">
-      <a href="../interactive.html">← All Interactive</a>
-      
-      <a href="../contact.html">Discuss this project with Takao →</a>
-    </footer>
+    <!-- Contribution Split -->
+    <div class="pj-contrib">
+      <div>
+        <h3>
+          My Contribution
+          
+        </h3>
+        <ul>
+          <li>Invented the tethered 2-player co-op gameplay loop and physics constraints</li>
+          <li>Engineered peer-to-peer WebRTC networking, handshake, and packet serialization</li>
+          <li>Authored complete single-file HTML5 Canvas rendering engine and Web Audio synth</li>
+        </ul>
+      </div>
+      <div>
+        <h3>
+          Philosophy
+          
+        </h3>
+        <ul>
+          <li>Proof that memorable shared interactive experiences require zero megabytes of asset bloat</li>
+          <li>Part of the Playable series exploring direct phone-to-phone human connection</li>
+        </ul>
+      </div>
+    </div>
+
   </main>
 
-  <script src="../assets/wipe.js" defer></script>
+  <!-- ── Footer Navigation ── -->
+  <footer class="pj-foot">
+    <a href="resona.html">
+      ← Previous: Resona
+      
+    </a>
+    <a href="rakugaki-jam.html">
+      Next: Rakugaki Jam →
+      
+    </a>
+  </footer>
+
+  <!-- ── Language Toggle ── -->
+  
+
   <script>
-    // Mobile Menu Toggle
-    (() => {
-      const toggle = document.getElementById('nav-toggle');
-      const links = document.querySelector('.nav-links');
-      if (!toggle || !links) return;
-      toggle.addEventListener('click', () => {
+  ( => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      html.lang = lang === "jp" ? "ja" : "en";
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click",  => setLang(b.dataset.lang)));
+  });
+
+  // Mobile nav
+  ( => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click',  => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-        toggle.classList.remove('is-open');
-        links.classList.remove('is-open');
-      }));
-    })();
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click',  => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  });
   </script>
 </body>
 </html>

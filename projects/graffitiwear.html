@@ -6,161 +6,553 @@
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>GraffitiWear — School Community Apparel | Takao Umehara</title>
   <meta name="description" content="GraffitiWear — a graffiti-inspired apparel collection designed by Takao Umehara for the Japanese Weekend School of New York, reaching over 50% adoption among students, faculty, and parents. Case study by Takao Umehara.">
-  <link rel="canonical" href="https://takaoumehara.com/projects/graffitiwear.html">
   <meta property="og:title" content="GraffitiWear — School Community Apparel | Takao Umehara">
-  <meta property="og:description" content="GraffitiWear — a graffiti-inspired apparel collection designed by Takao Umehara for the Japanese Weekend School of New York, reaching over 50% adoption among students, faculty, and parents. Case study by Takao Umehara.">
+  <meta property="og:description" content="GraffitiWear — a graffiti-inspired apparel collection for a Japanese weekend school that reached over 50% community adoption.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/graffitiwear.html">
-
+  <meta property="og:image" content="https://takaoumehara.com/assets/shared/Screenshot_2026-02-19_at_12.51.33.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="GraffitiWear — School Community Apparel | Takao Umehara">
+  <meta name="twitter:description" content="GraffitiWear — a graffiti-inspired apparel collection for a Japanese weekend school that reached over 50% community adoption.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/Screenshot_2026-02-19_at_12.51.33.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../assets/project-page.css">
-  <link rel="stylesheet" href="../assets/wipe.css">
-
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <style>
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
-    /* Cross-document view transition rules (guarded by tests) */
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    :root {
+      --bg: #0b0b0b; --ink: #ffffff; --ink-mid: rgba(255, 255, 255, 0.76); --ink-dim: rgba(255, 255, 255, 0.44);
+      --line: rgba(255, 255, 255, 0.12); --border: rgba(255, 255, 255, 0.16);
+      --surface: #141416; --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --angle: 102deg;
+      --a1: hsla(198 82% 72% / 0.44); --a2: hsla(248 74% 80% / 0.36);
+      --a3: hsla(324 72% 81% / 0.40); --a4: hsla(36 80% 78% / 0.34);
+      --t1: hsl(198 58% 56%); --t2: hsl(248 58% 70%);
+      --t3: hsl(324 60% 72%); --t4: hsl(36 58% 62%);
+      --hover-angle: 98deg; --bar-width: 70%;
+      --image-hover-opacity: 0.985; --image-hover-width: 174%;
+      --image-hover-from: -96%; --image-hover-to: -4%;
+      --image-hover-leave-to: 124%;
+      --image-hover-enter-ms: 1260ms; --image-hover-leave-ms: 920ms;
+      --hover-ms: 880ms; --press-ms: 760ms;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--ff); color: var(--ink); background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%); min-height: 100vh; }
+    .eyebrow, .kicker, .meta, .small, .pill { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); }
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; }
+    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(18,18,18,0.72) 0%,rgba(18,18,18,0.18) 60%,transparent 100%); }
+    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
+    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
+    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
+    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+    .project-aside-stat { margin-bottom: 24px; }
+    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
+    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
+    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+    .project-section { margin-bottom: 64px; }
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
+    .outcomes-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-bottom: 64px; }
+    .outcome-block { padding: 28px 24px; border: 1px solid var(--line); }
+    .outcome-num { font-size: 36px; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 6px; }
+    .outcome-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
+    .outcome-change { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); margin-top: 6px; }
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; border-radius: 2px; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.dark { background: #111; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
+    .nav-project { display: flex; justify-content: space-between; align-items: center; padding: 32px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
+    .nav-project a { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; display: flex; align-items: center; gap: 8px; }
+    .nav-project a:hover { color: var(--ink); }
+    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-left: 1px solid rgba(18,18,18,0.10); border-radius: 6px 0 0 6px; }
+    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    @media (max-width: 900px) {
+      .project-overview { grid-template-columns: 1fr; gap: 40px; }
+      .outcomes-grid { grid-template-columns: 1fr 1fr; }
+      .g-row.r3 { grid-template-columns: 1fr 1fr; }
+      .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .project-hero-content { padding: 32px 20px; }
+      .project-body { padding: 40px 20px 60px; }
+      .breadcrumb { padding: 16px 20px; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      .g-row.r2, .g-row.r3 { grid-template-columns: 1fr; }
+    }
+    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .g-cell img { opacity: 0; transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .g-cell img.loaded { opacity: 1; }
+    .g-cell:hover img.loaded { transform: scale(1.008); }
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; }
+      .g-cell img { opacity: 1 !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+  
+    /* ─── Cross-document view transition — docs/page-transitions.md ───────
+       The card the visitor clicked grows into this page's hero band while the
+       rest of the page cross-fades under it. It takes both documents: the
+       listing page puts `hero-media` on the one card it was launched from,
+       this page puts the same name on the hero. Browsers without support
+       simply navigate — nothing here is load-bearing. */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+       `object-fit: fill` stretches one into the other on the way across;
+       cropping both snapshots is what makes the move read as one element
+       rather than two pictures swapping. */
+    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
-      animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
     }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
-      ::view-transition-old(root), ::view-transition-new(root),
-      ::view-transition-old(hero-media), ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
     }
+</style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-mid); }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
+  <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
+  <script src="../assets/wipe.js" defer></script>
 </head>
-<body class="dark-theme">
+<body>
 
-  <!-- ── Navigation ── -->
   <nav class="site-nav">
     <a href="../index.html" class="nav-logo">
       <span class="nav-logo-name">Takao Umehara</span>
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="../interactive.html">Interactive</a></li>
       <li><a href="../ai-products.html">AI Products</a></li>
       <li><a href="../ai-tools.html">AI Tools</a></li>
       <li><a href="../work.html">Product Design</a></li>
-      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../brand.html" class="is-active" aria-current="page">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <main class="case-container">
-    <!-- ── Top Register ── -->
-    <div class="case-top">
-      <a href="../interactive.html">Interactive</a>
-      <span>Case Study</span>
-    </div>
+  <div class="breadcrumb">
+    <a href="../brand.html">Brand &amp; Visual</a>
+    <span>/</span>
+    <a href="#">GraffitiWear</a>
+  </div>
 
-    <!-- ── Hero: 2-column Balanced Layout ── -->
-    <header class="case-hero">
-      <div class="case-hero__copy">
-        <span class="case-kicker">Work · Interactive</span>
-        <p class="case-discipline">Interactive</p>
-        <h1 class="case-title">GraffitiWear &#8212; School Community Apparel
-        GraffitiWear</h1>
-        <p class="case-lede">GraffitiWear — a graffiti-inspired apparel collection designed by Takao Umehara for the Japanese Weekend School of New York, reaching over 50% adoption among students, faculty, and parents. Case study by Takao Umehara.</p>
+  <section data-vt-hero class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/shared/Screenshot_2026-02-19_at_12.51.33.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Graphic Design</span>
+        <span class="project-hero-tag">Apparel</span>
+        <span class="project-hero-tag">Community Design</span>
+      </div>
+      <h1 class="project-hero-title">
+        GraffitiWear &#8212; School Community Apparel
         
-
-        <div class="case-hero__cta">
-          <a href="../contact.html">Discuss this project →</a>
-          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">Japanese Weekend School of New York</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">Creative Director &amp; Lead Designer</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">2025</span>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Hero Media Container -->
-      <figure class="case-hero__media" data-vt-hero>
-        <a href="../assets/shared/Screenshot_2026-02-19_at_12.51.33.png" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/shared/Screenshot_2026-02-19_at_12.51.33.png" alt="GraffitiWear &#8212; School Community Apparel
-        GraffitiWear &#8212; " width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        GraffitiWear &#8212; School Community Apparel
-        GraffitiWear &#8212;  — case study showcase (click to open)
-        
-      </figcaption>
-      </figure>
-    </header>
+  <main class="project-body">
 
-    
-
-    
-
-    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
-    <div class="case-story">
-      <div class="project-overview reveal-on-scroll">
+    <div class="project-overview reveal-on-scroll">
       <aside>
         <p class="project-aside-label">
           Outcomes
           
         </p>
         <div class="project-aside-stat">
-          <div class="project-aside-num">50%+
+          <div class="project-aside-num">50%+</div>
+          <div class="project-aside-desc">
+            Adoption among students, faculty, and parents
+            
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">Pop-up</div>
+          <div class="project-aside-desc">
+            On-campus store execution
+            
+          </div>
+        </div>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">NYC &#215; JP</div>
+          <div class="project-aside-desc">
+            Bridged NYC street culture with Japanese education
+            
+          </div>
+        </div>
+
+        <p class="project-aside-label" style="margin-top: 32px;">
+          Scope
+          
+        </p>
+        <ul class="project-deliverables">
+          <li>Graphic Design</li>
+          <li>Brand Strategy</li>
+          <li>Apparel Design</li>
+          <li>Promotion Design</li>
+          <li>Pop-up Store</li>
+        </ul>
+      </aside>
+
+      <div>
+        <h2 class="project-section-title">
+          The Opportunity
+          
+        </h2>
+        <p class="project-text">
+          The Japanese Weekend School of New York (JWSNY) lacked a unified community identity that could bridge its educational mission with the vibrant street culture of New York City. The school needed something more than standard merchandise &#8212; it needed wearable art that students, faculty, and parents would be proud to wear, transforming school spirit into a visible, shared identity.
+          
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          My Direction
+          
+        </h2>
+        <p class="project-text">
+          I designed an apparel collection using bold, hand-drawn typography and symbolic illustrations that represented layers of learning, friendship, and cultural identity. The graffiti-inspired aesthetic drew directly from NYC street art traditions while honoring the school's Japanese heritage &#8212; creating designs that felt authentically New York and distinctly JWSNY.
+          
+        </p>
+        <p class="project-text">
+          The project extended beyond design into execution &#8212; I led the pop-up store experience on campus, creating an event that turned the collection launch into a community celebration. The result was over 50% adoption among students, faculty, and parents, transforming the campus visual landscape and significantly strengthening community unity and belonging.
+          
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          Tools &amp; Methods
+          
+        </h2>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Hand-drawn Typography</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Illustration</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Apparel Production</span>
+          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Pop-up Retail</span>
+        </div>
+      </div>
     </div>
 
-    <!-- ── Project Specs (Unboxed) ── -->
-    <dl class="case-spec">
-      <div>
-          <dt>Role</dt>
-          <dd>Product & Creative Direction</dd>
+    <div class="project-section">
+      <h2 class="project-section-title reveal-on-scroll">
+        Results
+        
+      </h2>
+      <div class="outcomes-grid reveal-on-scroll">
+        <div class="outcome-block">
+          <div class="outcome-num">50%+</div>
+          <div class="outcome-label">Community adoption rate</div>
         </div>
-        <div>
-          <dt>Engagement</dt>
-          <dd>Creativity Is Everywhere LLC</dd>
+        <div class="outcome-block">
+          <div class="outcome-num">3 Groups</div>
+          <div class="outcome-label">Students, faculty, and parents engaged</div>
         </div>
-        <div>
-          <dt>Medium</dt>
-          <dd>Digital Platform & System</dd>
+        <div class="outcome-block">
+          <div class="outcome-num">Pop-up</div>
+          <div class="outcome-label">On-campus store launched collection</div>
         </div>
-        <div>
-          <dt>Status</dt>
-          <dd>Case Study</dd>
-        </div>
-    </dl>
+      </div>
+    </div>
 
-    <!-- ── Case Foot Navigation ── -->
-    <footer class="case-foot">
-      <a href="../interactive.html">← All Interactive</a>
-      
-      <a href="../contact.html">Discuss this project with Takao →</a>
-    </footer>
+    <div class="gallery reveal-on-scroll">
+
+      <!-- ── Lookbook ── -->
+      <p class="gallery-label">
+        Lookbook
+        
+      </p>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_10.png" alt="Black T-shirt, kids colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_24.png" alt="Black T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_11.png" alt="Gray Camel T-shirt, kids colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_25.png" alt="Dark Apricot T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_18.png" alt="Khaki crewneck sweatshirt, kids colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_26.png" alt="Navy Blue T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_32.png" alt="Black hoodie, teen to adult colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_33.png" alt="Gray Coffee hoodie, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_34.png" alt="Navy Blue hoodie, teen to adult colorway, front and back" loading="lazy"></div>
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_40.png" alt="Black zip-up hoodie, teen to adult colorway, front and back" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_41.png" alt="Navy Blue zip-up hoodie styled with everyday layers, front and back" loading="lazy"></div>
+      </div>
+
+      <!-- ── Lineups ── -->
+      <p class="gallery-label">
+        Lineups
+        
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell natural"><img src="../assets/shared/Screenshot_2026-02-19_at_13.04.18.png" alt="GraffitiWear product lineup matrix across kids and teen-to-adult sizing" loading="lazy"></div>
+      </div>
+
+      <!-- ── The Final Artwork ── -->
+      <p class="gallery-label">
+        The Final Artwork
+        
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/credit-card-portal/ForMockup2.png" alt="Full graffiti artwork featuring MATSURI, NYUGAKU, and HANABI lettering" loading="lazy"></div>
+      </div>
+
+    </div>
+
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label">
+          Deliverables
+          
+        </p>
+        <ul class="project-deliverables">
+          <li>Apparel Collection</li>
+          <li>Graphic Design</li>
+          <li>Promotion Materials</li>
+          <li>Pop-up Store</li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          Methods
+          
+        </p>
+        <ul class="project-deliverables">
+          <li>Hand-drawn Typography</li>
+          <li>Illustration</li>
+          <li>Brand Strategy</li>
+          <li>Community Engagement</li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          Team
+          
+        </p>
+        <p class="project-text" style="font-size: 13px;">
+          School Parents Association. I served as Creative Director and Lead Designer &#8212; creating the concept, hand-drawn graphics, apparel designs, promotion materials, and pop-up store experience.
+          
+        </p>
+      </div>
+    </div>
+
+    <div class="nav-project">
+      <a href="xq.html">&#8592; Prev: XQ Super School</a>
+      <a href="../work.html">All Work &#8594;</a>
+    </div>
+
   </main>
 
-  <script src="../assets/wipe.js" defer></script>
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          Design &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong>
+          
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../interactive.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Interactive</a>
+      <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Products</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  
+
   <script>
-    // Mobile Menu Toggle
-    (() => {
-      const toggle = document.getElementById('nav-toggle');
-      const links = document.querySelector('.nav-links');
-      if (!toggle || !links) return;
-      toggle.addEventListener('click', () => {
+    ( => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click",  => setLang(b.dataset.lang)));
+    });
+( => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); } });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+});
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load',  => img.classList.add('loaded'));
+});
+  
+  // ── Mobile Nav ──
+  ( => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click',  => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-        toggle.classList.remove('is-open');
-        links.classList.remove('is-open');
-      }));
-    })();
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click',  => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  });
   </script>
+
 </body>
 </html>

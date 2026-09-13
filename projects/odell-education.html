@@ -4,148 +4,783 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <title>Odell Education — Takao Umehara</title>
-  <meta name="description" content="We connected a free high-school literacy curriculum across grades 9–12, literary units, teacher workflows, print covers, and a deep programme website.">
-  <link rel="canonical" href="https://takaoumehara.com/projects/odell-education.html">
-  <meta property="og:title" content="Odell Education — Takao Umehara">
-  <meta property="og:description" content="We connected a free high-school literacy curriculum across grades 9–12, literary units, teacher workflows, print covers, and a deep programme website.">
+  <title>Odell Education — High School Literacy Program | Takao Umehara</title>
+  <meta name="description" content="Odell Education — brand identity and program website for an open-source high school English Language Arts curriculum: a grade 9–12 visual system, typography, unit covers, and information architecture. Case study by Takao Umehara.">
+  <meta property="og:title" content="Odell Education — High School Literacy Program | Takao Umehara">
+  <meta property="og:description" content="Brand identity and product design for an open-source high school literacy curriculum — a cohesive grade 9–12 identity system and program website.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/odell-education.html">
-
+  <meta property="og:image" content="https://takaoumehara.com/assets/odell-education/Branding_Export_figma_Branding_-_main-0.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Odell Education — High School Literacy Program | Takao Umehara">
+  <meta name="twitter:description" content="Brand identity and product design for an open-source high school literacy curriculum — a cohesive grade 9–12 identity system and program website.">
+  <meta name="twitter:image" content="https://takaoumehara.com/assets/odell-education/Branding_Export_figma_Branding_-_main-0.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="../assets/project-page.css">
-  <link rel="stylesheet" href="../assets/wipe.css">
-
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <style>
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
+      font-weight: 500;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Geist Sans';
+      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
+      font-weight: 600;
+      font-display: swap;
+    }
 
-    /* Cross-document view transition rules (guarded by tests) */
+    /* ─── Mobile Menu ─── */
+    .nav-toggle {
+      display: none;
+      appearance: none; background: none; border: none; cursor: pointer;
+      width: 28px; height: 20px; position: relative; padding: 0;
+    }
+    .nav-toggle span {
+      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; gap: 0; padding: 0;
+        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--line);
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links li { border-top: 1px solid var(--line); }
+      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    }
+  </style>
+  <style>
+    /* ─── Tokens ─── */
+    :root {
+      --bg: #0b0b0b;
+      --ink: #ffffff;
+      --ink-mid: rgba(255, 255, 255, 0.76);
+      --ink-dim: rgba(255, 255, 255, 0.44);
+      --line: rgba(255, 255, 255, 0.12);
+      --border: rgba(255, 255, 255, 0.16);
+      --surface: #141416;
+      --shadow: 0 18px 42px rgba(18,18,18,0.04);
+      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--ff);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
+        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
+        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
+      min-height: 100vh;
+    }
+
+    /* ─── Typography ─── */
+    .eyebrow, .kicker, .meta, .small, .pill {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink-dim);
+    }
+
+    /* ─── Nav ─── */
+    .site-nav {
+      position: sticky; top: 0; z-index: 40;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 14px 32px;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
+    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+
+    /* ─── Buttons ─── */
+    .btn-primary {
+      display: inline-block; padding: 13px 20px;
+      background: var(--ink); color: #fff;
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--ink);
+      transition: background 180ms ease;
+    }
+    .btn-primary:hover { background: #2a2a2a; }
+    .btn-secondary {
+      display: inline-block; padding: 13px 20px;
+      background: transparent; color: var(--ink);
+      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+      text-decoration: none; border: 1px solid var(--border);
+      transition: border-color 180ms ease;
+    }
+    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
+
+    /* ─── Footer ─── */
+    .site-footer {
+      border-top: 1px solid var(--line); padding: 40px 32px;
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 24px; flex-wrap: wrap;
+    }
+    .footer-logo { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; }
+    .footer-links { display: flex; gap: 24px; list-style: none; }
+    .footer-links a { font-size: 12px; letter-spacing: 0.08em; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .footer-links a:hover { color: var(--ink); }
+    .footer-copy { font-size: 12px; color: var(--ink-dim); }
+
+    /* ─── Hero ─── */
+    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; }
+    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(18,18,18,0.72) 0%,rgba(18,18,18,0.18) 60%,transparent 100%); }
+    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
+    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
+    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
+
+    /* ─── Body ─── */
+    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
+    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
+    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
+    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
+    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
+    .project-aside-stat { margin-bottom: 24px; }
+    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
+    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
+    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
+    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
+    .project-section { margin-bottom: 64px; }
+
+    /* ─── Breadcrumb ─── */
+    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
+    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
+
+    /* ─── Process steps ─── */
+    .process-steps { display: flex; gap: 0; margin-bottom: 64px; }
+    .process-step { flex: 1; padding: 24px 20px; border-left: 1px solid var(--line); }
+    .process-step:first-child { border-left: none; padding-left: 0; }
+    .process-step-num { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
+    .process-step-label { font-size: 13px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.4; }
+
+    /* ─── Gallery ─── */
+    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
+    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
+    .g-row { display: grid; gap: 4px; }
+    .g-row + .g-row { margin-top: 4px; }
+    .g-row.r1 { grid-template-columns: 1fr; }
+    .g-row.r2 { grid-template-columns: 1fr 1fr; }
+    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
+    .g-row.r4 { grid-template-columns: repeat(4, 1fr); }
+    .g-row.r21 { grid-template-columns: 2fr 1fr; }
+    .g-row.r12 { grid-template-columns: 1fr 2fr; }
+    .g-cell { overflow: hidden; background: #f5f3f0; }
+    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
+    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .g-cell.dark { background: #232a35; }
+    .g-cell.dark img { width: 100%; height: auto; display: block; }
+    .g-cell.natural { background: #f5f3f0; }
+    .g-cell.natural img { width: 100%; height: auto; display: block; }
+    .g-cell.diagram { background: white; }
+    .g-cell.diagram img { width: 100%; height: auto; display: block; }
+    .g-cell.photo { aspect-ratio: 4/3; }
+    .g-cell.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .g-cell.brand { background: white; }
+    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 620px; object-fit: contain; }
+    .g-cell.cover { background: #f5f3f0; }
+    .g-cell.cover img { width: 100%; height: auto; display: block; }
+
+    /* ─── Project video ─── */
+    .proj-video { position: relative; background: #111; border-radius: 2px; overflow: hidden; margin: 4px 0; }
+    .proj-video video { width: 100%; display: block; }
+    .proj-video.narrow { max-width: 480px; margin-left: auto; margin-right: auto; }
+
+    /* ─── Section label ─── */
+    .section-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+
+    /* ─── Nav project ─── */
+    .nav-project { display: flex; justify-content: space-between; align-items: center; padding: 32px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
+    .nav-project a { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; display: flex; align-items: center; gap: 8px; }
+    .nav-project a:hover { color: var(--ink); }
+
+    /* ─── EN/JP lang switch ─── */
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px;
+      padding: 16px 9px;
+      background: rgba(255,255,255,0.94); backdrop-filter: blur(8px);
+      border-left: 1px solid rgba(18,18,18,0.10);
+      border-radius: 6px 0 0 6px;
+    }
+    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 900px) {
+      .project-overview { grid-template-columns: 1fr; gap: 40px; }
+      .process-steps { flex-direction: column; gap: 0; }
+      .process-step { border-left: none; border-top: 1px solid var(--line); padding: 20px 0; }
+      .process-step:first-child { border-top: none; }
+      .g-row.r3, .g-row.r4 { grid-template-columns: 1fr 1fr; }
+      .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 700px) {
+      .g-row.r3, .g-row.r4 { grid-template-columns: 1fr 1fr; }
+      .g-row.r21, .g-row.r12 { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .site-nav { padding: 16px 20px; }
+      .project-hero-content { padding: 32px 20px; }
+      .project-body { padding: 40px 20px 60px; }
+      .breadcrumb { padding: 16px 20px; }
+      .g-row.r2, .g-row.r3, .g-row.r4 { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Scroll Reveal ─── */
+    .reveal-on-scroll {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
+                  transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .reveal-on-scroll.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Image Fade-In ─── */
+    .g-cell img {
+      opacity: 0;
+      transition: opacity 400ms ease;
+    }
+    .g-cell img.loaded {
+      opacity: 1;
+    }
+
+    /* ─── Gallery Hover ─── */
+    .g-cell {
+      border-radius: 2px;
+    }
+    .g-cell img {
+      transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+    .g-cell:hover img.loaded {
+      transform: scale(1.008);
+    }
+
+    /* ─── Reduced Motion ─── */
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
+      .g-cell img { opacity: 1 !important; transition: none !important; }
+      .g-cell:hover img { transform: none !important; }
+    }
+  
+    /* ─── Cross-document view transition — docs/page-transitions.md ───────
+       The card the visitor clicked grows into this page's hero band while the
+       rest of the page cross-fades under it. It takes both documents: the
+       listing page puts `hero-media` on the one card it was launched from,
+       this page puts the same name on the hero. Browsers without support
+       simply navigate — nothing here is load-bearing. */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+       `object-fit: fill` stretches one into the other on the way across;
+       cropping both snapshots is what makes the move read as one element
+       rather than two pictures swapping. */
+    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
-      animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
     }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
-      ::view-transition-old(root), ::view-transition-new(root),
-      ::view-transition-old(hero-media), ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
+      ::view-transition-old(root),
+      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
     }
+</style>
+  <style>
+    /* ── Nav tiers ── The three offers read first at full ink; the two
+       foundations sit behind a hairline. The hairline is drawn inside the
+       existing gap rather than taking a slot of its own — a separator that
+       occupies a slot makes that one gap twice as wide as every other. ── */
+    .nav-links { align-items: center; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-mid); }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -15px; top: 50%;
+      width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
+  <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
+  <script src="../assets/wipe.js" defer></script>
 </head>
-<body class="dark-theme">
+<body>
 
-  <!-- ── Navigation ── -->
+  <!-- ── Nav ── -->
   <nav class="site-nav">
     <a href="../index.html" class="nav-logo">
       <span class="nav-logo-name">Takao Umehara</span>
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="../interactive.html">Interactive</a></li>
       <li><a href="../ai-products.html">AI Products</a></li>
       <li><a href="../ai-tools.html">AI Tools</a></li>
       <li><a href="../work.html">Product Design</a></li>
-      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li><a href="../brand.html" class="is-active" aria-current="page">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
-    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <main class="case-container">
-    <!-- ── Top Register ── -->
-    <div class="case-top">
-      <a href="../interactive.html">Interactive</a>
-      <span>Case Study</span>
-    </div>
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb">
+    <a href="../brand.html">Brand &amp; Visual</a>
+    <span>/</span>
+    <a href="#">Odell Education</a>
+  </div>
 
-    <!-- ── Hero: 2-column Balanced Layout ── -->
-    <header class="case-hero">
-      <div class="case-hero__copy">
-        <span class="case-kicker">Work · creativity is everywhere</span>
-        <p class="case-discipline">Brand and digital product design</p>
-        <h1 class="case-title">Odell Education</h1>
-        <p class="case-lede">We connected a free high-school literacy curriculum across grades 9–12, literary units, teacher workflows, print covers, and a deep programme website.</p>
-        <p class="case-note">Odell Education · 2023–2024</p>
-
-        <div class="case-hero__cta">
-          <a href="../contact.html">Discuss this project →</a>
-          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+  <!-- ── Hero ── -->
+  <section data-vt-hero class="project-hero">
+    <div class="project-hero-img" style="background-image:url('../assets/odell-education/Branding_Export_figma_Branding_-_main-0.png');"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <div class="project-hero-tags">
+        <span class="project-hero-tag">Brand Identity</span>
+        <span class="project-hero-tag">Design System</span>
+        <span class="project-hero-tag">Product Design</span>
+      </div>
+      <h1 class="project-hero-title">
+        Odell Education — High School Literacy Program
+        
+      </h1>
+      <div class="project-hero-meta">
+        <div class="project-meta-item">
+          <span class="project-meta-label">Client</span>
+          <span class="project-meta-value">Odell Education</span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Role</span>
+          <span class="project-meta-value">
+            Brand &amp; Product Design
+            
+          </span>
+        </div>
+        <div class="project-meta-item">
+          <span class="project-meta-label">Year</span>
+          <span class="project-meta-value">2023&ndash;2024</span>
         </div>
       </div>
+    </div>
+  </section>
 
-      <!-- Hero Media Container -->
-      <figure class="case-hero__media" data-vt-hero>
-        <img src="../assets/work-odell/hero.webp" alt="Odell Education grade 9 through 12 unit-reader covers beside the programme website" width="1600" height="900" loading="lazy" decoding="async">
-      <figcaption class="mono">One geometric system holds four grades in print and on screen.</figcaption>
-      </figure>
-    </header>
+  <!-- ── Body ── -->
+  <main class="project-body">
 
-    <!-- ── The Design Decision (Unboxed Thesis) ── -->
-    <section class="case-thesis">
-      <span class="case-thesis__label">The Design Decision</span>
-      <p class="case-thesis__statement">A large open curriculum began to read as one product.</p>
-    </section>
+    <!-- ── Overview (left: scope, right: text) ── -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          What Shipped
+          
+        </p>
+        <ul class="project-deliverables">
+          <li>Brand identity &amp; logo system</li>
+          <li>Grade 9–12 cover system</li>
+          <li>Typography &amp; visual language</li>
+          <li>Literary unit cover system</li>
+          <li>Stylescapes &amp; motion</li>
+          <li>Information architecture</li>
+          <li>Program website design</li>
+        </ul>
 
-    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
-    <dl class="counts">
-      <div class="count"><dt class="mono">grade levels</dt><dd>9–12</dd></div>
-      <div class="count"><dt class="mono">shared visual grammar</dt><dd>1</dd></div>
-      <div class="count"><dt class="mono">type licensing cost</dt><dd>$0</dd></div>
-    </dl>
+        <p class="project-aside-label" style="margin-top: 32px;">
+          Outcome
+          
+        </p>
+        <p class="project-text" style="font-size: 14px;">
+          A cohesive grade 9–12 identity system and a program website that make a large, open curriculum feel unified and easy for teachers to navigate.
+          
+        </p>
+      </aside>
 
-    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
-    <div class="case-story">
-      <section class="case-chapter">
-      <div class="case-chapter__copy">
-        <p class="case-chapter__eyebrow mono">01 · Situation</p>
-        <h2>Rigorous content looked like separate products.</h2>
-        <p>The open-source English language arts programme contained grades, units, sections, lessons, activities, and teacher materials. The pieces needed coherence without making a free curriculum harder to publish or use.</p>
+      <div>
+        <h2 class="project-section-title">
+          The Opportunity
+          
+        </h2>
+        <p class="project-text">
+          Odell Education develops an open-source high school English Language Arts and literacy curriculum, published freely for teachers and students at ela.odelleducation.com. The program spans four grade levels and dozens of units built around canonical and contemporary texts. Its challenge was one of coherence: a large body of educational content needed a single, credible visual identity — one that felt modern and rigorous, yet approachable for the classroom.
+          
+        </p>
+        <p class="project-text">
+          I led brand identity and digital product design for the program: a grade-level visual system, typography, stylescapes, a unit cover language, the information architecture, and the program website. The goal was to make a sprawling curriculum read as one coherent product across print and screen.
+          
+        </p>
+
+        <h2 class="project-section-title" style="margin-top: 40px;">
+          The Approach
+          
+        </h2>
+        <p class="project-text">
+          The brand centers on a navy-and-orange geometric language — dotted grids, circles, arcs, triangles, and dashed line-work — that flexes across the four grades. Each grade earns its own composition of the same shape vocabulary, so Grade 9 through 12 feel distinct yet clearly related. Montserrat carries the typography, chosen partly because it is a free Google font suited to both print and digital, keeping the open program truly open.
+          
+        </p>
+        <p class="project-text">
+          For the individual literary units, a brighter, more expressive palette gives each text — from The Great Gatsby to Things Fall Apart — its own cover while staying inside a shared system. On the product side, I mapped the information architecture and teacher user stories, then designed the program website that brings the identity to life: grade landing pages, unit overviews, sections, lessons, and activities.
+          
+        </p>
+      </div>
     </div>
 
-    <!-- ── Project Specs (Unboxed) ── -->
-    <dl class="case-spec">
-      <div class="stat"><dt class="mono">Client</dt><dd>Odell Education</dd></div>
-      <div class="stat"><dt class="mono">Role</dt><dd>Brand and product design</dd></div>
-      <div class="stat"><dt class="mono">What we made</dt><dd>Identity, grade and literary-unit covers, information architecture, and website UI</dd></div>
-    </dl>
+    <!-- ── Process Steps ── -->
+    <div class="project-section reveal-on-scroll">
+      <h2 class="project-section-title">
+        Process
+        
+      </h2>
+      <div class="process-steps">
+        <div class="process-step">
+          <div class="process-step-num">01</div>
+          <div class="process-step-label">Research &amp; Strategy</div>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">02</div>
+          <div class="process-step-label">Brand System &amp; Stylescapes</div>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">03</div>
+          <div class="process-step-label">Grade &amp; Unit Cover Design</div>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">04</div>
+          <div class="process-step-label">Information Architecture</div>
+        </div>
+        <div class="process-step">
+          <div class="process-step-num">05</div>
+          <div class="process-step-label">Program Website</div>
+        </div>
+      </div>
+    </div>
 
-    <!-- ── Case Foot Navigation ── -->
-    <footer class="case-foot">
-      <a href="../interactive.html">← All Interactive</a>
-      
-      <a href="../contact.html">Discuss this project with Takao →</a>
-    </footer>
+    <!-- ════════════════════════════════════════════════ -->
+    <!-- ── Gallery Sections ── -->
+    <!-- ════════════════════════════════════════════════ -->
+
+    <div class="gallery reveal-on-scroll">
+
+      <!-- ── Brand System ── -->
+      <p class="gallery-label">
+        Brand System
+        
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/odell-education/Branding_Export_figma_Branding_-_main-1.png" alt="Odell Education grade-level identity system — Grade 9 to 12 covers and program website mockup" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_Gradebooks_Grade9-sm.png" alt="Grade 9 unit readers cover — navy and orange geometric system with concentric arcs" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_Gradebooks_Grade10-sm.png" alt="Grade 10 unit readers cover — squares and dotted grids in navy and orange" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_Gradebooks_Grade11-sm.png" alt="Grade 11 unit readers cover — circles and sweeping lines in navy and orange" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_Gradebooks_Grade12-sm.png" alt="Grade 12 unit readers cover — triangles in navy and orange" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/odell-education/Branding_Export_figma_Branding_-_main-6.png" alt="Odell Education pattern library — a grid of geometric brand compositions" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/odell-education/Typography_OE_Type1.png" alt="Brand typography — Montserrat as the program's primary typeface, a free Google font for print and digital" loading="lazy"></div>
+      </div>
+
+      <!-- ── Unit Identity ── -->
+      <p class="gallery-label">
+        Unit Identity
+        
+      </p>
+
+      <div class="g-row r3">
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_GreatGatsby.png" alt="The Great Gatsby unit cover — layered pill shapes in blue, green and teal" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_ThingsFallApart.png" alt="Things Fall Apart unit cover — red and pink dotted arcs with scattered dots" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_1984.png" alt="1984 unit cover from the Odell Education literary unit system" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_Romeo.png" alt="Romeo and Juliet unit cover from the Odell Education literary unit system" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_WarmthOtherSuns.png" alt="The Warmth of Other Suns unit cover from the Odell Education literary unit system" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_UnknownAmericans.png" alt="The Book of Unknown Americans unit cover from the Odell Education literary unit system" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_IntheTimeofButterfliers.png" alt="In the Time of the Butterflies unit cover from the Odell Education literary unit system" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_ImmortalLife.png" alt="The Immortal Life of Henrietta Lacks unit cover from the Odell Education literary unit system" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_TellingStories.png" alt="Telling Stories unit cover from the Odell Education literary unit system" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r3">
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_FridaynightLights.png" alt="Friday Night Lights unit cover from the Odell Education literary unit system" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_LessonBeforeDying.png" alt="A Lesson Before Dying unit cover from the Odell Education literary unit system" loading="lazy"></div>
+        <div class="g-cell cover"><img src="../assets/odell-education/Books_FoundationUnit.png" alt="Foundation Unit cover — What does it mean to be an American?" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell brand"><img src="../assets/odell-education/Branding_Export_figma_Branding_-_main-8.png" alt="Unit-level branding applied — the Photojournalism student materials cover and matching web unit page" loading="lazy"></div>
+      </div>
+
+      <!-- ── Stylescapes ── -->
+      <p class="gallery-label">
+        Stylescapes
+        
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/odell-education/Stylescapes_OE_Stylescape_01_2x.png" alt="Odell Education stylescape 01 — visual direction with brand type, layout, and imagery" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/odell-education/Stylescapes_OE_Stylescape_02_2x.png" alt="Odell Education stylescape 02 — Bring Changes in how we learn literacy" loading="lazy"></div>
+      </div>
+
+      <div class="proj-video">
+        <video controls preload="metadata" poster="../assets/odell-education/Stylescapes_all_Stylescape_animation-poster.jpg">
+          <source src="../assets/odell-education/Stylescapes_all_Stylescape_animation.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell dark"><img src="../assets/odell-education/Stylescapes_OE_Stylescape_03_2x.png" alt="Odell Education stylescape 03 — The Making of a Modern High School Literacy Program" loading="lazy"></div>
+      </div>
+
+      <div class="proj-video">
+        <video controls preload="metadata" poster="../assets/odell-education/Stylescapes_OE_Stylescape_05_2x.png">
+          <source src="../assets/odell-education/Stylescapes_OE_Stylescape_05_Animation.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- ── The Website ── -->
+      <p class="gallery-label">
+        The Website
+        
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell ui"><img src="../assets/odell-education/Web_OdellWeb1.png" alt="ela.odelleducation.com — grade landing page with Grade 9 to 12 entry tiles" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell ui"><img src="../assets/odell-education/Web_OdellWeb3.png" alt="Unit overview page — The Book of Unknown Americans, with section navigation" loading="lazy"></div>
+        <div class="g-cell ui"><img src="../assets/odell-education/Web_OdellWeb5.png" alt="Section diagnostic page — writing prompts and culminating task connections" loading="lazy"></div>
+      </div>
+
+      <div class="proj-video">
+        <video controls preload="metadata" poster="../assets/odell-education/Web_Odell_Webcapture-poster.jpg">
+          <source src="../assets/odell-education/Web_Odell_Webcapture.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <!-- ── Strategy & IA ── -->
+      <p class="gallery-label">
+        Strategy &amp; IA
+        
+      </p>
+
+      <div class="g-row r1">
+        <div class="g-cell diagram"><img src="../assets/odell-education/Strategy_OE_Architecture_2x.png" alt="Site architecture — login and home through grades, units, sections, lessons, and activities" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r1">
+        <div class="g-cell diagram"><img src="../assets/odell-education/Strategy_ODE_User_Stories_2024-01-12_20-05-11.png" alt="Teacher user stories — first-time, returning to a unit, and teaching a lesson scenarios" loading="lazy"></div>
+      </div>
+
+      <div class="g-row r2">
+        <div class="g-cell diagram"><img src="../assets/odell-education/Strategy_Wireframe_Development_-_Lesson.png" alt="Lesson page wireframe — learning goals and core versus optional activities" loading="lazy"></div>
+        <div class="g-cell diagram"><img src="../assets/odell-education/Strategy_Wireframe_Development_-_Section.png" alt="Section page wireframe — overview, learning goals, texts, and materials" loading="lazy"></div>
+      </div>
+
+    </div>
+
+    <!-- ── Project Details (compact 3-col) ── -->
+    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
+      <div>
+        <p class="project-aside-label">
+          Deliverables
+          
+        </p>
+        <ul class="project-deliverables">
+          <li>Brand Identity &amp; Logo</li>
+          <li>Grade Cover System</li>
+          <li>Unit Cover System</li>
+          <li>Typography &amp; Stylescapes</li>
+          <li>Program Website</li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          Methods
+          
+        </p>
+        <ul class="project-deliverables">
+          <li>Brand Strategy</li>
+          <li>Stylescapes</li>
+          <li>Information Architecture</li>
+          <li>User Stories</li>
+          <li>Wireframing &amp; UI Design</li>
+        </ul>
+      </div>
+      <div>
+        <p class="project-aside-label">
+          Role
+          
+        </p>
+        <p class="project-text" style="font-size: 13px;">
+          I led brand and product design — brand identity, the grade and unit visual systems, typography, stylescapes, information architecture, and the design of the ela.odelleducation.com program website.
+          
+        </p>
+      </div>
+    </div>
+
+    <!-- ── Nav (prev/next) ── -->
+    <div class="nav-project">
+      <a href="../work.html">&#8592; All Work</a>
+      <a href="kitadoko.html">Next: Kitadoko &#8594;</a>
+    </div>
+
   </main>
 
-  <script src="../assets/wipe.js" defer></script>
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+      <div>
+        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
+        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
+          Design &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong>
+          
+        </div>
+      </div>
+      <div style="display:flex; gap:20px; flex-wrap:wrap;">
+        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
+        <a href="../interactive.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Interactive</a>
+      <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Products</a>
+        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
+        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
+        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
+        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
+        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
+      </div>
+      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
+    </div>
+  </footer>
+
+  <!-- ── Lang switch ── -->
+  
+
   <script>
-    // Mobile Menu Toggle
-    (() => {
-      const toggle = document.getElementById('nav-toggle');
-      const links = document.querySelector('.nav-links');
-      if (!toggle || !links) return;
-      toggle.addEventListener('click', () => {
+    ( => {
+      const html = document.documentElement;
+      const btns = [...document.querySelectorAll(".lang-btn")];
+      const saved = localStorage.getItem("tu-lang") || "en";
+      const setLang = (lang) => {
+        html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
+        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+        localStorage.setItem("tu-lang", lang);
+      };
+      setLang(saved);
+      btns.forEach((b) => b.addEventListener("click",  => setLang(b.dataset.lang)));
+    });
+
+// ── Scroll Reveal ──
+( => {
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
+});
+
+// ── Image Fade-In ──
+document.querySelectorAll('.g-cell img').forEach(img => {
+  if (img.complete) img.classList.add('loaded');
+  else img.addEventListener('load',  => img.classList.add('loaded'));
+});
+
+  // ── Mobile Nav ──
+  ( => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click',  => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-        toggle.classList.remove('is-open');
-        links.classList.remove('is-open');
-      }));
-    })();
+      // Close on link click
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click',  => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  });
   </script>
+
 </body>
 </html>
