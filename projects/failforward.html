@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>failforward — Takao Umehara</title>
-  <meta name="description" content="failforward — a zero-dependency CLI plus Claude Code skill that records coding failures and recalls the useful lessons before similar work starts.">
+  <meta name="description" content="A zero-dependency CLI tool and Claude Code skill that records every build, test, and type failure as structured Markdown, then recalls the relevant lessons before similar tasks begin.">
   <link rel="canonical" href="https://takaoumehara.com/projects/failforward.html">
   <meta property="og:title" content="failforward — Takao Umehara">
-  <meta property="og:description" content="failforward — a zero-dependency CLI plus Claude Code skill that records coding failures and recalls the useful lessons before similar work starts.">
+  <meta property="og:description" content="A zero-dependency CLI tool and Claude Code skill that records every build, test, and type failure as structured Markdown, then recalls the relevant lessons before similar tasks begin.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/failforward.html">
 
@@ -53,9 +53,9 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="../interactive.html">Interactive</a></li>
       <li><a href="../ai-products.html">AI Products</a></li>
-      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
       <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
@@ -67,79 +67,127 @@
   <main class="case-container">
     <!-- ── Top Register ── -->
     <div class="case-top">
-      <a href="../interactive.html">Interactive</a>
+      <a href="../ai-tools.html">AI Tools</a>
       <span>Case Study</span>
     </div>
 
     <!-- ── Hero: 2-column Balanced Layout ── -->
     <header class="case-hero">
       <div class="case-hero__copy">
-        <span class="case-kicker">Work · Interactive</span>
-        <p class="case-discipline">Interactive</p>
-        <h1 class="case-title">Your coding agent stops repeating yesterday's mistakes.</h1>
-        <p class="case-lede">failforward — a zero-dependency CLI plus Claude Code skill that records coding failures and recalls the useful lessons before similar work starts.</p>
-        
+        <span class="case-kicker">Agent Memory · CLI & Developer Tooling</span>
+        <p class="case-discipline">Automated error capture & regression prevention</p>
+        <h1 class="case-title">failforward</h1>
+        <p class="case-lede">A zero-dependency CLI tool and Claude Code skill that records every build, test, and type failure as structured Markdown, then recalls the relevant lessons before similar tasks begin.</p>
+        <p class="case-note">Open source · MIT License · 2026</p>
 
         <div class="case-hero__cta">
-          <a href="../contact.html">Discuss this project →</a>
-          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+          <a href="https://github.com/takaoumehara/failforward-skill" target="_blank" rel="noopener">GitHub Repository ↗</a>
+          <a href="../ai-tools.html" class="btn-ghost">← All AI Tools</a>
         </div>
       </div>
 
-      <!-- Hero Media Container -->
-      <figure class="case-hero__media" data-vt-hero>
-        <a href="https://github.com/takaoumehara/failforward-skill" class="pj-media-link" target="_blank" rel="noopener" aria-label="Open project media">
-        <img src="https://takaoumehara.com/assets/og/failforward.jpg" alt="Your coding agent stops repeating <em>yesterday's mistakes</em>.<em></em>" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        Your coding agent stops repeating <em>yesterday's mistakes</em>.<em></em> — case study showcase (click to open)
-        
-      </figcaption>
+      <!-- Hero Media Container (Unboxed Vector Diagram) -->
+      <figure class="fig fig--diagram case-hero__media" data-vt-hero>
+        <div class="fig__scroll">
+          <svg viewBox="0 0 1180 420" role="img" width="1180" height="420"
+       aria-label="Failforward learning loop: Recording failures upon resolution and proactively recalling past solutions in subsequent agent turns.">
+    <g fill="none" stroke="currentColor" stroke-width="1.5"><line x1="40" y1="96" x2="1140" y2="96"></line></g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="15" letter-spacing="0.04em">
+      <text x="40" y="46">THE LEARNING LOOP: RECORD ON RESOLUTION, RECALL ON START</text>
+    </g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="14">
+      <text x="40" y="130">01 FAILURE RESOLVED</text>
+      <text x="360" y="130">02 RECORDED TO DISK</text>
+      <text x="740" y="130">03 PROACTIVE RECALL</text>
+    </g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="15" letter-spacing="0.04em">
+      <text x="40" y="196">STRUCTURED ROOT-CAUSE TAXONOMY</text>
+    </g>
+    <g font-family="Outfit, sans-serif" font-size="18" fill="currentColor">
+      <text x="40" y="228">Instant Record — ff record captures category, severity, symptom, cause, fix</text>
+      <text x="40" y="292">Local Markdown Store — ~/.failforward/ keeps human-readable logs</text>
+      <text x="40" y="356">Session Hook — ff recall queries relevant historical pitfalls before work starts</text>
+    </g>
+    <g fill="currentColor">
+      <rect x="40" y="240" width="980" height="4" rx="2" opacity="0.3"></rect>
+      <rect x="40" y="304" width="820" height="4" rx="2" opacity="0.3"></rect>
+      <rect x="40" y="368" width="1050" height="4" rx="2" opacity="0.3"></rect>
+    </g>
+  </svg>
+        </div>
+        <figcaption class="mono">When an error is fixed, failforward records the root cause and remedy into a git-tracked index, ensuring future agent sessions recall the lesson before failing again.</figcaption>
       </figure>
     </header>
 
-    
+    <!-- ── The Design Decision (Unboxed Thesis) ── -->
+    <section class="case-thesis">
+      <span class="case-thesis__label">The Design Decision</span>
+      <p class="case-thesis__statement">Your coding agent stops repeating yesterday’s mistakes.</p>
+    </section>
 
-    
+    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
+    <dl class="counts">
+      <div class="count"><dt class="mono">External dependencies</dt><dd>0</dd></div>
+      <div class="count"><dt class="mono">Global command</dt><dd>1</dd></div>
+      <div class="count"><dt class="mono">Markdown based</dt><dd>100%</dd></div>
+      <div class="count"><dt class="mono">Agent runtimes supported</dt><dd>4</dd></div>
+    </dl>
 
     <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
     <div class="case-story">
-      <!-- ═══ Slide 1 · Hero (dark, orange glow) ═══ -->
-    <header  class="wds-hero wds-slide reveal-on-scroll">
-      <p class="wds-kick">CLI · Claude Code Skill + Hook · Codex · Gemini · Qwen ready</p>
-      <h1 class="wds-serif">Your coding agent stops repeating <em>yesterday's mistakes</em>.<span class="t-jp is-block"><em></em></span></h1>
-      <p class="wds-hero-lead"><strong>failforward</strong> is a zero-dependency CLI plus Claude Code skill that records every build, test, and lint failure as plain Markdown — then recalls the relevant ones before similar work begins. Convention files extend it to Codex, Gemini, and Qwen.<span class="t-jp is-block"><strong>failforward</strong>  Markdown  CLI  Claude Code CodexGeminiQwen </span></p>
-      <div class="wds-chips">
-        <span class="wds-chip">CLI</span>
-        <span class="wds-chip">Claude Code Skill + Hook</span>
-        <span class="wds-chip">Codex · Gemini · Qwen ready</span>
-        <span class="wds-chip">MIT</span>
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">01 · Problem</span>
+        <div class="case-chapter__copy">
+          <h2>The costly amnesia of coding agents</h2>
+          <p>AI agents operate without long-term memories of local build configurations, brittle dependencies, or tricky API quirks, repeatedly stubbing their toes on the exact same error each session.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">02 · The CLI</span>
+        <div class="case-chapter__copy">
+          <h2>Zero dependencies, maximum portability</h2>
+          <p>Engineered as a lightweight POSIX shell and Node CLI (`ff`) that sits on the global PATH, writing plain human-readable Markdown files that can be committed alongside repositories.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">03 · Taxonomy</span>
+        <div class="case-chapter__copy">
+          <h2>Root-cause first recording</h2>
+          <p>Forbids superficial symptom patching. Every record forces a four-part diagnosis: category (build, type, test, lint, logic), severity (p0–p3), root cause, and concrete verifiable fix.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">04 · Recall Engine</span>
+        <div class="case-chapter__copy">
+          <h2>Proactive session-start intelligence</h2>
+          <p>Before a complex refactor or debugging turn begins, failforward automatically searches the local index for matching symptoms and injects past remedies directly into the agent context.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">05 · Compatibility</span>
+        <div class="case-chapter__copy">
+          <h2>Universal across agent frameworks</h2>
+          <p>Integrates natively into Claude Code hooks, Google Antigravity IDE global rules, OpenAI Codex conventions, and Gemini CLI workflows.</p>
+        </div>
+      </section>
     </div>
 
     <!-- ── Project Specs (Unboxed) ── -->
     <dl class="case-spec">
-      <div>
-          <dt>Role</dt>
-          <dd>Product & Creative Direction</dd>
-        </div>
-        <div>
-          <dt>Engagement</dt>
-          <dd>Creativity Is Everywhere LLC</dd>
-        </div>
-        <div>
-          <dt>Medium</dt>
-          <dd>Digital Platform & System</dd>
-        </div>
-        <div>
-          <dt>Status</dt>
-          <dd>Case Study</dd>
-        </div>
+      <div class="stat"><dt class="mono">Role</dt><dd>Creator & Tooling Architect</dd></div>
+      <div class="stat"><dt class="mono">Runtime</dt><dd>Node.js / POSIX Shell · Zero Dependencies</dd></div>
+      <div class="stat"><dt class="mono">Storage</dt><dd>Local plain Markdown files (`~/.failforward/`)</dd></div>
+      <div class="stat"><dt class="mono">Open Source</dt><dd>MIT License · github.com/takaoumehara/failforward-skill</dd></div>
     </dl>
 
     <!-- ── Case Foot Navigation ── -->
     <footer class="case-foot">
-      <a href="../interactive.html">← All Interactive</a>
-      
+      <a href="../ai-tools.html">← All AI Tools</a>
+      <a href="https://github.com/takaoumehara/failforward-skill" target="_blank" rel="noopener">GitHub Repo ↗</a>
       <a href="../contact.html">Discuss this project with Takao →</a>
     </footer>
   </main>

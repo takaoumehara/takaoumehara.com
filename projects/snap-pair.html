@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Snap Pair — Takao Umehara</title>
-  <meta name="description" content="Snap Pair — a React + Firebase realtime pairing layer that lets every phone in the room join an app in one scan. Open source, with a Claude skill for safe integrations.">
+  <meta name="description" content="A lightweight React and Firebase pairing protocol that lets every phone in the room join an app in one scan, with presence heartbeats, capacity limits, and automatic room cleanup.">
   <link rel="canonical" href="https://takaoumehara.com/projects/snap-pair.html">
   <meta property="og:title" content="Snap Pair — Takao Umehara">
-  <meta property="og:description" content="Snap Pair — a React + Firebase realtime pairing layer that lets every phone in the room join an app in one scan. Open source, with a Claude skill for safe integrations.">
+  <meta property="og:description" content="A lightweight React and Firebase pairing protocol that lets every phone in the room join an app in one scan, with presence heartbeats, capacity limits, and automatic room cleanup.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/snap-pair.html">
 
@@ -53,9 +53,9 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="../interactive.html">Interactive</a></li>
       <li><a href="../ai-products.html">AI Products</a></li>
-      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
       <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
@@ -67,79 +67,127 @@
   <main class="case-container">
     <!-- ── Top Register ── -->
     <div class="case-top">
-      <a href="../interactive.html">Interactive</a>
+      <a href="../ai-tools.html">AI Tools</a>
       <span>Case Study</span>
     </div>
 
     <!-- ── Hero: 2-column Balanced Layout ── -->
     <header class="case-hero">
       <div class="case-hero__copy">
-        <span class="case-kicker">Work · Interactive</span>
-        <p class="case-discipline">Interactive</p>
-        <h1 class="case-title">Every phone in the room joins your app in one scan.QR 1</h1>
-        <p class="case-lede">Snap Pair — a React + Firebase realtime pairing layer that lets every phone in the room join an app in one scan. Open source, with a Claude skill for safe integrations.</p>
-        
+        <span class="case-kicker">Realtime Infrastructure · React & Firebase</span>
+        <p class="case-discipline">Multi-device pairing & zero-install state sync</p>
+        <h1 class="case-title">Snap Pair</h1>
+        <p class="case-lede">A lightweight React and Firebase pairing protocol that lets every phone in the room join an app in one scan, with presence heartbeats, capacity limits, and automatic room cleanup.</p>
+        <p class="case-note">Open source · MIT License · 2026</p>
 
         <div class="case-hero__cta">
-          <a href="../contact.html">Discuss this project →</a>
-          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+          <a href="https://github.com/takaoumehara/snap-pair-skill" target="_blank" rel="noopener">GitHub Repository ↗</a>
+          <a href="../ai-tools.html" class="btn-ghost">← All AI Tools</a>
         </div>
       </div>
 
-      <!-- Hero Media Container -->
-      <figure class="case-hero__media" data-vt-hero>
-        <a href="https://github.com/takaoumehara/snap-pair-skill" class="pj-media-link" target="_blank" rel="noopener" aria-label="Open project media">
-        <img src="https://takaoumehara.com/assets/og/snap-pair.jpg" alt="Every phone in the room joins your app in <em>one scan</em>.<em>QR 1</em>" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        Every phone in the room joins your app in <em>one scan</em>.<em>QR 1</em> — case study showcase (click to open)
-        
-      </figcaption>
+      <!-- Hero Media Container (Unboxed Vector Diagram) -->
+      <figure class="fig fig--diagram case-hero__media" data-vt-hero>
+        <div class="fig__scroll">
+          <svg viewBox="0 0 1180 420" role="img" width="1180" height="420"
+       aria-label="Snap Pair architecture: Display host generates pairing QR code, synchronising state across mobile devices via Firebase Realtime Database.">
+    <g fill="none" stroke="currentColor" stroke-width="1.5"><line x1="40" y1="96" x2="1140" y2="96"></line></g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="15" letter-spacing="0.04em">
+      <text x="40" y="46">CLIENT-DIRECT REALTIME PAIRING FLOW</text>
+    </g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="14">
+      <text x="40" y="130">01 HOST DISPLAY</text>
+      <text x="360" y="130">02 FIREBASE PRESENCE</text>
+      <text x="740" y="130">03 CONNECTED PHONES</text>
+    </g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="15" letter-spacing="0.04em">
+      <text x="40" y="196">SHARED TWO-WAY STATE SYNCHRONISATION</text>
+    </g>
+    <g font-family="Outfit, sans-serif" font-size="18" fill="currentColor">
+      <text x="40" y="228">Display Screen — renders QR code and listens to ephemeral room state</text>
+      <text x="40" y="292">Realtime Gateway — enforces room capacity, validation, and heartbeats</text>
+      <text x="40" y="356">Paired Devices — low-latency touch controls, keyboard, voice, and gyro input</text>
+    </g>
+    <g fill="currentColor">
+      <rect x="40" y="240" width="1050" height="4" rx="2" opacity="0.3"></rect>
+      <rect x="40" y="304" width="820" height="4" rx="2" opacity="0.3"></rect>
+      <rect x="40" y="368" width="940" height="4" rx="2" opacity="0.3"></rect>
+    </g>
+  </svg>
+        </div>
+        <figcaption class="mono">A phone scans the QR on the main display and immediately becomes a controller, pointer, keyboard, or microphone without native installs or account signups.</figcaption>
       </figure>
     </header>
 
-    
+    <!-- ── The Design Decision (Unboxed Thesis) ── -->
+    <section class="case-thesis">
+      <span class="case-thesis__label">The Design Decision</span>
+      <p class="case-thesis__statement">Connect any phone in the room without an app, an account, or an install.</p>
+    </section>
 
-    
+    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
+    <dl class="counts">
+      <div class="count"><dt class="mono">Scan to join</dt><dd>1</dd></div>
+      <div class="count"><dt class="mono">Room code length</dt><dd>6</dd></div>
+      <div class="count"><dt class="mono">Build dependencies</dt><dd>0</dd></div>
+      <div class="count"><dt class="mono">Claude skill integration</dt><dd>1</dd></div>
+    </dl>
 
     <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
     <div class="case-story">
-      <!-- ═══ Slide 1 · Hero (dark, blue glow) ═══ -->
-    <header  class="wds-hero wds-slide reveal-on-scroll">
-      <p class="wds-kick">Realtime Library · Claude Skill · React + Firebase</p>
-      <h1 class="wds-serif">Every phone in the room joins your app in <em>one scan</em>.<span class="t-jp is-block"><em>QR 1</em></span></h1>
-      <p class="wds-hero-lead"><strong>Snap Pair</strong> is a React + Firebase realtime pairing layer: QR or six-character code, presence heartbeat, room capacity, and security rules included. It ships with a Claude skill that writes safe integrations for you — so an agent can add multi-device play to any app.<span class="t-jp is-block"><strong>Snap Pair</strong> React  Firebase QR 6 Claude </span></p>
-      <div class="wds-chips">
-        <span class="wds-chip">Realtime Library</span>
-        <span class="wds-chip">Claude Skill</span>
-        <span class="wds-chip">React + Firebase</span>
-        <span class="wds-chip">MIT</span>
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">01 · Problem</span>
+        <div class="case-chapter__copy">
+          <h2>The high barrier to multi-device web apps</h2>
+          <p>Getting multiple users or auxiliary mobile screens into a shared session usually requires app store downloads, Bluetooth pairing dialogs, or account registrations that destroy spontaneous engagement.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">02 · Protocol</span>
+        <div class="case-chapter__copy">
+          <h2>Zero-install rendezvous handles</h2>
+          <p>Snap Pair generates a visual QR code and a 6-character human-readable code. Scanning the QR opens a lightweight web app that directly attaches to the room channel in under a second.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">03 · State Engine</span>
+        <div class="case-chapter__copy">
+          <h2>Symmetric real-time synchronization</h2>
+          <p>Built on top of Firebase Realtime Database primitives, Snap Pair maintains continuous presence heartbeats, coordinates room membership, and cleans up abandoned sessions automatically.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">04 · Agent Integration</span>
+        <div class="case-chapter__copy">
+          <h2>A Claude Code skill for rapid builds</h2>
+          <p>The package includes a comprehensive agent skill that automates the integration of multi-device controls into any frontend project with guaranteed security rules and data contracts.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">05 · Applications</span>
+        <div class="case-chapter__copy">
+          <h2>Living-room commerce, party games & workshops</h2>
+          <p>Powers interactive dual-device experiences such as ten-foot shopping interfaces, shared whiteboards, audience buzzers, and multiplayer web simulations.</p>
+        </div>
+      </section>
     </div>
 
     <!-- ── Project Specs (Unboxed) ── -->
     <dl class="case-spec">
-      <div>
-          <dt>Role</dt>
-          <dd>Product & Creative Direction</dd>
-        </div>
-        <div>
-          <dt>Engagement</dt>
-          <dd>Creativity Is Everywhere LLC</dd>
-        </div>
-        <div>
-          <dt>Medium</dt>
-          <dd>Digital Platform & System</dd>
-        </div>
-        <div>
-          <dt>Status</dt>
-          <dd>Case Study</dd>
-        </div>
+      <div class="stat"><dt class="mono">Role</dt><dd>Creator & Systems Architect</dd></div>
+      <div class="stat"><dt class="mono">Technology</dt><dd>React · Firebase Realtime Database · Vanilla JS</dd></div>
+      <div class="stat"><dt class="mono">Features</dt><dd>Presence heartbeat · Room expiration · Zero setup</dd></div>
+      <div class="stat"><dt class="mono">Open Source</dt><dd>MIT License · github.com/takaoumehara/snap-pair-skill</dd></div>
     </dl>
 
     <!-- ── Case Foot Navigation ── -->
     <footer class="case-foot">
-      <a href="../interactive.html">← All Interactive</a>
-      
+      <a href="../ai-tools.html">← All AI Tools</a>
+      <a href="https://github.com/takaoumehara/snap-pair-skill" target="_blank" rel="noopener">GitHub Repo ↗</a>
       <a href="../contact.html">Discuss this project with Takao →</a>
     </footer>
   </main>

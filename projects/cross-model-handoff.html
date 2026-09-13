@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>cross-model-handoff — Takao Umehara</title>
-  <meta name="description" content="cross-model-handoff — a lightweight note-and-passphrase protocol for moving active AI coding work between tools without losing context.">
+  <meta name="description" content="A standardized protocol and skill that serializes active workspace decisions and tasks into a portable capsule, allowing seamless transitions between Claude Code, Codex, and Gemini CLI.">
   <link rel="canonical" href="https://takaoumehara.com/projects/cross-model-handoff.html">
   <meta property="og:title" content="cross-model-handoff — Takao Umehara">
-  <meta property="og:description" content="cross-model-handoff — a lightweight note-and-passphrase protocol for moving active AI coding work between tools without losing context.">
+  <meta property="og:description" content="A standardized protocol and skill that serializes active workspace decisions and tasks into a portable capsule, allowing seamless transitions between Claude Code, Codex, and Gemini CLI.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/cross-model-handoff.html">
 
@@ -53,9 +53,9 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="../interactive.html">Interactive</a></li>
       <li><a href="../ai-products.html">AI Products</a></li>
-      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
       <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
@@ -67,79 +67,127 @@
   <main class="case-container">
     <!-- ── Top Register ── -->
     <div class="case-top">
-      <a href="../interactive.html">Interactive</a>
+      <a href="../ai-tools.html">AI Tools</a>
       <span>Case Study</span>
     </div>
 
     <!-- ── Hero: 2-column Balanced Layout ── -->
     <header class="case-hero">
       <div class="case-hero__copy">
-        <span class="case-kicker">Work · Interactive</span>
-        <p class="case-discipline">Interactive</p>
-        <h1 class="case-title">Switch AI tools mid-task. Keep the whole context.AI</h1>
-        <p class="case-lede">cross-model-handoff — a lightweight note-and-passphrase protocol for moving active AI coding work between tools without losing context.</p>
-        
+        <span class="case-kicker">Multi-Model Architecture · Context Protocol</span>
+        <p class="case-discipline">Session serialization & context encapsulation</p>
+        <h1 class="case-title">cross-model-handoff</h1>
+        <p class="case-lede">A standardized protocol and skill that serializes active workspace decisions and tasks into a portable capsule, allowing seamless transitions between Claude Code, Codex, and Gemini CLI.</p>
+        <p class="case-note">Open source · MIT License · 2026</p>
 
         <div class="case-hero__cta">
-          <a href="../contact.html">Discuss this project →</a>
-          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+          <a href="https://github.com/takaoumehara/cross-model-handoff" target="_blank" rel="noopener">GitHub Repository ↗</a>
+          <a href="../ai-tools.html" class="btn-ghost">← All AI Tools</a>
         </div>
       </div>
 
-      <!-- Hero Media Container -->
-      <figure class="case-hero__media" data-vt-hero>
-        <a href="https://github.com/takaoumehara/cross-model-handoff" class="pj-media-link" target="_blank" rel="noopener" aria-label="Open project media">
-        <img src="https://takaoumehara.com/assets/og/cross-model-handoff.jpg" alt="Switch AI tools mid-task. Keep the <em>whole context</em>.AI<em></em>" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        Switch AI tools mid-task. Keep the <em>whole context</em>.AI<em></em> — case study showcase (click to open)
-        
-      </figcaption>
+      <!-- Hero Media Container (Unboxed Vector Diagram) -->
+      <figure class="fig fig--diagram case-hero__media" data-vt-hero>
+        <div class="fig__scroll">
+          <svg viewBox="0 0 1180 420" role="img" width="1180" height="420"
+       aria-label="Cross-model handoff workflow: Serializing active intent into a structured disk capsule for resumption by any model.">
+    <g fill="none" stroke="currentColor" stroke-width="1.5"><line x1="40" y1="96" x2="1140" y2="96"></line></g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="15" letter-spacing="0.04em">
+      <text x="40" y="46">CROSS-MODEL WORKSPACE SERIALIZATION</text>
+    </g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="14">
+      <text x="40" y="130">MODEL A (PLANNING)</text>
+      <text x="400" y="130">.HANDOFF/ CAPSULE</text>
+      <text x="800" y="130">MODEL B (EXECUTION)</text>
+    </g>
+    <g fill="currentColor" font-family="'DM Mono', monospace" font-size="15" letter-spacing="0.04em">
+      <text x="40" y="196">STRUCTURED DISK ARTIFACTS</text>
+    </g>
+    <g font-family="Outfit, sans-serif" font-size="18" fill="currentColor">
+      <text x="40" y="228">Model A — writes architecture decisions, active goals, and invariants to .handoff/</text>
+      <text x="40" y="292">Capsule Ledger — contains state.json, decisions.md, and diff proofs</text>
+      <text x="40" y="356">Model B — cold-starts by parsing capsule and resumes coding without prompt drift</text>
+    </g>
+    <g fill="currentColor">
+      <rect x="40" y="240" width="1020" height="4" rx="2" opacity="0.3"></rect>
+      <rect x="40" y="304" width="760" height="4" rx="2" opacity="0.3"></rect>
+      <rect x="40" y="368" width="980" height="4" rx="2" opacity="0.3"></rect>
+    </g>
+  </svg>
+        </div>
+        <figcaption class="mono">A structured .handoff capsule snapshots completed work, active invariants, and open decisions, allowing a completely different AI model to take over with zero loss of progress.</figcaption>
       </figure>
     </header>
 
-    
+    <!-- ── The Design Decision (Unboxed Thesis) ── -->
+    <section class="case-thesis">
+      <span class="case-thesis__label">The Design Decision</span>
+      <p class="case-thesis__statement">Switch AI models mid-task without losing a single line of progress.</p>
+    </section>
 
-    
+    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
+    <dl class="counts">
+      <div class="count"><dt class="mono">Supported model runtimes</dt><dd>3+</dd></div>
+      <div class="count"><dt class="mono">Capsule directory</dt><dd>1</dd></div>
+      <div class="count"><dt class="mono">Lost context</dt><dd>0</dd></div>
+      <div class="count"><dt class="mono">Plain text format</dt><dd>100%</dd></div>
+    </dl>
 
     <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
     <div class="case-story">
-      <!-- ═══ Slide 1 · Hero (dark, violet glow) ═══ -->
-    <header  class="wds-hero wds-slide reveal-on-scroll">
-      <p class="wds-kick">Claude Code Plugin · Skill System · Codex · Gemini · Cursor ready</p>
-      <h1 class="wds-serif">Switch AI tools mid-task. Keep the <em>whole context</em>.<span class="t-jp is-block">AI<em></em></span></h1>
-      <p class="wds-hero-lead"><strong>cross-model-handoff</strong> is a lightweight handoff protocol: one <code>.handoff/</code> note and a memorable passphrase carry running work between Claude Code, Codex, Gemini CLI, Antigravity, and Cursor — no re-explaining, no lost state.<span class="t-jp is-block"><strong>cross-model-handoff</strong> <code>.handoff/</code> 11Claude CodeCodexGemini CLIAntigravityCursor </span></p>
-      <div class="wds-chips">
-        <span class="wds-chip">Claude Code Plugin</span>
-        <span class="wds-chip">Skill System</span>
-        <span class="wds-chip">Codex · Gemini · Cursor ready</span>
-        <span class="wds-chip">MIT</span>
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">01 · Problem</span>
+        <div class="case-chapter__copy">
+          <h2>The multi-model fragmentation dilemma</h2>
+          <p>Developers often prefer Claude for architecture, Codex for bulk code generation, and Gemini for deep analysis. However, moving between them traditionally requires copy-pasting messy chat history.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">02 · Capsule Schema</span>
+        <div class="case-chapter__copy">
+          <h2>Self-contained repository capsules</h2>
+          <p>Defines an open schema in `.handoff/` that documents active goals, verified invariants, completed steps, modified files, and known pitfalls in concise structured formats.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">03 · Delegation</span>
+        <div class="case-chapter__copy">
+          <h2>Handing off to asynchronous cloud agents</h2>
+          <p>Enables developers to package up an entire subsystem task and dispatch it seamlessly to cloud workers like Devin or background subagent runners with crisp completion criteria.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">04 · Verification</span>
+        <div class="case-chapter__copy">
+          <h2>Invariant contracts before execution</h2>
+          <p>When a new model picks up the capsule, it reads the verification script and tests before modifying source files, ensuring zero regressions occur across handoff boundaries.</p>
+        </div>
+      </section>
+
+      <section class="case-chapter">
+        <span class="case-chapter__eyebrow mono">05 · Ecosystem</span>
+        <div class="case-chapter__copy">
+          <h2>Universal agent tooling compatibility</h2>
+          <p>Works out-of-the-box across Claude Code, Cursor, Antigravity IDE, GitHub Copilot Workspace, and standalone shell scripts.</p>
+        </div>
+      </section>
     </div>
 
     <!-- ── Project Specs (Unboxed) ── -->
     <dl class="case-spec">
-      <div>
-          <dt>Role</dt>
-          <dd>Product & Creative Direction</dd>
-        </div>
-        <div>
-          <dt>Engagement</dt>
-          <dd>Creativity Is Everywhere LLC</dd>
-        </div>
-        <div>
-          <dt>Medium</dt>
-          <dd>Digital Platform & System</dd>
-        </div>
-        <div>
-          <dt>Status</dt>
-          <dd>Case Study</dd>
-        </div>
+      <div class="stat"><dt class="mono">Role</dt><dd>Protocol Designer & Systems Engineer</dd></div>
+      <div class="stat"><dt class="mono">Compatibility</dt><dd>Claude Code · OpenAI Codex · Google Gemini · Antigravity</dd></div>
+      <div class="stat"><dt class="mono">Format</dt><dd>Structured JSON schema + Markdown ledger</dd></div>
+      <div class="stat"><dt class="mono">Open Source</dt><dd>MIT License · github.com/takaoumehara/cross-model-handoff</dd></div>
     </dl>
 
     <!-- ── Case Foot Navigation ── -->
     <footer class="case-foot">
-      <a href="../interactive.html">← All Interactive</a>
-      
+      <a href="../ai-tools.html">← All AI Tools</a>
+      <a href="https://github.com/takaoumehara/cross-model-handoff" target="_blank" rel="noopener">GitHub Repo ↗</a>
       <a href="../contact.html">Discuss this project with Takao →</a>
     </footer>
   </main>
