@@ -11,101 +11,22 @@
   <meta property="og:description" content="Skateboard E-Gift — a solo personal project by Takao Umehara turning a digital gift card code into a custom inspirational card set and branded unboxing experience. Case study by Takao Umehara.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/skateboard-egift.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/image-asset_2.jpeg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Skateboard E-Gift &mdash; From Digital Code to Tangible Joy | Takao Umehara">
-  <meta name="twitter:description" content="Skateboard E-Gift — a solo personal project by Takao Umehara turning a digital gift card code into a custom inspirational card set and branded unboxing experience. Case study by Takao Umehara.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/image-asset_2.jpeg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,36 +64,65 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>Skateboard E-Gift &mdash; From Code to Joy
-        スケートボードの e ギフト &mdash; コードを、贈りものにする</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>Packaging Design</li>
-        <li>Experience Design</li>
-        <li>Personal Project</li>
-      </ul>
-      <h1 class="pj-title">Skateboard E-Gift &mdash; From Code to Joy
-        スケートボードの e ギフト &mdash; コードを、贈りものにする</h1>
-      <p class="pj-summary">It started with a birthday and a question: "How can I make my friend happy and give a bit of 'wow'?" I had a skateboard e-gift card &mdash; a perfectly fine present. But forwarding a redemption code felt impersonal. I wanted the gift to carry something more than purchasing power.
-          きっかけは、友人の誕生日と一つの問いでした。「どうすれば喜んでもらえて、しかも少し驚いてもらえるだろう」。手元にはスケートボードの e ギフトカードがある &mdash; それ自体、悪くない贈りものです。でも引き換えコードを転送するだけでは、どうにも味気ない。金額以上のものを渡したかった。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Skateboard E-Gift &mdash; From Code to Joy
+         e  &mdash;</h1>
+        <p class="case-lede">Skateboard E-Gift — a solo personal project by Takao Umehara turning a digital gift card code into a custom inspirational card set and branded unboxing experience. Case study by Takao Umehara.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/shared/image-asset_2.jpeg" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/shared/image-asset_2.jpeg" alt="Skateboard E-Gift &mdash; From Code to Joy
+         e  &mdash; " width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        Skateboard E-Gift &mdash; From Code to Joy
+         e  &mdash;  — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <!-- ════════════════════════════════════
+         Overview (left: stats / right: narrative)
+    ════════════════════════════════════ -->
+    <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          The Objective
+          
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num" style="font-size:22px; line-height:1.3; padding-top:4px;">"Make my friend stoked."
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -188,279 +138,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/shared/image-asset_2.jpeg" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/shared/image-asset_2.jpeg" alt="Skateboard E-Gift &mdash; From Code to Joy
-        スケートボードの e ギフト &mdash; コードを、贈りものにする" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">Skateboard E-Gift &mdash; From Code to Joy
-        スケートボードの e ギフト &mdash; コードを、贈りものにする — case study showcase (click to open)</span>
-        <span class="t-jp">Skateboard E-Gift &mdash; From Code to Joy
-        スケートボードの e ギフト &mdash; コードを、贈りものにする — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<!-- ════════════════════════════════════
-         Overview (left: stats / right: narrative)
-    ════════════════════════════════════ -->
-    <div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label">
-          <span class="t-en">The Objective</span>
-          <span class="t-jp">目的</span>
-        </p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num" style="font-size:22px; line-height:1.3; padding-top:4px;">"Make my friend stoked."</div>
-          <div class="project-aside-desc">
-            <span class="t-en">That was the entire brief.</span>
-            <span class="t-jp">依頼内容は、これだけ。</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">Solo</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Concept, design, and production</span>
-            <span class="t-jp">コンセプト、デザイン、制作</span>
-          </div>
-        </div>
-
-        <p class="project-aside-label" style="margin-top:32px;">
-          <span class="t-en">Deliverables</span>
-          <span class="t-jp">成果物</span>
-        </p>
-        <ul class="project-deliverables">
-          <li>
-            <span class="t-en">Custom inspirational card set</span>
-            <span class="t-jp">書き下ろしのメッセージカード一式</span>
-          </li>
-          <li>
-            <span class="t-en">Branded packaging system</span>
-            <span class="t-jp">パッケージ一式のデザイン</span>
-          </li>
-          <li>
-            <span class="t-en">Complete unboxing experience</span>
-            <span class="t-jp">開けるまでの体験の設計</span>
-          </li>
-        </ul>
-
-        <p class="project-aside-label" style="margin-top:32px;">
-          <span class="t-en">Tool</span>
-          <span class="t-jp">ツール</span>
-        </p>
-        <div class="tools-strip">
-          <span class="tool-pill">Adobe Illustrator</span>
-        </div>
-      </aside>
-
-      <div>
-        <!-- The Story -->
-        <h2 class="project-section-title">
-          <span class="t-en">The Story</span>
-          <span class="t-jp">ストーリー</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">It started with a birthday and a question: "How can I make my friend happy and give a bit of 'wow'?" I had a skateboard e-gift card &mdash; a perfectly fine present. But forwarding a redemption code felt impersonal. I wanted the gift to carry something more than purchasing power.</span>
-          <span class="t-jp is-block">きっかけは、友人の誕生日と一つの問いでした。「どうすれば喜んでもらえて、しかも少し驚いてもらえるだろう」。手元にはスケートボードの e ギフトカードがある &mdash; それ自体、悪くない贈りものです。でも引き換えコードを転送するだけでは、どうにも味気ない。金額以上のものを渡したかった。</span>
-        </p>
-
-        <!-- What I Made -->
-        <h2 class="project-section-title" style="margin-top:40px;">
-          <span class="t-en">What I Made</span>
-          <span class="t-jp">制作したもの</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">I extracted life lessons from skateboarding culture &mdash; persistence, reading the terrain, the joy of bailing and getting back up &mdash; and designed them into a set of custom inspirational cards. Each card carries a piece of skating wisdom reframed as life philosophy. I then designed branded packaging around the whole thing, engineering every layer of the unboxing for maximum surprise. The digital code was still inside, but now it was wrapped in a story worth telling.</span>
-          <span class="t-jp is-block">スケートボードの文化から、人生に通じる教えを引き出しました。粘り強さ、路面を読むこと、転んでまた立ち上がるときの気持ちよさ。それを一組のメッセージカードに落とし込み、スケートの知恵を人生の言葉として書き直しました。そのうえでパッケージをデザインし、開けていく一手順ごとに驚きが来るように組み立てました。中に入っているのは、結局あのデジタルコードです。ただ今回は、人に話したくなる物語で包まれていました。</span>
-        </p>
-      </div>
-    </div>
-
-    <!-- The Brief -->
-    <p class="project-aside-label">
-      <span class="t-en">The Brief</span>
-      <span class="t-jp">依頼内容</span>
-    </p>
-    <div class="brief-block reveal-on-scroll">
-      <div class="brief-item">
-        <div class="brief-item-label">
-          <span class="t-en">The Ask</span>
-          <span class="t-jp">お題</span>
-        </div>
-        <div class="brief-item-text">
-          <span class="t-en">"How can I make my friend happy and give a bit of 'wow'?"</span>
-          <span class="t-jp">「どうすれば喜んでもらえて、少し驚いてもらえるだろう」</span>
-        </div>
-      </div>
-      <div class="brief-item">
-        <div class="brief-item-label">
-          <span class="t-en">The Objective</span>
-          <span class="t-jp">目的</span>
-        </div>
-        <div class="brief-item-text">
-          <span class="t-en">"Make my friend stoked."</span>
-          <span class="t-jp">「友人に、最高に喜んでもらう。」</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════
-         Outcomes
-    ═══════════════════════════════════════════════ -->
-    <p class="project-aside-label" style="margin-bottom:20px;">
-      <span class="t-en">Outcomes</span>
-      <span class="t-jp">成果</span>
-    </p>
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block">
-        <div class="outcome-num">1</div>
-        <div class="outcome-label">
-          <span class="t-en">Digital code transformed into tangible gift experience</span>
-          <span class="t-jp">デジタルのコードを、手に取れる贈りものの体験に変えた</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">Solo</div>
-        <div class="outcome-label">
-          <span class="t-en">Concept through final delivery &mdash; designed and built alone</span>
-          <span class="t-jp">コンセプトから完成まで、一人で設計して制作した</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num" style="font-size:22px; padding-top:8px;">Stoked</div>
-        <div class="outcome-label">
-          <span class="t-en">Genuine surprise, warmth, and a story worth sharing</span>
-          <span class="t-jp">本当に驚いてもらえて、温かくて、人に話したくなる物語になった</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════
-         GALLERY: Concept & Design
-    ═══════════════════════════════════════════════ -->
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label">
-        <span class="t-en">Concept &amp; Design</span>
-        <span class="t-jp">コンセプトとデザイン</span>
-      </p>
-
-      <div class="g-row r2">
-        <div class="g-cell brand">
-          <img src="../assets/extraordinary/Screenshot_2024-01-04_at_4.17.36_PM.png" alt="Concept sketch and ideation" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/graffitiwear/Online-design.png" alt="Design system layout" loading="lazy">
-        </div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell brand">
-          <img src="../assets/koji-fizz/ownline-card.png" alt="Ownline card design" loading="lazy">
-        </div>
-        <div class="g-cell brand">
-          <img src="../assets/shared/workinprogress.png" alt="Work in progress" loading="lazy">
-        </div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell brand">
-          <img src="../assets/festival-design/papercutout_075@0.75x.png" alt="Paper cutout design" loading="lazy">
-        </div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════════
-         GALLERY: Packaging System
-    ═══════════════════════════════════════════════ -->
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label">
-        <span class="t-en">Packaging System</span>
-        <span class="t-jp">完成したパッケージ</span>
-      </p>
-
-      <div class="g-row r3">
-        <div class="g-cell photo">
-          <img src="../assets/koji-fizz/Ownline-packaging01s.jpg" alt="Packaging &mdash; 01" loading="lazy">
-        </div>
-        <div class="g-cell photo">
-          <img src="../assets/koji-fizz/Ownline-packaging02s.jpg" alt="Packaging &mdash; 02" loading="lazy">
-        </div>
-        <div class="g-cell photo">
-          <img src="../assets/value-frontier/Ownline-packaging04s.jpg" alt="Packaging &mdash; 04" loading="lazy">
-        </div>
-      </div>
-
-      <div class="g-row r3">
-        <div class="g-cell photo">
-          <img src="../assets/koji-fizz/Ownline-packaging05s.jpg" alt="Packaging &mdash; 05" loading="lazy">
-        </div>
-        <div class="g-cell photo">
-          <img src="../assets/koji-fizz/Ownline-packaging06s.jpg" alt="Packaging &mdash; 06" loading="lazy">
-        </div>
-        <div class="g-cell photo">
-          <img src="../assets/koji-fizz/Ownline-packaging07s.jpg" alt="Packaging &mdash; 07" loading="lazy">
-        </div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell photo">
-          <img src="../assets/koji-fizz/Ownline-packaging10s.jpg" alt="Packaging &mdash; 10" loading="lazy">
-        </div>
-        <div class="g-cell photo">
-          <img src="../assets/shared/image-asset_2.jpeg" alt="Packaging &mdash; final presentation" loading="lazy">
-        </div>
-      </div>
-    </div>
-
-    <!-- Nav -->
-    <div style="display:flex; gap:16px; flex-wrap:wrap; padding-top:16px;">
-      <a href="../work.html" class="btn-secondary">&larr; All Projects</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

@@ -5,24 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Typespace — Takao Umehara</title>
-  <meta name="description" content="Typespace — typed words form a 3D constellation, then slowly return to the cosmos. An interactive typing experience in Next.js, r3f, GLSL, and Web Audio.">
+  <meta name="description" content="Typespace, by creativity is everywhere: a typing toy for a big screen. Type a word and it condenses out of drifting particles, holds as a constellation, then returns to the dust. Nothing is saved.">
   <link rel="canonical" href="https://takaoumehara.com/projects/typespace.html">
   <meta property="og:title" content="Typespace — Takao Umehara">
-  <meta property="og:description" content="Type a word; it becomes a constellation, then drifts away. Next.js · r3f · GLSL · Web Audio.">
+  <meta property="og:description" content="Typespace, by creativity is everywhere: a typing toy for a big screen. Type a word and it condenses out of drifting particles, holds as a constellation, then returns to the dust. Nothing is saved.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/typespace.html">
-  <meta property="og:image" content="../assets/typespace/Typespace-screenshot.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Typespace — Takao Umehara">
-  <meta name="twitter:description" content="Type a word; it becomes a constellation, then drifts away.">
-  <meta name="twitter:image" content="../assets/typespace/Typespace-screenshot.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
@@ -30,93 +25,17 @@
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    @keyframes vt-fade-out { to { opacity: 0; } }
-    @keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
-
+    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
       animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     }
-    ::view-transition-old(hero-media) { animation-name: vt-fade-out; }
-    ::view-transition-new(hero-media) { animation-name: vt-fade-in; }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
@@ -145,251 +64,104 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span class="t-en">Typespace</span>
-    <span class="t-jp">Typespace</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Interactive · Generative 3D Typography · Web Audio</span>
-      <ul class="pj-tags">
-        <li>Next.js</li>
-        <li>r3f (Three.js)</li>
-        <li>GLSL Shaders</li>
-        <li>Web Audio API</li>
-      </ul>
-      <h1 class="pj-title">
-        <span class="t-en">Typespace: Words forming 3D constellations</span>
-        <span class="t-jp">Typespace：打った言葉が星座になり、宇宙へ還る</span>
-      </h1>
-      <p class="pj-summary">
-        <span class="t-en">Typed keystrokes coalesce into an ethereal 3D celestial constellation, hovering in three dimensions before slowly dissolving back into the cosmos. No generative AI — just your words, procedural geometry, and harmonic sound.</span>
-        <span class="t-jp is-block">キーボードを叩くと、入力した言葉が3次元の星の連なりとなって空間に浮かび上がり、やがて宇宙の深淵へと還っていく。生成AIではなく、打鍵と空間物理、そしてプロシージャル音響による思索的タイポグラフィ空間。</span>
-      </p>
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Playable — typing</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Typing toy for a big screen</h1>
+        <p class="case-lede">Type a word into the dark and it condenses out of drifting particles,
+        holds as a constellation over a real star field, then loosens and returns to the dust.</p>
+        
 
-      <div class="pj-cta">
-        <a href="http://typespace.creativityiseverywhere.com/" target="_blank" rel="noopener">
-          <span class="t-en">Enter Typespace ↗</span>
-          <span class="t-jp">Typespaceを起動 ↗</span>
-        </a>
-        <a href="../interactive.html">
-          <span class="t-en">← All Interactive Projects</span>
-          <span class="t-jp">← インタラクティブ一覧</span>
-        </a>
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Creative Direction &amp; 3D Engine</dd>
-        </div>
-        <div>
-          <dt>Stack</dt>
-          <dd>Next.js · r3f · GLSL · Web Audio</dd>
-        </div>
-        <div>
-          <dt>Input</dt>
-          <dd>Keystrokes, Orbit Controls</dd>
-        </div>
-        <div>
-          <dt>Year</dt>
-          <dd>2025 – 2026</dd>
-        </div>
-      </dl>
-    </div>
-  </header>
-
-  <!-- ── Body ── -->
-  <main class="pj-body">
-
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="http://typespace.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Experience Typespace live">
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="http://typespace.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Experience Typespace live">
         <video autoplay loop muted playsinline poster="../assets/typespace/Typespace-screenshot.png" width="1920" height="1080">
           <source src="../assets/typespace/Typespace.mov" type="video/mp4">
           <source src="../assets/typespace/preview.webm" type="video/webm">
         </video>
       </a>
       <figcaption>
-        <span class="t-en">Typespace generative typographic constellation forming in Three.js and orbiting in real-time (click thumbnail to launch)</span>
-        <span class="t-jp">Three.js上でリアルタイムに生成され軌道を周回する、3Dタイポグラフィの星座（サムネイルクリックで直接体験）</span>
+        Typespace generative typographic constellation forming in Three.js and orbiting in real-time (click thumbnail to launch)
+        
       </figcaption>
-    </figure>
+      </figure>
+    </header>
 
-    <!-- Key Metrics / Numbers -->
-    <dl class="pj-facts">
-      <div>
-        <dt>0</dt>
-        <dd>
-          <span class="t-en">AI prompts needed — pure human touch to procedural form</span>
-          <span class="t-jp">AIプロンプト不要、純粋な打鍵が生み出すプロシージャル形態</span>
-        </dd>
-      </div>
-      <div>
-        <dt>3D</dt>
-        <dd>
-          <span class="t-en">Full spatial orbital controls over typographic letterforms</span>
-          <span class="t-jp">文字の周囲を自由に旋回・ズームできる完全3次元空間</span>
-        </dd>
-      </div>
-      <div>
-        <dt>100%</dt>
-        <dd>
-          <span class="t-en">Algorithmic harmonic audio synthesized on each keystroke</span>
-          <span class="t-jp">キータッチごとに生成されるプロシージャル和声音響</span>
-        </dd>
-      </div>
-      <div>
-        <dt>&lt;2s</dt>
-        <dd>
-          <span class="t-en">Time to interactive for complex WebGL/GLSL shaders</span>
-          <span class="t-jp">高度なシェーダー描画を2秒未満で高速初期化</span>
-        </dd>
-      </div>
+    
+
+    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
+    <dl class="counts">
+      <div class="count"><dt class="mono">Real stars behind it, from the HYG catalogue</dt><dd>1,200</dd></div>
+      <div class="count"><dt class="mono">Words kept, once a constellation dissolves</dt><dd>0</dd></div>
+      <div class="count"><dt class="mono">Passing tests across 40 files</dt><dd>716</dd></div>
     </dl>
 
-    <!-- Key Architecture Points -->
-    <div class="pj-points">
-      <div class="pj-point">
-        <span class="pj-point-num">01</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Liberating typography from the 2D grid.</span>
-          <span class="t-jp">2次元の紙面グリッドからの文字の解放</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Type has lived on flat pages and bounded screens for six centuries. Typespace treats letters as physical astronomical nodes linked by gravitational lines, turning reading into spatial contemplation.</span>
-          <span class="t-jp is-block">600年もの間、活字は平面の紙や長方形の画面に縛られてきました。Typespaceでは文字を引力で引き合う星々の結節点として扱い、読むという行為を空間的探索へと拡張します。</span>
-        </p>
-      </div>
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="points"><div class="point">
+        <p class="point__n mono">01</p>
+        <h2 class="point__t">Keeping nothing is the feature.</h2>
+        <p>When a text box is a record you cannot write badly, so nobody writes. Nothing here
+          survives the minute you wrote it in, and that is the only reason people type.</p></div>
 
-      <div class="pj-point">
-        <span class="pj-point-num">02</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Procedural sound synthesis.</span>
-          <span class="t-jp">打鍵と共鳴するプロシージャル音響</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Rather than playing canned audio samples, each keystroke calculates an overtone series through Web Audio oscillators, matching the character's ASCII frequency and camera velocity to create an evolving ambient drone.</span>
-          <span class="t-jp is-block">録音された効果音を再生するのではなく、Web Audioの発振器から文字コードやカメラ距離に応じた倍音構成をリアルタイム合成。打鍵ごとに異なる音像が空間を満たします。</span>
-        </p>
-      </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">03</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">The beauty of impermanence.</span>
-          <span class="t-jp">留まらず消えゆく言葉の美しさ</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Modern feeds hoard messages eternally. Typespace lets words burn brightly, drift gracefully across the camera plane, and slowly evaporate into star particles, reflecting the transient nature of spoken human thought.</span>
-          <span class="t-jp is-block">ログを永久に保存し続ける現代のSNSと対照的に、Typespaceの言葉は一瞬の輝きを放ったあと、星屑となって宇宙に融解します。消え去るからこそ宿る、言葉の儚さを表現しました。</span>
-        </p>
-      </div>
+<section class="scenes"><h2 class="sub__t">Where it belongs</h2>
+      <ul class="scenes__list">
+        <li><b>A reception, an anniversary, a memorial</b>
+          <span>Every guest sends one word from their own phone and watches it join the others.</span></li>
+        <li><b>The close of a conference</b>
+          <span>A room of people answering one question at once, on the screen they are already facing.</span></li>
+        <li><b>A quiet screen in a lobby or a shop</b>
+          <span>It plays itself when nobody is typing, and anyone passing can write into it.</span></li>
+      </ul></section>
     </div>
 
-    <!-- Scenarios -->
-    <section class="pj-scenarios">
-      <h2>
-        <span class="t-en">Context &amp; Pedagogy</span>
-        <span class="t-jp">教育と探求の背景</span>
-      </h2>
-      <ul class="pj-scenarios-list">
-        <li>
-          <strong>Advanced Typography at SVA:</strong>
-          <span class="t-en">Developed in parallel with curriculum design at the School of Visual Arts, prompting students to question what typography becomes when space, time, and sound collide.</span>
-          <span class="t-jp">ニューヨークSVAでの講義設計と並行して開発。空間・時間・音響が重なったとき、文字は何になり得るかを学生に問いかける生きた教材。</span>
-        </li>
-        <li>
-          <strong>Interactive performance &amp; installation:</strong>
-          <span class="t-en">Functions as an ambient stage backdrop responding live to a speaker's transcribed thoughts or audience reflections.</span>
-          <span class="t-jp">登壇者の言葉や観客のメッセージがリアルタイムに星雲を織りなす、ステージ演出や美術館展示での活用。</span>
-        </li>
-      </ul>
-    </section>
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div class="stat"><dt class="mono">Input</dt><dd>Typing — a keyboard, or a paired phone across the room</dd></div>
+      <div class="stat"><dt class="mono">Output</dt><dd>A sky on any screen, from a laptop to a projection wall</dd></div>
+      <div class="stat"><dt class="mono">Runs on</dt><dd>Next.js · react-three-fiber and custom GLSL · Web Audio</dd></div>
+      <div class="stat"><dt class="mono">Made</dt><dd>2026, by our founder, with AI coding agents</dd></div>
+    </dl>
 
-    <!-- Contribution Split -->
-    <div class="pj-contrib">
-      <div>
-        <h3>
-          <span class="t-en">My Contribution</span>
-          <span class="t-jp">担当領域</span>
-        </h3>
-        <ul>
-          <li>Created overall concept, creative direction, and spatial typography hierarchy</li>
-          <li>Engineered 3D particle mesh and GLSL custom shaders in React Three Fiber</li>
-          <li>Synthesized realtime audio nodes using native Web Audio API</li>
-        </ul>
-      </div>
-      <div>
-        <h3>
-          <span class="t-en">Pedagogical Heritage</span>
-          <span class="t-jp">教育的背景</span>
-        </h3>
-        <ul>
-          <li>Emerged from research into dynamic typography at School of Visual Arts (SVA) NYC</li>
-          <li>Explores non-utilitarian, purely experiential software craftsmanship</li>
-        </ul>
-      </div>
-    </div>
-
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
 
-  <!-- ── Footer Navigation ── -->
-  <footer class="pj-foot">
-    <a href="rakugaki-jam.html">
-      <span class="t-en">← Previous: Rakugaki Jam</span>
-      <span class="t-jp">← 前：落書きJAM</span>
-    </a>
-    <a href="kao-game.html">
-      <span class="t-en">Next: Kao Game (顔ゲーム) →</span>
-      <span class="t-jp">次：顔ゲーム →</span>
-    </a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
-
+  <script src="../assets/wipe.js" defer></script>
   <script>
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll(".lang-btn")];
-    const saved = localStorage.getItem("tu-lang") || "en";
-    const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
-      html.lang = lang === "jp" ? "ja" : "en";
-      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-      localStorage.setItem("tu-lang", lang);
-    };
-    setLang(saved);
-    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
-  })();
-
-  // Mobile nav
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
+    // Mobile Menu Toggle
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (!toggle || !links) return;
       toggle.addEventListener('click', () => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          toggle.classList.remove('is-open');
-          links.classList.remove('is-open');
-        });
-      });
-    }
-  })();
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        toggle.classList.remove('is-open');
+        links.classList.remove('is-open');
+      }));
+    })();
   </script>
 </body>
 </html>

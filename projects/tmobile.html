@@ -11,101 +11,22 @@
   <meta property="og:description" content="Case study on designing T-Mobile's integrated Buy Online, Pick Up in Store experience across app, kiosk, and voice AI — work that led T-Mobile to select Concentrix Catalyst as a preferred innovation partner.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/tmobile.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/M−Mobile_teaser2.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="T-Mobile BOPIS Experience — Takao Umehara">
-  <meta name="twitter:description" content="Case study on designing T-Mobile's integrated Buy Online, Pick Up in Store experience across app, kiosk, and voice AI — work that led T-Mobile to select Concentrix Catalyst as a preferred innovation partner.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/M−Mobile_teaser2.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,36 +64,56 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>T-Mobile Buy Online, Pick Up in Store
-        T-Mobile のオンライン購入・店舗受取体験</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>Retail Innovation</li>
-        <li>Service Design</li>
-        <li>Multi-Touchpoint</li>
-      </ul>
-      <h1 class="pj-title">T-Mobile Buy Online, Pick Up in Store
-        T-Mobile のオンライン購入・店舗受取体験</h1>
-      <p class="pj-summary">BOPIS (Buy Online, Pick Up in Store) had a fundamental disconnection between digital and physical touchpoints. Customers who ordered online couldn't seamlessly transition to in-store pickup — the handoff was fragmented, requiring redundant steps and manual coordination between store staff and self-service systems. The digital experience ended where the physical one began, leaving a gap that frustrated customers and burdened staff.
-          BOPIS（オンラインで買って店舗で受け取る仕組み）は、デジタルの接点と店頭の接点がまるでつながっていなかった。オンラインで注文しても、そのまま店舗受取に進めない。余分な手順を踏み、店舗スタッフとセルフサービス機器の間を人の手でつなぐ必要があった。デジタルの体験が終わったところから、店頭の体験が別々に始まる。その隙間が、顧客の不満とスタッフの負担になっていた。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">T-Mobile Design System</h1>
+        <p class="case-lede">Case study on designing T-Mobile's integrated Buy Online, Pick Up in Store experience across app, kiosk, and voice AI — work that led T-Mobile to select Concentrix Catalyst as a preferred innovation partner.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/shared/M−Mobile_teaser2.jpg" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/shared/M−Mobile_teaser2.jpg" alt="T-Mobile Buy Online, Pick Up in Store
+        T-Mobile " width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        T-Mobile Buy Online, Pick Up in Store
+        T-Mobile  — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <!-- NDA Notice -->
+    <div class="nda-notice reveal-on-scroll">
+      All designs have had branding elements removed. Visual details have been anonymized to comply with confidentiality agreements. All outcomes described are factual.
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -188,315 +129,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/shared/M−Mobile_teaser2.jpg" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/shared/M−Mobile_teaser2.jpg" alt="T-Mobile Buy Online, Pick Up in Store
-        T-Mobile のオンライン購入・店舗受取体験" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">T-Mobile Buy Online, Pick Up in Store
-        T-Mobile のオンライン購入・店舗受取体験 — case study showcase (click to open)</span>
-        <span class="t-jp">T-Mobile Buy Online, Pick Up in Store
-        T-Mobile のオンライン購入・店舗受取体験 — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<!-- NDA Notice -->
-    <div class="nda-notice reveal-on-scroll">
-      <span class="t-en">All designs have had branding elements removed. Visual details have been anonymized to comply with confidentiality agreements. All outcomes described are factual.</span>
-      <span class="t-jp">掲載しているデザインからは、ブランド要素をすべて外しています。機密保持契約に従い、見た目の細部も匿名化しました。記載している成果は、いずれも実際のものです。</span>
-    </div>
-
-    <!-- Overview -->
-    <div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label">
-          <span class="t-en">Scope</span>
-          <span class="t-jp">スコープ</span>
-        </p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">3</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Integrated touchpoints (App + Kiosk/Locker + Voice AI)</span>
-            <span class="t-jp">つながった3つの接点（アプリ＋キオスク／ロッカー＋音声 AI）</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">12+</div>
-          <div class="project-aside-desc">
-            <span class="t-en">High-fidelity kiosk screens delivered</span>
-            <span class="t-jp">作り込んだキオスク画面を納品</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">2</div>
-          <div class="project-aside-desc">
-            <span class="t-en">End-to-end customer journey maps</span>
-            <span class="t-jp">エンドツーエンドのカスタマージャーニーマップ</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">1st</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Selected as T-Mobile's preferred innovation partner</span>
-            <span class="t-jp">T-Mobile のイノベーション優先パートナーにに選出</span>
-          </div>
-        </div>
-      </aside>
-      <div>
-        <h2 class="project-section-title">
-          <span class="t-en">The Tension</span>
-          <span class="t-jp">問題の核心</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">BOPIS (Buy Online, Pick Up in Store) had a fundamental disconnection between digital and physical touchpoints. Customers who ordered online couldn't seamlessly transition to in-store pickup — the handoff was fragmented, requiring redundant steps and manual coordination between store staff and self-service systems. The digital experience ended where the physical one began, leaving a gap that frustrated customers and burdened staff.</span>
-          <span class="t-jp is-block">BOPIS（オンラインで買って店舗で受け取る仕組み）は、デジタルの接点と店頭の接点がまるでつながっていなかった。オンラインで注文しても、そのまま店舗受取に進めない。余分な手順を踏み、店舗スタッフとセルフサービス機器の間を人の手でつなぐ必要があった。デジタルの体験が終わったところから、店頭の体験が別々に始まる。その隙間が、顧客の不満とスタッフの負担になっていた。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">My Approach</span>
-          <span class="t-jp">アプローチ</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">I designed an integrated 3-component solution that bridged the digital-physical gap. The Customer Care App gave store staff real-time visibility into incoming orders and customer profiles. The Self-Serve Kiosk and Locker system let customers check in, modify orders, and retrieve products independently. A Voice AI chatbot handled pre-visit questions and guided customers through pickup. I led the design across all three touchpoints, mapping the complete journey from online purchase through in-store experience to ensure every transition felt like one continuous interaction.</span>
-          <span class="t-jp is-block">デジタルと店頭の間を埋めるために、3つがつながった仕組みを設計した。店舗スタッフ向けのカスタマーケアアプリでは、届いた注文と顧客の情報をその場で確認できる。セルフサービスのキオスクとロッカーでは、顧客が自分でチェックインし、注文を変更し、商品を受け取れる。音声 AI のチャットボットが、来店前の質問に答え、受取までの流れを案内する。私はこの3つすべてのデザインを主導し、オンラインでの購入から店頭での受取まで、ひと続きの体験になるようジャーニー全体を描いた。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">Tools &amp; Methods</span>
-          <span class="t-jp">ツール＆手法</span>
-        </h2>
-        <div class="tools-list" style="display:flex; gap:8px; flex-wrap:wrap;">
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Customer Research</span><span class="t-jp">顧客リサーチ</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">CX/UX Audit</span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Journey Mapping</span><span class="t-jp">ジャーニーマッピング</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Service Design</span><span class="t-jp">サービスデザイン</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Figma</span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Outcomes -->
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block" style="border-color: var(--ink); background: rgba(18,18,18,0.035); position: relative;">
-        <div class="eyebrow" style="margin-bottom: 8px; color: var(--ink-mid);">
-          <span class="t-en">Headline Outcome</span>
-          <span class="t-jp">いちばん大きな成果</span>
-        </div>
-        <div class="outcome-num">
-          <span class="t-en">Preferred</span>
-          <span class="t-jp">優先パートナーに</span>
-        </div>
-        <div class="outcome-label">
-          <span class="t-en">Selected as T-Mobile's preferred innovation partner</span>
-          <span class="t-jp">T-Mobile のイノベーション優先パートナーにに選出</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">3</div>
-        <div class="outcome-label">
-          <span class="t-en">Seamlessly integrated touchpoints bridging digital and physical</span>
-          <span class="t-jp">デジタルと店頭を切れ目なくつないだ3つの接点</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">
-          <span class="t-en">End-to-End</span>
-          <span class="t-jp">一気通貫</span>
-        </div>
-        <div class="outcome-label">
-          <span class="t-en">Complete BOPIS journey from online order to in-store pickup</span>
-          <span class="t-jp">オンラインでの注文から店舗受取まで、BOPIS の体験を丸ごと設計</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── Gallery ── -->
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label">
-        <span class="t-en">01 — Customer Care App: Real-time visibility into incoming orders, customer profiles, and locker assignments — the tool store staff used to orchestrate every pickup.</span>
-        <span class="t-jp">01 — カスタマーケアアプリ：届いた注文、顧客の情報、ロッカーの割り当てをその場で把握し、店舗スタッフが受取対応をまとめて進めるためのツール。</span>
-      </p>
-      <div class="g-row r2">
-        <div class="g-cell brand"><img src="../assets/tmobile/03_CustomerCareTool_2x_Main_Screen-_Customer.png" alt="Customer Care App — customer profile with upcoming appointment, kiosk and locker assignment" loading="lazy"></div>
-        <div class="g-cell brand"><img src="../assets/tmobile/03_CustomerCareTool_2x_Main-dash.png" alt="Customer Care App — staff dashboard with satisfaction trends and appointments" loading="lazy"></div>
-      </div>
-      <div class="g-video-bleed">
-        <div class="g-video">
-          <video controls preload="metadata" poster="../assets/tmobile/CustomerCare-walkthru-poster.jpg">
-            <source src="../assets/tmobile/CustomerCare-walkthru.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-
-      <p class="gallery-label">
-        <span class="t-en">02 — Zero-Wait Self-Serve Kiosk &amp; Locker: The physical centerpiece of the experience — customers check in, unlock their locker, and walk out without waiting in line.</span>
-        <span class="t-jp">02 — 待ち時間ゼロのセルフサービスキオスクとロッカー：この体験の中心になる、店頭での接点。チェックインしてロッカーを開け、列に並ばずに店を出られる。</span>
-      </p>
-      <div class="g-video">
-        <video controls preload="metadata" poster="../assets/tmobile/Kiosk-walkthru-poster.jpg">
-          <source src="../assets/tmobile/Kiosk-walkthru.mp4" type="video/mp4">
-        </video>
-      </div>
-      <p class="video-caption">
-        <span class="t-en">Interactive walkthrough of the self-serve kiosk &amp; locker — check-in, locker unlock, and pickup end to end.</span>
-        <span class="t-jp">セルフサービスのキオスクとロッカーを、実際に触って辿れるデモ。チェックインからロッカーの解錠、受取完了まで通して体験できます。</span>
-      </p>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/tmobile/04_Kiosk_UI_Frame_34.png" alt="Self-serve kiosk — locker unlocked for order pickup" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/tmobile/04_Kiosk_3D_render_Kiosk_Keith_Screen9.png" alt="Self-serve kiosk row — Tips &amp; Tutorials and welcome screens side by side" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label">
-        <span class="t-en">03 — Customer Journey: End-to-end service blueprints mapping the complete BOPIS experience across all touchpoints, from purchase through in-store pickup.</span>
-        <span class="t-jp">03 — カスタマージャーニー：購入から店舗受取まで、すべての接点をまたいだ BOPIS 体験のサービスブループリント。</span>
-      </p>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/tmobile/Journey_Mmobile-journey1.png" alt="Customer journey map — full BOPIS flow, part 1" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/tmobile/Journey_Mmobile-journey2.png" alt="Customer journey map — full BOPIS flow, part 2" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label">
-        <span class="t-en">04 — Interaction Flow: The Voice AI touchpoint that handled pre-visit questions and guided customers into the pickup flow before they ever reached the kiosk.</span>
-        <span class="t-jp">04 — 操作フロー：来店前の質問に答え、キオスクに着く前に受取の流れを案内する、音声 AI の接点。</span>
-      </p>
-      <div class="g-video portrait">
-        <video controls preload="metadata" poster="../assets/tmobile/VoiceAI-walkthru-poster.jpg">
-          <source src="../assets/tmobile/VoiceAI-walkthru.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/tmobile/01_VoiceAItool_M-Mobile_Conversational_UX_2x.png" alt="Voice AI chatbot — account help, upgrade offer, and appointment scheduling flow" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label">
-        <span class="t-en">05 — Self-Serve Experience Flow with Kiosk: The complete in-store sequence — from welcome screen to locker retrieval to setup assistance and confirmation.</span>
-        <span class="t-jp">05 — キオスクを使ったセルフサービスの流れ：最初の画面からロッカーでの受取、初期設定の手伝い、完了確認まで、店内での一連の流れ。</span>
-      </p>
-      <div class="g-row r3">
-        <div class="g-cell photo"><img src="../assets/tmobile/04_Kiosk_3D_render_Kiosk_Screen_1.png" alt="Kiosk — welcome screen with quick actions" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/tmobile/04_Kiosk_3D_render_Kiosk_Screen_2.png" alt="Kiosk — appointment check-in with confirmation code and QR scan" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/tmobile/04_Kiosk_3D_render_Kiosk_Screen_4.png" alt="Kiosk — locker unlocked, ready for pickup" loading="lazy"></div>
-      </div>
-      <div class="g-row r3">
-        <div class="g-cell photo"><img src="../assets/tmobile/04_Kiosk_3D_render_Kiosk_Screen_5.png" alt="Kiosk — new phone setup, eSIM or physical SIM transfer" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/tmobile/04_Kiosk_3D_render_Kiosk_Screen_9.png" alt="Kiosk — Tips &amp; Tutorials screen" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/tmobile/04_Kiosk_3D_render_Kiosk_Screen_8.png" alt="Kiosk — appointment complete, browse store or cafe while device transfers" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label">
-        <span class="t-en">06 — Process &amp; Wireframes: Early flow diagrams, low-fidelity sketches, and material explorations that shaped the Customer Care App and kiosk interactions.</span>
-        <span class="t-jp">06 — 進め方とワイヤーフレーム：カスタマーケアアプリとキオスクの操作設計の土台になった、初期のフロー図、簡易スケッチ、素材の検討。</span>
-      </p>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/tmobile/04_Kiosk_Process_Kiosk-mini-wire.png" alt="Kiosk interaction flow wireframe — check-in through pickup and setup" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/tmobile/03_CustomerCareTool_mini-wires.png" alt="Customer Care App sitemap and flow wireframe" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/tmobile/04_Kiosk_Process_lofi_sketch-_Kiosk.png" alt="Low-fidelity kiosk flow sketches" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/tmobile/04_Kiosk_Process_Locker-kiosk2_1.png" alt="Kiosk and locker row — early concept sketch" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/tmobile/04_Kiosk_Process_Frame_31.png" alt="Kiosk material exploration — white/wood vs. wood finish" loading="lazy"></div>
-      </div>
-    </div>
-
-    <!-- ── Project details (compact) ── -->
-    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Deliverables</span>
-          <span class="t-jp">成果物</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Customer Research Interviews</span><span class="t-jp">顧客リサーチインタビュー</span></li>
-          <li><span class="t-en">CX/UX Audit</span><span class="t-jp">CX/UX監査</span></li>
-          <li><span class="t-en">Insight Generation &amp; Strategy</span><span class="t-jp">インサイトの抽出と戦略</span></li>
-          <li><span class="t-en">Personas &amp; Journey Maps</span><span class="t-jp">ペルソナとジャーニーマップ</span></li>
-          <li><span class="t-en">Wireframes &amp; Prototypes (3 systems)</span><span class="t-jp">ワイヤーフレームとプロトタイプ（3システム分）</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Methods</span>
-          <span class="t-jp">手法</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Customer Research Interviews</span><span class="t-jp">顧客リサーチインタビュー</span></li>
-          <li><span class="t-en">Service Blueprinting</span><span class="t-jp">サービスブループリンティング</span></li>
-          <li><span class="t-en">Journey Mapping</span><span class="t-jp">ジャーニーマッピング</span></li>
-          <li><span class="t-en">Iterative Prototyping</span><span class="t-jp">試作と改良のくり返し</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Team</span>
-          <span class="t-jp">チーム</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Experience Designer</span><span class="t-jp">エクスペリエンスデザイナー</span></li>
-          <li><span class="t-en">Product Designer</span><span class="t-jp">プロダクトデザイナー</span></li>
-          <li><span class="t-en">Industrial Designer</span><span class="t-jp">インダストリアルデザイナー</span></li>
-          <li><span class="t-en">Service Designer</span><span class="t-jp">サービスデザイナー</span></li>
-          <li><span class="t-en">Business Analyst</span><span class="t-jp">ビジネスアナリスト</span></li>
-          <li><span class="t-en">Software Engineer</span><span class="t-jp">ソフトウェアエンジニア</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Nav -->
-    <div class="nav-project">
-      <a href="../work.html"><span class="t-en">&larr; All Work</span><span class="t-jp">&larr; すべての仕事</span></a>
-      <a href="web3-wallet.html"><span class="t-en">Next: Web3 Wallet</span><span class="t-jp">次：Web3 ウォレット</span> &rarr;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

@@ -11,101 +11,22 @@
   <meta property="og:description" content="Design of a white-label Web3 custodial wallet with role-based interfaces for end users, admins, and managers, abstracting away blockchain complexity and winning a 2023 Merit Gold Award in Metaverse and AI.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/web3-wallet.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/web3-wallet/EventStack_Admin_Event_Detail.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Web3 Custodial Wallet — Takao Umehara">
-  <meta name="twitter:description" content="Design of a white-label Web3 custodial wallet with role-based interfaces for end users, admins, and managers, abstracting away blockchain complexity and winning a 2023 Merit Gold Award in Metaverse and AI.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/web3-wallet/EventStack_Admin_Event_Detail.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,36 +64,59 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>Web3 Custodial Wallet
-        Web3 カストディアルウォレット</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>Web3</li>
-        <li>Event Tech</li>
-        <li>Multi-Platform</li>
-      </ul>
-      <h1 class="pj-title">Web3 Custodial Wallet
-        Web3 カストディアルウォレット</h1>
-      <p class="pj-summary">Event management platforms lacked the security and customization that Web3 could provide — NFT tickets, blockchain-verified access, and decentralized ownership were technically possible but practically unusable. Web3 UX was too complex for non-crypto users. The gap between what the technology enabled and what event organizers could actually deploy was enormous.
-          当時のイベント管理サービスには、Web3 で実現できるはずの安全性と自由度がなかった。NFT のチケット、ブロックチェーンで確認する入場、持ち主が自分で管理できる仕組み。技術としては可能でも、実際には使い物にならなかった。Web3 の操作は、暗号資産に慣れていない人には複雑すぎたのだ。技術ができることと、イベント主催者が本当に導入できることの間には、大きな隔たりがあった。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Web3 Custodial Wallet
+        Web3</h1>
+        <p class="case-lede">Design of a white-label Web3 custodial wallet with role-based interfaces for end users, admins, and managers, abstracting away blockchain complexity and winning a 2023 Merit Gold Award in Metaverse and AI.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/web3-wallet/EventStack_Admin_Event_Detail.png" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/web3-wallet/EventStack_Admin_Event_Detail.png" alt="Web3 Custodial Wallet
+        Web3 " width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        Web3 Custodial Wallet
+        Web3  — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">Scope</p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">3
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -188,206 +132,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/web3-wallet/EventStack_Admin_Event_Detail.png" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/web3-wallet/EventStack_Admin_Event_Detail.png" alt="Web3 Custodial Wallet
-        Web3 カストディアルウォレット" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">Web3 Custodial Wallet
-        Web3 カストディアルウォレット — case study showcase (click to open)</span>
-        <span class="t-jp">Web3 Custodial Wallet
-        Web3 カストディアルウォレット — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label"><span class="t-en">Scope</span><span class="t-jp">スコープ</span></p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">3</div>
-          <div class="project-aside-desc"><span class="t-en">Role-based interfaces (End User / Admin / Manager)</span><span class="t-jp">役割ごとに分けた3つの画面（利用者／管理者／現場責任者）</span></div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">Gold</div>
-          <div class="project-aside-desc"><span class="t-en">2023 Merit Gold Awards for Technology, in both the Metaverse and AI categories</span><span class="t-jp">2023 Merit Gold Award — テクノロジー部門のメタバースと AI、両方のカテゴリーで受賞</span></div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">NFT</div>
-          <div class="project-aside-desc"><span class="t-en">Ticket system with blockchain-verified access control</span><span class="t-jp">ブロックチェーンで本人確認をするチケットと入場管理の仕組み</span></div>
-        </div>
-      </aside>
-      <div>
-        <h2 class="project-section-title"><span class="t-en">The Tension</span><span class="t-jp">問題の核心</span></h2>
-        <p class="project-text">
-          <span class="t-en">Event management platforms lacked the security and customization that Web3 could provide — NFT tickets, blockchain-verified access, and decentralized ownership were technically possible but practically unusable. Web3 UX was too complex for non-crypto users. The gap between what the technology enabled and what event organizers could actually deploy was enormous.</span>
-          <span class="t-jp is-block">当時のイベント管理サービスには、Web3 で実現できるはずの安全性と自由度がなかった。NFT のチケット、ブロックチェーンで確認する入場、持ち主が自分で管理できる仕組み。技術としては可能でも、実際には使い物にならなかった。Web3 の操作は、暗号資産に慣れていない人には複雑すぎたのだ。技術ができることと、イベント主催者が本当に導入できることの間には、大きな隔たりがあった。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">My Approach</span><span class="t-jp">アプローチ</span></h2>
-        <p class="project-text">
-          <span class="t-en">I designed a white-label custodial wallet that abstracted away blockchain complexity entirely. The key decision was role-based interfaces — instead of one universal dashboard, three distinct experiences mapped to three user types. End Users received a mobile wallet that felt like any native app, with NFT tickets appearing as simple event passes. Administrators managed events, minted tokens, and authorized staff through a purpose-built dashboard. Managers tracked financials and created NFT tickets through dedicated views. The custodial model meant users never touched seed phrases or gas fees.</span>
-          <span class="t-jp is-block">ブロックチェーンの複雑さを表に一切出さない、ホワイトラベルのカストディアルウォレットを設計した。いちばん大きな判断は、画面を役割ごとに分けたことだ。全員共通のダッシュボードを1つ置くのではなく、3種類の利用者にそれぞれ別の体験を用意した。一般の利用者には、ふつうのアプリと変わらない手ざわりのウォレット。NFT のチケットは、ただのイベントの入場券として表示される。管理者は専用の画面から、イベントの管理、トークンの発行、スタッフへの権限付与を行う。現場の責任者は、売上の確認と NFT チケットの作成を専用の画面で行う。預かり型（カストディアル）にしたので、利用者はシードフレーズもガス代も目にすることがない。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">Tools &amp; Methods</span><span class="t-jp">ツール＆手法</span></h2>
-        <div class="tools-list" style="display:flex; gap:8px; flex-wrap:wrap;">
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Technology Research</span><span class="t-jp">技術リサーチ</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">UX Research</span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Stakeholder Mapping</span><span class="t-jp">ステークホルダーマッピング</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Service Blueprint</span><span class="t-jp">サービスブループリント</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Figma</span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block">
-        <div class="outcome-num">Gold</div>
-        <div class="outcome-label"><span class="t-en">2023 Merit Gold Awards for Technology — both the Metaverse and AI categories</span><span class="t-jp">2023 Merit Gold Award — メタバースと AI、両方のカテゴリーで受賞</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">3</div>
-        <div class="outcome-label"><span class="t-en">Distinct role-based interfaces deployed</span><span class="t-jp">役割ごとに分けた3つの画面を実装</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">0</div>
-        <div class="outcome-label"><span class="t-en">Crypto knowledge required from end users</span><span class="t-jp">利用者に必要な暗号資産の知識</span></div>
-      </div>
-    </div>
-
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label"><span class="t-en">01 — Research &amp; Strategy: Stakeholder map and multi-user customer journey defining how NFT tickets flow from Admin to Managers to Customers.</span><span class="t-jp">01 — リサーチと戦略：NFT のチケットが管理者から現場責任者、そして来場者へと渡っていく流れを定義した、関係者マップと複数ユーザーのジャーニー。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell diagram"><img src="../assets/web3-wallet/Web3_Stakeholders.png" alt="Stakeholder map — Admin sends approval tokens to Managers, who mint NFT tickets for Customers, verified by Event Venue Staff" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell diagram"><img src="../assets/web3-wallet/Web3_Customer_Journey.png" alt="Customer journey map — Event Prep, Ticket Sales, Event Day, and Post Event swimlanes across four user roles" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">02 — End User's Interface: Mobile wallet — NFT tickets appear as simple event passes with QR-code entry, no crypto knowledge required.</span><span class="t-jp">02 — 利用者の画面：スマホのウォレット。NFT のチケットは QR コードで入場できる普通の入場券として表示され、暗号資産の知識は要らない。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell dark"><img src="../assets/web3-wallet/EventStack_Mobile_Wallet.png" alt="End user mobile wallet — event browsing, event detail, and NFT ticket with QR code for Madonna: The Celebration Tour" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">03 — Admin's Interface: Event oversight, authorized-token minting, and staff access management across the platform.</span><span class="t-jp">03 — 管理者の画面：イベントの管理、正規トークンの発行、スタッフの権限管理を一か所にまとめた。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/web3-wallet/EventStack_Admin_Events_Overview.png" alt="Admin — Events Overview, browsing all available events by the company" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/web3-wallet/EventStack_Admin_Mint_Token.png" alt="Admin — minting a new Authorized Approval Token for a manager" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/web3-wallet/EventStack_Admin_Event_Detail.png" alt="Admin — Event Detail for Madonna: The Celebration Tour, managing staff, financials, vendors, and tickets" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/web3-wallet/EventStack_Admin_Tokens.png" alt="Admin — Tokens, managing every Authorized Approval Token across departments" loading="lazy"></div>
-      </div>
-      <div class="g-row r12">
-        <div class="g-cell natural"><img src="../assets/web3-wallet/EventStack_Admin_Mint_Modal_Detail.png" alt="Detail — Mint Authorized Approved Token form" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/web3-wallet/EventStack_Admin_Staff_Detail.png" alt="Detail — staff authorization table for the Madonna event" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">04 — Managers Interface: Financial dashboards, event rosters, and NFT ticket-tier creation for on-the-ground event teams.</span><span class="t-jp">04 — 現場責任者の画面：売上のダッシュボード、イベントの一覧、そして現場チームが NFT チケットの券種を作るための画面。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/web3-wallet/EventStack_Manager_Current_Events.png" alt="Manager — Current Events, accessing events under their responsibility" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/web3-wallet/EventStack_Manager_Dashboard.png" alt="Manager — Event Dashboard with sales comparison and sales-goal tracking for Madonna: The Celebration Tour" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/web3-wallet/EventStack_Manager_NFT_Tickets.png" alt="Manager — NFT Tickets, creating and managing specialized ticket tiers" loading="lazy"></div>
-      </div>
-      <div class="g-row r12">
-        <div class="g-cell natural"><img src="../assets/web3-wallet/EventStack_Manager_Sales_Detail.png" alt="Detail — Sales Goal tracking, 79% of goal reached" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/web3-wallet/EventStack_Manager_Tickets_Detail.png" alt="Detail — All-Access Backstage Pass and Virtual VIP Experience Pass NFT tickets" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">05 — Design Process: Service blueprint mapping every actor, touchpoint, and system across the full event lifecycle.</span><span class="t-jp">05 — 進め方：イベントの始まりから終わりまで、関わる人・接点・システムをすべて書き出したサービスブループリント。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell diagram"><img src="../assets/web3-wallet/Web3_Service_Blueprint.png" alt="Service blueprint — Event Management Platform with Web3 Custodial Wallet" loading="lazy"></div>
-      </div>
-    </div>
-
-    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label"><span class="t-en">Deliverables</span><span class="t-jp">成果物</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Technology Research</span><span class="t-jp">技術リサーチ</span></li>
-          <li><span class="t-en">UX Research &amp; Insight Generation</span><span class="t-jp">UX リサーチとインサイトの抽出</span></li>
-          <li><span class="t-en">Personas &amp; Journey Maps</span><span class="t-jp">ペルソナとジャーニーマップ</span></li>
-          <li><span class="t-en">Wireframing &amp; Prototyping</span><span class="t-jp">ワイヤーフレームとプロトタイピング</span></li>
-          <li><span class="t-en">UI Design (3 platforms)</span><span class="t-jp">UIデザイン（3プラットフォーム）</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Methods</span><span class="t-jp">手法</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Stakeholder Mapping</span><span class="t-jp">ステークホルダーマッピング</span></li>
-          <li><span class="t-en">Service Blueprinting</span><span class="t-jp">サービスブループリンティング</span></li>
-          <li><span class="t-en">Multi-User Journey Mapping</span><span class="t-jp">複数ユーザーのジャーニーマップ</span></li>
-          <li><span class="t-en">Prototyping &amp; Testing</span><span class="t-jp">プロトタイピングと検証</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Team</span><span class="t-jp">チーム</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Product Owner</span><span class="t-jp">プロダクトオーナー</span></li>
-          <li><span class="t-en">UX Researcher</span><span class="t-jp">UXリサーチャー</span></li>
-          <li><span class="t-en">Software Engineers</span><span class="t-jp">ソフトウェアエンジニア</span></li>
-          <li><span class="t-en">Blockchain Engineers</span><span class="t-jp">ブロックチェーンエンジニア</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="nav-project">
-      <a href="../work.html"><span class="t-en">&larr; All Work</span><span class="t-jp">&larr; すべての仕事</span></a>
-      <a href="hummingbird.html"><span class="t-en">Next: Hummingbird</span><span class="t-jp">次：Hummingbird</span> &rarr;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

@@ -4,108 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <title>Odell Education — High School Literacy Program | Takao Umehara</title>
-  <meta name="description" content="Odell Education — brand identity and program website for an open-source high school English Language Arts curriculum: a grade 9–12 visual system, typography, unit covers, and information architecture. Case study by Takao Umehara.">
+  <title>Odell Education — Takao Umehara</title>
+  <meta name="description" content="We connected a free high-school literacy curriculum across grades 9–12, literary units, teacher workflows, print covers, and a deep programme website.">
   <link rel="canonical" href="https://takaoumehara.com/projects/odell-education.html">
-  <meta property="og:title" content="Odell Education — High School Literacy Program | Takao Umehara">
-  <meta property="og:description" content="Odell Education — brand identity and program website for an open-source high school English Language Arts curriculum: a grade 9–12 visual system, typography, unit covers, and information architecture. Case study by Takao Umehara.">
+  <meta property="og:title" content="Odell Education — Takao Umehara">
+  <meta property="og:description" content="We connected a free high-school literacy curriculum across grades 9–12, literary units, teacher workflows, print covers, and a deep programme website.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/odell-education.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/odell-education/Branding_Export_figma_Branding_-_main-0.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Odell Education — High School Literacy Program | Takao Umehara">
-  <meta name="twitter:description" content="Odell Education — brand identity and program website for an open-source high school English Language Arts curriculum: a grade 9–12 visual system, typography, unit covers, and information architecture. Case study by Takao Umehara.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/odell-education/Branding_Export_figma_Branding_-_main-0.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,380 +64,74 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>Odell Education — High School Literacy Program
-        Odell Education — 高校向け国語・リテラシープログラム</span>
-  </div>
-
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>Brand Identity</li>
-        <li>Design System</li>
-        <li>Product Design</li>
-      </ul>
-      <h1 class="pj-title">Odell Education — High School Literacy Program
-        Odell Education — 高校向け国語・リテラシープログラム</h1>
-      <p class="pj-summary">A cohesive grade 9–12 identity system and a program website that make a large, open curriculum feel unified and easy for teachers to navigate.
-          9〜12年生を通して一貫したアイデンティティと、大量のオープン教材をひとつのまとまりに見せ、先生が迷わず使えるプログラムサイトをつくりました。</p>
-
-      <div class="pj-cta">
-        
-        <a href="../interactive.html">← Back to Interactive</a>
-      </div>
-
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Product & Creative Direction</dd>
-        </div>
-        <div>
-          <dt>Engagement</dt>
-          <dd>Creativity Is Everywhere LLC</dd>
-        </div>
-        <div>
-          <dt>Medium</dt>
-          <dd>Digital Platform & System</dd>
-        </div>
-        <div>
-          <dt>Status</dt>
-          <dd>Case Study</dd>
-        </div>
-      </dl>
-    </div>
-  </header>
-
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/odell-education/Branding_Export_figma_Branding_-_main-0.png" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/odell-education/Branding_Export_figma_Branding_-_main-0.png" alt="Odell Education — High School Literacy Program
-        Odell Education — 高校向け国語・リテラシープログラム" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">Odell Education — High School Literacy Program
-        Odell Education — 高校向け国語・リテラシープログラム — case study showcase (click to open)</span>
-        <span class="t-jp">Odell Education — High School Literacy Program
-        Odell Education — 高校向け国語・リテラシープログラム — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<!-- ── Overview (left: scope, right: text) ── -->
-    <div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label">
-          <span class="t-en">What Shipped</span>
-          <span class="t-jp">成果物</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Brand identity &amp; logo system</span><span class="t-jp">ブランドアイデンティティとロゴの体系</span></li>
-          <li><span class="t-en">Grade 9–12 cover system</span><span class="t-jp">9〜12年生のカバーの体系</span></li>
-          <li><span class="t-en">Typography &amp; visual language</span><span class="t-jp">タイポグラフィと見た目のルール</span></li>
-          <li><span class="t-en">Literary unit cover system</span><span class="t-jp">文学ユニットのカバーの体系</span></li>
-          <li><span class="t-en">Stylescapes &amp; motion</span><span class="t-jp">スタイルスケープとモーション</span></li>
-          <li><span class="t-en">Information architecture</span><span class="t-jp">情報アーキテクチャ</span></li>
-          <li><span class="t-en">Program website design</span><span class="t-jp">プログラムサイトのデザイン</span></li>
-        </ul>
-
-        <p class="project-aside-label" style="margin-top: 32px;">
-          <span class="t-en">Outcome</span>
-          <span class="t-jp">成果</span>
-        </p>
-        <p class="project-text" style="font-size: 14px;">
-          <span class="t-en">A cohesive grade 9–12 identity system and a program website that make a large, open curriculum feel unified and easy for teachers to navigate.</span>
-          <span class="t-jp is-block">9〜12年生を通して一貫したアイデンティティと、大量のオープン教材をひとつのまとまりに見せ、先生が迷わず使えるプログラムサイトをつくりました。</span>
-        </p>
-      </aside>
-
-      <div>
-        <h2 class="project-section-title">
-          <span class="t-en">The Opportunity</span>
-          <span class="t-jp">機会</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">Odell Education develops an open-source high school English Language Arts and literacy curriculum, published freely for teachers and students at ela.odelleducation.com. The program spans four grade levels and dozens of units built around canonical and contemporary texts. Its challenge was one of coherence: a large body of educational content needed a single, credible visual identity — one that felt modern and rigorous, yet approachable for the classroom.</span>
-          <span class="t-jp is-block">Odell Education は、高校の英語（English Language Arts）とリテラシーのカリキュラムをオープンソースで開発し、ela.odelleducation.com で先生と生徒に無償で公開しています。対象は4つの学年にまたがり、古典から現代までのテキストを軸にしたユニットが何十本もあります。課題は「まとまり」でした。これだけの量の教材に、信頼できる見た目の軸が一本必要だったのです。現代的で厳密に見えて、それでも教室で身構えずに使えるもの。</span>
-        </p>
-        <p class="project-text">
-          <span class="t-en">I led brand identity and digital product design for the program: a grade-level visual system, typography, stylescapes, a unit cover language, the information architecture, and the program website. The goal was to make a sprawling curriculum read as one coherent product across print and screen.</span>
-          <span class="t-jp is-block">私はこのプログラムのブランドアイデンティティと、デジタルプロダクトのデザインをリードしました。学年ごとの見た目のルール、タイポグラフィ、スタイルスケープ、ユニットカバーの決めごと、情報アーキテクチャ、そしてプログラムサイトです。目標は、これだけ広がったカリキュラムを、紙でも画面でも「ひとつのまとまったもの」として読めるようにすることでした。</span>
-        </p>
-
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">The Approach</span>
-          <span class="t-jp">アプローチ</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">The brand centers on a navy-and-orange geometric language — dotted grids, circles, arcs, triangles, and dashed line-work — that flexes across the four grades. Each grade earns its own composition of the same shape vocabulary, so Grade 9 through 12 feel distinct yet clearly related. Montserrat carries the typography, chosen partly because it is a free Google font suited to both print and digital, keeping the open program truly open.</span>
-          <span class="t-jp is-block">ブランドの中心にあるのは、ネイビーとオレンジの幾何学的な造形です。点のグリッド、円、弧、三角形、破線。この語彙を、4つの学年に柔軟に展開しました。学年ごとに同じ形の組み合わせ方を変えているので、9年生から12年生まで、それぞれ違って見えながら、同じ家族だと分かります。書体は Montserrat。紙でも画面でも読みやすく、しかも無償で使える Google フォントであることも選んだ理由です。オープンな教材を、本当にオープンなままにしておくために。</span>
-        </p>
-        <p class="project-text">
-          <span class="t-en">For the individual literary units, a brighter, more expressive palette gives each text — from The Great Gatsby to Things Fall Apart — its own cover while staying inside a shared system. On the product side, I mapped the information architecture and teacher user stories, then designed the program website that brings the identity to life: grade landing pages, unit overviews, sections, lessons, and activities.</span>
-          <span class="t-jp is-block">個々の文学ユニットには、もっと明るく表情のある配色を使いました。『グレート・ギャツビー』から『崩れゆく絆（Things Fall Apart）』まで、どの作品も共通のルールの中にいながら、自分だけのカバーを持てるようにしています。プロダクトの側では、情報アーキテクチャと先生のユーザーストーリーを整理し、このアイデンティティが実際に動くプログラムサイトを設計しました。学年のトップページ、ユニットの概要、セクション、レッスン、アクティビティへとつながっていきます。</span>
-        </p>
-      </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
     </div>
 
-    <!-- ── Process Steps ── -->
-    <div class="project-section reveal-on-scroll">
-      <h2 class="project-section-title">
-        <span class="t-en">Process</span>
-        <span class="t-jp">プロセス</span>
-      </h2>
-      <div class="process-steps">
-        <div class="process-step">
-          <div class="process-step-num">01</div>
-          <div class="process-step-label"><span class="t-en">Research &amp; Strategy</span><span class="t-jp">リサーチと戦略</span></div>
-        </div>
-        <div class="process-step">
-          <div class="process-step-num">02</div>
-          <div class="process-step-label"><span class="t-en">Brand System &amp; Stylescapes</span><span class="t-jp">ブランドの体系とスタイルスケープ</span></div>
-        </div>
-        <div class="process-step">
-          <div class="process-step-num">03</div>
-          <div class="process-step-label"><span class="t-en">Grade &amp; Unit Cover Design</span><span class="t-jp">学年とユニットのカバーデザイン</span></div>
-        </div>
-        <div class="process-step">
-          <div class="process-step-num">04</div>
-          <div class="process-step-label"><span class="t-en">Information Architecture</span><span class="t-jp">情報アーキテクチャ</span></div>
-        </div>
-        <div class="process-step">
-          <div class="process-step-num">05</div>
-          <div class="process-step-label"><span class="t-en">Program Website</span><span class="t-jp">プログラムサイト</span></div>
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · creativity is everywhere</span>
+        <p class="case-discipline">Brand and digital product design</p>
+        <h1 class="case-title">Odell Education</h1>
+        <p class="case-lede">We connected a free high-school literacy curriculum across grades 9–12, literary units, teacher workflows, print covers, and a deep programme website.</p>
+        <p class="case-note">Odell Education · 2023–2024</p>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
         </div>
       </div>
+
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <img src="../assets/work-odell/hero.webp" alt="Odell Education grade 9 through 12 unit-reader covers beside the programme website" width="1600" height="900" loading="lazy" decoding="async">
+      <figcaption class="mono">One geometric system holds four grades in print and on screen.</figcaption>
+      </figure>
+    </header>
+
+    <!-- ── The Design Decision (Unboxed Thesis) ── -->
+    <section class="case-thesis">
+      <span class="case-thesis__label">The Design Decision</span>
+      <p class="case-thesis__statement">A large open curriculum began to read as one product.</p>
+    </section>
+
+    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
+    <dl class="counts">
+      <div class="count"><dt class="mono">grade levels</dt><dd>9–12</dd></div>
+      <div class="count"><dt class="mono">shared visual grammar</dt><dd>1</dd></div>
+      <div class="count"><dt class="mono">type licensing cost</dt><dd>$0</dd></div>
+    </dl>
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <section class="case-chapter">
+      <div class="case-chapter__copy">
+        <p class="case-chapter__eyebrow mono">01 · Situation</p>
+        <h2>Rigorous content looked like separate products.</h2>
+        <p>The open-source English language arts programme contained grades, units, sections, lessons, activities, and teacher materials. The pieces needed coherence without making a free curriculum harder to publish or use.</p>
     </div>
 
-    <!-- ════════════════════════════════════════════════ -->
-    <!-- ── Gallery Sections ── -->
-    <!-- ════════════════════════════════════════════════ -->
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div class="stat"><dt class="mono">Client</dt><dd>Odell Education</dd></div>
+      <div class="stat"><dt class="mono">Role</dt><dd>Brand and product design</dd></div>
+      <div class="stat"><dt class="mono">What we made</dt><dd>Identity, grade and literary-unit covers, information architecture, and website UI</dd></div>
+    </dl>
 
-    <div class="gallery reveal-on-scroll">
-
-      <!-- ── Brand System ── -->
-      <p class="gallery-label">
-        <span class="t-en">Brand System</span>
-        <span class="t-jp">ブランドの体系</span>
-      </p>
-
-      <div class="g-row r1">
-        <div class="g-cell dark"><img src="../assets/odell-education/Branding_Export_figma_Branding_-_main-1.png" alt="Odell Education grade-level identity system — Grade 9 to 12 covers and program website mockup" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_Gradebooks_Grade9-sm.png" alt="Grade 9 unit readers cover — navy and orange geometric system with concentric arcs" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_Gradebooks_Grade10-sm.png" alt="Grade 10 unit readers cover — squares and dotted grids in navy and orange" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_Gradebooks_Grade11-sm.png" alt="Grade 11 unit readers cover — circles and sweeping lines in navy and orange" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_Gradebooks_Grade12-sm.png" alt="Grade 12 unit readers cover — triangles in navy and orange" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell dark"><img src="../assets/odell-education/Branding_Export_figma_Branding_-_main-6.png" alt="Odell Education pattern library — a grid of geometric brand compositions" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell brand"><img src="../assets/odell-education/Typography_OE_Type1.png" alt="Brand typography — Montserrat as the program's primary typeface, a free Google font for print and digital" loading="lazy"></div>
-      </div>
-
-      <!-- ── Unit Identity ── -->
-      <p class="gallery-label">
-        <span class="t-en">Unit Identity</span>
-        <span class="t-jp">ユニットごとのアイデンティティ</span>
-      </p>
-
-      <div class="g-row r3">
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_GreatGatsby.png" alt="The Great Gatsby unit cover — layered pill shapes in blue, green and teal" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_ThingsFallApart.png" alt="Things Fall Apart unit cover — red and pink dotted arcs with scattered dots" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_1984.png" alt="1984 unit cover from the Odell Education literary unit system" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r3">
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_Romeo.png" alt="Romeo and Juliet unit cover from the Odell Education literary unit system" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_WarmthOtherSuns.png" alt="The Warmth of Other Suns unit cover from the Odell Education literary unit system" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_UnknownAmericans.png" alt="The Book of Unknown Americans unit cover from the Odell Education literary unit system" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r3">
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_IntheTimeofButterfliers.png" alt="In the Time of the Butterflies unit cover from the Odell Education literary unit system" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_ImmortalLife.png" alt="The Immortal Life of Henrietta Lacks unit cover from the Odell Education literary unit system" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_TellingStories.png" alt="Telling Stories unit cover from the Odell Education literary unit system" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r3">
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_FridaynightLights.png" alt="Friday Night Lights unit cover from the Odell Education literary unit system" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_LessonBeforeDying.png" alt="A Lesson Before Dying unit cover from the Odell Education literary unit system" loading="lazy"></div>
-        <div class="g-cell cover"><img src="../assets/odell-education/Books_FoundationUnit.png" alt="Foundation Unit cover — What does it mean to be an American?" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell brand"><img src="../assets/odell-education/Branding_Export_figma_Branding_-_main-8.png" alt="Unit-level branding applied — the Photojournalism student materials cover and matching web unit page" loading="lazy"></div>
-      </div>
-
-      <!-- ── Stylescapes ── -->
-      <p class="gallery-label">
-        <span class="t-en">Stylescapes</span>
-        <span class="t-jp">スタイルスケープ</span>
-      </p>
-
-      <div class="g-row r1">
-        <div class="g-cell dark"><img src="../assets/odell-education/Stylescapes_OE_Stylescape_01_2x.png" alt="Odell Education stylescape 01 — visual direction with brand type, layout, and imagery" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell dark"><img src="../assets/odell-education/Stylescapes_OE_Stylescape_02_2x.png" alt="Odell Education stylescape 02 — Bring Changes in how we learn literacy" loading="lazy"></div>
-      </div>
-
-      <div class="proj-video">
-        <video controls preload="metadata" poster="../assets/odell-education/Stylescapes_all_Stylescape_animation-poster.jpg">
-          <source src="../assets/odell-education/Stylescapes_all_Stylescape_animation.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell dark"><img src="../assets/odell-education/Stylescapes_OE_Stylescape_03_2x.png" alt="Odell Education stylescape 03 — The Making of a Modern High School Literacy Program" loading="lazy"></div>
-      </div>
-
-      <div class="proj-video">
-        <video controls preload="metadata" poster="../assets/odell-education/Stylescapes_OE_Stylescape_05_2x.png">
-          <source src="../assets/odell-education/Stylescapes_OE_Stylescape_05_Animation.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <!-- ── The Website ── -->
-      <p class="gallery-label">
-        <span class="t-en">The Website</span>
-        <span class="t-jp">ウェブサイト</span>
-      </p>
-
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/odell-education/Web_OdellWeb1.png" alt="ela.odelleducation.com — grade landing page with Grade 9 to 12 entry tiles" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell ui"><img src="../assets/odell-education/Web_OdellWeb3.png" alt="Unit overview page — The Book of Unknown Americans, with section navigation" loading="lazy"></div>
-        <div class="g-cell ui"><img src="../assets/odell-education/Web_OdellWeb5.png" alt="Section diagnostic page — writing prompts and culminating task connections" loading="lazy"></div>
-      </div>
-
-      <div class="proj-video">
-        <video controls preload="metadata" poster="../assets/odell-education/Web_Odell_Webcapture-poster.jpg">
-          <source src="../assets/odell-education/Web_Odell_Webcapture.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <!-- ── Strategy & IA ── -->
-      <p class="gallery-label">
-        <span class="t-en">Strategy &amp; IA</span>
-        <span class="t-jp">戦略と情報アーキテクチャ</span>
-      </p>
-
-      <div class="g-row r1">
-        <div class="g-cell diagram"><img src="../assets/odell-education/Strategy_OE_Architecture_2x.png" alt="Site architecture — login and home through grades, units, sections, lessons, and activities" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell diagram"><img src="../assets/odell-education/Strategy_ODE_User_Stories_2024-01-12_20-05-11.png" alt="Teacher user stories — first-time, returning to a unit, and teaching a lesson scenarios" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell diagram"><img src="../assets/odell-education/Strategy_Wireframe_Development_-_Lesson.png" alt="Lesson page wireframe — learning goals and core versus optional activities" loading="lazy"></div>
-        <div class="g-cell diagram"><img src="../assets/odell-education/Strategy_Wireframe_Development_-_Section.png" alt="Section page wireframe — overview, learning goals, texts, and materials" loading="lazy"></div>
-      </div>
-
-    </div>
-
-    <!-- ── Project Details (compact 3-col) ── -->
-    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Deliverables</span>
-          <span class="t-jp">成果物</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Brand Identity &amp; Logo</span><span class="t-jp">ブランドアイデンティティとロゴ</span></li>
-          <li><span class="t-en">Grade Cover System</span><span class="t-jp">学年カバーの体系</span></li>
-          <li><span class="t-en">Unit Cover System</span><span class="t-jp">ユニットカバーの体系</span></li>
-          <li><span class="t-en">Typography &amp; Stylescapes</span><span class="t-jp">タイポグラフィとスタイルスケープ</span></li>
-          <li><span class="t-en">Program Website</span><span class="t-jp">プログラムサイト</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Methods</span>
-          <span class="t-jp">手法</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Brand Strategy</span><span class="t-jp">ブランド戦略</span></li>
-          <li><span class="t-en">Stylescapes</span><span class="t-jp">スタイルスケープ</span></li>
-          <li><span class="t-en">Information Architecture</span><span class="t-jp">情報アーキテクチャ</span></li>
-          <li><span class="t-en">User Stories</span><span class="t-jp">ユーザーストーリー</span></li>
-          <li><span class="t-en">Wireframing &amp; UI Design</span><span class="t-jp">ワイヤーフレームと UI デザイン</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Role</span>
-          <span class="t-jp">役割</span>
-        </p>
-        <p class="project-text" style="font-size: 13px;">
-          <span class="t-en">I led brand and product design — brand identity, the grade and unit visual systems, typography, stylescapes, information architecture, and the design of the ela.odelleducation.com program website.</span>
-          <span class="t-jp is-block">ブランドとプロダクトのデザインをリードしました。ブランドアイデンティティ、学年とユニットの見た目のルール、タイポグラフィ、スタイルスケープ、情報アーキテクチャ、そして ela.odelleducation.com のプログラムサイトのデザインを担当しています。</span>
-        </p>
-      </div>
-    </div>
-
-    <!-- ── Nav (prev/next) ── -->
-    <div class="nav-project">
-      <a href="../work.html">&#8592; <span class="t-en">All Work</span><span class="t-jp">すべての仕事</span></a>
-      <a href="kitadoko.html"><span class="t-en">Next: Kitadoko</span><span class="t-jp">次：Kitadoko</span> &#8594;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

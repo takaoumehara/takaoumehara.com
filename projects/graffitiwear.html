@@ -11,101 +11,22 @@
   <meta property="og:description" content="GraffitiWear — a graffiti-inspired apparel collection designed by Takao Umehara for the Japanese Weekend School of New York, reaching over 50% adoption among students, faculty, and parents. Case study by Takao Umehara.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/graffitiwear.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/Screenshot_2026-02-19_at_12.51.33.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="GraffitiWear — School Community Apparel | Takao Umehara">
-  <meta name="twitter:description" content="GraffitiWear — a graffiti-inspired apparel collection designed by Takao Umehara for the Japanese Weekend School of New York, reaching over 50% adoption among students, faculty, and parents. Case study by Takao Umehara.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/Screenshot_2026-02-19_at_12.51.33.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,36 +64,62 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>GraffitiWear &#8212; School Community Apparel
-        GraffitiWear &#8212; スクールコミュニティアパレル</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>Graphic Design</li>
-        <li>Apparel</li>
-        <li>Community Design</li>
-      </ul>
-      <h1 class="pj-title">GraffitiWear &#8212; School Community Apparel
-        GraffitiWear &#8212; スクールコミュニティアパレル</h1>
-      <p class="pj-summary">The Japanese Weekend School of New York (JWSNY) lacked a unified community identity that could bridge its educational mission with the vibrant street culture of New York City. The school needed something more than standard merchandise &#8212; it needed wearable art that students, faculty, and parents would be proud to wear, transforming school spirit into a visible, shared identity.
-          ニューヨーク補習授業校（JWSNY）には、学校の役割とニューヨークの活気あるストリート文化を橋渡しするような、共通のアイデンティティがありませんでした。必要だったのは、よくある学校グッズの先にあるもの。生徒も先生も保護者も、誇りを持って着られる「着られる作品」をつくり、学校への愛着を目に見える形に変えることでした。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">GraffitiWear &#8212; School Community Apparel
+        GraffitiWear</h1>
+        <p class="case-lede">GraffitiWear — a graffiti-inspired apparel collection designed by Takao Umehara for the Japanese Weekend School of New York, reaching over 50% adoption among students, faculty, and parents. Case study by Takao Umehara.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/shared/Screenshot_2026-02-19_at_12.51.33.png" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/shared/Screenshot_2026-02-19_at_12.51.33.png" alt="GraffitiWear &#8212; School Community Apparel
+        GraffitiWear &#8212; " width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        GraffitiWear &#8212; School Community Apparel
+        GraffitiWear &#8212;  — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          Outcomes
+          
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">50%+
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -188,262 +135,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/shared/Screenshot_2026-02-19_at_12.51.33.png" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/shared/Screenshot_2026-02-19_at_12.51.33.png" alt="GraffitiWear &#8212; School Community Apparel
-        GraffitiWear &#8212; スクールコミュニティアパレル" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">GraffitiWear &#8212; School Community Apparel
-        GraffitiWear &#8212; スクールコミュニティアパレル — case study showcase (click to open)</span>
-        <span class="t-jp">GraffitiWear &#8212; School Community Apparel
-        GraffitiWear &#8212; スクールコミュニティアパレル — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label">
-          <span class="t-en">Outcomes</span>
-          <span class="t-jp">成果</span>
-        </p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">50%+</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Adoption among students, faculty, and parents</span>
-            <span class="t-jp">生徒・教職員・保護者に広まった割合</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">Pop-up</div>
-          <div class="project-aside-desc">
-            <span class="t-en">On-campus store execution</span>
-            <span class="t-jp">校内でのポップアップストアを実施</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">NYC &#215; JP</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Bridged NYC street culture with Japanese education</span>
-            <span class="t-jp">ニューヨークのストリート文化と日本の学校をつないだ</span>
-          </div>
-        </div>
-
-        <p class="project-aside-label" style="margin-top: 32px;">
-          <span class="t-en">Scope</span>
-          <span class="t-jp">スコープ</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Graphic Design</span><span class="t-jp">グラフィックデザイン</span></li>
-          <li><span class="t-en">Brand Strategy</span><span class="t-jp">ブランド戦略</span></li>
-          <li><span class="t-en">Apparel Design</span><span class="t-jp">アパレルデザイン</span></li>
-          <li><span class="t-en">Promotion Design</span><span class="t-jp">プロモーションデザイン</span></li>
-          <li><span class="t-en">Pop-up Store</span><span class="t-jp">ポップアップストア</span></li>
-        </ul>
-      </aside>
-
-      <div>
-        <h2 class="project-section-title">
-          <span class="t-en">The Opportunity</span>
-          <span class="t-jp">機会</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">The Japanese Weekend School of New York (JWSNY) lacked a unified community identity that could bridge its educational mission with the vibrant street culture of New York City. The school needed something more than standard merchandise &#8212; it needed wearable art that students, faculty, and parents would be proud to wear, transforming school spirit into a visible, shared identity.</span>
-          <span class="t-jp is-block">ニューヨーク補習授業校（JWSNY）には、学校の役割とニューヨークの活気あるストリート文化を橋渡しするような、共通のアイデンティティがありませんでした。必要だったのは、よくある学校グッズの先にあるもの。生徒も先生も保護者も、誇りを持って着られる「着られる作品」をつくり、学校への愛着を目に見える形に変えることでした。</span>
-        </p>
-
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">My Direction</span>
-          <span class="t-jp">ディレクション</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">I designed an apparel collection using bold, hand-drawn typography and symbolic illustrations that represented layers of learning, friendship, and cultural identity. The graffiti-inspired aesthetic drew directly from NYC street art traditions while honoring the school's Japanese heritage &#8212; creating designs that felt authentically New York and distinctly JWSNY.</span>
-          <span class="t-jp is-block">大胆な手描きの文字と、学び・友情・文化的な背景の重なりを表す象徴的なイラストを使って、アパレルのコレクションをデザインしました。グラフィティから引いてきた表現はニューヨークのストリートアートの流れを汲みつつ、学校が持つ日本の文脈もきちんと残しています。ニューヨークらしく、しかも JWSNY にしか見えないものになりました。</span>
-        </p>
-        <p class="project-text">
-          <span class="t-en">The project extended beyond design into execution &#8212; I led the pop-up store experience on campus, creating an event that turned the collection launch into a community celebration. The result was over 50% adoption among students, faculty, and parents, transforming the campus visual landscape and significantly strengthening community unity and belonging.</span>
-          <span class="t-jp is-block">このプロジェクトはデザインだけで終わらず、売る場所づくりまで含みました。校内でのポップアップストアを自分で設計・運営し、発売日をお祭りに変えたのです。結果として、生徒・教職員・保護者の5割以上が手に入れ、校内の景色が変わり、コミュニティの結びつきと「自分もここの一員だ」という感覚が目に見えて強まりました。</span>
-        </p>
-
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">Tools &amp; Methods</span>
-          <span class="t-jp">ツール＆手法</span>
-        </h2>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Hand-drawn Typography</span><span class="t-jp">手描きの文字</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Illustration</span><span class="t-jp">イラストレーション</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Apparel Production</span><span class="t-jp">アパレルの製造</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Pop-up Retail</span><span class="t-jp">ポップアップリテール</span></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-section">
-      <h2 class="project-section-title reveal-on-scroll">
-        <span class="t-en">Results</span>
-        <span class="t-jp">成果</span>
-      </h2>
-      <div class="outcomes-grid reveal-on-scroll">
-        <div class="outcome-block">
-          <div class="outcome-num">50%+</div>
-          <div class="outcome-label"><span class="t-en">Community adoption rate</span><span class="t-jp">コミュニティに広まった割合</span></div>
-        </div>
-        <div class="outcome-block">
-          <div class="outcome-num">3 Groups</div>
-          <div class="outcome-label"><span class="t-en">Students, faculty, and parents engaged</span><span class="t-jp">生徒、教職員、保護者が参加</span></div>
-        </div>
-        <div class="outcome-block">
-          <div class="outcome-num">Pop-up</div>
-          <div class="outcome-label"><span class="t-en">On-campus store launched collection</span><span class="t-jp">キャンパス内ストアでコレクション発売</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery reveal-on-scroll">
-
-      <!-- ── Lookbook ── -->
-      <p class="gallery-label">
-        <span class="t-en">Lookbook</span>
-        <span class="t-jp">ルックブック</span>
-      </p>
-
-      <div class="g-row r2">
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_10.png" alt="Black T-shirt, kids colorway, front and back" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_24.png" alt="Black T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_11.png" alt="Gray Camel T-shirt, kids colorway, front and back" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_25.png" alt="Dark Apricot T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_18.png" alt="Khaki crewneck sweatshirt, kids colorway, front and back" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_26.png" alt="Navy Blue T-shirt, teen to adult colorway, front and back" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_32.png" alt="Black hoodie, teen to adult colorway, front and back" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_33.png" alt="Gray Coffee hoodie, teen to adult colorway, front and back" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_34.png" alt="Navy Blue hoodie, teen to adult colorway, front and back" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_40.png" alt="Black zip-up hoodie, teen to adult colorway, front and back" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell photo"><img src="../assets/graffitiwear/GraffitiWearPromotion_(4)_Page_41.png" alt="Navy Blue zip-up hoodie styled with everyday layers, front and back" loading="lazy"></div>
-      </div>
-
-      <!-- ── Lineups ── -->
-      <p class="gallery-label">
-        <span class="t-en">Lineups</span>
-        <span class="t-jp">ラインナップ</span>
-      </p>
-
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/shared/Screenshot_2026-02-19_at_13.04.18.png" alt="GraffitiWear product lineup matrix across kids and teen-to-adult sizing" loading="lazy"></div>
-      </div>
-
-      <!-- ── The Final Artwork ── -->
-      <p class="gallery-label">
-        <span class="t-en">The Final Artwork</span>
-        <span class="t-jp">最終アートワーク</span>
-      </p>
-
-      <div class="g-row r1">
-        <div class="g-cell dark"><img src="../assets/credit-card-portal/ForMockup2.png" alt="Full graffiti artwork featuring MATSURI, NYUGAKU, and HANABI lettering" loading="lazy"></div>
-      </div>
-
-    </div>
-
-    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Deliverables</span>
-          <span class="t-jp">成果物</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Apparel Collection</span><span class="t-jp">アパレルコレクション</span></li>
-          <li><span class="t-en">Graphic Design</span><span class="t-jp">グラフィックデザイン</span></li>
-          <li><span class="t-en">Promotion Materials</span><span class="t-jp">宣伝用の制作物</span></li>
-          <li><span class="t-en">Pop-up Store</span><span class="t-jp">ポップアップストア</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Methods</span>
-          <span class="t-jp">手法</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Hand-drawn Typography</span><span class="t-jp">手描きの文字</span></li>
-          <li><span class="t-en">Illustration</span><span class="t-jp">イラストレーション</span></li>
-          <li><span class="t-en">Brand Strategy</span><span class="t-jp">ブランド戦略</span></li>
-          <li><span class="t-en">Community Engagement</span><span class="t-jp">コミュニティづくり</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Team</span>
-          <span class="t-jp">チーム</span>
-        </p>
-        <p class="project-text" style="font-size: 13px;">
-          <span class="t-en">School Parents Association. I served as Creative Director and Lead Designer &#8212; creating the concept, hand-drawn graphics, apparel designs, promotion materials, and pop-up store experience.</span>
-          <span class="t-jp is-block">学校の保護者会と一緒に。私はクリエイティブディレクター兼リードデザイナーとして、コンセプト、手描きのグラフィック、アパレルのデザイン、宣伝用の制作物、そしてポップアップストアの体験までをつくりました。</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="nav-project">
-      <a href="xq.html">&#8592; <span class="t-en">Prev: XQ Super School</span><span class="t-jp">前：XQ Super School</span></a>
-      <a href="../work.html"><span class="t-en">All Work</span><span class="t-jp">すべての仕事</span> &#8594;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

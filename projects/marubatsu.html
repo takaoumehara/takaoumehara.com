@@ -5,119 +5,37 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Marubatsu 2.0 — Takao Umehara</title>
-  <meta name="description" content="Marubatsu 2.0 — a 4×4 tic-tac-toe with two marks per turn. Born on a school-run ferry, shipped as a real-time multiplayer arena with an AI opponent.">
+  <meta name="description" content="Marubatsu 2.0, by creativity is everywhere: online four-by-four tic-tac-toe. Two marks a turn, four in a row wins, and two phones share one board on a room code.">
   <link rel="canonical" href="https://takaoumehara.com/projects/marubatsu.html">
   <meta property="og:title" content="Marubatsu 2.0 — Takao Umehara">
-  <meta property="og:description" content="A 4×4 tic-tac-toe with two marks per turn. Pass-and-play, AI opponent, or pair up in one scan.">
+  <meta property="og:description" content="Marubatsu 2.0, by creativity is everywhere: online four-by-four tic-tac-toe. Two marks a turn, four in a row wins, and two phones share one board on a room code.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/marubatsu.html">
-  <meta property="og:image" content="../assets/marubatsu/Marubatsu20-screenshot.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Marubatsu 2.0 — Takao Umehara">
-  <meta name="twitter:description" content="A 4×4 tic-tac-toe with two marks per turn. Pass-and-play, AI opponent, or pair up in one scan.">
-  <meta name="twitter:image" content="../assets/marubatsu/Marubatsu20-screenshot.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    @keyframes vt-fade-out { to { opacity: 0; } }
-    @keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
-
+    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
       animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     }
-    ::view-transition-old(hero-media) { animation-name: vt-fade-out; }
-    ::view-transition-new(hero-media) { animation-name: vt-fade-in; }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
@@ -146,258 +64,104 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span class="t-en">Marubatsu 2.0</span>
-    <span class="t-jp">○× 2.0</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Playable · Realtime Web</span>
-      <ul class="pj-tags">
-        <li>Game Design</li>
-        <li>Realtime Sync</li>
-        <li>AI Opponent</li>
-        <li>Next.js 16</li>
-      </ul>
-      <h1 class="pj-title">
-        <span class="t-en">Marubatsu 2.0: Online 4×4 tic-tac-toe</span>
-        <span class="t-jp">○× 2.0：オンライン 4×4 三目並べの再発明</span>
-      </h1>
-      <p class="pj-summary">
-        <span class="t-en">A four-by-four board where you place two marks per turn and four in a row wins. Invented with my son on a school commute ferry, shipped as a real-time multiplayer arena with an adaptive AI adversary.</span>
-        <span class="t-jp is-block">4×4の盤面、1手2個置き、4つ並べたら勝ち。通学フェリーの中で息子と紙の上に描いたルールが、リアルタイム対戦とAI対戦を備えたWebゲームになりました。</span>
-      </p>
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Playable — two phones</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Online 4×4 tic-tac-toe</h1>
+        <p class="case-lede">A four-by-four board where you place two marks a turn and four in a row
+        wins. Everyone already knows the old game, so the one changed rule is the whole product.</p>
+        
 
-      <div class="pj-cta">
-        <a href="http://marubatsu20.creativityiseverywhere.com/" target="_blank" rel="noopener">
-          <span class="t-en">Play it live ↗</span>
-          <span class="t-jp">実際に遊ぶ ↗</span>
-        </a>
-        <a href="../interactive.html">
-          <span class="t-en">← All Interactive Projects</span>
-          <span class="t-jp">← インタラクティブ一覧</span>
-        </a>
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Game Design &amp; Architecture</dd>
-        </div>
-        <div>
-          <dt>Stack</dt>
-          <dd>Next.js 16 · Firebase RTDB · Gemini</dd>
-        </div>
-        <div>
-          <dt>Input</dt>
-          <dd>Touch, QR Pairing, AI Bot</dd>
-        </div>
-        <div>
-          <dt>Year</dt>
-          <dd>2025 – 2026</dd>
-        </div>
-      </dl>
-    </div>
-  </header>
-
-  <!-- ── Body ── -->
-  <main class="pj-body">
-
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="http://marubatsu20.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Play Marubatsu 2.0 live">
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="http://marubatsu20.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Play Marubatsu 2.0 live">
         <video autoplay loop muted playsinline poster="../assets/marubatsu/Marubatsu20-screenshot.png" width="1920" height="1080">
           <source src="../assets/marubatsu/Marubatsu20.mov" type="video/mp4">
           <source src="../assets/marubatsu/preview.webm" type="video/webm">
         </video>
       </a>
       <figcaption>
-        <span class="t-en">Real-time match synced across desktop and mobile devices — click thumbnail to play live</span>
-        <span class="t-jp">PCとスマートフォンの間で同期されるリアルタイム対戦画面（サムネイルクリックで直接プレイ）</span>
+        Real-time match synced across desktop and mobile devices — click thumbnail to play live
+        
       </figcaption>
-    </figure>
+      </figure>
+    </header>
 
-    <!-- Key Metrics / Numbers -->
-    <dl class="pj-facts">
-      <div>
-        <dt>1</dt>
-        <dd>
-          <span class="t-en">Core rule changed: 2 marks a turn on a 4×4 grid</span>
-          <span class="t-jp">変えたルールは1つ：4×4盤で1手2個置き</span>
-        </dd>
-      </div>
-      <div>
-        <dt>3</dt>
-        <dd>
-          <span class="t-en">Ways to play: Solo pass, AI opponent, or QR scan</span>
-          <span class="t-jp">3つの対戦方式：対面パス、AI対戦、QR接続</span>
-        </dd>
-      </div>
-      <div>
-        <dt>9</dt>
-        <dd>
-          <span class="t-en">Localized languages with zero setup required</span>
-          <span class="t-jp">9言語に対応、設定不要で即座にプレイ可能</span>
-        </dd>
-      </div>
-      <div>
-        <dt>&lt;100ms</dt>
-        <dd>
-          <span class="t-en">Peer board synchronization via Firebase RTDB</span>
-          <span class="t-jp">Firebase RTDBによる100ms未満の高速盤面同期</span>
-        </dd>
-      </div>
+    
+
+    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
+    <dl class="counts">
+      <div class="count"><dt class="mono">Rule changed</dt><dd>1</dd></div>
+      <div class="count"><dt class="mono">Ways to play: alone, the AI, or two phones</dt><dd>3</dd></div>
+      <div class="count"><dt class="mono">Interface languages</dt><dd>9</dd></div>
     </dl>
 
-    <!-- Key Architecture Points -->
-    <div class="pj-points">
-      <div class="pj-point">
-        <span class="pj-point-num">01</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">The rule is the asset; the app is disposable.</span>
-          <span class="t-jp">ルールこそが資産、アプリはその器にすぎない</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Tic-tac-toe was solved centuries ago, but placing two marks on a 4×4 grid revives tension instantly. The exact same ten win lines power the local game, the AI search tree, and the room referee.</span>
-          <span class="t-jp is-block">従来の三目並べは先手必勝の解かれたゲームですが、盤を4×4にし1手2個置くだけで最初の1手から熾烈な駆け引きが生まれます。10本の勝利判定ラインはローカルでもAIでも共通です。</span>
-        </p>
-      </div>
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="points"><div class="point">
+        <p class="point__n mono">01</p>
+        <h2 class="point__t">The rule is the asset; the app is disposable.</h2>
+        <p>The same ten win lines are written identically in the local game, the AI's search and
+          the online room — and they outlived three rewrites of everything around them.</p></div>
 
-      <div class="pj-point">
-        <span class="pj-point-num">02</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Instant pairing without accounts.</span>
-          <span class="t-jp">アカウント登録不要の即座接続</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Creating a room gives a 6-character shortcode and a QR code. The second phone scans and is in. No logins, no downloads, and the server only arbitrates the state.</span>
-          <span class="t-jp is-block">部屋を作成すると6文字のコードとQRコードが表示され、2台目のスマホでカメラをかざすだけで同期完了。会員登録もアプリのインストールも一切不要です。</span>
-        </p>
-      </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">03</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Gemini-first adaptive adversary.</span>
-          <span class="t-jp">Geminiを活用した適応型AI対戦</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">The AI opponent uses Gemini to generate playful contextual banter and tactical moves across four difficulty settings, falling back seamlessly to an offline search engine when network drops.</span>
-          <span class="t-jp is-block">Geminiを活用し、戦術的な指し手だけでなく対戦中の心理的駆け引きや台詞を生成。オフライン時や低速回線時は瞬時にローカル探索エンジンへとフォールバックします。</span>
-        </p>
-      </div>
+<section class="scenes"><h2 class="sub__t">Where it belongs</h2>
+      <ul class="scenes__list">
+        <li><b>Two strangers with five minutes</b>
+          <span>A waiting room, a train, a queue: one room code and a board they both already understand.</span></li>
+        <li><b>A two-player game on a brand's own site</b>
+          <span>Nine languages, no download, and a server that only has to referee.</span></li>
+        <li><b>The pattern under any shared-board game</b>
+          <span>Swap the rules and the same engine runs a quiz, a draft, or a card game across two phones.</span></li>
+      </ul></section>
     </div>
 
-    <!-- Scenarios -->
-    <section class="pj-scenarios">
-      <h2>
-        <span class="t-en">Where it belongs</span>
-        <span class="t-jp">どのような場面で真価を発揮するか</span>
-      </h2>
-      <ul class="pj-scenarios-list">
-        <li>
-          <strong>Two people with five minutes:</strong>
-          <span class="t-en">Waiting lounges, trains, cafes — pull out one phone or scan between two, with zero explanation needed.</span>
-          <span class="t-jp">待ち時間やカフェで、説明なしに誰とでも5分で遊べるアイスブレイク体験。</span>
-        </li>
-        <li>
-          <strong>Shared-board engine pattern:</strong>
-          <span class="t-en">The lightweight pairing engine built here evolved into Snap Pair, enabling any quiz, voting board, or party game across phones.</span>
-          <span class="t-jp">ここで確立した同期基盤はSnap Pairライブラリへと発展し、各種クイズや共同キャンバスに応用。</span>
-        </li>
-        <li>
-          <strong>Multi-platform responsive web:</strong>
-          <span class="t-en">Plays equally well on touch screens, trackpads, and desktop browsers with full keyboard accessibility.</span>
-          <span class="t-jp">タッチスクリーン、トラックパッド、キーボード操作すべてに配慮した設計。</span>
-        </li>
-      </ul>
-    </section>
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div class="stat"><dt class="mono">Input</dt><dd>Two phones, one phone passed between two people, or one person and the AI</dd></div>
+      <div class="stat"><dt class="mono">Output</dt><dd>One board, kept in step across both screens in real time</dd></div>
+      <div class="stat"><dt class="mono">Runs on</dt><dd>Next.js · Firebase Realtime Database · Gemini, with a local search behind it</dd></div>
+      <div class="stat"><dt class="mono">Made</dt><dd>2025–2026, by our founder with a young co-designer at home</dd></div>
+    </dl>
 
-    <!-- Contribution Split -->
-    <div class="pj-contrib">
-      <div>
-        <h3>
-          <span class="t-en">My Contribution</span>
-          <span class="t-jp">担当領域</span>
-        </h3>
-        <ul>
-          <li>Co-invented the 4×4 two-marks game mechanic over hundreds of rounds</li>
-          <li>Designed complete UX/UI, board iconography, and tactile micro-interactions</li>
-          <li>Engineered the Next.js 16 and Firebase RTDB real-time pairing architecture</li>
-          <li>Integrated Gemini AI adversary with offline heuristic fallback</li>
-        </ul>
-      </div>
-      <div>
-        <h3>
-          <span class="t-en">Collaborators &amp; Heritage</span>
-          <span class="t-jp">協働者と誕生背景</span>
-        </h3>
-        <ul>
-          <li>Co-designed with Takao's son on the school ferry commute in New York</li>
-          <li>Original rule tested on paper napkins before writing a single line of code</li>
-          <li>Released as open-source web application under Creativity Is Everywhere LLC</li>
-        </ul>
-      </div>
-    </div>
-
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
 
-  <!-- ── Footer Navigation ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">
-      <span class="t-en">← All Interactive Projects</span>
-      <span class="t-jp">← インタラクティブ一覧</span>
-    </a>
-    <a href="resona.html">
-      <span class="t-en">Next: Resona (響) →</span>
-      <span class="t-jp">次：Resona (響) →</span>
-    </a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
-
+  <script src="../assets/wipe.js" defer></script>
   <script>
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll(".lang-btn")];
-    const saved = localStorage.getItem("tu-lang") || "en";
-    const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
-      html.lang = lang === "jp" ? "ja" : "en";
-      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-      localStorage.setItem("tu-lang", lang);
-    };
-    setLang(saved);
-    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
-  })();
-
-  // Mobile nav
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
+    // Mobile Menu Toggle
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (!toggle || !links) return;
       toggle.addEventListener('click', () => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          toggle.classList.remove('is-open');
-          links.classList.remove('is-open');
-        });
-      });
-    }
-  })();
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        toggle.classList.remove('is-open');
+        links.classList.remove('is-open');
+      }));
+    })();
   </script>
 </body>
 </html>

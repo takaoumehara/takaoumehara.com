@@ -11,101 +11,22 @@
   <meta property="og:description" content="Menlo Math (SunBay Math) — a themed, card-based redesign of a middle-school math curriculum app for iPad, replacing generic navigation with real-world scenario storytelling. Product design case study by Takao Umehara.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/menlomath.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Menlo Math — Middle-School Math App Redesign | Takao Umehara">
-  <meta name="twitter:description" content="Menlo Math (SunBay Math) — a themed, card-based redesign of a middle-school math curriculum app for iPad, replacing generic navigation with real-world scenario storytelling. Product design case study by Takao Umehara.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,40 +64,56 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>Menlo Math: Middle-School Math App RedesignMenlo Math：中学校向け数学アプリのリデザイン</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>EdTech</li>
-        <li>iPad App</li>
-        <li>Redesign</li>
-      </ul>
-      <h1 class="pj-title">Menlo Math: Middle-School Math App RedesignMenlo Math：中学校向け数学アプリのリデザイン</h1>
-      <p class="pj-summary">Menlo Math (built and shipped as SunBay Math) taught rate, proportionality, and other
-            pre-algebra concepts through interactive simulations — but the surrounding app gave students little reason
-            to care. Every unit looked the same: a plain list of titles, a grid of numbered gray tiles for
-            investigations, and a repeating thumbnail for every activity. The underlying math tools — position graphs,
-            data tables, editable function panels — were solid, but nothing in the interface signaled which unit was a
-            soccer-team budgeting problem and which was a 3D-printing challenge. Students couldn't tell one activity
-            from the next until they opened it.
-          Menlo Math（SunBay Math として開発・提供）は、触って動かせるシミュレーションで、比や比例といった中学数学の土台を教えるアプリだった。ただ、そのアプリの画面が、教材の面白さをまったく伝えていなかった。どのユニットも見た目は同じ。素っ気ないタイトルの一覧、灰色の番号タイルが並ぶ調査（investigation）のメニュー、そしてどのアクティビティにも同じサムネイル。位置のグラフ、データの表、値を書き換えられる関数のパネルといった数学ツール自体はよくできていたのに、どのユニットがサッカーチームの予算の話で、どれが3Dプリンターの課題なのかが、画面からは何も分からない。生徒は開いてみるまで、アクティビティの違いすら分からなかった。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Menlo Math</h1>
+        <p class="case-lede">Menlo Math (SunBay Math) — a themed, card-based redesign of a middle-school math curriculum app for iPad, replacing generic navigation with real-world scenario storytelling. Product design case study by Takao Umehara.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png" alt="Menlo Math: Middle-School Math App RedesignMenlo Math" width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        Menlo Math: Middle-School Math App RedesignMenlo Math — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">Scope</p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">6
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -192,315 +129,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png" alt="Menlo Math: Middle-School Math App RedesignMenlo Math：中学校向け数学アプリのリデザイン" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">Menlo Math: Middle-School Math App RedesignMenlo Math：中学校向け数学アプリのリデザイン — case study showcase (click to open)</span>
-        <span class="t-jp">Menlo Math: Middle-School Math App RedesignMenlo Math：中学校向け数学アプリのリデザイン — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label"><span class="t-en">Scope</span><span class="t-jp">スコープ</span></p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">6</div>
-          <div class="project-aside-desc"><span class="t-en">Curriculum units restructured around real-world
-              scenarios</span><span class="t-jp">現実の場面を軸に組み直したカリキュラムユニット</span></div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">iPad</div>
-          <div class="project-aside-desc"><span class="t-en">Purpose-built middle-school math curriculum app</span><span
-              class="t-jp">中学校向け数学カリキュラムアプリ（iPad 専用）</span></div>
-        </div>
-      </aside>
-      <div>
-        <h2 class="project-section-title"><span class="t-en">The Tension</span><span class="t-jp">問題の核心</span></h2>
-        <p class="project-text">
-          <span class="t-en">Menlo Math (built and shipped as SunBay Math) taught rate, proportionality, and other
-            pre-algebra concepts through interactive simulations — but the surrounding app gave students little reason
-            to care. Every unit looked the same: a plain list of titles, a grid of numbered gray tiles for
-            investigations, and a repeating thumbnail for every activity. The underlying math tools — position graphs,
-            data tables, editable function panels — were solid, but nothing in the interface signaled which unit was a
-            soccer-team budgeting problem and which was a 3D-printing challenge. Students couldn't tell one activity
-            from the next until they opened it.</span>
-          <span class="t-jp is-block">Menlo Math（SunBay Math として開発・提供）は、触って動かせるシミュレーションで、比や比例といった中学数学の土台を教えるアプリだった。ただ、そのアプリの画面が、教材の面白さをまったく伝えていなかった。どのユニットも見た目は同じ。素っ気ないタイトルの一覧、灰色の番号タイルが並ぶ調査（investigation）のメニュー、そしてどのアクティビティにも同じサムネイル。位置のグラフ、データの表、値を書き換えられる関数のパネルといった数学ツール自体はよくできていたのに、どのユニットがサッカーチームの予算の話で、どれが3Dプリンターの課題なのかが、画面からは何も分からない。生徒は開いてみるまで、アクティビティの違いすら分からなかった。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">My Approach</span><span
-            class="t-jp">アプローチ</span></h2>
-        <p class="project-text">
-          <span class="t-en">I redesigned the app's navigation and information architecture around its strongest asset:
-            the real-world scenarios each unit was already built on. The home screen became a photographic card grid
-            with plain-language subtitles — "Ratio" became "True Color Murals," "Rate and Proportionality" became
-            "Managing the Soccer Team." Unit overviews adopted a narrative framing ("We got a job for you!") with
-            investigations laid out as discoverable cards instead of a numbered grid, and activity screens kept the same
-            simulation, graph, and data-table tools but set them inside a themed scene — a soccer field instead of an
-            abstract line — so the math stayed connected to its story from first tap to last.</span>
-          <span class="t-jp is-block">私は、このアプリのナビゲーションと情報アーキテクチャを、各ユニットがもともと持っていたいちばんの強み — 現実の場面 — を軸に作り直した。ホーム画面は、写真とやさしい言葉のサブタイトルが付いたカードの一覧にした。「Ratio（比）」は「True Color Murals（本当の色で壁画を描く）」に、「Rate and Proportionality（割合と比例）」は「Managing the Soccer Team（サッカーチームを運営する）」になった。ユニットの入口では「あなたに仕事を頼みたい！」と話しかける形にし、調査は番号だけのタイルではなく、見て選べるカードに変えた。アクティビティの画面では、シミュレーション・グラフ・データの表という既存の数学ツールをそのまま使いながら、抽象的な直線ではなくサッカー場のような舞台の中に置いた。そうすることで、最初のタップから最後まで、数学と物語がつながったままになる。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">Tools &amp; Methods</span><span
-            class="t-jp">ツール＆手法</span></h2>
-        <div class="tools-list" style="display:flex; gap:8px; flex-wrap:wrap;">
-          <span
-            style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span
-              class="t-en">Design Workshops</span><span class="t-jp">デザインワークショップ</span></span>
-          <span
-            style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span
-              class="t-en">Stakeholder Personas</span><span class="t-jp">ステークホルダーペルソナ</span></span>
-          <span
-            style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Figma</span>
-          <span
-            style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span
-              class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block">
-        <div class="outcome-num">
-          <span class="t-en">Themed</span>
-          <span class="t-jp">テーマ化</span>
-        </div>
-        <div class="outcome-label"><span class="t-en">Generic list navigation replaced with a photographic card
-            system</span><span class="t-jp">ありふれた一覧のナビゲーションを、写真を使ったカード形式に変えた</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">
-          <span class="t-en">Narrative</span>
-          <span class="t-jp">物語性</span>
-        </div>
-        <div class="outcome-label"><span class="t-en">Real-world scenarios frame every unit and
-            investigation</span><span class="t-jp">すべてのユニットと調査に、現実の場面という文脈をつけた</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">iPad</div>
-        <div class="outcome-label"><span class="t-en">Purpose-built for the tablet's touch interactions</span><span
-            class="t-jp">タブレットのタッチ操作に合わせて設計</span></div>
-      </div>
-    </div>
-
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label"><span class="t-en">01 — Before &amp; After: The same underlying curriculum tools, rebuilt
-          around theme, story, and navigation.</span><span class="t-jp">01 — ビフォー／アフター：同じ数学ツールを、テーマ・物語・ナビゲーションの側から組み直した。</span></p>
-
-      <!-- Home Screen -->
-      <div class="ba-row reveal-on-scroll">
-        <div class="ba-cell ui">
-          <span class="ba-label before">Before</span>
-          <img src="../assets/menlomath/Before_Menlo-Math_Before_Page_3.png"
-            alt="Before — original SunBay Math home screen, six units listed as plain text rows with small thumbnails"
-            loading="lazy">
-        </div>
-        <div class="ba-arrow"><svg viewBox="0 0 24 24">
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <polyline points="14 6 20 12 14 18" />
-          </svg></div>
-        <div class="ba-cell ui">
-          <span class="ba-label after">After</span>
-          <img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png"
-            alt="After — Menlo Math home screen, six units shown as a photographic card grid with plain-language subtitles"
-            loading="lazy">
-        </div>
-      </div>
-
-      <!-- Unit Overview -->
-      <div class="ba-row reveal-on-scroll">
-        <div class="ba-cell ui">
-          <span class="ba-label before">Before</span>
-          <img src="../assets/menlomath/Before_Menlo-Math_Before_Page_4.png"
-            alt="Before — investigation menu shown as eight identical numbered gray tiles" loading="lazy">
-        </div>
-        <div class="ba-arrow"><svg viewBox="0 0 24 24">
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <polyline points="14 6 20 12 14 18" />
-          </svg></div>
-        <div class="ba-cell ui">
-          <span class="ba-label after">After</span>
-          <img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_02.png"
-            alt="After — Managing the Soccer Team unit overview, narrative framing with investigations laid out as navigable cards"
-            loading="lazy">
-        </div>
-      </div>
-
-      <!-- Investigation Detail -->
-      <div class="ba-row reveal-on-scroll">
-        <div class="ba-cell ui">
-          <span class="ba-label before">Before</span>
-          <img src="../assets/menlomath/Before_Menlo-Math_Before_Page_5.png"
-            alt="Before — activity list repeating the same generic thumbnail for every activity" loading="lazy">
-        </div>
-        <div class="ba-arrow"><svg viewBox="0 0 24 24">
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <polyline points="14 6 20 12 14 18" />
-          </svg></div>
-        <div class="ba-cell ui">
-          <span class="ba-label after">After</span>
-          <img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_03.png"
-            alt="After — Investigation 1, A Race Day, expanded with its own description, activity thumbnails, and a Start action"
-            loading="lazy">
-        </div>
-      </div>
-
-      <!-- Activity Screen -->
-      <div class="ba-row reveal-on-scroll">
-        <div class="ba-cell ui">
-          <span class="ba-label before">Before</span>
-          <img src="../assets/menlomath/Before_Menlo-Math_Before_Page_1.png"
-            alt="Before — bare position-time graph for Activity 1.3, no thematic context" loading="lazy">
-        </div>
-        <div class="ba-arrow"><svg viewBox="0 0 24 24">
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <polyline points="14 6 20 12 14 18" />
-          </svg></div>
-        <div class="ba-cell ui">
-          <span class="ba-label after">After</span>
-          <img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_04.png"
-            alt="After — redesigned activity screen, soccer-field simulation, position graph, data table, and function panel working together"
-            loading="lazy">
-        </div>
-      </div>
-
-      <!-- Data Table -->
-      <div class="ba-row reveal-on-scroll">
-        <div class="ba-cell ui">
-          <span class="ba-label before">Before</span>
-          <img src="../assets/menlomath/Before_Menlo-Math_Before_Page_2.png"
-            alt="Before — plain data table listing Clara and Fatima's distance readings" loading="lazy">
-        </div>
-        <div class="ba-arrow"><svg viewBox="0 0 24 24">
-            <line x1="4" y1="12" x2="20" y2="12" />
-            <polyline points="14 6 20 12 14 18" />
-          </svg></div>
-        <div class="ba-cell ui">
-          <span class="ba-label after">After</span>
-          <img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_09.png"
-            alt="After — editable function panel, students can adjust Clara's slope and intercept directly"
-            loading="lazy">
-        </div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">02 — The Redesigned App: Additional interface states from the rebuilt
-          activity tool.</span><span class="t-jp">02 — 作り直したアプリ：組み直したアクティビティ画面の、その他の状態。</span></p>
-      <div class="g-row r3">
-        <div class="g-cell ui"><img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_06.png"
-            alt="Graph options panel — zoom and coordinate-display controls for the position graph" loading="lazy">
-        </div>
-        <div class="g-cell ui"><img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_07.png"
-            alt="Instructions panel — guided questions A through F walk students through the activity" loading="lazy">
-        </div>
-        <div class="g-cell ui"><img src="../assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_10.png"
-            alt="Editing mode for Erica's data — students can compare both runners' functions side by side"
-            loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">03 — Walkthrough</span><span class="t-jp">03 — ウォークスルー</span></p>
-      <div class="g-row r1">
-        <div class="proj-video">
-          <video controls preload="metadata" poster="../assets/menlomath/MenloMath_walkthru-poster.jpg">
-            <source src="../assets/menlomath/MenloMath_walkthru.mp4" type="video/mp4">
-          </video>
-        </div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">04 — Process: Workshopping the redesign with the curriculum and
-          stakeholder team.</span><span class="t-jp">04 — 進め方：カリキュラムチームと関係者と一緒に進めたリデザインのワークショップ。</span></p>
-      <div class="g-row r2">
-        <div class="g-cell photo"><img src="../assets/menlomath/Workshop_Menlo_Wksp1.jpg"
-            alt="Design workshop — reviewing user flow and concept sketches on the wall" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/menlomath/Workshop_MenloWkshp2.jpg"
-            alt="Design workshop — mapping unit concepts and requirements with the team" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell photo"><img src="../assets/menlomath/Workshop_MenloWkshp3.jpg"
-            alt="Design workshop — team review session around the concept boards" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/menlomath/Workshop_Wkshp4.jpg"
-            alt="Design workshop — sketching stakeholder personas for the redesign" loading="lazy"></div>
-      </div>
-    </div>
-
-    <div
-      style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;"
-      class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label"><span class="t-en">Deliverables</span><span class="t-jp">成果物</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">UX Research &amp; Redesign Strategy</span><span class="t-jp">UX リサーチとリデザインの戦略</span></li>
-          <li><span class="t-en">Information Architecture</span><span class="t-jp">情報アーキテクチャ</span></li>
-          <li><span class="t-en">Visual Design (Card System)</span><span class="t-jp">ビジュアルデザイン（カード形式）</span></li>
-          <li><span class="t-en">UI Design (iPad)</span><span class="t-jp">UI デザイン（iPad）</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Methods</span><span class="t-jp">手法</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Design Workshops</span><span class="t-jp">デザインワークショップ</span></li>
-          <li><span class="t-en">Stakeholder Persona Mapping</span><span class="t-jp">関係者のペルソナ整理</span></li>
-          <li><span class="t-en">Concept Sketching</span><span class="t-jp">コンセプトスケッチ</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Team</span><span class="t-jp">チーム</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Curriculum Team (SunBay Math)</span><span class="t-jp">カリキュラムチーム（SunBay Math）</span>
-          </li>
-          <li><span class="t-en">Product Stakeholders</span><span class="t-jp">プロダクト側の関係者</span></li>
-          <li><span class="t-en">Developer</span><span class="t-jp">開発者</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="nav-project">
-      <a href="../work.html"><span class="t-en">&larr; All Work</span><span class="t-jp">&larr; すべての仕事</span></a>
-      <a href="edutrack.html"><span class="t-en">Next: EduTrack</span><span class="t-jp">次：EduTrack</span> &rarr;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

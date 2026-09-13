@@ -11,101 +11,22 @@
   <meta property="og:description" content="Design direction for XQ Super School, Emerson Collective's nationwide high school redesign platform, including the XQ Canvas collaborative framework and XQ Directory team-building tool.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/xq.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/xq_map_v7-2.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="XQ Super School — High School Redesign Platform | Takao Umehara">
-  <meta name="twitter:description" content="Design direction for XQ Super School, Emerson Collective's nationwide high school redesign platform, including the XQ Canvas collaborative framework and XQ Directory team-building tool.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/xq_map_v7-2.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,36 +64,62 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>XQ Super School &#8212; High School Redesign Platform
-        XQ Super School &#8212; 高校再設計プラットフォーム</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>Strategic Design</li>
-        <li>UX/UI</li>
-        <li>Framework Design</li>
-      </ul>
-      <h1 class="pj-title">XQ Super School &#8212; High School Redesign Platform
-        XQ Super School &#8212; 高校再設計プラットフォーム</h1>
-      <p class="pj-summary">Emerson Collective, founded by Laurene Powell Jobs, launched a nationwide competition to fundamentally redesign American high schools. The initiative needed a digital platform that could serve as the central hub &#8212; not just a website, but an ecosystem of tools that would enable diverse teams across the country to envision, design, and submit innovative school models.
-          Laurene Powell Jobs が設立した Emerson Collective は、アメリカの高校を根本から作り直すための全国コンペを立ち上げました。必要だったのは単なるウェブサイトではなく、全国のさまざまなチームが新しい学校の形を構想し、設計し、応募するところまでできる、道具のひとまとまりでした。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">XQ Super School &#8212; High School Redesign Platform
+        XQ Super School</h1>
+        <p class="case-lede">Design direction for XQ Super School, Emerson Collective's nationwide high school redesign platform, including the XQ Canvas collaborative framework and XQ Directory team-building tool.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/shared/xq_map_v7-2.jpg" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/shared/xq_map_v7-2.jpg" alt="XQ Super School &#8212; High School Redesign Platform
+        XQ Super School &#8212; " width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        XQ Super School &#8212; High School Redesign Platform
+        XQ Super School &#8212;  — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">
+          Outcomes
+          
+        </p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">Nationwide
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -188,284 +135,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/shared/xq_map_v7-2.jpg" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/shared/xq_map_v7-2.jpg" alt="XQ Super School &#8212; High School Redesign Platform
-        XQ Super School &#8212; 高校再設計プラットフォーム" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">XQ Super School &#8212; High School Redesign Platform
-        XQ Super School &#8212; 高校再設計プラットフォーム — case study showcase (click to open)</span>
-        <span class="t-jp">XQ Super School &#8212; High School Redesign Platform
-        XQ Super School &#8212; 高校再設計プラットフォーム — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label">
-          <span class="t-en">Outcomes</span>
-          <span class="t-jp">成果</span>
-        </p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">Nationwide</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Competition hub for US high school redesign</span>
-            <span class="t-jp">全米の高校を作り直すコンペの拠点サイト</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">XQ Canvas</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Collaborative design tool for school vision</span>
-            <span class="t-jp">学校の構想を一緒に描くためのツール</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">XQ Directory</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Team-building feature for applicants</span>
-            <span class="t-jp">応募者同士がチームを組むための機能</span>
-          </div>
-        </div>
-
-        <p class="project-aside-label" style="margin-top: 32px;">
-          <span class="t-en">Scope</span>
-          <span class="t-jp">スコープ</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Experience Strategy</span><span class="t-jp">体験戦略</span></li>
-          <li><span class="t-en">UX/UI Design</span><span class="t-jp">UX/UIデザイン</span></li>
-          <li><span class="t-en">Framework Design (XQ Canvas)</span><span class="t-jp">フレームワークの設計（XQ Canvas）</span></li>
-          <li><span class="t-en">Motion Design</span><span class="t-jp">モーションデザイン</span></li>
-          <li><span class="t-en">Directory Feature Design</span><span class="t-jp">ディレクトリ機能の設計</span></li>
-        </ul>
-      </aside>
-
-      <div>
-        <h2 class="project-section-title">
-          <span class="t-en">The Opportunity</span>
-          <span class="t-jp">機会</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">Emerson Collective, founded by Laurene Powell Jobs, launched a nationwide competition to fundamentally redesign American high schools. The initiative needed a digital platform that could serve as the central hub &#8212; not just a website, but an ecosystem of tools that would enable diverse teams across the country to envision, design, and submit innovative school models.</span>
-          <span class="t-jp is-block">Laurene Powell Jobs が設立した Emerson Collective は、アメリカの高校を根本から作り直すための全国コンペを立ち上げました。必要だったのは単なるウェブサイトではなく、全国のさまざまなチームが新しい学校の形を構想し、設計し、応募するところまでできる、道具のひとまとまりでした。</span>
-        </p>
-
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">My Direction</span>
-          <span class="t-jp">ディレクション</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">As Design Director, I designed XQSUPERSCHOOL.ORG as the competition's central hub &#8212; a comprehensive platform that housed competition information, educational resources, and community features. The key innovation was the <strong>XQ Canvas Framework</strong>, a collaborative design tool inspired by the Business Model Canvas. It enabled applicant teams to iteratively develop their high school vision through structured yet creative exercises.</span>
-          <span class="t-jp is-block">デザインディレクターとして、XQSUPERSCHOOL.ORG をコンペの中心となる場として設計しました。コンペの情報、教育リソース、参加者同士のつながりを一か所に集めています。いちばんの発明は <strong>XQ Canvas Framework</strong>。ビジネスモデルキャンバスから発想した、みんなで描けるツールです。応募チームは、決まった型はありながら発想は自由という演習を通して、自分たちの高校像を何度も描き直していけます。</span>
-        </p>
-        <p class="project-text">
-          <span class="t-en">I also designed the <strong>XQ Directory</strong> &#8212; a team-building feature that allowed individuals passionate about education reform to find and connect with each other, forming the diverse teams the competition required. Motion design and storyboarding brought these tools to life, making complex processes feel intuitive and engaging. The platform achieved significant nationwide participation in the school redesign competition.</span>
-          <span class="t-jp is-block">あわせて <strong>XQ Directory</strong> も設計しました。教育を変えたいと思っている人同士が互いを見つけてつながり、コンペが求める多様なチームを組めるようにする機能です。モーションデザインとストーリーボードでこれらのツールに動きを与え、複雑な手順を直感的で、やってみたくなるものにしました。結果として、全米から多くの参加を集めました。</span>
-        </p>
-
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">Tools &amp; Methods</span>
-          <span class="t-jp">ツール＆手法</span>
-        </h2>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Experience Strategy</span><span class="t-jp">体験戦略</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">UX/UI Design</span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Storyboarding</span><span class="t-jp">ストーリーボーディング</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Motion Design</span><span class="t-jp">モーションデザイン</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Framework Design</span><span class="t-jp">フレームワークデザイン</span></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="project-section">
-      <h2 class="project-section-title reveal-on-scroll">
-        <span class="t-en">Results</span>
-        <span class="t-jp">成果</span>
-      </h2>
-      <div class="outcomes-grid reveal-on-scroll">
-        <div class="outcome-block">
-          <div class="outcome-num">Nationwide</div>
-          <div class="outcome-label"><span class="t-en">Significant participation in school redesign</span><span class="t-jp">学校の作り直しに、全米から多数の参加</span></div>
-        </div>
-        <div class="outcome-block">
-          <div class="outcome-num">XQ Canvas</div>
-          <div class="outcome-label"><span class="t-en">Strategic framework adopted by applicant teams</span><span class="t-jp">応募チームに採用された戦略フレームワーク</span></div>
-        </div>
-        <div class="outcome-block">
-          <div class="outcome-num">3 Products</div>
-          <div class="outcome-label"><span class="t-en">Website + Canvas + Directory ecosystem</span><span class="t-jp">ウェブサイト + Canvas + Directoryエコシステム</span></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="gallery reveal-on-scroll">
-
-      <!-- ── XQSUPERSCHOOL.ORG ── -->
-      <p class="gallery-label">
-        <span class="t-en">XQSUPERSCHOOL.ORG &#8212; Competition Hub</span>
-        <span class="t-jp">XQSUPERSCHOOL.ORG &#8212; コンペティションハブ</span>
-      </p>
-
-      <div class="g-row r3">
-        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web0.png" alt="XQ Super School website home" loading="lazy"></div>
-        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web1.png" alt="XQ website page 1" loading="lazy"></div>
-        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web2.png" alt="XQ website page 2" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r3">
-        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web3.png" alt="XQ website page 3" loading="lazy"></div>
-        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web4.png" alt="XQ website page 4" loading="lazy"></div>
-        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_web5.png" alt="XQ website page 5" loading="lazy"></div>
-      </div>
-
-      <!-- ── XQ Canvas Framework ── -->
-      <p class="gallery-label">
-        <span class="t-en">XQ Canvas Framework</span>
-        <span class="t-jp">XQ Canvasフレームワーク</span>
-      </p>
-
-      <div class="g-row r1">
-        <div class="xq-video">
-          <iframe src="https://www.youtube.com/embed/6blXp2roX98?modestbranding=1&amp;rel=0&amp;iv_load_policy=3" title="XQ CANVAS" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
-        </div>
-      </div>
-      <a class="video-link" href="https://youtu.be/6blXp2roX98" target="_blank" rel="noopener"><span class="t-en">Watch “XQ CANVAS” on YouTube ↗</span><span class="t-jp">「XQ CANVAS」をYouTube で見る ↗</span></a>
-
-      <div class="g-row r1">
-        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_Canvas_Shadow.png" alt="XQ Canvas tool, full framework view" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell photo"><img src="../assets/xq-canvas/XQCanvas_inAction.jpg" alt="Workshop photo, team using XQ Canvas" loading="lazy"></div>
-        <div class="g-cell photo"><img src="../assets/xq-canvas/XQCanvas_real.jpg" alt="Workshop photo, team reviewing XQ Canvas" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell brand"><img src="../assets/xq-canvas/XQ_canvas_altschool.png" alt="XQ Canvas filled out, AltSchool example" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r1">
-        <div class="g-cell brand"><img src="../assets/xq-canvas/Motion_Design_XQ.png" alt="XQ motion design storyboard for Canvas walkthrough" loading="lazy"></div>
-      </div>
-
-      <!-- ── XQ Directory ── -->
-      <p class="gallery-label">
-        <span class="t-en">XQ Directory &#8212; Team Building</span>
-        <span class="t-jp">XQ Directory &#8212; チーム構築</span>
-      </p>
-
-      <div class="g-row r1">
-        <div class="xq-video">
-          <iframe src="https://www.youtube.com/embed/G6W69Tk6swQ?modestbranding=1&amp;rel=0&amp;iv_load_policy=3" title="XQ DIRECTORY" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
-        </div>
-      </div>
-      <a class="video-link" href="https://youtu.be/G6W69Tk6swQ" target="_blank" rel="noopener"><span class="t-en">Watch “XQ DIRECTORY” on YouTube ↗</span><span class="t-jp">「XQ DIRECTORY」をYouTube で見る ↗</span></a>
-
-      <div class="g-row r1">
-        <div class="g-cell brand"><img src="../assets/xq-canvas/hero-image-XQdirectory.png" alt="XQ Directory hero" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell brand"><img src="../assets/xq-directory/XQ_Dir_Web-0.png" alt="XQ Directory web page 0" loading="lazy"></div>
-        <div class="g-cell brand"><img src="../assets/xq-directory/XQ_Dir_Web-1.png" alt="XQ Directory web page 1" loading="lazy"></div>
-      </div>
-
-      <div class="g-row r2">
-        <div class="g-cell brand"><img src="../assets/xq-directory/XQ_Dir_Web-2.png" alt="XQ Directory web page 2" loading="lazy"></div>
-        <div class="g-cell brand"><img src="../assets/xq-directory/XQ_Dir_Web-3.png" alt="XQ Directory web page 3" loading="lazy"></div>
-      </div>
-
-    </div>
-
-    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Deliverables</span>
-          <span class="t-jp">成果物</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Experience Strategy</span><span class="t-jp">体験戦略</span></li>
-          <li><span class="t-en">UX/UI Design</span><span class="t-jp">UX/UIデザイン</span></li>
-          <li><span class="t-en">XQ Canvas Framework</span><span class="t-jp">XQ Canvasフレームワーク</span></li>
-          <li><span class="t-en">XQ Directory</span><span class="t-jp">XQディレクトリ</span></li>
-          <li><span class="t-en">Motion Design</span><span class="t-jp">モーションデザイン</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Methods</span>
-          <span class="t-jp">手法</span>
-        </p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Experience Strategy</span><span class="t-jp">体験戦略</span></li>
-          <li><span class="t-en">Storyboarding &amp; Animation</span><span class="t-jp">ストーリーボーディング・アニメーション</span></li>
-          <li><span class="t-en">Framework Design</span><span class="t-jp">フレームワークデザイン</span></li>
-          <li><span class="t-en">Workshop Facilitation</span><span class="t-jp">ワークショップの設計と進行</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label">
-          <span class="t-en">Team</span>
-          <span class="t-jp">チーム</span>
-        </p>
-        <p class="project-text" style="font-size: 13px;">
-          <span class="t-en">Amplify Education partnership. Creative director, visual designer, business strategist, web developer, media strategist, project manager. I served as Design Director &#8212; leading experience strategy, UX/UI design, framework design, and motion design.</span>
-          <span class="t-jp is-block">Amplify Educationとのパートナーシップ。クリエイティブディレクター、ビジュアルデザイナー、ビジネスストラテジスト、ウェブ開発者、メディアストラテジスト、プロジェクトマネージャー。デザインディレクターとして、体験戦略、UX/UIデザイン、フレームワークデザイン、モーションデザインをリード。</span>
-        </p>
-      </div>
-    </div>
-
-    <div class="nav-project">
-      <a href="dnt.html">&#8592; <span class="t-en">Prev: DO! NUTS TOKYO</span><span class="t-jp">前：DO! NUTS TOKYO</span></a>
-      <a href="graffitiwear.html"><span class="t-en">Next: GraffitiWear</span><span class="t-jp">次：GraffitiWear</span> &#8594;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

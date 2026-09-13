@@ -11,101 +11,22 @@
   <meta property="og:description" content="UX audit of USAA's mobile term life insurance app combining Nielsen's usability heuristics with trauma-informed design, driving a 40% navigation efficiency improvement and a 25% drop in dropout rates.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/ux-audit.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/image-asset.jpeg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="USAA UX Audit — Takao Umehara">
-  <meta name="twitter:description" content="UX audit of USAA's mobile term life insurance app combining Nielsen's usability heuristics with trauma-informed design, driving a 40% navigation efficiency improvement and a 25% drop in dropout rates.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/image-asset.jpeg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,34 +64,56 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>USAA Mobile Term Life Insurance UX AuditUSAA モバイル定期生命保険の UX 監査</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>UX Audit</li>
-        <li>Insurance</li>
-        <li>Trauma-Informed Design</li>
-      </ul>
-      <h1 class="pj-title">USAA Mobile Term Life Insurance UX AuditUSAA モバイル定期生命保険の UX 監査</h1>
-      <p class="pj-summary">USAA's mobile term life insurance app was evaluated against usability heuristics, but the standard approach missed something critical. Insurance is inherently tied to trauma — death, loss, the fear of leaving a family unprotected. The interface showed no awareness of this. Users were asked to make deeply emotional decisions through a flow designed with the same detachment as a utility bill payment. The standard heuristic lens caught navigation issues and form problems, but it couldn't explain why qualified leads were abandoning the application at such high rates.
-          USAA のモバイル定期生命保険アプリを、一般的なユーザビリティの指標で評価した。だが、その見方だけでは肝心なところが抜け落ちていた。生命保険は、そもそも人の傷つきやすい部分に直結している。死、喪失、家族を守れないままにしてしまう恐れ。ところがインターフェースには、その自覚がまったく感じられなかった。ユーザーは、公共料金の支払い画面と変わらない事務的な流れの中で、きわめて感情的な決断を迫られていた。一般的な指標ではナビゲーションやフォームの問題は見つかる。しかし、条件を満たした見込み客がなぜこれほど高い割合で途中離脱するのかは、説明できなかった。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">USAA Mobile Term Life Insurance UX AuditUSAA  UX</h1>
+        <p class="case-lede">UX audit of USAA's mobile term life insurance app combining Nielsen's usability heuristics with trauma-informed design, driving a 40% navigation efficiency improvement and a 25% drop in dropout rates.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/shared/image-asset.jpeg" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/shared/image-asset.jpeg" alt="USAA Mobile Term Life Insurance UX AuditUSAA  UX " width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        USAA Mobile Term Life Insurance UX AuditUSAA  UX  — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">Impact</p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">40%
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -186,205 +129,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/shared/image-asset.jpeg" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/shared/image-asset.jpeg" alt="USAA Mobile Term Life Insurance UX AuditUSAA モバイル定期生命保険の UX 監査" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">USAA Mobile Term Life Insurance UX AuditUSAA モバイル定期生命保険の UX 監査 — case study showcase (click to open)</span>
-        <span class="t-jp">USAA Mobile Term Life Insurance UX AuditUSAA モバイル定期生命保険の UX 監査 — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label"><span class="t-en">Impact</span><span class="t-jp">インパクト</span></p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">40%</div>
-          <div class="project-aside-desc"><span class="t-en">Navigation efficiency improvement</span><span class="t-jp">画面移動のしやすさが向上</span></div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">30%</div>
-          <div class="project-aside-desc"><span class="t-en">Cognitive load reduction</span><span class="t-jp">頭の負担が軽くなった</span></div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">25%</div>
-          <div class="project-aside-desc"><span class="t-en">Decrease in dropout rates</span><span class="t-jp">途中離脱が減った</span></div>
-        </div>
-      </aside>
-      <div>
-        <h2 class="project-section-title"><span class="t-en">The Tension</span><span class="t-jp">問題の核心</span></h2>
-        <p class="project-text">
-          <span class="t-en">USAA's mobile term life insurance app was evaluated against usability heuristics, but the standard approach missed something critical. Insurance is inherently tied to trauma — death, loss, the fear of leaving a family unprotected. The interface showed no awareness of this. Users were asked to make deeply emotional decisions through a flow designed with the same detachment as a utility bill payment. The standard heuristic lens caught navigation issues and form problems, but it couldn't explain why qualified leads were abandoning the application at such high rates.</span>
-          <span class="t-jp is-block">USAA のモバイル定期生命保険アプリを、一般的なユーザビリティの指標で評価した。だが、その見方だけでは肝心なところが抜け落ちていた。生命保険は、そもそも人の傷つきやすい部分に直結している。死、喪失、家族を守れないままにしてしまう恐れ。ところがインターフェースには、その自覚がまったく感じられなかった。ユーザーは、公共料金の支払い画面と変わらない事務的な流れの中で、きわめて感情的な決断を迫られていた。一般的な指標ではナビゲーションやフォームの問題は見つかる。しかし、条件を満たした見込み客がなぜこれほど高い割合で途中離脱するのかは、説明できなかった。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">My Approach</span><span class="t-jp">アプローチ</span></h2>
-        <p class="project-text">
-          <span class="t-en">I combined Jakob Nielsen's 10 Usability Heuristics with trauma-informed design principles — safety, respect, community, and dignity. This dual framework revealed issues that neither approach would have caught alone. The usability layer identified structural friction: unclear navigation, excessive cognitive load, poor error recovery. The trauma-informed layer revealed emotional friction: language that felt clinical when it should have felt supportive, progress indicators that amplified anxiety, and decision points that forced confrontation with mortality without providing emotional scaffolding. The recommendations addressed both dimensions simultaneously.</span>
-          <span class="t-jp is-block">Jakob Nielsen の10のユーザビリティ原則に、トラウマインフォームドデザインの考え方 — 安全、敬意、つながり、尊厳 — を重ねて評価した。この二枚重ねにしたことで、どちらか片方だけでは見つからない問題が出てきた。ユーザビリティの層で見えたのは、構造の問題だ。ナビゲーションが分かりにくい、頭の負担が大きすぎる、間違えたときに戻れない。トラウマインフォームドの層で見えたのは、気持ちの問題だった。支えるべき場面で事務的に響く言葉、かえって不安をあおる進捗表示、そして心の支えを何も用意しないまま「自分の死」と向き合わせる選択画面。改善案は、この両方にまとめて手を打つ形にした。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">Tools &amp; Methods</span><span class="t-jp">ツール＆手法</span></h2>
-        <div class="tools-list" style="display:flex; gap:8px; flex-wrap:wrap;">
-          <a href="https://www.nngroup.com/articles/ten-usability-heuristics/" target="_blank" rel="noopener" style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim); text-decoration:none;"><span class="t-en">Nielsen's 10 Heuristics ↗</span><span class="t-jp">ニールセンの10原則 ↗</span></a>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Trauma-Informed Design</span><span class="t-jp">トラウマインフォームドデザイン</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Heuristic Evaluation</span><span class="t-jp">ヒューリスティック評価</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Strategic Recommendations</span><span class="t-jp">戦略的な提言</span></span>
-        </div>
-      </div>
-    </div>
-
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block">
-        <div class="outcome-num">40%</div>
-        <div class="outcome-label"><span class="t-en">Navigation efficiency improvement</span><span class="t-jp">画面移動のしやすさが向上</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">30%</div>
-        <div class="outcome-label"><span class="t-en">Cognitive load reduction</span><span class="t-jp">頭の負担が軽くなった</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">25%</div>
-        <div class="outcome-label"><span class="t-en">Decrease in dropout rates</span><span class="t-jp">途中離脱が減った</span></div>
-      </div>
-    </div>
-
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label"><span class="t-en">01 — Goal Setting: The engagement's north star, key success factors, and the four evaluation lenses used.</span><span class="t-jp">01 — ゴール設定：この案件の指針、成否を分ける要素、そして評価に使った4つの視点。</span></p>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation.jpg" alt="Introduction — the goal of the engagement" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(1).jpg" alt="North star statement for the mobile term life experience" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(2).jpg" alt="Key success factors — frictionless experience, confidence, ease of application" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(3).jpg" alt="Key lenses — UX, UI, accessibility, and trauma-informed design" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">02 — UX/UI Evaluation: Severity summary — 6 Critical, 7 Major, 3 Minor, 1 Irritant issue — assessed against Nielsen Norman Group's <a href="https://www.nngroup.com/articles/ten-usability-heuristics/" target="_blank" rel="noopener" style="color:var(--ink-mid);">10 Usability Heuristics</a>. Each screen below is the actual audited UI, annotated with the specific issue and recommendation.</span><span class="t-jp">02 — UX/UI の評価：深刻度の内訳は Critical 6件、Major 7件、Minor 3件、Irritant 1件。Nielsen Norman Group の<a href="https://www.nngroup.com/articles/ten-usability-heuristics/" target="_blank" rel="noopener" style="color:var(--ink-mid);">10のユーザビリティ原則</a>に沿って評価した。以下は実際に評価した UI そのもので、見つかった問題と改善案を注記している。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(10).jpg" alt="Audited UI — process visibility issue, critical severity, with recommendations" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(12).jpg" alt="Audited UI — staying on track issue, major severity, with recommendations" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(13).jpg" alt="Audited UI — contextual support issue, major severity, with recommendations" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(14).jpg" alt="Audited UI — cognitive load issue, critical severity, with recommendations" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(16).jpg" alt="Audited UI — button inconsistency issue, major severity, with recommendations" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(17).jpg" alt="Audited UI — content hierarchy issue, critical severity, with recommendations" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(18).jpg" alt="Audited UI — radio button issue, critical severity, with recommendations" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(19).jpg" alt="Nielsen's 10 usability heuristics — 1 through 5" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(4).jpg" alt="Nielsen's 10 usability heuristics — 6 through 10" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">03 — Trauma-Informed Design Evaluation: Five principles — safety, trustworthiness, choice, collaboration, empowerment — applied to the same audited screens.</span><span class="t-jp">03 — トラウマインフォームドデザインの評価：安全、信頼できること、選べること、一緒に決めること、力を取り戻すこと。この5つの原則を、同じ画面に当てて見直した。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(26).jpg" alt="Audited UI — cognitive load issue, trauma-informed lens, critical severity" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(27).jpg" alt="Audited UI — gender choice issue, trauma-informed lens, major severity" loading="lazy"></div>
-      </div>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(28).jpg" alt="Audited UI — application with a real person, trauma-informed lens, major severity" loading="lazy"></div>
-      </div>
-
-      <p class="gallery-label"><span class="t-en">04 — Opportunities &amp; Recommendations: Effort vs. value matrix prioritizing every UX, UI, and trauma-informed fix.</span><span class="t-jp">04 — 改善の機会と提言：UX、UI、トラウマインフォームドのすべての改善案を、工数と効果のマトリクスで優先順位づけした。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(31).jpg" alt="Effort vs. value matrix prioritizing recommendations" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(32).jpg" alt="Short and medium term plan — quick wins and phased enhancements" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/ux-audit/Portfolio_USAA_Term_Life_Evaluation_(33).jpg" alt="Key recommendations — information architecture, content hierarchy, design system, usability testing" loading="lazy"></div>
-      </div>
-    </div>
-
-    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label"><span class="t-en">Deliverables</span><span class="t-jp">成果物</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">UX/UI Evaluation Report</span><span class="t-jp">UX/UI の評価レポート</span></li>
-          <li><span class="t-en">Strategic Recommendations</span><span class="t-jp">戦略的な提言</span></li>
-          <li><span class="t-en">Future Implementation Roadmap</span><span class="t-jp">今後の実装ロードマップ</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Methods</span><span class="t-jp">手法</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Nielsen's 10 Heuristics</span><span class="t-jp">ニールセンの10原則</span></li>
-          <li><span class="t-en">Trauma-Informed Design Assessment</span><span class="t-jp">トラウマインフォームドデザインの評価</span></li>
-          <li><span class="t-en">Severity Rating</span><span class="t-jp">深刻度の判定</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Team</span><span class="t-jp">チーム</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Lead UX (project lead)</span><span class="t-jp">リード UX（プロジェクトリード）</span></li>
-          <li><span class="t-en">Senior UX Designer</span><span class="t-jp">シニアUXデザイナー</span></li>
-          <li><span class="t-en">UI Designer</span><span class="t-jp">UIデザイナー</span></li>
-          <li><span class="t-en">Tech Lead</span><span class="t-jp">テックリード</span></li>
-          <li><span class="t-en">Project Manager</span><span class="t-jp">プロジェクトマネージャー</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="nav-project">
-      <a href="../work.html"><span class="t-en">&larr; All Work</span><span class="t-jp">&larr; すべての仕事</span></a>
-      <a href="edutrack.html"><span class="t-en">Next: EduTrack</span><span class="t-jp">次：EduTrack</span> &rarr;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

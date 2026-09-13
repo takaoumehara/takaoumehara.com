@@ -8,21 +8,16 @@
   <meta name="description" content="Kao Game — a game you play with your face. A browser-based face tracking workout that turns physical therapy into addictive play.">
   <link rel="canonical" href="https://takaoumehara.com/projects/kao-game.html">
   <meta property="og:title" content="Kao Game — Takao Umehara">
-  <meta property="og:description" content="A game you play with your face — a workout you actually want to repeat.">
+  <meta property="og:description" content="Kao Game — a game you play with your face. A browser-based face tracking workout that turns physical therapy into addictive play.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/kao-game.html">
-  <meta property="og:image" content="../assets/kao-game/hero.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Kao Game — Takao Umehara">
-  <meta name="twitter:description" content="A game you play with your face — a workout you actually want to repeat.">
-  <meta name="twitter:image" content="../assets/kao-game/hero.svg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
@@ -30,93 +25,17 @@
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    @keyframes vt-fade-out { to { opacity: 0; } }
-    @keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
-
+    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
       animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     }
-    ::view-transition-old(hero-media) { animation-name: vt-fade-out; }
-    ::view-transition-new(hero-media) { animation-name: vt-fade-in; }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
@@ -145,46 +64,53 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span class="t-en">Kao Game (顔ゲーム)</span>
-    <span class="t-jp">顔ゲーム</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Interactive · Computer Vision · Face Tracking</span>
-      <ul class="pj-tags">
-        <li>Face Tracking</li>
-        <li>Touchless UI</li>
-        <li>WebAssembly</li>
-        <li>On-Device ML</li>
-      </ul>
-      <h1 class="pj-title">
-        <span class="t-en">Kao Game: The face is your game controller</span>
-        <span class="t-jp">顔ゲーム：顔がそのまま操作になる</span>
-      </h1>
-      <p class="pj-summary">
-        <span class="t-en">A browser game played entirely with your face — turning daily facial exercise and rehabilitation into an intuitive, addictive challenge without any physical controller.</span>
-        <span class="t-jp is-block">表情トラッキングだけで遊ぶWebゲーム。ふだんは続かない顔の運動や表情筋トレーニングを、誰もが夢中になれる遊びへと昇華させました。</span>
-      </p>
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Kao Game: The face is your game controller</h1>
+        <p class="case-lede">Kao Game — a game you play with your face. A browser-based face tracking workout that turns physical therapy into addictive play.</p>
+        
 
-      <div class="pj-cta">
-        <a href="http://kaogame.creativityiseverywhere.com/" target="_blank" rel="noopener">
-          <span class="t-en">Play Kao Game ↗</span>
-          <span class="t-jp">ゲームを開く ↗</span>
-        </a>
-        <a href="../interactive.html">
-          <span class="t-en">← All Interactive Projects</span>
-          <span class="t-jp">← インタラクティブ一覧</span>
-        </a>
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="http://kaogame.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Play Kao Game live">
+        <img src="../assets/kao-game/hero.svg" alt="Kao Game face tracking mesh" width="1200" height="800">
+      </a>
+      <figcaption>
+        Real-time landmark mesh tracking subtle muscular shifts around the eyes, jaw, and brow (click thumbnail to launch)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <section class="case-chapter"><div class="case-chapter__copy"><h2>The Project Overview</h2><p>A browser game played entirely with your face — turning daily facial exercise and rehabilitation into an intuitive, addictive challenge without any physical controller.
+        Web</p>
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Concept, UX &amp; Prototyping</dd>
         </div>
@@ -200,193 +126,32 @@
           <dt>Status</dt>
           <dd>In-Progress Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
-
-  <!-- ── Body ── -->
-  <main class="pj-body">
-
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="http://kaogame.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Play Kao Game live">
-        <img src="../assets/kao-game/hero.svg" alt="Kao Game face tracking mesh" width="1200" height="800">
-      </a>
-      <figcaption>
-        <span class="t-en">Real-time landmark mesh tracking subtle muscular shifts around the eyes, jaw, and brow (click thumbnail to launch)</span>
-        <span class="t-jp">目元、顎、眉の微細な筋肉運動をミリ秒単位で捉えるリアルタイム表情追跡メッシュ（サムネイルクリックで直接プレイ）</span>
-      </figcaption>
-    </figure>
-
-    <!-- Key Metrics / Numbers -->
-    <dl class="pj-facts">
-      <div>
-        <dt>0</dt>
-        <dd>
-          <span class="t-en">Physical game controllers required — your facial muscles are the pad</span>
-          <span class="t-jp">コントローラー不要、顔の表情筋そのものが十字キーになる</span>
-        </dd>
-      </div>
-      <div>
-        <dt>468</dt>
-        <dd>
-          <span class="t-en">Geometric landmark points calculated in real-time on-device</span>
-          <span class="t-jp">端末内でリアルタイム追跡される468点の顔面幾何学ランドマーク</span>
-        </dd>
-      </div>
-      <div>
-        <dt>3</dt>
-        <dd>
-          <span class="t-en">Playable mini-games challenging rhythm, endurance, and symmetry</span>
-          <span class="t-jp">リズム、持続力、左右対称性を鍛える3つのミニゲーム</span>
-        </dd>
-      </div>
-      <div>
-        <dt>100%</dt>
-        <dd>
-          <span class="t-en">On-device edge inference with zero video frames transmitted over network</span>
-          <span class="t-jp">完全ローカル動作。カメラ映像や顔情報は一切ネットワーク送信されません</span>
-        </dd>
-      </div>
     </dl>
 
-    <!-- Key Architecture Points -->
-    <div class="pj-points">
-      <div class="pj-point">
-        <span class="pj-point-num">01</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Wellness disguised as playful challenge.</span>
-          <span class="t-jp">運動を遊びへと転換する</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Desk workers stare at screens for eight hours, freezing their facial posture into tense scowls. By gamifying eyebrow lifts, open-mouthed laughter, and head tilts into target-hitting mechanics, the workout happens without feeling like a chore.</span>
-          <span class="t-jp is-block">長時間のデスクワークで強張りがちな表情筋。眉の上下や口の開閉、首の傾きをターゲットヒットのゲーム性に変換することで、義務感なしに自然と顔のコリがほぐれます。</span>
-        </p>
-      </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">02</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Privacy-first edge architecture.</span>
-          <span class="t-jp">プライバシーに配慮したエッジ推論</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Cameras in software trigger privacy fears. Kao Game runs entirely within the client's browser WebAssembly runtime. Video pixels are processed in memory and immediately discarded, extracting only relative vector deltas.</span>
-          <span class="t-jp is-block">カメラ利用への不安を払拭するため、WebAssemblyを用いた完全ブラウザ内エッジ処理を採用。映像フレームはメモリ上でベクトル差分を抽出した瞬間に破棄され、外部サーバーとは一切通信しません。</span>
-        </p>
-      </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">03</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Adaptive neutral baseline calibration.</span>
-          <span class="t-jp">個人差を吸収するベースライン補正</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Human faces are fundamentally asymmetrical. The system calibrates a 3-second neutral resting baseline upon launch, mapping input deltas relative to each individual's unique resting geometry.</span>
-          <span class="t-jp is-block">人間の顔の骨格や左右差は千差万別です。起動時に3秒間のニュートラル姿勢を計測・補正することで、誰でも無理なく正確な操作入力を得られるよう設計されています。</span>
-        </p>
-      </div>
-    </div>
-
-    <!-- Scenarios -->
-    <section class="pj-scenarios">
-      <h2>
-        <span class="t-en">Potential applications</span>
-        <span class="t-jp">期待される応用分野</span>
-      </h2>
-      <ul class="pj-scenarios-list">
-        <li>
-          <strong>Remote work fatigue relief:</strong>
-          <span class="t-en">A 2-minute micro-break to revitalize focus and release tension between long video calls.</span>
-          <span class="t-jp">オンライン会議の合間に、2分で表情筋の緊張をリセットし集中力を取り戻す休憩ツール。</span>
-        </li>
-        <li>
-          <strong>Accessible touchless interfaces:</strong>
-          <span class="t-en">Navigation and selection mechanics for users with limited motor control or hands-busy environments.</span>
-          <span class="t-jp">手や腕を使えない環境や、身体的制約を持つユーザーのためのタッチレス入力インターフェース研究。</span>
-        </li>
-      </ul>
-    </section>
-
-    <!-- Contribution Split -->
-    <div class="pj-contrib">
-      <div>
-        <h3>
-          <span class="t-en">My Contribution</span>
-          <span class="t-jp">担当領域</span>
-        </h3>
-        <ul>
-          <li>Designed the facial interaction game mechanics and scoring curves</li>
-          <li>Engineered in-browser computer vision mesh and landmark tracking</li>
-          <li>Developed calibration pipeline for zero-latency facial input</li>
-        </ul>
-      </div>
-      <div>
-        <h3>
-          <span class="t-en">Research Trajectory</span>
-          <span class="t-jp">研究の位置づけ</span>
-        </h3>
-        <ul>
-          <li>Part of the ongoing "controller-free" physical interaction experiments at Creativity Is Everywhere LLC</li>
-          <li>Exploring human wellness at the seam of play and machine perception</li>
-        </ul>
-      </div>
-    </div>
-
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
 
-  <!-- ── Footer Navigation ── -->
-  <footer class="pj-foot">
-    <a href="typespace.html">
-      <span class="t-en">← Previous: Typespace</span>
-      <span class="t-jp">← 前：Typespace</span>
-    </a>
-    <a href="marubatsu.html">
-      <span class="t-en">Next: Marubatsu 2.0 →</span>
-      <span class="t-jp">次：○× 2.0 →</span>
-    </a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
-
+  <script src="../assets/wipe.js" defer></script>
   <script>
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll(".lang-btn")];
-    const saved = localStorage.getItem("tu-lang") || "en";
-    const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
-      html.lang = lang === "jp" ? "ja" : "en";
-      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-      localStorage.setItem("tu-lang", lang);
-    };
-    setLang(saved);
-    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
-  })();
-
-  // Mobile nav
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
+    // Mobile Menu Toggle
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (!toggle || !links) return;
       toggle.addEventListener('click', () => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          toggle.classList.remove('is-open');
-          links.classList.remove('is-open');
-        });
-      });
-    }
-  })();
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        toggle.classList.remove('is-open');
+        links.classList.remove('is-open');
+      }));
+    })();
   </script>
 </body>
 </html>

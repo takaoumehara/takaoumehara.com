@@ -11,101 +11,22 @@
   <meta property="og:description" content="cross-model-handoff — a lightweight note-and-passphrase protocol for moving active AI coding work between tools without losing context.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/cross-model-handoff.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/og/cross-model-handoff.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="cross-model-handoff — Takao Umehara">
-  <meta name="twitter:description" content="cross-model-handoff — a lightweight note-and-passphrase protocol for moving active AI coding work between tools without losing context.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/og/cross-model-handoff.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,30 +64,61 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>Switch AI tools mid-task. Keep the <em>whole context</em>.AIツールを途中で乗り換えても、<em>文脈はそのまま</em>。</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-      </ul>
-      <h1 class="pj-title">Switch AI tools mid-task. Keep the <em>whole context</em>.AIツールを途中で乗り換えても、<em>文脈はそのまま</em>。</h1>
-      <p class="pj-summary">cross-model-handoff — a lightweight note-and-passphrase protocol for moving active AI coding work between tools without losing context.</p>
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Switch AI tools mid-task. Keep the whole context.AI</h1>
+        <p class="case-lede">cross-model-handoff — a lightweight note-and-passphrase protocol for moving active AI coding work between tools without losing context.</p>
+        
 
-      <div class="pj-cta">
-        <a href="https://github.com/takaoumehara/cross-model-handoff" target="_blank" rel="noopener">Open Live Project ↗</a>
-        <a href="../interactive.html">← Back to Interactive</a>
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="https://github.com/takaoumehara/cross-model-handoff" class="pj-media-link" target="_blank" rel="noopener" aria-label="Open project media">
+        <img src="https://takaoumehara.com/assets/og/cross-model-handoff.jpg" alt="Switch AI tools mid-task. Keep the <em>whole context</em>.AI<em></em>" width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        Switch AI tools mid-task. Keep the <em>whole context</em>.AI<em></em> — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <!-- ═══ Slide 1 · Hero (dark, violet glow) ═══ -->
+    <header  class="wds-hero wds-slide reveal-on-scroll">
+      <p class="wds-kick">Claude Code Plugin · Skill System · Codex · Gemini · Cursor ready</p>
+      <h1 class="wds-serif">Switch AI tools mid-task. Keep the <em>whole context</em>.<span class="t-jp is-block">AI<em></em></span></h1>
+      <p class="wds-hero-lead"><strong>cross-model-handoff</strong> is a lightweight handoff protocol: one <code>.handoff/</code> note and a memorable passphrase carry running work between Claude Code, Codex, Gemini CLI, Antigravity, and Cursor — no re-explaining, no lost state.<span class="t-jp is-block"><strong>cross-model-handoff</strong> <code>.handoff/</code> 11Claude CodeCodexGemini CLIAntigravityCursor </span></p>
+      <div class="wds-chips">
+        <span class="wds-chip">Claude Code Plugin</span>
+        <span class="wds-chip">Skill System</span>
+        <span class="wds-chip">Codex · Gemini · Cursor ready</span>
+        <span class="wds-chip">MIT</span>
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -182,116 +134,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="https://github.com/takaoumehara/cross-model-handoff" class="pj-media-link" target="_blank" rel="noopener" aria-label="Open project media">
-        <img src="https://takaoumehara.com/assets/og/cross-model-handoff.jpg" alt="Switch AI tools mid-task. Keep the <em>whole context</em>.AIツールを途中で乗り換えても、<em>文脈はそのまま</em>。" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">Switch AI tools mid-task. Keep the <em>whole context</em>.AIツールを途中で乗り換えても、<em>文脈はそのまま</em>。 — case study showcase (click to open)</span>
-        <span class="t-jp">Switch AI tools mid-task. Keep the <em>whole context</em>.AIツールを途中で乗り換えても、<em>文脈はそのまま</em>。 — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<!-- ═══ Slide 1 · Hero (dark, violet glow) ═══ -->
-    <header  class="wds-hero wds-slide reveal-on-scroll">
-      <p class="wds-kick"><span class="t-en">Claude Code Plugin · Skill System · Codex · Gemini · Cursor ready</span><span class="t-jp">Claude Code プラグイン · スキルシステム · Codex · Gemini · Cursor 対応</span></p>
-      <h1 class="wds-serif"><span class="t-en">Switch AI tools mid-task. Keep the <em>whole context</em>.</span><span class="t-jp is-block">AIツールを途中で乗り換えても、<em>文脈はそのまま</em>。</span></h1>
-      <p class="wds-hero-lead"><span class="t-en"><strong>cross-model-handoff</strong> is a lightweight handoff protocol: one <code>.handoff/</code> note and a memorable passphrase carry running work between Claude Code, Codex, Gemini CLI, Antigravity, and Cursor — no re-explaining, no lost state.</span><span class="t-jp is-block"><strong>cross-model-handoff</strong> は、ごく軽い引き継ぎの取り決めです。<code>.handoff/</code> にメモを1つ置き、覚えやすいパスフレーズを1つ決めておくだけで、Claude Code・Codex・Gemini CLI・Antigravity・Cursor のあいだを、説明のやり直しも作業状態の消失もなく行き来できます。</span></p>
-      <div class="wds-chips">
-        <span class="wds-chip">Claude Code Plugin</span>
-        <span class="wds-chip"><span class="t-en">Skill System</span><span class="t-jp">スキルシステム</span></span>
-        <span class="wds-chip">Codex · Gemini · Cursor <span class="t-en">ready</span><span class="t-jp">対応</span></span>
-        <span class="wds-chip">MIT</span>
-      </div>
-      <div class="mech-ctas">
-        <a class="story-cta" href="https://github.com/takaoumehara/cross-model-handoff" target="_blank" rel="noopener" aria-label="View cross-model-handoff on GitHub (opens in a new tab)">GitHub ↗</a>
-      </div>
-    </header>
-
-    <!-- ═══ Slide 2 · Mechanism (cream) ═══ -->
-    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="cross-model-handoff details">
-      <div class="mech-grid">
-        <div>
-          <h3><span class="t-en">One note and a passphrase carry the work.</span><span class="t-jp is-block">メモ1つとパスフレーズが、作業を運んでいく。</span></h3>
-          <p class="mech-lead"><span class="t-en">Switching AI coding tools, or clearing context, usually forces people to explain the work again and loses running state that source control can't capture. cross-model-handoff writes a single <code>.handoff/</code> note plus an <code>AGENTS.md</code> convention file that any tool reading project instructions can pick up — carried forward by a short, memorable passphrase instead of a long prompt.</span><span class="t-jp is-block">AI のコーディングツールを切り替えたり、コンテキストを消したりすると、ふつうは背景をもう一度説明することになり、しかも Git では残せない「作業途中の状態」まで消えてしまいます。cross-model-handoff は、プロジェクトの指示を読むツールならどれでも拾える <code>.handoff/</code> のメモと <code>AGENTS.md</code> の規約ファイルを書き出します。引き継ぎに要るのは、長いプロンプトではなく、短くて覚えやすいパスフレーズ一つです。</span></p>
-          <div class="mech-facts">
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Carrier</span><span class="t-jp">媒体</span></div><div class="mech-fact-v"><span class="t-en">.handoff/ note + passphrase</span><span class="t-jp">.handoff/ のメモとパスフレーズ</span></div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Tools</span><span class="t-jp">対応</span></div><div class="mech-fact-v">Claude Code · Codex · Gemini · Cursor</div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Docs</span><span class="t-jp">文書</span></div><div class="mech-fact-v"><span class="t-en">5 languages · MIT</span><span class="t-jp">5言語 · MIT</span></div></div>
-          </div>
-          <div class="mech-ctas">
-            <a class="story-cta" href="https://github.com/takaoumehara/cross-model-handoff" target="_blank" rel="noopener" aria-label="View cross-model-handoff on GitHub (opens in a new tab)">GitHub ↗</a>
-          </div>
-        </div>
-        <div class="mech-figure" aria-hidden="true">
-          <svg class="diagram" viewBox="0 0 160 120" role="img">
-            <rect class="ink draw" x="12" y="36" width="44" height="44" rx="8"/>
-            <circle class="ink draw d2" cx="126" cy="58" r="23"/>
-            <path class="faint" d="M62 58 h56"/>
-            <g class="dot">
-              <rect class="tint" x="60" y="50" width="14" height="17" rx="2"/>
-              <path class="tint" d="M63 56 h8 M63 61 h8"/>
-            </g>
-            <text x="12" y="98">TOOL A</text>
-            <text x="106" y="98">TOOL B</text>
-          </svg>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Slide 3 · Closing (vivid violet) ═══ -->
-    <section class="tool-statement st-violet wds-slide reveal-on-scroll">
-      <p class="wds-kick"><span class="t-en">Why it matters</span><span class="t-jp">なぜ重要か</span></p>
-      <h2 class="wds-serif"><span class="t-en">The protocol that keeps <em>every project moving</em>.</span><span class="t-jp is-block"><em>どのプロジェクトも止めない</em>ための取り決め。</span></h2>
-      <div class="mech-ctas">
-        <a class="story-cta" href="../ai-tools.html"><span class="t-en">Back to AI Tools →</span><span class="t-jp">AI Tools に戻る →</span></a>
-      </div>
-    </section>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

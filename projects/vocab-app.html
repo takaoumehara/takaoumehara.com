@@ -4,108 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <title>Amplify Vocabulary App — Word List Management | Takao Umehara</title>
-  <meta name="description" content="Amplify Vocabulary App — a dual-pane word-list management tool letting ELA curriculum authors search, import, and validate vocabulary lists against a master library of thousands of words. Product design case study by Takao Umehara.">
+  <title>Vocab App Amplify — Takao Umehara</title>
+  <meta name="description" content="We designed a dual-pane administration tool for curriculum authors to assemble grade and stream vocabulary from thousands of words by hand or CSV.">
   <link rel="canonical" href="https://takaoumehara.com/projects/vocab-app.html">
-  <meta property="og:title" content="Amplify Vocabulary App — Word List Management | Takao Umehara">
-  <meta property="og:description" content="Amplify Vocabulary App — a dual-pane word-list management tool letting ELA curriculum authors search, import, and validate vocabulary lists against a master library of thousands of words. Product design case study by Takao Umehara.">
+  <meta property="og:title" content="Vocab App Amplify — Takao Umehara">
+  <meta property="og:description" content="We designed a dual-pane administration tool for curriculum authors to assemble grade and stream vocabulary from thousands of words by hand or CSV.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/vocab-app.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_3.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Amplify Vocabulary App — Word List Management | Takao Umehara">
-  <meta name="twitter:description" content="Amplify Vocabulary App — a dual-pane word-list management tool letting ELA curriculum authors search, import, and validate vocabulary lists against a master library of thousands of words. Product design case study by Takao Umehara.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_3.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,233 +64,74 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>Amplify Vocabulary App: Word List ManagementAmplify Vocabulary アプリ：単語リストの管理</span>
-  </div>
-
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>EdTech</li>
-        <li>Admin Tool</li>
-        <li>UX Design</li>
-      </ul>
-      <h1 class="pj-title">Amplify Vocabulary App: Word List ManagementAmplify Vocabulary アプリ：単語リストの管理</h1>
-      <p class="pj-summary">Amplify's ELA curriculum draws on a master library of thousands of vocabulary words, and curriculum authors needed to assemble and maintain custom word lists from that library for different grades, streams, and lesson plans. Doing this by hand — cross-checking spreadsheets, retyping definitions, catching duplicates — was slow and error-prone. There was no dependable way to see, at a glance, whether a word being added already existed elsewhere in the system.
-          Amplify の英語（ELA）カリキュラムは、数千語を収めたマスターの単語ライブラリを土台にしている。教材をつくる人は、学年やコース、授業計画に合わせて、そこから独自の単語リストを組み立てて管理しなければならない。ところが実際の作業は、スプレッドシートを突き合わせ、語義を手で打ち直し、重複を目で探すというもので、時間がかかるうえに間違いも起きやすかった。いま追加しようとしている単語が、システムのどこかにすでにあるのかどうかを、ひと目で確かめる手段がなかったのだ。</p>
-
-      <div class="pj-cta">
-        
-        <a href="../interactive.html">← Back to Interactive</a>
-      </div>
-
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Product & Creative Direction</dd>
-        </div>
-        <div>
-          <dt>Engagement</dt>
-          <dd>Creativity Is Everywhere LLC</dd>
-        </div>
-        <div>
-          <dt>Medium</dt>
-          <dd>Digital Platform & System</dd>
-        </div>
-        <div>
-          <dt>Status</dt>
-          <dd>Case Study</dd>
-        </div>
-      </dl>
-    </div>
-  </header>
-
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_3.png" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_3.png" alt="Amplify Vocabulary App: Word List ManagementAmplify Vocabulary アプリ：単語リストの管理" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">Amplify Vocabulary App: Word List ManagementAmplify Vocabulary アプリ：単語リストの管理 — case study showcase (click to open)</span>
-        <span class="t-jp">Amplify Vocabulary App: Word List ManagementAmplify Vocabulary アプリ：単語リストの管理 — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label"><span class="t-en">Scope</span><span class="t-jp">スコープ</span></p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">G6–G8</div>
-          <div class="project-aside-desc"><span class="t-en">Grade band covered by the vocabulary curriculum</span><span class="t-jp">語彙カリキュラムが対象とする学年の幅</span></div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">4</div>
-          <div class="project-aside-desc"><span class="t-en">Management modules: Words, Activities, Encounters, Word Lists</span><span class="t-jp">管理する単位：単語、アクティビティ、出会い（Encounters）、単語リスト</span></div>
-        </div>
-      </aside>
-      <div>
-        <h2 class="project-section-title"><span class="t-en">The Tension</span><span class="t-jp">問題の核心</span></h2>
-        <p class="project-text">
-          <span class="t-en">Amplify's ELA curriculum draws on a master library of thousands of vocabulary words, and curriculum authors needed to assemble and maintain custom word lists from that library for different grades, streams, and lesson plans. Doing this by hand — cross-checking spreadsheets, retyping definitions, catching duplicates — was slow and error-prone. There was no dependable way to see, at a glance, whether a word being added already existed elsewhere in the system.</span>
-          <span class="t-jp is-block">Amplify の英語（ELA）カリキュラムは、数千語を収めたマスターの単語ライブラリを土台にしている。教材をつくる人は、学年やコース、授業計画に合わせて、そこから独自の単語リストを組み立てて管理しなければならない。ところが実際の作業は、スプレッドシートを突き合わせ、語義を手で打ち直し、重複を目で探すというもので、時間がかかるうえに間違いも起きやすかった。いま追加しようとしている単語が、システムのどこかにすでにあるのかどうかを、ひと目で確かめる手段がなかったのだ。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">My Approach</span><span class="t-jp">アプローチ</span></h2>
-        <p class="project-text">
-          <span class="t-en">I designed a dual-pane word list manager: the master "All Words" library on the left, the list being built on the right, both searchable and filterable by stream and grade. Authors could hand-pick words directly from the master list, or bulk-import a CSV — and when an import turned up malformed rows or duplicate entries, the interface surfaced them inline, with side-by-side comparison cards so authors could choose the master entry or the incoming one before anything was committed. Every destructive action, like removing a word from a list, got a confirmation step and an undo path.</span>
-          <span class="t-jp is-block">画面を左右に分けた単語リストの管理ツールを設計した。左に全単語が入ったマスターライブラリ「All Words」、右にいま組み立てているリスト。どちらもコースや学年で検索・絞り込みができる。教材をつくる人は、マスターから一語ずつ選んで足すこともできるし、CSV でまとめて取り込むこともできる。取り込みのときに書式が崩れた行や重複した語が出てきたら、その場に並べて表示し、マスター側と取り込み側を横に並べたカードで、確定する前にどちらを採るかを選べるようにした。リストから単語を消すような、あとから戻しにくい操作には、必ず確認の一手間と、取り消せる道を用意している。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">Tools &amp; Methods</span><span class="t-jp">ツール＆手法</span></h2>
-        <div class="tools-list" style="display:flex; gap:8px; flex-wrap:wrap;">
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">UX Research</span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Information Architecture</span><span class="t-jp">情報設計</span></span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);">Figma</span>
-          <span style="font-size:11px; letter-spacing:0.10em; text-transform:uppercase; padding:6px 10px; border:1px solid var(--border); color:var(--ink-dim);"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
-        </div>
-      </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
     </div>
 
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block">
-        <div class="outcome-num">
-          <span class="t-en">Streamlined</span>
-          <span class="t-jp">効率化</span>
-        </div>
-        <div class="outcome-label"><span class="t-en">Word list creation reduced to search, select, and import</span><span class="t-jp">単語リストづくりを、検索・選択・取り込みの3つに絞った</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">CSV</div>
-        <div class="outcome-label"><span class="t-en">Bulk import workflow with inline duplicate and error handling</span><span class="t-jp">重複やエラーをその場で片づけられる一括取り込み</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">
-          <span class="t-en">Table-Driven</span>
-          <span class="t-jp">テーブル駆動</span>
-        </div>
-        <div class="outcome-label"><span class="t-en">Structure-first UI matching how curriculum authors already worked</span><span class="t-jp">教材をつくる人の元々の進め方に沿って、構造から組んだ UI</span></div>
-      </div>
-    </div>
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · creativity is everywhere</span>
+        <p class="case-discipline">Curriculum-authoring workflow design</p>
+        <h1 class="case-title">Vocab App Amplify</h1>
+        <p class="case-lede">We designed a dual-pane administration tool for curriculum authors to assemble grade and stream vocabulary from thousands of words by hand or CSV.</p>
+        <p class="case-note">Amplify Education</p>
 
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label"><span class="t-en">01 — The Tool: Manage Word Lists, from the master library to a table-driven authoring workspace.</span><span class="t-jp">01 — ツール本体：マスターライブラリから、表を中心にした作業画面へ。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_7.png" alt="All Words — master vocabulary library with search, stream and grade filters, and pagination across hundreds of pages" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_4.png" alt="Create a new word list — dual-pane workspace pairing the master library with the list being built" loading="lazy"></div>
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_24.png" alt="A populated word list — imported words shown with duplicate flags ready for review" loading="lazy"></div>
-      </div>
-    </div>
-
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label"><span class="t-en">02 — Interaction Details: bulk import, inline validation, and safe editing states.</span><span class="t-jp">02 — 操作の細部：一括取り込み、その場での入力チェック、安全に編集できる状態。</span></p>
-      <div class="g-row r2">
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_5.png" alt="Uploading a CSV — native file picker for bulk word list import" loading="lazy"></div>
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_6.png" alt="Import in progress after a CSV file is selected" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_8.png" alt="Import confirmation step before words are added to the list" loading="lazy"></div>
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_9.png" alt="Inline validation flags a row with missing part-of-speech data and surfaces duplicate words before import completes" loading="lazy"></div>
-      </div>
-      <div class="g-row r2">
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_20.png" alt="Multi-selecting words directly from the master word list" loading="lazy"></div>
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_22.png" alt="Confirmation toast after adding selected words, with an undo option" loading="lazy"></div>
-      </div>
-      <div class="g-row r3">
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_13.png" alt="Delete confirmation — a safeguard before removing a word from a list" loading="lazy"></div>
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_14.png" alt="Undo toast after removing a word from a list" loading="lazy"></div>
-        <div class="g-cell ui"><img src="../assets/vocab-app/ELA_Vocab_Sketch_TU06_New_highlight.png" alt="Row hover and selection highlight state in the word table" loading="lazy"></div>
-      </div>
-    </div>
-
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label"><span class="t-en">03 — Walkthrough</span><span class="t-jp">03 — ウォークスルー</span></p>
-      <div class="g-row r1">
-        <div class="proj-video">
-          <video controls preload="metadata" poster="../assets/vocab-app/Vocabapp_walkthru-poster.jpg">
-            <source src="../assets/vocab-app/Vocabapp_walkthru.mp4" type="video/mp4">
-          </video>
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
         </div>
       </div>
+
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <img src="../assets/work-vocab/hero.webp" alt="Amplify Vocab word-list builder with the master word library on the left and the new list on the right" width="1600" height="1034" loading="lazy" decoding="async">
+      <figcaption class="mono">The dual-pane workspace keeps the source library and the list being assembled visible together.</figcaption>
+      </figure>
+    </header>
+
+    <!-- ── The Design Decision (Unboxed Thesis) ── -->
+    <section class="case-thesis">
+      <span class="case-thesis__label">The Design Decision</span>
+      <p class="case-thesis__statement">A word list became a reviewable data workflow.</p>
+    </section>
+
+    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
+    <dl class="counts">
+      <div class="count"><dt class="mono">grade range</dt><dd>6–8</dd></div>
+      <div class="count"><dt class="mono">connected modules</dt><dd>4</dd></div>
+      <div class="count"><dt class="mono">manual and CSV inputs</dt><dd>2</dd></div>
+    </dl>
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <section class="case-chapter">
+      <div class="case-chapter__copy">
+        <p class="case-chapter__eyebrow mono">01 · Situation</p>
+        <h2>Authors were assembling lists from a large vocabulary system.</h2>
+        <p>The administration product connected Words, Activities, Encounters, and Word Lists across grades 6–8. Curriculum authors needed to find, compare, and organise thousands of records without losing grade and stream context.</p>
     </div>
 
-    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label"><span class="t-en">Deliverables</span><span class="t-jp">成果物</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">UX Research &amp; Insight Generation</span><span class="t-jp">UX リサーチとインサイトの抽出</span></li>
-          <li><span class="t-en">Information Architecture</span><span class="t-jp">情報設計</span></li>
-          <li><span class="t-en">Wireframing &amp; Prototyping</span><span class="t-jp">ワイヤーフレームとプロトタイピング</span></li>
-          <li><span class="t-en">UI Design (Web App)</span><span class="t-jp">UI デザイン（Web アプリ）</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Methods</span><span class="t-jp">手法</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Task Analysis</span><span class="t-jp">タスク分析</span></li>
-          <li><span class="t-en">Content &amp; Data Modeling</span><span class="t-jp">コンテンツとデータの設計</span></li>
-          <li><span class="t-en">Usability Review</span><span class="t-jp">ユーザビリティレビュー</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Team</span><span class="t-jp">チーム</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Curriculum Team (Domain Expert)</span><span class="t-jp">カリキュラムチーム（教科の専門家）</span></li>
-          <li><span class="t-en">Engineering</span><span class="t-jp">エンジニアリング</span></li>
-          <li><span class="t-en">QA</span><span class="t-jp">QA</span></li>
-        </ul>
-      </div>
-    </div>
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div class="stat"><dt class="mono">Client</dt><dd>Amplify Education</dd></div>
+      <div class="stat"><dt class="mono">Role</dt><dd>UX design</dd></div>
+      <div class="stat"><dt class="mono">What we made</dt><dd>Dual-pane word-list manager, filtering, CSV import, validation, confirmation, and undo</dd></div>
+    </dl>
 
-    <div class="nav-project">
-      <a href="../work.html"><span class="t-en">&larr; All Work</span><span class="t-jp">&larr; すべての仕事</span></a>
-      <a href="ela-quests.html"><span class="t-en">Next: Amplify ELA Quests</span><span class="t-jp">次：Amplify ELA Quests</span> &rarr;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

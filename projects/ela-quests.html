@@ -11,101 +11,22 @@
   <meta property="og:description" content="Amplify ELA Quests — immersive quest-based learning products reaching millions of students. Product design case study by Takao Umehara.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/ela-quests.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Amplify ELA Quests — Takao Umehara">
-  <meta name="twitter:description" content="Amplify ELA Quests — immersive quest-based learning products reaching millions of students. Product design case study by Takao Umehara.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,862 +64,79 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>Amplify Education ELA Quests
-        Amplify Education の ELA クエスト</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>EdTech</li>
-        <li>Product Design</li>
-        <li>AR</li>
-      </ul>
-      <h1 class="pj-title">Amplify Education ELA Quests
-        Amplify Education の ELA クエスト</h1>
-      <p class="pj-summary">Teachers wanted to deliver engaging, immersive ELA instruction, but creating those
-            experiences demanded specialized skills, time, and technical knowledge that most educators simply didn't
-            have. The gap between what the best teachers could achieve and what the average teacher could deliver was
-            widening.
-          先生たちは、子どもが夢中になる国語（ELA）の授業をしたいと思っていた。けれど、そういう体験をゼロからつくるには、専門的な技術と時間と技術の知識が必要で、ほとんどの先生にはそれがない。結果として、力のある先生ができることと、ふつうの先生ができることの差は、開く一方だった。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Amplify Education ELA Quests
+        Amplify Education  ELA</h1>
+        <p class="case-lede">Amplify ELA Quests — immersive quest-based learning products reaching millions of students. Product design case study by Takao Umehara.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Lead Product Designer</dd>
-        </div>
-      </dl>
-    </div>
-  </header>
-
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/shared/Quest_teaser_tr.png" class="pj-media-link" aria-label="Open project media">
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/shared/Quest_teaser_tr.png" class="pj-media-link" aria-label="Open project media">
         <img src="../assets/shared/Quest_teaser_tr.png" alt="Amplify Education ELA Quests
-        Amplify Education の ELA クエスト" width="1200" height="800" loading="eager">
+        Amplify Education  ELA " width="1200" height="800" loading="eager">
       </a>
       <figcaption>
-        <span class="t-en">Amplify Education ELA Quests
-        Amplify Education の ELA クエスト — case study showcase (click to open)</span>
-        <span class="t-jp">Amplify Education ELA Quests
-        Amplify Education の ELA クエスト — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
+        Amplify Education ELA Quests
+        Amplify Education  ELA  — case study showcase (click to open)
+        
       </figcaption>
-    </figure>
+      </figure>
+    </header>
 
-    <div class="project-content-body">
-<!-- ═══ Overview ═══ -->
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <!-- ═══ Overview ═══ -->
     <div class="project-overview reveal-on-scroll">
       <aside>
         <p class="project-aside-label">
-          <span class="t-en">Impact</span>
-          <span class="t-jp">インパクト</span>
+          Impact
+          
         </p>
         <div class="project-aside-stat">
           <div class="project-aside-num">
-            <span class="t-en">Millions</span>
-            <span class="t-jp">数百万</span>
-          </div>
-          <div class="project-aside-desc">
-            <span class="t-en">Students reached across the US</span>
-            <span class="t-jp">全米の生徒に届いた</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">10+</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Quest modules launched</span>
-            <span class="t-jp">本のクエストモジュールを公開</span>
-          </div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">AR</div>
-          <div class="project-aside-desc">
-            <span class="t-en">Technology integrated into classroom experiences</span>
-            <span class="t-jp">AR を教室での学習体験に組み込んだ</span>
-          </div>
-        </div>
-      </aside>
+            Millions
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
       <div>
-        <h2 class="project-section-title">
-          <span class="t-en">The Tension</span>
-          <span class="t-jp">問題の核心</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">Teachers wanted to deliver engaging, immersive ELA instruction, but creating those
-            experiences demanded specialized skills, time, and technical knowledge that most educators simply didn't
-            have. The gap between what the best teachers could achieve and what the average teacher could deliver was
-            widening.</span>
-          <span
-            class="t-jp is-block">先生たちは、子どもが夢中になる国語（ELA）の授業をしたいと思っていた。けれど、そういう体験をゼロからつくるには、専門的な技術と時間と技術の知識が必要で、ほとんどの先生にはそれがない。結果として、力のある先生ができることと、ふつうの先生ができることの差は、開く一方だった。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">My Approach</span>
-          <span class="t-jp">アプローチ</span>
-        </h2>
-        <p class="project-text">
-          <span class="t-en">I designed ready-to-use immersive quest modules that empowered all teachers to deliver
-            dynamic ELA instruction. Each quest was a complete 5-day lesson sequence with scripts, teacher guides, and
-            embedded assessments. I integrated AR technology for experiential learning, created a teacher-facing app for
-            seamless classroom implementation, and developed drawer-based navigation systems inspired by the content
-            itself.</span>
-          <span
-            class="t-jp is-block">どの先生でも生き生きとした国語の授業ができるように、そのまま使える没入型のクエストモジュールを設計した。各クエストは、台本、先生向けのガイド、評価まで組み込んだ5日間の授業セットになっている。体験して学べるように AR を組み込み、教室でそのまま使える先生向けアプリを開発し、題材そのものから発想した「引き出し」式のナビゲーションをつくった。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;">
-          <span class="t-en">Tools &amp; Methods</span>
-          <span class="t-jp">ツール＆手法</span>
-        </h2>
-        <div class="tools-list">
-          <span class="tool-tag"><span class="t-en">Technology Research</span><span
-              class="t-jp">技術リサーチ</span></span>
-          <span class="tool-tag"><span class="t-en">UX Research</span><span class="t-jp">UXリサーチ</span></span>
-          <span class="tool-tag"><span class="t-en">Product Concept</span><span class="t-jp">プロダクトコンセプト</span></span>
-          <span class="tool-tag"><span class="t-en">Persona Creation</span><span class="t-jp">ペルソナ作成</span></span>
-          <span class="tool-tag"><span class="t-en">Journey Mapping</span><span class="t-jp">ジャーニーマッピング</span></span>
-          <span class="tool-tag"><span class="t-en">Prototyping</span><span class="t-jp">プロトタイピング</span></span>
-          <span class="tool-tag">AR Integration</span>
+          <dt>Role</dt>
+          <dd>Lead Product Designer</dd>
         </div>
-      </div>
-    </div>
+    </dl>
 
-    <!-- ═══ Outcomes Grid ═══ -->
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block">
-        <div class="outcome-num">01</div>
-        <div class="outcome-label">
-          <span class="t-en">Boosted student engagement through immersive storytelling, role-playing, and multimedia
-            experiences</span>
-          <span class="t-jp">没入感のある物語、ロールプレイ、映像や音を使った体験で、生徒が自分から前に出てくるようにした</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">02</div>
-        <div class="outcome-label">
-          <span class="t-en">Enhanced literacy skills aligned with CCSS, strengthening critical reading, writing, and
-            speaking</span>
-          <span class="t-jp">CCSS に沿って読む力・書く力・話す力を伸ばし、国語の土台を強くした</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">03</div>
-        <div class="outcome-label">
-          <span class="t-en">Empowered teachers with step-by-step guides, assessment tools, and professional
-            development</span>
-          <span class="t-jp">手順を追えるガイド、評価のツール、研修で、先生の負担を減らした</span>
-        </div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">04</div>
-        <div class="outcome-label">
-          <span class="t-en">Enabled data-driven instruction with embedded assessments and measurable literacy
-            growth</span>
-          <span class="t-jp">授業に評価を組み込むことで、データを見ながら指導でき、伸びも数字で追えるようにした</span>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══ Product Overview Video ═══ -->
-    <div class="reveal-on-scroll" style="margin-bottom: 72px;">
-      <h2 class="project-section-title" style="margin-bottom: 16px;">
-        <span class="t-en">Quests in Action</span>
-        <span class="t-jp">クエストの実際の様子</span>
-      </h2>
-      <p class="project-text" style="max-width: 800px;">
-        <span class="t-en">An official overview of the Quest curriculum for Core Grades 3–5 — how the immersive,
-          multi-day modules I designed come together in the classroom.</span>
-        <span class="t-jp is-block">3〜5年生向けのコアカリキュラムに入っているクエストの公式紹介動画。
-          私が設計した数日がかりの没入型モジュールが、実際の教室でどう動くかが分かります。</span>
-      </p>
-      <div
-        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 12px;">
-        <iframe src="https://www.youtube.com/embed/x4tz6Pd0pT4?modestbranding=1&rel=0&iv_load_policy=3"
-          title="Amplify Curriculum: Quests for the Core Grades 3-5" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
-      </div>
-      <a href="https://www.youtube.com/watch?v=x4tz6Pd0pT4" target="_blank" rel="noopener" class="quest-video-link">
-        <span class="t-en">Watch on YouTube ↗</span>
-        <span class="t-jp">YouTube で見る ↗</span>
-      </a>
-    </div>
-
-
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- ═══ QUEST 01: Who Killed Edgar Allan Poe? ═══ -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="quest-section reveal-on-scroll">
-      <div class="quest-header">
-        <div class="quest-num">Quest 01</div>
-        <h3 class="quest-title">
-          <span class="t-en">Who Killed Edgar Allan Poe?</span>
-          <span class="t-jp">エドガー・アラン・ポーを殺したのは誰だ？</span>
-        </h3>
-        <div class="quest-grade">
-          <span class="t-en">7th Grade</span>
-          <span class="t-jp">7年生</span>
-        </div>
-        <p class="quest-desc">
-          <span class="t-en">Poe has been murdered and students must figure out who did it. They explore a range of
-            suspects, including characters from Poe's works and his critics. Students assume the identity of a suspect
-            and interview each other to uncover evidence.</span>
-          <span
-            class="t-jp is-block">ポーが殺された。生徒たちは犯人を突き止めなければならない。容疑者はポーの作品の登場人物や当時の批評家たち。生徒はその容疑者になりきってお互いに聞き込みをし、証拠を集めていく。</span>
-        </p>
-        <div class="quest-rationale">
-          <div class="quest-rationale-label">
-            <span class="t-en">Design Rationale</span>
-            <span class="t-jp">設計の理由</span>
-          </div>
-          <span class="t-en">This Quest incorporates bold visualizations and a wry sense of humor to highlight the
-            macabre fun of Poe's Gothic style. Students role-play as characters from Poe's poems, short stories, and
-            even his biography, as they try to solve an elaborate murder mystery. To unravel the plot, students practice
-            close reading of new primary source documents and additional works of Poe's not previously encountered in
-            the curriculum. They will use a digital, interactive detective notebook that allows them to collect and
-            organize their evidence as they work toward the creation of an opinion piece proving the identity of the
-            murderer in this mystery.</span>
-          <span
-            class="t-jp is-block">このクエストでは、ポーのゴシックな世界の「怖いけど楽しい」感じを前に出すために、大胆なビジュアルと少し皮肉の効いたユーモアを使っている。生徒はポーの詩や短編、さらには伝記に出てくる人物を演じながら、入り組んだ殺人ミステリーを解いていく。筋を追うために、授業ではまだ扱っていない一次資料やポーの他の作品を、じっくり読む練習をする。デジタルの探偵ノートで証拠を集めて整理しながら、最後は「犯人はこの人物だ」と論証する意見文を書き上げる。</span>
-        </div>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">Quest Walkthrough</span>
-        <span class="t-jp">クエストウォークスルー</span>
-      </p>
-      <div class="quest-video">
-        <video controls preload="metadata" poster="../assets/ela-quests/EdgarAllanPoe_01.png">
-          <source src="../assets/ela-quests/QUEST-Video_Amplify_live_Poe_Quest.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">Quest Opening</span>
-        <span class="t-jp">クエスト冒頭</span>
-      </p>
-      <div
-        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 12px;">
-        <iframe src="https://www.youtube.com/embed/R9Jo9R2OXHg?modestbranding=1&rel=0&iv_load_policy=3"
-          title="Amplify Edgar Allan Poe Quest Opening" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
-      </div>
-      <a href="https://www.youtube.com/watch?v=R9Jo9R2OXHg" target="_blank" rel="noopener" class="quest-video-link">
-        <span class="t-en">Watch on YouTube ↗</span>
-        <span class="t-jp">YouTube で見る ↗</span>
-      </a>
-
-      <div class="gallery">
-        <p class="gallery-label">
-          <span class="t-en">Quest Screens</span>
-          <span class="t-jp">クエスト画面</span>
-        </p>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/EdgarAllanPoe_01.png" alt="Edgar Allan Poe Quest — Screen 01" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/EdgarAllanPoe_02.png" alt="Edgar Allan Poe Quest — Screen 02" loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/EdgarAllanPoe_03.png" alt="Edgar Allan Poe Quest — Screen 03" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/EdgarAllanPoe_04.png" alt="Edgar Allan Poe Quest — Screen 04" loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r1">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/EdgarAllanPoe_05.png" alt="Edgar Allan Poe Quest — Screen 05" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- ═══ QUEST 02: Perception Academy ═══════════ -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="quest-section reveal-on-scroll">
-      <div class="quest-header">
-        <div class="quest-num">Quest 02</div>
-        <h3 class="quest-title">
-          <span class="t-en">Perception Academy</span>
-          <span class="t-jp">知覚のふしぎ学園</span>
-        </h3>
-        <div class="quest-grade">
-          <span class="t-en">7th Grade — AR Learning</span>
-          <span class="t-jp">7年生 — AR を使った学習</span>
-        </div>
-        <p class="quest-desc">
-          <span class="t-en">Students explore a series of linked activities focusing on brain disorders and how they
-            affect our perception and response to the world. They move through the periods of a school day as though
-            they have one of the perception disorders described in Oliver Sacks's book <em>The Man Who Mistook His Wife
-              for a Hat</em>. AR technology deepened empathy and understanding of neurological conditions.</span>
-          <span
-            class="t-jp is-block">脳の障害が、人の知覚や世界の受け取り方をどう変えるのか。それを一連のアクティビティで探っていく。生徒はオリヴァー・サックスの『妻を帽子とまちがえた男』に出てくる知覚障害を実際に体験しながら、学校の一日を過ごす。AR があることで、脳や神経の病気への理解と共感が一段深まった。</span>
-        </p>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">Quest Introduction</span>
-        <span class="t-jp">クエストの紹介</span>
-      </p>
-      <div
-        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 12px;">
-        <iframe src="https://www.youtube.com/embed/WC69Qsph8I4?modestbranding=1&rel=0&iv_load_policy=3"
-          title="Perception Academy Quest" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
-      </div>
-      <a href="https://www.youtube.com/watch?v=WC69Qsph8I4" target="_blank" rel="noopener" class="quest-video-link">
-        <span class="t-en">Watch on YouTube ↗</span>
-        <span class="t-jp">YouTube で見る ↗</span>
-      </a>
-
-      <div class="gallery">
-        <p class="gallery-label">
-          <span class="t-en">Quest Screens</span>
-          <span class="t-jp">クエスト画面</span>
-        </p>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/PerceptionAcademy_Quest_Amplify_Page_05.png"
-              alt="Perception Academy — Page 05" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/PerceptionAcademy_Quest_Amplify_Page_07.png"
-              alt="Perception Academy — Page 07" loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/PerceptionAcademy_Quest_Amplify_Page_09.png"
-              alt="Perception Academy — Page 09" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/PerceptionAcademy_Quest_Amplify_Page_11.png"
-              alt="Perception Academy — Page 11" loading="lazy">
-          </div>
-        </div>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">AR Development — Brain Disorder Breakfast Scene Prototypes</span>
-        <span class="t-jp">AR の開発 — 脳の障害を体験する朝食シーンのプロトタイプ</span>
-      </p>
-      <div class="quest-yt-row">
-        <div class="quest-yt-cell">
-          <iframe src="https://www.youtube.com/embed/zy8QF_tcOGg?modestbranding=1&rel=0&iv_load_policy=3"
-            title="AR Prototype — Brain Disorder 1" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen></iframe>
-        </div>
-        <div class="quest-yt-cell">
-          <iframe src="https://www.youtube.com/embed/1DtlVvPcxlk?modestbranding=1&rel=0&iv_load_policy=3"
-            title="AR Prototype — Brain Disorder 2" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen></iframe>
-        </div>
-        <div class="quest-yt-cell">
-          <iframe src="https://www.youtube.com/embed/8iEn-EOcqOA?modestbranding=1&rel=0&iv_load_policy=3"
-            title="AR Prototype — Brain Disorder 3" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen></iframe>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- ═══ QUEST 03: Declare Yourself! ════════════ -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="quest-section reveal-on-scroll">
-      <div class="quest-header">
-        <div class="quest-num">Quest 03</div>
-        <h3 class="quest-title">
-          <span class="t-en">Declare Yourself!</span>
-          <span class="t-jp">立場を宣言せよ！</span>
-        </h3>
-        <div class="quest-grade">
-          <span class="t-en">Congress Roleplay</span>
-          <span class="t-jp">議会のロールプレイ</span>
-        </div>
-        <p class="quest-desc">
-          <span class="t-en">Students navigate the historical debate of the Declaration of Independence as members of
-            the Second Continental Congress. They embody historical figures, arguing their stances with evidence and
-            teamwork, aiming to sway opinions.</span>
-          <span
-            class="t-jp is-block">第二次大陸会議の一員として、独立宣言をめぐる歴史上の議論をそのまま体験する。生徒は当時の人物になりきり、証拠とチームワークで自分の立場を主張し、会議の空気を動かすことを目指す。</span>
-        </p>
-        <div class="quest-rationale">
-          <div class="quest-rationale-label">
-            <span class="t-en">Design Rationale — Drawer UI</span>
-            <span class="t-jp">設計の理由 — 引き出し型の UI</span>
-          </div>
-          <span class="t-en">The interface design takes inspiration from the historical drawers commonly found in
-            congress buildings. Each of the four main UI navigation elements functions like a drawer, allowing users to
-            "pull out" each section by clicking on its corresponding tab. This interactive drawer mechanism provides
-            access to distinct activities within the learning experience, making navigation intuitive and immersing
-            users in a tactile, period-appropriate design that reflects the setting of the content.</span>
-          <span
-            class="t-jp is-block">インターフェイスの発想元は、当時の議事堂にあった木製の引き出しだ。主要な4つのナビゲーションはそれぞれ引き出しになっていて、タブをクリックするとそのセクションが「引き出されて」開く。この仕掛けによって、学習の中の個々のアクティビティに直感的にたどり着けるうえ、手で触れているような、舞台となる時代に合った感触の中に入っていける。</span>
-        </div>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">UI Walkthrough</span>
-        <span class="t-jp">UI の紹介</span>
-      </p>
-      <div
-        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 32px;">
-        <iframe src="https://www.youtube.com/embed/QmRjDav1-2I?modestbranding=1&rel=0&iv_load_policy=3"
-          title="Declare Yourself — UI Walkthrough" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
-      </div>
-
-      <div class="gallery">
-        <div class="g-row r1">
-          <div class="g-cell dark">
-            <img src="../assets/dnt/Declare-3.png" alt="Declare Yourself! — Quest scene" loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/dnt/DeclareScreenshot2.png" alt="Declare Yourself! — Screenshot 2" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/dnt/DeclareScreenshot8.png" alt="Declare Yourself! — Screenshot 8" loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/dnt/DeclareScreenshot23.png" alt="Declare Yourself! — Screenshot 23" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/dnt/DeclareScreenshot30.png" alt="Declare Yourself! — Screenshot 30" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- ═══ QUEST 04: A Viking's Journey ═══════════ -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="quest-section reveal-on-scroll">
-      <div class="quest-header">
-        <div class="quest-num">Quest 04</div>
-        <h3 class="quest-title">
-          <span class="t-en">A Far From Home: A Viking's Journey</span>
-          <span class="t-jp">故郷を遠く離れて：ヴァイキングの航海</span>
-        </h3>
-        <div class="quest-grade">
-          <span class="t-en">3rd Grade — Multi-sensory, 5 Lessons</span>
-          <span class="t-jp">3年生 — 五感を使う、全5回</span>
-        </div>
-        <p class="quest-desc">
-          <span class="t-en">Students embark on an immersive adventure as Vikings alongside Leif Erikson, aiming to
-            establish the first Norse settlement in North America. Through their voyage, they encounter diverse
-            characters, diving deep into Viking society. The Quest blends writing, listening, speaking, reading, and
-            physical activities across five 45-minute lessons.</span>
-          <span
-            class="t-jp is-block">レイフ・エリクソンとともにヴァイキングとして旅に出て、北米で最初のノース人の集落をつくることを目指す。航海の途中でさまざまな人物に出会いながら、ヴァイキングの社会を掘り下げていく。45分の授業5回のなかに、作文、聞く、話す、読む、そして体を動かす活動を織り込んだ。</span>
-        </p>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">Quest Introduction</span>
-        <span class="t-jp">クエストの紹介</span>
-      </p>
-      <div class="quest-video">
-        <video controls preload="metadata">
-          <source src="../assets/ela-quests/QUEST-Video_Viking-short.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <div class="gallery">
-        <div class="g-row r3">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Quest_Viking1.png" alt="A Viking's Journey — Visual 1" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Quest_Viking2.png" alt="A Viking's Journey — Visual 2" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Quest_Viking4.png" alt="A Viking's Journey — Visual 4" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- ═══ QUEST 05: The Contraption Quest ════════ -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="quest-section reveal-on-scroll">
-      <div class="quest-header">
-        <div class="quest-num">Quest 05</div>
-        <h3 class="quest-title">
-          <span class="t-en">The Contraption Quest</span>
-          <span class="t-jp">からくり装置クエスト</span>
-        </h3>
-        <div class="quest-grade">
-          <span class="t-en">Interactive Writing Adventure</span>
-          <span class="t-jp">書きながら進む冒険</span>
-        </div>
-        <p class="quest-desc">
-          <span class="t-en">Students explore the world of inventions and contraptions through a creative writing
-            journey. The quest challenges students to imagine, design, and write about their own fantastical machines
-            while developing narrative and expository writing skills.</span>
-          <span
-            class="t-jp is-block">発明とからくり装置の世界を、書くことを通して旅していく。自分だけの空想の機械を思いつき、設計し、それについて書く。その過程で、物語を書く力と説明する力の両方が伸びていく。</span>
-        </p>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">Quest Introduction</span>
-        <span class="t-jp">クエストの紹介</span>
-      </p>
-      <div class="quest-video">
-        <video controls preload="metadata">
-          <source src="../assets/ela-quests/QUEST-Video_Introducing_The_Contraption.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">Live Experience</span>
-        <span class="t-jp">ライブ体験</span>
-      </p>
-      <div class="quest-embed">
-        <img src="../assets/ela-quests/Contraption_Dashboard.jpg" alt="Contraption Quest — Live dashboard"
-          style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy">
-      </div>
-      <a href="https://learning.amplify.com/contraption/#/dashboard" target="_blank" rel="noopener"
-        class="quest-video-link">
-        <span class="t-en">Explore the live product ↗</span>
-        <span class="t-jp">実際のプロダクトを見る ↗</span>
-      </a>
-
-      <div class="gallery">
-        <p class="gallery-label">
-          <span class="t-en">Quest Screens</span>
-          <span class="t-jp">クエスト画面</span>
-        </p>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Contraption_Progress.jpg" alt="Contraption Quest — Machine build progress"
-              loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Contraption_Portal.jpg" alt="Contraption Quest — Portal transition scene"
-              loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Contraption_WritingPrompt.jpg"
-              alt="Contraption Quest — 'Visiting a Relative' writing prompt" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Contraption_MeMail.jpg" alt="Contraption Quest — Simulated meMail inbox"
-              loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Contraption_EmotionCube.jpg"
-              alt="Contraption Quest — Emotion-selector interaction" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Contraption_Final.jpg" alt="Contraption Quest — Completed machine reveal"
-              loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- ═══ QUEST 06: The Robot Quest ══════════════ -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="quest-section reveal-on-scroll">
-      <div class="quest-header">
-        <div class="quest-num">Quest 06</div>
-        <h3 class="quest-title">
-          <span class="t-en">The Robot Quest</span>
-          <span class="t-jp">ロボットクエスト</span>
-        </h3>
-        <div class="quest-grade">
-          <span class="t-en">Year-long Writing Adventure</span>
-          <span class="t-jp">1年かけて書き進める冒険</span>
-        </div>
-        <p class="quest-desc">
-          <span class="t-en">A year-long writing project that invited students to explore the theme of robots through
-            narrative and expository writing tasks. Students progressively built their writing skills through a sequence
-            of connected assignments, fostering both creativity and structure over the course of the school year.</span>
-          <span
-            class="t-jp is-block">ロボットをテーマに、物語文と説明文の課題を1年かけて積み上げていくプロジェクト。前の課題が次の課題につながる構成にして、書く力を段々と高めながら、発想力と文章を組み立てる力の両方を育てた。</span>
-        </p>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">Quest Introduction</span>
-        <span class="t-jp">クエストの紹介</span>
-      </p>
-      <div
-        style="position: relative; width: 100%; max-width: 800px; aspect-ratio: 16/9; border-radius: 4px; overflow: hidden; background: #111; margin-bottom: 12px;">
-        <iframe src="https://www.youtube.com/embed/tGTMEJtGkm4?modestbranding=1&rel=0&iv_load_policy=3"
-          title="Introducing The Robot" frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen style="position: absolute; inset: 0; width: 100%; height: 100%;"></iframe>
-      </div>
-      <a href="https://www.youtube.com/watch?v=tGTMEJtGkm4" target="_blank" rel="noopener" class="quest-video-link">
-        <span class="t-en">Watch on YouTube ↗</span>
-        <span class="t-jp">YouTube で見る ↗</span>
-      </a>
-
-      <p class="quest-video-label">
-        <span class="t-en">Live Experience</span>
-        <span class="t-jp">ライブ体験</span>
-      </p>
-      <div class="quest-embed">
-        <img src="../assets/ela-quests/Robot_01.png" alt="Robot Quest — Live dashboard"
-          style="width:100%; height:100%; object-fit:cover; display:block;" loading="lazy">
-      </div>
-      <a href="https://learning.amplify.com/robot/#/home" target="_blank" rel="noopener" class="quest-video-link">
-        <span class="t-en">Explore the live product ↗</span>
-        <span class="t-jp">実際のプロダクトを見る ↗</span>
-      </a>
-
-      <div class="gallery">
-        <p class="gallery-label">
-          <span class="t-en">Quest Screens</span>
-          <span class="t-jp">クエスト画面</span>
-        </p>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Robot_02.png" alt="Robot Quest — Keyboard controls" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Robot_03.png" alt="Robot Quest — Character design" loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Robot_06.png" alt="Robot Quest — Skill drill lesson screen" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Robot_08.png" alt="Robot Quest — Newspaper job application lesson"
-              loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- ═══ QUEST 07: Myth World ═══════════════════ -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="quest-section reveal-on-scroll">
-      <div class="quest-header">
-        <div class="quest-num">Quest 07</div>
-        <h3 class="quest-title">
-          <span class="t-en">Myth World</span>
-          <span class="t-jp">神話の世界</span>
-        </h3>
-        <div class="quest-grade">
-          <span class="t-en">Greek Mythology Exploration</span>
-          <span class="t-jp">ギリシャ神話をめぐる探究</span>
-        </div>
-        <p class="quest-desc">
-          <span class="t-en">There's no one way to interpret Greek myths. Each myth can be enjoyed without context, and
-            yet also connects in ways great and small to other myths from the canon. This Quest is an exploration
-            designed to make students more broadly literate in the world of Greek mythology. Students can use their
-            devices to climb Mount Olympus or cross the Mediterranean Sea to Crete, reading new myths that take place in
-            each setting. Class discussions can also further help students to create small communities — not unlike a
-            Greek chorus or council — as they learn to share knowledge about this historical period.</span>
-          <span
-            class="t-jp is-block">ギリシャ神話の読み方に、唯一の正解はない。ひとつの神話はそれだけでも面白いが、他の神話と大小さまざまにつながっている。このクエストは、その世界を広く掴むための探究型の学習だ。生徒は端末を使ってオリュンポス山を登り、地中海を渡ってクレタ島へ行き、着いた先ごとに新しい神話を読む。教室での話し合いでは、ギリシャの合唱隊や評議会のような小さな共同体をつくり、知ったことを持ち寄って共有する。</span>
-        </p>
-      </div>
-
-      <p class="quest-video-label">
-        <span class="t-en">Quest Introduction</span>
-        <span class="t-jp">クエストの紹介</span>
-      </p>
-      <div class="quest-video">
-        <video controls preload="metadata">
-          <source src="../assets/ela-quests/QUEST-Video_Intro_Myth_World_Quest.mp4" type="video/mp4">
-        </video>
-      </div>
-
-      <div class="gallery">
-        <p class="gallery-label">
-          <span class="t-en">Quest Screens</span>
-          <span class="t-jp">クエスト画面</span>
-        </p>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/GreekMyth1.png" alt="Myth World — Mount Olympus scene with the pantheon"
-              loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/GreekMyth7.png" alt="Myth World — Exploring the mortal realm"
-              loading="lazy">
-          </div>
-        </div>
-        <div class="g-row r2">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/GreekMyth9.png" alt="Myth World — Coastal island setting" loading="lazy">
-          </div>
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/GreekMyth10.png"
-              alt="Myth World — Interactive story tree connecting the myths" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══════════════════════════════════════════════ -->
-    <!-- ═══ Teacher-Facing App ═════════════════════ -->
-    <!-- ═══════════════════════════════════════════════ -->
-    <div class="quest-section reveal-on-scroll">
-      <div class="quest-header">
-        <div class="quest-num">
-          <span class="t-en">Teacher-Facing App</span>
-          <span class="t-jp">先生向けアプリ</span>
-        </div>
-        <h3 class="quest-title">
-          <span class="t-en">Quest Teacher Application</span>
-          <span class="t-jp">クエスト用の先生向けアプリ</span>
-        </h3>
-        <p class="quest-desc">
-          <span class="t-en">I designed a teacher-facing app to help teachers learn about each Quest, prepare for the
-            five days of lessons, and implement the Quest in the classroom. The app serves as an educational tool for
-            understanding the Quest and provides a comprehensive guide for the five-day lessons, complete with scripts
-            and flow. This ensured that every teacher, regardless of their previous experience, could confidently
-            conduct a beautifully crafted and engaging learning experience.</span>
-          <span
-            class="t-jp is-block">先生がクエストの内容を理解し、5日間の授業を準備して、実際に教室で進めるためのアプリを設計した。クエストを学ぶための教材でもあり、台本と進行を含む5日分の授業ガイドでもある。経験の長さに関係なく、どの先生も自信を持って、よくできた学習体験をそのまま届けられるようにした。</span>
-        </p>
-      </div>
-
-      <div class="gallery">
-        <div class="g-row r1">
-          <div class="g-cell dark">
-            <img src="../assets/ela-quests/Quest_Teacher_app.png" alt="Quest Teacher App" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══ Project Details (Compact) ═══ -->
-    <div class="project-details-compact reveal-on-scroll">
-      <div>
-        <div class="detail-group-label">
-          <span class="t-en">Deliverables</span>
-          <span class="t-jp">成果物</span>
-        </div>
-        <div class="detail-group-value">
-          <span class="t-en">Technology Research, UX Research &amp; Strategy, Product Concept Development, Persona
-            Creation, Customer Journey Mapping, Wireframing, Prototyping, Implementation Support, Teacher-Facing App
-            Design</span>
-          <span
-            class="t-jp">技術リサーチ、UX リサーチと戦略、プロダクトコンセプトの開発、ペルソナ作成、カスタマージャーニーマップ、ワイヤーフレーム、プロトタイピング、実装のサポート、先生向けアプリのデザイン</span>
-        </div>
-      </div>
-      <div>
-        <div class="detail-group-label">Role</div>
-        <div class="detail-group-value">Lead Product Designer</div>
-      </div>
-      <div>
-        <div class="detail-group-label">Team</div>
-        <div class="detail-group-value">Amplify ELA Quest Team</div>
-      </div>
-      <div>
-        <div class="detail-group-label">
-          <span class="t-en">Program</span>
-          <span class="t-jp">プログラム</span>
-        </div>
-        <div class="detail-group-value">
-          <a href="https://amplify.com/programs/amplify-english-language-arts/" target="_blank" rel="noopener"
-            style="color: var(--ink-mid); text-decoration: underline; text-underline-offset: 3px;">
-            <span class="t-en">View the live program ↗</span>
-            <span class="t-jp">実際のプログラムを見る ↗</span>
-          </a>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- ═══ Nav ═══ -->
-    <div class="project-nav">
-      <a href="../work.html" class="project-nav-link">
-        <span class="t-en">&larr; All Work</span>
-        <span class="t-jp">&larr; 全作品</span>
-      </a>
-      <a href="tmobile.html" class="project-nav-link">
-        <span class="t-en">Next: T-Mobile BOPIS &rarr;</span>
-        <span class="t-jp">次へ：T-Mobile BOPIS &rarr;</span>
-      </a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

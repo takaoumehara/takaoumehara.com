@@ -11,101 +11,22 @@
   <meta property="og:description" content="Snap Pair — a React + Firebase realtime pairing layer that lets every phone in the room join an app in one scan. Open source, with a Claude skill for safe integrations.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/snap-pair.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/og/snap-pair.jpg">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Snap Pair — Takao Umehara">
-  <meta name="twitter:description" content="Snap Pair — a React + Firebase realtime pairing layer that lets every phone in the room join an app in one scan. Open source, with a Claude skill for safe integrations.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/og/snap-pair.jpg">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,30 +64,61 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>Every phone in the room joins your app in <em>one scan</em>.その場のスマホが、<em>QR を1回読むだけ</em>でアプリの一部になる。</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-      </ul>
-      <h1 class="pj-title">Every phone in the room joins your app in <em>one scan</em>.その場のスマホが、<em>QR を1回読むだけ</em>でアプリの一部になる。</h1>
-      <p class="pj-summary">Snap Pair — a React + Firebase realtime pairing layer that lets every phone in the room join an app in one scan. Open source, with a Claude skill for safe integrations.</p>
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Every phone in the room joins your app in one scan.QR 1</h1>
+        <p class="case-lede">Snap Pair — a React + Firebase realtime pairing layer that lets every phone in the room join an app in one scan. Open source, with a Claude skill for safe integrations.</p>
+        
 
-      <div class="pj-cta">
-        <a href="https://github.com/takaoumehara/snap-pair-skill" target="_blank" rel="noopener">Open Live Project ↗</a>
-        <a href="../interactive.html">← Back to Interactive</a>
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="https://github.com/takaoumehara/snap-pair-skill" class="pj-media-link" target="_blank" rel="noopener" aria-label="Open project media">
+        <img src="https://takaoumehara.com/assets/og/snap-pair.jpg" alt="Every phone in the room joins your app in <em>one scan</em>.<em>QR 1</em>" width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        Every phone in the room joins your app in <em>one scan</em>.<em>QR 1</em> — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <!-- ═══ Slide 1 · Hero (dark, blue glow) ═══ -->
+    <header  class="wds-hero wds-slide reveal-on-scroll">
+      <p class="wds-kick">Realtime Library · Claude Skill · React + Firebase</p>
+      <h1 class="wds-serif">Every phone in the room joins your app in <em>one scan</em>.<span class="t-jp is-block"><em>QR 1</em></span></h1>
+      <p class="wds-hero-lead"><strong>Snap Pair</strong> is a React + Firebase realtime pairing layer: QR or six-character code, presence heartbeat, room capacity, and security rules included. It ships with a Claude skill that writes safe integrations for you — so an agent can add multi-device play to any app.<span class="t-jp is-block"><strong>Snap Pair</strong> React  Firebase QR 6 Claude </span></p>
+      <div class="wds-chips">
+        <span class="wds-chip">Realtime Library</span>
+        <span class="wds-chip">Claude Skill</span>
+        <span class="wds-chip">React + Firebase</span>
+        <span class="wds-chip">MIT</span>
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -182,144 +134,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="https://github.com/takaoumehara/snap-pair-skill" class="pj-media-link" target="_blank" rel="noopener" aria-label="Open project media">
-        <img src="https://takaoumehara.com/assets/og/snap-pair.jpg" alt="Every phone in the room joins your app in <em>one scan</em>.その場のスマホが、<em>QR を1回読むだけ</em>でアプリの一部になる。" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">Every phone in the room joins your app in <em>one scan</em>.その場のスマホが、<em>QR を1回読むだけ</em>でアプリの一部になる。 — case study showcase (click to open)</span>
-        <span class="t-jp">Every phone in the room joins your app in <em>one scan</em>.その場のスマホが、<em>QR を1回読むだけ</em>でアプリの一部になる。 — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<!-- ═══ Slide 1 · Hero (dark, blue glow) ═══ -->
-    <header  class="wds-hero wds-slide reveal-on-scroll">
-      <p class="wds-kick"><span class="t-en">Realtime Library · Claude Skill · React + Firebase</span><span class="t-jp">リアルタイムライブラリ · Claude スキル · React + Firebase</span></p>
-      <h1 class="wds-serif"><span class="t-en">Every phone in the room joins your app in <em>one scan</em>.</span><span class="t-jp is-block">その場のスマホが、<em>QR を1回読むだけ</em>でアプリの一部になる。</span></h1>
-      <p class="wds-hero-lead"><span class="t-en"><strong>Snap Pair</strong> is a React + Firebase realtime pairing layer: QR or six-character code, presence heartbeat, room capacity, and security rules included. It ships with a Claude skill that writes safe integrations for you — so an agent can add multi-device play to any app.</span><span class="t-jp is-block"><strong>Snap Pair</strong> は、React と Firebase でつくったリアルタイムのペアリング機構です。QR または6文字コードでの接続、参加者が生きているかの確認、部屋の定員管理、セキュリティルールまで一式入っています。安全な組み込みコードを書いてくれる Claude スキルも付いているので、エージェントがどんなアプリにも複数端末での同時利用を足せます。</span></p>
-      <div class="wds-chips">
-        <span class="wds-chip"><span class="t-en">Realtime Library</span><span class="t-jp">リアルタイムライブラリ</span></span>
-        <span class="wds-chip">Claude Skill</span>
-        <span class="wds-chip">React + Firebase</span>
-        <span class="wds-chip">MIT</span>
-      </div>
-      <div class="mech-ctas">
-        <a class="story-cta" href="https://github.com/takaoumehara/snap-pair-skill" target="_blank" rel="noopener" aria-label="View Snap Pair on GitHub (opens in a new tab)">GitHub ↗</a>
-        <a class="story-cta" href="amazon-firetv.html"><span class="t-en">See it live — Fire TV demo →</span><span class="t-jp">実物を見る — Fire TV のデモ →</span></a>
-      </div>
-    </header>
-
-    <!-- ═══ Slide 2 · Mechanism + Built with Snap Pair (cream) ═══ -->
-    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="Snap Pair details">
-      <div class="mech-grid">
-        <div>
-          <h3><span class="t-en">Pairing, presence, and security — already solved.</span><span class="t-jp is-block">つなぐ、生きているか確かめる、守る。そこは全部済んでいます。</span></h3>
-          <p class="mech-lead"><span class="t-en">Safe, temporary multi-device experiences repeatedly need the same difficult foundation: pairing, presence, shared state, room capacity, and authorization. Snap Pair packages a React hook plus Firebase Auth, callable Cloud Functions, Realtime Database rules, cleanup, tests, and a one-file Lite example — so you build the experience, not the plumbing.</span><span class="t-jp is-block">その場限りで安全に複数端末をつなぐ体験には、毎回まったく同じ面倒な土台が必要になります。端末をつなぐ、誰がまだ居るかを把握する、状態を共有する、定員を守る、権限を確かめる。Snap Pair は、React のフック、Firebase Auth、呼び出し型の Cloud Functions、Realtime Database のセキュリティルール、後片づけの処理、テスト、そして1ファイルで動く軽量サンプルまでまとめて入れました。配線工事ではなく、体験そのものをつくることに時間を使えます。</span></p>
-          <div class="mech-facts">
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Pairing</span><span class="t-jp">ペアリング</span></div><div class="mech-fact-v"><span class="t-en">QR or 6-character code</span><span class="t-jp">QR または6文字のコード</span></div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Scale</span><span class="t-jp">スケール</span></div><div class="mech-fact-v"><span class="t-en">Rooms up to 300 devices</span><span class="t-jp">1つの部屋に最大300台</span></div></div>
-            <div class="mech-fact"><div class="mech-fact-l"><span class="t-en">Install</span><span class="t-jp">導入</span></div><div class="mech-fact-v"><span class="t-en">No app download needed</span><span class="t-jp">アプリのダウンロード不要</span></div></div>
-          </div>
-          <div class="mech-ctas">
-            <a class="story-cta" href="https://github.com/takaoumehara/snap-pair-skill" target="_blank" rel="noopener" aria-label="View Snap Pair on GitHub (opens in a new tab)">GitHub ↗</a>
-          </div>
-        </div>
-        <div class="mech-figure" aria-hidden="true">
-          <svg class="diagram" viewBox="0 0 160 120" role="img">
-            <rect class="ink draw" x="8" y="22" width="78" height="52" rx="3"/>
-            <path class="ink draw" d="M38 82 h18 M47 74 v8"/>
-            <path class="tint draw d2" d="M20 34 h10 M20 34 v10 M64 34 h10 M74 34 v10 M20 52 v10 M20 62 h10 M74 52 v10 M64 62 h10"/>
-            <rect class="ink draw d2" x="120" y="38" width="26" height="48" rx="5"/>
-            <path class="ink draw d2" d="M129 80 h8"/>
-            <path class="faint" d="M90 48 C 102 40, 110 40, 118 46"/>
-            <circle class="tint-fill dot" cx="90" cy="46" r="3"/>
-            <circle class="tint pulse" cx="133" cy="58" r="9"/>
-            <text x="8" y="104">TV</text>
-            <text x="118" y="104">PHONE</text>
-          </svg>
-        </div>
-      </div>
-      <div class="mech-rail">
-        <p class="mech-rail-label"><span class="t-en">Built with Snap Pair</span><span class="t-jp">Snap Pair で作られたもの</span></p>
-        <div class="rail-items">
-          <a class="rail-item" href="marubatsu.html">
-            <div class="rail-item-status"><span class="t-en">Shipped</span><span class="t-jp">公開済み</span></div>
-            <div class="rail-item-name">Marubatsu Arena</div>
-            <div class="rail-item-desc"><span class="t-en">The game that started it all — its QR/code online match is where this pairing layer was first proven out.</span><span class="t-jp is-block">すべての出発点になったゲーム。オンライン対戦の QR とコードは、この仕組みを最初に試した場所です。</span></div>
-          </a>
-          <a class="rail-item" href="amazon-firetv.html">
-            <div class="rail-item-status"><span class="t-en">Live prototype</span><span class="t-jp">公開中のプロトタイプ</span></div>
-            <div class="rail-item-name">Amazon Shopping on Fire TV</div>
-            <div class="rail-item-desc"><span class="t-en">Your phone becomes the TV remote, keyboard, and Alexa mic.</span><span class="t-jp is-block">スマホが、テレビのリモコンにもキーボードにも Alexa のマイクにもなる。</span></div>
-          </a>
-          <div class="rail-item">
-            <div class="rail-item-status is-soon"><span class="t-en">Coming soon</span><span class="t-jp">近日公開</span></div>
-            <div class="rail-item-name">TypeSpace</div>
-            <div class="rail-item-desc"><span class="t-en">A shared typographic space every phone can write into.</span><span class="t-jp is-block">その場の全員が、自分のスマホから書き込める文字の空間。</span></div>
-          </div>
-          <div class="rail-item">
-            <div class="rail-item-status is-soon"><span class="t-en">Coming soon</span><span class="t-jp">近日公開</span></div>
-            <div class="rail-item-name"><span class="t-en">Multiplayer card game</span><span class="t-jp">多人数のカードゲーム</span></div>
-            <div class="rail-item-desc"><span class="t-en">Phones as hands, one screen as the table.</span><span class="t-jp is-block">手元のスマホが手札になり、大きな画面が卓になる。</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═══ Slide 3 · Closing (vivid blue) ═══ -->
-    <section class="tool-statement st-blue wds-slide reveal-on-scroll">
-      <p class="wds-kick"><span class="t-en">Why it matters</span><span class="t-jp">なぜ重要か</span></p>
-      <h2 class="wds-serif"><span class="t-en">Built once. Reused <em>everywhere multi-device matters</em>.</span><span class="t-jp is-block">一度つくって、<em>複数の端末が関わるところすべて</em>で使い回す。</span></h2>
-      <div class="mech-ctas">
-        <a class="story-cta" href="../ai-products.html"><span class="t-en">See AI Products →</span><span class="t-jp">AI Products を見る →</span></a>
-        <a class="story-cta" href="../ai-tools.html"><span class="t-en">Explore other AI Tools →</span><span class="t-jp">他の AI Tools を見る →</span></a>
-      </div>
-    </section>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');

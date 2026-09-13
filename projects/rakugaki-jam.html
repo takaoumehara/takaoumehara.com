@@ -5,24 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Rakugaki Jam — Takao Umehara</title>
-  <meta name="description" content="Rakugaki Jam — doodle on your phone, then fling it onto a shared wall screen. An impromptu, crowd-drawn live visual jam.">
+  <meta name="description" content="Rakugaki Jam, by creativity is everywhere: a crowd drawing game. Scan a code, scribble on your phone, flick it at the wall, and the doodle swims off and breeds with strangers’ drawings. No app, no install.">
   <link rel="canonical" href="https://takaoumehara.com/projects/rakugaki-jam.html">
   <meta property="og:title" content="Rakugaki Jam — Takao Umehara">
-  <meta property="og:description" content="Doodle on your phone, then fling it onto a shared wall screen. An impromptu, crowd-drawn live visual jam.">
+  <meta property="og:description" content="Rakugaki Jam, by creativity is everywhere: a crowd drawing game. Scan a code, scribble on your phone, flick it at the wall, and the doodle swims off and breeds with strangers’ drawings. No app, no install.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/rakugaki-jam.html">
-  <meta property="og:image" content="../assets/rakugaki-jam/RakugakiJam-screenshot.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Rakugaki Jam — Takao Umehara">
-  <meta name="twitter:description" content="Doodle on your phone, then fling it onto the wall screen.">
-  <meta name="twitter:image" content="../assets/rakugaki-jam/RakugakiJam-screenshot.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
@@ -30,93 +25,17 @@
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    @keyframes vt-fade-out { to { opacity: 0; } }
-    @keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
-
+    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
       animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     }
-    ::view-transition-old(hero-media) { animation-name: vt-fade-out; }
-    ::view-transition-new(hero-media) { animation-name: vt-fade-in; }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
@@ -145,251 +64,105 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span class="t-en">Rakugaki Jam</span>
-    <span class="t-jp">落書きJAM</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Interactive · Multi-Device Canvas · Realtime</span>
-      <ul class="pj-tags">
-        <li>Multi-screen</li>
-        <li>Snap Pair</li>
-        <li>Firebase RTDB</li>
-        <li>Canvas Vector</li>
-      </ul>
-      <h1 class="pj-title">
-        <span class="t-en">Rakugaki Jam: Doodle on mobile, fling to the wall</span>
-        <span class="t-jp">落書きJAM：スマホから壁へ投げ飛ばす、みんなの落書き空間</span>
-      </h1>
-      <p class="pj-summary">
-        <span class="t-en">Draw freely on your phone, then fling your stroke onto a shared projection screen with a flick of your finger. A live, crowd-drawn collaborative visual jam powered by Snap Pair and Firebase Realtime Database.</span>
-        <span class="t-jp is-block">スマホに指先で描いた落書きを、指のフリックひとつで壁の巨大スクリーンへ投げ込む。Snap PairとFirebase RTDBで実現した、観客参加型のライブ落書きセッション。</span>
-      </p>
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Playable — handwriting</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">Crowd drawing game</h1>
+        <p class="case-lede">Scan the code on the wall, scribble with a finger, flick it — and your
+        doodle lands on the big screen as a creature that swims, meets a stranger's drawing, and
+        breeds with it.</p>
+        
 
-      <div class="pj-cta">
-        <a href="https://rakugakijam.creativityiseverywhere.com/" target="_blank" rel="noopener">
-          <span class="t-en">Join Rakugaki Jam ↗</span>
-          <span class="t-jp">JAMに参加する ↗</span>
-        </a>
-        <a href="../interactive.html">
-          <span class="t-en">← All Interactive Projects</span>
-          <span class="t-jp">← インタラクティブ一覧</span>
-        </a>
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Concept, UX Design &amp; Architecture</dd>
-        </div>
-        <div>
-          <dt>Stack</dt>
-          <dd>Snap Pair · Firebase RTDB · Canvas</dd>
-        </div>
-        <div>
-          <dt>Input</dt>
-          <dd>Touchscreen Handwriting &amp; Fling</dd>
-        </div>
-        <div>
-          <dt>Year</dt>
-          <dd>2025 – 2026</dd>
-        </div>
-      </dl>
-    </div>
-  </header>
-
-  <!-- ── Body ── -->
-  <main class="pj-body">
-
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="https://rakugakijam.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Play Rakugaki Jam live">
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="https://rakugakijam.creativityiseverywhere.com/" class="pj-media-link" target="_blank" rel="noopener" aria-label="Play Rakugaki Jam live">
         <video autoplay loop muted playsinline poster="../assets/rakugaki-jam/RakugakiJam-screenshot.png" width="1920" height="1080">
           <source src="../assets/rakugaki-jam/RakugakiJam.webm" type="video/webm">
           <source src="../assets/rakugaki-jam/preview.mp4" type="video/mp4">
         </video>
       </a>
       <figcaption>
-        <span class="t-en">Live multi-device doodle capture synchronized instantaneously to the central wall canvas (click thumbnail to launch)</span>
-        <span class="t-jp">複数スマホから投げ込まれた落書きが中央の壁キャンバスにリアルタイム反映される様子（サムネイルクリックで直接体験）</span>
+        Live multi-device doodle capture synchronized instantaneously to the central wall canvas (click thumbnail to launch)
+        
       </figcaption>
-    </figure>
+      </figure>
+    </header>
 
-    <!-- Key Metrics / Numbers -->
-    <dl class="pj-facts">
-      <div>
-        <dt>&infin;</dt>
-        <dd>
-          <span class="t-en">Simultaneous doodlers sharing a single ambient wall surface</span>
-          <span class="t-jp">同一の巨大壁面スクリーンを同時共有できる参加者数（無制限）</span>
-        </dd>
-      </div>
-      <div>
-        <dt>&lt;80ms</dt>
-        <dd>
-          <span class="t-en">Fling-to-wall arrival latency via Firebase RTDB</span>
-          <span class="t-jp">フリックから壁へ到達するまでの同期遅延（80ms未満）</span>
-        </dd>
-      </div>
-      <div>
-        <dt>0</dt>
-        <dd>
-          <span class="t-en">App installations needed — scan QR directly into mobile browser</span>
-          <span class="t-jp">アプリ不要、QRをスキャンしてSafari/Chromeで即描画</span>
-        </dd>
-      </div>
-      <div>
-        <dt>100%</dt>
-        <dd>
-          <span class="t-en">Vector curve smoothing applied to rough finger touches</span>
-          <span class="t-jp">粗い指先のタッチを滑らかなベジェ曲線に自動補正</span>
-        </dd>
-      </div>
+    
+
+    <!-- ── Evidence / Metrics Counts (Unboxed) ── -->
+    <dl class="counts">
+      <div class="count"><dt class="mono">To join: scan, draw, flick</dt><dd>10<span class="u">sec</span></dd></div>
+      <div class="count"><dt class="mono">Installed at the venue</dt><dd>0</dd></div>
+      <div class="count"><dt class="mono">Phones on one wall, before the Wi-Fi gives out</dt><dd>150</dd></div>
     </dl>
 
-    <!-- Key Architecture Points -->
-    <div class="pj-points">
-      <div class="pj-point">
-        <span class="pj-point-num">01</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Personal intimacy meets public spectacle.</span>
-          <span class="t-jp">個人の手元から公共の祝祭へ</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Drawing on a large stage in front of people induces performance anxiety. Drawing privately in the palm of your hand and flicking it up transforms self-conscious hesitation into a joyous, playful toss.</span>
-          <span class="t-jp is-block">人前で大きなキャンバスに描くのは心理的ハードルが高いものですが、手元のスマホでこっそり描いてフリックで放り込む体験にすることで、恥ずかしさが遊び心へと反転します。</span>
-        </p>
-      </div>
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="points"><div class="point">
+        <p class="point__n mono">01</p>
+        <h2 class="point__t">A full room is the reward, not the failure mode.</h2>
+        <p>Two doodles that meet produce a child whose outline is a real blend of both parents. The
+          wall gets richer with every person who joins.</p></div>
 
-      <div class="pj-point">
-        <span class="pj-point-num">02</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Powered by the Snap Pair protocol.</span>
-          <span class="t-jp">Snap Pairプロトコルによる即時同期</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Built on our open-source Snap Pair architecture. The wall acts as the room host; audience members connect via ephemeral room tokens, automatically receiving designated color palettes to maintain visual harmony.</span>
-          <span class="t-jp is-block">独自開発したSnap Pair基盤を採用。壁面がホスト役を務め、参加者はQRから一時トークンで接続。重なりや色被りを防ぐシグネチャーパレットが自動割り当てされます。</span>
-        </p>
-      </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">03</span>
-        <h2 class="pj-point-title">
-          <span class="t-en">Organic kinetic canvas dynamics.</span>
-          <span class="t-jp">生き物のように漂うキャンバス動態</span>
-        </h2>
-        <p class="pj-point-desc">
-          <span class="t-en">Rather than accumulating clutter like a static whiteboard, thrown doodles gently drift, react to ambient audio amplitude, and slowly dissolve over time to preserve momentum and freshness throughout an event.</span>
-          <span class="t-jp is-block">静止したホワイトボードと異なり、投げられた落書きはゆっくりと浮遊し、音楽のビートに反応して揺れ、やがて半減期を経て優しく消えていきます。場が散らからずエネルギーが保たれます。</span>
-        </p>
-      </div>
+<section class="scenes"><h2 class="sub__t">Where it belongs</h2>
+      <ul class="scenes__list">
+        <li><b>A launch, a party, a festival wall</b>
+          <span>The moment the audience stops watching and starts putting things on the screen.</span></li>
+        <li><b>A lobby or a booth with a queue</b>
+          <span>Nobody is briefed and nobody is handed anything — the QR code on the wall is the whole invitation.</span></li>
+        <li><b>A classroom or a workshop</b>
+          <span>Thirty drawings arrive at once and the room can see what it made together.</span></li>
+      </ul></section>
     </div>
 
-    <!-- Scenarios -->
-    <section class="pj-scenarios">
-      <h2>
-        <span class="t-en">Event &amp; physical installations</span>
-        <span class="t-jp">イベント・展示での活用</span>
-      </h2>
-      <ul class="pj-scenarios-list">
-        <li>
-          <strong>Conferences and keynote venues:</strong>
-          <span class="t-en">Audience questions or visual reactions submitted as expressive sketches rather than dry text polls.</span>
-          <span class="t-jp">カンファレンスの質疑や感想を、無機質な文字アンケートではなく直感的なイラストで共有。</span>
-        </li>
-        <li>
-          <strong>Live music, club nights &amp; VJ sets:</strong>
-          <span class="t-en">Crowd participation where the audience visually co-creates the visual backdrop behind the performers.</span>
-          <span class="t-jp">ステージ背面の巨大スクリーンに観客が直接落書きを投影する、共創型ライブVJ空間。</span>
-        </li>
-      </ul>
-    </section>
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div class="stat"><dt class="mono">Input</dt><dd>A finger on a phone screen</dd></div>
+      <div class="stat"><dt class="mono">Output</dt><dd>One wall screen every phone in the room shares</dd></div>
+      <div class="stat"><dt class="mono">Runs on</dt><dd>Snap Pair · Firebase, client-direct · Canvas · Web Audio</dd></div>
+      <div class="stat"><dt class="mono">Made</dt><dd>2026, by our founder, with AI coding agents</dd></div>
+    </dl>
 
-    <!-- Contribution Split -->
-    <div class="pj-contrib">
-      <div>
-        <h3>
-          <span class="t-en">My Contribution</span>
-          <span class="t-jp">担当領域</span>
-        </h3>
-        <ul>
-          <li>Conceived the hand-to-wall doodle throw interaction and fling kinetic curve</li>
-          <li>Engineered real-time device sync with Firebase RTDB and custom Snap Pair logic</li>
-          <li>Designed high-performance vector stroke interpolation on HTML5 Canvas</li>
-        </ul>
-      </div>
-      <div>
-        <h3>
-          <span class="t-en">Ecosystem</span>
-          <span class="t-jp">エコシステム</span>
-        </h3>
-        <ul>
-          <li>Demonstrator application for the Snap Pair multi-device pairing framework</li>
-          <li>Deployed across private studio workshops and experimental community gatherings</li>
-        </ul>
-      </div>
-    </div>
-
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
 
-  <!-- ── Footer Navigation ── -->
-  <footer class="pj-foot">
-    <a href="emoji-blast.html">
-      <span class="t-en">← Previous: Emoji Blast</span>
-      <span class="t-jp">← 前：Emoji Blast</span>
-    </a>
-    <a href="typespace.html">
-      <span class="t-en">Next: Typespace →</span>
-      <span class="t-jp">次：Typespace →</span>
-    </a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
-
+  <script src="../assets/wipe.js" defer></script>
   <script>
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll(".lang-btn")];
-    const saved = localStorage.getItem("tu-lang") || "en";
-    const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
-      html.lang = lang === "jp" ? "ja" : "en";
-      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-      localStorage.setItem("tu-lang", lang);
-    };
-    setLang(saved);
-    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
-  })();
-
-  // Mobile nav
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
+    // Mobile Menu Toggle
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (!toggle || !links) return;
       toggle.addEventListener('click', () => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          toggle.classList.remove('is-open');
-          links.classList.remove('is-open');
-        });
-      });
-    }
-  })();
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        toggle.classList.remove('is-open');
+        links.classList.remove('is-open');
+      }));
+    })();
   </script>
 </body>
 </html>

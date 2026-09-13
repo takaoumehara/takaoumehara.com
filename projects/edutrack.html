@@ -11,101 +11,22 @@
   <meta property="og:description" content="EduTrack — a year-long lesson planner and standards-tracking companion for K-5 classroom teachers, built around Plan, Do, Review. Product design case study by Takao Umehara.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/edutrack.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/LessonPlanner_Hero_(1).png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="EduTrack — Takao Umehara">
-  <meta name="twitter:description" content="EduTrack — a year-long lesson planner and standards-tracking companion for K-5 classroom teachers, built around Plan, Do, Review. Product design case study by Takao Umehara.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/LessonPlanner_Hero_(1).png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../assets/project-page.css">
   <link rel="stylesheet" href="../assets/wipe.css">
 
   <style>
-    /* Inlined nav & baseline tokens for self-contained detail page */
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
     @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
-    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      min-height: 100vh;
-      font-family: var(--ff);
-      background: #0b0b0b;
-      color: #ffffff;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(11, 11, 11, 0.90);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
-    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
-    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
-      background: rgba(255, 255, 255, 0.14);
-    }
-    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
-    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    .lang-switch {
-      position: fixed; right: 0; bottom: 80px; z-index: 100;
-      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
-      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
-      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
-    }
-    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
-    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    @media (max-width: 768px) {
-      .site-nav { padding: 14px 20px; }
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; align-items: flex-start; padding: 20px 24px;
-        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links .is-tierbreak::before { display: none; }
-    }
-
-    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    /* Cross-document view transition rules (guarded by tests) */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
@@ -143,34 +64,56 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    <span>EduTrack: Plan it. Teach it. Grow from it.EduTrack：計画して、教えて、次に生かす。</span>
-  </div>
+  <main class="case-container">
+    <!-- ── Top Register ── -->
+    <div class="case-top">
+      <a href="../interactive.html">Interactive</a>
+      <span>Case Study</span>
+    </div>
 
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Case Study · Interactive</span>
-      <ul class="pj-tags">
-        <li>creativity is everywhere</li>
-        <li>EdTech</li>
-        <li>SaaS Web App</li>
-        <li>K-5 Teachers</li>
-      </ul>
-      <h1 class="pj-title">EduTrack: Plan it. Teach it. Grow from it.EduTrack：計画して、教えて、次に生かす。</h1>
-      <p class="pj-summary">A classroom teacher plans a whole school year in a paper planbook, tracks standards in a district spreadsheet, and runs each day from memory or a sticky note. Nothing connects the plan to what actually gets taught — or to whether the standards were ever covered.
-          先生は、年間の計画を紙のプランブックで立て、学習基準の達成状況は学区のスプレッドシートで管理し、その日の授業は記憶と付箋を頼りに進めている。立てた計画と、実際に教えた内容と、基準を本当に満たせたかどうかが、どこでもつながっていない。</p>
-
-      <div class="pj-cta">
+    <!-- ── Hero: 2-column Balanced Layout ── -->
+    <header class="case-hero">
+      <div class="case-hero__copy">
+        <span class="case-kicker">Work · Interactive</span>
+        <p class="case-discipline">Interactive</p>
+        <h1 class="case-title">EduTrack: Plan it. Teach it. Grow from it.EduTrack</h1>
+        <p class="case-lede">EduTrack — a year-long lesson planner and standards-tracking companion for K-5 classroom teachers, built around Plan, Do, Review. Product design case study by Takao Umehara.</p>
         
-        <a href="../interactive.html">← Back to Interactive</a>
+
+        <div class="case-hero__cta">
+          <a href="../contact.html">Discuss this project →</a>
+          <a href="../interactive.html" class="btn-ghost">← All Interactive</a>
+        </div>
       </div>
 
-      <dl class="pj-meta">
-        <div>
+      <!-- Hero Media Container -->
+      <figure class="case-hero__media" data-vt-hero>
+        <a href="../assets/shared/LessonPlanner_Hero_(1" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/shared/LessonPlanner_Hero_(1" alt="EduTrack: Plan it. Teach it. Grow from it.EduTrack" width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        EduTrack: Plan it. Teach it. Grow from it.EduTrack — case study showcase (click to open)
+        
+      </figcaption>
+      </figure>
+    </header>
+
+    
+
+    
+
+    <!-- ── Case Chapters: Editorial Narrative (Unboxed) ── -->
+    <div class="case-story">
+      <div class="project-overview reveal-on-scroll">
+      <aside>
+        <p class="project-aside-label">Scope</p>
+        <div class="project-aside-stat">
+          <div class="project-aside-num">K-5
+    </div>
+
+    <!-- ── Project Specs (Unboxed) ── -->
+    <dl class="case-spec">
+      <div>
           <dt>Role</dt>
           <dd>Product & Creative Direction</dd>
         </div>
@@ -186,214 +129,18 @@
           <dt>Status</dt>
           <dd>Case Study</dd>
         </div>
-      </dl>
-    </div>
-  </header>
+    </dl>
 
-  <!-- ── Body ── -->
-  <main class="pj-body">
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <a href="../assets/shared/LessonPlanner_Hero_(1" class="pj-media-link" aria-label="Open project media">
-        <img src="../assets/shared/LessonPlanner_Hero_(1" alt="EduTrack: Plan it. Teach it. Grow from it.EduTrack：計画して、教えて、次に生かす。" width="1200" height="800" loading="eager">
-      </a>
-      <figcaption>
-        <span class="t-en">EduTrack: Plan it. Teach it. Grow from it.EduTrack：計画して、教えて、次に生かす。 — case study showcase (click to open)</span>
-        <span class="t-jp">EduTrack: Plan it. Teach it. Grow from it.EduTrack：計画して、教えて、次に生かす。 — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
-      </figcaption>
-    </figure>
-
-    <div class="project-content-body">
-<div class="project-overview reveal-on-scroll">
-      <aside>
-        <p class="project-aside-label"><span class="t-en">Scope</span><span class="t-jp">スコープ</span></p>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">K-5</div>
-          <div class="project-aside-desc"><span class="t-en">Built for classroom teachers</span><span class="t-jp">教室に立つ先生のために設計</span></div>
-        </div>
-        <div class="project-aside-stat">
-          <div class="project-aside-num">3</div>
-          <div class="project-aside-desc"><span class="t-en">Plan · Do · Review product rhythm</span><span class="t-jp">Plan · Do · Review のプロダクトリズム</span></div>
-        </div>
-      </aside>
-      <div>
-        <h2 class="project-section-title"><span class="t-en">The Ask</span><span class="t-jp">課題</span></h2>
-        <p class="project-text">
-          <span class="t-en">A classroom teacher plans a whole school year in a paper planbook, tracks standards in a district spreadsheet, and runs each day from memory or a sticky note. Nothing connects the plan to what actually gets taught — or to whether the standards were ever covered.</span>
-          <span class="t-jp is-block">先生は、年間の計画を紙のプランブックで立て、学習基準の達成状況は学区のスプレッドシートで管理し、その日の授業は記憶と付箋を頼りに進めている。立てた計画と、実際に教えた内容と、基準を本当に満たせたかどうかが、どこでもつながっていない。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">The Solution</span><span class="t-jp">解決策</span></h2>
-        <p class="project-text">
-          <span class="t-en">The brief: design a single, humane tool that ties long-range planning, the daily teaching hour, and standards coverage together — and makes planning a year feel approachable instead of paralyzing. Everything lives inside a single rhythm — Plan → Do → Review — so the plan becomes the teaching day, and the teaching day becomes the record.</span>
-          <span class="t-jp is-block">依頼はこうだった。長期の計画、その日の授業の時間、そして基準の達成状況を、一つにつなぐ人にやさしい道具をつくること。年間計画を、身構えてしまう作業から、手をつけられる作業に変えること。すべてを Plan → Do → Review という一つのリズムに収めた結果、計画がそのまま授業になり、授業がそのまま記録になる。</span>
-        </p>
-        <h2 class="project-section-title" style="margin-top: 40px;"><span class="t-en">Tools &amp; Methods</span><span class="t-jp">ツール＆手法</span></h2>
-        <div class="tools-list">
-          <span class="tool-chip">Product Strategy</span>
-          <span class="tool-chip">Design System</span>
-          <span class="tool-chip">Prototype</span>
-          <span class="tool-chip">Drag &amp; Drop</span>
-          <span class="tool-chip">Standards Tracking</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="outcomes-grid reveal-on-scroll">
-      <div class="outcome-block">
-        <div class="outcome-num">
-          <span class="t-en">Plan</span>
-          <span class="t-jp">計画</span>
-        </div>
-        <div class="outcome-label"><span class="t-en">A shelf of ready-to-teach, standards-aligned lesson cards</span><span class="t-jp">そのまま教えられて、学習基準にも紐づいたレッスンカードの棚</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">Do</div>
-        <div class="outcome-label"><span class="t-en">A daily run-of-show with agenda, materials, and conference notes</span><span class="t-jp">進行、教材、面談メモまで含んだ、その日の授業の段取り</span></div>
-      </div>
-      <div class="outcome-block">
-        <div class="outcome-num">
-          <span class="t-en">Review</span>
-          <span class="t-jp">振り返り</span>
-        </div>
-        <div class="outcome-label"><span class="t-en">Standards coverage rolls up automatically from what was planned and taught</span><span class="t-jp">計画した内容と実際に教えた内容から、基準の達成状況が自動でたまっていく</span></div>
-      </div>
-    </div>
-
-    <div class="reveal-on-scroll" style="margin-bottom:8px;">
-      <h2 class="project-section-title"><span class="t-en">Try It — Live Prototype</span><span class="t-jp">触って試す — ライブプロトタイプ</span></h2>
-      <p class="project-text" style="max-width:820px;">
-        <span class="t-en">This is the ClaudeDesign live prototype, the source of truth for the EduTrack design system. Lessons behave like physical index cards: drag them onto days, move through Plan / Do / Review, open a lesson, capture a conference note, and see coverage emerge from the work itself.</span>
-        <span class="t-jp is-block">これは ClaudeDesign で作った実際に動くプロトタイプで、EduTrack のデザインシステムの参照元にもなっています。レッスンは、紙のカードと同じように扱えます。日付のところへドラッグし、Plan / Do / Review を行き来し、レッスンを開いて面談のメモを残す。そうしているうちに、基準の達成状況が作業の中から自然に立ち上がってきます。</span>
-      </p>
-    </div>
-    <div class="proto-live reveal-on-scroll">
-      <div class="proto-frame">
-        <div class="proto-bar">
-          <span class="proto-bar-dots"><i></i><i></i><i></i></span>
-          <span class="proto-bar-label">EduTrack &middot; Live Prototype &middot; iPad</span>
-          <a class="proto-bar-link" href="../assets/edutrack/claude-design/EduTrack.dc.html" target="_blank" rel="noopener"><span class="t-en">Open full screen &#8599;</span><span class="t-jp">フルスクリーンで開く &#8599;</span></a>
-        </div>
-        <div class="proto-stage">
-          <iframe src="../assets/edutrack/claude-design/EduTrack.dc.html" title="EduTrack interactive prototype" loading="lazy" allow="fullscreen"></iframe>
-        </div>
-      </div>
-      <p class="proto-hint"><span class="t-en">Best experienced on a larger screen. If the prototype doesn't load in the frame, open it full screen &#8599;</span><span class="t-jp">大きな画面のほうが操作しやすいです。この枠の中で表示されない場合は、フルスクリーンで開いてください &#8599;</span></p>
-    </div>
-
-    <section class="design-system reveal-on-scroll" aria-labelledby="design-system-title">
-      <div class="design-system-head">
-        <div>
-          <p class="design-system-kicker"><span class="t-en">Design System</span><span class="t-jp">デザインシステム</span></p>
-          <h2 class="design-system-title" id="design-system-title"><span class="t-en">A planbook, not a dashboard.</span><span class="t-jp">ダッシュボードではなく、プランブックとして。</span></h2>
-        </div>
-        <p class="design-system-body">
-          <span class="t-en">EduTrack looks like a beloved paper planbook, not a dashboard. Lessons are physical index cards you pick up and place on days. Surfaces are warm paper; corners are square; shadows say how far off the desk a piece of paper is. Deliberately the opposite of sterile edtech.</span>
-          <span class="t-jp is-block">EduTrack は、ダッシュボードではなく、使い込んだ紙のプランブックのように見えます。レッスンは、手に取って日付の上に置く紙のカード。地の面は温かみのある紙、角は落とさず四角のまま、影は「その紙が机からどれだけ浮いているか」を表します。無機質な EdTech とは、意図して逆の方向に振りました。</span>
-        </p>
-      </div>
-
-      <div class="storybook-embed">
-        <div class="storybook-toolbar">
-          <span class="storybook-label">ClaudeDesign · EduTrack Storybook</span>
-          <a class="storybook-link" href="../assets/edutrack/claude-design/EduTrack%20Storybook.dc.html" target="_blank" rel="noopener"><span class="t-en">Open full screen &#8599;</span><span class="t-jp">フルスクリーンで開く &#8599;</span></a>
-        </div>
-        <div class="storybook-stage">
-          <iframe src="../assets/edutrack/claude-design/EduTrack%20Storybook.dc.html" title="EduTrack design system Storybook" loading="lazy"></iframe>
-        </div>
-      </div>
-    </section>
-
-    <div class="gallery reveal-on-scroll">
-      <p class="gallery-label"><span class="t-en">01 — Plan: A lesson shelf of ready-to-teach cards above a year-long timeline of every unit.</span><span class="t-jp">01 — Plan（計画）：そのまま教えられるレッスンカードの棚と、全ユニットを見渡せる年間の時間軸。</span></p>
-      <div class="g-row r1">
-        <div class="g-cell natural"><img src="../assets/edutrack/screenshots/EduTrack_Screenshots00001.png" alt="EduTrack screenshot 01 — lesson planning interface" loading="lazy"></div>
-      </div>
-      <p class="gallery-label"><span class="t-en">02 — Planning screens and scheduling states.</span><span class="t-jp">02 — 計画の画面と、日付を割り当てるときの各状態。</span></p>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/edutrack/screenshots/EduTrack_Screenshots00002.png" alt="EduTrack screenshot 02 — planning screen" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/edutrack/screenshots/EduTrack_Screenshots00003.png" alt="EduTrack screenshot 03 — scheduling screen" loading="lazy"></div>
-      </div>
-      <p class="gallery-label"><span class="t-en">03 — Assignment views and classroom planning details.</span><span class="t-jp">03 — 課題の画面と、授業計画の細部。</span></p>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/edutrack/screenshots/EduTrack_Screenshots00004.png" alt="EduTrack screenshot 04 — assignment view" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/edutrack/screenshots/EduTrack_Screenshots00005.png" alt="EduTrack screenshot 05 — classroom planning detail" loading="lazy"></div>
-      </div>
-      <p class="gallery-label"><span class="t-en">04 — Semester overview and supporting planner surfaces.</span><span class="t-jp">04 — 学期全体を見渡す画面と、補助的なプランナーの画面。</span></p>
-      <div class="g-row r2">
-        <div class="g-cell natural"><img src="../assets/edutrack/screenshots/EduTrack_Screenshots00006.png" alt="EduTrack screenshot 06 — semester overview" loading="lazy"></div>
-        <div class="g-cell natural"><img src="../assets/edutrack/screenshots/EduTrack_Screenshots00007.png" alt="EduTrack screenshot 07 — supporting planner surface" loading="lazy"></div>
-      </div>
-    </div>
-
-    <div style="padding-top: 48px; border-top: 1px solid var(--line); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;" class="reveal-on-scroll">
-      <div>
-        <p class="project-aside-label"><span class="t-en">Deliverables</span><span class="t-jp">成果物</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">UX Research &amp; Insight Generation</span><span class="t-jp">UX リサーチとインサイトの抽出</span></li>
-          <li><span class="t-en">UX Strategy</span><span class="t-jp">UX戦略</span></li>
-          <li><span class="t-en">Wireframing &amp; Prototyping</span><span class="t-jp">ワイヤーフレームとプロトタイピング</span></li>
-          <li><span class="t-en">UI Design (iPad)</span><span class="t-jp">UI デザイン（iPad）</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Methods</span><span class="t-jp">手法</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Persona Creation</span><span class="t-jp">ペルソナ作成</span></li>
-          <li><span class="t-en">Stakeholder Mapping</span><span class="t-jp">ステークホルダーマッピング</span></li>
-          <li><span class="t-en">Journey Mapping</span><span class="t-jp">ジャーニーマッピング</span></li>
-        </ul>
-      </div>
-      <div>
-        <p class="project-aside-label"><span class="t-en">Team</span><span class="t-jp">チーム</span></p>
-        <ul class="project-deliverables">
-          <li><span class="t-en">Domain Expert (Education)</span><span class="t-jp">教育分野の専門家</span></li>
-          <li><span class="t-en">UX Researcher</span><span class="t-jp">UXリサーチャー</span></li>
-          <li><span class="t-en">Developer</span><span class="t-jp">開発者</span></li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="nav-project">
-      <a href="../work.html"><span class="t-en">&larr; All Work</span><span class="t-jp">&larr; すべての仕事</span></a>
-      <a href="carnegie.html"><span class="t-en">Next: Carnegie PDSA</span><span class="t-jp">次：Carnegie PDSA</span> &rarr;</a>
-    </div>
-    </div>
+    <!-- ── Case Foot Navigation ── -->
+    <footer class="case-foot">
+      <a href="../interactive.html">← All Interactive</a>
+      
+      <a href="../contact.html">Discuss this project with Takao →</a>
+    </footer>
   </main>
-
-  <!-- ── Footer Nav ── -->
-  <footer class="pj-foot">
-    <a href="../interactive.html">← Back to Interactive</a>
-    <a href="../contact.html">Discuss this project with Takao →</a>
-  </footer>
-
-  <!-- ── Language Toggle ── -->
-  <div class="lang-switch" id="lang-switch">
-    <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">|</span>
-    <button class="lang-btn" data-lang="jp">JP</button>
-  </div>
 
   <script src="../assets/wipe.js" defer></script>
   <script>
-    // Language Switcher
-    (() => {
-      const html = document.documentElement;
-      const btns = document.querySelectorAll('.lang-btn');
-      const setLang = (lang) => {
-        if (lang === 'jp') {
-          html.classList.add('lang-jp');
-          localStorage.setItem('tu_lang', 'jp');
-        } else {
-          html.classList.remove('lang-jp');
-          localStorage.setItem('tu_lang', 'en');
-        }
-        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
-      };
-      const saved = localStorage.getItem('tu_lang');
-      if (saved) setLang(saved);
-      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
-    })();
-
     // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');
