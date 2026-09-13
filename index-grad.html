@@ -67,7 +67,7 @@
       --bg: #fbfaf7;
       --ink: #121212;
       --ink-mid: #4c4841;
-      --ink-dim: #79746d;
+      --ink-dim: #76716a;
       --line: rgba(18,18,18,0.08);
       --border: rgba(18,18,18,0.10);
       --surface: rgba(255,255,255,0.92);
@@ -883,7 +883,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="work.html">Work</a></li>
-      <li><a href="about.html">About</a></li>
+      <li class="is-tierbreak"><a href="about.html">About</a></li>
       <li><a href="breakbias.html">BreakBias</a></li>
       <li><a href="intentfirst.html">intentfirst.ai</a></li>
       <li><a href="contact.html">Contact</a></li>
@@ -1433,7 +1433,7 @@
     const btns = [...document.querySelectorAll(".lang-btn")];
     const saved = localStorage.getItem("tu-lang") || "en";
     const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp");
+      html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
       btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
       localStorage.setItem("tu-lang", lang);
     };

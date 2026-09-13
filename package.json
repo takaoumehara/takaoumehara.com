@@ -1,0 +1,21 @@
+{
+  "name": "takaoumehara.com",
+  "private": true,
+  "type": "module",
+  "description": "Adaptive career portfolio \u2014 one evidence base, rendered through lenses. No dependencies.",
+  "scripts": {
+    "generate": "node src/build.mjs",
+    "check": "node src/build.mjs --check",
+    "test": "node --test tests/*.test.mjs",
+    "serve": "python3 -m http.server 4173",
+    "test:e2e": "playwright test",
+    "test:all": "npm test && npm run test:e2e"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.62.1"
+  }
+}

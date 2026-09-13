@@ -58,7 +58,7 @@
   margin-top: clamp(18px, 2vw, 30px);
   padding-bottom: 16px;
 }
-.idx-meta-col { display: flex; flex-direction: column; gap: 3px; }
+.idx-meta-col { display: flex; flex-direction: column; gap: 0; }
 .idx-meta-col span,
 .idx-meta-col a {
   font-size: 11px;
@@ -66,8 +66,21 @@
   letter-spacing: 0.005em;
   color: var(--ink-dim);
 }
+/* One 24px row per line. Two of these lines are links and WCAG 2.2 §2.5.8
+   wants 24px of target; giving the rhythm to the whole block rather than to
+   the links alone is what keeps the four columns aligned with each other.
+   Height comes from line-height rather than flex: a flex container would turn
+   "13 " and <span class="t-en">projects</span> into separate flex items and
+   eat the space between them. */
+.idx-meta-col > span,
+.idx-meta-col > a { min-height: 24px; line-height: 24px; }
 .idx-meta-col .is-ink { color: var(--ink); }
-.idx-meta-col a { text-decoration: none; border-bottom: 1px solid transparent; width: fit-content; transition: color 160ms ease, border-color 160ms ease; }
+.idx-meta-col a {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  width: fit-content;
+  transition: color 160ms ease, border-color 160ms ease;
+}
 .idx-meta-col a:hover { color: var(--ink); border-bottom-color: var(--ink); }
 .idx-meta-col.is-right { text-align: right; }
 

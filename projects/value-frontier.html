@@ -77,7 +77,7 @@
       --bg: #fbfaf7;
       --ink: #121212;
       --ink-mid: #4c4841;
-      --ink-dim: #79746d;
+      --ink-dim: #76716a;
       --line: rgba(18,18,18,0.08);
       --border: rgba(18,18,18,0.10);
       --surface: rgba(255,255,255,0.92);
@@ -392,22 +392,35 @@
     @keyframes webScrollCue { 0%,100% { transform: translateY(0); opacity: 0.5; } 50% { transform: translateY(3px); opacity: 1; } }
     @media (prefers-reduced-motion: reduce) { .web-frame-hint .scroll-cue::after { animation: none !important; } }
   
-    /* ─── Cross-document view transition ───────────────────────────────
-       The tile the visitor clicked on the index expands into this page's
-       hero. Both documents have to opt in for the morph to happen, and the
-       transition name has to match the one the index assigns to the tile it
-       was launched from. Browsers without support simply navigate — nothing
-       here is load-bearing. */
+    /* ─── Cross-document view transition — docs/page-transitions.md ───────
+       The card the visitor clicked grows into this page's hero band while the
+       rest of the page cross-fades under it. It takes both documents: the
+       listing page puts `hero-media` on the one card it was launched from,
+       this page puts the same name on the hero. Browsers without support
+       simply navigate — nothing here is load-bearing. */
     @view-transition { navigation: auto; }
-    @media (prefers-reduced-motion: no-preference) {
-      .project-hero, .wds-hero { view-transition-name: hero-media; }
-      ::view-transition-old(hero-media),
-      ::view-transition-new(hero-media) {
-        animation-duration: 520ms;
-        animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
-      }
+    [data-vt-hero] { view-transition-name: hero-media; }
+
+    @keyframes vt-fade-out { to { opacity: 0; } }
+    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
+    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
+    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+
+    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
+       `object-fit: fill` stretches one into the other on the way across;
+       cropping both snapshots is what makes the move read as one element
+       rather than two pictures swapping. */
+    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+    ::view-transition-old(hero-media),
+    ::view-transition-new(hero-media) {
+      height: 100%; width: 100%; object-fit: cover;
+      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      [data-vt-hero] { view-transition-name: none; }
       ::view-transition-old(root),
-      ::view-transition-new(root) { animation-duration: 300ms; }
+      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
     }
 </style>
   <style>
@@ -417,9 +430,8 @@
        occupies a slot makes that one gap twice as wide as every other. ── */
     .nav-links { align-items: center; }
     .nav-links li { position: relative; }
-    .nav-links a { color: var(--ink-dim); }
-    .nav-links a.is-lead { color: var(--ink); font-weight: 500; }
-    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+    .nav-links a { color: var(--ink-mid); }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
     .nav-links .is-tierbreak::before {
       content: ""; position: absolute; left: -15px; top: 50%;
       width: 1px; height: 11px; margin-top: -5.5px;
@@ -437,12 +449,12 @@
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html" class="is-lead">Interactive</a></li>
-      <li><a href="../ai-products.html" class="is-lead">AI Products</a></li>
-      <li><a href="../ai-tools.html" class="is-lead">AI Tools</a></li>
-      <li class="is-tierbreak"><a href="../work.html">Product Design</a></li>
+      <li><a href="../interactive.html">Interactive</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html" class="is-active" aria-current="page">Brand &amp; Visual</a></li>
-      <li><a href="../about.html">About</a></li>
+      <li class="is-tierbreak"><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
       <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -456,7 +468,7 @@
   </div>
 
   <!-- ── Hero ── -->
-  <section class="project-hero">
+  <section data-vt-hero class="project-hero">
     <div class="project-hero-img" style="background-image:url('../assets/shared/VF_Hero.png');"></div>
     <div class="project-hero-overlay"></div>
     <div class="project-hero-content">
@@ -739,7 +751,7 @@
           <span class="web-frame-tag"><span class="t-en">Home</span><span class="t-jp">ホーム</span></span>
         </div>
         <div class="web-frame-scroll">
-          <img src="../assets/value-frontier/Website/VF-Web-screenshot00001.png" alt="Value Frontier website — full homepage" loading="lazy">
+          <img src="../assets/value-frontier/Website/VF-Web-screenshot00002.png" alt="Value Frontier website — home" loading="lazy">
         </div>
         <div class="web-frame-hint">
           <span><span class="t-en">Home</span><span class="t-jp">ホーム</span></span>
@@ -750,11 +762,11 @@
       <figure class="web-frame">
         <div class="web-frame-bar">
           <div class="web-frame-dots"><span></span><span></span><span></span></div>
-          <span class="web-frame-url">valuefrontier.co.jp/services</span>
+          <span class="web-frame-url">valuefrontier.co.jp</span>
           <span class="web-frame-tag"><span class="t-en">Services</span><span class="t-jp">サービス</span></span>
         </div>
         <div class="web-frame-scroll">
-          <img src="../assets/value-frontier/Website/VF-Web-screenshot00002.png" alt="Value Frontier website — services page" loading="lazy">
+          <img src="../assets/value-frontier/Website/VF-Web-screenshot00006.png" alt="Value Frontier website — services" loading="lazy">
         </div>
         <div class="web-frame-hint">
           <span><span class="t-en">Services</span><span class="t-jp">サービス</span></span>
@@ -765,14 +777,14 @@
       <figure class="web-frame">
         <div class="web-frame-bar">
           <div class="web-frame-dots"><span></span><span></span><span></span></div>
-          <span class="web-frame-url">valuefrontier.co.jp/track-record</span>
-          <span class="web-frame-tag"><span class="t-en">Track Record</span><span class="t-jp">実績</span></span>
+          <span class="web-frame-url">valuefrontier.co.jp</span>
+          <span class="web-frame-tag"><span class="t-en">Consultant</span><span class="t-jp">コンサルタント</span></span>
         </div>
         <div class="web-frame-scroll">
-          <img src="../assets/value-frontier/Website/VF-Web-screenshot00003.png" alt="Value Frontier website — track record and project list" loading="lazy">
+          <img src="../assets/value-frontier/Website/VF-Web-screenshot00004.png" alt="Value Frontier website — consultants" loading="lazy">
         </div>
         <div class="web-frame-hint">
-          <span><span class="t-en">Track Record</span><span class="t-jp">実績</span></span>
+          <span><span class="t-en">Consultant</span><span class="t-jp">コンサルタント</span></span>
           <span class="scroll-cue"><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></span>
         </div>
       </figure>
@@ -780,14 +792,14 @@
       <figure class="web-frame">
         <div class="web-frame-bar">
           <div class="web-frame-dots"><span></span><span></span><span></span></div>
-          <span class="web-frame-url">valuefrontier.co.jp/consultants</span>
-          <span class="web-frame-tag"><span class="t-en">Consultants</span><span class="t-jp">コンサルタント</span></span>
+          <span class="web-frame-url">valuefrontier.co.jp</span>
+          <span class="web-frame-tag"><span class="t-en">Company</span><span class="t-jp">会社情報</span></span>
         </div>
         <div class="web-frame-scroll">
-          <img src="../assets/value-frontier/Website/VF-Web-screenshot00004.png" alt="Value Frontier website — consultant profiles" loading="lazy">
+          <img src="../assets/value-frontier/Website/VF-Web-screenshot00003.png" alt="Value Frontier website — company" loading="lazy">
         </div>
         <div class="web-frame-hint">
-          <span><span class="t-en">Consultants</span><span class="t-jp">コンサルタント</span></span>
+          <span><span class="t-en">Company</span><span class="t-jp">会社情報</span></span>
           <span class="scroll-cue"><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></span>
         </div>
       </figure>
@@ -795,18 +807,17 @@
       <figure class="web-frame">
         <div class="web-frame-bar">
           <div class="web-frame-dots"><span></span><span></span><span></span></div>
-          <span class="web-frame-url">valuefrontier.co.jp/knowledge</span>
-          <span class="web-frame-tag"><span class="t-en">Knowledge</span><span class="t-jp">ナレッジ</span></span>
+          <span class="web-frame-url">valuefrontier.co.jp</span>
+          <span class="web-frame-tag"><span class="t-en">FAQ</span><span class="t-jp">よくある質問</span></span>
         </div>
         <div class="web-frame-scroll">
-          <img src="../assets/value-frontier/Website/VF-Web-screenshot00005.png" alt="Value Frontier website — sustainability knowledge and frameworks" loading="lazy">
+          <img src="../assets/value-frontier/Website/VF-Web-screenshot00005.png" alt="Value Frontier website — FAQ" loading="lazy">
         </div>
         <div class="web-frame-hint">
-          <span><span class="t-en">Knowledge</span><span class="t-jp">ナレッジ</span></span>
+          <span><span class="t-en">FAQ</span><span class="t-jp">よくある質問</span></span>
           <span class="scroll-cue"><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></span>
         </div>
       </figure>
-
     </div>
 
     <!-- ── Project Details (compact 3-col) ── -->
@@ -894,7 +905,7 @@
       const btns = [...document.querySelectorAll(".lang-btn")];
       const saved = localStorage.getItem("tu-lang") || "en";
       const setLang = (lang) => {
-        html.classList.toggle("lang-jp", lang === "jp");
+        html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
         btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
         localStorage.setItem("tu-lang", lang);
       };
