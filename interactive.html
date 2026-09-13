@@ -535,20 +535,22 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
 @view-transition { navigation: auto; }
 
 @keyframes vt-fade-out { to { opacity: 0; } }
-@keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
-::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
-::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+@keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vt-rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+::view-transition-old(root) { animation: vt-fade-out 200ms ease both; }
+::view-transition-new(root) { animation: vt-rise-in 260ms cubic-bezier(0.2, 0, 0, 1) both; }
 
-/* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
-   `object-fit: fill` stretches one into the other on the way across; cropping
-   both snapshots instead is what makes the move read as one element rather
-   than two pictures swapping. */
-::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+/* Non-distorting transition for hero-media:
+   Cross-fade rather than aggressive bounding-box morph, so thumbnail contents
+   transition smoothly into the detail page without awkward squashing. */
+::view-transition-group(hero-media) { animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1); }
 ::view-transition-old(hero-media),
 ::view-transition-new(hero-media) {
   height: 100%; width: 100%; object-fit: cover;
-  animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+  animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
 }
+::view-transition-old(hero-media) { animation-name: vt-fade-out; }
+::view-transition-new(hero-media) { animation-name: vt-fade-in; }
 
 /* Reduced motion keeps the navigation instant. The morph is never assigned in
    the first place — shell.mjs checks the same query before it names a card. */
@@ -591,44 +593,44 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
         <p class="cat-group-note"><span class="t-en">No winner, no score</span><span class="t-jp">勝ち負けも点数もない</span></p>
       </div>
       <div class="cat-grid">
-        <article class="cat-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
+        <article class="cat-card" tabindex="0" data-href="https://resonamotion.com/" data-external="true">
           <div class="cat-card-media"><img src="assets/resona/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/resona/preview.webm" type="video/webm"><source src="assets/resona/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
             <h3 class="cat-card-title"><span class="t-en">Resona</span><span class="t-jp">響</span></h3>
             <p class="cat-card-kind"><span class="t-en">Web animation · Pseudo-haptics</span><span class="t-jp">ウェブアニメーション · 擬似ハプティクス</span></p>
             <p class="cat-card-desc"><span class="t-en">Motion that tells you what something means before you read a word.</span><span class="t-jp is-block">言葉を読む前に、動きが意味を伝える。</span></p>
-            <a class="cat-card-cta" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
+            <a class="cat-card-cta" href="https://resonamotion.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card">
+        <article class="cat-card" tabindex="0" data-href="http://kaogame.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><div class="card-art card-art--kao"><span class="card-art-label">Kao Game 顔ゲーム</span></div></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Face</span><span class="t-jp">表情</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
             <h3 class="cat-card-title"><span class="t-en">Kao Game</span><span class="t-jp">顔ゲーム</span></h3>
             <p class="cat-card-kind"><span class="t-en">Face tracking · Web</span><span class="t-jp">表情トラッキング · ウェブ</span></p>
             <p class="cat-card-desc"><span class="t-en">A game you play with your face.</span><span class="t-jp is-block">顔で遊ぶゲーム。</span></p>
-            
+            <a class="cat-card-cta" href="http://kaogame.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
+        <article class="cat-card" tabindex="0" data-href="https://rakugakijam.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><img src="assets/rakugaki-jam/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/rakugaki-jam/preview.webm" type="video/webm"><source src="assets/rakugaki-jam/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Handwriting</span><span class="t-jp">手描き</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
             <h3 class="cat-card-title">Rakugaki Jam</h3>
             <p class="cat-card-kind"><span class="t-en">Snap Pair · Firebase RTDB · Canvas</span><span class="t-jp">Snap Pair · Firebase RTDB · Canvas</span></p>
             <p class="cat-card-desc"><span class="t-en">Doodle on your phone, then fling it onto the wall screen.</span><span class="t-jp is-block">スマホで落書きして、壁の画面へ投げ込む。</span></p>
-            <a class="cat-card-cta" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
+            <a class="cat-card-cta" href="https://rakugakijam.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
+        <article class="cat-card" tabindex="0" data-href="http://typespace.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><img src="assets/typespace/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/typespace/preview.webm" type="video/webm"><source src="assets/typespace/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Typing</span><span class="t-jp">タイピング</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
             <h3 class="cat-card-title">Typespace</h3>
             <p class="cat-card-kind"><span class="t-en">Next.js · r3f · GLSL · Web Audio</span><span class="t-jp">Next.js · r3f · GLSL · Web Audio</span></p>
             <p class="cat-card-desc"><span class="t-en">Type a word; it becomes a constellation, then drifts away.</span><span class="t-jp is-block">打った言葉が星座になり、やがて離れていく。</span></p>
-            <a class="cat-card-cta" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
+            <a class="cat-card-cta" href="http://typespace.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
         <article class="cat-card">
@@ -650,24 +652,24 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
         <p class="cat-group-note"><span class="t-en">Scan to join — no app, no accounts</span><span class="t-jp">スキャンして参加。アプリも登録もなし</span></p>
       </div>
       <div class="cat-grid">
-        <article class="cat-card" tabindex="0" data-href="https://emojiblast.vercel.app" data-external="true">
+        <article class="cat-card" tabindex="0" data-href="https://emojiblast.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><img src="assets/emoji-blast/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/emoji-blast/preview.webm" type="video/webm"><source src="assets/emoji-blast/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2 台のスマホ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
             <h3 class="cat-card-title">Emoji Blast</h3>
             <p class="cat-card-kind"><span class="t-en">HTML5 Canvas · WebRTC · single-file</span><span class="t-jp">HTML5 Canvas · WebRTC · 単一ファイル</span></p>
             <p class="cat-card-desc"><span class="t-en">Two phones, one emoji shooter. Shared lives, no server.</span><span class="t-jp is-block">スマホ 2 台の絵文字シューティング。残機は共有、サーバーなし。</span></p>
-            <a class="cat-card-cta" href="https://emojiblast.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
+            <a class="cat-card-cta" href="https://emojiblast.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" tabindex="0" data-href="https://marubatsu20.vercel.app/" data-external="true">
+        <article class="cat-card" tabindex="0" data-href="http://marubatsu20.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><img src="assets/marubatsu/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/marubatsu/preview.webm" type="video/webm"><source src="assets/marubatsu/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2 台のスマホ</span></span><span class="pill pill--status"><span class="t-en">Shipped</span><span class="t-jp">リリース済み</span></span></p>
             <h3 class="cat-card-title">Marubatsu 2.0</h3>
             <p class="cat-card-kind"><span class="t-en">Next.js 16 · Firebase RTDB · Gemini</span><span class="t-jp">Next.js 16 · Firebase RTDB · Gemini</span></p>
             <p class="cat-card-desc"><span class="t-en">Tic-tac-toe on a 4×4 board, two marks a turn.</span><span class="t-jp is-block">4×4 の盤で一手に二つ置く、○×ゲーム。</span></p>
-            <a class="cat-card-cta" href="https://marubatsu20.vercel.app/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
+            <a class="cat-card-cta" href="http://marubatsu20.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
         <article class="cat-card">

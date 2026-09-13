@@ -195,7 +195,7 @@ export function careerArcSection({ section, lens, lib, ctx }) {
       </li>`;
   }).join("\n");
   return `  <section class="band career" id="career">
-${sectionHead(section.title ?? { en: "Different mediums. Same instinct.", jp: "扱うものは変わった。でも、興味の中心はあまり変わっていない。" }, section.lede ?? { en: "Twenty years across different platforms. The medium kept changing — brand, interactive spaces, education, enterprise systems, AI agents. The underlying curiosity never did.", jp: "20 年、仕事のジャンルを何度も変えてきたというより、同じ好奇心を違うメディアで追い続けてきました。" })}
+${sectionHead(section.title ?? { en: "20 Years of Craft: Brand, Product, and AI", jp: "20 年の軌跡：ブランド、プロダクト、AI へ" }, section.lede ?? { en: "Twenty years across different platforms. The medium kept changing — brand, interactive spaces, education, enterprise systems, AI agents. The underlying curiosity never did.", jp: "20 年、仕事のジャンルを何度も変えてきたというより、同じ好奇心を違うメディアで追い続けてきました。" })}
     <ol class="arc">
 ${cells}
     </ol>

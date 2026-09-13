@@ -535,20 +535,22 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
 @view-transition { navigation: auto; }
 
 @keyframes vt-fade-out { to { opacity: 0; } }
-@keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
-::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
-::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+@keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vt-rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+::view-transition-old(root) { animation: vt-fade-out 200ms ease both; }
+::view-transition-new(root) { animation: vt-rise-in 260ms cubic-bezier(0.2, 0, 0, 1) both; }
 
-/* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
-   `object-fit: fill` stretches one into the other on the way across; cropping
-   both snapshots instead is what makes the move read as one element rather
-   than two pictures swapping. */
-::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+/* Non-distorting transition for hero-media:
+   Cross-fade rather than aggressive bounding-box morph, so thumbnail contents
+   transition smoothly into the detail page without awkward squashing. */
+::view-transition-group(hero-media) { animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1); }
 ::view-transition-old(hero-media),
 ::view-transition-new(hero-media) {
   height: 100%; width: 100%; object-fit: cover;
-  animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+  animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
 }
+::view-transition-old(hero-media) { animation-name: vt-fade-out; }
+::view-transition-new(hero-media) { animation-name: vt-fade-in; }
 
 /* Reduced motion keeps the navigation instant. The morph is never assigned in
    the first place — shell.mjs checks the same query before it names a card. */

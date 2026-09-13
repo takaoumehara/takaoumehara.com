@@ -535,20 +535,22 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
 @view-transition { navigation: auto; }
 
 @keyframes vt-fade-out { to { opacity: 0; } }
-@keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
-::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
-::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
+@keyframes vt-fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vt-rise-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+::view-transition-old(root) { animation: vt-fade-out 200ms ease both; }
+::view-transition-new(root) { animation: vt-rise-in 260ms cubic-bezier(0.2, 0, 0, 1) both; }
 
-/* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
-   `object-fit: fill` stretches one into the other on the way across; cropping
-   both snapshots instead is what makes the move read as one element rather
-   than two pictures swapping. */
-::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+/* Non-distorting transition for hero-media:
+   Cross-fade rather than aggressive bounding-box morph, so thumbnail contents
+   transition smoothly into the detail page without awkward squashing. */
+::view-transition-group(hero-media) { animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1); }
 ::view-transition-old(hero-media),
 ::view-transition-new(hero-media) {
   height: 100%; width: 100%; object-fit: cover;
-  animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+  animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
 }
+::view-transition-old(hero-media) { animation-name: vt-fade-out; }
+::view-transition-new(hero-media) { animation-name: vt-fade-in; }
 
 /* Reduced motion keeps the navigation instant. The morph is never assigned in
    the first place — shell.mjs checks the same query before it names a card. */
@@ -599,7 +601,7 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       <p class="section-lede"><span class="t-en">Six pieces, from a brand film to an agent fleet. Each one says what I did and what the director, the crew or the team did.</span><span class="t-jp is-block">ブランドフィルムからエージェント群まで 6 つ。それぞれに、自分がしたことと、監督・クルー・チームがしたことを書いてある。</span></p>
     </div>
     <div class="proof-grid">
-      <article class="proof-card is-lead" tabindex="0" data-href="https://rakugaki-jam.vercel.app" data-external="true">
+      <article class="proof-card is-lead" tabindex="0" data-href="../../projects/rakugaki-jam.html">
         <div class="card-media"><img src="../../assets/rakugaki-jam/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/rakugaki-jam/preview.webm" type="video/webm"><source src="../../assets/rakugaki-jam/preview.mp4" type="video/mp4"></video></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Interactive · Live now</span><span class="t-jp">インタラクティブ · 公開中</span></p>
@@ -609,7 +611,7 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
       <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul><li>Designed the doodle-to-wall-screen concept — draw on your phone, fling it onto a shared display</li><li>Built the realtime multi-device pairing and sync on Snap Pair and Firebase RTDB</li><li>Built the canvas rendering and fling interaction</li></ul></div></details>
-          <a class="card-link" href="https://rakugaki-jam.vercel.app" target="_blank" rel="noopener"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></a>
+          <a class="card-link" href="../../projects/rakugaki-jam.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
         </div>
       </article>
       <article class="proof-card is-standard" tabindex="0" data-href="../../projects/koji-fizz.html">
@@ -686,22 +688,22 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       <p class="section-lede"><span class="t-en">Emerging technology as a creative medium, not a feature. Most of these open on your phone right now.</span><span class="t-jp is-block">機能ではなく表現の素材としての新しい技術。ほとんどは、いまスマホで開ける。</span></p>
     </div>
     <div class="exp-grid">
-      <article class="exp-card" tabindex="0" data-href="https://resona-motion.vercel.app" data-external="true">
+      <article class="exp-card" tabindex="0" data-href="https://resonamotion.com/" data-external="true">
         <div class="exp-media"><img src="../../assets/resona/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/resona/preview.webm" type="video/webm"><source src="../../assets/resona/preview.mp4" type="video/mp4"></video></div>
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
           <h3 class="card-title"><span class="t-en">Resona</span><span class="t-jp">響</span></h3>
           <p class="card-desc"><span class="t-en">Motion that tells you what something means before you read a word.</span><span class="t-jp is-block">言葉を読む前に、動きが意味を伝える。</span></p>
-          <a class="card-link" href="https://resona-motion.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
+          <a class="card-link" href="https://resonamotion.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
-      <article class="exp-card" tabindex="0" data-href="https://typespace-rho.vercel.app" data-external="true">
+      <article class="exp-card" tabindex="0" data-href="http://typespace.creativityiseverywhere.com/" data-external="true">
         <div class="exp-media"><img src="../../assets/typespace/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../../assets/typespace/preview.webm" type="video/webm"><source src="../../assets/typespace/preview.mp4" type="video/mp4"></video></div>
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Typing</span><span class="t-jp">タイピング</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
           <h3 class="card-title">Typespace</h3>
           <p class="card-desc"><span class="t-en">Type a word; it becomes a constellation, then drifts away.</span><span class="t-jp is-block">打った言葉が星座になり、やがて離れていく。</span></p>
-          <a class="card-link" href="https://typespace-rho.vercel.app" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
+          <a class="card-link" href="http://typespace.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
       <article class="exp-card" tabindex="0">
@@ -713,13 +715,13 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
           
         </div>
       </article>
-      <article class="exp-card" tabindex="0">
+      <article class="exp-card" tabindex="0" data-href="http://kaogame.creativityiseverywhere.com/" data-external="true">
         <div class="exp-media"><div class="card-art card-art--kao"><span class="card-art-label">Kao Game 顔ゲーム</span></div></div>
         <div class="card-body">
           <p class="chips"><span class="pill pill--in"><span class="t-en">Face</span><span class="t-jp">表情</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
           <h3 class="card-title"><span class="t-en">Kao Game</span><span class="t-jp">顔ゲーム</span></h3>
           <p class="card-desc"><span class="t-en">A game you play with your face.</span><span class="t-jp is-block">顔で遊ぶゲーム。</span></p>
-          
+          <a class="card-link" href="http://kaogame.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
         </div>
       </article>
     </div>
@@ -772,7 +774,7 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
 
   <section class="band career" id="career">
     <div class="section-head">
-      <h2 class="section-title"><span class="t-en">Different mediums. Same instinct.</span><span class="t-jp">扱うものは変わった。でも、興味の中心はあまり変わっていない。</span></h2>
+      <h2 class="section-title"><span class="t-en">20 Years of Craft: Brand, Product, and AI</span><span class="t-jp">20 年の軌跡：ブランド、プロダクト、AI へ</span></h2>
       <p class="section-lede"><span class="t-en">Twenty years across different platforms. The medium kept changing — brand, interactive spaces, education, enterprise systems, AI agents. The underlying curiosity never did.</span><span class="t-jp is-block">20 年、仕事のジャンルを何度も変えてきたというより、同じ好奇心を違うメディアで追い続けてきました。</span></p>
     </div>
     <ol class="arc">
@@ -788,8 +790,8 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       </li>
       <li class="arc-cell is-quiet">
         <h3 class="arc-label"><span class="t-en">Education / Product</span><span class="t-jp">教育 / プロダクト</span></h3>
-        <p class="arc-summary"><span class="t-en">How can learning become something people want to participate in? Leading product design at Amplify — AR literacy quests reaching millions — and hands-on playful learning experiments.</span><span class="t-jp is-block">どうすれば、学ぶこと自体を参加したくなる体験にできるか。Amplify での大規模な EdTech プロダクトから、漢字パズルなど手で触れる遊びの学びまで。</span></p>
-        <ul class="arc-roles"><li><b>Amplify Education</b> <span class="arc-title">Product Design Lead</span></li></ul>
+        <p class="arc-summary"><span class="t-en">How can learning become something people want to participate in? Teaching Advanced Typography at SVA, leading product design at Amplify — AR literacy quests reaching millions — and hands-on playful learning experiments.</span><span class="t-jp is-block">どうすれば、学ぶこと自体を参加したくなる体験にできるか。SVA での教鞭、Amplify での大規模な EdTech プロダクトから、漢字パズルなど手で触れる遊びの学びまで。</span></p>
+        <ul class="arc-roles"><li><b>Amplify Education</b> <span class="arc-title">Product Design Lead</span></li><li><b>School of Visual Arts</b> <span class="arc-title">Adjunct Professor</span><span class="arc-period">2024–2024</span></li></ul>
       </li>
       <li class="arc-cell is-quiet">
         <h3 class="arc-label"><span class="t-en">Enterprise / CX</span><span class="t-jp">エンタープライズ / CX</span></h3>
@@ -798,8 +800,8 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       </li>
       <li class="arc-cell is-emphasised">
         <h3 class="arc-label"><span class="t-en">AI / Ventures</span><span class="t-jp">AI / ベンチャー</span></h3>
-        <p class="arc-summary"><span class="t-en">AI agents inside a locked-down enterprise, a design language for agentic products, open-source tools, and a portfolio of ventures at the validating stage.</span><span class="t-jp is-block">制約の強い企業に組み込む AI エージェント、AI が介在するプロダクトの設計言語、オープンソースのツール、そして検証段階のベンチャー群。</span></p>
-        <ul class="arc-roles"><li><b>Verizon Value</b> <span class="arc-title">Lead Product Designer (Agentic UX &amp; AI Systems)</span><span class="arc-period">2024–present</span></li><li><b>intentfirst.ai</b> <span class="arc-title">Founder</span></li><li><b>BreakBias</b> <span class="arc-title">Creator</span></li></ul>
+        <p class="arc-summary"><span class="t-en">Where it is heading: mentoring early-stage founders at SOSV, building autonomous agents at Verizon, and founding Intent First.</span><span class="t-jp is-block">現在の向かう先。SOSV でのスタートアップ創業者メンター、Verizon での自律型エージェント開発、そして Intent First の立ち上げ。</span></p>
+        <ul class="arc-roles"><li><b>SOSV</b> <span class="arc-title">Startup Coach</span><span class="arc-period">2019–2020</span></li><li><b>Verizon Value</b> <span class="arc-title">Lead Product Designer (Agentic UX &amp; AI Systems)</span><span class="arc-period">2024–present</span></li><li><b>intentfirst.ai</b> <span class="arc-title">Founder</span></li><li><b>BreakBias</b> <span class="arc-title">Creator</span></li></ul>
       </li>
     </ol>
     <p class="arc-more"><a href="../../about.html"><span class="t-en">Full background →</span><span class="t-jp">経歴の詳細 →</span></a></p>

@@ -5,630 +5,699 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title>About — Takao Umehara</title>
-  <meta name="description" content="About Takao Umehara — a NYC-based product designer and innovation strategist blending product design, brand strategy, and AI-era innovation frameworks.">
+  <meta name="description" content="About Takao Umehara — NYC-based product designer, educator, and innovation strategist blending product craft, brand systems, and AI-era frameworks.">
+  <link rel="canonical" href="https://takaoumehara.com/about.html">
   <meta property="og:title" content="About — Takao Umehara">
-  <meta property="og:description" content="A NYC-based product designer and innovation strategist blending product design, brand strategy, and AI-era innovation frameworks.">
+  <meta property="og:description" content="NYC-based product designer, educator, and innovation strategist blending product craft, brand systems, and AI-era frameworks.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://takaoumehara.com/about.html">
-  <meta property="og:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
+  <meta property="og:image" content="assets/about/TakaoUmehara_passport.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="About — Takao Umehara">
-  <meta name="twitter:description" content="A NYC-based product designer and innovation strategist blending product design, brand strategy, and AI-era innovation frameworks.">
-  <meta name="twitter:image" content="https://takaoumehara.com/assets/shared/Quest_teaser_tr.png">
+  <meta name="twitter:description" content="NYC-based product designer, educator, and innovation strategist blending product craft, brand systems, and AI-era frameworks.">
+  <meta name="twitter:image" content="assets/about/TakaoUmehara_passport.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* ─── Tokens ─── */
-    :root {
-      --bg: #fbfaf7;
-      --ink: #121212;
-      --ink-mid: #4c4841;
-      --ink-dim: #76716a;
-      --line: rgba(18,18,18,0.08);
-      --border: rgba(18,18,18,0.10);
-      --surface: rgba(255,255,255,0.92);
-      --shadow: 0 18px 42px rgba(18,18,18,0.04);
-      --ff: "Google Sans","Google Sans Text","Product Sans",system-ui,sans-serif;
-      --angle: 102deg;
-      --a1: hsla(198 82% 72% / 0.44);
-      --a2: hsla(248 74% 80% / 0.36);
-      --a3: hsla(324 72% 81% / 0.40);
-      --a4: hsla(36 80% 78% / 0.34);
-      --t1: hsl(198 58% 56%);
-      --t2: hsl(248 58% 70%);
-      --t3: hsl(324 60% 72%);
-      --t4: hsl(36 58% 62%);
-      --hover-angle: 98deg;
-      --bar-width: 70%;
-      --image-hover-opacity: 0.985;
-      --image-hover-width: 174%;
-      --image-hover-from: -96%;
-      --image-hover-to: -4%;
-      --image-hover-leave-to: 124%;
-      --image-hover-enter-ms: 1260ms;
-      --image-hover-leave-ms: 920ms;
-      --hover-ms: 880ms;
-      --press-ms: 760ms;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--ff);
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
-        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
-        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-      min-height: 100vh;
-    }
-
-    /* ─── Typography ─── */
-    .eyebrow, .kicker, .meta, .small, .pill {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-    }
-
-    /* ─── Nav ─── */
-    .site-nav {
-      position: sticky;
-      top: 0;
-      z-index: 40;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 14px 32px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .nav-logo {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      text-decoration: none;
-      line-height: 1;
-    }
-
-    .nav-logo-name {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-      color: var(--ink);
-    }
-
-    .nav-logo-tag {
-      font-size: 10.5px;
-      letter-spacing: 0.01em;
-      color: var(--ink-dim);
-      font-weight: 400;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 13px;
-      color: var(--ink-mid);
-      text-decoration: none;
-      letter-spacing: 0.01em;
-      transition: color 160ms ease;
-    }
-
-    .nav-links a:hover { color: var(--ink); }
-    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-
-    /* ─── Hero ─── */
-    .hero {
-      padding: 96px 32px 80px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .about-hero-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.35fr) minmax(260px, 0.65fr);
-      gap: clamp(32px, 6vw, 84px);
-      align-items: end;
-    }
-
-    .about-portrait {
-      width: min(100%, 360px);
-      aspect-ratio: 4 / 5;
-      justify-self: end;
-      margin: 0;
-      overflow: hidden;
-      background: #d6d0c5;
-    }
-
-    .about-portrait img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-    }
-
-    .hero-kicker {
-      margin-bottom: 20px;
-    }
-
-    .hero-headline {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(44px, 6.8vw, 88px);
-      line-height: 0.91;
-      letter-spacing: -0.03em;
-      font-weight: 400;
-      max-width: 900px;
-      margin-bottom: 32px;
-      color: var(--ink);
-    }
-
-    .hero-desc {
-      font-size: 17px;
-      line-height: 1.62;
-      color: var(--ink-mid);
-      max-width: 640px;
-      margin-bottom: 0;
-    }
-
-    /* ─── Section header ─── */
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 24px;
-      padding: 0 32px;
-      margin: 0 auto 28px;
-      max-width: 1200px;
-    }
-
-    .section-title {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: clamp(22px, 2.4vw, 30px);
-      font-weight: 400;
-      letter-spacing: -0.02em;
-    }
-
-    /* ─── Capabilities strip ─── */
-    .capabilities-section {
-      padding: 72px 0 80px;
-      border-top: 1px solid var(--line);
-    }
-
-    .capabilities-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 28px auto 0;
-    }
-
-    .capability-block {
-      padding: 32px 0;
-      border-right: 1px solid var(--line);
-    }
-
-    .capability-block:last-child { border-right: 0; }
-    .capability-block:not(:first-child) { padding-left: 32px; }
-
-    .capability-num {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-      margin-bottom: 16px;
-    }
-
-    .capability-title {
-      font-family: "DM Serif Display", Georgia, serif;
-      font-size: 20px;
-      font-weight: 400;
-      letter-spacing: -0.02em;
-      margin-bottom: 12px;
-    }
-
-    .capability-desc {
-      font-size: 14px;
-      line-height: 1.62;
-      color: var(--ink-mid);
-    }
-
-    /* ─── Timeline section ─── */
-    .timeline-section {
-      padding: 72px 0 80px;
-      border-top: 1px solid var(--line);
-    }
-
-    .timeline-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 28px auto 0;
-    }
-
-    .timeline-item {
-      display: contents;
-    }
-
-    .timeline-left {
-      padding: 28px 32px 28px 0;
-      border-right: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .timeline-right {
-      padding: 28px 0 28px 32px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .timeline-item:last-child .timeline-left,
-    .timeline-item:last-child .timeline-right {
-      border-bottom: 0;
-    }
-
-    .timeline-org {
-      font-size: 16px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      margin-bottom: 4px;
-    }
-
-    .timeline-role {
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-    }
-
-    .timeline-desc {
-      font-size: 14px;
-      line-height: 1.62;
-      color: var(--ink-mid);
-    }
-
-    /* ─── Highlights strip ─── */
-    .highlights-section {
-      padding: 56px 0 72px;
-      border-top: 1px solid var(--line);
-    }
-
-    .highlights-row {
-      display: flex;
-      gap: 0;
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 28px auto 0;
-      flex-wrap: wrap;
-    }
-
-    .highlight-item {
-      flex: 1 1 200px;
-      padding: 24px 32px 24px 0;
-      border-right: 1px solid var(--line);
-    }
-
-    .highlight-item:last-child { border-right: 0; }
-
-    .highlight-num {
-      font-size: clamp(28px, 3.2vw, 42px);
-      font-weight: 600;
-      letter-spacing: -0.05em;
-      margin-bottom: 6px;
-      color: var(--ink);
-    }
-
-    .highlight-label {
-      font-size: 13px;
-      color: var(--ink-dim);
-      line-height: 1.5;
-    }
-
-    /* ─── Clients section ─── */
-    .clients-section {
-      padding: 64px 0 72px;
-      border-top: 1px solid var(--line);
-    }
-
-    .clients-list {
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 28px auto 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0;
-    }
-
-    .client-item {
-      font-size: 15px;
-      font-weight: 500;
-      letter-spacing: -0.02em;
-      color: var(--ink-mid);
-      padding: 16px 24px 16px 0;
-      margin-right: 24px;
-      border-bottom: 1px solid var(--line);
-      flex: 0 0 auto;
-      transition: color 160ms ease;
-    }
-
-    .client-item:hover { color: var(--ink); }
-
-    /* ─── Social links ─── */
-    .social-section {
-      padding: 56px 0 72px;
-      border-top: 1px solid var(--line);
-    }
-
-    .social-row {
-      padding: 0 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary {
-      display: inline-block;
-      padding: 13px 20px;
-      background: var(--ink);
-      color: #fff;
-      font-family: var(--ff);
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border: 1px solid var(--ink);
-      transition: background 180ms ease, color 180ms ease;
-    }
-
-    .btn-primary:hover { background: #2a2a2a; }
-
-    .btn-secondary {
-      display: inline-block;
-      padding: 13px 20px;
-      background: transparent;
-      color: var(--ink);
-      font-family: var(--ff);
-      font-size: 12px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border: 1px solid var(--border);
-      transition: border-color 180ms ease;
-    }
-
-    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
-
-    /* ─── Footer ─── */
-    .site-footer {
-      border-top: 1px solid var(--line);
-      padding: 40px 32px;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .footer-logo {
-      font-size: 15px;
-      font-weight: 600;
-      letter-spacing: -0.025em;
-    }
-
-    .footer-links {
-      display: flex;
-      gap: 24px;
-      list-style: none;
-    }
-
-    .footer-links a {
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      color: var(--ink-dim);
-      text-decoration: none;
-      transition: color 160ms ease;
-    }
-
-    .footer-links a:hover { color: var(--ink); }
-
-    .footer-copy {
-      font-size: 12px;
-      color: var(--ink-dim);
-    }
-
-    .footer-llc {
-      font-size: 11px;
-      color: var(--ink-dim);
-      margin-top: 5px;
-      letter-spacing: 0.01em;
-    }
-
-    .footer-llc strong {
-      color: var(--ink-mid);
-      font-weight: 500;
-    }
-
-    /* ─── Animations ─── */
-    @keyframes hero-in {
-      from { opacity: 0; transform: translateY(14px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .hero-kicker  { animation: hero-in 600ms cubic-bezier(0.22, 0.84, 0.22, 1) 80ms both; }
-    .hero-headline {
-      animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 120ms both;
-    }
-    .hero-desc    { animation: hero-in 700ms cubic-bezier(0.22, 0.84, 0.22, 1) 260ms both; }
-
-    /* ─── EN/JP lang switch ─── */
-    .lang-switch {
-      position: fixed;
-      right: 0;
-      bottom: 80px;
-      z-index: 100;
-      writing-mode: vertical-rl;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      padding: 16px 9px;
-      background: rgba(255,255,255,0.94);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-      border-left: 1px solid rgba(18,18,18,0.10);
-      border-top: 1px solid rgba(18,18,18,0.07);
-      border-bottom: 1px solid rgba(18,18,18,0.07);
-      border-radius: 6px 0 0 6px;
-    }
-
-    .lang-btn {
-      appearance: none; background: none; border: none;
-      font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em;
-      text-transform: uppercase; cursor: pointer;
-      color: var(--ink-dim); padding: 0;
-      transition: color 160ms ease;
-    }
-
-    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
-    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
-
-    /* bilingual content */
-    .t-jp { display: none; }
-    html.lang-jp .t-en { display: none; }
-    html.lang-jp .t-jp { display: inline; }
-    html.lang-jp .t-jp.is-block { display: block; }
-
-    /* ─── Reduced motion ─── */
-    @media (prefers-reduced-motion: reduce) {
-      .hero-kicker, .hero-headline, .hero-desc { animation: none !important; opacity: 1 !important; }
-    }
-
-    /* ─── Responsive ─── */
-    @media (max-width: 900px) {
-      .capabilities-grid { grid-template-columns: 1fr; }
-      .capability-block { border-right: 0; border-bottom: 1px solid var(--line); padding: 28px 0; }
-      .capability-block:not(:first-child) { padding-left: 0; }
-      .timeline-grid { grid-template-columns: 1fr; }
-      .timeline-left { border-right: 0; border-bottom: 0; padding-bottom: 4px; padding-right: 0; }
-      .timeline-right { padding-left: 0; }
-    }
-
-    @media (max-width: 760px) {
-      .about-hero-grid {
-        grid-template-columns: 1fr;
-        gap: 32px;
-      }
-
-      .about-portrait {
-        width: min(100%, 420px);
-        justify-self: start;
-      }
-    }
-
-    @media (max-width: 600px) {
-      .site-nav { padding: 16px 20px; }
-      .hero { padding: 64px 20px 56px; }
-      .section-head, .capabilities-grid, .timeline-grid, .highlights-row, .clients-list, .social-row { padding: 0 20px; }
-      .highlight-item { padding-right: 20px; }
-    }
-
-    /* ─── Mobile Menu ─── */
-    .nav-toggle {
-      display: none;
-      appearance: none; background: none; border: none; cursor: pointer;
-      width: 28px; height: 20px; position: relative; padding: 0;
-    }
-    .nav-toggle span {
-      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
-      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
-    }
-    .nav-toggle span:nth-child(1) { top: 0; }
-    .nav-toggle span:nth-child(2) { top: 9px; }
-    .nav-toggle span:nth-child(3) { top: 18px; }
-    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
-    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
-
-    @media (max-width: 768px) {
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; gap: 0; padding: 0;
-        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--line);
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links li { border-top: 1px solid var(--line); }
-      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
-    }
-      /* ─── Cross-document view transition — docs/page-transitions.md ───────
-       The card the visitor clicked grows into this page's hero band while the
-       rest of the page cross-fades under it. It takes both documents: the
-       listing page puts `hero-media` on the one card it was launched from,
-       this page puts the same name on the hero. Browsers without support
-       simply navigate — nothing here is load-bearing. */
-    @view-transition { navigation: auto; }
-    [data-vt-hero] { view-transition-name: hero-media; }
-
-    @keyframes vt-fade-out { to { opacity: 0; } }
-    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
-    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
-    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
-
-    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
-       `object-fit: fill` stretches one into the other on the way across;
-       cropping both snapshots is what makes the move read as one element
-       rather than two pictures swapping. */
-    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
-    ::view-transition-old(hero-media),
-    ::view-transition-new(hero-media) {
-      height: 100%; width: 100%; object-fit: cover;
-      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      [data-vt-hero] { view-transition-name: none; }
-      ::view-transition-old(root),
-      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
-    }
-</style>
-  <style>
-    /* ── Nav tiers ── The three offers read first at full ink; the two
-       foundations sit behind a hairline. The hairline is drawn inside the
-       existing gap rather than taking a slot of its own — a separator that
-       occupies a slot makes that one gap twice as wide as every other. ── */
-    .nav-links { align-items: center; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: var(--ink-mid); }
-    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -15px; top: 50%;
-      width: 1px; height: 11px; margin-top: -5.5px;
-      background: var(--line);
-    }
-    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
+/* ═══════════════════════════════════════════════════════════════════════════
+   About page — Ink & Paper monochrome aesthetic matching takaoumehara.com
+   ═══════════════════════════════════════════════════════════════════════════ */
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --bg: #f3f2ee;
+  --ink: #0b0b0b;
+  --ink-mid: #4a4a44;
+  --ink-dim: #66665f;
+  --line: rgba(11, 11, 11, 0.12);
+  --border: rgba(11, 11, 11, 0.16);
+  --surface: #ffffff;
+  
+  --ff: "Outfit", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --ff-jp: "Outfit", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  
+  --col: 1200px;
+  --gutter: clamp(20px, 3vw, 36px);
+  
+  --r-sm: 8px;
+  --r-card: clamp(14px, 1.8vw, 22px);
+  --r-pill: 9999px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--ff);
+  color: var(--ink);
+  background: var(--bg);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Navigation ─── */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 32px;
+  background: rgba(243, 242, 238, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--line);
+}
+
+.nav-logo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.nav-logo-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.nav-logo-tag {
+  font-size: 10.5px;
+  letter-spacing: 0.01em;
+  color: var(--ink-dim);
+  font-weight: 400;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  list-style: none;
+}
+
+.nav-links li { position: relative; }
+
+.nav-links a {
+  font-size: 13px;
+  letter-spacing: 0.01em;
+  color: var(--ink-mid);
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+
+.nav-links a:hover, .nav-links a.is-active {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.nav-links .is-tierbreak::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 1px;
+  height: 11px;
+  margin-top: -5.5px;
+  background: var(--line);
+}
+
+.nav-toggle {
+  display: none;
+  width: 28px;
+  height: 20px;
+  padding: 0;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-toggle span {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--ink);
+  transition: transform 240ms ease, opacity 180ms ease;
+}
+
+.nav-toggle span:nth-child(1) { top: 0; }
+.nav-toggle span:nth-child(2) { top: 9px; }
+.nav-toggle span:nth-child(3) { top: 18px; }
+.nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+/* ─── Typography & Shared Tokens ─── */
+.container {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 12px;
+}
+
+/* Language switch */
+.lang-switch {
+  position: fixed;
+  right: 0;
+  bottom: 80px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 16px 9px;
+  background: rgba(255,255,255,0.95);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--border);
+  border-radius: 8px 0 0 8px;
+  writing-mode: vertical-rl;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+
+.lang-btn {
+  padding: 0;
+  appearance: none;
+  background: none;
+  border: none;
+  color: var(--ink-dim);
+  cursor: pointer;
+  font-family: var(--ff);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 160ms ease;
+}
+
+.lang-btn.is-active {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.lang-sep {
+  color: var(--line);
+  font-size: 9px;
+}
+
+.t-jp { display: none; }
+html.lang-jp .t-en { display: none; }
+html.lang-jp .t-jp { display: inline; }
+html.lang-jp .t-jp.is-block { display: block; }
+html.lang-jp body { font-family: var(--ff-jp); }
+
+/* ─── Hero Section ─── */
+.about-hero {
+  padding: clamp(56px, 8vw, 100px) 0 clamp(40px, 6vw, 72px);
+  border-bottom: 1px solid var(--line);
+}
+
+.about-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.65fr);
+  gap: clamp(36px, 6vw, 72px);
+  align-items: start;
+}
+
+.hero-headline {
+  font-size: clamp(34px, 4.8vw, 58px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+html.lang-jp .hero-headline {
+  font-size: clamp(28px, 4vw, 46px);
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.hero-desc {
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.65;
+  color: var(--ink-mid);
+  margin-bottom: 18px;
+}
+
+.hero-subdesc {
+  font-size: clamp(14px, 1.25vw, 16px);
+  line-height: 1.65;
+  color: var(--ink-dim);
+}
+
+.about-portrait {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  background: #0b0b0b;
+  border: 1px solid var(--border);
+  box-shadow: 0 16px 36px rgba(11, 11, 11, 0.07);
+}
+
+.about-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ─── Highlights Row ─── */
+.highlights-section {
+  padding: clamp(36px, 5vw, 56px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.highlights-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.highlight-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 24px 22px;
+}
+
+.highlight-num {
+  font-size: clamp(32px, 3.6vw, 44px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.highlight-label {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-mid);
+}
+
+/* ─── Educator & Coach Dual Card ─── */
+.feature-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-top: 24px;
+}
+
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: clamp(28px, 4vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.feature-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink);
+  margin-bottom: 16px;
+  align-self: flex-start;
+}
+
+.feature-card h3 {
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+
+.feature-card p {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--ink-mid);
+  margin-bottom: 16px;
+}
+
+.feature-meta {
+  font-size: 12.5px;
+  color: var(--ink-dim);
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+  margin-top: auto;
+}
+
+/* ─── Sections Headings ─── */
+.section {
+  padding: clamp(48px, 6vw, 80px) 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.section-head {
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: clamp(26px, 3.2vw, 38px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+/* ─── Core Capabilities Grid ─── */
+.capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.capability-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: 28px 24px;
+}
+
+.capability-num {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  font-weight: 700;
+  color: var(--ink-dim);
+  margin-bottom: 16px;
+}
+
+.capability-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+
+.capability-desc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-mid);
+}
+
+/* ─── Career Timeline ─── */
+.timeline-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--line);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+
+.timeline-item {
+  background: var(--surface);
+  padding: 24px 28px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.timeline-org {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.timeline-role {
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+
+.timeline-desc {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink-mid);
+}
+
+/* ─── Exhibitions & Books ─── */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.work-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+
+.work-card-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0b0b0b;
+  overflow: hidden;
+}
+
+.work-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.work-card-body {
+  padding: 24px;
+}
+
+.work-card-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.work-card-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-mid);
+  margin-bottom: 14px;
+}
+
+.work-card-meta {
+  font-size: 12px;
+  color: var(--ink-dim);
+}
+
+/* ─── Client Badges ─── */
+.clients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.client-badge {
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ─── Contact / Links ─── */
+.links-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 22px;
+  border-radius: var(--r-pill);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.btn-primary {
+  background: var(--ink);
+  color: #fff;
+  border: 1px solid var(--ink);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+
+.btn-pill:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* ─── Footer ─── */
+footer {
+  border-top: 1px solid var(--line);
+  padding: 44px 0 64px;
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.footer-logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.footer-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+
+.footer-links a {
+  color: var(--ink-mid);
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  color: var(--ink);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 980px) {
+  .highlights-row { grid-template-columns: repeat(2, 1fr); }
+  .feature-cards { grid-template-columns: 1fr; }
+  .capabilities-grid { grid-template-columns: 1fr; }
+  .works-grid { grid-template-columns: 1fr; }
+  .timeline-item { grid-template-columns: 1fr; gap: 10px; }
+}
+
+@media (max-width: 768px) {
+  .site-nav { padding: 14px 20px; }
+  .nav-toggle { display: block; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    gap: 16px;
+  }
+  .nav-links.is-open { display: flex; }
+  .nav-links .is-tierbreak::before { display: none; }
+}
+
+@media (max-width: 760px) {
+  .about-hero-grid {
+    grid-template-columns: 1fr;
+  }
+  .about-portrait {
+    max-width: 320px;
+  }
+  .highlights-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@view-transition { navigation: auto; }
   </style>
 </head>
 <body>
 
-  <!-- ── Nav ── -->
+  <!-- ── Navigation ── -->
   <nav class="site-nav">
     <a href="index.html" class="nav-logo">
       <span class="nav-logo-name">Takao Umehara</span>
@@ -643,258 +712,400 @@
       <li class="is-tierbreak"><a href="about.html" class="is-active" aria-current="page">About</a></li>
       <li><a href="contact.html">Contact</a></li>
     </ul>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
   <!-- ── Hero ── -->
-  <section class="hero">
-    <div class="about-hero-grid">
-      <div class="about-hero-copy">
-        <div class="hero-kicker eyebrow">
-          <span class="t-en">About</span>
-          <span class="t-jp">私について</span>
+  <section class="about-hero">
+    <div class="container">
+      <div class="about-hero-grid">
+        <div class="about-hero-copy">
+          <span class="eyebrow">
+            <span class="t-en">About &amp; Practice</span>
+            <span class="t-jp">自己紹介と活動理念</span>
+          </span>
+          <h1 class="hero-headline">
+            <span class="t-en">Product designer, educator, and innovation strategist based in New York City.</span>
+            <span class="t-jp">ニューヨーク在住のプロダクトデザイナー、教育者、イノベーション・ストラテジスト。</span>
+          </h1>
+          <p class="hero-desc">
+            <span class="t-en">For over 20 years, I have worked across branding, product design, playful learning, and AI-driven platforms. My practice balances executive-level strategic leadership with obsessive hands-on making.</span>
+            <span class="t-jp is-block">20年以上にわたり、ブランディング、プロダクト設計、プレイフルラーニング、そして生成AIプラットフォームの現場を横断。事業戦略を牽引するリーダーシップと、細部まで自ら手を動かして形にするクラフトマンシップの両立を信条としています。</span>
+          </p>
+          <p class="hero-subdesc">
+            <span class="t-en">Whether teaching Advanced Typography at SVA, coaching 20 startup founders at SOSV, or building flagship enterprise AI platforms for Verizon, I bridge conceptual rigor with tangible execution.</span>
+            <span class="t-jp is-block">SVA（School of Visual Arts）でのタイポグラフィ教育、SOSVでの20名のスタートアップ創業者育成、さらにはVerizonの大規模AIプラットフォーム構築まで、概念の深さと手触りのある実装を一貫してつなぎます。</span>
+          </p>
         </div>
-        <h1 class="hero-headline">
-          <span class="t-en">Product designer, innovation strategist, and creative thinker based in New York City.</span>
-          <span class="t-jp">ニューヨーク在住のプロダクトデザイナー、イノベーション・ストラテジスト。</span>
-        </h1>
-        <p class="hero-desc">
-          <span class="t-en">Throughout my career, I have consistently taken on key leadership roles such as Product Design Lead, UX Lead, and Senior Product Designer. My approach combines strategic vision with hands-on design skills to create products that resonate with users and meet business goals.</span>
-          <span class="t-jp is-block">これまで、プロダクトデザインリード、UXリード、シニアプロダクトデザイナーとして、一貫して現場を率いる立場を担ってきました。戦略の視点と手を動かすデザインの両方を持ち込み、ユーザーの心に残り、事業の目標にもつながるプロダクトをつくっています。</span>
-        </p>
+        <figure class="about-portrait">
+          <img src="assets/about/TakaoUmehara_passport.png" alt="Takao Umehara" width="1024" height="1024">
+        </figure>
       </div>
-      <figure class="about-portrait">
-        <img src="assets/about/TakaoUmehara_passport.png" alt="Takao Umehara" width="1024" height="1024">
-      </figure>
     </div>
   </section>
 
   <!-- ── Highlights ── -->
   <section class="highlights-section">
-    <div class="highlights-row">
-      <div class="highlight-item">
-        <div class="highlight-num">12+</div>
-        <div class="highlight-label">
-          <span class="t-en">Products launched across EdTech, FinTech, Blockchain, Commerce, AI, Web3 &amp; Retail</span>
-          <span class="t-jp is-block">EdTech、FinTech、ブロックチェーン、コマース、AI、Web3、小売の各領域で立ち上げたプロダクト</span>
+    <div class="container">
+      <div class="highlights-row">
+        <div class="highlight-item">
+          <div class="highlight-num">20+</div>
+          <div class="highlight-label">
+            <span class="t-en">Years of craft spanning brand, UX, education, and AI architecture</span>
+            <span class="t-jp is-block">ブランド、UX、教育、AI設計まで20年におよぶ実績</span>
+          </div>
         </div>
-      </div>
-      <div class="highlight-item">
-        <div class="highlight-num">10+</div>
-        <div class="highlight-label">
-          <span class="t-en">ELA Quests product launches at Amplify Education, reaching millions of students</span>
-          <span class="t-jp is-block">Amplify Education で立ち上げた ELA Quests のプロダクト。数百万人の生徒に届いています</span>
+        <div class="highlight-item">
+          <div class="highlight-num">10+</div>
+          <div class="highlight-label">
+            <span class="t-en">ELA Quests launches at Amplify Education reaching millions of students</span>
+            <span class="t-jp is-block">全米数百万人へ届けたAmplify Educationの学習プロダクト立ち上げ</span>
+          </div>
         </div>
-      </div>
-      <div class="highlight-item">
-        <div class="highlight-num">11K+</div>
-        <div class="highlight-label">
-          <span class="t-en">Copies sold of <em>extra•ordinary</em> (Rockport Publishing)</span>
-          <span class="t-jp is-block">著書『extra•ordinary』（Rockport Publishing）の販売部数</span>
+        <div class="highlight-item">
+          <div class="highlight-num">20</div>
+          <div class="highlight-label">
+            <span class="t-en">Startup founders coached at SOSV across Food &amp; Blockchain ventures</span>
+            <span class="t-jp is-block">SOSVでメンタリングしたフード＆ブロックチェーン領域の創業者</span>
+          </div>
         </div>
-      </div>
-      <div class="highlight-item">
-        <div class="highlight-num">5</div>
-        <div class="highlight-label">
-          <span class="t-en">Global companies trained with BreakBias — Microsoft, Tiffany, Havas, Dentsu, Google</span>
-          <span class="t-jp is-block">BreakBias を実施したグローバル企業 — Microsoft、Tiffany、Havas、電通、Google</span>
+        <div class="highlight-item">
+          <div class="highlight-num">11K+</div>
+          <div class="highlight-label">
+            <span class="t-en">Copies sold of <em>extra•ordinary</em> (Rockport Publishing worldwide)</span>
+            <span class="t-jp is-block">世界で11,000部以上を刊行した著書『extra•ordinary』</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Expertise ── -->
-  <section class="capabilities-section">
-    <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">Expertise</span>
-        <span class="t-jp">専門領域</span>
-      </h2>
+  <!-- ── Educator & Startup Coach Focus ── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">
+          <span class="t-en">Pedagogy &amp; Venture Mentorship</span>
+          <span class="t-jp">教育と起業家支援</span>
+        </span>
+        <h2 class="section-title">
+          <span class="t-en">Educator and startup coach</span>
+          <span class="t-jp">教育者として、スタートアップの伴走者として</span>
+        </h2>
+      </div>
+
+      <div class="feature-cards">
+        <div class="feature-card">
+          <div>
+            <span class="feature-tag">
+              <span class="t-en">Higher Education</span>
+              <span class="t-jp">大学教育</span>
+            </span>
+            <h3>
+              <span class="t-en">Adjunct Professor at School of Visual Arts (SVA)</span>
+              <span class="t-jp">ニューヨーク SVA 非常勤教授</span>
+            </h3>
+            <p>
+              <span class="t-en">Developed and taught an intensive course on Advanced Typography for the Graphic Design Department in NYC, exploring the intersection of historical typography, contemporary visual systems, and dynamic digital expression.</span>
+              <span class="t-jp is-block">グラフィックデザイン学部にてアドバンスド・タイポグラフィの集中講義を設計・指導。歴史的タイポグラフィの作法と、現代の動的・生成的デジタル表現の交差点を次世代のデザイナーに教授しました。</span>
+            </p>
+          </div>
+          <div class="feature-meta">
+            <span class="t-en">New York, NY · School of Visual Arts · Advanced Typography &amp; Dynamic Design</span>
+            <span class="t-jp is-block">ニューヨーク · SVA グラフィックデザイン科 · 先端タイポグラフィ演習</span>
+          </div>
+        </div>
+
+        <div class="feature-card">
+          <div>
+            <span class="feature-tag">
+              <span class="t-en">Venture &amp; Seed Acceleration</span>
+              <span class="t-jp">ベンチャー育成</span>
+            </span>
+            <h3>
+              <span class="t-en">Startup Coach at SOSV</span>
+              <span class="t-jp">SOSV スタートアップ・プロダクトコーチ</span>
+            </h3>
+            <p>
+              <span class="t-en">Mentored and coached 20 founders across emerging FoodTech and Blockchain startups in New York. Provided 1-on-1 strategic UX coaching, brand architecture, and rapid user-testing frameworks to accelerate product-market fit.</span>
+              <span class="t-jp is-block">世界的アクセラレーターSOSVにて、フードテックやブロックチェーン分野のスタートアップ創業者20名をコーチング。週次の個別セッションを通じて、0→1のUX戦略、ブランド設計、初期ユーザー検証手法を指南しました。</span>
+            </p>
+          </div>
+          <div class="feature-meta">
+            <span class="t-en">SOSV Global Accelerator · 20 Founders Coached · Product Design &amp; Brand Strategy</span>
+            <span class="t-jp is-block">SOSV アクセラレーター · 20名の創業者メンタリング · プロダクトデザイン &amp; ブランド戦略</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="capabilities-grid">
-      <div class="capability-block">
-        <div class="capability-num">01</div>
-        <div class="capability-title">
-          <span class="t-en">Products &amp; Systems</span>
-          <span class="t-jp">プロダクト &amp; システム</span>
-        </div>
-        <p class="capability-desc">
-          <span class="t-en">End-to-end UX/UI, design systems, prototyping</span>
-          <span class="t-jp is-block">エンドツーエンドのUX/UI、デザインシステム、プロトタイピング</span>
-        </p>
+  </section>
+
+  <!-- ── Core Practice ── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">
+          <span class="t-en">Expertise</span>
+          <span class="t-jp">専門領域</span>
+        </span>
+        <h2 class="section-title">
+          <span class="t-en">Four pillars of practice</span>
+          <span class="t-jp">4つの探求と実践の柱</span>
+        </h2>
       </div>
-      <div class="capability-block">
-        <div class="capability-num">02</div>
-        <div class="capability-title">
-          <span class="t-en">Brands &amp; Experiences</span>
-          <span class="t-jp">ブランド &amp; 体験</span>
+
+      <div class="capabilities-grid">
+        <div class="capability-block">
+          <div class="capability-num">01</div>
+          <div class="capability-title">
+            <span class="t-en">Product Design &amp; Architecture</span>
+            <span class="t-jp">プロダクト設計 &amp; システム</span>
+          </div>
+          <p class="capability-desc">
+            <span class="t-en">Complex multi-platform design systems, responsive web apps, and enterprise platforms. Designing clear workflows out of tangled operational systems.</span>
+            <span class="t-jp is-block">複雑なマルチプラットフォームのデザインシステム、Webアプリケーション、大規模業務基盤。絡み合った運用課題を直感的なUIへと昇華させます。</span>
+          </p>
         </div>
-        <p class="capability-desc">
-          <span class="t-en">Brand strategy, visual identity, CX design</span>
-          <span class="t-jp is-block">ブランド戦略、ビジュアルアイデンティティ、CXデザイン</span>
-        </p>
-      </div>
-      <div class="capability-block">
-        <div class="capability-num">03</div>
-        <div class="capability-title">
-          <span class="t-en">Innovation &amp; Strategy</span>
-          <span class="t-jp">イノベーション &amp; 戦略</span>
+
+        <div class="capability-block">
+          <div class="capability-num">02</div>
+          <div class="capability-title">
+            <span class="t-en">Playful Learning &amp; EdTech</span>
+            <span class="t-jp">プレイフルラーニング &amp; 教育</span>
+          </div>
+          <p class="capability-desc">
+            <span class="t-en">Over 13 years developing educational experiences that blend game mechanics, narrative quests, and accessible typography for millions of young minds.</span>
+            <span class="t-jp is-block">13年以上にわたり、ゲームメカニクス、物語的クエスト、アクセシブルな文字設計を融合した教育体験を開発。全米の学習現場に届けています。</span>
+          </p>
         </div>
-        <p class="capability-desc">
-          <span class="t-en">BreakBias workshops, design sprints, AI UX</span>
-          <span class="t-jp is-block">BreakBiasワークショップ、デザインスプリント、AI UX</span>
-        </p>
+
+        <div class="capability-block">
+          <div class="capability-num">03</div>
+          <div class="capability-title">
+            <span class="t-en">AI Systems &amp; Context Grammar</span>
+            <span class="t-jp">AIアーキテクチャ &amp; 文法</span>
+          </div>
+          <p class="capability-desc">
+            <span class="t-en">Pioneering UX patterns for autonomous agentic workflows, multi-model handoffs, and conversational interfaces that keep human intent in full control.</span>
+            <span class="t-jp is-block">自律型AIエージェント、モデル間引き継ぎ、人間の意図を精密に反映する対話型UIなど、次世代AIプロダクトのUX規範を先駆けて開発。</span>
+          </p>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ── Career Timeline ── -->
-  <section class="timeline-section">
-    <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">Career</span>
-        <span class="t-jp">キャリア</span>
-      </h2>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">
+          <span class="t-en">Experience</span>
+          <span class="t-jp">経歴</span>
+        </span>
+        <h2 class="section-title">
+          <span class="t-en">Leadership &amp; career trajectory</span>
+          <span class="t-jp">キャリアの歩み</span>
+        </h2>
+      </div>
+
+      <div class="timeline-list">
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-org">Creativity Is Everywhere LLC</div>
+            <div class="timeline-role">
+              <span class="t-en">Executive Creative Director / Founder (2020 – Present)</span>
+              <span class="t-jp">エグゼクティブ・クリエイティブディレクター / 代表（2020年〜現在）</span>
+            </div>
+          </div>
+          <div class="timeline-desc">
+            <span class="t-en">Leading a specialized studio partnering with ventures and enterprises in the US and Japan. Product design, brand architecture, and AI-era product strategies for clients like T-Mobile, Emerson Collective, and Tokyo Metropolitan Government.</span>
+            <span class="t-jp is-block">日米の企業やスタートアップと協働するクリエイティブスタジオを主宰。T-Mobile、Emerson Collective、東京都などのプロダクト設計、ブランド構築、AI戦略を推進。</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-org">School of Visual Arts (SVA)</div>
+            <div class="timeline-role">
+              <span class="t-en">Adjunct Professor, Graphic Design (2024)</span>
+              <span class="t-jp">非常勤教授 · グラフィックデザイン学科（2024年）</span>
+            </div>
+          </div>
+          <div class="timeline-desc">
+            <span class="t-en">Taught Advanced Typography. Mentored BFA students in modern type systems, digital kinetic layouts, and contemporary graphic rigor in New York City.</span>
+            <span class="t-jp is-block">ニューヨーク本校にてアドバンスド・タイポグラフィを担当。現代のタイポグラフィ体系と動的表現を指導。</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-org">SOSV</div>
+            <div class="timeline-role">
+              <span class="t-en">Startup Coach — Product Design &amp; Branding (2019 – 2020)</span>
+              <span class="t-jp">スタートアップコーチ · プロダクトデザイン &amp; ブランディング（2019〜2020年）</span>
+            </div>
+          </div>
+          <div class="timeline-desc">
+            <span class="t-en">Coached 20 founders of Food and Blockchain seed-stage startups on customer discovery, UX strategy, identity design, and go-to-market storytelling.</span>
+            <span class="t-jp is-block">フードテックおよびブロックチェーン分野の創業者20名に対し、ユーザー体験設計、ブランド構築、事業立ち上げ時の実践的ガイダンスを提供。</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-org">Amplify Education</div>
+            <div class="timeline-role">
+              <span class="t-en">Product Design Lead / Design Strategy Coach (2013 – 2020)</span>
+              <span class="t-jp">プロダクトデザインリード / デザイン戦略コーチ（2013〜2020年）</span>
+            </div>
+          </div>
+          <div class="timeline-desc">
+            <span class="t-en">Spearheaded 10+ ELA Quests releases, combining narrative storytelling, gamified mechanics, and educational standards into learning apps used daily by millions of US students.</span>
+            <span class="t-jp is-block">ELA Questsシリーズ10作以上のプロダクト立ち上げを主導。物語とゲーム性、学習指導要領を融合し、全米数百万人の児童・生徒が利用する教育基盤を構築。</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-org">Concentrix Catalyst</div>
+            <div class="timeline-role">
+              <span class="t-en">Lead Product Designer (2020 – 2021)</span>
+              <span class="t-jp">リードプロダクトデザイナー（2020〜2021年）</span>
+            </div>
+          </div>
+          <div class="timeline-desc">
+            <span class="t-en">Architected a major US banking portal spanning 105 screens, full design system tokens, and seamless self-service servicing for cardholders nationwide.</span>
+            <span class="t-jp is-block">全米大手銀行のクレジットカードポータルを設計。105画面のUI、網羅的なデザインシステム、強固なアクセシビリティを策定。</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-org">Ogilvy Brand Integration Group (BIG)</div>
+            <div class="timeline-role">
+              <span class="t-en">Senior Designer (2007 – 2008)</span>
+              <span class="t-jp">シニアデザイナー（2007〜2008年）</span>
+            </div>
+          </div>
+          <div class="timeline-desc">
+            <span class="t-en">Collaborated on Coca-Cola's worldwide visual identity refresh, establishing global visual guidelines, packaging principles, and cross-medium brand applications.</span>
+            <span class="t-jp is-block">コカ・コーラのグローバル・リブランディングにおいて、世界各国のパッケージングや広告展開を統一するブランドガイドラインの策定に従事。</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="timeline-grid">
+  </section>
 
-      <div class="timeline-item">
-        <div class="timeline-left">
-          <div class="timeline-org">Amplify Education</div>
-          <div class="timeline-role">
-            <span class="t-en">Product Design Lead</span>
-            <span class="t-jp">プロダクトデザインリード</span>
-          </div>
-        </div>
-        <div class="timeline-right">
-          <p class="timeline-desc">
-            <span class="t-en">Led 10+ ELA Quests product launches — AR-powered educational experiences reaching millions of students across the United States.</span>
-            <span class="t-jp is-block">ELA Quests のプロダクトを10本以上立ち上げ。AR を使った学習体験を、全米の数百万人の生徒に届けました。</span>
-          </p>
-        </div>
+  <!-- ── Books & Exhibitions ── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">
+          <span class="t-en">Publications &amp; Gallery</span>
+          <span class="t-jp">著書と展示</span>
+        </span>
+        <h2 class="section-title">
+          <span class="t-en">Authored works and gallery installations</span>
+          <span class="t-jp">書籍とインスタレーション</span>
+        </h2>
       </div>
 
-      <div class="timeline-item">
-        <div class="timeline-left">
-          <div class="timeline-org">Concentrix Catalyst</div>
-          <div class="timeline-role">
-            <span class="t-en">Lead Product Designer</span>
-            <span class="t-jp">リードプロダクトデザイナー</span>
+      <div class="works-grid">
+        <div class="work-card">
+          <div class="work-card-media">
+            <img src="assets/extraordinary/extraoridinaryshow01-min.jpg" alt="extraordinary LA Exhibition" loading="lazy">
+          </div>
+          <div class="work-card-body">
+            <div class="work-card-title">
+              <span class="t-en">extra•ordinary — Book &amp; LA Exhibition</span>
+              <span class="t-jp">著書『extra•ordinary』とLA個展</span>
+            </div>
+            <p class="work-card-text">
+              <span class="t-en">Co-authored and designed with architect Hisako Ichiki. Reimagined everyday objects through playful re-use. Published globally by Rockport, sold 11,000+ copies, and launched with an experiential exhibition in Los Angeles featuring functional furniture made from industrial cardboard.</span>
+              <span class="t-jp is-block">建築家・一木久子氏との共著。日用品を観察し新たな用途へと再編集した書籍（Rockport社刊、世界1.1万部販売）。LAギャラリーを本の世界観そのものに作り変えた体験型インスタレーションを開催。</span>
+            </p>
+            <div class="work-card-meta">Rockport Publishing · Los Angeles Gallery Installation · Design Quarterly Feature</div>
           </div>
         </div>
-        <div class="timeline-right">
-          <p class="timeline-desc">
-            <span class="t-en">Designed a major US bank credit card portal — 105 screens, complete design system, and end-to-end UX for millions of cardholders.</span>
-            <span class="t-jp is-block">米国大手銀行のクレジットカードポータルを設計。105 画面、デザインシステムの一式、そして数百万人のカード会員に向けた一貫した UX。</span>
-          </p>
-        </div>
-      </div>
 
-      <div class="timeline-item">
-        <div class="timeline-left">
-          <div class="timeline-org">Ogilvy Brand Integration Group</div>
-          <div class="timeline-role">
-            <span class="t-en">Senior Designer</span>
-            <span class="t-jp">シニアデザイナー</span>
+        <div class="work-card">
+          <div class="work-card-media">
+            <img src="assets/extraordinary/extraoridinaryshow04-min.jpg" alt="Exhibition functional objects" loading="lazy">
+          </div>
+          <div class="work-card-body">
+            <div class="work-card-title">
+              <span class="t-en">BreakBias &amp; IntentFirst Methodologies</span>
+              <span class="t-jp">BreakBias &amp; IntentFirst 思考メソッド</span>
+            </div>
+            <p class="work-card-text">
+              <span class="t-en">Developed structured innovation frameworks to eliminate subconscious creative bias. Conducted workshops for Microsoft, Tiffany &amp; Co., Google, Dentsu, and Havas. Currently evolving these principles into agentic AI grammar frameworks.</span>
+              <span class="t-jp is-block">無意識の思考バイアスを取り除く8つの発想フレームワークを体系化。Microsoft、ティファニー、Google、電通、Havas等で実践。現在、AIエージェント設計の設計言語へと拡張しています。</span>
+            </p>
+            <div class="work-card-meta">Corporate Workshops · Cognitive Frameworks · 8 Systematic Thinking Tools</div>
           </div>
         </div>
-        <div class="timeline-right">
-          <p class="timeline-desc">
-            <span class="t-en">Led design for Coca-Cola's global rebranding campaign, ensuring visual consistency and brand integrity across markets worldwide.</span>
-            <span class="t-jp is-block">Coca-Cola のグローバル・リブランディングでデザインを主導。世界各市場でビジュアルの一貫性とブランドらしさを保ちました。</span>
-          </p>
-        </div>
       </div>
-
-      <div class="timeline-item">
-        <div class="timeline-left">
-          <div class="timeline-org">Creativity Is Everywhere LLC</div>
-          <div class="timeline-role">
-            <span class="t-en">Founder</span>
-            <span class="t-jp">ファウンダー</span>
-          </div>
-        </div>
-        <div class="timeline-right">
-          <p class="timeline-desc">
-            <span class="t-en">Brand strategy, product design, and innovation consulting for clients across the US and Japan — including T-Mobile, Tokyo Metropolitan Government, and Emerson Collective.</span>
-            <span class="t-jp is-block">米国と日本のクライアントに、ブランド戦略、プロダクトデザイン、イノベーションのコンサルティングを提供。T-Mobile、東京都、Emerson Collective など。</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-left">
-          <div class="timeline-org">BreakBias</div>
-          <div class="timeline-role">
-            <span class="t-en">Creator</span>
-            <span class="t-jp">クリエイター</span>
-          </div>
-        </div>
-        <div class="timeline-right">
-          <p class="timeline-desc">
-            <span class="t-en">Created an innovation training program with 8 structured tools. Trained professionals at Microsoft, Tiffany, Havas, Dentsu, and Google.</span>
-            <span class="t-jp is-block">8つのツールで構成したイノベーション研修プログラムを開発。Microsoft、Tiffany、Havas、電通、Google の実務者に向けて実施しました。</span>
-          </p>
-        </div>
-      </div>
-
-      <div class="timeline-item">
-        <div class="timeline-left">
-          <div class="timeline-org">intentfirst.ai</div>
-          <div class="timeline-role">
-            <span class="t-en">Founder</span>
-            <span class="t-jp">ファウンダー</span>
-          </div>
-        </div>
-        <div class="timeline-right">
-          <p class="timeline-desc">
-            <span class="t-en">Developed the Context Grammar framework for Agentic AI design — a design language that bridges what users ask and what they actually need.</span>
-            <span class="t-jp is-block">エージェンティック AI のデザインのために Context Grammar を開発。ユーザーが口にする要望と、本当に必要としているものをつなぐデザイン言語です。</span>
-          </p>
-        </div>
-      </div>
-
     </div>
   </section>
 
   <!-- ── Notable Clients ── -->
-  <section class="clients-section">
-    <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">Notable Clients</span>
-        <span class="t-jp">主なクライアント</span>
-      </h2>
-    </div>
-    <div class="clients-list">
-      <span class="client-item">Amplify Education</span>
-      <span class="client-item">T-Mobile</span>
-      <span class="client-item">Coca-Cola</span>
-      <span class="client-item">USAA</span>
-      <span class="client-item">Carnegie Foundation</span>
-      <span class="client-item">Tokyo Metropolitan Government</span>
-      <span class="client-item">Emerson Collective</span>
-      <span class="client-item">CLI Studios</span>
-      <span class="client-item">Value Frontier</span>
-      <span class="client-item">JWSNY</span>
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">
+          <span class="t-en">Partnerships</span>
+          <span class="t-jp">主なクライアント</span>
+        </span>
+        <h2 class="section-title">
+          <span class="t-en">Organizations and brands</span>
+          <span class="t-jp">協働した主な企業・機関</span>
+        </h2>
+      </div>
+
+      <div class="clients-grid">
+        <span class="client-badge">Amplify Education</span>
+        <span class="client-badge">Verizon</span>
+        <span class="client-badge">T-Mobile</span>
+        <span class="client-badge">Coca-Cola</span>
+        <span class="client-badge">School of Visual Arts (SVA)</span>
+        <span class="client-badge">SOSV</span>
+        <span class="client-badge">USAA</span>
+        <span class="client-badge">Carnegie Foundation</span>
+        <span class="client-badge">Tokyo Metropolitan Government</span>
+        <span class="client-badge">Emerson Collective</span>
+        <span class="client-badge">CLI Studios</span>
+        <span class="client-badge">Value Frontier</span>
+        <span class="client-badge">Microsoft (Training)</span>
+        <span class="client-badge">Google (Training)</span>
+        <span class="client-badge">Tiffany &amp; Co. (Training)</span>
+      </div>
     </div>
   </section>
 
-  <!-- ── Social / Publications ── -->
-  <section class="social-section">
-    <div class="section-head">
-      <h2 class="section-title">
-        <span class="t-en">Find me online</span>
-        <span class="t-jp">各種リンク</span>
-      </h2>
-    </div>
-    <div class="social-row">
-      <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" class="btn-primary">LinkedIn</a>
-      <a href="https://breakbias.medium.com/" target="_blank" rel="noopener" class="btn-secondary">Medium</a>
-      <a href="https://intentfirst.ai" target="_blank" rel="noopener" class="btn-secondary">intentfirst.ai</a>
+  <!-- ── Find Me Online ── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">
+          <span class="t-en">Connect</span>
+          <span class="t-jp">リンク</span>
+        </span>
+        <h2 class="section-title">
+          <span class="t-en">Online presence &amp; direct contact</span>
+          <span class="t-jp">各種リンクと連絡先</span>
+        </h2>
+      </div>
+
+      <div class="links-row">
+        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" class="btn-pill btn-primary">LinkedIn</a>
+        <a href="https://breakbias.medium.com/" target="_blank" rel="noopener" class="btn-pill btn-secondary">Medium (BreakBias)</a>
+        <a href="contact.html" class="btn-pill btn-secondary">Contact Page</a>
+        <a href="https://creativityiseverywhere.com" target="_blank" rel="noopener" class="btn-pill btn-secondary">creativityiseverywhere.com</a>
+      </div>
     </div>
   </section>
 
-  <!-- ── Lang Switch ── -->
+  <!-- ── Language Toggle ── -->
   <div class="lang-switch" id="lang-switch">
     <button class="lang-btn is-active" data-lang="en">EN</button>
     <span class="lang-sep">|</span>
@@ -903,21 +1114,20 @@
 
   <!-- ── Footer ── -->
   <footer>
-    <div class="site-footer">
+    <div class="container footer-inner">
       <div>
         <div class="footer-logo">Takao Umehara</div>
-        <div class="footer-llc">
-          <span class="t-en">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></span>
-          <span class="t-jp is-block">デザインとコンサルティングのご依頼は<strong>Creativity Is Everywhere LLC</strong>を通じて承っています</span>
-        </div>
+        <p>
+          <span class="t-en">Design, strategy &amp; AI consulting through <strong>Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp is-block">デザイン、戦略、AIコンサルティングのご依頼は<strong>Creativity Is Everywhere LLC</strong>にて承っています</span>
+        </p>
       </div>
       <ul class="footer-links">
         <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
-        
         <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
-        <li><a href="intentfirst.html">intentfirst.ai</a></li>
+        <li><a href="contact.html">Contact</a></li>
       </ul>
-      <div class="footer-copy">New York City</div>
+      <div>New York City</div>
     </div>
   </footer>
 
@@ -927,15 +1137,16 @@
     const btns = [...document.querySelectorAll(".lang-btn")];
     const saved = localStorage.getItem("tu-lang") || "en";
     const setLang = (lang) => {
-      html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
+      html.classList.toggle("lang-jp", lang === "jp");
+      html.lang = lang === "jp" ? "ja" : "en";
       btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
       localStorage.setItem("tu-lang", lang);
     };
     setLang(saved);
     btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
   })();
-  
-  // ── Mobile Nav ──
+
+  // Mobile menu
   (() => {
     const toggle = document.getElementById('nav-toggle');
     const links = document.querySelector('.nav-links');
@@ -944,7 +1155,6 @@
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      // Close on link click
       links.querySelectorAll('a').forEach(a => {
         a.addEventListener('click', () => {
           toggle.classList.remove('is-open');
@@ -954,6 +1164,5 @@
     }
   })();
   </script>
-
 </body>
 </html>

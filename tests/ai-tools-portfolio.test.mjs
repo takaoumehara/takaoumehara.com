@@ -151,8 +151,9 @@ test('homepage Selected proof spans experiment, enterprise and venture evidence'
   assert.ok(section, 'homepage needs a Selected proof section');
   const cards = [...section.matchAll(openWithClass('article', 'proof-card'))].length;
   assert.ok(cards >= 5 && cards <= 7, `Selected proof is a curated five to seven, got ${cards}`);
-  for (const href of ['https://rakugaki-jam.vercel.app', 'projects/verizon-ai-agents.html', 'projects/festival-design.html', 'projects/ela-quests.html']) {
-    assert.match(section, new RegExp(`data-href\\s*=\\s*["']${escape(href)}["']`), `Selected proof must include ${href}`);
+  for (const href of [/(?:https:\/\/rakugakijam\.creativityiseverywhere\.com\/|https:\/\/rakugaki-jam\.vercel\.app|projects\/rakugaki-jam\.html)/, 'projects/verizon-ai-agents.html', 'projects/festival-design.html', 'projects/ela-quests.html']) {
+    const pattern = typeof href === 'string' ? `data-href\\s*=\\s*["']${escape(href)}["']` : `data-href\\s*=\\s*["']${href.source}["']`;
+    assert.match(section, new RegExp(pattern), `Selected proof must include ${href}`);
   }
   assertNoUnsupportedClaims(section, 'homepage Selected proof');
 });
