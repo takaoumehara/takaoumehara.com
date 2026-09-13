@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <title>Workshops &amp; Executive Training — Takao Umehara</title>
+  <meta name="description" content="Innovation, creative thinking, and branding workshops led by Takao Umehara. Proven at Google, Microsoft, Tiffany & Co., Dentsu, and Havas.">
+  <link rel="canonical" href="https://takaoumehara.com/workshop.html">
+  <meta property="og:title" content="Workshops &amp; Executive Training — Takao Umehara">
+  <meta property="og:description" content="Accelerating product innovation, breaking creative bias, and building brand distinction through hands-on executive workshops.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://takaoumehara.com/workshop.html">
+  <meta property="og:image" content="assets/about/TakaoUmehara_passport.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Workshops &amp; Executive Training — Takao Umehara">
+  <meta name="twitter:description" content="Hands-on innovation workshops for corporate teams, founders, and creative leaders.">
+  <meta name="twitter:image" content="assets/about/TakaoUmehara_passport.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+/* ─── Base & Typography ─── */
+:root {
+  --bg: #0c0d0e;
+  --surface: #131416;
+  --surface-raised: #1a1b1e;
+  --surface-hover: #222328;
+  --border: rgba(255, 255, 255, 0.10);
+  --border-strong: rgba(255, 255, 255, 0.20);
+  --line: rgba(255, 255, 255, 0.08);
+  --ink: #f4f4f6;
+  --ink-mid: rgba(244, 244, 246, 0.74);
+  --ink-dim: rgba(244, 244, 246, 0.44);
+  --accent: #ff6b35;
+  --accent-soft: rgba(255, 107, 53, 0.12);
+  --ff: "Outfit", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ff-jp: "Noto Sans JP", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --col: 1140px;
+  --gutter: clamp(20px, 4vw, 48px);
+  --r: 12px;
+  --r-pill: 9999px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; background: var(--bg); color: var(--ink); }
+body {
+  font-family: var(--ff);
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+.container {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* ─── Navigation ─── */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px var(--gutter);
+  background: rgba(12, 13, 14, 0.90);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.nav-logo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--ink);
+  line-height: 1;
+  text-decoration: none;
+}
+.nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+.nav-logo-tag { color: var(--ink-dim); font-size: 11px; font-weight: 400; }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+.nav-links li { position: relative; }
+.nav-links a {
+  color: var(--ink-mid);
+  font-size: 13.5px;
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+.nav-links a:hover,
+.nav-links a.is-active {
+  color: #ffffff;
+  font-weight: 600;
+}
+.nav-links .is-tierbreak::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 1px;
+  height: 11px;
+  margin-top: -5.5px;
+  background: var(--border-strong);
+}
+.nav-toggle {
+  display: none;
+  width: 28px;
+  height: 20px;
+  padding: 0;
+  position: relative;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+.nav-toggle span {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: var(--ink);
+  transition: transform 240ms ease, opacity 180ms ease;
+}
+.nav-toggle span:nth-child(1) { top: 0; }
+.nav-toggle span:nth-child(2) { top: 9px; }
+.nav-toggle span:nth-child(3) { top: 18px; }
+.nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+@media (max-width: 860px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    gap: 16px;
+  }
+  .nav-links.is-open { display: flex; }
+  .nav-links .is-tierbreak::before { display: none; }
+}
+
+/* ─── Hero Header ─── */
+.page-hero {
+  padding: clamp(60px, 8vw, 100px) 0 48px;
+  border-bottom: 1px solid var(--line);
+}
+.eyebrow {
+  display: inline-block;
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+.hero-title {
+  font-size: clamp(34px, 5.2vw, 56px);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  color: #ffffff;
+  margin-bottom: 20px;
+  max-width: 24ch;
+}
+.hero-desc {
+  font-size: clamp(16px, 1.6vw, 19px);
+  color: var(--ink-mid);
+  line-height: 1.65;
+  max-width: 68ch;
+}
+
+/* ─── Sections ─── */
+.ws-section {
+  padding: clamp(56px, 7vw, 92px) 0;
+  border-bottom: 1px solid var(--line);
+}
+.section-head {
+  margin-bottom: 44px;
+}
+.section-kicker {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+.section-desc {
+  font-size: 15px;
+  color: var(--ink-mid);
+  max-width: 62ch;
+}
+
+/* ─── Workshop Cards Grid ─── */
+.workshop-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+@media (max-width: 860px) {
+  .workshop-grid { grid-template-columns: 1fr; }
+}
+
+.ws-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: clamp(28px, 3.5vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+.ws-card:hover {
+  background: var(--surface-raised);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+}
+.ws-num {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+.ws-card-title {
+  font-size: clamp(22px, 2.5vw, 28px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.ws-card-desc {
+  font-size: 14.5px;
+  color: var(--ink-mid);
+  line-height: 1.68;
+  margin-bottom: 24px;
+}
+.ws-pill-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+.ws-pill {
+  font-size: 11px;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: var(--r-pill);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  color: var(--ink);
+}
+.ws-card-meta {
+  border-top: 1px solid var(--line);
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12.5px;
+  color: var(--ink-dim);
+}
+.ws-card-target {
+  font-weight: 500;
+  color: var(--ink-mid);
+}
+
+/* ─── Methodology Highlights ─── */
+.framework-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: clamp(32px, 4vw, 48px);
+  margin-top: 40px;
+}
+.framework-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 28px;
+}
+@media (max-width: 860px) {
+  .framework-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 540px) {
+  .framework-grid { grid-template-columns: 1fr; }
+}
+.framework-item {
+  padding: 20px;
+  background: var(--surface-raised);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.framework-item h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+.framework-item p {
+  font-size: 13px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+}
+
+/* ─── Formats & Logistics ─── */
+.formats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 860px) {
+  .formats-grid { grid-template-columns: 1fr; }
+}
+.format-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.format-time {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.format-name {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #ffffff;
+  margin-bottom: 10px;
+}
+.format-desc {
+  font-size: 13.5px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+.format-takeaways {
+  font-size: 12px;
+  color: var(--ink-dim);
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+/* ─── Client Badges ─── */
+.clients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.client-badge {
+  padding: 8px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ─── CTA Box ─── */
+.cta-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: clamp(36px, 5vw, 64px);
+  text-align: center;
+  margin-top: 48px;
+}
+.cta-box h3 {
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin-bottom: 16px;
+}
+.cta-box p {
+  font-size: 16px;
+  color: var(--ink-mid);
+  max-width: 54ch;
+  margin: 0 auto 28px;
+  line-height: 1.65;
+}
+.cta-actions {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+/* ─── Buttons ─── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--r-pill);
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity 140ms ease, background 140ms ease, transform 140ms ease;
+  cursor: pointer;
+}
+.btn-primary { background: #ffffff; color: #0c0d0e; }
+.btn-primary:hover { background: #e6e6e8; transform: translateY(-1px); }
+.btn-secondary { background: var(--surface-raised); color: #ffffff; border: 1px solid var(--border-strong); }
+.btn-secondary:hover { background: var(--surface-hover); transform: translateY(-1px); }
+
+/* ─── Language Toggle ─── */
+.lang-switch {
+  position: fixed;
+  right: 0;
+  bottom: 80px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 16px 9px;
+  background: rgba(18, 18, 18, 0.94);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--border);
+  border-radius: 8px 0 0 8px;
+  writing-mode: vertical-rl;
+  backdrop-filter: blur(8px);
+}
+.lang-btn {
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--ink-dim);
+  cursor: pointer;
+  font-family: var(--ff);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 140ms ease;
+}
+.lang-btn.is-active { color: #ffffff; font-weight: 700; }
+.lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
+.t-jp { display: none; }
+html.lang-jp .t-en { display: none; }
+html.lang-jp .t-jp { display: inline; }
+html.lang-jp .t-jp.is-block { display: block; }
+html.lang-jp body { font-family: var(--ff-jp); }
+
+/* ─── Footer ─── */
+footer {
+  padding: 60px 0;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+.footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer-logo {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin-bottom: 4px;
+}
+.footer-links {
+  display: flex;
+  gap: 20px;
+  list-style: none;
+}
+.footer-links a {
+  color: var(--ink-mid);
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+.footer-links a:hover { color: #ffffff; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ── -->
+  <nav class="site-nav">
+    <a href="index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="interactive.html">Interactive</a></li>
+      <li><a href="ai-products.html">AI Products</a></li>
+      <li><a href="ai-tools.html">AI Tools</a></li>
+      <li><a href="work.html">Product Design</a></li>
+      <li><a href="brand.html">Brand &amp; Visual</a></li>
+      <li class="is-tierbreak"><a href="about.html">About</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="workshop.html" class="is-active" aria-current="page">Workshops</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Page Hero ── -->
+  <header class="page-hero">
+    <div class="container">
+      <span class="eyebrow">
+        <span class="t-en">Workshops &amp; Executive Training</span>
+        <span class="t-jp">ワークショップ・企業研修</span>
+      </span>
+      <h1 class="hero-title">
+        <span class="t-en">Break creative bias. Accelerate innovation. Align your team.</span>
+        <span class="t-jp">思考バイアスを打破し、非連続なイノベーションを加速する。</span>
+      </h1>
+      <p class="hero-desc">
+        <span class="t-en">Interactive, intensive workshops designed for founders, product teams, and enterprise leadership. Combining cognitive bias elimination, AI-accelerated product prototyping, and brand architecture.</span>
+        <span class="t-jp is-block">Google、Microsoft、ティファニー、電通などで実践された発想メソッド「BreakBias」やAI共創型プロダクト検証をベースに、チームの膠着状態を打開する実践的ワークショップを提供しています。</span>
+      </p>
+    </div>
+  </header>
+
+  <!-- ── Core Workshop Offerings ── -->
+  <section class="ws-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">Core Programs</div>
+        <h2 class="section-title">
+          <span class="t-en">Tailored Workshop Curriculum</span>
+          <span class="t-jp">4つの主要プログラム</span>
+        </h2>
+        <p class="section-desc">
+          <span class="t-en">Each workshop is interactive and challenge-focused, moving beyond passive lectures to produce tangible strategic frameworks and working prototypes.</span>
+          <span class="t-jp is-block">単なる座学ではなく、自社の実課題を持ち込んでその場で解法とプロトタイプを導き出すハンズオン形式です。</span>
+        </p>
+      </div>
+
+      <div class="workshop-grid">
+        <!-- 01: New Biz & Product/Service Innovation -->
+        <div class="ws-card">
+          <div>
+            <div class="ws-num">Workshop 01</div>
+            <h3 class="ws-card-title">
+              <span class="t-en">New Biz, Product &amp; Service Innovation</span>
+              <span class="t-jp">新規事業・新プロダクト・サービス創出ワークショップ</span>
+            </h3>
+            <p class="ws-card-desc">
+              <span class="t-en">Zero-to-one product incubation from initial opportunity framing to rapid prototype testing. Integrates AI coding agents and iterative testing to test 10 product hypotheses in days rather than quarters.</span>
+              <span class="t-jp is-block">0から1の新規事業・サービス機会を発見し、AIエージェントを活用した迅速なプロトタイピングで市場仮説を高速検証する実践型インキュベーション。</span>
+            </p>
+            <div class="ws-pill-list">
+              <span class="ws-pill">0-to-1 Incubation</span>
+              <span class="ws-pill">AI Rapid Prototyping</span>
+              <span class="ws-pill">Value Hypothesis</span>
+              <span class="ws-pill">Market Validation</span>
+            </div>
+          </div>
+          <div class="ws-card-meta">
+            <span class="ws-card-target">For Founders, R&amp;D &amp; Product Executives</span>
+            <a href="contact.html" class="btn btn-secondary">Inquire →</a>
+          </div>
+        </div>
+
+        <!-- 02: Breakbias Training -->
+        <div class="ws-card">
+          <div>
+            <div class="ws-num">Workshop 02</div>
+            <h3 class="ws-card-title">
+              <span class="t-en">Breakbias Training Workshop</span>
+              <span class="t-jp">BreakBias（ブレイクバイアス）発想トレーニング</span>
+            </h3>
+            <p class="ws-card-desc">
+              <span class="t-en">Hands-on immersion in the 8 systematic thinking tools that dismantle functional fixedness and organizational blind spots. Learn repeatable cognitive patterns to escape incrementalism and produce breakthrough solutions.</span>
+              <span class="t-jp is-block">無意識の思い込み「機能的固着」を打ち破る8つの思考変形ツールを習得。チームの慣性を取り除き、非連続で強力なアイデアを反復可能に創出するメソッド。</span>
+            </p>
+            <div class="ws-pill-list">
+              <span class="ws-pill">8 Cognitive Tools</span>
+              <span class="ws-pill">Unconscious Bias Elimination</span>
+              <span class="ws-pill">SIT Method</span>
+              <span class="ws-pill">Breakthrough Ideation</span>
+            </div>
+          </div>
+          <div class="ws-card-meta">
+            <span class="ws-card-target">Conducted at Microsoft, Google, Tiffany &amp; Co.</span>
+            <a href="contact.html" class="btn btn-secondary">Inquire →</a>
+          </div>
+        </div>
+
+        <!-- 03: Creative Thinking -->
+        <div class="ws-card">
+          <div>
+            <div class="ws-num">Workshop 03</div>
+            <h3 class="ws-card-title">
+              <span class="t-en">Creative Thinking &amp; Analogical Problem Solving</span>
+              <span class="t-jp">クリエイティブ・シンキング &amp; 類推発想ワークショップ</span>
+            </h3>
+            <p class="ws-card-desc">
+              <span class="t-en">Deconstructing problem assumptions through playful constraints and cross-disciplinary analogies. Rooted in Takao's research from the book <em>extra•ordinary</em> and pedagogy at the School of Visual Arts (SVA) NYC.</span>
+              <span class="t-jp is-block">身近な日用品の再解釈や異分野からのアナロジーを通じて思考の可動域を広げるセッション。著書『extra•ordinary』やSVA（ニューヨーク美術大学）での教育実践を応用。</span>
+            </p>
+            <div class="ws-pill-list">
+              <span class="ws-pill">Everyday Observation</span>
+              <span class="ws-pill">Playful Constraints</span>
+              <span class="ws-pill">Analogical Mapping</span>
+              <span class="ws-pill">SVA Pedagogy</span>
+            </div>
+          </div>
+          <div class="ws-card-meta">
+            <span class="ws-card-target">For Creative Directors, Designers &amp; Engineers</span>
+            <a href="contact.html" class="btn btn-secondary">Inquire →</a>
+          </div>
+        </div>
+
+        <!-- 04: Branding Workshop -->
+        <div class="ws-card">
+          <div>
+            <div class="ws-num">Workshop 04</div>
+            <h3 class="ws-card-title">
+              <span class="t-en">Branding &amp; Strategic Positioning Workshop</span>
+              <span class="t-jp">ブランディング &amp; 戦略ポジショニング・ワークショップ</span>
+            </h3>
+            <p class="ws-card-desc">
+              <span class="t-en">Defining brand identity systems, core narrative pillars, and tone of voice. Bridges Ogilvy Brand Integration Group global pedigree with agile startup speed to create brands that command premium attention.</span>
+              <span class="t-jp is-block">コカ・コーラのグローバルVIを手掛けたOgilvy BIGでの経験とスタートアップの機動力を融合。ブランドの世界観、コアメッセージ、視覚言語を一体として構築。</span>
+            </p>
+            <div class="ws-pill-list">
+              <span class="ws-pill">Brand Architecture</span>
+              <span class="ws-pill">Visual Identity</span>
+              <span class="ws-pill">Narrative Positioning</span>
+              <span class="ws-pill">Cross-Medium Voice</span>
+            </div>
+          </div>
+          <div class="ws-card-meta">
+            <span class="ws-card-target">For Founders, CMOs &amp; Brand Leadership</span>
+            <a href="contact.html" class="btn btn-secondary">Inquire →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Framework Overview -->
+      <div class="framework-block">
+        <div class="section-kicker">Core Methodology</div>
+        <h3 style="font-size:22px; font-weight:700; color:#fff; margin-bottom:8px;">
+          <span class="t-en">The 8 BreakBias Systematic Transformation Tools</span>
+          <span class="t-jp">BreakBiasの核となる8つの思考変形ツール</span>
+        </h3>
+        <p style="font-size:14px; color:var(--ink-mid); max-width:64ch;">
+          <span class="t-en">Unlike standard brainstorming where volume replaces rigor, BreakBias applies proven cognitive transformations directly to existing product components.</span>
+          <span class="t-jp is-block">根拠のない自由連想ではなく、既存の要素に対して体系的な操作を加えることで確実な新解を導きます。</span>
+        </p>
+
+        <div class="framework-grid">
+          <div class="framework-item">
+            <h4>01. Subtraction</h4>
+            <p>Remove a seemingly indispensable element and force the system to perform without it.</p>
+          </div>
+          <div class="framework-item">
+            <h4>02. Division</h4>
+            <p>Deconstruct a unified component physically or temporally and relocate its function.</p>
+          </div>
+          <div class="framework-item">
+            <h4>03. Multiplication</h4>
+            <p>Duplicate an existing part while giving the copy a modified, non-identical responsibility.</p>
+          </div>
+          <div class="framework-item">
+            <h4>04. Task Unification</h4>
+            <p>Assign a brand-new role to an existing component or to an ambient resource in the environment.</p>
+          </div>
+          <div class="framework-item">
+            <h4>05. Attribute Dependency</h4>
+            <p>Link two previously independent variables so change in one dynamically alters the other.</p>
+          </div>
+          <div class="framework-item">
+            <h4>06. Inversion</h4>
+            <p>Flip standard user flows, hierarchies, or business model assumptions completely upside down.</p>
+          </div>
+          <div class="framework-item">
+            <h4>07. Extreme Constraint</h4>
+            <p>Drastically cut time, budget, interface size, or dependencies to trigger radical shortcuts.</p>
+          </div>
+          <div class="framework-item">
+            <h4>08. Intent Scaffolding</h4>
+            <p>Decompose high-level human intent into precise agentic logic rules and automated workflows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Delivery Formats ── -->
+  <section class="ws-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">Engagement Modes</div>
+        <h2 class="section-title">
+          <span class="t-en">Workshop Formats &amp; Delivery</span>
+          <span class="t-jp">実施形式・スケジュール</span>
+        </h2>
+        <p class="section-desc">
+          <span class="t-en">Available in-person (NYC, Tokyo, or on-site worldwide) and in high-energy remote cohorts.</span>
+          <span class="t-jp is-block">ニューヨーク、東京、または貴社オフィスへの出張開催、オンラインリモート開催に対応しています。</span>
+        </p>
+      </div>
+
+      <div class="formats-grid">
+        <div class="format-card">
+          <div>
+            <div class="format-time">Half-Day / Full-Day</div>
+            <h3 class="format-name">Executive Sprint</h3>
+            <p class="format-desc">
+              <span class="t-en">Intensive immersion designed for leadership and cross-functional teams to align on a specific opportunity or unblock an immediate strategic barrier.</span>
+              <span class="t-jp is-block">経営陣やリーダー層を対象に、特定課題の突破や新規施策の方向性合意を1日で一気に達成する集中セッション。</span>
+            </p>
+          </div>
+          <div class="format-takeaways">
+            <strong>Outcome:</strong> Validated concept matrix + immediate action roadmap
+          </div>
+        </div>
+
+        <div class="format-card">
+          <div>
+            <div class="format-time">2–3 Days Intensive</div>
+            <h3 class="format-name">Innovation Lab &amp; Build</h3>
+            <p class="format-desc">
+              <span class="t-en">Deep-dive workshop taking teams from raw problem definition through BreakBias transformations to working prototypes built alongside AI coding agents.</span>
+              <span class="t-jp is-block">課題定義からBreakBias変形、さらには動くプロトタイプの制作までを一気通貫でやり切る実践型合宿。</span>
+            </p>
+          </div>
+          <div class="format-takeaways">
+            <strong>Outcome:</strong> Clickable / interactive prototypes + user test results
+          </div>
+        </div>
+
+        <div class="format-card">
+          <div>
+            <div class="format-time">Multi-Week Cohort</div>
+            <h3 class="format-name">Organizational Transformation</h3>
+            <p class="format-desc">
+              <span class="t-en">Series of recurring workshops paired with bi-weekly advisory coaching to permanently embed disciplined creative thinking into corporate culture.</span>
+              <span class="t-jp is-block">ワークショップと定期メンタリングを組み合わせ、組織全体にイノベーションを自走させる企業変革プログラム。</span>
+            </p>
+          </div>
+          <div class="format-takeaways">
+            <strong>Outcome:</strong> Internal innovation playbook + institutional capability
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Proven Clients ── -->
+  <section class="ws-section">
+    <div class="container">
+      <div class="section-head">
+        <div class="section-kicker">Track Record</div>
+        <h2 class="section-title">
+          <span class="t-en">Trusted by Industry Leaders</span>
+          <span class="t-jp">研修・ワークショップ実績</span>
+        </h2>
+        <p class="section-desc">
+          <span class="t-en">Delivering measurable mindset shifts and tangible product outcomes across tech giants, luxury brands, global agencies, and accelerators.</span>
+          <span class="t-jp is-block">グローバルテック企業からラグジュアリーブランド、大手広告代理店、スタートアップ育成機関まで多数の実績。</span>
+        </p>
+      </div>
+
+      <div class="clients-grid">
+        <span class="client-badge">Google</span>
+        <span class="client-badge">Microsoft</span>
+        <span class="client-badge">Tiffany &amp; Co.</span>
+        <span class="client-badge">Dentsu</span>
+        <span class="client-badge">Havas Worldwide</span>
+        <span class="client-badge">School of Visual Arts (SVA)</span>
+        <span class="client-badge">SOSV (Coached 20+ Startups)</span>
+        <span class="client-badge">Amplify Education</span>
+        <span class="client-badge">Verizon</span>
+        <span class="client-badge">Tokyo Metropolitan Government</span>
+        <span class="client-badge">Value Frontier</span>
+      </div>
+
+      <!-- CTA Box -->
+      <div class="cta-box">
+        <h3>
+          <span class="t-en">Ready to unlock your team's creative potential?</span>
+          <span class="t-jp">貴社のチームに合わせたワークショップを設計します</span>
+        </h3>
+        <p>
+          <span class="t-en">Get in touch to discuss your team's challenges, custom curriculum design, scheduling, and format options.</span>
+          <span class="t-jp is-block">組織の課題や参加人数、期間に応じて最適なプログラムをカスタマイズいたします。お気軽にご相談ください。</span>
+        </p>
+        <div class="cta-actions">
+          <a href="contact.html" class="btn btn-primary">Schedule a Consultation →</a>
+          <a href="mailto:info@creativityiseverywhere.com" class="btn btn-secondary">Direct Email</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Language Switch ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <!-- ── Footer ── -->
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <div class="footer-logo">Takao Umehara</div>
+        <p>
+          <span class="t-en">Design, strategy &amp; AI consulting through <strong>Creativity Is Everywhere LLC</strong></span>
+          <span class="t-jp is-block">デザイン、戦略、AIコンサルティングのご依頼は<strong>Creativity Is Everywhere LLC</strong>にて承っています</span>
+        </p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="about.html">About</a></li>
+        <li><a href="publications.html">Publications</a></li>
+        <li><a href="workshop.html">Workshops</a></li>
+        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div>New York City</div>
+    </div>
+  </footer>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      html.lang = lang === "jp" ? "ja" : "en";
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+
+  // Mobile menu
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+</body>
+</html>

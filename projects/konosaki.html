@@ -1197,7 +1197,7 @@
   
 
   <script>
-    ( => {
+  (() => {
       const html = document.documentElement;
       const btns = [...document.querySelectorAll(".lang-btn")];
       const saved = localStorage.getItem("tu-lang") || "en";
@@ -1207,11 +1207,11 @@
         localStorage.setItem("tu-lang", lang);
       };
       setLang(saved);
-      btns.forEach((b) => b.addEventListener("click",  => setLang(b.dataset.lang)));
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
     });
 
 // ── Scroll Reveal ──
-( => {
+  (() => {
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -1226,11 +1226,11 @@
 // ── Image Fade-In ──
 document.querySelectorAll('.g-cell img').forEach(img => {
   if (img.complete) img.classList.add('loaded');
-  else img.addEventListener('load',  => img.classList.add('loaded'));
+  else img.addEventListener('load', () => img.classList.add('loaded'));
 });
 
 // ── Template slide scaling ──
-( => {
+  (() => {
   const fit = (el) => {
     const inner = el.querySelector('.tpl-inner');
     if (!inner) return;
@@ -1242,16 +1242,16 @@ document.querySelectorAll('.g-cell img').forEach(img => {
 });
 
   // ── Mobile Nav ──
-  ( => {
+  (() => {
     const toggle = document.getElementById('nav-toggle');
     const links = document.querySelector('.nav-links');
     if (toggle && links) {
-      toggle.addEventListener('click',  => {
+      toggle.addEventListener('click', () => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
       links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click',  => {
+        a.addEventListener('click', () => {
           toggle.classList.remove('is-open');
           links.classList.remove('is-open');
         });
@@ -1260,23 +1260,23 @@ document.querySelectorAll('.g-cell img').forEach(img => {
   });
 
   // ── Lightbox ──
-  ( => {
+  (() => {
     const box = document.createElement('div');
     box.className = 'lightbox';
     box.innerHTML = '<img alt=""><span class="lightbox-hint">Click / Esc to close</span>';
     document.body.appendChild(box);
     const big = box.querySelector('img');
-    const close =  => { box.classList.remove('is-open'); big.src = ''; };
+    const close = () => { box.classList.remove('is-open'); big.src = ''; };
     box.addEventListener('click', close);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close; });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
     document.querySelectorAll('.g-cell img').forEach(img => {
-      img.addEventListener('click',  => {
+      img.addEventListener('click', () => {
         big.src = img.currentSrc || img.src;
         big.alt = img.alt || '';
         box.classList.add('is-open');
       });
     });
-  });
+  })();
   </script>
 
 </body>

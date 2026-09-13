@@ -1927,7 +1927,7 @@
   
 
   <script>
-    ( => {
+  (() => {
       const html = document.documentElement;
       const btns = [...document.querySelectorAll(".lang-btn")];
       const saved = localStorage.getItem("tu-lang") || "en";
@@ -1937,11 +1937,11 @@
         localStorage.setItem("tu-lang", lang);
       };
       setLang(saved);
-      btns.forEach((b) => b.addEventListener("click",  => setLang(b.dataset.lang)));
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
     });
 
     // ── Scroll Reveal ──
-    ( => {
+  (() => {
       const obs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           if (e.isIntersecting) {
@@ -1956,27 +1956,27 @@
     // ── Image Fade-In ──
     document.querySelectorAll('.g-cell img').forEach(img => {
       if (img.complete) img.classList.add('loaded');
-      else img.addEventListener('load',  => img.classList.add('loaded'));
+      else img.addEventListener('load', () => img.classList.add('loaded'));
     });
 
     // ── Mobile Nav ──
-    ( => {
+  (() => {
       const toggle = document.getElementById('nav-toggle');
       const links = document.querySelector('.nav-links');
       if (toggle && links) {
-        toggle.addEventListener('click',  => {
+        toggle.addEventListener('click', () => {
           toggle.classList.toggle('is-open');
           links.classList.toggle('is-open');
         });
         // Close on link click
         links.querySelectorAll('a').forEach(a => {
-          a.addEventListener('click',  => {
+          a.addEventListener('click', () => {
             toggle.classList.remove('is-open');
             links.classList.remove('is-open');
           });
         });
       }
-    });
+  })();
   </script>
 
 </body>

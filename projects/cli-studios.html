@@ -1216,7 +1216,7 @@
 
   <script>
     // Language toggle
-    ( => {
+  (() => {
       const html = document.documentElement;
       const btns = [...document.querySelectorAll(".lang-btn")];
       const saved = localStorage.getItem("tu-lang") || "en";
@@ -1227,11 +1227,11 @@
         localStorage.setItem("tu-lang", lang);
       };
       setLang(saved);
-      btns.forEach((b) => b.addEventListener("click",  => setLang(b.dataset.lang)));
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
     });
 
     // Scroll reveal
-    ( => {
+  (() => {
       const obs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           if (e.isIntersecting) {
@@ -1246,34 +1246,34 @@
     // Image fade-in
     document.querySelectorAll('.g-cell img').forEach(img => {
       if (img.complete) img.classList.add('loaded');
-      else img.addEventListener('load',  => img.classList.add('loaded'));
+      else img.addEventListener('load', () => img.classList.add('loaded'));
     });
 
     // Mobile nav
-    ( => {
+  (() => {
       const toggle = document.getElementById('nav-toggle');
       const links = document.querySelector('.nav-links');
       if (toggle && links) {
-        toggle.addEventListener('click',  => {
+        toggle.addEventListener('click', () => {
           const open = !links.classList.contains('is-open');
           toggle.classList.toggle('is-open', open);
           links.classList.toggle('is-open', open);
           toggle.setAttribute('aria-expanded', String(open));
         });
         links.querySelectorAll('a').forEach(a => {
-          a.addEventListener('click',  => {
+          a.addEventListener('click', () => {
             toggle.classList.remove('is-open');
             links.classList.remove('is-open');
             toggle.setAttribute('aria-expanded', 'false');
           });
         });
       }
-    });
+  })();
   </script>
 
   <script data-deck>
   // View-mode engine: scroll | deck-v. Keyed only off html[data-view] + .deck-slide.
-  ( => {
+  (() => {
     const html = document.documentElement;
     const btns = [...document.querySelectorAll('[data-viewbtn]')];
     const bar = document.querySelector('.deck-progress i');
@@ -1281,14 +1281,14 @@
     const hint = document.getElementById('deck-hint');
     const mqMobile = window.matchMedia('(max-width: 768px)');
     const mqMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const slides =  => [...document.querySelectorAll('.deck-slide')];
-    const allowDeck =  => !(mqMobile.matches || mqMotion.matches);
+    const slides = () => [...document.querySelectorAll('.deck-slide')];
+    const allowDeck = () => !(mqMobile.matches || mqMotion.matches);
     let cur = 0, advanced = false;
 
     const setBtns = (v) => btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewbtn === v)));
 
-    const markLive =  => {
-      const s = slides;
+    const markLive = () => {
+      const s = slides();
       s.forEach((el, i) => { if (i !== cur) el.classList.remove('is-live'); });
       const el = s[cur];
       if (el && !el.classList.contains('is-live')) {
@@ -1297,48 +1297,48 @@
       }
     };
 
-    const update =  => {
-      const n = slides.length || 1;
+    const update = () => {
+      const n = slides().length || 1;
       if (bar) bar.style.width = ((cur + 1) / n * 100) + '%';
       if (count) count.textContent = (cur + 1) + ' / ' + n;
-      if (html.dataset.view === 'deck-v') markLive;
+      if (html.dataset.view === 'deck-v') markLive();
     };
 
-    const idxFromScroll =  => {
-      const s = slides;
+    const idxFromScroll = () => {
+      const s = slides();
       if (!s.length) return 0;
       let best = 0, bestD = Infinity;
       s.forEach((el, i) => {
-        const d = Math.abs(el.getBoundingClientRect.top);
+        const d = Math.abs(el.getBoundingClientRect().top);
         if (d < bestD) { bestD = d; best = i; }
       });
       return best;
     };
 
     const goto = (i, behavior) => {
-      const s = slides;
+      const s = slides();
       if (!s.length) return;
       cur = Math.max(0, Math.min(i, s.length - 1));
       s[cur].scrollIntoView({ behavior: behavior || 'smooth', block: 'start' });
-      update;
+      update();
     };
 
     const setView = (v) => {
-      if (v !== 'scroll' && !allowDeck) v = 'scroll';
+      if (v !== 'scroll' && !allowDeck()) v = 'scroll';
       html.dataset.view = v;
       setBtns(v);
       localStorage.setItem('tu-view', v);
       if (v === 'scroll') {
-        slides.forEach(el => el.classList.remove('is-live'));
+        slides().forEach(el => el.classList.remove('is-live'));
         if (hint) hint.classList.remove('is-gone');
         advanced = false;
       } else {
-        requestAnimationFrame( => goto(cur, 'auto'));
+        requestAnimationFrame(() => goto(cur, 'auto'));
       }
-      update;
+      update();
     };
 
-    btns.forEach(b => b.addEventListener('click',  => setView(b.dataset.viewbtn)));
+    btns.forEach(b => b.addEventListener('click', () => setView(b.dataset.viewbtn)));
 
     const FWD = new Set([' ', 'Spacebar', 'ArrowDown', 'ArrowRight', 'PageDown']);
     const BACK = new Set(['ArrowUp', 'ArrowLeft', 'PageUp']);
@@ -1347,31 +1347,31 @@
       const ae = document.activeElement;
       if (ae && ae.matches && ae.matches('input,textarea,select,[contenteditable="true"]')) return;
       if ((e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') && ae && ae.matches && ae.matches('button,a,[role="button"]')) return;
-      if (FWD.has(e.key)) { e.preventDefault; cur = idxFromScroll; goto(cur + 1); }
-      else if (BACK.has(e.key)) { e.preventDefault; cur = idxFromScroll; goto(cur - 1); }
-      else if (e.key === 'Home') { e.preventDefault; goto(0); }
-      else if (e.key === 'End') { e.preventDefault; goto(slides.length - 1); }
+      if (FWD.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur + 1); }
+      else if (BACK.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur - 1); }
+      else if (e.key === 'Home') { e.preventDefault(); goto(0); }
+      else if (e.key === 'End') { e.preventDefault(); goto(slides().length - 1); }
       else return;
       if (!advanced && hint) { advanced = true; hint.classList.add('is-gone'); }
     });
 
     let raf = 0;
-    const onScroll =  => {
+    const onScroll = () => {
       if (raf) return;
-      raf = requestAnimationFrame( => {
+      raf = requestAnimationFrame(() => {
         raf = 0;
-        if (html.dataset.view === 'deck-v') { cur = idxFromScroll; update; }
+        if (html.dataset.view === 'deck-v') { cur = idxFromScroll(); update(); }
       });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize',  => { if (html.dataset.view === 'deck-v') goto(cur, 'auto'); });
-    [mqMobile, mqMotion].forEach(mq => mq.addEventListener('change',  => {
+    window.addEventListener('resize', () => { if (html.dataset.view === 'deck-v') goto(cur, 'auto'); });
+    [mqMobile, mqMotion].forEach(mq => mq.addEventListener('change', () => {
       if (!allowDeck && html.dataset.view !== 'scroll') setView('scroll');
     }));
 
     const saved = localStorage.getItem('tu-view') || 'scroll';
     setView(allowDeck ? saved : 'scroll');
-  });
+  })();
   </script>
 
 </body>

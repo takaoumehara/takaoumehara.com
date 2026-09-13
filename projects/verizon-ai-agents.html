@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
     @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
@@ -73,16 +73,16 @@
   <style>
     /* ─── Tokens ─── */
     :root {
-      --bg: #0b0b0b;
-      --ink: #ffffff;
-      --ink-mid: rgba(255, 255, 255, 0.76);
-      --ink-dim: rgba(255, 255, 255, 0.44);
-      --line: rgba(255, 255, 255, 0.12);
-      --border: rgba(255, 255, 255, 0.16);
-      --surface: #141416;
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #76716a;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --surface: rgba(255,255,255,0.92);
       --shadow: 0 18px 42px rgba(18,18,18,0.04);
-      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
-      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+      --ff: "Outfit", system-ui, -apple-system, sans-serif;
+      --ff-jp: "Noto Sans JP", -apple-system, sans-serif;
       /* Panel tones — deeper, lower-chroma versions of the accent hues.
          Large full-bleed fills use these; small accents (dots, rules, type)
          keep the full-chroma hue so saturation reads as deliberate. */
@@ -1983,7 +1983,7 @@
 
   <script>
   // Language toggle
-  ( => {
+  (() => {
     const html = document.documentElement;
     const btns = [...document.querySelectorAll('.lang-btn')];
     const saved = localStorage.getItem('tu-lang') || 'en';
@@ -1994,11 +1994,11 @@
       localStorage.setItem('tu-lang', lang);
     };
     setLang(saved);
-    btns.forEach((b) => b.addEventListener('click',  => setLang(b.dataset.lang)));
+    btns.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
   });
 
   // Scroll reveal
-  ( => {
+  (() => {
     const items = document.querySelectorAll('.reveal-on-scroll');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); observer.unobserve(e.target); } });
@@ -2007,23 +2007,23 @@
   });
 
   // Mobile menu
-  ( => {
+  (() => {
     const toggle = document.getElementById('nav-toggle');
     const links = document.querySelector('.nav-links');
     if (toggle && links) {
-      toggle.addEventListener('click',  => {
+      toggle.addEventListener('click', () => {
         const open = !links.classList.contains('is-open');
         toggle.classList.toggle('is-open', open);
         links.classList.toggle('is-open', open);
         toggle.setAttribute('aria-expanded', String(open));
       });
     }
-  });
+  })();
   </script>
 
   <script data-deck>
   // View-mode engine: scroll | deck-v | deck-h. Keyed only off html[data-view] + .deck-slide.
-  ( => {
+  (() => {
     const html = document.documentElement;
     const btns = [...document.querySelectorAll('[data-viewbtn]')];
     const bar = document.querySelector('.deck-progress i');
@@ -2031,57 +2031,57 @@
     const hint = document.getElementById('deck-hint');
     const mqMobile = window.matchMedia('(max-width:768px)');
     const mqMotion = window.matchMedia('(prefers-reduced-motion:reduce)');
-    const slides =  => [...document.querySelectorAll('.deck-slide')];
-    const allowDeck =  => !(mqMobile.matches || mqMotion.matches);
+    const slides = () => [...document.querySelectorAll('.deck-slide')];
+    const allowDeck = () => !(mqMobile.matches || mqMotion.matches);
     let cur = 0, advanced = false;
 
     const setBtns = (v) => btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewbtn === v)));
     // Mark the current slide live so its content replays the entrance beat
-    const markLive =  => {
-      const s = slides;
+    const markLive = () => {
+      const s = slides();
       s.forEach((el, i) => { if (i !== cur) el.classList.remove('is-live'); });
       const el = s[cur];
       if (el && !el.classList.contains('is-live')) { void el.offsetWidth; el.classList.add('is-live'); }
     };
-    const updateProgress =  => {
-      const n = slides.length || 1;
+    const updateProgress = () => {
+      const n = slides().length || 1;
       if (bar) bar.style.width = ((cur + 1) / n * 100) + '%';
       if (count) count.textContent = (cur + 1) + ' / ' + n;
-      if (html.dataset.view === 'deck-v') markLive;
+      if (html.dataset.view === 'deck-v') markLive();
     };
-    const idxFromScroll =  => {
-      const s = slides; if (!s.length) return 0;
+    const idxFromScroll = () => {
+      const s = slides(); if (!s.length) return 0;
       const horiz = html.dataset.view === 'deck-h';
       let best = 0, bestD = Infinity;
       s.forEach((el, i) => {
-        const r = el.getBoundingClientRect;
+        const r = el.getBoundingClientRect();
         const d = Math.abs(horiz ? r.left : r.top);
         if (d < bestD) { bestD = d; best = i; }
       });
       return best;
     };
     const goto = (i, behavior) => {
-      const s = slides; if (!s.length) return;
+      const s = slides(); if (!s.length) return;
       cur = Math.max(0, Math.min(i, s.length - 1));
       s[cur].scrollIntoView({ behavior: behavior || 'smooth', block: 'start', inline: 'start' });
-      updateProgress;
+      updateProgress();
     };
     const setView = (v) => {
-      if (v !== 'scroll' && !allowDeck) v = 'scroll';
+      if (v !== 'scroll' && !allowDeck()) v = 'scroll';
       html.dataset.view = v;
       setBtns(v);
       localStorage.setItem('tu-view', v);
       if (v === 'scroll') {
-        slides.forEach(el => el.classList.remove('is-live'));
+        slides().forEach(el => el.classList.remove('is-live'));
         if (hint) hint.classList.remove('is-gone');
         advanced = false;
       } else {
-        requestAnimationFrame( => goto(cur, 'auto'));
+        requestAnimationFrame(() => goto(cur, 'auto'));
       }
-      updateProgress;
+      updateProgress();
     };
 
-    btns.forEach(b => b.addEventListener('click',  => setView(b.dataset.viewbtn)));
+    btns.forEach(b => b.addEventListener('click', () => setView(b.dataset.viewbtn)));
 
     const FWD = new Set([' ', 'Spacebar', 'ArrowDown', 'ArrowRight', 'PageDown']);
     const BACK = new Set(['ArrowUp', 'ArrowLeft', 'PageUp']);
@@ -2091,55 +2091,55 @@
       const ae = document.activeElement;
       if (ae && ae.matches && ae.matches('input,textarea,select,[contenteditable="true"]')) return;
       if ((e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') && ae && ae.matches && ae.matches('button,a,[role="button"]')) return;
-      if (FWD.has(e.key)) { e.preventDefault; cur = idxFromScroll; goto(cur + 1); }
-      else if (BACK.has(e.key)) { e.preventDefault; cur = idxFromScroll; goto(cur - 1); }
-      else if (e.key === 'Home') { e.preventDefault; goto(0); }
-      else if (e.key === 'End') { e.preventDefault; goto(slides.length - 1); }
+      if (FWD.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur + 1); }
+      else if (BACK.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur - 1); }
+      else if (e.key === 'Home') { e.preventDefault(); goto(0); }
+      else if (e.key === 'End') { e.preventDefault(); goto(slides().length - 1); }
       else return;
       if (!advanced && hint) { advanced = true; hint.classList.add('is-gone'); }
     });
 
     let raf = 0;
-    const onScroll =  => {
+    const onScroll = () => {
       if (raf) return;
-      raf = requestAnimationFrame( => {
+      raf = requestAnimationFrame(() => {
         raf = 0;
         const v = html.dataset.view;
-        if (v && v !== 'scroll') { cur = idxFromScroll; updateProgress; }
+        if (v && v !== 'scroll') { cur = idxFromScroll(); updateProgress(); }
       });
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('scroll', onScroll, { passive: true, capture: true });
-    window.addEventListener('resize',  => { if (html.dataset.view && html.dataset.view !== 'scroll') goto(cur, 'auto'); });
-    [mqMobile, mqMotion].forEach(mq => mq.addEventListener('change',  => { if (!allowDeck && html.dataset.view !== 'scroll') setView('scroll'); }));
+    window.addEventListener('resize', () => { if (html.dataset.view && html.dataset.view !== 'scroll') goto(cur, 'auto'); });
+    [mqMobile, mqMotion].forEach(mq => mq.addEventListener('change', () => { if (!allowDeck() && html.dataset.view !== 'scroll') setView('scroll'); }));
 
     const saved = localStorage.getItem('tu-view') || 'scroll';
-    setView(allowDeck ? saved : 'scroll');
-  });
+    setView(allowDeck() ? saved : 'scroll');
+  })();
   </script>
 
   <script data-toc>
   // Auto-generated section jump-nav + scroll-spy. Reusable: scans headers, no hand-authored list.
-  ( => {
+  (() => {
     const main = document.querySelector('main.project-body');
     const rail = document.querySelector('.toc-rail');
     const list = rail && rail.querySelector('.toc-list');
     if (!main || !list) return;
     const docEl = document.documentElement;
 
-    const slug = (s) => (s.toLowerCase.replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 40) || 'section');
-    const shorten = (s) => s.split(/\s+[—–-]\s+|:/)[0].trim;
+    const slug = (s) => (s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 40) || 'section');
+    const shorten = (s) => s.split(/\s+[—–-]\s+|:/)[0].trim();
     const labelOf = (el) => {
       const clone = el.cloneNode(true);
-      clone.querySelectorAll('.wds-head-role').forEach(n => n.remove);
-      const pick = (c) => { const n = clone.querySelector('.' + c); return n ? n.textContent.trim : ''; };
-      let en = pick('t-en'); if (!en) en = clone.textContent.trim;
+      clone.querySelectorAll('.wds-head-role').forEach(n => n.remove());
+      const pick = (c) => { const n = clone.querySelector('.' + c); return n ? n.textContent.trim() : ''; };
+      let en = pick('t-en'); if (!en) en = clone.textContent.trim();
       let jp = pick('t-jp'); if (!jp) jp = en;
       return { en: shorten(en), jp: shorten(jp) };
     };
     const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
-    const entries = [], seen = new Set;
+    const entries = [], seen = new Set();
     const add = (headerEl, boxEl) => {
       if (!headerEl || !boxEl || seen.has(boxEl)) return;
       const { en, jp } = labelOf(headerEl);
@@ -2157,7 +2157,7 @@
       add(header, header.closest('.wds-head') || child);
     });
     if (entries.length < 2) {  // fallback: pages whose headings are nested, not top-level
-      entries.length = 0; seen.clear;
+      entries.length = 0; seen.clear();
       main.querySelectorAll('.project-section-title').forEach((h) => add(h, h));
     }
     if (entries.length < 2) { rail.style.display = 'none'; return; }
@@ -2175,25 +2175,25 @@
       if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
     });
 
-    const current =  => {
+    const current = () => {
       const horiz = docEl.dataset.view === 'deck-h';
       const limit = (horiz ? window.innerWidth : window.innerHeight) * 0.35;
       let idx = 0;
       entries.forEach((e, i) => {
-        const r = e.box.getBoundingClientRect;
+        const r = e.box.getBoundingClientRect();
         if ((horiz ? r.left : r.top) <= limit) idx = i;
       });
       return idx;
     };
-    const paint =  => { const c = current; items.forEach((it, i) => it.classList.toggle('is-current', i === c)); };
+    const paint = () => { const c = current(); items.forEach((it, i) => it.classList.toggle('is-current', i === c)); };
     let raf = 0;
-    const onScroll =  => { if (raf) return; raf = requestAnimationFrame( => { raf = 0; paint; }); };
+    const onScroll = () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; paint(); }); };
     window.addEventListener('scroll', onScroll, { passive: true });
     document.addEventListener('scroll', onScroll, { passive: true, capture: true });
     window.addEventListener('resize', onScroll, { passive: true });
-    paint;
+    paint();
     setTimeout(paint, 80);
-  });
+  })();
   </script>
 
 </body>

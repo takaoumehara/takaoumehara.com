@@ -210,17 +210,15 @@
     }
 
     /* ─── Scroll Reveal ─── */
-    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
-    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+    .reveal-on-scroll { opacity: 1; transform: none; transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
+    .js-ready .reveal-on-scroll { opacity: 0; transform: translateY(16px); }
+    .js-ready .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
 
     /* ─── Image Fade-In ─── */
-    .g-cell img { opacity: 0; transition: opacity 400ms ease; }
-    .g-cell img.loaded { opacity: 1; }
-
-    /* ─── Gallery Hover ─── */
-    .g-cell { border-radius: 2px; }
+    .g-cell img { opacity: 1; max-width: 100%; height: auto; display: block; }
+    .g-cell { border-radius: 2px; overflow: hidden; }
     .g-cell img { transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
-    .g-cell:hover img.loaded { transform: scale(1.008); }
+    .g-cell:hover img { transform: scale(1.008); }
 
     @media (prefers-reduced-motion: reduce) {
       .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
@@ -623,7 +621,7 @@
   
 
   <script>
-    ( => {
+  (() => {
       const html = document.documentElement;
       const btns = [...document.querySelectorAll(".lang-btn")];
       const saved = localStorage.getItem("tu-lang") || "en";
@@ -633,41 +631,42 @@
         localStorage.setItem("tu-lang", lang);
       };
       setLang(saved);
-      btns.forEach((b) => b.addEventListener("click",  => setLang(b.dataset.lang)));
-    });
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+    })();
 
-    ( => {
+    (() => {
+      document.body.classList.add('js-ready');
       const obs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           if (e.isIntersecting) { e.target.classList.add('is-visible'); obs.unobserve(e.target); }
         });
       }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
       document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
-    });
+    })();
 
     document.querySelectorAll('.g-cell img').forEach(img => {
       if (img.complete) img.classList.add('loaded');
-      else img.addEventListener('load',  => img.classList.add('loaded'));
+      else img.addEventListener('load', () => img.classList.add('loaded'));
     });
   
   // ── Mobile Nav ──
-  ( => {
+  (() => {
     const toggle = document.getElementById('nav-toggle');
     const links = document.querySelector('.nav-links');
     if (toggle && links) {
-      toggle.addEventListener('click',  => {
+      toggle.addEventListener('click', () => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
       // Close on link click
       links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click',  => {
+        a.addEventListener('click', () => {
           toggle.classList.remove('is-open');
           links.classList.remove('is-open');
         });
       });
     }
-  });
+  })();
   </script>
 
 </body>

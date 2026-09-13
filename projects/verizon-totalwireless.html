@@ -1135,7 +1135,7 @@
 
   <script>
     // ── Language Toggle ──
-    ( => {
+  (() => {
       const html = document.documentElement;
       const btns = [...document.querySelectorAll(".lang-btn")];
       const saved = localStorage.getItem("tu-lang") || "en";
@@ -1145,11 +1145,11 @@
         localStorage.setItem("tu-lang", lang);
       };
       setLang(saved);
-      btns.forEach((b) => b.addEventListener("click",  => setLang(b.dataset.lang)));
+      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
     });
 
     // ── Scroll Reveal ──
-    ( => {
+  (() => {
       const obs = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           if (e.isIntersecting) {
@@ -1164,20 +1164,20 @@
     // ── Image Fade-In ──
     document.querySelectorAll('.g-cell img').forEach(img => {
       if (img.complete) img.classList.add('loaded');
-      else img.addEventListener('load',  => img.classList.add('loaded'));
+      else img.addEventListener('load', () => img.classList.add('loaded'));
     });
 
     // ── Mobile Nav ──
-    ( => {
+  (() => {
       const toggle = document.getElementById('nav-toggle');
       const links = document.querySelector('.nav-links');
       if (toggle && links) {
-        toggle.addEventListener('click',  => {
+        toggle.addEventListener('click', () => {
           toggle.classList.toggle('is-open');
           links.classList.toggle('is-open');
         });
         links.querySelectorAll('a').forEach(a => {
-          a.addEventListener('click',  => {
+          a.addEventListener('click', () => {
             toggle.classList.remove('is-open');
             links.classList.remove('is-open');
           });
@@ -1186,7 +1186,7 @@
     });
 
     // ── Prototype Device Toggle + Code View + Reload ──
-    ( => {
+  (() => {
       document.querySelectorAll('.proto-frame').forEach(frame => {
         const btns = frame.querySelectorAll('.proto-device-btn');
         const viewport = frame.querySelector('.proto-viewport');
@@ -1199,40 +1199,40 @@
         codeEl.className = 'proto-code';
         viewport.appendChild(codeEl);
         let codeLoaded = false;
-        const loadCode =  => {
+        const loadCode = () => {
           if (codeLoaded || !src) return;
           codeLoaded = true;
           codeEl.textContent = 'Loading source…';
           fetch(src)
-            .then(r => r.text)
+            .then(r => r.text())
             .then(txt => { codeEl.textContent = txt; })
-            .catch( => { codeEl.textContent = 'Could not load source in the frame. Use “Open Full Screen” and view the page source.'; });
+            .catch(() => { codeEl.textContent = 'Could not load source in the frame. Use “Open Full Screen” and view the page source.'; });
         };
 
         // Default to mobile (iPhone frame)
         viewport.classList.add('is-mobile');
 
         btns.forEach(btn => {
-          btn.addEventListener('click',  => {
+          btn.addEventListener('click', () => {
             btns.forEach(b => b.classList.remove('is-active'));
             btn.classList.add('is-active');
             const v = btn.dataset.view;
             viewport.classList.toggle('is-mobile', v === 'mobile');
             viewport.classList.toggle('is-code', v === 'code');
-            if (v === 'code') loadCode;
+            if (v === 'code') loadCode();
           });
         });
 
         // Reload all iframes in this frame
         if (reloadBtn) {
-          reloadBtn.addEventListener('click',  => {
+          reloadBtn.addEventListener('click', () => {
             frame.querySelectorAll('iframe').forEach(iframe => {
               iframe.src = iframe.src;
             });
           });
         }
       });
-    });
+  })();
   </script>
 
 </body>
