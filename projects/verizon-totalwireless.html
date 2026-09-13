@@ -1,55 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Shopping Flow &amp; Price Simplification — E-Commerce UX | Takao Umehara</title>
   <meta name="description" content="Live-coded HTML prototypes that solved multi-line wireless pricing confusion for Verizon's Total Wireless, introducing a line-item pricing pattern adopted into the shipped desktop and mobile checkout.">
+  <link rel="canonical" href="https://takaoumehara.com/projects/verizon-totalwireless.html">
   <meta property="og:title" content="Shopping Flow &amp; Price Simplification — E-Commerce UX | Takao Umehara">
-  <meta property="og:description" content="Live-coded prototypes that simplified multi-line wireless pricing for Verizon's Total Wireless, shipping a line-item pricing pattern across desktop and mobile.">
+  <meta property="og:description" content="Live-coded HTML prototypes that solved multi-line wireless pricing confusion for Verizon's Total Wireless, introducing a line-item pricing pattern adopted into the shipped desktop and mobile checkout.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/verizon-totalwireless.html">
   <meta property="og:image" content="https://takaoumehara.com/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Shopping Flow &amp; Price Simplification — E-Commerce UX | Takao Umehara">
-  <meta name="twitter:description" content="Live-coded prototypes that simplified multi-line wireless pricing for Verizon's Total Wireless, shipping a line-item pricing pattern across desktop and mobile.">
+  <meta name="twitter:description" content="Live-coded HTML prototypes that solved multi-line wireless pricing confusion for Verizon's Total Wireless, introducing a line-item pricing pattern adopted into the shipped desktop and mobile checkout.">
   <meta name="twitter:image" content="https://takaoumehara.com/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
+
   <style>
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
-      font-weight: 400;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
-      font-weight: 500;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
-      font-weight: 600;
-      font-display: swap;
+    /* Inlined nav & baseline tokens for self-contained detail page */
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: var(--ff);
+      background: #0b0b0b;
+      color: #ffffff;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── Mobile Menu ─── */
-    .nav-toggle {
-      display: none;
-      appearance: none; background: none; border: none; cursor: pointer;
-      width: 28px; height: 20px; position: relative; padding: 0;
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(11, 11, 11, 0.90);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
-    .nav-toggle span {
-      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
-      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
+      background: rgba(255, 255, 255, 0.14);
     }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
     .nav-toggle span:nth-child(1) { top: 0; }
     .nav-toggle span:nth-child(2) { top: 9px; }
     .nav-toggle span:nth-child(3) { top: 18px; }
@@ -57,473 +77,65 @@
     .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
     .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-    @media (max-width: 768px) {
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; gap: 0; padding: 0;
-        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--line);
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links li { border-top: 1px solid var(--line); }
-      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
+      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
     }
-  </style>  <style>
-    /* ─── Tokens ─── */
-    :root {
-      --bg: #fbfaf7;
-      --ink: #121212;
-      --ink-mid: #4c4841;
-      --ink-dim: #76716a;
-      --line: rgba(18,18,18,0.08);
-      --border: rgba(18,18,18,0.10);
-      --surface: rgba(255,255,255,0.92);
-      --shadow: 0 18px 42px rgba(18,18,18,0.04);
-      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--ff);
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
-        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
-        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-      min-height: 100vh;
-    }
-
-    /* ─── Nav ─── */
-    .site-nav {
-      position: sticky; top: 0; z-index: 40;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 32px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
-    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
-    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
-    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-
-    /* ─── Buttons ─── */
-    .btn-primary {
-      display: inline-block; padding: 13px 20px;
-      background: var(--ink); color: #fff;
-      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; border: 1px solid var(--ink);
-      transition: background 180ms ease;
-    }
-    .btn-primary:hover { background: #2a2a2a; }
-    .btn-secondary {
-      display: inline-block; padding: 13px 20px;
-      background: transparent; color: var(--ink);
-      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; border: 1px solid var(--border);
-      transition: border-color 180ms ease;
-    }
-    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
-
-    /* ─── Project Hero ─── */
-    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; }
-    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center; }
-    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(18,18,18,0.55) 0%,rgba(18,18,18,0.10) 60%,transparent 100%); }
-    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
-    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
-    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
-    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
-    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
-    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
-    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
-
-    /* ─── Project Body ─── */
-    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
-    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
-    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
-    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
-    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
-    .project-aside-stat { margin-bottom: 24px; }
-    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
-    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
-    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
-    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
-
-    /* ─── Notice box ─── */
-    .notice-box {
-      display: flex; gap: 20px; align-items: flex-start;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.72);
-      padding: 32px 36px;
-      margin-bottom: 56px;
-    }
-    .notice-box-icon {
-      flex-shrink: 0;
-      width: 38px; height: 38px;
-      background: var(--ink); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 16px; font-weight: 500;
-    }
-    .notice-box-title { font-size: 16px; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 8px; }
-    .notice-box-text { font-size: 14px; color: var(--ink-mid); line-height: 1.68; }
-
-    /* ─── Outcomes ─── */
-    .outcomes-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; margin-bottom: 64px; }
-    .outcome-block { padding: 28px 24px; border: 1px solid var(--line); }
-    .outcome-num { font-size: 36px; font-weight: 600; letter-spacing: -0.05em; margin-bottom: 6px; }
-    .outcome-label { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
-
-    /* ─── Process steps ─── */
-    .process-steps { display: flex; gap: 0; margin-bottom: 64px; }
-    .process-step { flex: 1; padding: 24px 20px; border-left: 1px solid var(--line); }
-    .process-step:first-child { border-left: none; padding-left: 0; }
-    .process-step-num { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
-    .process-step-label { font-size: 14px; font-weight: 500; letter-spacing: -0.02em; line-height: 1.4; }
-
-    /* ─── Section ─── */
-    .project-section { margin-bottom: 64px; }
-
-    /* ─── Gallery ─── */
-    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
-    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
-    .g-row { display: grid; gap: 4px; }
-    .g-row + .g-row { margin-top: 4px; }
-    .g-row.r1 { grid-template-columns: 1fr; }
-    .g-row.r2 { grid-template-columns: 1fr 1fr; }
-    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
-    .g-row.r21 { grid-template-columns: 2fr 1fr; }
-    .g-row.r12 { grid-template-columns: 1fr 2fr; }
-    .g-cell { overflow: hidden; background: #f5f3f0; border-radius: 2px; }
-    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
-    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .g-cell.natural { background: #f5f3f0; }
-    .g-cell.natural img { width: 100%; height: auto; display: block; }
-    .g-cell.dark { background: #111; }
-    .g-cell.dark img { width: 100%; height: auto; display: block; }
-    .g-cell.flow { background: #e8e6e2; }
-    .g-cell.flow img { width: 100%; height: auto; display: block; }
-
-    /* ─── Design System: code blocks ─── */
-    .ds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 40px; }
-    .code-block { background: #0d1117; border: 1px solid #1e2430; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
-    .code-tab { display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: #161b22; border-bottom: 1px solid #1e2430; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 11px; letter-spacing: 0.02em; color: #8b949e; }
-    .code-tab::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ec6a5e; box-shadow: 14px 0 0 #f4bf4f, 28px 0 0 #61c454; flex-shrink: 0; margin-right: 22px; }
-    .code-block pre { margin: 0; padding: 16px 18px; overflow-x: auto; font-family: ui-monospace, "SFMono-Regular", Menlo, monospace; font-size: 12px; line-height: 1.7; color: #c9d1d9; }
-    .code-block pre .c-com { color: #6a7889; }
-    .code-block pre .c-tok { color: #79c0ff; }
-    .code-block pre .c-str { color: #a5d6ff; }
-    .code-block pre .c-key { color: #ff7b72; }
-    .code-block pre .c-fn  { color: #d2a8ff; }
-    .code-caption { font-size: 12px; color: var(--ink-dim); margin: -28px 2px 40px; line-height: 1.6; }
-
-    /* ─── Shipped flow: desktop + mobile pairing ─── */
-    .flow-stage { margin: 40px 0 0; }
-    .flow-stage-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 0 0 14px; }
-    .flow-pair { display: grid; grid-template-columns: 1fr 216px; gap: 22px; align-items: start; margin-bottom: 20px; }
-    .flow-shot { background: #fff; border: 1px solid var(--line); border-radius: 5px; overflow: hidden; }
-    .flow-shot img { width: 100%; height: auto; display: block; }
-    .flow-shot.solo { max-width: none; }
-    .flow-cap { font-size: 12px; color: var(--ink-dim); margin: 8px 2px 0; line-height: 1.6; }
-    /* iPhone 15 Pro device frame — holds the mobile screenshot column */
-    .phone-frame {
-      width: 100%; aspect-ratio: 390 / 844; margin: 0 auto;
-      background: linear-gradient(150deg, #3c3c3e, #1a1a1c);
-      border-radius: 30px; padding: 7px; position: relative;
-      box-shadow: 0 16px 34px rgba(18,18,18,0.14), 0 2px 8px rgba(18,18,18,0.10), inset 0 1px 0 rgba(255,255,255,0.07);
-    }
-    .phone-screen { position: relative; width: 100%; height: 100%; border-radius: 24px; overflow: hidden; background: #000; }
-    .phone-screen img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .phone-island { position: absolute; top: 7px; left: 50%; transform: translateX(-50%); width: 62px; height: 18px; background: #000; border-radius: 12px; z-index: 5; }
-    @media (max-width: 760px) {
-      .ds-grid { grid-template-columns: 1fr; }
-      .flow-pair { grid-template-columns: 1fr 152px; gap: 14px; }
-      .phone-frame { border-radius: 24px; padding: 5px; }
-      .phone-screen { border-radius: 19px; }
-      .phone-island { width: 46px; height: 13px; top: 5px; border-radius: 9px; }
-    }
-    @media (max-width: 520px) {
-      .flow-pair { grid-template-columns: 1fr; }
-      .phone-frame { width: 152px; margin: 14px auto 0; }
-    }
-
-    /* ─── Prototype iframe ─── */
-    .proto-section { margin-bottom: 64px; }
-    .proto-card { margin-bottom: 48px; }
-    .proto-card-title { font-size: 18px; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 6px; }
-    .proto-card-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; margin-bottom: 16px; }
-    .proto-frame {
-      position: relative;
-      width: 100%;
-      background: #1a1a2e;
-      border-radius: 6px;
-      overflow: hidden;
-      border: 1px solid rgba(18,18,18,0.12);
-    }
-    .proto-toolbar {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 10px 16px;
-      background: #1e1e2e;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .proto-device-btns { display: flex; gap: 6px; }
-    .proto-device-btn {
-      appearance: none; border: none; cursor: pointer;
-      padding: 5px 12px; font-family: var(--ff);
-      font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
-      border-radius: 3px; transition: all 160ms ease;
-      background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.5);
-    }
-    .proto-device-btn.is-active {
-      background: rgba(255,255,255,0.14); color: #fff;
-    }
-    .proto-fullscreen, .proto-reload {
-      font-family: var(--ff); font-size: 11px; letter-spacing: 0.06em;
-      color: rgba(255,255,255,0.5); text-decoration: none;
-      transition: color 160ms ease; cursor: pointer;
-      background: none; border: none; padding: 0;
-    }
-    .proto-fullscreen:hover, .proto-reload:hover { color: #fff; }
-    .proto-toolbar-right { display: flex; gap: 16px; align-items: center; }
-    .proto-viewport {
-      display: flex; justify-content: center; align-items: center;
-      background: #111118;
-      padding: 0;
-      transition: padding 300ms ease, background 300ms ease;
-    }
-    .proto-viewport iframe {
-      width: 100%;
-      height: 720px;
-      border: 0;
-      transition: width 300ms ease, height 300ms ease;
-    }
-    /* ── Code view ── */
-    .proto-viewport.is-code { display: block; padding: 0; background: #0d1117; }
-    .proto-viewport.is-code > iframe,
-    .proto-viewport.is-code .iphone-frame { display: none !important; }
-    .proto-code {
-      display: none; margin: 0; max-height: 720px; overflow: auto;
-      padding: 18px 20px; background: #0d1117; color: #c9d1d9;
-      font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
-      font-size: 12px; line-height: 1.62; white-space: pre; tab-size: 2;
-    }
-    .proto-viewport.is-code .proto-code { display: block; }
-
-    /* ─── Storybook embed ─── */
-    .sb-embed { margin: 8px 0 40px; }
-    .sb-frame { border: 1px solid var(--border); border-radius: 8px; overflow: hidden; background: #fff; box-shadow: 0 24px 60px rgba(18,18,18,0.10); }
-    .sb-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 16px; background: #1e1e2e; }
-    .sb-bar-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.58); }
-    .sb-bar-link { font-size: 12px; color: rgba(255,255,255,0.82); text-decoration: none; white-space: nowrap; }
-    .sb-bar-link:hover { color: #fff; }
-    .sb-stage { width: 100%; height: 760px; background: #fff; }
-    .sb-stage iframe { width: 100%; height: 100%; border: 0; display: block; }
-    .sb-hint { font-size: 12px; color: var(--ink-dim); margin: 12px 2px 0; line-height: 1.6; }
-    @media (max-width: 600px) { .sb-stage { height: 520px; } }
-    /* ── iPhone 15 Pro Frame (mobile mode) ── */
-    .proto-viewport .iphone-frame { display: none; }
-    .proto-viewport.is-mobile {
-      padding: 40px 24px;
-      background: #E8EAED;
-    }
-    .proto-viewport.is-mobile > iframe { display: none; }
-    .proto-viewport.is-mobile .iphone-frame {
-      display: block;
-      width: 390px;
-      height: 844px;
-      background: linear-gradient(145deg, #2d2d2f, #1a1a1c);
-      border-radius: 48px;
-      padding: 11px;
-      position: relative;
-      flex-shrink: 0;
-      transform-origin: center center;
-      transform: scale(0.82);
-      margin: -76px 0;
-      box-shadow:
-        0 1px 3px rgba(0,0,0,0.12),
-        0 8px 24px rgba(0,0,0,0.14),
-        0 24px 48px rgba(0,0,0,0.06),
-        inset 0 1px 0 rgba(255,255,255,0.08),
-        inset 0 -1px 0 rgba(0,0,0,0.3);
-    }
-    /* Side buttons */
-    .iphone-frame::before {
-      content: '';
-      position: absolute; right: -2px; top: 130px;
-      width: 3px; height: 52px;
-      background: linear-gradient(to bottom, #3a3a3c, #2a2a2c);
-      border-radius: 0 2px 2px 0;
-    }
-    .iphone-frame::after {
-      content: '';
-      position: absolute; left: -2px; top: 110px;
-      width: 3px; height: 30px;
-      background: linear-gradient(to bottom, #3a3a3c, #2a2a2c);
-      border-radius: 2px 0 0 2px;
-      box-shadow: 0 42px 0 #2a2a2c, 0 72px 0 #2a2a2c;
-    }
-    .iphone-screen {
-      width: 100%; height: 100%;
-      background: #fff;
-      border-radius: 40px;
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-    }
-    .iphone-notch {
-      position: absolute; top: 10px; left: 50%;
-      transform: translateX(-50%);
-      width: 126px; height: 34px;
-      background: #000; border-radius: 20px;
-      z-index: 100;
-    }
-    /* Status bar spacer — clears the Dynamic Island */
-    .iphone-status {
-      flex-shrink: 0;
-      height: 54px;
-      background: #fff;
-      position: relative;
-      z-index: 50;
-    }
-    /* Dark status bar for dark-themed prototypes */
-    .iphone-status.dark {
-      background: #111827;
-    }
-    .iphone-screen iframe {
-      flex: 1;
-      width: 100%;
-      border: 0;
-      border-radius: 0 0 40px 40px;
-    }
-    /* ─── Extra prototypes link row ─── */
-    .proto-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
-
-    /* ─── Team credit ─── */
-    .team-credit {
-      font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--ink-dim);
-      padding: 8px 14px;
-      border: 1px solid var(--border);
-      display: inline-block;
-      margin-bottom: 16px;
-    }
-
-    /* ─── Back link ─── */
-    .back-link { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
-    .back-link:hover { color: var(--ink); }
-    .back-bar { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
-
-    /* ─── Lang switch ─── */
-    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(255,255,255,0.94); backdrop-filter: blur(8px); border-left: 1px solid rgba(18,18,18,0.10); border-radius: 6px 0 0 6px; }
-    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
-    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
-    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
+    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
+    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
     .t-jp { display: none; }
     html.lang-jp .t-en { display: none; }
     html.lang-jp .t-jp { display: inline; }
     html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
 
-    /* ─── Responsive ─── */
-    @media (max-width: 900px) {
-      .project-overview { grid-template-columns: 1fr; gap: 40px; }
-      .outcomes-grid { grid-template-columns: 1fr 1fr; }
-      .process-steps { flex-direction: column; gap: 0; }
-      .process-step { border-left: none; border-top: 1px solid var(--line); padding: 20px 0; }
-      .process-step:first-child { border-top: none; }
-      .g-row.r2 { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 600px) {
-      .site-nav { padding: 16px 20px; }
-      .project-hero-content { padding: 32px 20px; }
-      .project-body { padding: 40px 20px 60px; }
-      .back-bar { padding: 20px; }
-      .outcomes-grid { grid-template-columns: 1fr; }
-      .notice-box { flex-direction: column; gap: 14px; padding: 24px 20px; }
-      .proto-viewport.is-mobile { padding: 24px 8px; }
-      .proto-viewport.is-mobile .iphone-frame { transform: scale(0.58); margin: -176px 0; }
+    @media (max-width: 768px) {
+      .site-nav { padding: 14px 20px; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: flex-start; padding: 20px 24px;
+        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links .is-tierbreak::before { display: none; }
     }
 
-    /* ─── Scroll Reveal ─── */
-    .reveal-on-scroll { opacity: 0; transform: translateY(16px); transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1), transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1); }
-    .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-    .g-cell img { opacity: 0; transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1); }
-    .g-cell img.loaded { opacity: 1; }
-    .g-cell:hover img.loaded { transform: scale(1.008); }
-    @media (prefers-reduced-motion: reduce) {
-      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
-      .g-cell img { opacity: 1 !important; transition: none !important; }
-      .g-cell:hover img { transform: none !important; }
-    }
-  
-    /* ─── Cross-document view transition — docs/page-transitions.md ───────
-       The card the visitor clicked grows into this page's hero band while the
-       rest of the page cross-fades under it. It takes both documents: the
-       listing page puts `hero-media` on the one card it was launched from,
-       this page puts the same name on the hero. Browsers without support
-       simply navigate — nothing here is load-bearing. */
+    /* ─── Cross-document view transition rules (guarded by tests) ─── */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    @keyframes vt-fade-out { to { opacity: 0; } }
-    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
-    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
-    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
-
-    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
-       `object-fit: fill` stretches one into the other on the way across;
-       cropping both snapshots is what makes the move read as one element
-       rather than two pictures swapping. */
-    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
-      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+      animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
-      ::view-transition-old(root),
-      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
+      ::view-transition-old(root), ::view-transition-new(root),
+      ::view-transition-old(hero-media), ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
     }
-</style>
-  <style>
-    /* ── Nav tiers ── The three offers read first at full ink; the two
-       foundations sit behind a hairline. The hairline is drawn inside the
-       existing gap rather than taking a slot of its own — a separator that
-       occupies a slot makes that one gap twice as wide as every other. ── */
-    .nav-links { align-items: center; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: var(--ink-mid); }
-    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -15px; top: 50%;
-      width: 1px; height: 11px; margin-top: -5.5px;
-      background: var(--line);
-    }
-    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
-<body>
+<body class="dark-theme">
 
-  <!-- ── Nav ── -->
+  <!-- ── Navigation ── -->
   <nav class="site-nav">
     <a href="../index.html" class="nav-logo">
       <span class="nav-logo-name">Takao Umehara</span>
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html">Interactive</a></li>
+      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
       <li><a href="../ai-products.html">AI Products</a></li>
       <li><a href="../ai-tools.html">AI Tools</a></li>
-      <li><a href="../work.html" class="is-active" aria-current="page">Product Design</a></li>
+      <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
@@ -531,49 +143,73 @@
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <div class="back-bar">
-    <a href="../work.html" class="back-link">&larr; All Work</a>
+  <!-- ── Breadcrumb ── -->
+  <div class="pj-crumb">
+    <a href="../interactive.html">Interactive</a>
+    <span>/</span>
+    <span>Shopping Flow &amp; Price Simplification
+        購入フローと料金表示の簡素化</span>
   </div>
 
   <!-- ── Hero ── -->
-  <section data-vt-hero class="project-hero">
-    <div class="project-hero-img" style="background-image:url('../assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png'); background-position:center top;"></div>
-    <div class="project-hero-overlay" style="background: linear-gradient(0deg,rgba(10,15,25,0.78) 0%,rgba(10,15,25,0.30) 55%,rgba(10,15,25,0.20) 100%);"></div>
-    <div class="project-hero-content">
-      <div class="project-hero-tags">
-        <span class="project-hero-tag">Telecom</span>
-        <span class="project-hero-tag">E-Commerce UX</span>
-        <span class="project-hero-tag">Live Prototyping</span>
-        <span class="project-hero-tag">Price Transparency</span>
+  <header class="pj-hero">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker">Case Study · Interactive</span>
+      <ul class="pj-tags">
+        <li>creativity is everywhere</li>
+        <li>Telecom</li>
+        <li>E-Commerce UX</li>
+        <li>Live Prototyping</li>
+      </ul>
+      <h1 class="pj-title">Shopping Flow &amp; Price Simplification
+        購入フローと料金表示の簡素化</h1>
+      <p class="pj-summary">Wireless plan pricing is inherently confusing. Customers adding multiple phone lines face compounding complexity: per-line costs shift based on plan tier, device selection, and discount combinations like AutoPay or BYOD. The existing purchase flow made it nearly impossible for customers to understand what they would actually pay each month &mdash; especially when configuring 2, 3, or 4 lines simultaneously.
+          携帯プランの料金は、そもそも分かりにくい。回線を何本も追加する人は、プランの段階、選ぶ端末、AutoPay や持ち込み端末（BYOD）といった割引の組み合わせによって、1回線あたりの金額がそのたびに変わるという複雑さに直面する。それまでの購入フローでは、特に2回線、3回線、4回線を同時に申し込む場合、毎月いくら払うことになるのかを把握するのがほぼ不可能だった。</p>
+
+      <div class="pj-cta">
+        
+        <a href="../interactive.html">← Back to Interactive</a>
       </div>
-      <h1 class="project-hero-title">
-        <span class="t-en">Shopping Flow &amp; Price Simplification</span>
-        <span class="t-jp">購入フローと料金表示の簡素化</span>
-      </h1>
-      <div class="project-hero-meta">
-        <div class="project-meta-item">
-          <span class="project-meta-label">Client</span>
-          <span class="project-meta-value">
-            <span class="t-en">Verizon Value — Total Wireless</span>
-            <span class="t-jp">Verizon Value — Total Wireless</span>
-          </span>
+
+      <dl class="pj-meta">
+        <div>
+          <dt>Role</dt>
+          <dd>Product & Creative Direction</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Role</span>
-          <span class="project-meta-value">UX Designer &amp; Prototyper</span>
+        <div>
+          <dt>Engagement</dt>
+          <dd>Creativity Is Everywhere LLC</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Year</span>
-          <span class="project-meta-value">2024</span>
+        <div>
+          <dt>Medium</dt>
+          <dd>Digital Platform & System</dd>
         </div>
-      </div>
+        <div>
+          <dt>Status</dt>
+          <dd>Case Study</dd>
+        </div>
+      </dl>
     </div>
-  </section>
+  </header>
 
   <!-- ── Body ── -->
-  <main class="project-body">
+  <main class="pj-body">
+    <!-- Hero Media -->
+    <figure class="pj-media" data-vt-hero>
+      <a href="../assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop2.png" alt="Shopping Flow &amp; Price Simplification
+        購入フローと料金表示の簡素化" width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        <span class="t-en">Shopping Flow &amp; Price Simplification
+        購入フローと料金表示の簡素化 — case study showcase (click to open)</span>
+        <span class="t-jp">Shopping Flow &amp; Price Simplification
+        購入フローと料金表示の簡素化 — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
+      </figcaption>
+    </figure>
 
-    <!-- ════════════════════════════════════
+    <div class="project-content-body">
+<!-- ════════════════════════════════════
          NDA Disclaimer
     ════════════════════════════════════ -->
     <div class="notice-box">
@@ -1101,140 +737,57 @@
       <a href="../work.html" class="btn-secondary">&larr; All Projects</a>
       <a href="koji-fizz.html" class="btn-primary">Next: KOJI FIZZ &rarr;</a>
     </div>
-
+    </div>
   </main>
 
-  <div class="lang-switch">
+  <!-- ── Footer Nav ── -->
+  <footer class="pj-foot">
+    <a href="../interactive.html">← Back to Interactive</a>
+    <a href="../contact.html">Discuss this project with Takao →</a>
+  </footer>
+
+  <!-- ── Language Toggle ── -->
+  <div class="lang-switch" id="lang-switch">
     <button class="lang-btn is-active" data-lang="en">EN</button>
     <span class="lang-sep">|</span>
     <button class="lang-btn" data-lang="jp">JP</button>
   </div>
 
-  <footer>
-    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
-      <div>
-        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
-        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
-          <span class="t-en">Design &amp; consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
-          <span class="t-jp">デザインとコンサルティングのご依頼は <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて承っています</span>
-        </div>
-      </div>
-      <div style="display:flex; gap:20px; flex-wrap:wrap;">
-        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
-        <a href="../interactive.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Interactive</a>
-      <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Products</a>
-        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
-        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
-        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand &amp; Visual</a>
-        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
-        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
-        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
-      </div>
-      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
-    </div>
-  </footer>
-
+  <script src="../assets/wipe.js" defer></script>
   <script>
-    // ── Language Toggle ──
+    // Language Switcher
     (() => {
       const html = document.documentElement;
-      const btns = [...document.querySelectorAll(".lang-btn")];
-      const saved = localStorage.getItem("tu-lang") || "en";
+      const btns = document.querySelectorAll('.lang-btn');
       const setLang = (lang) => {
-        html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
-        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-        localStorage.setItem("tu-lang", lang);
+        if (lang === 'jp') {
+          html.classList.add('lang-jp');
+          localStorage.setItem('tu_lang', 'jp');
+        } else {
+          html.classList.remove('lang-jp');
+          localStorage.setItem('tu_lang', 'en');
+        }
+        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
       };
-      setLang(saved);
-      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+      const saved = localStorage.getItem('tu_lang');
+      if (saved) setLang(saved);
+      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
     })();
 
-    // ── Scroll Reveal ──
-    (() => {
-      const obs = new IntersectionObserver((entries) => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            e.target.classList.add('is-visible');
-            obs.unobserve(e.target);
-          }
-        });
-      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-      document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
-    })();
-
-    // ── Image Fade-In ──
-    document.querySelectorAll('.g-cell img').forEach(img => {
-      if (img.complete) img.classList.add('loaded');
-      else img.addEventListener('load', () => img.classList.add('loaded'));
-    });
-
-    // ── Mobile Nav ──
+    // Mobile Menu Toggle
     (() => {
       const toggle = document.getElementById('nav-toggle');
       const links = document.querySelector('.nav-links');
-      if (toggle && links) {
-        toggle.addEventListener('click', () => {
-          toggle.classList.toggle('is-open');
-          links.classList.toggle('is-open');
-        });
-        links.querySelectorAll('a').forEach(a => {
-          a.addEventListener('click', () => {
-            toggle.classList.remove('is-open');
-            links.classList.remove('is-open');
-          });
-        });
-      }
-    })();
-
-    // ── Prototype Device Toggle + Code View + Reload ──
-    (() => {
-      document.querySelectorAll('.proto-frame').forEach(frame => {
-        const btns = frame.querySelectorAll('.proto-device-btn');
-        const viewport = frame.querySelector('.proto-viewport');
-        const reloadBtn = frame.querySelector('.proto-reload');
-        const srcLink = frame.querySelector('.proto-fullscreen');
-        const src = srcLink ? srcLink.getAttribute('href') : null;
-
-        // Code panel (created lazily, appended to the viewport)
-        const codeEl = document.createElement('pre');
-        codeEl.className = 'proto-code';
-        viewport.appendChild(codeEl);
-        let codeLoaded = false;
-        const loadCode = () => {
-          if (codeLoaded || !src) return;
-          codeLoaded = true;
-          codeEl.textContent = 'Loading source…';
-          fetch(src)
-            .then(r => r.text())
-            .then(txt => { codeEl.textContent = txt; })
-            .catch(() => { codeEl.textContent = 'Could not load source in the frame. Use “Open Full Screen” and view the page source.'; });
-        };
-
-        // Default to mobile (iPhone frame)
-        viewport.classList.add('is-mobile');
-
-        btns.forEach(btn => {
-          btn.addEventListener('click', () => {
-            btns.forEach(b => b.classList.remove('is-active'));
-            btn.classList.add('is-active');
-            const v = btn.dataset.view;
-            viewport.classList.toggle('is-mobile', v === 'mobile');
-            viewport.classList.toggle('is-code', v === 'code');
-            if (v === 'code') loadCode();
-          });
-        });
-
-        // Reload all iframes in this frame
-        if (reloadBtn) {
-          reloadBtn.addEventListener('click', () => {
-            frame.querySelectorAll('iframe').forEach(iframe => {
-              iframe.src = iframe.src;
-            });
-          });
-        }
+      if (!toggle || !links) return;
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
       });
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        toggle.classList.remove('is-open');
+        links.classList.remove('is-open');
+      }));
     })();
   </script>
-
 </body>
 </html>

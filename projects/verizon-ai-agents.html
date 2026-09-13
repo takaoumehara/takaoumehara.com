@@ -1,652 +1,215 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Verizon — AI-Powered UX Workflow Transformation — Takao Umehara</title>
   <meta name="description" content="How a fleet of 10 purpose-built AI agents transformed the UX workflow for Verizon Value's 6-brand design team — knowledge management, edge-case detection, CX strategy, writing evaluation, and design production.">
+  <link rel="canonical" href="https://takaoumehara.com/projects/verizon-ai-agents.html">
   <meta property="og:title" content="Verizon — AI-Powered UX Workflow Transformation — Takao Umehara">
-  <meta property="og:description" content="A fleet of 10 purpose-built AI agents that replaced Verizon Value's structural design-workflow failures, from tribal knowledge to late-phase edge cases.">
+  <meta property="og:description" content="How a fleet of 10 purpose-built AI agents transformed the UX workflow for Verizon Value's 6-brand design team — knowledge management, edge-case detection, CX strategy, writing evaluation, and design production.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/verizon-ai-agents.html">
   <meta property="og:image" content="https://takaoumehara.com/assets/verizon-ai-agents/hero-agents-network.jpg">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Verizon — AI-Powered UX Workflow Transformation — Takao Umehara">
-  <meta name="twitter:description" content="A fleet of 10 purpose-built AI agents that replaced Verizon Value's structural design-workflow failures, from tribal knowledge to late-phase edge cases.">
+  <meta name="twitter:description" content="How a fleet of 10 purpose-built AI agents transformed the UX workflow for Verizon Value's 6-brand design team — knowledge management, edge-case detection, CX strategy, writing evaluation, and design production.">
   <meta name="twitter:image" content="https://takaoumehara.com/assets/verizon-ai-agents/hero-agents-network.jpg">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
+
   <style>
-    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
-    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
-    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
-      /* ─── Cross-document view transition — docs/page-transitions.md ───────
-       The card the visitor clicked grows into this page's hero band while the
-       rest of the page cross-fades under it. It takes both documents: the
-       listing page puts `hero-media` on the one card it was launched from,
-       this page puts the same name on the hero. Browsers without support
-       simply navigate — nothing here is load-bearing. */
+    /* Inlined nav & baseline tokens for self-contained detail page */
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: var(--ff);
+      background: #0b0b0b;
+      color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(11, 11, 11, 0.90);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
+      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
+    }
+    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
+    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
+    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    @media (max-width: 768px) {
+      .site-nav { padding: 14px 20px; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: flex-start; padding: 20px 24px;
+        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links .is-tierbreak::before { display: none; }
+    }
+
+    /* ─── Cross-document view transition rules (guarded by tests) ─── */
     @view-transition { navigation: auto; }
     [data-vt-hero] { view-transition-name: hero-media; }
 
-    @keyframes vt-fade-out { to { opacity: 0; } }
-    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
-    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
-    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
-
-    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
-       `object-fit: fill` stretches one into the other on the way across;
-       cropping both snapshots is what makes the move read as one element
-       rather than two pictures swapping. */
-    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
+    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
     ::view-transition-old(hero-media),
     ::view-transition-new(hero-media) {
       height: 100%; width: 100%; object-fit: cover;
-      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
+      animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     }
 
     @media (prefers-reduced-motion: reduce) {
       [data-vt-hero] { view-transition-name: none; }
-      ::view-transition-old(root),
-      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
+      ::view-transition-old(root), ::view-transition-new(root),
+      ::view-transition-old(hero-media), ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
     }
-</style>
-  <style>
-    /* ─── Mobile Menu ─── */
-    .nav-toggle { display:none; appearance:none; background:none; border:none; cursor:pointer; width:28px; height:20px; position:relative; padding:0; }
-    .nav-toggle span { display:block; position:absolute; left:0; width:100%; height:1.5px; background:var(--ink); transition:transform 280ms ease, opacity 180ms ease; }
-    .nav-toggle span:nth-child(1) { top:0; } .nav-toggle span:nth-child(2) { top:9px; } .nav-toggle span:nth-child(3) { top:18px; }
-    .nav-toggle.is-open span:nth-child(1) { top:9px; transform:rotate(45deg); }
-    .nav-toggle.is-open span:nth-child(2) { opacity:0; }
-    .nav-toggle.is-open span:nth-child(3) { top:9px; transform:rotate(-45deg); }
-    @media (max-width:768px) {
-      .nav-toggle { display:block; }
-      .nav-links { display:none; position:absolute; top:100%; left:0; right:0; flex-direction:column; gap:0; padding:0; background:rgba(255,255,255,0.97); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
-      .nav-links.is-open { display:flex; }
-      .nav-links li { border-top:1px solid var(--line); }
-      .nav-links a { display:block; padding:16px 32px; font-size:14px; }
-    }
-  </style>
-  <style>
-    /* ─── Tokens ─── */
-    :root {
-      --bg: #fbfaf7;
-      --ink: #121212;
-      --ink-mid: #4c4841;
-      --ink-dim: #76716a;
-      --line: rgba(18,18,18,0.08);
-      --border: rgba(18,18,18,0.10);
-      --surface: rgba(255,255,255,0.92);
-      --shadow: 0 18px 42px rgba(18,18,18,0.04);
-      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
-      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-      /* Panel tones — deeper, lower-chroma versions of the accent hues.
-         Large full-bleed fills use these; small accents (dots, rules, type)
-         keep the full-chroma hue so saturation reads as deliberate. */
-      --p-violet: #57359b;
-      --p-blue: #1f4a9c;
-      --p-orange: #c9620e;
-      --p-green: #16783c;
-      --p-amber: #cf7d10;
-      /* 5-3C'02 Rich palette */
-      --angle: 102deg;
-      --a1: hsla(198 82% 72% / 0.44);
-      --a2: hsla(248 74% 80% / 0.36);
-      --a3: hsla(324 72% 81% / 0.40);
-      --a4: hsla(36 80% 78% / 0.34);
-      --t1: hsl(198 58% 56%);
-      --t2: hsl(248 58% 70%);
-      --t3: hsl(324 60% 72%);
-      --t4: hsl(36 58% 62%);
-      --hover-angle: 98deg;
-      --bar-width: 70%;
-      --image-hover-opacity: 0.985;
-      --image-hover-width: 174%;
-      --image-hover-from: -96%;
-      --image-hover-to: -4%;
-      --image-hover-leave-to: 124%;
-      --image-hover-enter-ms: 1260ms;
-      --image-hover-leave-ms: 920ms;
-      --hover-ms: 880ms;
-      --press-ms: 760ms;
-    }
-
-    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-    html { scroll-behavior:smooth; }
-    body {
-      font-family:var(--ff); color:var(--ink);
-      background: radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%), radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%), linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-      min-height:100vh;
-    }
-
-    .eyebrow, .kicker, .meta, .small, .pill { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); }
-
-    /* ─── Nav ─── */
-    .site-nav { position:sticky; top:0; z-index:40; display:flex; justify-content:space-between; align-items:center; padding:14px 32px; background:rgba(255,255,255,0.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); }
-    .nav-logo { display:flex; flex-direction:column; gap:3px; text-decoration:none; line-height:1; }
-    .nav-logo-name { font-size:15px; font-weight:600; letter-spacing:-0.018em; color:var(--ink); }
-    .nav-logo-tag { font-size:10.5px; letter-spacing:0.02em; color:var(--ink-dim); font-weight:400; }
-    .nav-links { display:flex; gap:28px; list-style:none; }
-    .nav-links a { position:relative; font-size:13px; color:var(--ink-mid); text-decoration:none; letter-spacing:0.01em; transition:color 160ms ease; }
-    .nav-links a:hover { color:var(--ink); }
-    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-    .nav-links a.is-active::after { content:""; position:absolute; left:0; right:0; bottom:-6px; height:2px; border-radius:2px; background:#f97316; }
-
-    /* ─── Buttons ─── */
-    .btn-primary { display:inline-block; padding:13px 20px; background:var(--ink); color:#fff; font-family:var(--ff); font-size:12px; letter-spacing:0.12em; text-transform:uppercase; text-decoration:none; border:1px solid var(--ink); transition:background 180ms ease; }
-    .btn-primary:hover { background:#2a2a2a; }
-
-    /* ─── Footer ─── */
-    .site-footer { border-top:1px solid var(--line); padding:40px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; }
-    .footer-logo { font-size:15px; font-weight:600; letter-spacing:-0.018em; }
-    .footer-links { display:flex; gap:24px; list-style:none; }
-    .footer-links a { font-size:12px; letter-spacing:0.08em; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; }
-    .footer-links a:hover { color:var(--ink); }
-    .footer-copy { font-size:12px; color:var(--ink-dim); }
-
-    /* ─── Animations ─── */
-    @keyframes hero-in { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
-
-    /* ─── Reduced motion ─── */
-    @media (prefers-reduced-motion:reduce) {
-      .reveal-on-scroll { opacity:1 !important; transform:none !important; transition:none !important; }
-    }
-
-    /* ─── Project Detail ─── */
-    .project-hero { position:relative; min-height:560px; overflow:hidden; display:flex; align-items:flex-end; background:#0a0a0c url('../assets/verizon-ai-agents/hero-agents-network.jpg') center/cover no-repeat; }
-    .project-hero-overlay { position:absolute; inset:0; background:linear-gradient(0deg,rgba(10,10,12,0.82) 0%,rgba(10,10,12,0.16) 45%,rgba(10,10,12,0.55) 100%); }
-    .project-hero-content { position:relative; z-index:2; padding:56px 32px; max-width:1200px; margin:0 auto; width:100%; }
-    .project-hero-tags { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
-    .project-hero-tag { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.24); padding:5px 9px; }
-    .project-hero-title { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(32px,5vw,64px); font-weight:400; letter-spacing:-0.03em; line-height:0.93; color:#fff; max-width:860px; margin-bottom:24px; }
-    .project-hero-subtitle { font-size:17px; line-height:1.68; color:rgba(255,255,255,0.62); max-width:680px; margin-bottom:32px; }
-    .project-hero-meta { display:flex; gap:32px; flex-wrap:wrap; }
-    .project-meta-item { display:flex; flex-direction:column; gap:3px; }
-    .project-meta-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.38); }
-    .project-meta-value { font-size:13px; color:rgba(255,255,255,0.82); }
-
-    .breadcrumb { padding:20px 32px; max-width:1200px; margin:0 auto; }
-    .breadcrumb a { font-size:12px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; }
-    .breadcrumb a:hover { color:var(--ink); }
-    .breadcrumb span { font-size:12px; color:rgba(18,18,18,0.28); margin:0 8px; }
-
-    .project-body { max-width:1200px; margin:0 auto; padding:64px 32px 80px; }
-    .project-overview { display:grid; grid-template-columns:1fr 1.6fr; gap:64px; margin-bottom:72px; padding-bottom:72px; border-bottom:1px solid var(--line); }
-    .project-section-title { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(22px,2.4vw,30px); font-weight:400; letter-spacing:-0.02em; margin-bottom:20px; }
-    .project-text { font-size:16px; line-height:1.72; color:var(--ink-mid); margin-bottom:20px; }
-    .project-aside-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
-    .project-aside-stat { margin-bottom:24px; }
-    .project-aside-num { font-size:32px; font-weight:600; letter-spacing:-0.04em; }
-    .project-aside-desc { font-size:13px; color:var(--ink-dim); margin-top:4px; }
-    .project-deliverables { list-style:none; display:flex; flex-direction:column; gap:10px; }
-    .project-deliverables li { font-size:14px; color:var(--ink-mid); display:flex; gap:10px; align-items:baseline; }
-    .project-deliverables li::before { content:"\2014"; color:rgba(18,18,18,0.24); flex-shrink:0; }
-
-    .project-section { margin-bottom:64px; }
-    .section-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--line); }
-    .impact-block { background:#f5f3ef; padding:40px 36px; margin-bottom:64px; }
-    .impact-title { font-size:13px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
-    .impact-text { font-size:17px; line-height:1.7; color:var(--ink-mid); }
-
-    .outcomes-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:64px; }
-    .outcome-block { padding:28px 24px; border:1px solid var(--line); }
-    .outcome-num { font-size:36px; font-weight:600; letter-spacing:-0.05em; margin-bottom:6px; }
-    .outcome-label { font-size:13px; color:var(--ink-mid); line-height:1.5; }
-
-    .nav-project { display:flex; justify-content:space-between; align-items:center; padding:32px 0 0; border-top:1px solid var(--line); margin-top:32px; }
-    .nav-project a { font-size:13px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-decoration:none; transition:color 160ms ease; display:flex; align-items:center; gap:8px; }
-    .nav-project a:hover { color:var(--ink); }
-
-    /* ─── Friction Grid ─── */
-    .friction-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-bottom:48px; }
-    .friction-card { background:#0f0f10; padding:36px 32px; display:flex; flex-direction:column; gap:12px; }
-    .friction-num { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.36); }
-    .friction-title { font-size:20px; font-weight:600; letter-spacing:-0.022em; color:#fff; line-height:1.18; }
-    .friction-desc { font-size:14px; line-height:1.62; color:rgba(255,255,255,0.52); }
-
-    /* ─── Solution Mapping ─── */
-    .solution-map { display:grid; grid-template-columns:1fr auto 1fr; gap:0; margin-bottom:48px; border:1px solid var(--line); overflow:hidden; }
-    .sol-friction { background:#f5f3f0; padding:32px 28px; }
-    .sol-arrow { display:flex; align-items:center; justify-content:center; padding:0 20px; color:var(--ink-dim); font-size:18px; }
-    .sol-agent { background:#fff; padding:32px 28px; }
-    .sol-label { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:10px; }
-    .sol-name { font-size:17px; font-weight:600; letter-spacing:-0.02em; margin-bottom:6px; }
-    .sol-desc { font-size:13px; line-height:1.56; color:var(--ink-mid); }
-
-    /* ─── Agent Cards ─── */
-    .agent-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-bottom:48px; }
-    .agent-card { padding:32px 28px; border:1px solid var(--line); position:relative; }
-    .agent-card.is-accent { border-left:3px solid; }
-    .agent-color-orange { border-left-color:#f97316; }
-    .agent-color-blue { border-left-color:#2563eb; }
-    .agent-color-green { border-left-color:#16a34a; }
-    .agent-color-yellow { border-left-color:#eab308; }
-    .agent-color-purple { border-left-color:#7c3aed; }
-    .agent-color-teal { border-left-color:#0d9488; }
-    .agent-role { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:8px; }
-    .agent-name { font-size:18px; font-weight:600; letter-spacing:-0.022em; margin-bottom:10px; }
-    .agent-desc { font-size:13px; line-height:1.56; color:var(--ink-mid); }
-
-    /* ─── Workflow Timeline ─── */
-    .workflow-timeline { position:relative; margin-bottom:48px; }
-    .wf-row { display:grid; grid-template-columns:repeat(6,1fr); gap:2px; margin-bottom:2px; }
-    .wf-step { padding:20px 16px; font-size:12px; font-weight:500; letter-spacing:-0.01em; line-height:1.4; min-height:80px; display:flex; align-items:flex-start; }
-    .wf-step.is-dark { background:#0f0f10; color:rgba(255,255,255,0.82); }
-    .wf-step.is-light { background:#f5f3f0; color:var(--ink-mid); }
-    .wf-agent-bar { display:flex; gap:2px; margin-bottom:2px; }
-    .wf-agent-label { padding:10px 16px; font-size:10px; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:#fff; display:flex; align-items:center; }
-    .wf-bar-orange { background:var(--p-orange); flex:1; }
-    .wf-bar-green { background:var(--p-green); }
-    .wf-bar-blue { background:var(--p-blue); flex:1.5; }
-    .wf-bar-yellow { background:var(--p-amber); color:#fff; }
-    .wf-tools-bar { display:flex; gap:2px; margin-bottom:16px; }
-    .wf-tool { padding:8px 16px; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); border:1px solid var(--line); flex:1; text-align:center; }
-
-    /* ─── Big Statement ─── */
-    .big-statement { margin:8px 0 72px; }
-    .big-statement h2 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(38px,5.6vw,76px); line-height:1.06; letter-spacing:-0.03em; max-width:1020px; margin-top:8px; }
-    .big-statement .hl { box-shadow:inset 0 -0.24em 0 0 rgba(249,115,22,0.26); }
-    .big-statement-note { font-size:16px; line-height:1.7; color:var(--ink-mid); max-width:640px; margin-top:24px; }
-    .big-statement-sub { margin-top:36px; display:flex; gap:48px; flex-wrap:wrap; }
-    .bs-stat-num { font-size:clamp(30px,3.4vw,46px); font-weight:600; letter-spacing:-0.045em; line-height:1; }
-    .bs-stat-label { font-size:12px; color:var(--ink-dim); margin-top:8px; letter-spacing:0.04em; }
-
-    /* ─── Fleet Roster ─── */
-    .fleet-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
-    .fleet-card { border:1px solid var(--line); background:rgba(255,255,255,0.72); padding:32px 28px 30px; }
-    .fleet-num { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); display:flex; align-items:center; gap:10px; margin-bottom:18px; }
-    .fleet-dot { width:13px; height:13px; border-radius:4px; flex-shrink:0; }
-    .fleet-name { font-size:clamp(24px,2.3vw,31px); font-weight:600; letter-spacing:-0.03em; line-height:1.05; margin-bottom:8px; }
-    .fleet-role { font-size:11px; letter-spacing:0.13em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:14px; }
-    .fleet-job { font-size:13.5px; line-height:1.62; color:var(--ink-mid); }
-    .fleet-members { display:flex; flex-wrap:wrap; gap:6px; margin-top:14px; }
-    .fleet-member { font-size:11px; padding:5px 11px; border:1px solid var(--border); border-radius:14px; color:var(--ink-mid); background:rgba(255,255,255,0.6); }
-    @media (max-width:900px) { .fleet-grid { grid-template-columns:1fr 1fr; } .big-statement-sub { gap:32px; } }
-    @media (max-width:600px) { .fleet-grid { grid-template-columns:1fr; } }
-
-    /* ─── Journey Strip (at a glance) ─── */
-    .journey-strip { display:grid; grid-template-columns:repeat(5,1fr); gap:2px; margin:8px 0 12px; }
-    .journey-step { border:1px solid var(--line); padding:24px 20px; background:rgba(255,255,255,0.66); }
-    .journey-phase { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:12px; }
-    .journey-num { font-size:26px; font-weight:600; letter-spacing:-0.04em; margin-bottom:6px; line-height:1.1; }
-    .journey-desc { font-size:12.5px; line-height:1.55; color:var(--ink-mid); }
-    .journey-dots { display:flex; gap:6px; margin-bottom:8px; }
-    .journey-dot { width:14px; height:14px; border-radius:4px; }
-
-    /* ─── Sally Scorecard ─── */
-    .scorecard { display:grid; grid-template-columns:auto 1fr; gap:48px; border:1px solid var(--line); background:#fff; padding:40px 36px; align-items:center; margin:28px 0 10px; }
-    .scorecard-total { text-align:left; }
-    .scorecard-num { font-size:64px; font-weight:600; letter-spacing:-0.05em; color:#d92d20; line-height:1; }
-    .scorecard-num small { font-size:22px; color:var(--ink-dim); font-weight:400; letter-spacing:-0.01em; }
-    .scorecard-verdict { font-size:12px; letter-spacing:0.12em; text-transform:uppercase; color:#d92d20; font-weight:600; margin-top:10px; }
-    .scorecard-note { font-size:12.5px; color:var(--ink-dim); margin-top:8px; max-width:230px; line-height:1.55; }
-    .score-rows { display:flex; flex-direction:column; gap:18px; }
-    .score-label { display:flex; justify-content:space-between; font-size:13px; margin-bottom:7px; }
-    .score-label strong { font-weight:600; }
-    .score-label span:last-child { color:var(--ink-dim); }
-    .score-bar { height:6px; background:rgba(18,18,18,0.07); overflow:hidden; }
-    .score-fill { height:100%; }
-    .score-finding { font-size:12px; color:var(--ink-dim); margin-top:6px; }
-
-    /* ─── Strategic Option Cards ─── */
-    .option-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:20px 0 8px; }
-    .option-card { border:1px solid var(--line); padding:24px 22px; background:rgba(255,255,255,0.66); }
-    .option-tier { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px; font-weight:600; }
-    .option-name { font-size:15px; font-weight:600; letter-spacing:-0.01em; margin-bottom:8px; }
-    .option-desc { font-size:12.5px; line-height:1.55; color:var(--ink-mid); }
-
-    /* ─── Method / Pro-Tip Cards ─── */
-    .method-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:28px 0 8px; }
-    .method-card { border:1px solid var(--line); padding:28px 24px; background:rgba(255,255,255,0.66); }
-    .method-num { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:10px; }
-    .method-title { font-size:16px; font-weight:600; letter-spacing:-0.015em; margin-bottom:10px; }
-    .method-desc { font-size:13px; line-height:1.6; color:var(--ink-mid); }
-
-    @media (max-width:900px) {
-      .journey-strip { grid-template-columns:1fr 1fr; }
-      .scorecard { grid-template-columns:1fr; gap:28px; }
-      .option-cards { grid-template-columns:1fr; }
-      .method-grid { grid-template-columns:1fr; }
-    }
-    @media (max-width:600px) {
-      .journey-strip { grid-template-columns:1fr; }
-    }
-
-    /* ─── Agent Profile (Sally / Justin) ─── */
-    .agent-profile { display:grid; grid-template-columns:220px 1fr; gap:44px; align-items:start; margin-bottom:8px; }
-    .agent-profile-img { width:100%; height:auto; display:block; border-radius:50%; }
-    .agent-profile-name { font-size:22px; font-weight:600; letter-spacing:-0.022em; margin-bottom:4px; }
-    .agent-profile-tag { font-size:12px; color:var(--ink-dim); margin-bottom:18px; }
-    .framework-tags { display:flex; flex-wrap:wrap; gap:8px; margin:20px 0 8px; }
-    .framework-tag { font-size:11px; letter-spacing:0.02em; padding:7px 13px; border:1px solid var(--border); border-radius:20px; color:var(--ink-mid); background:rgba(255,255,255,0.6); }
-    .output-list { list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:16px; }
-    .output-list li { font-size:13.5px; line-height:1.6; color:var(--ink-mid); padding-left:18px; position:relative; }
-    .output-list li::before { content:"\2192"; position:absolute; left:0; color:var(--ink-dim); }
-    .output-list strong { color:var(--ink); font-weight:600; }
-
-    /* ─── Trap / Scan Grids ─── */
-    .trap-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin:28px 0; }
-    .trap-block { background:#0f0f10; padding:26px 24px; }
-    .trap-title { font-size:15px; font-weight:600; color:#fff; margin-bottom:8px; letter-spacing:-0.01em; }
-    .trap-desc { font-size:12.5px; line-height:1.56; color:rgba(255,255,255,0.56); }
-    .scan-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin:28px 0 8px; }
-    .scan-block { padding:24px 20px; border:1px solid var(--line); }
-    .scan-block.is-accent { border-left:3px solid; }
-    .scan-title { font-size:14px; font-weight:600; letter-spacing:-0.01em; margin-bottom:8px; }
-    .scan-desc { font-size:12.5px; line-height:1.5; color:var(--ink-mid); }
-
-    @media (max-width:900px) {
-      .agent-profile { grid-template-columns:1fr; }
-      .agent-profile-img { max-width:180px; }
-      .trap-grid { grid-template-columns:1fr; }
-      .scan-grid { grid-template-columns:1fr 1fr; }
-    }
-    @media (max-width:600px) {
-      .scan-grid { grid-template-columns:1fr; }
-    }
-
-    /* ─── Master Brain Diagram ─── */
-    .brain-diagram { display:grid; grid-template-columns:1fr 1.2fr 1fr; gap:0; margin-bottom:48px; align-items:center; }
-    .brain-spoke { display:flex; flex-direction:column; gap:20px; }
-    .brain-spoke-item { padding:20px 24px; border:1px solid var(--line); }
-    .brain-spoke-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:6px; }
-    .brain-spoke-text { font-size:13px; color:var(--ink-mid); line-height:1.5; }
-    .brain-center { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 24px; }
-    .brain-hub { width:160px; height:160px; border-radius:50%; border:2px solid var(--line); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; margin-bottom:12px; }
-    .brain-hub-label { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-dim); }
-    .brain-hub-title { font-size:18px; font-weight:600; letter-spacing:-0.02em; }
-
-    /* ─── Scroll Reveal ─── */
-    .reveal-on-scroll { opacity:0; transform:translateY(16px); transition:opacity 600ms cubic-bezier(0.22,0.84,0.22,1), transform 600ms cubic-bezier(0.22,0.84,0.22,1); }
-    .reveal-on-scroll.is-visible { opacity:1; transform:translateY(0); }
-
-    /* ─── Responsive ─── */
-    @media (max-width:900px) {
-      .project-overview { grid-template-columns:1fr; gap:40px; }
-      .outcomes-grid { grid-template-columns:1fr 1fr; }
-      .friction-grid { grid-template-columns:1fr; }
-      .agent-grid { grid-template-columns:1fr 1fr; }
-      .solution-map { grid-template-columns:1fr; }
-      .sol-arrow { padding:12px; transform:rotate(90deg); }
-      .brain-diagram { grid-template-columns:1fr; gap:16px; }
-      .wf-row { grid-template-columns:repeat(3,1fr); }
-    }
-    @media (max-width:600px) {
-      .site-nav { padding:16px 20px; }
-      .project-hero-content { padding:32px 20px; }
-      .project-body { padding:40px 20px 60px; }
-      .breadcrumb { padding:16px 20px; }
-      .outcomes-grid { grid-template-columns:1fr; }
-      .agent-grid { grid-template-columns:1fr; }
-      .wf-row { grid-template-columns:repeat(2,1fr); }
-    }
-
-    /* ─── Lang switch ─── */
-    /* Language buttons live in the .page-controls cluster below */
-    .lang-btn { appearance:none; background:none; border:none; font-family:var(--ff); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; color:var(--ink-dim); padding:0; transition:color 160ms ease; }
-    .lang-btn.is-active { color:var(--ink); font-weight:600; }
-    .lang-sep { font-size:9px; color:rgba(18,18,18,0.18); }
-    .t-jp { display:none; }
-    html.lang-jp .t-en { display:none; }
-    html.lang-jp .t-jp { display:inline; }
-    html.lang-jp .t-jp.is-block { display:block; }
-    html.lang-jp body { font-family: var(--ff-jp); }
-
-    /* ─── Focus visible ─── */
-    .nav-links a:focus-visible, .nav-logo:focus-visible, .lang-btn:focus-visible,
-    .nav-toggle:focus-visible, .breadcrumb a:focus-visible, .nav-project a:focus-visible,
-    .page-controls button:focus-visible, a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-
-    /* ─── Hero / gallery image ─── */
-    .g-cell { overflow:hidden; background:#f5f3f0; border-radius:2px; }
-    .g-cell.natural { background:#f5f3f0; }
-    .g-cell.natural img { width:100%; height:auto; display:block; }
-    .g-caption { font-size:12px; color:var(--ink-dim); line-height:1.55; margin-top:10px; }
-
-    /* ─── Notice box ─── */
-    .notice-box { display:flex; gap:20px; align-items:flex-start; border:1px solid var(--border); background:rgba(255,255,255,0.72); padding:26px 30px; margin-bottom:56px; }
-    .notice-box-icon { flex-shrink:0; width:38px; height:38px; background:var(--ink); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:600; letter-spacing:0.03em; }
-    .notice-box-title { font-size:15px; font-weight:600; letter-spacing:-0.02em; margin-bottom:8px; }
-    .notice-box-text { font-size:14px; color:var(--ink-mid); line-height:1.68; }
-    @media (max-width:600px) { .notice-box { flex-direction:column; gap:14px; padding:20px 18px; } }
-  </style>
-  <style data-deck>
-    /* ═══ View modes: scroll (default) | deck-v | deck-h ═══
-       All deck rules are scoped under html[data-view="deck-*"]; the .deck-slide /
-       .deck-section markers carry NO default rules, so scroll mode is untouched. */
-
-    /* ─── Page controls: one cluster, not four floats ───
-       Language, view mode and the deck readout are all "how you look at this page",
-       so they live in a single object at one corner. Quietness comes from size and
-       hairlines — never from lowering opacity, which would drop the labels below the
-       WCAG contrast floor. Only the progress bar sits apart, on the top edge. */
-    .page-controls { position:fixed; right:14px; bottom:16px; z-index:120; display:flex; flex-direction:column; gap:2px; padding:4px; background:rgba(255,255,255,0.9); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); border:1px solid var(--border); border-radius:12px; transition:border-color 200ms ease, background 200ms ease; }
-    .page-controls:hover, .page-controls:focus-within { background:rgba(255,255,255,0.97); border-color:rgba(18,18,18,0.2); }
-    .pc-group { display:flex; gap:2px; }
-    .pc-view { flex-direction:column; }
-    .pc-rule { height:1px; background:var(--line); margin:3px 5px; }
-    .page-controls button { appearance:none; border:none; background:none; cursor:pointer; font-family:var(--ff); font-size:10.5px; letter-spacing:0.09em; text-transform:uppercase; color:var(--ink-mid); padding:7px 11px; border-radius:8px; display:flex; align-items:center; gap:7px; white-space:nowrap; transition:background 140ms ease, color 140ms ease; }
-    .pc-lang button { flex:1; justify-content:center; padding:6px 12px; }
-    .page-controls button:hover { color:var(--ink); background:rgba(18,18,18,0.05); }
-    .page-controls button.is-active, .page-controls button[aria-pressed="true"] { background:var(--ink); color:#fff; }
-    .page-controls .pc-i { font-size:12px; line-height:1; width:13px; text-align:center; }
-    .deck-count, .deck-hint { display:none; }
-    .deck-count { font-size:10.5px; letter-spacing:0.12em; font-variant-numeric:tabular-nums; color:var(--ink-dim); text-align:center; padding:5px 4px 6px; }
-    .deck-hint { font-size:9.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); text-align:center; padding:6px 4px 3px; border-top:1px solid var(--line); margin-top:3px; }
-    .deck-hint kbd { font-family:var(--ff); font-weight:600; color:var(--ink-mid); }
-    .deck-hint.is-gone { display:none; }
-    html[data-view^="deck"] .deck-count, html[data-view^="deck"] .deck-hint:not(.is-gone) { display:block; }
-    .deck-progress { position:fixed; left:0; top:0; right:0; height:3px; z-index:121; background:rgba(18,18,18,0.10); display:none; }
-    .deck-progress i { display:block; height:100%; width:0; background:var(--p-orange); transition:width 240ms cubic-bezier(0.22,0.84,0.22,1); }
-    html[data-view^="deck"] .deck-progress { display:block; }
-    html[data-view^="deck"] .reveal-on-scroll { opacity:1 !important; transform:none !important; }
-    html[data-view^="deck"] .notice-box, html[data-view^="deck"] .nav-project { display:none; }
-
-    /* ── deck-v: vertical snap; Space/↓ advances one panel ──
-       Snap mechanics alone give a page that stops in convenient places, not a deck.
-       The framing rules below are what make it read as slides. */
-    html[data-view="deck-v"] { scroll-snap-type:y mandatory; }
-    html[data-view="deck-v"] .deck-slide { scroll-snap-align:start; scroll-snap-stop:always; min-height:100vh; min-height:100dvh; box-sizing:border-box; }
-
-    /* 1 · strip the page chrome — a deck is not a document */
-    html[data-view="deck-v"] .site-nav,
-    html[data-view="deck-v"] .site-footer,
-    html[data-view="deck-v"] .toc-rail { display:none; }
-    /* 2 · full-bleed the stage: the container's max-width is what makes a slide read as a section */
-    html[data-view="deck-v"] .project-body { max-width:none; margin:0; padding:0; }
-    html[data-view="deck-v"] .deck-section { display:contents; }
-    /* 3 · centre the content, with side gutters off the raw edge */
-    html[data-view="deck-v"] .deck-slide { display:flex; flex-direction:column; justify-content:safe center; padding:clamp(36px,5.5vh,76px) clamp(32px,6vw,120px); }
-    /* grid/flex-row panels are ALSO .deck-slide — restore their display or the columns collapse */
-    html[data-view="deck-v"] .deck-slide:is(.wds-worlds,.wds-moves,.wds-tech,.wds-agents,.sl-intake) { display:grid; align-content:safe center; }
-    html[data-view="deck-v"] .deck-slide.sl-fw { display:flex; flex-flow:row wrap; align-items:baseline; align-content:safe center; }
-    /* colour-field panels fill the stage rather than floating as a band inside it */
-    html[data-view="deck-v"] .deck-slide:is(.wds-worlds,.sl-intake) { grid-template-rows:1fr; align-content:stretch; padding-inline:0; padding-block:0; }
-    html[data-view="deck-v"] :is(.wds-tech-item,.jc-trap-card,.jc-layer,.mb-source,.mb-hub,.mb-out-item,.wds-world,.wds-move) { display:flex; flex-direction:column; justify-content:center; }
-    /* 4 · cap promoted type against viewport HEIGHT — a real browser's inner height is
-       ~813px on a "900px" window, and vw-only sizing overflows every laptop */
-    html[data-view="deck-v"] .wds-head .wds-head-title { font-size:min(clamp(48px,7.5vw,104px), 11vh); line-height:0.94; }
-    html[data-view="deck-v"] .wds-hero h3 { font-size:min(clamp(34px,5vw,68px), 8.4vh); }
-    html[data-view="deck-v"] .wds-hero-lead { font-size:min(clamp(15px,1.4vw,19px), 2.3vh); }
-    html[data-view="deck-v"] .tool-statement h2 { font-size:min(clamp(34px,5vw,66px), 9vh); }
-    html[data-view="deck-v"] .big-statement h2 { font-size:min(clamp(30px,4.4vw,58px), 8vh); }
-    /* 5 · give the advance a beat; keyframed off a class so a failed script can't blank the page */
-    @keyframes deck-in { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
-    html[data-view="deck-v"] .deck-slide.is-live > * { animation:deck-in 560ms cubic-bezier(0.22,0.84,0.22,1) both; }
-    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(2) { animation-delay:70ms; }
-    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(3) { animation-delay:130ms; }
-    html[data-view="deck-v"] .deck-slide.is-live > *:nth-child(n+4) { animation-delay:180ms; }
-
-    /* ── deck-h: horizontal track via display:contents flatten + native x-snap ── */
-    html[data-view="deck-h"], html[data-view="deck-h"] body { overflow:hidden; }
-    /* both decks open directly on slide 0 — the bg-image hero + breadcrumb aren't panels */
-    html[data-view^="deck"] .breadcrumb,
-    html[data-view^="deck"] .project-hero { display:none; }
-    html[data-view="deck-h"] .site-nav,
-    html[data-view="deck-h"] .site-footer { display:none; }
-    html[data-view="deck-h"] .deck-section { display:contents; }
-    html[data-view="deck-h"] .project-body { position:fixed; inset:0; max-width:none; width:100vw; height:100vh; margin:0; padding:0; display:flex; flex-flow:row nowrap; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
-    html[data-view="deck-h"] .deck-slide { flex:0 0 100vw; width:100vw; height:100vh; box-sizing:border-box; overflow-y:auto; scroll-snap-align:start; scroll-snap-stop:always; }
-    /* bare (non-full-bleed) panels need their own breathing room once project-body padding is gone */
-    html[data-view="deck-h"] .deck-slide:is(.big-statement,.project-overview,.impact-block,.wds-head,.project-section) { padding:clamp(40px,7vh,84px) clamp(28px,6vw,110px); }
-
-    /* ── deck-h stage framing: center content so nothing floats top/edge; fill color grids ──
-       Each panel is a 100vh stage. Scroll-authored blocks stack from the top and leave the
-       lower half empty; here every panel vertically-centers its content. `safe center` keeps
-       taller-than-viewport panels starting at the top so their top stays reachable/scrollable. */
-    html[data-view="deck-h"] .deck-slide { display:flex; flex-direction:column; justify-content:safe center; }
-    /* text panels keep their big block padding — just widen the side gutters off the raw edges */
-    html[data-view="deck-h"] .deck-slide:is(.wds-hero,.wds-adopt) { padding-inline:clamp(40px,7vw,120px); }
-    /* grid cells that own a full-height color column should center their own text, too */
-    html[data-view="deck-h"] :is(.wds-tech-item,.jc-trap-card,.jc-layer,.mb-source,.mb-hub,.mb-out-item,.wds-world,.wds-move) { display:flex; flex-direction:column; justify-content:center; }
-    /* grid-based panels are ALSO .deck-slide; the blanket flex rule above would collapse their
-       columns into a vertical stack. Restore grid and center the row(s) vertically instead. */
-    html[data-view="deck-h"] .deck-slide:is(.wds-worlds,.wds-moves,.wds-tech,.wds-agents,.sl-intake) { display:grid; align-content:safe center; }
-    /* chip / tag strips are flex ROWS — keep them horizontal, just center them in the stage */
-    html[data-view="deck-h"] .deck-slide.sl-fw { display:flex; flex-flow:row wrap; align-items:baseline; align-content:safe center; }
-    /* the "Grounded in" strip is inherently thin; in deck-h enlarge it into an intentional
-       "the science this rests on" credential slide (label as a heading, bigger chips) */
-    html[data-view="deck-h"] .sl-fw .sl-fw-tag { width:100%; font-size:clamp(15px,1.7vw,20px); letter-spacing:0.16em; margin-bottom:clamp(20px,3vh,36px); }
-    html[data-view="deck-h"] .sl-fw .framework-tags { display:flex; flex-wrap:wrap; gap:clamp(10px,1vw,16px); }
-    html[data-view="deck-h"] .sl-fw .framework-tag { font-size:clamp(14px,1.35vw,18px); padding:clamp(9px,0.9vw,15px) clamp(15px,1.5vw,25px); }
-
-    /* ── deck-h: the section nameplate becomes a BOLD centered section-divider slide ──
-       In scroll mode `.wds-head` is a modest name + rule that reads as a section break because
-       of its top margin. As a standalone deck slide that reads as *smaller* than the hero that
-       follows, collapsing the hierarchy. Here the section name is promoted to the biggest type
-       on screen (larger than any hero h3's 90px cap) so the section boundary is unmistakable. */
-    html[data-view="deck-h"] .deck-slide.wds-head { border-bottom:none; padding-block:clamp(56px,12vh,150px); }
-    html[data-view="deck-h"] .wds-head .wds-head-eyebrow { font-size:clamp(13px,1.5vw,17px); letter-spacing:0.2em; margin-bottom:clamp(20px,3vh,34px); }
-    html[data-view="deck-h"] .wds-head .wds-head-title { font-size:clamp(66px,11.5vw,158px); line-height:0.92; }
-    html[data-view="deck-h"] .wds-head .wds-head-role { font-size:clamp(14px,1.5vw,18px); margin-top:clamp(18px,2.6vh,30px); }
-
-    /* Where decks can't run, remove the control rather than dimming it — a disabled
-       button people can still see is a distraction that answers nothing. */
-    @media (max-width:768px) { .pc-view, .pc-rule { display:none; } }
-    @media (prefers-reduced-motion:reduce) { .pc-view, .pc-rule { display:none; } html[data-view="deck-v"] .deck-slide.is-live > * { animation:none !important; } }
-  </style>
-  <style data-toc>
-    /* ═══ Section jump-nav: left "you-are-here" scroll-spy rail (auto-generated) ═══ */
-    .toc-rail { position:fixed; left:0; top:50%; transform:translateY(-50%); z-index:115; display:flex; align-items:center; max-height:82vh; }
-    .toc-list { list-style:none; margin:0; padding:8px 12px 8px 8px; display:flex; flex-direction:column; gap:1px; max-height:82vh; overflow-y:auto; background:rgba(255,255,255,0.86); backdrop-filter:blur(9px); -webkit-backdrop-filter:blur(9px); border:1px solid var(--border); border-left:none; border-radius:0 12px 12px 0; box-shadow:0 14px 36px rgba(18,18,18,0.12); }
-    .toc-list::-webkit-scrollbar { width:0; height:0; }
-    .toc-item button { appearance:none; border:none; background:none; cursor:pointer; font-family:var(--ff); display:flex; align-items:center; gap:11px; padding:5px 6px; width:100%; text-align:left; color:var(--ink-dim); border-radius:7px; transition:color 140ms ease, background 140ms ease; }
-    .toc-dot { width:7px; height:7px; border-radius:50%; background:rgba(18,18,18,0.24); flex-shrink:0; transition:background 140ms ease, transform 140ms ease; }
-    .toc-label { font-size:12px; letter-spacing:0.01em; white-space:nowrap; width:0; overflow:hidden; text-overflow:ellipsis; opacity:0; transition:width 260ms cubic-bezier(0.22,0.84,0.22,1), opacity 200ms ease; }
-    .toc-item.is-current .toc-dot { background:#f97316; transform:scale(1.4); }
-    .toc-item.is-current button { color:var(--ink); font-weight:600; }
-    /* resting = slim dots only (no overlap); labels slide out to a FIXED width on hover/focus
-       (fixed width + ellipsis so the panel never jitters with label length) */
-    .toc-rail:hover .toc-label, .toc-rail:focus-within .toc-label { width:184px; opacity:1; }
-    .toc-list { transition:background 160ms ease; background:rgba(255,255,255,0.55); }
-    .toc-rail:hover .toc-list, .toc-rail:focus-within .toc-list { background:rgba(255,255,255,0.92); }
-    /* deck modes are full-bleed (no room for a rail) — the deck's own progress/keys navigate */
-    html[data-view^="deck"] .toc-rail { display:none; }
-    .toc-item button:hover { background:rgba(18,18,18,0.05); color:var(--ink); }
-    @media (max-width:768px) { .toc-rail { display:none; } }
-  </style>
-  <style>
-    /* ── Nav tiers ── The three offers read first at full ink; the two
-       foundations sit behind a hairline. The hairline is drawn inside the
-       existing gap rather than taking a slot of its own — a separator that
-       occupies a slot makes that one gap twice as wide as every other. ── */
-    .nav-links { align-items: center; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: var(--ink-mid); }
-    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -15px; top: 50%;
-      width: 1px; height: 11px; margin-top: -5.5px;
-      background: var(--line);
-    }
-    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
-<body>
+<body class="dark-theme">
 
-  <!-- ── Nav ── -->
+  <!-- ── Navigation ── -->
   <nav class="site-nav">
     <a href="../index.html" class="nav-logo">
       <span class="nav-logo-name">Takao Umehara</span>
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html">Interactive</a></li>
-      <li><a href="../ai-products.html" class="is-active" aria-current="page">AI Products</a></li>
+      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
       <li><a href="../ai-tools.html">AI Tools</a></li>
       <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
-    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
   <!-- ── Breadcrumb ── -->
-  <div class="breadcrumb">
-    <a href="../work.html">Product Design</a>
+  <div class="pj-crumb">
+    <a href="../interactive.html">Interactive</a>
     <span>/</span>
-    <a href="#">Verizon AI Workflow</a>
+    <span>AI-Powered UX Workflow Transformation
+        AIでUXのワークフローを組み替える</span>
   </div>
 
   <!-- ── Hero ── -->
-  <section data-vt-hero class="project-hero">
-    <div class="project-hero-overlay"></div>
-    <div class="project-hero-content">
-      <div class="project-hero-tags">
-        <span class="project-hero-tag">AI Products</span>
-        <span class="project-hero-tag">AI Workflow</span>
-        <span class="project-hero-tag">Design Ops</span>
-        <span class="project-hero-tag">Change Management</span>
+  <header class="pj-hero">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker">Case Study · Interactive</span>
+      <ul class="pj-tags">
+        <li>creativity is everywhere</li>
+        <li>AI Products</li>
+        <li>AI Workflow</li>
+        <li>Design Ops</li>
+      </ul>
+      <h1 class="pj-title">AI-Powered UX Workflow Transformation
+        AIでUXのワークフローを組み替える</h1>
+      <p class="pj-summary">The team's gain is threefold: instant self-auditing without testing budgets or lead times, scientific consistency &mdash; every screen held to the same ISO and behavioral-science standards &mdash; and internal validation, so designers walk into stakeholder reviews with evidence instead of hope.
+          チームが得たものは3つある。検証予算も待ち時間も要らないその場での自己点検。すべての画面が同じISOと行動科学の基準で評価されるぶれない判断軸。そして社内での裏づけ &mdash; デザイナーは祈るのではなく、根拠を持ってレビューの場に臨めるようになった。</p>
+
+      <div class="pj-cta">
+        
+        <a href="../interactive.html">← Back to Interactive</a>
       </div>
-      <h1 class="project-hero-title">
-        <span class="t-en">AI-Powered UX Workflow Transformation</span>
-        <span class="t-jp">AIでUXのワークフローを組み替える</span>
-      </h1>
-      <p class="project-hero-subtitle">
-        <span class="t-en">When Gemini became the only AI allowed inside Verizon's locked-down enterprise, nobody knew what to do with it. I built ten purpose-built agents woven into the existing workflow &mdash; without tearing it up &mdash; and shifted 42 designers from tactical executors to strategic pilots.</span>
-        <span class="t-jp is-block">外部ツールを厳しく制限したVerizonの社内環境で、使用を許されたAIはGeminiだけ。しかも、誰もその使い道が分かっていなかった。私は既存のワークフローを壊さず、その中に織り込む形で用途を絞った10のエージェントをつくり、42人のデザイナーを「言われたものをつくる側」から「自分で舵を取る側」へと動かした。</span>
-      </p>
-      <div class="project-hero-meta">
-        <div class="project-meta-item">
-          <span class="project-meta-label">Client</span>
-          <span class="project-meta-value">
-            <span class="t-en">Verizon Value (6 Brands)</span>
-            <span class="t-jp">Verizon Value（6ブランド）</span>
-          </span>
+
+      <dl class="pj-meta">
+        <div>
+          <dt>Role</dt>
+          <dd>Product & Creative Direction</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Role</span>
-          <span class="project-meta-value">
-            <span class="t-en">Lead Product Designer (Agentic UX &amp; AI Systems)</span>
-            <span class="t-jp">リードプロダクトデザイナー（Agentic UX &amp; AIシステム）</span>
-          </span>
+        <div>
+          <dt>Engagement</dt>
+          <dd>Creativity Is Everywhere LLC</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Year</span>
-          <span class="project-meta-value">
-            <span class="t-en">2025 &ndash; Present</span>
-            <span class="t-jp">2025年 &ndash; 現在</span>
-          </span>
+        <div>
+          <dt>Medium</dt>
+          <dd>Digital Platform & System</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Scope</span>
-          <span class="project-meta-value">
-            <span class="t-en">UX Strategy, AI Architecture, System Integration</span>
-            <span class="t-jp">UX戦略、AIアーキテクチャ、システム統合</span>
-          </span>
+        <div>
+          <dt>Status</dt>
+          <dd>Case Study</dd>
         </div>
-      </div>
+      </dl>
     </div>
-  </section>
+  </header>
 
   <!-- ── Body ── -->
-  <main class="project-body">
+  <main class="pj-body">
+    <!-- Hero Media -->
+    <figure class="pj-media" data-vt-hero>
+      <a href="../assets/verizon-ai-agents/agent-justin-portrait.jpg" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/verizon-ai-agents/agent-justin-portrait.jpg" alt="AI-Powered UX Workflow Transformation
+        AIでUXのワークフローを組み替える" width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        <span class="t-en">AI-Powered UX Workflow Transformation
+        AIでUXのワークフローを組み替える — case study showcase (click to open)</span>
+        <span class="t-jp">AI-Powered UX Workflow Transformation
+        AIでUXのワークフローを組み替える — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
+      </figcaption>
+    </figure>
 
-    <!-- ── Confidentiality Notice ── -->
+    <div class="project-content-body">
+<!-- ── Confidentiality Notice ── -->
     <div class="notice-box">
       <div class="notice-box-icon">NDA</div>
       <div>
@@ -1937,261 +1500,57 @@
       <a href="credit-card-portal.html">&larr; Credit Card Portal</a>
       <a href="ela-quests.html">ELA Quests &rarr;</a>
     </div>
-
+    </div>
   </main>
 
-  <!-- ── Page controls: language, view mode, and the deck readout in one cluster ── -->
-  <div class="page-controls">
-    <div class="deck-count" aria-live="polite">1 / 1</div>
-    <div class="pc-group pc-lang" role="group" aria-label="Language">
-      <button class="lang-btn is-active" type="button" data-lang="en">EN</button>
-      <button class="lang-btn" type="button" data-lang="jp">JP</button>
-    </div>
-    <div class="pc-rule" aria-hidden="true"></div>
-    <div class="pc-group pc-view" role="group" aria-label="View mode">
-      <button type="button" data-viewbtn="scroll" aria-pressed="true"><span class="pc-i" aria-hidden="true">&#8801;</span><span class="t-en">Scroll</span><span class="t-jp">スクロール</span></button>
-      <button type="button" data-viewbtn="deck-v" aria-pressed="false"><span class="pc-i" aria-hidden="true">&#8595;</span><span class="t-en">Slides</span><span class="t-jp">スライド</span></button>
-      <button type="button" data-viewbtn="deck-h" aria-pressed="false"><span class="pc-i" aria-hidden="true">&#8594;</span><span class="t-en">Deck</span><span class="t-jp">デッキ</span></button>
-    </div>
-    <div class="deck-hint" id="deck-hint" aria-hidden="true">
-      <span class="t-en"><kbd>Space</kbd> to advance</span>
-      <span class="t-jp"><kbd>Space</kbd> キーで次へ</span>
-    </div>
-  </div>
-  <div class="deck-progress" aria-hidden="true"><i></i></div>
-
-  <!-- ── Section jump-nav rail (auto-populated) ── -->
-  <nav class="toc-rail" aria-label="Sections"><ul class="toc-list"></ul></nav>
-
-  <!-- ── Footer ── -->
-  <footer>
-    <div class="site-footer">
-      <div>
-        <div class="footer-logo">Takao Umehara</div>
-      </div>
-      <ul class="footer-links">
-        <li><a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener">LinkedIn</a></li>
-        <li><a href="https://breakbias.medium.com/" target="_blank" rel="noopener">Medium</a></li>
-        <li><a href="../intentfirst.html">intentfirst.ai</a></li>
-      </ul>
-      <div class="footer-copy">New York City</div>
-    </div>
+  <!-- ── Footer Nav ── -->
+  <footer class="pj-foot">
+    <a href="../interactive.html">← Back to Interactive</a>
+    <a href="../contact.html">Discuss this project with Takao →</a>
   </footer>
 
+  <!-- ── Language Toggle ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script src="../assets/wipe.js" defer></script>
   <script>
-  // Language toggle
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll('.lang-btn')];
-    const saved = localStorage.getItem('tu-lang') || 'en';
-    const setLang = (lang) => {
-      html.classList.toggle('lang-jp', lang === 'jp');
-      html.lang = lang === 'jp' ? 'ja' : 'en';
-      btns.forEach((b) => b.classList.toggle('is-active', b.dataset.lang === lang));
-      localStorage.setItem('tu-lang', lang);
-    };
-    setLang(saved);
-    btns.forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
-  })();
+    // Language Switcher
+    (() => {
+      const html = document.documentElement;
+      const btns = document.querySelectorAll('.lang-btn');
+      const setLang = (lang) => {
+        if (lang === 'jp') {
+          html.classList.add('lang-jp');
+          localStorage.setItem('tu_lang', 'jp');
+        } else {
+          html.classList.remove('lang-jp');
+          localStorage.setItem('tu_lang', 'en');
+        }
+        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
+      };
+      const saved = localStorage.getItem('tu_lang');
+      if (saved) setLang(saved);
+      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+    })();
 
-  // Scroll reveal
-  (() => {
-    const items = document.querySelectorAll('.reveal-on-scroll');
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); observer.unobserve(e.target); } });
-    }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-    items.forEach(el => observer.observe(el));
-  })();
-
-  // Mobile menu
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
+    // Mobile Menu Toggle
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (!toggle || !links) return;
       toggle.addEventListener('click', () => {
-        const open = !links.classList.contains('is-open');
-        toggle.classList.toggle('is-open', open);
-        links.classList.toggle('is-open', open);
-        toggle.setAttribute('aria-expanded', String(open));
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
       });
-    }
-  })();
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        toggle.classList.remove('is-open');
+        links.classList.remove('is-open');
+      }));
+    })();
   </script>
-
-  <script data-deck>
-  // View-mode engine: scroll | deck-v | deck-h. Keyed only off html[data-view] + .deck-slide.
-  (() => {
-    const html = document.documentElement;
-    const btns = [...document.querySelectorAll('[data-viewbtn]')];
-    const bar = document.querySelector('.deck-progress i');
-    const count = document.querySelector('.deck-count');
-    const hint = document.getElementById('deck-hint');
-    const mqMobile = window.matchMedia('(max-width:768px)');
-    const mqMotion = window.matchMedia('(prefers-reduced-motion:reduce)');
-    const slides = () => [...document.querySelectorAll('.deck-slide')];
-    const allowDeck = () => !(mqMobile.matches || mqMotion.matches);
-    let cur = 0, advanced = false;
-
-    const setBtns = (v) => btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.viewbtn === v)));
-    // Mark the current slide live so its content replays the entrance beat
-    const markLive = () => {
-      const s = slides();
-      s.forEach((el, i) => { if (i !== cur) el.classList.remove('is-live'); });
-      const el = s[cur];
-      if (el && !el.classList.contains('is-live')) { void el.offsetWidth; el.classList.add('is-live'); }
-    };
-    const updateProgress = () => {
-      const n = slides().length || 1;
-      if (bar) bar.style.width = ((cur + 1) / n * 100) + '%';
-      if (count) count.textContent = (cur + 1) + ' / ' + n;
-      if (html.dataset.view === 'deck-v') markLive();
-    };
-    const idxFromScroll = () => {
-      const s = slides(); if (!s.length) return 0;
-      const horiz = html.dataset.view === 'deck-h';
-      let best = 0, bestD = Infinity;
-      s.forEach((el, i) => {
-        const r = el.getBoundingClientRect();
-        const d = Math.abs(horiz ? r.left : r.top);
-        if (d < bestD) { bestD = d; best = i; }
-      });
-      return best;
-    };
-    const goto = (i, behavior) => {
-      const s = slides(); if (!s.length) return;
-      cur = Math.max(0, Math.min(i, s.length - 1));
-      s[cur].scrollIntoView({ behavior: behavior || 'smooth', block: 'start', inline: 'start' });
-      updateProgress();
-    };
-    const setView = (v) => {
-      if (v !== 'scroll' && !allowDeck()) v = 'scroll';
-      html.dataset.view = v;
-      setBtns(v);
-      localStorage.setItem('tu-view', v);
-      if (v === 'scroll') {
-        slides().forEach(el => el.classList.remove('is-live'));
-        if (hint) hint.classList.remove('is-gone');
-        advanced = false;
-      } else {
-        requestAnimationFrame(() => goto(cur, 'auto'));
-      }
-      updateProgress();
-    };
-
-    btns.forEach(b => b.addEventListener('click', () => setView(b.dataset.viewbtn)));
-
-    const FWD = new Set([' ', 'Spacebar', 'ArrowDown', 'ArrowRight', 'PageDown']);
-    const BACK = new Set(['ArrowUp', 'ArrowLeft', 'PageUp']);
-    window.addEventListener('keydown', (e) => {
-      const v = html.dataset.view;
-      if (!v || v === 'scroll') return;
-      const ae = document.activeElement;
-      if (ae && ae.matches && ae.matches('input,textarea,select,[contenteditable="true"]')) return;
-      if ((e.key === ' ' || e.key === 'Spacebar' || e.key === 'Enter') && ae && ae.matches && ae.matches('button,a,[role="button"]')) return;
-      if (FWD.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur + 1); }
-      else if (BACK.has(e.key)) { e.preventDefault(); cur = idxFromScroll(); goto(cur - 1); }
-      else if (e.key === 'Home') { e.preventDefault(); goto(0); }
-      else if (e.key === 'End') { e.preventDefault(); goto(slides().length - 1); }
-      else return;
-      if (!advanced && hint) { advanced = true; hint.classList.add('is-gone'); }
-    });
-
-    let raf = 0;
-    const onScroll = () => {
-      if (raf) return;
-      raf = requestAnimationFrame(() => {
-        raf = 0;
-        const v = html.dataset.view;
-        if (v && v !== 'scroll') { cur = idxFromScroll(); updateProgress(); }
-      });
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    document.addEventListener('scroll', onScroll, { passive: true, capture: true });
-    window.addEventListener('resize', () => { if (html.dataset.view && html.dataset.view !== 'scroll') goto(cur, 'auto'); });
-    [mqMobile, mqMotion].forEach(mq => mq.addEventListener('change', () => { if (!allowDeck() && html.dataset.view !== 'scroll') setView('scroll'); }));
-
-    const saved = localStorage.getItem('tu-view') || 'scroll';
-    setView(allowDeck() ? saved : 'scroll');
-  })();
-  </script>
-
-  <script data-toc>
-  // Auto-generated section jump-nav + scroll-spy. Reusable: scans headers, no hand-authored list.
-  (() => {
-    const main = document.querySelector('main.project-body');
-    const rail = document.querySelector('.toc-rail');
-    const list = rail && rail.querySelector('.toc-list');
-    if (!main || !list) return;
-    const docEl = document.documentElement;
-
-    const slug = (s) => (s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 40) || 'section');
-    const shorten = (s) => s.split(/\s+[—–-]\s+|:/)[0].trim();
-    const labelOf = (el) => {
-      const clone = el.cloneNode(true);
-      clone.querySelectorAll('.wds-head-role').forEach(n => n.remove());
-      const pick = (c) => { const n = clone.querySelector('.' + c); return n ? n.textContent.trim() : ''; };
-      let en = pick('t-en'); if (!en) en = clone.textContent.trim();
-      let jp = pick('t-jp'); if (!jp) jp = en;
-      return { en: shorten(en), jp: shorten(jp) };
-    };
-    const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-
-    const entries = [], seen = new Set();
-    const add = (headerEl, boxEl) => {
-      if (!headerEl || !boxEl || seen.has(boxEl)) return;
-      const { en, jp } = labelOf(headerEl);
-      if (!en) return;
-      seen.add(boxEl);
-      if (!boxEl.id) boxEl.id = 'sec-' + slug(en);
-      entries.push({ id: boxEl.id, en, jp, box: boxEl });
-    };
-    [...main.children].forEach((child) => {
-      if (child.tagName === 'STYLE' || child.tagName === 'SCRIPT') return;
-      const header = child.querySelector('.wds-head-title')
-        || child.querySelector('.project-section-title')
-        || child.querySelector('.section-label');
-      if (!header) return;
-      add(header, header.closest('.wds-head') || child);
-    });
-    if (entries.length < 2) {  // fallback: pages whose headings are nested, not top-level
-      entries.length = 0; seen.clear();
-      main.querySelectorAll('.project-section-title').forEach((h) => add(h, h));
-    }
-    if (entries.length < 2) { rail.style.display = 'none'; return; }
-
-    list.innerHTML = entries.map((e) =>
-      `<li class="toc-item"><button type="button" data-goto="${e.id}">`
-      + `<span class="toc-dot"></span>`
-      + `<span class="toc-label"><span class="t-en">${esc(e.en)}</span><span class="t-jp">${esc(e.jp)}</span></span>`
-      + `</button></li>`).join('');
-    const items = [...list.querySelectorAll('.toc-item')];
-
-    list.addEventListener('click', (ev) => {
-      const b = ev.target.closest('[data-goto]'); if (!b) return;
-      const t = document.getElementById(b.dataset.goto);
-      if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'start' });
-    });
-
-    const current = () => {
-      const horiz = docEl.dataset.view === 'deck-h';
-      const limit = (horiz ? window.innerWidth : window.innerHeight) * 0.35;
-      let idx = 0;
-      entries.forEach((e, i) => {
-        const r = e.box.getBoundingClientRect();
-        if ((horiz ? r.left : r.top) <= limit) idx = i;
-      });
-      return idx;
-    };
-    const paint = () => { const c = current(); items.forEach((it, i) => it.classList.toggle('is-current', i === c)); };
-    let raf = 0;
-    const onScroll = () => { if (raf) return; raf = requestAnimationFrame(() => { raf = 0; paint(); }); };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    document.addEventListener('scroll', onScroll, { passive: true, capture: true });
-    window.addEventListener('resize', onScroll, { passive: true });
-    paint();
-    setTimeout(paint, 80);
-  })();
-  </script>
-
 </body>
 </html>

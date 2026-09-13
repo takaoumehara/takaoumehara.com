@@ -1,61 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="../favicon.svg">
   <title>Konosaki — Bilingual Consulting Brand & Website | Takao Umehara</title>
   <meta name="description" content="Konosaki — a complete brand identity and bilingual website for a cross-border consulting firm. Identity system, guidelines, and live site designed and built AI-assisted through Creativity Is Everywhere LLC.">
+  <link rel="canonical" href="https://takaoumehara.com/projects/konosaki.html">
   <meta property="og:title" content="Konosaki — Bilingual Consulting Brand & Website | Takao Umehara">
-  <meta property="og:description" content="Brand identity, guidelines, and bilingual website for Konosaki — a cross-border consulting firm connecting Japanese and global businesses.">
+  <meta property="og:description" content="Konosaki — a complete brand identity and bilingual website for a cross-border consulting firm. Identity system, guidelines, and live site designed and built AI-assisted through Creativity Is Everywhere LLC.">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://takaoumehara.com/projects/konosaki.html">
   <meta property="og:image" content="https://takaoumehara.com/assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Konosaki — Bilingual Consulting Brand & Website | Takao Umehara">
-  <meta name="twitter:description" content="Brand identity, guidelines, and bilingual website for Konosaki — a cross-border consulting firm connecting Japanese and global businesses.">
+  <meta name="twitter:description" content="Konosaki — a complete brand identity and bilingual website for a cross-border consulting firm. Identity system, guidelines, and live site designed and built AI-assisted through Creativity Is Everywhere LLC.">
   <meta name="twitter:image" content="https://takaoumehara.com/assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
-
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/project-page.css">
+  <link rel="stylesheet" href="../assets/wipe.css">
+
   <style>
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
-      font-weight: 400;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
-      font-weight: 500;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
-      font-weight: 600;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Bold.woff2') format('woff2');
-      font-weight: 700;
-      font-display: swap;
+    /* Inlined nav & baseline tokens for self-contained detail page */
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: var(--ff);
+      background: #0b0b0b;
+      color: #ffffff;
+      -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── Mobile Menu ─── */
-    .nav-toggle {
-      display: none;
-      appearance: none; background: none; border: none; cursor: pointer;
-      width: 28px; height: 20px; position: relative; padding: 0;
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(11, 11, 11, 0.90);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
     }
-    .nav-toggle span {
-      display: block; position: absolute; left: 0; width: 100%; height: 1.5px;
-      background: var(--ink); transition: transform 280ms ease, opacity 180ms ease;
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
+      background: rgba(255, 255, 255, 0.14);
     }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
     .nav-toggle span:nth-child(1) { top: 0; }
     .nav-toggle span:nth-child(2) { top: 9px; }
     .nav-toggle span:nth-child(3) { top: 18px; }
@@ -63,434 +77,139 @@
     .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
     .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-    @media (max-width: 768px) {
-      .nav-toggle { display: block; }
-      .nav-links {
-        display: none; position: absolute; top: 100%; left: 0; right: 0;
-        flex-direction: column; gap: 0; padding: 0;
-        background: rgba(255,255,255,0.97); backdrop-filter: blur(12px);
-        -webkit-backdrop-filter: blur(12px);
-        border-bottom: 1px solid var(--line);
-      }
-      .nav-links.is-open { display: flex; }
-      .nav-links li { border-top: 1px solid var(--line); }
-      .nav-links a { display: block; padding: 16px 32px; font-size: 14px; }
-    }
-      /* ─── Cross-document view transition — docs/page-transitions.md ───────
-       The card the visitor clicked grows into this page's hero band while the
-       rest of the page cross-fades under it. It takes both documents: the
-       listing page puts `hero-media` on the one card it was launched from,
-       this page puts the same name on the hero. Browsers without support
-       simply navigate — nothing here is load-bearing. */
-    @view-transition { navigation: auto; }
-    [data-vt-hero] { view-transition-name: hero-media; }
-
-    @keyframes vt-fade-out { to { opacity: 0; } }
-    @keyframes vt-rise-in { from { opacity: 0; transform: translateY(10px); } }
-    ::view-transition-old(root) { animation: vt-fade-out 220ms ease both; }
-    ::view-transition-new(root) { animation: vt-rise-in 320ms cubic-bezier(0.22, 0.84, 0.22, 1) both; }
-
-    /* A 3:2 thumbnail and a full-bleed hero are different shapes. The default
-       `object-fit: fill` stretches one into the other on the way across;
-       cropping both snapshots is what makes the move read as one element
-       rather than two pictures swapping. */
-    ::view-transition-group(hero-media) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1); }
-    ::view-transition-old(hero-media),
-    ::view-transition-new(hero-media) {
-      height: 100%; width: 100%; object-fit: cover;
-      animation-duration: 520ms; animation-timing-function: cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      [data-vt-hero] { view-transition-name: none; }
-      ::view-transition-old(root),
-      ::view-transition-new(root) { animation-duration: 1ms; animation-delay: 0s; }
-    }
-</style>
-  <style>
-    /* ─── Tokens ─── */
-    :root {
-      --bg: #fbfaf7;
-      --ink: #121212;
-      --ink-mid: #4c4841;
-      --ink-dim: #76716a;
-      --line: rgba(18,18,18,0.08);
-      --border: rgba(18,18,18,0.10);
-      --surface: rgba(255,255,255,0.92);
-      --shadow: 0 18px 42px rgba(18,18,18,0.04);
-      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
-      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-      --press-ms: 760ms;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: var(--ff);
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 6% 0%, rgba(188,233,255,0.28) 0%, transparent 18%),
-        radial-gradient(circle at 96% 6%, rgba(255,204,229,0.14) 0%, transparent 18%),
-        linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
-      min-height: 100vh;
-    }
-
-    /* ─── Typography ─── */
-    .eyebrow, .kicker, .meta, .small, .pill {
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: var(--ink-dim);
-    }
-
-    /* ─── Nav ─── */
-    .site-nav {
-      position: sticky; top: 0; z-index: 40;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 32px;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-    }
-    .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
-    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.025em; color: var(--ink); }
-    .nav-logo-tag { font-size: 10.5px; letter-spacing: 0.01em; color: var(--ink-dim); font-weight: 400; }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
-    .nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
-    .nav-links a:hover { color: var(--ink); }
-    .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-
-    /* ─── Buttons ─── */
-    .btn-primary {
-      display: inline-block; padding: 13px 20px;
-      background: var(--ink); color: #fff;
-      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; border: 1px solid var(--ink);
-      transition: background 180ms ease;
-    }
-    .btn-primary:hover { background: #2a2a2a; }
-    .btn-secondary {
-      display: inline-flex; align-items: center; gap: 6px; padding: 13px 20px;
-      background: transparent; color: var(--ink);
-      font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-      text-decoration: none; border: 1px solid var(--border);
-      transition: border-color 180ms ease;
-    }
-    .btn-secondary:hover { border-color: rgba(18,18,18,0.3); }
-
-    /* ─── Hero ─── */
-    .project-hero { position: relative; min-height: 480px; overflow: hidden; display: flex; align-items: flex-end; background: #0a0a0a; }
-    .project-hero-img { position: absolute; inset: 0; background-size: cover; background-position: center top; }
-    .project-hero-overlay { position: absolute; inset: 0; background: linear-gradient(0deg,rgba(10,10,10,0.62) 0%,rgba(10,10,10,0.08) 42%,transparent 62%); }
-    .project-hero-content { position: relative; z-index: 2; padding: 48px 32px; max-width: 1200px; margin: 0 auto; width: 100%; }
-    .project-hero-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .project-hero-tag { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.24); padding: 5px 9px; }
-    .project-hero-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(32px,5vw,64px); font-weight: 400; letter-spacing: -0.03em; line-height: 0.93; color: #fff; max-width: 800px; margin-bottom: 20px; }
-    .project-hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
-    .project-meta-item { display: flex; flex-direction: column; gap: 3px; }
-    .project-meta-label { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
-    .project-meta-value { font-size: 13px; color: rgba(255,255,255,0.86); }
-
-    /* ─── Body ─── */
-    .project-body { max-width: 1200px; margin: 0 auto; padding: 64px 32px 80px; }
-    .project-overview { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; margin-bottom: 72px; padding-bottom: 72px; border-bottom: 1px solid var(--line); }
-    .project-section-title { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(22px,2.4vw,30px); font-weight: 400; letter-spacing: -0.02em; margin-bottom: 20px; }
-    .project-text { font-size: 16px; line-height: 1.72; color: var(--ink-mid); margin-bottom: 20px; }
-    .project-aside-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 16px; }
-    .project-aside-stat { margin-bottom: 24px; }
-    .project-aside-num { font-size: 32px; font-weight: 600; letter-spacing: -0.04em; }
-    .project-aside-desc { font-size: 13px; color: var(--ink-dim); margin-top: 4px; }
-    .project-deliverables { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .project-deliverables li { font-size: 14px; color: var(--ink-mid); display: flex; gap: 10px; align-items: baseline; }
-    .project-deliverables li::before { content: "\2014"; color: rgba(18,18,18,0.24); flex-shrink: 0; }
-    .project-section { margin-bottom: 64px; }
-
-    /* ─── Breadcrumb ─── */
-    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
-    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
-    .breadcrumb a:hover { color: var(--ink); }
-    .breadcrumb span { font-size: 12px; color: rgba(18,18,18,0.28); margin: 0 8px; }
-
-    /* ─── Brand attributes ─── */
-    .brand-attributes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-bottom: 64px; }
-    .brand-attr { padding: 28px 24px; border: 1px solid var(--line); }
-    .brand-attr-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 10px; }
-    .brand-attr-title { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
-    .brand-attr-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.5; }
-
-    /* ─── Color palette ─── */
-    .color-palette { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
-    .color-swatch { border-radius: 4px; overflow: hidden; }
-    .color-swatch-top { height: 100px; }
-    .color-swatch-bottom { padding: 12px 14px; background: #fff; border: 1px solid var(--line); border-top: none; }
-    .color-name { font-size: 13px; font-weight: 600; }
-    .color-hex { font-size: 11px; color: var(--ink-dim); margin-top: 2px; font-family: ui-monospace, monospace; }
-
-    /* ─── Extended palette ─── */
-    .color-palette.extended { grid-template-columns: repeat(4, 1fr); }
-    .color-palette.extended .color-swatch-top { height: 70px; }
-    .color-palette.extended .color-name { font-size: 12px; }
-    .color-palette.extended .color-hex { font-size: 10px; }
-
-    /* ─── Typography specimen ─── */
-    .typo-spec { display: grid; grid-template-columns: 1fr 1.4fr; gap: 4px; margin-bottom: 4px; }
-    .typo-spec-card { border: 1px solid var(--line); background: #fff; padding: 36px; display: flex; flex-direction: column; gap: 24px; }
-    .typo-spec-big { font-size: clamp(72px, 10vw, 110px); font-weight: 600; line-height: 1; letter-spacing: -0.03em; font-family: var(--ff); }
-    .typo-spec-name { font-size: 16px; font-weight: 600; }
-    .typo-spec-desc { font-size: 13px; line-height: 1.6; color: var(--ink-mid); margin-top: 6px; }
-    .typo-spec-charset { font-size: 12px; color: var(--ink-dim); margin-top: 12px; line-height: 1.6; letter-spacing: 0.03em; word-break: break-all; }
-    .typo-row { display: flex; align-items: baseline; gap: 20px; padding: 6px 0; }
-    .typo-row-label { font-size: 10px; color: var(--ink-dim); width: 120px; flex: none; letter-spacing: 0.08em; text-transform: uppercase; }
-    .typo-row-text { font-family: var(--ff); }
-
-    /* ─── Business card mockup ─── */
-    .card-mockup-wrap { background: #f4f7f9; padding: 64px; display: flex; flex-wrap: wrap; gap: 48px; justify-content: center; }
-    .biz-card { border-radius: 6px; box-shadow: 0 18px 40px rgba(22,62,81,0.22); flex: none; display: flex; align-items: center; justify-content: center; box-sizing: border-box; }
-    .biz-card.front { width: 364px; height: 220px; background: #000; }
-    .biz-card.back { width: 364px; height: 220px; background: #fff; padding: 26px 28px; flex-direction: column; justify-content: space-between; align-items: stretch; }
-    .biz-card.back .top { display: flex; justify-content: space-between; align-items: flex-start; }
-    .biz-card.back .bottom { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; }
-    .biz-card.back .name { font-size: 17px; font-weight: 600; }
-    .biz-card.back .role { font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #0080BC; margin-top: 3px; }
-    .biz-card.back .info { text-align: right; font-size: 10px; line-height: 1.75; color: #0F5474; }
-
-    /* ─── Social media mockups ─── */
-    .social-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; }
-    .social-post { aspect-ratio: 1; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; justify-content: space-between; }
-    .social-post.white { background: #fff; border: 1px solid var(--line); }
-    .social-post.blue { background: #0080BC; }
-    .social-post.black { background: #000; }
-    .social-post.navy { background: #163E51; }
-
-    /* ─── Stationery mockup ─── */
-    .stationery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-
-    @media (max-width: 900px) {
-      .typo-spec { grid-template-columns: 1fr; }
-      .social-grid { grid-template-columns: 1fr 1fr; }
-      .stationery-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 600px) {
-      .social-grid { grid-template-columns: 1fr; }
-    }
-
-    /* ─── Lightbox ─── */
-    .g-cell img { cursor: zoom-in; }
-    .lightbox {
-      position: fixed; inset: 0; z-index: 300;
-      background: rgba(10,10,10,0.93);
-      display: none; align-items: center; justify-content: center;
-      padding: 4vh 4vw; cursor: zoom-out;
-    }
-    .lightbox.is-open { display: flex; }
-    .lightbox img {
-      max-width: 100%; max-height: 100%; object-fit: contain;
-      border-radius: 3px; box-shadow: 0 30px 90px rgba(0,0,0,0.55);
-      animation: lb-in 220ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-    .lightbox-hint {
-      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
-      font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.55);
-    }
-    @keyframes lb-in { from { opacity: 0; transform: scale(0.965); } to { opacity: 1; transform: scale(1); } }
-
-    /* ─── Gallery ─── */
-    .gallery { margin-bottom: 80px; display: flex; flex-direction: column; gap: 4px; }
-    .gallery-label { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin: 48px 0 12px; }
-    .g-row { display: grid; gap: 4px; }
-    .g-row + .g-row { margin-top: 4px; }
-    .g-row.r1 { grid-template-columns: 1fr; }
-    .g-row.r2 { grid-template-columns: 1fr 1fr; }
-    .g-row.r3 { grid-template-columns: repeat(3, 1fr); }
-    .g-cell { overflow: hidden; background: #f5f3f0; }
-    .g-cell.ui { aspect-ratio: 16/9; background: #f5f3f0; }
-    .g-cell.ui img { width: 100%; height: 100%; object-fit: contain; display: block; }
-    .g-cell.dark { background: #111; }
-    .g-cell.dark img { width: 100%; height: auto; display: block; }
-    .g-cell.natural { background: #f5f3f0; }
-    .g-cell.natural img { width: 100%; height: auto; display: block; }
-    .g-cell.brand { background: white; }
-    .g-cell.brand img { width: 100%; height: auto; display: block; max-height: 520px; object-fit: contain; }
-    .g-cell.slide { background: white; aspect-ratio: 16/9; }
-    .g-cell.slide img { width: 100%; height: 100%; object-fit: contain; display: block; }
-
-    /* ─── Live template embeds (scaled HTML slides) ─── */
-    .tpl-slide, .tpl-card { position: relative; overflow: hidden; }
-    .tpl-slide { aspect-ratio: 16/9; background: #fff; border-radius: 2px; }
-    .tpl-card { aspect-ratio: 1080/1350; border-radius: 6px; box-shadow: 0 10px 26px rgba(22,62,81,0.16); }
-    .tpl-inner {
-      position: absolute; top: 0; left: 0;
-      transform-origin: top left;
-      font-family: var(--ff); -webkit-font-smoothing: antialiased;
-    }
-    .tpl-slide .tpl-inner { width: 1920px; height: 1080px; }
-    .tpl-card .tpl-inner { width: 1080px; height: 1350px; }
-    .tpl-strip { display: flex; gap: 20px; overflow-x: auto; padding: 8px 2px 20px; }
-    .tpl-strip .tpl-card { flex: 0 0 250px; }
-    html.lang-jp .tpl-inner { font-family: var(--ff); }
-
-    /* ─── Section label ─── */
-    .section-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-
-    /* ─── Nav project ─── */
-    .nav-project { display: flex; justify-content: space-between; align-items: center; padding: 32px 0 0; border-top: 1px solid var(--line); margin-top: 32px; }
-    .nav-project a { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; display: flex; align-items: center; gap: 8px; }
-    .nav-project a:hover { color: var(--ink); }
-
-    /* ─── EN/JP lang switch ─── */
     .lang-switch {
       position: fixed; right: 0; bottom: 80px; z-index: 100;
-      writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px;
-      padding: 16px 9px;
-      background: rgba(255,255,255,0.94); backdrop-filter: blur(8px);
-      border-left: 1px solid rgba(18,18,18,0.10);
-      border-radius: 6px 0 0 6px;
+      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
+      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
     }
-    .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
-    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
-    .lang-sep { font-size: 9px; color: rgba(18,18,18,0.18); }
+    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
+    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
+    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
     .t-jp { display: none; }
     html.lang-jp .t-en { display: none; }
     html.lang-jp .t-jp { display: inline; }
     html.lang-jp .t-jp.is-block { display: block; }
     html.lang-jp body { font-family: var(--ff-jp); }
 
-    /* ─── Responsive ─── */
-    @media (max-width: 900px) {
-      .project-overview { grid-template-columns: 1fr; gap: 40px; }
-      .brand-attributes { grid-template-columns: 1fr; }
-      .color-palette { grid-template-columns: 1fr 1fr; }
-      .g-row.r3 { grid-template-columns: 1fr 1fr; }
-    }
-    @media (max-width: 600px) {
-      .site-nav { padding: 16px 20px; }
-      .project-hero-content { padding: 32px 20px; }
-      .project-body { padding: 40px 20px 60px; }
-      .breadcrumb { padding: 16px 20px; }
-      .color-palette { grid-template-columns: 1fr; }
-      .g-row.r2, .g-row.r3 { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+      .site-nav { padding: 14px 20px; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: flex-start; padding: 20px 24px;
+        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links .is-tierbreak::before { display: none; }
     }
 
-    /* ─── Scroll Reveal ─── */
-    .reveal-on-scroll {
-      opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 600ms cubic-bezier(0.22, 0.84, 0.22, 1),
-                  transform 600ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-    .reveal-on-scroll.is-visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* ─── Cross-document view transition rules (guarded by tests) ─── */
+    @view-transition { navigation: auto; }
+    [data-vt-hero] { view-transition-name: hero-media; }
+
+    ::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
+    ::view-transition-old(hero-media),
+    ::view-transition-new(hero-media) {
+      height: 100%; width: 100%; object-fit: cover;
+      animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     }
 
-    /* ─── Image Fade-In ─── */
-    .g-cell img {
-      opacity: 0;
-      transition: opacity 400ms ease;
-    }
-    .g-cell img.loaded {
-      opacity: 1;
-    }
-
-    /* ─── Gallery Hover ─── */
-    .g-cell {
-      border-radius: 2px;
-    }
-    .g-cell img {
-      transition: opacity 400ms ease, transform 480ms cubic-bezier(0.22, 0.84, 0.22, 1);
-    }
-    .g-cell:hover img.loaded {
-      transform: scale(1.008);
-    }
-
-    /* ─── Reduced Motion ─── */
     @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
-      .reveal-on-scroll { opacity: 1 !important; transform: none !important; transition: none !important; }
-      .g-cell img { opacity: 1 !important; transition: none !important; }
-      .g-cell:hover img { transform: none !important; }
+      [data-vt-hero] { view-transition-name: none; }
+      ::view-transition-old(root), ::view-transition-new(root),
+      ::view-transition-old(hero-media), ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
     }
-  </style>
-  <style>
-    /* ── Nav tiers ── The three offers read first at full ink; the two
-       foundations sit behind a hairline. The hairline is drawn inside the
-       existing gap rather than taking a slot of its own — a separator that
-       occupies a slot makes that one gap twice as wide as every other. ── */
-    .nav-links { align-items: center; }
-    .nav-links li { position: relative; }
-    .nav-links a { color: var(--ink-mid); }
-    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-    .nav-links .is-tierbreak::before {
-      content: ""; position: absolute; left: -15px; top: 50%;
-      width: 1px; height: 11px; margin-top: -5.5px;
-      background: var(--line);
-    }
-    @media (max-width: 768px) { .nav-links .is-tierbreak::before { display: none; } }
   </style>
 </head>
-<body>
+<body class="dark-theme">
 
-  <!-- ── Nav ── -->
+  <!-- ── Navigation ── -->
   <nav class="site-nav">
     <a href="../index.html" class="nav-logo">
       <span class="nav-logo-name">Takao Umehara</span>
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links">
-      <li><a href="../interactive.html">Interactive</a></li>
+      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
       <li><a href="../ai-products.html">AI Products</a></li>
       <li><a href="../ai-tools.html">AI Tools</a></li>
       <li><a href="../work.html">Product Design</a></li>
-      <li><a href="../brand.html" class="is-active" aria-current="page">Brand &amp; Visual</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
-      <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
   <!-- ── Breadcrumb ── -->
-  <div class="breadcrumb">
-    <a href="../brand.html">Brand & Visual</a>
+  <div class="pj-crumb">
+    <a href="../interactive.html">Interactive</a>
     <span>/</span>
-    <a href="#">Konosaki</a>
+    <span>Konosaki — Cross-Border Consulting Brand
+        Konosaki — 越境コンサルティングのブランドづくり</span>
   </div>
 
   <!-- ── Hero ── -->
-  <section data-vt-hero class="project-hero">
-    <div class="project-hero-img" style="background-image:url('../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png');"></div>
-    <div class="project-hero-overlay"></div>
-    <div class="project-hero-content">
-      <div class="project-hero-tags">
-        <span class="project-hero-tag">Brand Identity</span>
-        <span class="project-hero-tag">Website</span>
-        <span class="project-hero-tag">AI-Assisted</span>
+  <header class="pj-hero">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker">Case Study · Interactive</span>
+      <ul class="pj-tags">
+        <li>creativity is everywhere</li>
+        <li>Brand Identity</li>
+        <li>Website</li>
+        <li>AI-Assisted</li>
+      </ul>
+      <h1 class="pj-title">Konosaki — Cross-Border Consulting Brand
+        Konosaki — 越境コンサルティングのブランドづくり</h1>
+      <p class="pj-summary">Konosaki is a bilingual consulting partner connecting Japanese and global businesses. The identity is built on a single idea — a bridge: a clear, confident path across languages, cultures, and markets. I designed and built the complete brand system &mdash; from strategy and logo to guidelines, website, and collateral &mdash; AI-assisted, through Creativity Is Everywhere LLC.
+          Konosaki（このさき）は、日本企業と海外企業をつなぐ、二言語対応のコンサルティングパートナーです。アイデンティティは、「架け橋」という一つの考えを核に組み立てました。言語も文化も市場も越えていく、はっきりした道。戦略とロゴから、ガイドライン、ウェブサイト、名刺などの制作物まで、Creativity Is Everywhere LLC として AI を使いながら設計・構築しました。</p>
+
+      <div class="pj-cta">
+        
+        <a href="../interactive.html">← Back to Interactive</a>
       </div>
-      <h1 class="project-hero-title">
-        <span class="t-en">Konosaki — Cross-Border Consulting Brand</span>
-        <span class="t-jp">Konosaki — 越境コンサルティングのブランドづくり</span>
-      </h1>
-      <div class="project-hero-meta">
-        <div class="project-meta-item">
-          <span class="project-meta-label">Client</span>
-          <span class="project-meta-value">Konosaki LLC</span>
+
+      <dl class="pj-meta">
+        <div>
+          <dt>Role</dt>
+          <dd>Product & Creative Direction</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Role</span>
-          <span class="project-meta-value">Design & Build (Creativity Is Everywhere LLC)</span>
+        <div>
+          <dt>Engagement</dt>
+          <dd>Creativity Is Everywhere LLC</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Live Site</span>
-          <span class="project-meta-value">konosaki-co.vercel.app</span>
+        <div>
+          <dt>Medium</dt>
+          <dd>Digital Platform & System</dd>
         </div>
-      </div>
+        <div>
+          <dt>Status</dt>
+          <dd>Case Study</dd>
+        </div>
+      </dl>
     </div>
-  </section>
+  </header>
 
   <!-- ── Body ── -->
-  <main class="project-body">
+  <main class="pj-body">
+    <!-- Hero Media -->
+    <figure class="pj-media" data-vt-hero>
+      <a href="../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png" class="pj-media-link" aria-label="Open project media">
+        <img src="../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png" alt="Konosaki — Cross-Border Consulting Brand
+        Konosaki — 越境コンサルティングのブランドづくり" width="1200" height="800" loading="eager">
+      </a>
+      <figcaption>
+        <span class="t-en">Konosaki — Cross-Border Consulting Brand
+        Konosaki — 越境コンサルティングのブランドづくり — case study showcase (click to open)</span>
+        <span class="t-jp">Konosaki — Cross-Border Consulting Brand
+        Konosaki — 越境コンサルティングのブランドづくり — 事例詳細プレビュー（クリックで拡大・閲覧）</span>
+      </figcaption>
+    </figure>
 
-    <!-- ── Overview ── -->
+    <div class="project-content-body">
+<!-- ── Overview ── -->
     <div class="project-overview reveal-on-scroll">
       <aside>
         <div class="project-aside-stat">
@@ -1162,123 +881,57 @@
       <a href="../brand.html">&#8592; <span class="t-en">All Brand & Visual</span><span class="t-jp">ブランド＆ビジュアルの一覧へ</span></a>
       <a href="odell-education.html"><span class="t-en">Next: Odell Education</span><span class="t-jp">次：Odell Education</span> &#8594;</a>
     </div>
-
+    </div>
   </main>
 
-  <!-- ── Footer ── -->
-  <footer>
-    <div class="site-footer" style="border-top:1px solid var(--line); padding:36px 32px; max-width:1200px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
-      <div>
-        <div style="font-size:14px; font-weight:600; letter-spacing:-0.02em;">Takao Umehara</div>
-        <div style="font-size:11px; color:var(--ink-dim); margin-top:4px;">
-          <span class="t-en">Freelance & consulting through <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong></span>
-          <span class="t-jp">デザインとコンサルティングのご依頼は <strong style="color:var(--ink-mid); font-weight:500;">Creativity Is Everywhere LLC</strong> を通じて承っています</span>
-        </div>
-      </div>
-      <div style="display:flex; gap:20px; flex-wrap:wrap;">
-        <a href="../index.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Home</a>
-        <a href="../interactive.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Interactive</a>
-      <a href="../ai-products.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Products</a>
-        <a href="../ai-tools.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">AI Tools</a>
-        <a href="../work.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Product Design</a>
-        <a href="../brand.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Brand & Visual</a>
-        <a href="../about.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">About</a>
-        <a href="../contact.html" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">Contact</a>
-        <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" style="font-size:12px; color:var(--ink-dim); text-decoration:none;">LinkedIn</a>
-      </div>
-      <div style="font-size:12px; color:var(--ink-dim);">New York City</div>
-    </div>
+  <!-- ── Footer Nav ── -->
+  <footer class="pj-foot">
+    <a href="../interactive.html">← Back to Interactive</a>
+    <a href="../contact.html">Discuss this project with Takao →</a>
   </footer>
 
-  <!-- ── Lang switch ── -->
-  <div class="lang-switch">
+  <!-- ── Language Toggle ── -->
+  <div class="lang-switch" id="lang-switch">
     <button class="lang-btn is-active" data-lang="en">EN</button>
-    <span class="lang-sep">&middot;</span>
+    <span class="lang-sep">|</span>
     <button class="lang-btn" data-lang="jp">JP</button>
   </div>
 
+  <script src="../assets/wipe.js" defer></script>
   <script>
+    // Language Switcher
     (() => {
       const html = document.documentElement;
-      const btns = [...document.querySelectorAll(".lang-btn")];
-      const saved = localStorage.getItem("tu-lang") || "en";
+      const btns = document.querySelectorAll('.lang-btn');
       const setLang = (lang) => {
-        html.classList.toggle("lang-jp", lang === "jp"); html.lang = lang === "jp" ? "ja" : "en";
-        btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-        localStorage.setItem("tu-lang", lang);
+        if (lang === 'jp') {
+          html.classList.add('lang-jp');
+          localStorage.setItem('tu_lang', 'jp');
+        } else {
+          html.classList.remove('lang-jp');
+          localStorage.setItem('tu_lang', 'en');
+        }
+        btns.forEach(b => b.classList.toggle('is-active', b.dataset.lang === lang));
       };
-      setLang(saved);
-      btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
-    });
+      const saved = localStorage.getItem('tu_lang');
+      if (saved) setLang(saved);
+      btns.forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+    })();
 
-// ── Scroll Reveal ──
-(() => {
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.classList.add('is-visible');
-        obs.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal-on-scroll').forEach(el => obs.observe(el));
-})();
-
-// ── Image Fade-In ──
-document.querySelectorAll('.g-cell img').forEach(img => {
-  if (img.complete) img.classList.add('loaded');
-  else img.addEventListener('load', () => img.classList.add('loaded'));
-});
-
-// ── Template slide scaling ──
-(() => {
-  const fit = (el) => {
-    const inner = el.querySelector('.tpl-inner');
-    if (!inner) return;
-    inner.style.transform = `scale(${el.clientWidth / parseFloat(inner.dataset.w || 1920)})`;
-  };
-  const els = document.querySelectorAll('.tpl-slide, .tpl-card');
-  const ro = new ResizeObserver(entries => entries.forEach(e => fit(e.target)));
-  els.forEach(el => { fit(el); ro.observe(el); });
-})();
-
-  // ── Mobile Nav ──
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
+    // Mobile Menu Toggle
+    (() => {
+      const toggle = document.getElementById('nav-toggle');
+      const links = document.querySelector('.nav-links');
+      if (!toggle || !links) return;
       toggle.addEventListener('click', () => {
         toggle.classList.toggle('is-open');
         links.classList.toggle('is-open');
       });
-      links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          toggle.classList.remove('is-open');
-          links.classList.remove('is-open');
-        });
-      });
-    }
-  })();
-
-  // ── Lightbox ──
-  (() => {
-    const box = document.createElement('div');
-    box.className = 'lightbox';
-    box.innerHTML = '<img alt=""><span class="lightbox-hint">Click / Esc to close</span>';
-    document.body.appendChild(box);
-    const big = box.querySelector('img');
-    const close = () => { box.classList.remove('is-open'); big.src = ''; };
-    box.addEventListener('click', close);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
-    document.querySelectorAll('.g-cell img').forEach(img => {
-      img.addEventListener('click', () => {
-        big.src = img.currentSrc || img.src;
-        big.alt = img.alt || '';
-        box.classList.add('is-open');
-      });
-    });
-  })();
+      links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+        toggle.classList.remove('is-open');
+        links.classList.remove('is-open');
+      }));
+    })();
   </script>
-
 </body>
 </html>

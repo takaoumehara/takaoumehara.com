@@ -199,14 +199,35 @@ export const scripts = () => `  <script>
     });
   })();
 
-  // ── Card click-through (whole card is a link target; real <a> inside stays keyboard-reachable) ──
+  // ── Card click-through with Monochrome Wipe Transition ──
   (() => {
+    // Create curtain element if not present
+    let curtain = document.getElementById("wipe-curtain");
+    if (!curtain) {
+      curtain = document.createElement("div");
+      curtain.id = "wipe-curtain";
+      curtain.innerHTML = '<div class="wipe-inner"><span class="wipe-mark">Takao Umehara</span><span class="wipe-sub">creativity is everywhere</span></div>';
+      document.body.appendChild(curtain);
+    }
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+
     document.querySelectorAll("[data-href]").forEach((card) => {
       card.addEventListener("click", (event) => {
         if (event.target.closest("a, button, details, summary")) return;
         const url = card.dataset.href;
-        if (card.dataset.external === "true") window.open(url, "_blank", "noopener");
-        else window.location.href = url;
+        if (card.dataset.external === "true") {
+          window.open(url, "_blank", "noopener");
+        } else {
+          if (!still.matches && curtain) {
+            sessionStorage.setItem("tu_wiping", "true");
+            curtain.style.transition = "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)";
+            curtain.style.transform = "translateX(0)";
+            curtain.classList.add("is-wiping-out");
+            setTimeout(() => { window.location.href = url; }, 280);
+          } else {
+            window.location.href = url;
+          }
+        }
       });
       card.addEventListener("keydown", (event) => {
         if (event.key === "Enter" && event.target === card) card.click();
