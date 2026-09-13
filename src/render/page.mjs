@@ -4,7 +4,7 @@ import { head, nav, langSwitch, footer, scripts } from "./shell.mjs";
 import { hero } from "./hero.mjs";
 import { proofSection } from "./proof.mjs";
 import {
-  exploringSection, experimentsSection, venturesSection, toolsSection,
+  exploringSection, experimentsSection, venturesSection, ideasSection, toolsSection,
   careerArcSection, capabilitiesSection, studioSection, contactSection,
 } from "./sections.mjs";
 import { lensEvidenceIds } from "../validate.mjs";
@@ -14,6 +14,7 @@ const SECTIONS = {
   exploring: exploringSection,
   experiments: experimentsSection,
   ventures: venturesSection,
+  ideas: ideasSection,
   tools: toolsSection,
   "career-arc": careerArcSection,
   capabilities: capabilitiesSection,

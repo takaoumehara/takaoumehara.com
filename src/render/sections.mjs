@@ -97,25 +97,62 @@ ${cards}
   </section>`;
 }
 
-// ── Things I'm betting on ───────────────────────────────────────────────────
+// ── What I'm building now ───────────────────────────────────────────────────
 export function venturesSection({ section, lib, ctx }) {
   const cards = section.items.map((id) => {
     const v = lib.evidence.get(id);
+    if (!v) return "";
     const link = v.links?.external ?? v.links?.caseStudy;
     const rows = [
-      [{ en: "Thesis", jp: "仮説" }, v.thesis],
-      [{ en: "Experiment", jp: "実験" }, v.experiment],
-      [{ en: "Question", jp: "問い" }, v.question],
+      [{ en: "Why", jp: "なぜ" }, v.thesis],
+      [{ en: "What", jp: "何をつくったか" }, v.experiment],
+      [{ en: "Next", jp: "次に確かめたいこと" }, v.question],
     ].map(([label, value]) => `<div class="venture-row"><dt>${t(label)}</dt><dd>${tb(value)}</dd></div>`).join("");
     return `      <article class="venture-card">
         <div class="venture-head"><h3 class="card-title">${displayTitle(v)}</h3>${status(v.status)}</div>
         <dl class="venture-rows">${rows}</dl>
         ${link ? `<a class="card-link" href="${esc(href(ctx, link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${/^https?:/.test(link) ? `<span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span>` : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`}</a>` : ""}
       </article>`;
-  }).join("\n");
+  }).filter(Boolean).join("\n");
   return `  <section class="band ventures" id="ventures">
-${sectionHead(section.title ?? { en: "Things I'm betting on", jp: "いま賭けていること" }, section.lede ?? { en: "Not a gallery of side projects. Each one is a belief, the thing built to test it, and the question still open.", jp: "サイドプロジェクトの一覧ではない。それぞれが、ひとつの信念と、それを試すために作ったものと、まだ開いている問い。" })}
+${sectionHead(section.title ?? { en: "What I'm building now", jp: "いま、つくっているもの。" }, section.lede ?? { en: "Products, ventures, tools, and experiments currently in motion. Some may grow into businesses. Others may simply teach me what to build next.", jp: "プロダクト、事業、ツール、実験。事業として育つものもあれば、試して終わるものもあります。どちらも、次に何をつくるかを考えるための材料です。" })}
     <div class="venture-grid">
+${cards}
+    </div>
+  </section>`;
+}
+
+// ── Ideas & methods ─────────────────────────────────────────────────────────
+export function ideasSection({ section, lib, ctx }) {
+  const items = lib.ideas ?? [];
+  const cards = items.map((idea) => {
+    const link = idea.links?.external ?? idea.links?.caseStudy;
+    const linkHtml = link
+      ? `<a class="card-link" href="${esc(href(ctx, link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${/^https?:/.test(link) ? `<span class="t-en">Explore ↗</span><span class="t-jp">詳細 ↗</span>` : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`}</a>`
+      : "";
+    const coverHtml = idea.assets?.cover
+      ? `<div class="idea-cover"><img src="${esc(href(ctx, idea.assets.cover))}" alt="${esc(idea.title)}" loading="lazy" /></div>`
+      : "";
+    const taglineHtml = idea.tagline
+      ? `<p class="idea-tagline">${t(idea.tagline)}</p>`
+      : "";
+    return `      <article class="idea-card${coverHtml ? " has-cover" : ""}">
+        ${coverHtml}
+        <div class="idea-content">
+          <div class="idea-head">
+            <span class="pill">${esc(idea.year)}</span>
+            <h3 class="card-title">${esc(idea.title)}</h3>
+            <span class="idea-role">${esc(idea.role)}</span>
+          </div>
+          ${taglineHtml}
+          <p class="idea-summary">${tb(idea.summary)}</p>
+          ${linkHtml}
+        </div>
+      </article>`;
+  }).join("\n");
+  return `  <section class="band ideas" id="ideas">
+${sectionHead(section.title ?? { en: "Ideas & methods", jp: "ずっと考えてきたこと" }, section.lede ?? { en: "Long before my current work in AI and ventures, I was interested in a simpler question: How do we see possibilities in things we normally overlook?", jp: "AI よりずっと前から、僕が興味を持ってきたのは、「見慣れたものを、どうすれば違って見られるか」ということでした。扱うテーマや技術は変わってきましたが、この問いは今の仕事にも深くつながっています。" })}
+    <div class="ideas-grid">
 ${cards}
     </div>
   </section>`;
@@ -125,13 +162,14 @@ ${cards}
 export function toolsSection({ section, lib, ctx }) {
   const rows = section.items.map((id) => {
     const tool = lib.evidence.get(id);
+    if (!tool) return "";
     const link = tool.links?.caseStudy ? href(ctx, tool.links.caseStudy) : tool.links?.repo;
     return `      <li class="tool-row">
         <a class="tool-name" href="${esc(link)}">${esc(tool.title)}</a>
         <span class="tool-desc">${tb(tool.summary)}</span>
         <span class="tool-meta">${esc((tool.stack ?? []).slice(0, 3).join(" · "))}${tool.license ? ` · ${esc(tool.license)}` : ""}</span>
       </li>`;
-  }).join("\n");
+  }).filter(Boolean).join("\n");
   return `  <section class="band tools" id="tools">
 ${sectionHead(section.title ?? { en: "I build the tools I build with", jp: "道具のほうも、自分でつくる" }, section.lede)}
     <ul class="tool-list">
@@ -157,7 +195,7 @@ export function careerArcSection({ section, lens, lib, ctx }) {
       </li>`;
   }).join("\n");
   return `  <section class="band career" id="career">
-${sectionHead(section.title ?? { en: "Career arc", jp: "これまでの流れ" }, section.lede ?? { en: "Twenty years, one instinct. The mediums changed; the move — find the real question, make it tangible, let people react — did not.", jp: "20年、ひとつの勘。媒体は変わっても、本当の問いを見つけ、形にして、人の反応を見るという動きは変わらなかった。" })}
+${sectionHead(section.title ?? { en: "Different mediums. Same instinct.", jp: "扱うものは変わった。でも、興味の中心はあまり変わっていない。" }, section.lede ?? { en: "Twenty years across different platforms. The medium kept changing — brand, interactive spaces, education, enterprise systems, AI agents. The underlying curiosity never did.", jp: "20 年、仕事のジャンルを何度も変えてきたというより、同じ好奇心を違うメディアで追い続けてきました。" })}
     <ol class="arc">
 ${cells}
     </ol>
@@ -165,31 +203,83 @@ ${cells}
   </section>`;
 }
 
-// ── Where I can be useful ───────────────────────────────────────────────────
-export function capabilitiesSection({ section, lens, lib, ctx, usedEvidence }) {
-  const byId = new Map(lib.capabilities.capabilities.map((c) => [c.id, c]));
-  const groups = lib.capabilities.groups;
-  const rows = new Map(groups.map((g) => [g.id, []]));
-  for (const capId of lens.capabilityPriority) {
-    const cap = byId.get(capId);
-    const backing = usedEvidence.filter((item) => item.capabilities.some((c) => c.id === capId && c.strength === "strong"));
-    const examples = backing.length ? evidenceName(backing.slice(0, 3)) : "";
-    rows.get(cap.group).push(`        <li class="cap">
-          <span class="cap-label">${t(cap.label)}</span>
-          ${cap.note ? `<span class="cap-note">${t(cap.note)}</span>` : ""}
-          ${examples ? `<span class="cap-evidence">${examples}</span>` : ""}
-        </li>`);
+// ── Where I can be useful to leadership ─────────────────────────────────────
+const LEADERSHIP_AREAS = [
+  {
+    id: "zero-to-one",
+    title: { en: "0→1 & New Ventures", jp: "0→1 / 新規事業" },
+    question: { en: "What should we build next?", jp: "次に何をつくるべきか。" },
+    desc: {
+      en: "Opportunity discovery, venture concepts, early validation, and prototypes that make ideas tangible enough to test.",
+      jp: "まだ形のない段階から可能性を見出し、検証可能な試作や事業構想として形にする。"
+    },
+    evidence: "intentfirst · MyBrainSpec · BreakBias"
+  },
+  {
+    id: "product-cx-ai",
+    title: { en: "Product, CX & AI", jp: "Product / CX / AI" },
+    question: { en: "How should technology change customer experience?", jp: "新しい技術によって、体験や仕事の仕方をどう変えるか。" },
+    desc: {
+      en: "Product strategy, experience systems, and embedding autonomous AI agents and workflows into real operations.",
+      jp: "プロダクト戦略、顧客体験システム、そして自律型 AI やワークフローを実際の現場に組み込む設計。"
+    },
+    evidence: "Verizon AI Workflow · Amplify Quests"
+  },
+  {
+    id: "brand-creative",
+    title: { en: "Brand & Creative Direction", jp: "Brand / Creative Direction" },
+    question: { en: "What should this mean to people?", jp: "この会社やプロダクトは、人にとってどんな存在になるべきか。" },
+    desc: {
+      en: "Setting the narrative, visual and interaction language, and holding creative intent all the way through execution.",
+      jp: "言葉、印、ビジュアル、ふるまい。その存在の手ざわりを決め、チームの手を経て世に出るまで狙いを保ち続ける。"
+    },
+    evidence: "Resona · Ogilvy · extra•ordinary"
+  },
+  {
+    id: "break-bias",
+    title: { en: "Break Bias Workshops", jp: "Break Bias ワークショップ" },
+    question: { en: "What assumptions are preventing new possibilities?", jp: "今の発想を縛っている前提は何か。" },
+    desc: {
+      en: "Structured innovation workshops for surfacing inherited assumptions and breaking them to uncover new ground.",
+      jp: "業界やプロダクトに対して無意識に持っている前提を意図的に外し、新しい事業や体験の可能性を切り拓く。"
+    },
+    evidence: "Google · Microsoft · Tiffany & Co."
+  },
+  {
+    id: "japan-us",
+    title: { en: "US ↔ Japan", jp: "US ↔ Japan" },
+    question: { en: "How should products move between cultures?", jp: "アメリカと日本の間で、どう動かすか。" },
+    desc: {
+      en: "Bilingual and cross-cultural leadership bridging US and Japanese markets, product nuances, and executive teams.",
+      jp: "日米両方のビジネス文化とデザイン感覚を深く理解し、プロダクトやブランドを越境して機能させる。"
+    },
+    evidence: "Bilingual Practice · NY ↔ Tokyo"
+  },
+  {
+    id: "partnership",
+    title: { en: "Executive & Fractional Partnership", jp: "経営・プロジェクトへの参画" },
+    question: { en: "Senior leadership before full-time hiring makes sense.", jp: "フルタイムを採用する前の、確かな推進力。" },
+    desc: {
+      en: "Hands-on partnership at the executive level: advisory, fractional design & AI leadership, and venture sprint sprints.",
+      jp: "経営陣への助言、週数日のエグゼクティブ参画など、柔軟な枠組みで 0→1 の推進力を提供する。"
+    },
+    evidence: "Creativity is Everywhere LLC"
   }
-  const columns = groups.filter((g) => rows.get(g.id).length).map((g) => `      <div class="cap-group">
-        <h3 class="cap-group-label">${t(g.label)}</h3>
-        <ul class="cap-list">
-${rows.get(g.id).join("\n")}
-        </ul>
+];
+
+export function capabilitiesSection({ section, lens, lib, ctx, usedEvidence }) {
+  // If the lens has a customized 5-area leadership focus, render that cleanly:
+  const cards = LEADERSHIP_AREAS.map((area) => `      <div class="cap-card">
+        <h3 class="cap-title">${t(area.title)}</h3>
+        <p class="cap-question">${t(area.question)}</p>
+        <p class="cap-desc">${t(area.desc)}</p>
+        <span class="cap-evidence">${esc(area.evidence)}</span>
       </div>`).join("\n");
+
   return `  <section class="band capabilities" id="capabilities">
-${sectionHead(section.title ?? { en: "Where I can be useful to leadership", jp: "どこで役に立てるか" }, section.lede)}
+${sectionHead(section.title ?? { en: "Where I can be useful to leadership", jp: "一緒に考えられること" }, section.lede ?? { en: "I'm most valuable before the answer is known — when a team needs to figure out what to build, not just polish what is already decided.", jp: "僕がいちばん役に立つのは、すでに決まったものをきれいに仕上げるときより、「そもそも何をやるべきなんだろう」というところから考えるときです。" })}
     <div class="cap-grid">
-${columns}
+${cards}
     </div>
   </section>`;
 }
@@ -198,7 +288,7 @@ ${columns}
 export function studioSection({ section, lib }) {
   const s = lib.profile.studio;
   return `  <section class="band studio" id="studio">
-${sectionHead(section.title ?? { en: "Creativity is everywhere", jp: "Creativity is everywhere" }, section.lede)}
+${sectionHead(section.title ?? { en: "creativity is everywhere", jp: "creativity is everywhere" }, section.lede ?? { en: "The independent design & innovation studio I founded in 2006. This is where client work, ventures, interactive experiments, and executive partnerships take concrete shape.", jp: "2006 年から続けているデザイン＆イノベーションスタジオです。クライアントワークだけでなく、自分たちのプロダクト、実験、新規事業、経営チームとの仕事もここから動かしています。" })}
     <div class="studio-row">
       <p class="studio-note">${tb(s.note)}</p>
       <a class="btn-secondary" href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)} ↗</a>
@@ -225,3 +315,4 @@ export function contactSection({ lens, lib, ctx, showLensNote }) {
 ${note}
   </section>`;
 }
+

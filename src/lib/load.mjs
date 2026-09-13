@@ -36,6 +36,7 @@ export function loadLibrary(dataDir = DATA_DIR) {
     chapters: readJson(join(dataDir, "chapters.json")).chapters,
     roles: readJson(join(dataDir, "roles.json")).roles,
     theses: readJson(join(dataDir, "theses.json")).theses,
+    ideas: existsSync(join(dataDir, "ideas.json")) ? readJson(join(dataDir, "ideas.json")) : [],
     evidence,
     sources,
   };

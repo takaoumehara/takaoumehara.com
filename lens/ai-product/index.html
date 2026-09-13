@@ -16,35 +16,85 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
 /* ═══════════════════════════════════════════════════════════════════════════
    Lens pages — shared stylesheet, inlined at build time.
-   Tokens and shell rules mirror the hand-built pages (index-console.html,
-   interactive.html) so a generated page sits in the same site.
+   Aligned with creativityiseverywhere.com typography & monochrome aesthetic:
+   Outfit variable typography, Ink & Paper high contrast, rounded modularity,
+   and subtle tactile paper grain.
    ═══════════════════════════════════════════════════════════════════════════ */
-@font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
-@font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
 
 :root {
-  --bg: #fbfaf7;
-  --ink: #121212;
-  --ink-mid: #4c4841;
-  --ink-dim: #76716a;
-  --line: rgba(18,18,18,0.08);
-  --border: rgba(18,18,18,0.10);
-  --surface: rgba(255,255,255,0.92);
-  --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
-  --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-  --serif: "DM Serif Display", Georgia, "Times New Roman", serif;
+  /* Ink & Paper system — directly inspired by creativityiseverywhere.com */
+  --bg: #f3f2ee;                       /* Warm paper ground */
+  --ink: #0b0b0b;                      /* Rich deep ink */
+  --ink-mid: #4a4a44;                  /* Balanced secondary body */
+  --ink-dim: #66665f;                  /* Paper-mute for registers & counters (5.6:1 AAA) */
+  --line: rgba(11, 11, 11, 0.12);      /* Structural hair line */
+  --border: rgba(11, 11, 11, 0.16);    /* Card borders */
+  --surface: #ffffff;                  /* Crisp white card surface */
+  
+  /* Unified to Outfit */
+  --ff: "Outfit", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --ff-jp: "Outfit", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  --serif: "Outfit", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  
   --col: 1200px;
-  --gutter: clamp(20px, 3vw, 32px);
-  /* 5-3C'02 palette — used only as a quiet wash and on hover */
-  --a1: hsla(198 82% 72% / 0.44);
-  --a2: hsla(248 74% 80% / 0.36);
-  --a3: hsla(324 72% 81% / 0.40);
-  --a4: hsla(36 80% 78% / 0.34);
+  --gutter: clamp(20px, 3vw, 36px);
+  
+  /* Corner radii */
+  --r-sm: 8px;
+  --r-card: clamp(14px, 1.8vw, 22px);
+  --r-pill: 9999px;
+  
+  /* Quiet textural wash — muted mono accents */
+  --a1: rgba(11, 11, 11, 0.05);
+  --a2: rgba(11, 11, 11, 0.08);
+  --a3: rgba(11, 11, 11, 0.04);
+  --a4: rgba(11, 11, 11, 0.06);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,17 +104,32 @@ body {
   background: var(--bg);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
-  line-height: 1.5;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
   overflow-x: hidden;
+  position: relative;
 }
 html.lang-jp body { font-family: var(--ff-jp); }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
 
+::selection {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* Subtle Grain — The poster's tactile paper surface (from creativityiseverywhere.com) */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.055;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
 /* ── Language toggle convention ─────────────────────────────────────────── */
-/* 言語切替。レイアウト側が .t-en / .t-jp に display を指定するときは必ず :where() で
-   包むこと — 包まないと詳細度が並び、後に書いたほうが勝って、片方の言語に
-   両方の言語が出る。tests/lens-system.test.mjs がこれを検査する。 */
 .t-jp { display: none; }
 html.lang-jp .t-en { display: none; }
 html.lang-jp .t-jp { display: inline; }
@@ -73,10 +138,10 @@ html.lang-jp .t-jp.is-block { display: block; }
 .lang-switch {
   position: fixed; right: 0; bottom: 80px; z-index: 100;
   writing-mode: vertical-rl; display: flex; align-items: center; gap: 5px;
-  padding: 16px 9px; background: rgba(255,255,255,0.94);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  border-left: 1px solid rgba(18,18,18,0.10); border-top: 1px solid rgba(18,18,18,0.07); border-bottom: 1px solid rgba(18,18,18,0.07);
-  border-radius: 6px 0 0 6px;
+  padding: 16px 9px; background: rgba(243, 242, 238, 0.94);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-left: 1px solid var(--border); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  border-radius: var(--r-sm) 0 0 var(--r-sm);
 }
 .lang-btn { appearance: none; background: none; border: none; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; color: var(--ink-dim); padding: 0; transition: color 160ms ease; }
 .lang-btn.is-active { color: var(--ink); font-weight: 600; }
@@ -86,17 +151,17 @@ html.lang-jp .t-jp.is-block { display: block; }
 .site-nav {
   position: sticky; top: 0; z-index: 40;
   display: flex; justify-content: space-between; align-items: center;
-  padding: 14px var(--gutter);
-  background: rgba(255,255,255,0.92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  padding: 16px var(--gutter);
+  background: rgba(243, 242, 238, 0.92); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--line);
 }
 .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
-.nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; color: var(--ink); }
-.nav-logo-tag { font-size: 10.5px; letter-spacing: 0.02em; color: var(--ink-dim); font-weight: 400; }
+.nav-logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
+.nav-logo-tag { font-size: 11px; letter-spacing: 0.04em; color: var(--ink-dim); font-weight: 400; text-transform: lowercase; }
 .nav-links { display: flex; gap: 28px; list-style: none; }
 .nav-links li { position: relative; }
-.nav-links a { font-size: 13px; color: var(--ink-mid); text-decoration: none; letter-spacing: 0.01em; transition: color 160ms ease; }
-.nav-links a:hover, .nav-links a.is-active { color: var(--ink); }
+.nav-links a { font-size: 13.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none; letter-spacing: -0.005em; transition: color 160ms ease; }
+.nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
 .nav-links .is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--line); }
 .nav-toggle { display: none; appearance: none; background: none; border: none; cursor: pointer; width: 44px; height: 44px; position: relative; padding: 0; }
 .nav-toggle > span { display: block; position: absolute; left: 8px; width: 28px; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
@@ -108,7 +173,7 @@ html.lang-jp .t-jp.is-block { display: block; }
 .nav-toggle.is-open span:nth-child(3) { top: 21px; transform: rotate(-45deg); }
 @media (max-width: 768px) {
   .nav-toggle { display: block; }
-  .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; padding: 0; background: rgba(255,255,255,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; padding: 0; background: rgba(243, 242, 238, 0.98); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   .nav-links.is-open { display: flex; }
   .nav-links li { border-top: 1px solid var(--line); }
   .nav-links a { display: block; padding: 14px 20px; }
@@ -116,60 +181,58 @@ html.lang-jp .t-jp.is-block { display: block; }
 }
 
 /* ── Shared layout ──────────────────────────────────────────────────────── */
-.band { max-width: var(--col); margin: 0 auto; padding: 76px var(--gutter) 84px; border-top: 1px solid var(--line); }
-.section-head { margin-bottom: 36px; }
-.section-title { font-family: var(--serif); font-size: clamp(30px, 3.6vw, 44px); font-weight: 400; letter-spacing: -0.02em; line-height: 1.05; }
-html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; }
-.section-lede { margin-top: 14px; max-width: 68ch; font-size: 15.5px; line-height: 1.7; color: var(--ink-mid); }
+.band { max-width: var(--col); margin: 0 auto; padding: 80px var(--gutter) 92px; border-top: 1px solid var(--line); }
+.section-head { margin-bottom: 40px; }
+.section-title { font-family: var(--serif); font-size: clamp(32px, 4vw, 50px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.02; }
+html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 700; letter-spacing: -0.01em; }
+.section-lede { margin-top: 16px; max-width: 68ch; font-size: 16px; line-height: 1.7; color: var(--ink-mid); }
 .section-lede :where(.t-en) { display: block; }
 
-.btn-primary { display: inline-block; padding: 13px 20px; background: var(--ink); color: #fff; font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--ink); transition: background 180ms ease; }
-.btn-primary:hover { background: #2a2a2a; }
-.btn-secondary { display: inline-block; padding: 13px 20px; background: transparent; color: var(--ink); font-family: var(--ff); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--ink); transition: background 180ms ease, color 180ms ease; }
-.btn-secondary:hover { background: var(--ink); color: #fff; }
-.hero-alt { font-size: 13px; color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.18); padding-bottom: 2px; transition: color 160ms ease, border-color 160ms ease; }
-.hero-alt:hover { color: var(--ink); border-color: rgba(18,18,18,0.3); }
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; background: var(--ink); color: var(--bg); font-family: var(--ff); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--ink); border-radius: var(--r-pill); transition: background 180ms ease, transform 180ms cubic-bezier(.16,1,.3,1); }
+.btn-primary:hover { background: #262626; color: var(--bg); transform: translateY(-1px); }
+.btn-secondary { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; background: transparent; color: var(--ink); font-family: var(--ff); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border: 1px solid var(--ink); border-radius: var(--r-pill); transition: background 180ms ease, color 180ms ease, transform 180ms cubic-bezier(.16,1,.3,1); }
+.btn-secondary:hover { background: var(--ink); color: var(--bg); transform: translateY(-1px); }
+.hero-alt { font-size: 13px; font-weight: 500; color: var(--ink-mid); text-decoration: none; border-bottom: 1px solid rgba(11,11,11,0.22); padding-bottom: 2px; transition: color 160ms ease, border-color 160ms ease; }
+.hero-alt:hover { color: var(--ink); border-color: var(--ink); }
 
-.pill { display: inline-block; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--border); border-radius: 999px; color: var(--ink-dim); }
-.pill--in { background: var(--ink); color: #fff; border-color: var(--ink); }
+.pill { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; font-variant-numeric: tabular-nums; padding: 4px 10px; border: 1px solid var(--border); border-radius: var(--r-pill); color: var(--ink-dim); background: var(--surface); }
+.pill--in { background: var(--ink); color: var(--bg); border-color: var(--ink); }
 .pill--status { color: var(--ink-dim); }
-.chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
 
 /* ── Hero ───────────────────────────────────────────────────────────────── */
 .hero {
   position: relative; max-width: var(--col); margin: 0 auto; padding: 96px var(--gutter) 72px;
 }
 .hero::before {
-  /* the palette, at whisper volume: a wash that sits behind the headline only */
-  content: ""; position: absolute; inset: 40px auto auto 0; width: min(520px, 70%); height: 220px; z-index: -1;
-  background: linear-gradient(102deg, var(--a1), var(--a2) 40%, var(--a3) 70%, var(--a4));
-  filter: blur(70px); opacity: 0.55; pointer-events: none;
+  /* Pure Ink & Paper — no muddy color washes */
+  display: none;
 }
 .hero-id { font-size: 12px; letter-spacing: 0.04em; color: var(--ink-dim); margin-bottom: 40px; }
 .hero-id b { color: var(--ink); font-weight: 600; }
 .hero-id-sep { margin: 0 4px; }
-.hero-eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 18px; }
+.hero-eyebrow { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 18px; font-weight: 500; }
 .hero-line {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  font-size: clamp(44px, 7vw, 92px); line-height: 0.94; letter-spacing: -0.025em;
-  max-width: 14ch; margin-bottom: 32px;
+  font-family: var(--ff); font-style: normal; font-weight: 700;
+  font-size: clamp(48px, 7.8vw, 98px); line-height: 0.94; letter-spacing: -0.04em;
+  max-width: 14ch; margin-bottom: 32px; color: var(--ink);
 }
-html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-weight: 500; letter-spacing: -0.01em; font-size: clamp(34px, 5.4vw, 68px); line-height: 1.18; max-width: 22ch; }
-.hero-sub { font-size: 17.5px; line-height: 1.68; color: var(--ink-mid); max-width: 62ch; }
+html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-weight: 700; letter-spacing: -0.02em; font-size: clamp(36px, 5.8vw, 72px); line-height: 1.15; max-width: 22ch; }
+.hero-sub { font-size: 17.5px; line-height: 1.68; color: var(--ink-mid); max-width: 62ch; font-weight: 400; }
 .hero-sub :where(.t-en) { display: block; }
 .hero-note { margin-top: 16px; font-size: 14px; color: var(--ink-dim); max-width: 62ch; line-height: 1.6; }
 .hero-cta { margin-top: 36px; display: flex; gap: 20px; align-items: center; flex-wrap: wrap; }
 
 /* ── Proof cards ────────────────────────────────────────────────────────── */
 .proof-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px 28px; }
-.proof-card { display: flex; flex-direction: column; border-top: 1px solid var(--line); padding-top: 14px; outline: none; }
+.proof-card { display: flex; flex-direction: column; border-top: 1px solid var(--line); padding-top: 16px; outline: none; }
 .proof-card[data-href] { cursor: pointer; }
 .proof-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
 .proof-card.is-lead { grid-column: span 2; }
 /* One card per page may take the whole column. It is the loudest thing the
    grid can say, so it stays rare — the lens decides, never the record. */
 .proof-card.is-feature { grid-column: 1 / -1; }
-.card-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 18px; }
+.card-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 18px; border-radius: var(--r-card); border: 1px solid var(--border); box-shadow: 0 4px 20px -2px rgba(11, 11, 11, 0.04); }
 .proof-card.is-lead .card-media { aspect-ratio: 16 / 8.5; }
 .proof-card.is-feature .card-media { aspect-ratio: 21 / 9; }
 .card-media img, .exp-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
@@ -181,30 +244,33 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 }
 .card-clip.is-playing { opacity: 1; }
 .proof-card[data-href]:hover .card-media img, .exp-card[data-href]:hover .exp-media img { transform: scale(1.03); }
-.card-art { width: 100%; height: 100%; display: flex; align-items: flex-end; padding: 18px; color: #fff; background: linear-gradient(138deg, #152334, #4b6584 52%, #a7c5eb); }
-.card-art-label { font-family: var(--serif); font-size: clamp(22px, 2.6vw, 34px); line-height: 1; letter-spacing: -0.02em; text-shadow: 0 1px 12px rgba(0,0,0,0.25); }
-.card-art--intent { background: linear-gradient(138deg, #152334, #4b6584 52%, #a7c5eb); }
-.card-art--arena { background: linear-gradient(140deg, #1a1b36, #5f49a7 56%, #f08ca9); }
-.card-art--brain { background: linear-gradient(140deg, #1f3437, #5d917b 54%, #c3d884); }
-.card-art--bias { background: linear-gradient(140deg, #351d32, #9a567f 54%, #edb67c); }
-.card-art--insta { background: linear-gradient(140deg, #472329, #bd5c6b 58%, #f3c47a); }
-.card-art--typespace { background: radial-gradient(circle at 50% 42%, #7c75c5 0 2%, transparent 3%), radial-gradient(circle at 72% 25%, #b3c6ff 0 1%, transparent 2%), radial-gradient(circle at 25% 70%, #ffd0b3 0 1%, transparent 2%), #16172d; }
-.card-art--emoji { background: linear-gradient(140deg, #113c63, #2377a8 50%, #ffc553); }
-.card-art--motion { background: linear-gradient(140deg, #24322f, #62836a 50%, #c4d99b); }
-.card-art--snap { background: linear-gradient(140deg, #123b82, #2563eb 55%, #7fb7ff); }
-.card-art--game { background: linear-gradient(140deg, #2a1140, #7b2d8e 52%, #ff9ec7); }
-.card-art--fail { background: linear-gradient(140deg, #4b2217, #d6572a 54%, #f7b74c); }
-.card-art--kao { background: linear-gradient(140deg, #3b1d2e, #b04a6e 55%, #ffd1a1); }
-.card-art--rakugaki { background: linear-gradient(140deg, #1d2a4a, #3f6fd8 52%, #ffe08a); }
-.card-art--koebaku { background: linear-gradient(140deg, #3a1a10, #e0562a 55%, #ffd166); }
-.card-art--superforge { background: linear-gradient(140deg, #0f2f3a, #0e9bbd 55%, #a4e8f5); }
-.card-art--motionskills { background: linear-gradient(140deg, #123a34, #16a394 55%, #b8f0e2); }
-.card-art--handoff { background: linear-gradient(140deg, #2b1a4a, #9061f9 55%, #d9c7ff); }
-.card-art--readme { background: linear-gradient(140deg, #4a1a35, #e04c8a 55%, #ffc7de); }
+
+/* Monochromatic art plates — pure Ink & Paper typography & geometry */
+.card-art { width: 100%; height: 100%; display: flex; align-items: flex-end; padding: 22px; color: #f3f2ee; background: #121212; position: relative; overflow: hidden; }
+.card-art::before { content: ""; position: absolute; inset: 0; opacity: 0.12; background-image: radial-gradient(rgba(243,242,238,0.4) 1px, transparent 1px); background-size: 18px 18px; pointer-events: none; }
+.card-art-label { position: relative; z-index: 2; font-family: var(--ff); font-weight: 700; font-size: clamp(22px, 2.6vw, 34px); line-height: 1; letter-spacing: -0.03em; color: #f3f2ee; }
+.card-art--intent { background: linear-gradient(138deg, #0d0d0d, #202020 52%, #383838); }
+.card-art--arena { background: linear-gradient(140deg, #121212, #242424 56%, #3a3a3a); }
+.card-art--brain { background: linear-gradient(140deg, #0f0f0f, #222222 54%, #333333); }
+.card-art--bias { background: linear-gradient(140deg, #141414, #262626 54%, #404040); }
+.card-art--insta { background: linear-gradient(140deg, #161616, #2a2a2a 58%, #3e3e3e); }
+.card-art--typespace { background: radial-gradient(circle at 50% 42%, #ffffff 0 1px, transparent 2px), radial-gradient(circle at 72% 25%, #ffffff 0 1px, transparent 2px), radial-gradient(circle at 25% 70%, #ffffff 0 1px, transparent 2px), #111111; }
+.card-art--emoji { background: linear-gradient(140deg, #0e0e0e, #202020 50%, #3a3a3a); }
+.card-art--motion { background: linear-gradient(140deg, #131313, #252525 50%, #3c3c3c); }
+.card-art--snap { background: linear-gradient(140deg, #101010, #222222 55%, #383838); }
+.card-art--game { background: linear-gradient(140deg, #151515, #282828 52%, #424242); }
+.card-art--fail { background: linear-gradient(140deg, #121212, #232323 54%, #393939); }
+.card-art--kao { background: linear-gradient(140deg, #141414, #272727 55%, #3f3f3f); }
+.card-art--rakugaki { background: linear-gradient(140deg, #111111, #212121 52%, #353535); }
+.card-art--koebaku { background: linear-gradient(140deg, #131313, #262626 55%, #3b3b3b); }
+.card-art--superforge { background: linear-gradient(140deg, #0c0c0c, #1f1f1f 55%, #343434); }
+.card-art--motionskills { background: linear-gradient(140deg, #101010, #232323 55%, #373737); }
+.card-art--handoff { background: linear-gradient(140deg, #141414, #272727 55%, #3d3d3d); }
+.card-art--readme { background: linear-gradient(140deg, #161616, #292929 55%, #414141); }
 
 .card-body { display: flex; flex-direction: column; gap: 8px; }
-.card-emphasis { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); }
-.card-title { font-family: var(--serif); font-size: 24px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.15; }
+.card-emphasis { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); font-weight: 500; }
+.card-title { font-family: var(--ff); font-size: 24px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.15; }
 .proof-card.is-lead .card-title { font-size: clamp(28px, 3vw, 38px); }
 .proof-card.is-feature .card-title { font-size: clamp(34px, 4.4vw, 54px); }
 /* Full width is not a reason to set a 90-character line. */
@@ -214,16 +280,16 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
    than the small bottom-left label a 3:2 tile wants. */
 .proof-card.is-feature .card-art { align-items: center; justify-content: center; padding: 32px; }
 .proof-card.is-feature .card-art-label { font-size: clamp(40px, 6.4vw, 92px); text-align: center; }
-html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; }
+html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 600; letter-spacing: 0; }
 .card-meta { font-size: 12.5px; color: var(--ink-dim); }
 .card-flag { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--border); border-radius: 999px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
 .card-desc { font-size: 15px; line-height: 1.66; color: var(--ink-mid); }
 .card-desc :where(.t-en) { display: block; }
-.card-link { align-self: flex-start; font-size: 12.5px; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.22); padding-bottom: 1px; margin-top: 4px; }
+.card-link { align-self: flex-start; font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em; color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.22); padding-bottom: 1px; margin-top: 4px; transition: border-color 160ms ease; }
 .card-link:hover { border-color: var(--ink); }
 
 .metrics { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 6px; }
-.metric dt { font-family: var(--serif); font-size: 26px; line-height: 1; letter-spacing: -0.02em; }
+.metric dt { font-family: var(--ff); font-size: 26px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
 .metric dd { font-size: 12px; color: var(--ink-dim); margin-top: 3px; max-width: 18ch; line-height: 1.35; }
 
 .contrib { margin-top: 6px; border-top: 1px dashed var(--border); padding-top: 8px; }
@@ -232,16 +298,16 @@ html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 500; letter-s
 .contrib summary::before { content: "+"; display: inline-block; width: 14px; text-align: center; font-weight: 600; color: var(--ink); }
 .contrib[open] summary::before { content: "–"; }
 .contrib-body { padding: 10px 0 4px; display: grid; gap: 10px; }
-.contrib-body h4 { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); font-weight: 500; }
+.contrib-body h4 { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); font-weight: 600; }
 .contrib-body ul { padding-left: 16px; font-size: 13.5px; line-height: 1.55; color: var(--ink-mid); }
 .contrib-body li + li { margin-top: 3px; }
 
 /* ── Exploring ──────────────────────────────────────────────────────────── */
 .explore-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; }
 .explore-cell { border-top: 1px solid var(--line); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; }
-.explore-kicker { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
-.explore-statement { font-family: var(--serif); font-size: 26px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.15; }
-html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; font-size: 22px; }
+.explore-kicker { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-weight: 500; }
+.explore-statement { font-family: var(--ff); font-size: 24px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.18; }
+html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 600; letter-spacing: 0; font-size: 21px; }
 .explore-body { font-size: 14.5px; line-height: 1.65; color: var(--ink-mid); }
 .explore-body :where(.t-en) { display: block; }
 
@@ -250,24 +316,39 @@ html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; l
 .exp-card { border-top: 1px solid var(--line); padding-top: 12px; outline: none; }
 .exp-card[data-href] { cursor: pointer; }
 .exp-card:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
-.exp-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 14px; }
-.exp-card .card-title { font-size: 20px; }
+.exp-media { aspect-ratio: 3 / 2; overflow: hidden; background: #ece9e3; margin-bottom: 14px; border-radius: var(--r-card); border: 1px solid var(--border); }
+.exp-card .card-title { font-size: 19px; font-weight: 600; }
 .exp-card .card-desc { font-size: 14px; }
 
 /* ── Ventures ───────────────────────────────────────────────────────────── */
 .venture-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
-.venture-card { border: 1px solid var(--border); padding: 24px 26px 22px; background: var(--surface); display: flex; flex-direction: column; gap: 16px; }
+.venture-card { border: 1px solid var(--border); border-radius: var(--r-card); padding: 24px 26px 22px; background: var(--surface); display: flex; flex-direction: column; gap: 16px; box-shadow: 0 4px 20px -2px rgba(11, 11, 11, 0.04); }
 .venture-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
 .venture-rows { display: grid; gap: 10px; }
 .venture-row { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: baseline; }
-.venture-row dt { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); padding-top: 4px; }
+.venture-row dt { font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); padding-top: 4px; font-weight: 500; }
 .venture-row dd { font-size: 14.5px; line-height: 1.6; color: var(--ink-mid); }
 .venture-row dd :where(.t-en) { display: block; }
+
+/* ── Ideas & Methods ────────────────────────────────────────────────────── */
+.ideas-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.idea-card { border: 1px solid var(--border); border-radius: var(--r-card); padding: 24px 26px; background: var(--surface); display: flex; flex-direction: column; gap: 16px; box-shadow: 0 4px 20px -2px rgba(11, 11, 11, 0.04); transition: transform 0.2s ease, box-shadow 0.2s ease; }
+.idea-card:hover { transform: translateY(-2px); box-shadow: 0 8px 28px -4px rgba(11, 11, 11, 0.08); }
+.idea-cover { border-radius: var(--r-media); overflow: hidden; background: var(--surface-sunken); display: flex; justify-content: center; align-items: center; padding: 12px; margin-bottom: 4px; border: 1px solid var(--line); }
+.idea-cover img { max-height: 200px; width: auto; object-fit: contain; border-radius: 4px; box-shadow: 0 2px 12px rgba(0,0,0,0.12); }
+.idea-content { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.idea-head { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+.idea-head .card-title { font-size: 21px; font-weight: 600; letter-spacing: -0.015em; margin: 2px 0 0; }
+.idea-role { font-size: 12px; color: var(--ink-dim); font-weight: 500; }
+.idea-tagline { font-size: 13.5px; font-weight: 600; color: var(--ink); line-height: 1.4; border-left: 2px solid var(--ink); padding-left: 10px; margin: 4px 0; }
+.idea-summary { font-size: 14px; line-height: 1.6; color: var(--ink-mid); }
+.idea-summary :where(.t-en) { display: block; }
+.idea-content .card-link { margin-top: auto; padding-top: 8px; }
 
 /* ── Tools ──────────────────────────────────────────────────────────────── */
 .tool-list { list-style: none; border-top: 1px solid var(--line); }
 .tool-row { display: grid; grid-template-columns: 220px 1fr 220px; gap: 24px; padding: 16px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
-.tool-name { font-family: var(--serif); font-size: 20px; text-decoration: none; color: var(--ink); }
+.tool-name { font-family: var(--ff); font-size: 19px; font-weight: 600; letter-spacing: -0.015em; text-decoration: none; color: var(--ink); }
 .tool-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; }
 .tool-desc :where(.t-en) { display: block; }
 .tool-meta { font-size: 12px; color: var(--ink-dim); text-align: right; }
@@ -275,7 +356,7 @@ html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; l
 /* ── Career arc ─────────────────────────────────────────────────────────── */
 .arc { list-style: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 22px; counter-reset: arc; }
 .arc-cell { position: relative; border-top: 1px solid var(--ink); padding-top: 14px; counter-increment: arc; transition: color 200ms ease; }
-.arc-cell::before { content: counter(arc, decimal-leading-zero); font-size: 11px; letter-spacing: 0.14em; color: var(--ink-dim); display: block; margin-bottom: 10px; }
+.arc-cell::before { content: counter(arc, decimal-leading-zero); font-size: 11px; letter-spacing: 0.14em; color: var(--ink-dim); display: block; margin-bottom: 10px; font-weight: 500; }
 .arc-cell + .arc-cell::after { content: "→"; position: absolute; left: -17px; top: 8px; font-size: 13px; color: var(--ink-dim); }
 /* A chapter this lens does not lead with recedes by one step of ink, not by
    opacity. At 0.55 opacity the roles inside measured 2.09:1 — a lens is still
@@ -288,26 +369,32 @@ html.lang-jp .explore-statement { font-family: var(--ff-jp); font-weight: 500; l
 .arc-cell.is-quiet .arc-title { color: var(--ink-dim); }
 .arc-cell.is-quiet { border-top-color: var(--ink-mid); }
 .arc-cell.is-emphasised { opacity: 1; }
-.arc-label { font-family: var(--serif); font-size: 22px; font-weight: 400; letter-spacing: -0.015em; line-height: 1.1; margin-bottom: 8px; }
-html.lang-jp .arc-label { font-family: var(--ff-jp); font-weight: 500; letter-spacing: 0; font-size: 19px; }
-.arc-period { font-family: var(--ff); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); margin-left: 6px; }
+.arc-label { font-family: var(--ff); font-size: 21px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 8px; }
+html.lang-jp .arc-label { font-family: var(--ff-jp); font-weight: 600; letter-spacing: 0; font-size: 19px; }
+.arc-period { font-family: var(--ff); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-dim); margin-left: 6px; font-weight: 500; }
 .arc-summary { font-size: 13.5px; line-height: 1.6; color: var(--ink-mid); }
 .arc-summary :where(.t-en) { display: block; }
 .arc-roles { list-style: none; margin-top: 12px; font-size: 12.5px; color: var(--ink-mid); display: grid; gap: 6px; }
-.arc-roles b { font-weight: 500; color: var(--ink); }
+.arc-roles b { font-weight: 600; color: var(--ink); }
 .arc-title { color: var(--ink-dim); }
 .arc-more { margin-top: 28px; font-size: 13px; }
 .arc-more a { color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.22); }
 
 /* ── Capabilities ───────────────────────────────────────────────────────── */
-.cap-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px 28px; }
-.cap-group-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); font-weight: 500; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+.cap-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+.cap-card { border: 1px solid var(--border); border-radius: var(--r-card); padding: 24px 26px; background: var(--surface); display: flex; flex-direction: column; gap: 10px; box-shadow: 0 4px 20px -2px rgba(11, 11, 11, 0.04); }
+.cap-title { font-family: var(--ff); font-size: 18px; font-weight: 600; color: var(--ink); letter-spacing: -0.015em; margin: 0; }
+html.lang-jp .cap-title { font-family: var(--ff-jp); }
+.cap-question { font-size: 13.5px; font-weight: 600; color: var(--ink); line-height: 1.4; margin: 0; }
+.cap-desc { font-size: 14px; color: var(--ink-mid); line-height: 1.6; margin: 0; }
+.cap-desc :where(.t-en) { display: block; }
+.cap-evidence { font-size: 12px; color: var(--ink-dim); margin-top: auto; padding-top: 10px; border-top: 1px dashed var(--line); }
+.cap-evidence::before { content: "↳ "; }
+.cap-group-label { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-dim); font-weight: 600; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
 .cap-list { list-style: none; display: grid; gap: 14px; }
 .cap { display: grid; gap: 3px; }
-.cap-label { font-size: 16px; font-weight: 500; color: var(--ink); }
+.cap-label { font-size: 16px; font-weight: 600; color: var(--ink); letter-spacing: -0.01em; }
 .cap-note { font-size: 13px; color: var(--ink-mid); line-height: 1.5; }
-.cap-evidence { font-size: 12px; color: var(--ink-dim); }
-.cap-evidence::before { content: "↳ "; }
 
 /* ── Studio ─────────────────────────────────────────────────────────────── */
 .studio-row { display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
@@ -316,8 +403,8 @@ html.lang-jp .arc-label { font-family: var(--ff-jp); font-weight: 500; letter-sp
 
 /* ── Closing ────────────────────────────────────────────────────────────── */
 .end { max-width: var(--col); margin: 0 auto; padding: 96px var(--gutter) 88px; border-top: 1px solid var(--line); text-align: center; }
-.end-line { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: clamp(30px, 4.4vw, 54px); letter-spacing: -0.02em; line-height: 1.08; max-width: 22ch; margin: 0 auto 20px; }
-html.lang-jp .end-line { font-family: var(--ff-jp); font-style: normal; font-weight: 500; letter-spacing: 0; font-size: clamp(24px, 3.4vw, 40px); line-height: 1.3; }
+.end-line { font-family: var(--ff); font-style: normal; font-weight: 700; font-size: clamp(30px, 4.4vw, 54px); letter-spacing: -0.03em; line-height: 1.05; max-width: 22ch; margin: 0 auto 20px; }
+html.lang-jp .end-line { font-family: var(--ff-jp); font-style: normal; font-weight: 700; letter-spacing: -0.01em; font-size: clamp(24px, 3.4vw, 40px); line-height: 1.25; }
 .end-sub { max-width: 58ch; margin: 0 auto 32px; font-size: 15.5px; line-height: 1.7; color: var(--ink-mid); }
 .end-sub :where(.t-en) { display: block; }
 .end-actions { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; align-items: center; }
@@ -350,6 +437,7 @@ footer { border-top: 1px solid var(--line); }
 }
 @media (max-width: 900px) {
   .proof-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ideas-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 768px) {
   .site-nav { padding: 12px var(--gutter); }
@@ -357,7 +445,7 @@ footer { border-top: 1px solid var(--line); }
   .hero-id { margin-bottom: 28px; }
   .band { padding: 56px var(--gutter) 60px; }
   .end { padding: 64px var(--gutter) 64px; }
-  .explore-grid, .venture-grid, .cap-grid { grid-template-columns: 1fr; }
+  .explore-grid, .venture-grid, .ideas-grid, .cap-grid { grid-template-columns: 1fr; }
   .arc { grid-template-columns: 1fr; }
   .tool-row { grid-template-columns: 1fr; gap: 6px; }
   .venture-row { grid-template-columns: 1fr; gap: 2px; }
@@ -389,23 +477,23 @@ footer { border-top: 1px solid var(--line); }
 
 .cat-head { padding: clamp(56px, 7vw, 104px) 0 clamp(32px, 4vw, 52px); }
 .cat-title {
-  font-family: var(--serif);
+  font-family: var(--ff);
   font-size: clamp(44px, 8vw, 104px);
-  font-weight: 400;
+  font-weight: 700;
   line-height: 0.98;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.035em;
   margin: 0 0 20px;
 }
-html.lang-jp .cat-title { font-family: var(--ff-jp); font-weight: 600; font-size: clamp(34px, 6vw, 72px); letter-spacing: -0.01em; }
+html.lang-jp .cat-title { font-family: var(--ff-jp); font-weight: 700; font-size: clamp(34px, 6vw, 72px); letter-spacing: -0.01em; }
 .cat-lede { max-width: 34em; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: var(--ink-mid); margin: 0; }
-.cat-count { margin: 18px 0 0; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
+.cat-count { margin: 18px 0 0; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); font-weight: 500; }
 
 .cat-group + .cat-group { margin-top: clamp(56px, 6vw, 88px); }
 .cat-group-head {
   display: flex; align-items: baseline; gap: 16px; flex-wrap: wrap;
   border-top: 1px solid var(--ink); padding-top: 12px; margin-bottom: 28px;
 }
-.cat-group-title { font-size: 15px; font-weight: 600; letter-spacing: 0.01em; margin: 0; }
+.cat-group-title { font-size: 15px; font-weight: 700; letter-spacing: 0.01em; margin: 0; }
 .cat-group-note { font-size: 12.5px; color: var(--ink-dim); margin: 0; }
 
 .cat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 52px 32px; }
@@ -419,14 +507,16 @@ html.lang-jp .cat-title { font-family: var(--ff-jp); font-weight: 600; font-size
   overflow: hidden;
   background: #ece9e3;
   margin-bottom: 18px;
+  border-radius: var(--r-card);
+  border: 1px solid var(--border);
 }
 .cat-card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform 900ms cubic-bezier(.2,.7,.2,1); }
 .cat-card[data-href]:hover .cat-card-media img { transform: scale(1.03); }
-.cat-card-title { font-family: var(--serif); font-size: clamp(22px, 2.2vw, 28px); font-weight: 400; line-height: 1.15; letter-spacing: -0.015em; margin: 10px 0 6px; }
+.cat-card-title { font-family: var(--ff); font-size: clamp(22px, 2.2vw, 28px); font-weight: 600; line-height: 1.15; letter-spacing: -0.02em; margin: 10px 0 6px; }
 html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font-size: clamp(19px, 1.9vw, 24px); }
-.cat-card-kind { font-size: 12.5px; color: var(--ink-dim); margin: 0 0 10px; }
+.cat-card-kind { font-size: 12.5px; color: var(--ink-dim); margin: 0 0 10px; font-weight: 500; }
 .cat-card-desc { font-size: 14.5px; line-height: 1.65; color: var(--ink-mid); margin: 0; }
-.cat-card-cta { display: inline-block; margin-top: 14px; font-size: 13px; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+.cat-card-cta { display: inline-block; margin-top: 14px; font-size: 13px; font-weight: 500; color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); padding-bottom: 2px; transition: border-color 160ms ease; }
 .cat-card-cta:hover { border-bottom-color: var(--ink); }
 
 @media (max-width: 900px) {
@@ -644,102 +734,53 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
 
   <section class="band capabilities" id="capabilities">
     <div class="section-head">
-      <h2 class="section-title"><span class="t-en">Where I can be useful to leadership</span><span class="t-jp">どこで役に立てるか</span></h2>
-      
+      <h2 class="section-title"><span class="t-en">Where I can be useful to leadership</span><span class="t-jp">一緒に考えられること</span></h2>
+      <p class="section-lede"><span class="t-en">I&#39;m most valuable before the answer is known — when a team needs to figure out what to build, not just polish what is already decided.</span><span class="t-jp is-block">僕がいちばん役に立つのは、すでに決まったものをきれいに仕上げるときより、「そもそも何をやるべきなんだろう」というところから考えるときです。</span></p>
     </div>
     <div class="cap-grid">
-      <div class="cap-group">
-        <h3 class="cap-group-label"><span class="t-en">Product</span><span class="t-jp">プロダクト</span></h3>
-        <ul class="cap-list">
-        <li class="cap">
-          <span class="cap-label">Product Strategy</span>
-          <span class="cap-note"><span class="t-en">Deciding what the product is — and, harder, what it is not.</span><span class="t-jp">何を作らないかを含めて、プロダクトの筋を決める。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · intentfirst.ai · ELA Quests</span><span class="t-jp">AI による UX ワークフローの変革 · intentfirst.ai · Amplify Education ELA クエスト</span></span>
-        </li>
-        <li class="cap">
-          <span class="cap-label">UX / CX</span>
-          <span class="cap-note"><span class="t-en">The whole path, not just the screen: choosing, buying, using, getting stuck.</span><span class="t-jp">画面の中だけでなく、選ぶ・買う・使う・困るまでの全体。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · Total Wireless · ELA Quests</span><span class="t-jp">AI による UX ワークフローの変革 · ショッピングフロー &amp; 価格の簡素化 · Amplify Education ELA クエスト</span></span>
-        </li>
-        <li class="cap">
-          <span class="cap-label">Design Systems</span>
-          <span class="cap-note"><span class="t-en">Components and rules, taken all the way into code so they stop drifting.</span><span class="t-jp">部品と規則をそろえ、コードに落として揺れを止める。</span></span>
-          <span class="cap-evidence"><span class="t-en">Total Wireless · Credit Card Portal</span><span class="t-jp">ショッピングフロー &amp; 価格の簡素化 · クレジットカード Web ポータル リデザイン</span></span>
-        </li>
-        <li class="cap">
-          <span class="cap-label">0→1</span>
-          <span class="cap-note"><span class="t-en">Taking something with no shape yet to the point where it can be tested.</span><span class="t-jp">まだ形のないものを、試せるところまで持っていく。</span></span>
-          <span class="cap-evidence"><span class="t-en">intentfirst.ai · Amazon Shopping on Fire TV · MyBrainSpec</span><span class="t-jp">intentfirst.ai · Fire TV 向け Amazon ショッピング · MyBrainSpec</span></span>
-        </li>
-        </ul>
+      <div class="cap-card">
+        <h3 class="cap-title"><span class="t-en">0→1 &amp; New Ventures</span><span class="t-jp">0→1 / 新規事業</span></h3>
+        <p class="cap-question"><span class="t-en">What should we build next?</span><span class="t-jp">次に何をつくるべきか。</span></p>
+        <p class="cap-desc"><span class="t-en">Opportunity discovery, venture concepts, early validation, and prototypes that make ideas tangible enough to test.</span><span class="t-jp">まだ形のない段階から可能性を見出し、検証可能な試作や事業構想として形にする。</span></p>
+        <span class="cap-evidence">intentfirst · MyBrainSpec · BreakBias</span>
       </div>
-      <div class="cap-group">
-        <h3 class="cap-group-label"><span class="t-en">Business</span><span class="t-jp">事業</span></h3>
-        <ul class="cap-list">
-        <li class="cap">
-          <span class="cap-label">Business Transformation</span>
-          <span class="cap-note"><span class="t-en">Changing how the money is made, when the old way has stopped working.</span><span class="t-jp">儲け方そのものを組み替える。前のやり方が使えなくなったときに。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow</span><span class="t-jp">AI による UX ワークフローの変革</span></span>
-        </li>
-        </ul>
+      <div class="cap-card">
+        <h3 class="cap-title"><span class="t-en">Product, CX &amp; AI</span><span class="t-jp">Product / CX / AI</span></h3>
+        <p class="cap-question"><span class="t-en">How should technology change customer experience?</span><span class="t-jp">新しい技術によって、体験や仕事の仕方をどう変えるか。</span></p>
+        <p class="cap-desc"><span class="t-en">Product strategy, experience systems, and embedding autonomous AI agents and workflows into real operations.</span><span class="t-jp">プロダクト戦略、顧客体験システム、そして自律型 AI やワークフローを実際の現場に組み込む設計。</span></p>
+        <span class="cap-evidence">Verizon AI Workflow · Amplify Quests</span>
       </div>
-      <div class="cap-group">
-        <h3 class="cap-group-label"><span class="t-en">Technology</span><span class="t-jp">技術</span></h3>
-        <ul class="cap-list">
-        <li class="cap">
-          <span class="cap-label">AI</span>
-          <span class="cap-note"><span class="t-en">Designing, building and putting AI into real work — including inside locked-down enterprises.</span><span class="t-jp">AI を設計し、作り、実際の仕事に入れる。制約の強い企業の中でも。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · intentfirst.ai · MyBrainSpec</span><span class="t-jp">AI による UX ワークフローの変革 · intentfirst.ai · MyBrainSpec</span></span>
-        </li>
-        <li class="cap">
-          <span class="cap-label">Agentic UX</span>
-          <span class="cap-note"><span class="t-en">Designing how a person and an AI agent divide the work between them.</span><span class="t-jp">人と AI が仕事をどう分け合うかを設計する。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · intentfirst.ai</span><span class="t-jp">AI による UX ワークフローの変革 · intentfirst.ai</span></span>
-        </li>
-        <li class="cap">
-          <span class="cap-label">Prototyping</span>
-          <span class="cap-note"><span class="t-en">Building something people can touch in the room, instead of arguing over a deck.</span><span class="t-jp">その場で触れるものを作って議論を進める。資料ではなく。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · Total Wireless · Amazon Shopping on Fire TV</span><span class="t-jp">AI による UX ワークフローの変革 · ショッピングフロー &amp; 価格の簡素化 · Fire TV 向け Amazon ショッピング</span></span>
-        </li>
-        </ul>
+      <div class="cap-card">
+        <h3 class="cap-title"><span class="t-en">Brand &amp; Creative Direction</span><span class="t-jp">Brand / Creative Direction</span></h3>
+        <p class="cap-question"><span class="t-en">What should this mean to people?</span><span class="t-jp">この会社やプロダクトは、人にとってどんな存在になるべきか。</span></p>
+        <p class="cap-desc"><span class="t-en">Setting the narrative, visual and interaction language, and holding creative intent all the way through execution.</span><span class="t-jp">言葉、印、ビジュアル、ふるまい。その存在の手ざわりを決め、チームの手を経て世に出るまで狙いを保ち続ける。</span></p>
+        <span class="cap-evidence">Resona · Ogilvy · extra•ordinary</span>
       </div>
-      <div class="cap-group">
-        <h3 class="cap-group-label"><span class="t-en">Leadership</span><span class="t-jp">率いること</span></h3>
-        <ul class="cap-list">
-        <li class="cap">
-          <span class="cap-label">Cross-functional Leadership</span>
-          <span class="cap-note"><span class="t-en">Moving people across departments by being useful to them, not by issuing a decree.</span><span class="t-jp">部署をまたいで人を動かす。命令ではなく、使ってもらう形で。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow</span><span class="t-jp">AI による UX ワークフローの変革</span></span>
-        </li>
-        <li class="cap">
-          <span class="cap-label">Executive Partnership</span>
-          <span class="cap-note"><span class="t-en">Working next to the people who decide, and giving them what they decide with.</span><span class="t-jp">決める人の隣で働き、決めるための材料を渡す。</span></span>
-          
-        </li>
-        </ul>
+      <div class="cap-card">
+        <h3 class="cap-title"><span class="t-en">Break Bias Workshops</span><span class="t-jp">Break Bias ワークショップ</span></h3>
+        <p class="cap-question"><span class="t-en">What assumptions are preventing new possibilities?</span><span class="t-jp">今の発想を縛っている前提は何か。</span></p>
+        <p class="cap-desc"><span class="t-en">Structured innovation workshops for surfacing inherited assumptions and breaking them to uncover new ground.</span><span class="t-jp">業界やプロダクトに対して無意識に持っている前提を意図的に外し、新しい事業や体験の可能性を切り拓く。</span></p>
+        <span class="cap-evidence">Google · Microsoft · Tiffany &amp; Co.</span>
       </div>
-      <div class="cap-group">
-        <h3 class="cap-group-label"><span class="t-en">Context</span><span class="t-jp">どこで効くか</span></h3>
-        <ul class="cap-list">
-        <li class="cap">
-          <span class="cap-label">Enterprise</span>
-          <span class="cap-note"><span class="t-en">Large organisations, where both the approvals and the available tools are limited.</span><span class="t-jp">大企業の中。承認も、使える道具も限られる。</span></span>
-          <span class="cap-evidence"><span class="t-en">Verizon AI Workflow · Total Wireless · Credit Card Portal</span><span class="t-jp">AI による UX ワークフローの変革 · ショッピングフロー &amp; 価格の簡素化 · クレジットカード Web ポータル リデザイン</span></span>
-        </li>
-        <li class="cap">
-          <span class="cap-label">B2C</span>
-          <span class="cap-note"><span class="t-en">Built for the public, where nothing can be explained in advance.</span><span class="t-jp">生活者に向けたもの。説明なしで伝わる必要がある。</span></span>
-          <span class="cap-evidence"><span class="t-en">Total Wireless · ELA Quests</span><span class="t-jp">ショッピングフロー &amp; 価格の簡素化 · Amplify Education ELA クエスト</span></span>
-        </li>
-        </ul>
+      <div class="cap-card">
+        <h3 class="cap-title"><span class="t-en">US ↔ Japan</span><span class="t-jp">US ↔ Japan</span></h3>
+        <p class="cap-question"><span class="t-en">How should products move between cultures?</span><span class="t-jp">アメリカと日本の間で、どう動かすか。</span></p>
+        <p class="cap-desc"><span class="t-en">Bilingual and cross-cultural leadership bridging US and Japanese markets, product nuances, and executive teams.</span><span class="t-jp">日米両方のビジネス文化とデザイン感覚を深く理解し、プロダクトやブランドを越境して機能させる。</span></p>
+        <span class="cap-evidence">Bilingual Practice · NY ↔ Tokyo</span>
+      </div>
+      <div class="cap-card">
+        <h3 class="cap-title"><span class="t-en">Executive &amp; Fractional Partnership</span><span class="t-jp">経営・プロジェクトへの参画</span></h3>
+        <p class="cap-question"><span class="t-en">Senior leadership before full-time hiring makes sense.</span><span class="t-jp">フルタイムを採用する前の、確かな推進力。</span></p>
+        <p class="cap-desc"><span class="t-en">Hands-on partnership at the executive level: advisory, fractional design &amp; AI leadership, and venture sprint sprints.</span><span class="t-jp">経営陣への助言、週数日のエグゼクティブ参画など、柔軟な枠組みで 0→1 の推進力を提供する。</span></p>
+        <span class="cap-evidence">Creativity is Everywhere LLC</span>
       </div>
     </div>
   </section>
 
   <section class="band career" id="career">
     <div class="section-head">
-      <h2 class="section-title"><span class="t-en">Career arc</span><span class="t-jp">これまでの流れ</span></h2>
-      <p class="section-lede"><span class="t-en">Twenty years, one instinct. The mediums changed; the move — find the real question, make it tangible, let people react — did not.</span><span class="t-jp is-block">20年、ひとつの勘。媒体は変わっても、本当の問いを見つけ、形にして、人の反応を見るという動きは変わらなかった。</span></p>
+      <h2 class="section-title"><span class="t-en">Different mediums. Same instinct.</span><span class="t-jp">扱うものは変わった。でも、興味の中心はあまり変わっていない。</span></h2>
+      <p class="section-lede"><span class="t-en">Twenty years across different platforms. The medium kept changing — brand, interactive spaces, education, enterprise systems, AI agents. The underlying curiosity never did.</span><span class="t-jp is-block">20 年、仕事のジャンルを何度も変えてきたというより、同じ好奇心を違うメディアで追い続けてきました。</span></p>
     </div>
     <ol class="arc">
       <li class="arc-cell is-quiet">
@@ -753,8 +794,8 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
         
       </li>
       <li class="arc-cell is-emphasised">
-        <h3 class="arc-label"><span class="t-en">Product / EdTech</span><span class="t-jp">プロダクト / EdTech</span></h3>
-        <p class="arc-summary"><span class="t-en">Leading product design at Amplify — AR-powered literacy quests reaching millions of students — and a string of education and productivity products.</span><span class="t-jp is-block">Amplify でプロダクトデザインを率いた。AR を使った読解クエストは数百万人の生徒に届き、教育・業務効率化のプロダクトが続いた。</span></p>
+        <h3 class="arc-label"><span class="t-en">Education / Product</span><span class="t-jp">教育 / プロダクト</span></h3>
+        <p class="arc-summary"><span class="t-en">How can learning become something people want to participate in? Leading product design at Amplify — AR literacy quests reaching millions — and hands-on playful learning experiments.</span><span class="t-jp is-block">どうすれば、学ぶこと自体を参加したくなる体験にできるか。Amplify での大規模な EdTech プロダクトから、漢字パズルなど手で触れる遊びの学びまで。</span></p>
         <ul class="arc-roles"><li><b>Amplify Education</b> <span class="arc-title">Product Design Lead</span></li></ul>
       </li>
       <li class="arc-cell is-emphasised">
