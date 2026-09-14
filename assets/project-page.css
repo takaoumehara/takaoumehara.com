@@ -1,5 +1,7 @@
+@import "./design-system.css";
+
 /* Project detail pages — Unboxed Editorial Theme
-   Inspired by creativityiseverywhere.com case studies:
+   Single Source of Truth: assets/design-system.css
    No boxed cards or trapped containers. Generous breathing space,
    refined Outfit typography, structured editorial chapters, and 100% English text.
    Dark by default; <html data-theme="light"> switches a page to the paper theme. */
@@ -652,26 +654,28 @@ body {
   color: var(--ink);
 }
 
-/* ── Cross-document View Transition Styles (Test Mandatory) ── */
+/* ── Universal Page transitions: Clean Fade Out / Fade In ──
+   Cross-document view transitions with smooth root cross-fade.
+   All thumbnail morphing / zooming is completely disabled. */
 @view-transition { navigation: auto; }
-[data-vt-hero] { view-transition-name: hero-media; }
 
-::view-transition-group(hero-media) {
-  animation-duration: 0s !important;
-  animation-name: none !important;
-}
+::view-transition-old(root) { animation: 160ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out; }
+::view-transition-new(root) { animation: 220ms cubic-bezier(0, 0, 0.2, 1) both vt-fade-in; }
+
+/* Cancel any hero-media morphs/zoom animations — only clean fade */
+::view-transition-group(hero-media),
 ::view-transition-old(hero-media),
 ::view-transition-new(hero-media) {
-  height: 100%; width: 100%; object-fit: cover;
-  animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  animation: none !important;
+  view-transition-name: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-vt-hero] { view-transition-name: none; }
   ::view-transition-old(root),
-  ::view-transition-new(root),
-  ::view-transition-old(hero-media),
-  ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
+  ::view-transition-new(root) {
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -1487,30 +1491,42 @@ html[data-theme="light"] .wds-hero h1 em {
 .pj-point {
   display: grid;
   grid-template-columns: 80px 1fr;
-  gap: 24px;
+  gap: 8px 24px;
   align-items: baseline;
 }
-@media (max-width: 640px) {
-  .pj-point { grid-template-columns: 1fr; gap: 8px; }
-}
 .pj-point-num {
+  grid-column: 1;
+  grid-row: 1;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.12em;
   color: var(--accent-orange);
 }
 .pj-point-title {
+  grid-column: 2;
+  grid-row: 1;
   font-size: clamp(22px, 2.5vw, 32px);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--ink);
-  margin-bottom: 12px;
+  margin-bottom: 0;
 }
 .pj-point-desc {
+  grid-column: 2;
+  grid-row: 2;
   font-size: 15px;
   color: var(--ink-mid);
   line-height: 1.68;
   max-width: 68ch;
+}
+@media (max-width: 640px) {
+  .pj-point {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .pj-point-num { grid-column: 1; grid-row: 1; }
+  .pj-point-title { grid-column: 1; grid-row: 2; }
+  .pj-point-desc { grid-column: 1; grid-row: 3; }
 }
 
 .pj-scenarios {

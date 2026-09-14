@@ -1,0 +1,588 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   TAKAO UMEHARA PORTFOLIO — MASTER DESIGN SYSTEM (SINGLE SOURCE OF TRUTH)
+   All typography, color themes, spacing tokens, core components, and
+   universal page transitions are defined here.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1. TYPOGRAPHY & FONT IMPORTS ──────────────────────────────────────── */
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Noto+Sans+JP:wght@400;500;700&display=swap");
+
+@font-face { font-family: "Outfit"; src: url("fonts/Outfit-Light.ttf") format("truetype"); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: "Outfit"; src: url("fonts/Outfit-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Outfit"; src: url("fonts/Outfit-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Outfit"; src: url("fonts/Outfit-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: "Outfit"; src: url("fonts/Outfit-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Outfit"; src: url("fonts/Outfit-ExtraBold.ttf") format("truetype"); font-weight: 800; font-style: normal; font-display: swap; }
+
+/* ── 2. DESIGN TOKENS (DARK THEME DEFAULT) ─────────────────────────────── */
+:root {
+  /* Surface & Ink */
+  --bg: #0b0b0b;
+  --ink: #ffffff;
+  --ink-mid: rgba(255, 255, 255, 0.76);
+  --ink-dim: rgba(255, 255, 255, 0.52);
+  --line: rgba(255, 255, 255, 0.12);
+  --border: rgba(255, 255, 255, 0.16);
+  --surface: #141416;
+  --surface-raised: #1c1d21;
+  --nav-bg: rgba(11, 11, 11, 0.90);
+  --code-bg: #141416;
+  --code-ink: rgba(255, 255, 255, 0.88);
+
+  /* Accents */
+  --accent-sky: #38bdf8;
+  --accent-orange: #ff6b35;
+  --accent-green: #10b981;
+  --accent-purple: #8b5cf6;
+
+  /* Font Families */
+  --ff: "Outfit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ff-mono: "SF Mono", "Menlo", ui-monospace, SFMono-Regular, Monaco, Consolas, monospace;
+  --ff-serif: "Newsreader", "EB Garamond", Georgia, serif;
+  --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+
+  /* Geometry & Layout */
+  --col: 1120px;
+  --gutter: clamp(20px, 4vw, 44px);
+  --r: 12px;
+  --r-sm: 6px;
+  --r-pill: 9999px;
+  --shadow: 0 18px 42px rgba(0, 0, 0, 0.4);
+}
+
+/* ── 3. LIGHT PAPER THEME ──────────────────────────────────────────────── */
+html[data-theme="light"],
+body.light-theme {
+  --bg: #fbfaf7;
+  --ink: #121212;
+  --ink-mid: #4c4841;
+  --ink-dim: #6b665f;
+  --line: rgba(18, 18, 18, 0.08);
+  --border: rgba(18, 18, 18, 0.12);
+  --surface: #ffffff;
+  --surface-raised: #f5f3f0;
+  --nav-bg: rgba(251, 250, 247, 0.92);
+  --code-bg: #f3f1ec;
+  --code-ink: #26231f;
+  --accent-sky: #0369a1;
+  --accent-orange: #c2410c;
+  --accent-green: #047857;
+  --accent-purple: #6d28d9;
+  --shadow: 0 18px 42px rgba(18, 18, 18, 0.04);
+}
+
+/* ── 4. BASE RESET & DOCUMENT ──────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--ff);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  overflow-x: hidden;
+}
+
+/* ── 5. UNIVERSAL PAGE TRANSITION: CLEAN FADE OUT / FADE IN ─────────────
+   Replaces jarring thumbnail scaling and black wipe curtains with a
+   seamless, elegant cross-fade across all pages.
+   ──────────────────────────────────────────────────────────────────────── */
+@view-transition { navigation: auto; }
+
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+::view-transition-old(root) {
+  animation: 160ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out;
+}
+
+::view-transition-new(root) {
+  animation: 220ms cubic-bezier(0, 0, 0.2, 1) both vt-fade-in;
+}
+
+/* Turn off morphing/zoom animations globally — only clean fade */
+::view-transition-group(hero-media),
+::view-transition-old(hero-media),
+::view-transition-new(hero-media) {
+  animation: none !important;
+  view-transition-name: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 1ms !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* ── 6. COMMON SITE NAVIGATION ─────────────────────────────────────────── */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px var(--gutter);
+  background: var(--nav-bg);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.nav-logo {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--ink);
+  line-height: 1;
+  text-decoration: none;
+}
+.nav-logo-name {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.nav-logo-tag {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  list-style: none;
+}
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+.nav-links a:hover,
+.nav-links a.is-active {
+  color: var(--ink);
+}
+.nav-links a.is-active {
+  font-weight: 600;
+}
+.nav-links .is-tierbreak::before {
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 12px;
+  background: var(--line);
+  margin-right: 18px;
+  vertical-align: middle;
+}
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 24px;
+  height: 20px;
+  position: relative;
+}
+.nav-toggle span {
+  position: absolute;
+  left: 0;
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: var(--ink);
+  transition: transform 200ms ease, opacity 160ms ease;
+}
+.nav-toggle span:nth-child(1) { top: 0; }
+.nav-toggle span:nth-child(2) { top: 9px; }
+.nav-toggle span:nth-child(3) { top: 18px; }
+.nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+@media (max-width: 768px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 24px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--line);
+    gap: 16px;
+  }
+  .nav-links.is-open { display: flex; }
+  .nav-links .is-tierbreak::before { display: none; }
+}
+
+/* ── 7. LANGUAGE SWITCH ────────────────────────────────────────────────── */
+.lang-switch {
+  position: fixed;
+  right: 0;
+  bottom: 80px;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 16px 9px;
+  background: var(--nav-bg);
+  border: 1px solid var(--border);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  writing-mode: vertical-rl;
+  backdrop-filter: blur(8px);
+}
+.lang-btn {
+  padding: 0;
+  background: none;
+  border: none;
+  color: var(--ink-dim);
+  cursor: pointer;
+  font-family: var(--ff);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 140ms ease;
+}
+.lang-btn.is-active {
+  color: var(--ink);
+  font-weight: 700;
+}
+.lang-sep {
+  color: var(--line);
+  font-size: 9px;
+}
+.t-jp { display: none; }
+html.lang-jp .t-en { display: none; }
+html.lang-jp .t-jp { display: inline; }
+html.lang-jp .t-jp.is-block { display: block; }
+html.lang-jp body { font-family: var(--ff-jp); }
+
+/* ── 8. PROJECT DETAIL PAGE LAYOUT (UNBOXED EDITORIAL) ─────────────────── */
+.pj-crumb {
+  padding: 24px var(--gutter) 0;
+  max-width: var(--col);
+  margin: 0 auto;
+}
+.pj-crumb ol {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  list-style: none;
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+.pj-crumb a {
+  color: var(--ink-dim);
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+.pj-crumb a:hover { color: var(--ink); }
+.pj-crumb li:last-child { color: var(--ink); font-weight: 500; }
+
+.pj-hero {
+  padding: clamp(32px, 5vw, 64px) var(--gutter) clamp(40px, 6vw, 72px);
+  max-width: var(--col);
+  margin: 0 auto;
+}
+.pj-kicker {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-orange);
+  margin-bottom: 12px;
+}
+.pj-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.pj-tag {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-pill);
+  color: var(--ink-mid);
+}
+.pj-title {
+  font-size: clamp(32px, 4.5vw, 56px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 20px;
+  max-width: 24ch;
+}
+.pj-summary {
+  font-size: clamp(16px, 1.8vw, 20px);
+  line-height: 1.55;
+  color: var(--ink-mid);
+  max-width: 44ch;
+  margin-bottom: 28px;
+}
+.pj-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: clamp(36px, 5vw, 56px);
+}
+.pj-cta a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: var(--r-pill);
+  text-decoration: none;
+  transition: all 160ms ease;
+}
+.pj-cta a.is-primary {
+  background: var(--ink);
+  color: var(--bg);
+}
+.pj-cta a.is-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+.pj-cta a.is-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--border);
+}
+.pj-cta a.is-ghost:hover {
+  border-color: var(--ink);
+}
+
+.pj-meta {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px 32px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.pj-meta dt {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 4px;
+}
+.pj-meta dd {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.pj-body {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.pj-media {
+  margin: 0 0 clamp(40px, 5vw, 64px);
+}
+.pj-media video,
+.pj-media img {
+  width: 100%;
+  height: auto;
+  max-height: 82vh;
+  object-fit: contain;
+  background: var(--surface);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  display: block;
+}
+.pj-media figcaption {
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+.pj-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: clamp(24px, 3vw, 40px);
+  padding: clamp(32px, 4vw, 48px) 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  margin-bottom: clamp(48px, 6vw, 84px);
+}
+.pj-facts dt {
+  font-size: clamp(32px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.pj-facts dd {
+  font-size: 13.5px;
+  color: var(--ink-mid);
+  line-height: 1.5;
+}
+
+/* ── 9. FIXED GRID: KEY ARCHITECTURE POINTS (RESONA / RAKUGAKI JAM) ───── */
+.pj-points {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 5vw, 64px);
+  margin-bottom: clamp(48px, 6vw, 84px);
+}
+.pj-point {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 8px 24px;
+  align-items: baseline;
+}
+.pj-point-num {
+  grid-column: 1;
+  grid-row: 1;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent-orange);
+}
+.pj-point-title {
+  grid-column: 2;
+  grid-row: 1;
+  font-size: clamp(22px, 2.5vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 0;
+}
+.pj-point-desc {
+  grid-column: 2;
+  grid-row: 2;
+  font-size: 15px;
+  color: var(--ink-mid);
+  line-height: 1.68;
+  max-width: 68ch;
+}
+@media (max-width: 640px) {
+  .pj-point {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .pj-point-num { grid-column: 1; grid-row: 1; }
+  .pj-point-title { grid-column: 1; grid-row: 2; }
+  .pj-point-desc { grid-column: 1; grid-row: 3; }
+}
+
+.pj-scenarios {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: clamp(32px, 4vw, 48px);
+  margin-bottom: clamp(48px, 6vw, 84px);
+}
+.pj-scenarios h2 {
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 20px;
+}
+.pj-scenarios-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.pj-scenarios-list li {
+  font-size: 14px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+.pj-scenarios-list strong {
+  color: var(--ink);
+  display: inline;
+}
+
+.pj-contrib {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  padding: clamp(36px, 4vw, 56px) 0;
+  border-top: 1px solid var(--line);
+  margin-bottom: clamp(48px, 6vw, 84px);
+}
+@media (max-width: 768px) {
+  .pj-contrib { grid-template-columns: 1fr; }
+}
+.pj-contrib h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 14px;
+}
+.pj-contrib ul {
+  list-style: disc;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.pj-contrib li {
+  font-size: 14px;
+  color: var(--ink-mid);
+  line-height: 1.6;
+}
+
+.pj-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: clamp(36px, 4vw, 56px) var(--gutter);
+  max-width: var(--col);
+  margin: 0 auto;
+  border-top: 1px solid var(--line);
+}
+.pj-foot a {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink-mid);
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+.pj-foot a:hover { color: var(--ink); }

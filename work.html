@@ -523,69 +523,37 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
   .cat-grid { grid-template-columns: 1fr; gap: 44px; }
 }
 
-/* ── Page transitions ──────────────────────────────────────────────────────
-   docs/page-transitions.md. Opening a card is not a cut: the thumbnail that
-   was clicked grows into the hero band of the page it opens, and everything
-   around it cross-fades. It takes two halves and both have to be present —
-   this file is the listing half, the detail page carries the other.
-   `view-transition-name` has to be unique within a document, so the name is
-   put on one card at a time from script (shell.mjs), never on all of them up
-   front: a duplicate name aborts the whole transition, silently.
-   Browsers without the API simply navigate. Nothing here is load-bearing. */
+/* ── Universal Page transitions: Clean Fade Out / Fade In ────────────────
+   Universal cross-fade for seamless, elegant page navigation across all views.
+   No thumbnail morphs, no black wipe curtain. */
 @view-transition { navigation: auto; }
 
-@keyframes vt-wipe-out {
-  from { clip-path: inset(0 0 0 0); opacity: 1; }
-  to { clip-path: inset(0 100% 0 0); opacity: 0.8; }
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
-@keyframes vt-wipe-in {
-  from { clip-path: inset(0 0 0 100%); opacity: 0.8; }
-  to { clip-path: inset(0 0 0 0); opacity: 1; }
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-::view-transition-old(root) { animation: 260ms cubic-bezier(0.4, 0, 0.2, 1) both vt-wipe-out; }
-::view-transition-new(root) { animation: 320ms cubic-bezier(0.16, 1, 0.3, 1) both vt-wipe-in; }
 
-/* Non-distorting transition for hero-media:
-   Avoid bounding-box distortion; use clean wipe instead. */
-::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
+::view-transition-old(root) { animation: 160ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out; }
+::view-transition-new(root) { animation: 220ms cubic-bezier(0, 0, 0.2, 1) both vt-fade-in; }
+
+/* Turn off morphing/zoom animations globally — only clean root fade */
+::view-transition-group(hero-media),
 ::view-transition-old(hero-media),
 ::view-transition-new(hero-media) {
-  height: 100%; width: 100%; object-fit: cover;
-  animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  animation: none !important;
+  view-transition-name: none !important;
 }
-::view-transition-old(hero-media) { animation-name: vt-wipe-out; }
-::view-transition-new(hero-media) { animation-name: vt-wipe-in; }
 
-/* Reduced motion keeps the navigation instant. The morph is never assigned in
-   the first place — shell.mjs checks the same query before it names a card. */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
-  ::view-transition-new(root),
-  ::view-transition-old(hero-media),
-  ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
-  #wipe-curtain { display: none !important; }
+  ::view-transition-new(root) { animation-duration: 1ms !important; animation-delay: 0s !important; }
 }
 
-/* ── Monochrome Graphic Wipe Curtain ── */
-#wipe-curtain {
-  position: fixed; inset: 0; z-index: 10000; pointer-events: none;
-  display: flex; align-items: center; justify-content: center;
-  background: #0b0b0b; transform: translateX(-101%);
-  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1); will-change: transform;
-}
-#wipe-curtain::before {
-  content: ""; position: absolute; top: 0; bottom: 0; right: 0; width: 3px;
-  background: rgba(255, 255, 255, 0.35);
-}
-#wipe-curtain .wipe-inner {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  opacity: 0; transform: scale(0.96); transition: opacity 180ms ease, transform 180ms ease;
-}
-#wipe-curtain .wipe-mark { font-family: var(--ff); font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: #ffffff; }
-#wipe-curtain .wipe-sub { font-family: "DM Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
-#wipe-curtain.is-wiping-out { pointer-events: all; transform: translateX(0); }
-#wipe-curtain.is-wiping-out .wipe-inner { opacity: 1; transform: scale(1); }
-#wipe-curtain.is-wiping-in { transform: translateX(101%); transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1); }
+#wipe-curtain { display: none !important; }
 
 
   </style>
@@ -849,82 +817,17 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
     });
   })();
 
-  // ── Page transitions (the other half of the rules in lens.css) ──
-  // The thumbnail that was clicked grows into the hero band of the page it
-  // opens. view-transition-name has to be unique in the document, so exactly
-  // one card carries it, and only around the navigation itself: naming every
-  // card up front would abort the transition instead of improving it.
-  // pageswap/pagereveal are used rather than a click handler so that every way
-  // of leaving is covered — the card, the "Case study" link inside it, and the
-  // back button on the way home. Browsers without them just navigate.
+  // ── Card click-through (clean direct navigation with View Transition cross-fade) ──
   (() => {
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const CARD = ".proof-card, .exp-card, .cat-card";
-    const MEDIA = ".card-media, .exp-media, .cat-card-media";
-    let named = null;
-    const clear = () => { if (named) named.style.viewTransitionName = ""; named = null; };
-    const cardFor = (url) => {
-      for (const card of document.querySelectorAll(CARD)) {
-        if (card.dataset.external === "true") continue;
-        const own = card.dataset.href;
-        const hit = own
-          ? new URL(own, location.href).href === url
-          : [...card.querySelectorAll("a[href]")].some((a) => a.href === url);
-        if (hit) return card;
-      }
-      return null;
-    };
-    // Cards without a picture (a text row, a card-art tile on a page that has
-    // none) are left alone: the page still cross-fades, nothing morphs.
-    const name = (url) => {
-      clear();
-      if (!url || still.matches) return;
-      const media = cardFor(url)?.querySelector(MEDIA);
-      if (!media) return;
-      media.style.viewTransitionName = "hero-media";
-      named = media;
-    };
-
-    addEventListener("pageswap", (event) => {
-      if (event.viewTransition) name(event.activation?.entry?.url);
-    });
-    addEventListener("pagereveal", (event) => {
-      // Coming back: the hero settles into the card it was opened from. This
-      // also clears a name left behind by a page restored from the bfcache.
-      if (!event.viewTransition) return clear();
-      name(event.activation?.from?.url);
-      event.viewTransition.finished.then(clear, clear);
-    });
-  })();
-
-  // ── Card click-through with Monochrome Wipe Transition ──
-  (() => {
-    // Create curtain element if not present
-    let curtain = document.getElementById("wipe-curtain");
-    if (!curtain) {
-      curtain = document.createElement("div");
-      curtain.id = "wipe-curtain";
-      curtain.innerHTML = '<div class="wipe-inner"><span class="wipe-mark">Takao Umehara</span><span class="wipe-sub">creativity is everywhere</span></div>';
-      document.body.appendChild(curtain);
-    }
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-
     document.querySelectorAll("[data-href]").forEach((card) => {
       card.addEventListener("click", (event) => {
         if (event.target.closest("a, button, details, summary")) return;
         const url = card.dataset.href;
+        if (!url) return;
         if (card.dataset.external === "true") {
           window.open(url, "_blank", "noopener");
         } else {
-          if (!still.matches && curtain) {
-            sessionStorage.setItem("tu_wiping", "true");
-            curtain.style.transition = "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)";
-            curtain.style.transform = "translateX(0)";
-            curtain.classList.add("is-wiping-out");
-            setTimeout(() => { window.location.href = url; }, 280);
-          } else {
-            window.location.href = url;
-          }
+          window.location.href = url;
         }
       });
       card.addEventListener("keydown", (event) => {

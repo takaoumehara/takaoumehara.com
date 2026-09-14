@@ -503,67 +503,35 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
   .cat-grid { grid-template-columns: 1fr; gap: 44px; }
 }
 
-/* ── Page transitions ──────────────────────────────────────────────────────
-   docs/page-transitions.md. Opening a card is not a cut: the thumbnail that
-   was clicked grows into the hero band of the page it opens, and everything
-   around it cross-fades. It takes two halves and both have to be present —
-   this file is the listing half, the detail page carries the other.
-   `view-transition-name` has to be unique within a document, so the name is
-   put on one card at a time from script (shell.mjs), never on all of them up
-   front: a duplicate name aborts the whole transition, silently.
-   Browsers without the API simply navigate. Nothing here is load-bearing. */
+/* ── Universal Page transitions: Clean Fade Out / Fade In ────────────────
+   Universal cross-fade for seamless, elegant page navigation across all views.
+   No thumbnail morphs, no black wipe curtain. */
 @view-transition { navigation: auto; }
 
-@keyframes vt-wipe-out {
-  from { clip-path: inset(0 0 0 0); opacity: 1; }
-  to { clip-path: inset(0 100% 0 0); opacity: 0.8; }
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
 }
-@keyframes vt-wipe-in {
-  from { clip-path: inset(0 0 0 100%); opacity: 0.8; }
-  to { clip-path: inset(0 0 0 0); opacity: 1; }
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
-::view-transition-old(root) { animation: 260ms cubic-bezier(0.4, 0, 0.2, 1) both vt-wipe-out; }
-::view-transition-new(root) { animation: 320ms cubic-bezier(0.16, 1, 0.3, 1) both vt-wipe-in; }
 
-/* Non-distorting transition for hero-media:
-   Avoid bounding-box distortion; use clean wipe instead. */
-::view-transition-group(hero-media) { animation-duration: 0s !important; animation-name: none !important; }
+::view-transition-old(root) { animation: 160ms cubic-bezier(0.4, 0, 1, 1) both vt-fade-out; }
+::view-transition-new(root) { animation: 220ms cubic-bezier(0, 0, 0.2, 1) both vt-fade-in; }
+
+/* Turn off morphing/zoom animations globally — only clean root fade */
+::view-transition-group(hero-media),
 ::view-transition-old(hero-media),
 ::view-transition-new(hero-media) {
-  height: 100%; width: 100%; object-fit: cover;
-  animation-duration: 260ms; animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+  animation: none !important;
+  view-transition-name: none !important;
 }
-::view-transition-old(hero-media) { animation-name: vt-wipe-out; }
-::view-transition-new(hero-media) { animation-name: vt-wipe-in; }
 
-/* Reduced motion keeps the navigation instant. The morph is never assigned in
-   the first place — shell.mjs checks the same query before it names a card. */
 @media (prefers-reduced-motion: reduce) {
   ::view-transition-old(root),
-  ::view-transition-new(root),
-  ::view-transition-old(hero-media),
-  ::view-transition-new(hero-media) { animation-duration: 1ms; animation-delay: 0s; }
-  #wipe-curtain { display: none !important; }
+  ::view-transition-new(root) { animation-duration: 1ms !important; animation-delay: 0s !important; }
 }
 
-/* ── Monochrome Graphic Wipe Curtain ── */
-#wipe-curtain {
-  position: fixed; inset: 0; z-index: 10000; pointer-events: none;
-  display: flex; align-items: center; justify-content: center;
-  background: #0b0b0b; transform: translateX(-101%);
-  transition: transform 320ms cubic-bezier(0.4, 0, 0.2, 1); will-change: transform;
-}
-#wipe-curtain::before {
-  content: ""; position: absolute; top: 0; bottom: 0; right: 0; width: 3px;
-  background: rgba(255, 255, 255, 0.35);
-}
-#wipe-curtain .wipe-inner {
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  opacity: 0; transform: scale(0.96); transition: opacity 180ms ease, transform 180ms ease;
-}
-#wipe-curtain .wipe-mark { font-family: var(--ff); font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: #ffffff; }
-#wipe-curtain .wipe-sub { font-family: "DM Mono", monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255, 255, 255, 0.5); }
-#wipe-curtain.is-wiping-out { pointer-events: all; transform: translateX(0); }
-#wipe-curtain.is-wiping-out .wipe-inner { opacity: 1; transform: scale(1); }
-#wipe-curtain.is-wiping-in { transform: translateX(101%); transition: transform 360ms cubic-bezier(0.16, 1, 0.3, 1); }
+#wipe-curtain { display: none !important; }
 

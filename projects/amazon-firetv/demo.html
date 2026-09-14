@@ -52,14 +52,26 @@
     z-index: 10;
   }
 
-  /* Simulator Stage */
+  /* Simulator Stage Viewport & Scaler */
+  .simulation-stage-viewport {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: visible;
+  }
+
   .simulation-stage {
     display: flex;
     gap: 48px;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;
-    margin: 20px 0 30px;
+    width: 1360px;
+    height: 720px;
+    flex-shrink: 0;
+    transform-origin: center center;
+    transition: transform 0.1s ease-out;
   }
 
   .device-wrapper {
@@ -337,38 +349,10 @@
     padding-top: 20px;
   }
 
-  /* Responsive Simulator Scaling */
-  @media (max-width: 1350px) {
+  /* Responsive Simulator Fluid Scaling Fallback */
+  @supports (transform: scale(1)) {
     .simulation-stage {
-      transform: scale(0.9);
-      margin: -30px 0;
-    }
-  }
-
-  @media (max-width: 1200px) {
-    .simulation-stage {
-      flex-direction: column;
-      gap: 30px;
-      transform: none;
-      margin: 20px 0;
-    }
-    .tv-device {
-      width: 90vw;
-      max-width: 760px;
-    }
-    .tv-bezel {
-      width: 100%;
-      height: auto;
-      aspect-ratio: 16 / 9;
-    }
-    .tv-screen {
-      width: 100%;
-      height: 100%;
-    }
-    .tv-screen iframe {
-      width: 100%;
-      height: 100%;
-      transform: none;
+      transform: scale(min(1, calc((100vw - 32px) / 1380), calc((100vh - 36px) / 740)));
     }
   }
 </style>
@@ -377,10 +361,9 @@
 
 <div class="container">
 
-
-
-  <div class="simulation-stage">
-    <!-- Fire TV Mockup (Left - Enlarged 960px width) -->
+  <div class="simulation-stage-viewport">
+    <div class="simulation-stage" id="simStage">
+      <!-- Fire TV Mockup (Left - Enlarged 960px width) -->
     <div class="device-wrapper tv-wrapper">
       <div class="tv-device">
         <div class="tv-bezel">
@@ -451,11 +434,39 @@
       </div>
     </div>
   </div>
-
-
+</div>
 </div>
 
+<script>
+  function updateSimulatorScale() {
+    const stage = document.getElementById('simStage');
+    const viewport = document.querySelector('.simulation-stage-viewport');
+    if (!stage || !viewport) return;
 
+    const BASE_W = 1360;
+    const BASE_H = 720;
+    const PADDING_X = 24;
+    const PADDING_Y = 24;
 
+    const availW = Math.max(300, window.innerWidth - PADDING_X);
+    const availH = Math.max(260, window.innerHeight - PADDING_Y);
+
+    const scaleW = availW / BASE_W;
+    const scaleH = availH / BASE_H;
+    const scale = Math.min(1, scaleW, scaleH);
+
+    stage.style.transform = 'scale(' + scale + ')';
+    viewport.style.height = Math.ceil(BASE_H * scale) + 'px';
+  }
+
+  window.addEventListener('resize', updateSimulatorScale, { passive: true });
+  window.addEventListener('orientationchange', updateSimulatorScale, { passive: true });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateSimulatorScale);
+  } else {
+    updateSimulatorScale();
+  }
+  window.addEventListener('load', updateSimulatorScale);
+</script>
 </body>
 </html>

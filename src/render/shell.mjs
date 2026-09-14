@@ -151,82 +151,17 @@ export const scripts = () => `  <script>
     });
   })();
 
-  // ── Page transitions (the other half of the rules in lens.css) ──
-  // The thumbnail that was clicked grows into the hero band of the page it
-  // opens. view-transition-name has to be unique in the document, so exactly
-  // one card carries it, and only around the navigation itself: naming every
-  // card up front would abort the transition instead of improving it.
-  // pageswap/pagereveal are used rather than a click handler so that every way
-  // of leaving is covered — the card, the "Case study" link inside it, and the
-  // back button on the way home. Browsers without them just navigate.
+  // ── Card click-through (clean direct navigation with View Transition cross-fade) ──
   (() => {
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const CARD = ".proof-card, .exp-card, .cat-card";
-    const MEDIA = ".card-media, .exp-media, .cat-card-media";
-    let named = null;
-    const clear = () => { if (named) named.style.viewTransitionName = ""; named = null; };
-    const cardFor = (url) => {
-      for (const card of document.querySelectorAll(CARD)) {
-        if (card.dataset.external === "true") continue;
-        const own = card.dataset.href;
-        const hit = own
-          ? new URL(own, location.href).href === url
-          : [...card.querySelectorAll("a[href]")].some((a) => a.href === url);
-        if (hit) return card;
-      }
-      return null;
-    };
-    // Cards without a picture (a text row, a card-art tile on a page that has
-    // none) are left alone: the page still cross-fades, nothing morphs.
-    const name = (url) => {
-      clear();
-      if (!url || still.matches) return;
-      const media = cardFor(url)?.querySelector(MEDIA);
-      if (!media) return;
-      media.style.viewTransitionName = "hero-media";
-      named = media;
-    };
-
-    addEventListener("pageswap", (event) => {
-      if (event.viewTransition) name(event.activation?.entry?.url);
-    });
-    addEventListener("pagereveal", (event) => {
-      // Coming back: the hero settles into the card it was opened from. This
-      // also clears a name left behind by a page restored from the bfcache.
-      if (!event.viewTransition) return clear();
-      name(event.activation?.from?.url);
-      event.viewTransition.finished.then(clear, clear);
-    });
-  })();
-
-  // ── Card click-through with Monochrome Wipe Transition ──
-  (() => {
-    // Create curtain element if not present
-    let curtain = document.getElementById("wipe-curtain");
-    if (!curtain) {
-      curtain = document.createElement("div");
-      curtain.id = "wipe-curtain";
-      curtain.innerHTML = '<div class="wipe-inner"><span class="wipe-mark">Takao Umehara</span><span class="wipe-sub">creativity is everywhere</span></div>';
-      document.body.appendChild(curtain);
-    }
-    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-
     document.querySelectorAll("[data-href]").forEach((card) => {
       card.addEventListener("click", (event) => {
         if (event.target.closest("a, button, details, summary")) return;
         const url = card.dataset.href;
+        if (!url) return;
         if (card.dataset.external === "true") {
           window.open(url, "_blank", "noopener");
         } else {
-          if (!still.matches && curtain) {
-            sessionStorage.setItem("tu_wiping", "true");
-            curtain.style.transition = "transform 300ms cubic-bezier(0.4, 0, 0.2, 1)";
-            curtain.style.transform = "translateX(0)";
-            curtain.classList.add("is-wiping-out");
-            setTimeout(() => { window.location.href = url; }, 280);
-          } else {
-            window.location.href = url;
-          }
+          window.location.href = url;
         }
       });
       card.addEventListener("keydown", (event) => {
