@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <title>Werewolf Card Game — Takao Umehara</title>
+  <meta name="description" content="Werewolf Card Game — party card game on the phones in the room. Hand-illustrated role cards dealt to each phone, one shared table on the big screen.">
+  <link rel="canonical" href="https://takaoumehara.com/projects/werewolf.html">
+  <meta property="og:title" content="Werewolf Card Game — Takao Umehara">
+  <meta property="og:description" content="Werewolf, dealt to the phones people already have. Nobody hands anything to anybody, and nobody sees a card that is not theirs.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://takaoumehara.com/projects/werewolf.html">
+  <meta property="og:image" content="../assets/werewolf/ghost-wolf.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Werewolf Card Game — Takao Umehara">
+  <meta name="twitter:description" content="Party card game dealt to the phones in the room. Hand-illustrated roles, zero physical cards.">
+  <meta name="twitter:image" content="../assets/werewolf/ghost-wolf.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../assets/design-system.css">
+  <link rel="stylesheet" href="../assets/project-page.css">
+
+  <style>
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Light.ttf') format('truetype'); font-weight: 300; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Medium.ttf') format('truetype'); font-weight: 500; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-SemiBold.ttf') format('truetype'); font-weight: 600; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-style: normal; font-display: swap; }
+    @font-face { font-family: 'Outfit'; src: url('../assets/fonts/Outfit-ExtraBold.ttf') format('truetype'); font-weight: 800; font-style: normal; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      min-height: 100vh;
+      font-family: var(--ff);
+      background: #0b0b0b;
+      color: #ffffff;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .site-nav {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 32px;
+      background: rgba(11, 11, 11, 0.90);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: #ffffff; line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; }
+    .nav-logo-tag { color: rgba(255, 255, 255, 0.48); font-size: 10.5px; font-weight: 400; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: rgba(255, 255, 255, 0.72); font-size: 13px; text-decoration: none; transition: color 140ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: #ffffff; font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
+      background: rgba(255, 255, 255, 0.14);
+    }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: #ffffff; transition: transform 240ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+    .lang-switch {
+      position: fixed; right: 0; bottom: 80px; z-index: 100;
+      display: flex; align-items: center; gap: 5px; padding: 16px 9px;
+      background: rgba(18, 18, 18, 0.94); border-top: 1px solid rgba(255, 255, 255, 0.12);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12); border-left: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 8px 0 0 8px; writing-mode: vertical-rl; backdrop-filter: blur(8px);
+    }
+    .lang-btn { padding: 0; background: none; border: none; color: rgba(255, 255, 255, 0.48); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 140ms ease; }
+    .lang-btn.is-active { color: #ffffff; font-weight: 700; }
+    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 9px; }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    .card-display-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, rgba(45, 30, 60, 0.35) 0%, rgba(11, 11, 11, 0.8) 70%);
+      padding: clamp(24px, 4vw, 48px) 16px;
+      border-radius: var(--r-card, 16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .card-artwork-frame {
+      max-width: 380px;
+      width: 100%;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(180, 100, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      transition: transform 300ms ease, box-shadow 300ms ease;
+    }
+    .card-artwork-frame:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 32px 70px rgba(0, 0, 0, 0.8), 0 0 50px rgba(180, 100, 255, 0.2);
+    }
+    .card-artwork-frame img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .site-nav { padding: 14px 20px; }
+      .nav-toggle { display: block; }
+      .nav-links {
+        display: none; position: absolute; top: 100%; left: 0; right: 0;
+        flex-direction: column; align-items: flex-start; padding: 20px 24px;
+        background: #0b0b0b; border-bottom: 1px solid rgba(255, 255, 255, 0.12); gap: 16px;
+      }
+      .nav-links.is-open { display: flex; }
+      .nav-links .is-tierbreak::before { display: none; }
+    }
+  </style>
+  <link rel="stylesheet" href="../assets/wipe.css">
+  <script src="../assets/wipe.js" defer></script>
+</head>
+<body class="dark-theme">
+
+  <!-- ── Navigation ── -->
+  <nav class="site-nav">
+    <a href="../index.html" class="nav-logo">
+      <span class="nav-logo-name">Takao Umehara</span>
+      <span class="nav-logo-tag">creativity is everywhere</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="../interactive.html" class="is-active" aria-current="page">Interactive</a></li>
+      <li><a href="../ai-products.html">AI Products</a></li>
+      <li><a href="../ai-tools.html">AI Tools</a></li>
+      <li><a href="../work.html">Product Design</a></li>
+      <li><a href="../brand.html">Brand &amp; Visual</a></li>
+      <li class="is-tierbreak"><a href="../about.html">About</a></li>
+      <li><a href="../publications.html">Publications</a></li>
+      <li><a href="../workshop.html">Workshops</a></li>
+      <li><a href="../contact.html">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="pj-crumb">
+    <a href="../interactive.html">Interactive</a>
+    <span>/</span>
+    Werewolf Card Game 人狼
+  </div>
+
+  <!-- ── Hero ── -->
+  <header class="pj-hero">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker">Playable · Social Play · Shared Screen</span>
+      <ul class="pj-tags">
+        <li>Social Deduction</li>
+        <li>Snap Pair</li>
+        <li>27 Illustrated Roles</li>
+        <li>Canvas Animation</li>
+      </ul>
+      <h1 class="pj-title">
+        <span class="t-en">Werewolf: Party card game on the phones in the room</span>
+        <span class="t-jp">人狼（Werewolf）: その場のスマホで遊ぶ人狼</span>
+      </h1>
+      <p class="pj-summary">
+        <span class="t-en">The classic social deduction game dealt directly to everyone's phone in the room. Hand-illustrated roles appear privately on each player's screen, while the village square, timer, and voting drama play out on one shared display. No physical cards to shuffle, no secret peeking, and zero app install.</span>
+        <span class="t-jp">人狼を、その場にあるスマホに配る。誰も何も手渡さないし、自分以外のカードは誰にも見えません。各自のスマホに27種の美麗な役職カードが配られ、大画面に村の広場と投票のドラマが映し出されます。</span>
+      </p>
+
+      <div class="pj-cta">
+        <a href="../interactive.html">
+          <span class="t-en">← All Interactive Projects</span>
+          <span class="t-jp">← すべてのインタラクティブ作品</span>
+        </a>
+      </div>
+
+      <dl class="pj-meta">
+        <div>
+          <dt>Role</dt>
+          <dd>Game Design, Illustration &amp; Engineering</dd>
+        </div>
+        <div>
+          <dt>Stack</dt>
+          <dd>Snap Pair · Canvas · SVG Illustration · Firebase RTDB</dd>
+        </div>
+        <div>
+          <dt>Input</dt>
+          <dd>Every Phone in the Room (QR Scan)</dd>
+        </div>
+        <div>
+          <dt>Year</dt>
+          <dd>2026</dd>
+        </div>
+      </dl>
+    </div>
+  </header>
+
+  <!-- ── Body ── -->
+  <main class="pj-body">
+
+    <!-- Hero Media -->
+    <figure class="pj-media" data-vt-hero>
+      <div class="card-display-wrap">
+        <div class="card-artwork-frame">
+          <img src="../assets/werewolf/ghost-wolf.png" alt="Ghost Wolf character role card from Werewolf card game" width="628" height="1100" loading="lazy">
+        </div>
+      </div>
+      <figcaption>
+        <span class="t-en">Ghost Wolf — one of 27 original hand-illustrated roles dealt privately to players' individual phone screens</span>
+        <span class="t-jp">「亡霊狼（Ghost Wolf）」— 各プレイヤーの手元端末だけに秘密裏に配られる、27種類のオリジナル描き下ろし役職カードのひとつ</span>
+      </figcaption>
+    </figure>
+
+    <!-- Key Metrics / Numbers -->
+    <dl class="pj-facts">
+      <div>
+        <dt>27</dt>
+        <dd>
+          <span class="t-en">Unique hand-illustrated character role cards</span>
+          <span class="t-jp">独自の世界観で描き下ろされた27種の役職カード</span>
+        </dd>
+      </div>
+      <div>
+        <dt>0</dt>
+        <dd>
+          <span class="t-en">App installations or account logins required</span>
+          <span class="t-jp">アプリダウンロード・会員登録一切不要（ブラウザ完結）</span>
+        </dd>
+      </div>
+      <div>
+        <dt>5–20</dt>
+        <dd>
+          <span class="t-en">Players supported around a single living-room display or TV</span>
+          <span class="t-jp">1台の大画面（テレビ/プロジェクター）で5〜20人プレイ可能</span>
+        </dd>
+      </div>
+      <div>
+        <dt>100%</dt>
+        <dd>
+          <span class="t-en">Privacy guarantee — secret nocturnal roles stay locked to the owner's handset</span>
+          <span class="t-jp">手元の端末で完全に守られる夜の行動と秘密の役職</span>
+        </dd>
+      </div>
+    </dl>
+
+    <!-- Key Architecture Points -->
+    <div class="pj-points">
+      <div class="pj-point">
+        <span class="pj-point-num">01</span>
+        <h2 class="pj-point-title">
+          <span class="t-en">Private knowledge in the palm, public theater on the wall.</span>
+          <span class="t-jp">手のひらに秘密の役職、壁の大画面に広がる劇空間。</span>
+        </h2>
+        <p class="pj-point-desc">
+          <span class="t-en">Physical social deduction games suffer from bent cards, clumsy night handling, and accidental peeking. By distributing secret roles and nocturnal actions directly to personal phone screens, players preserve absolute poker faces while the central screen orchestrates time, debate phases, and dramatic executions.</span>
+          <span class="t-jp">紙のカードを使う人狼では、配る際の擦れや夜のフェーズでの物音で役職がバレてしまう問題がありました。秘密の役職と夜の行動を手元のスマホ画面だけに限定することで、プレイヤーは完璧なポーカーフェイスを保ちつつ、大画面が緊迫した審判役を務めます。</span>
+        </p>
+      </div>
+
+      <div class="pj-point">
+        <span class="pj-point-num">02</span>
+        <h2 class="pj-point-title">
+          <span class="t-en">Zero-friction QR code onboarding via Snap Pair.</span>
+          <span class="t-jp">Snap PairによるQR一発参加。準備の手間ゼロ。</span>
+        </h2>
+        <p class="pj-point-desc">
+          <span class="t-en">No one wants to install an 80MB native app or fill out registration forms at a casual party. A single camera scan instantly pairs each handset to the room state via Snap Pair, auto-assigning private socket channels in under five seconds.</span>
+          <span class="t-jp">楽しい集まりの場で「まずこのアプリをダウンロードして」と頼むのは最大の興ざめ。QRコードをカメラで読み取るだけで、5秒以内に部屋のルームに自動接続。ゲームマスターも参加者も、一切のセッティングストレスから解放されます。</span>
+        </p>
+      </div>
+
+      <div class="pj-point">
+        <span class="pj-point-num">03</span>
+        <h2 class="pj-point-title">
+          <span class="t-en">Distinctive visual lore and 27 original roles.</span>
+          <span class="t-jp">独自の神話世界と27種の多彩な役職イラスト。</span>
+        </h2>
+        <p class="pj-point-desc">
+          <span class="t-en">Rather than generic tabletop tropes, every card features distinctive handcrafted character artwork (from the Ghost Wolf to the Blind Seer), elevating a digital utility into an evocative, tangible parlor artifact.</span>
+          <span class="t-jp">ありきたりな人狼のアイコンではなく、亡霊狼や盲目の預言者など、27種の個性的なキャラクターを独自に描き下ろし。画面の中に本物のタロットや特製カードが配られたような、所有感と没入感を提供します。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Scenarios -->
+    <section class="pj-scenarios">
+      <h2>
+        <span class="t-en">Where it belongs</span>
+        <span class="t-jp">想定される体験シーン</span>
+      </h2>
+      <ul class="pj-scenarios-list">
+        <li>
+          <strong><span class="t-en">Family &amp; friends game night:</span><span class="t-jp">友人・家族とのゲームナイト:</span></strong>
+          <span class="t-en">No missing cards, no damaged cardbacks, and no human moderator forced to sit out the fun to manage the timer.</span>
+          <span class="t-jp">カードの紛失や傷によるイカサマがなく、誰かひとりが司会進行役に縛られることなく全員がプレイヤーとして参加可能。</span>
+        </li>
+        <li>
+          <strong><span class="t-en">Company offsite &amp; team retreat:</span><span class="t-jp">企業のオフサイト・チームビルディング合宿:</span></strong>
+          <span class="t-en">Spontaneous large-group icebreaker that scales effortlessly from 5 to 20 players without physical board game gear.</span>
+          <span class="t-jp">物理的なボードゲームを持ち運ぶ必要がなく、ホテルのテレビや会議室のプロジェクターがあれば即座に多人数ゲームを開始。</span>
+        </li>
+        <li>
+          <strong><span class="t-en">Pubs, cafes &amp; social lounges:</span><span class="t-jp">カフェ・バー・イベントラウンジ:</span></strong>
+          <span class="t-en">Customers join the venue's public wall screen table directly from their table seats simply by scanning the coaster code.</span>
+          <span class="t-jp">コースターや壁面のQRコードを読み込むだけで、店内の別テーブルに座る客同士がひとつの大画面テーブルで競い合う空間演出。</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Contribution Split -->
+    <div class="pj-contrib">
+      <div>
+        <h3>
+          <span class="t-en">My Contribution</span>
+          <span class="t-jp">担当領域</span>
+        </h3>
+        <ul>
+          <li><span class="t-en">Designed social deduction game loop, voting mechanics, and multi-screen state transitions</span><span class="t-jp">ゲームループ、秘密投票メカニクス、マルチスクリーン状態遷移の設計</span></li>
+          <li><span class="t-en">Hand-illustrated 27 distinctive character cards and nocturnal visual identity</span><span class="t-jp">27種のオリジナル役職キャラクターの描き下ろしイラストおよびアートディレクション</span></li>
+          <li><span class="t-en">Engineered Snap Pair multi-client state orchestration and responsive table view</span><span class="t-jp">Snap Pairによるマルチ端末状態管理およびレスポンシブな卓画面の実装</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>
+          <span class="t-en">Ecosystem</span>
+          <span class="t-jp">エコシステムにおける位置づけ</span>
+        </h3>
+        <ul>
+          <li><span class="t-en">Part of the Playable laboratory exploring social presence and multi-device interaction</span><span class="t-jp">複数デバイスによる身体的・空間的プレイを探求するPlayableコレクションの作品</span></li>
+          <li><span class="t-en">Demonstrates private-vs-public state segregation using client-direct Snap Pair architecture</span><span class="t-jp">プライベート情報とパブリック情報の分離制御を実証するSnap Pairリファレンス</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Footer Navigation ── -->
+  <footer class="pj-foot">
+    <a href="koe-baku.html">
+      <span class="t-en">← Previous: Koe Baku</span>
+      <span class="t-jp">← 前のプロジェクト: Koe Baku</span>
+    </a>
+    <a href="marubatsu.html">
+      <span class="t-en">Next: Marubatsu 2.0 →</span>
+      <span class="t-jp">次のプロジェクト: Marubatsu 2.0 →</span>
+    </a>
+  </footer>
+
+  <!-- ── Language Switcher ── -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn is-active" data-lang="en">EN</button>
+    <span class="lang-sep">|</span>
+    <button class="lang-btn" data-lang="jp">JP</button>
+  </div>
+
+  <script>
+  (() => {
+    const html = document.documentElement;
+    const btns = [...document.querySelectorAll(".lang-btn")];
+    const saved = localStorage.getItem("tu-lang") || "en";
+    const setLang = (lang) => {
+      html.classList.toggle("lang-jp", lang === "jp");
+      html.lang = lang === "jp" ? "ja" : "en";
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
+      localStorage.setItem("tu-lang", lang);
+    };
+    setLang(saved);
+    btns.forEach((b) => b.addEventListener("click", () => setLang(b.dataset.lang)));
+  })();
+
+  // Mobile nav
+  (() => {
+    const toggle = document.getElementById('nav-toggle');
+    const links = document.querySelector('.nav-links');
+    if (toggle && links) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('is-open');
+        links.classList.toggle('is-open');
+      });
+      links.querySelectorAll('a').forEach(a => {
+        a.addEventListener('click', () => {
+          toggle.classList.remove('is-open');
+          links.classList.remove('is-open');
+        });
+      });
+    }
+  })();
+  </script>
+</body>
+</html>
