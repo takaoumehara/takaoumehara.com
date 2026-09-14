@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -65,16 +65,17 @@
     html.lang-jp .t-jp.is-block { display: block; }
     html.lang-jp body { font-family: var(--ff-jp); }
 
-    .breadcrumb { padding: 20px 32px; max-width: 1200px; margin: 0 auto; }
-    .breadcrumb a { font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; }
+    .breadcrumb { padding: clamp(20px, 3vw, 32px) var(--gutter) clamp(12px, 2vw, 20px); max-width: var(--col); margin: 0 auto; }
+    .breadcrumb a { font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; font-family: var(--ff-mono); }
     .breadcrumb a:hover { color: var(--ink); }
-    .breadcrumb span { font-size: 12px; color: rgba(18, 18, 18, 0.28); margin: 0 8px; }
+    .breadcrumb span { font-size: 11.5px; color: var(--ink-dim); margin: 0 8px; }
 
     /* ═══ Slide deck ═══ */
-    .deck { max-width: 1240px; margin: 0 auto; padding: 8px 20px 8px; }
+    .deck { max-width: var(--col); margin: 0 auto; padding: 0 var(--gutter); }
     .wds-slide { margin-bottom: 2px; }
-    .wds-serif { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
-    .wds-kick { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
+    .wds-serif { font-family: var(--ff); font-weight: 800; font-style: normal; letter-spacing: -0.035em; line-height: 1.04; color: var(--ink); }
+    .wds-serif em { font-style: normal; font-weight: 800; }
+    .wds-kick { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; color: var(--ink-dim); }
     html.lang-jp .wds-serif { line-height: 1.2; letter-spacing: -0.01em; }
     html.lang-jp .wds-serif em { white-space: nowrap; }
 </style>

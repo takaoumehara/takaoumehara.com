@@ -775,12 +775,18 @@ section.section,
   color: var(--ink) !important;
 }
 
-/* Headings in sections */
+/* Headings in sections — adopting festival-design Outfit 800 */
 .wds-serif {
-  font-family: var(--ff-serif) !important;
-  font-weight: 400 !important;
+  font-family: var(--ff) !important;
+  font-weight: 800 !important;
+  font-style: normal !important;
   color: var(--ink) !important;
-  letter-spacing: -0.03em !important;
+  letter-spacing: -0.035em !important;
+}
+.wds-serif em {
+  font-family: var(--ff) !important;
+  font-style: normal !important;
+  font-weight: 800 !important;
 }
 .wds-kick, .section-label, .ev-cap, .kicker, .eyebrow {
   font-family: var(--ff-mono) !important;
@@ -802,40 +808,82 @@ section.section,
 }
 
 /* Hero unboxing */
-.wds-hero,
+.wds-hero {
+  position: relative !important;
+  overflow: hidden !important;
+  background: var(--bg) !important;
+  color: var(--ink) !important;
+  padding: clamp(40px, 5vw, 68px) 0 clamp(36px, 4vw, 56px) !important;
+  border-bottom: 1px solid var(--line) !important;
+}
 .project-hero {
   position: relative !important;
   overflow: hidden !important;
+  background: var(--bg) !important;
+  color: var(--ink) !important;
+  padding: clamp(40px, 5vw, 68px) 0 clamp(36px, 4vw, 56px) !important;
+  border-bottom: 1px solid var(--line) !important;
+}
+html[data-theme="dark"] .wds-hero,
+html[data-theme="dark"] .project-hero,
+body.dark-theme .wds-hero,
+body.dark-theme .project-hero {
   background: #0b0b0b !important;
   color: #ffffff !important;
-  padding: clamp(44px, 6vw, 76px) clamp(24px, 4vw, 64px) !important;
   border-bottom: 1px solid rgba(255, 255, 255, 0.14) !important;
 }
 .project-hero-overlay {
   background: linear-gradient(0deg, rgba(11, 11, 11, 0.88) 0%, rgba(11, 11, 11, 0.62) 55%, rgba(11, 11, 11, 0.28) 100%) !important;
 }
+html[data-theme="light"] .project-hero-overlay {
+  background: linear-gradient(0deg, rgba(251, 250, 247, 0.92) 0%, rgba(251, 250, 247, 0.65) 55%, rgba(251, 250, 247, 0.25) 100%) !important;
+}
 .project-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  box-sizing: border-box;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+html[data-theme="light"] .project-hero-content {
+  text-shadow: none;
 }
 .wds-hero h1,
 .project-hero h1,
 .project-hero-title {
+  font-family: var(--ff) !important;
   font-size: clamp(38px, 5.8vw, 76px) !important;
-  font-weight: 500 !important;
+  font-weight: 800 !important;
   line-height: 1.02 !important;
   letter-spacing: -0.035em !important;
-  color: #ffffff !important;
+  color: var(--ink) !important;
   margin-bottom: 22px !important;
   max-width: 22ch !important;
+}
+html[data-theme="dark"] .wds-hero h1,
+html[data-theme="dark"] .project-hero h1,
+html[data-theme="dark"] .project-hero-title,
+body.dark-theme .wds-hero h1,
+body.dark-theme .project-hero h1,
+body.dark-theme .project-hero-title {
+  color: #ffffff !important;
 }
 .wds-hero-lead,
 .project-hero-subtitle {
   font-size: clamp(16px, 1.55vw, 20px) !important;
   line-height: 1.62 !important;
-  color: rgba(255, 255, 255, 0.76) !important;
+  color: var(--ink-mid) !important;
   max-width: 68ch !important;
   margin-top: 20px !important;
   margin-bottom: 28px !important;
+}
+html[data-theme="dark"] .wds-hero-lead,
+html[data-theme="dark"] .project-hero-subtitle,
+body.dark-theme .wds-hero-lead,
+body.dark-theme .project-hero-subtitle {
+  color: rgba(255, 255, 255, 0.76) !important;
 }
 .wds-hero-lead strong,
 .project-hero-subtitle strong,
@@ -843,7 +891,74 @@ section.section,
 .project-hero .wds-serif,
 .wds-hero .wds-serif em,
 .project-hero .wds-serif em {
+  font-family: var(--ff) !important;
+  font-style: normal !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--ink) !important;
+}
+html[data-theme="dark"] .wds-hero-lead strong,
+html[data-theme="dark"] .project-hero-subtitle strong,
+html[data-theme="dark"] .wds-hero .wds-serif,
+html[data-theme="dark"] .project-hero .wds-serif,
+html[data-theme="dark"] .wds-hero .wds-serif em,
+html[data-theme="dark"] .project-hero .wds-serif em,
+body.dark-theme .wds-hero-lead strong,
+body.dark-theme .project-hero-subtitle strong,
+body.dark-theme .wds-hero .wds-serif,
+body.dark-theme .project-hero .wds-serif,
+body.dark-theme .wds-hero .wds-serif em,
+body.dark-theme .project-hero .wds-serif em {
   color: #ffffff !important;
+}
+
+.project-hero-actions {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 14px !important;
+  margin: 24px 0 32px !important;
+}
+.btn-hero-solid,
+.btn-hero-ghost {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 10px 22px !important;
+  border-radius: var(--r-pill) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  text-decoration: none !important;
+  transition: all 140ms ease !important;
+}
+.btn-hero-solid {
+  background: var(--ink) !important;
+  color: var(--bg) !important;
+  border: 1px solid var(--ink) !important;
+}
+.btn-hero-solid:hover {
+  opacity: 0.88 !important;
+  transform: translateY(-1px) !important;
+}
+.btn-hero-ghost {
+  background: var(--surface) !important;
+  color: var(--ink) !important;
+  border: 1px solid var(--border) !important;
+}
+.btn-hero-ghost:hover {
+  background: var(--surface-dim) !important;
+  border-color: var(--ink) !important;
+  transform: translateY(-1px) !important;
+}
+html[data-theme="dark"] .btn-hero-solid {
+  background: #ffffff !important;
+  color: #0b0b0b !important;
+  border: 1px solid #ffffff !important;
+}
+html[data-theme="dark"] .btn-hero-ghost {
+  background: rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.20) !important;
 }
 
 .wds-chips, .project-hero-tags {
@@ -866,7 +981,17 @@ section.section,
 }
 
 .wds-hero .wds-chip, .project-hero .project-hero-tag {
+  color: var(--ink-mid) !important;
+  border: 1px solid var(--border) !important;
+  background: var(--surface) !important;
+}
+html[data-theme="dark"] .wds-hero .wds-chip,
+html[data-theme="dark"] .project-hero .project-hero-tag,
+body.dark-theme .wds-hero .wds-chip,
+body.dark-theme .project-hero .project-hero-tag {
   color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.22) !important;
+  background: transparent !important;
 }
 .wds-hero-meta,
 .project-hero-meta {
@@ -875,6 +1000,12 @@ section.section,
   gap: 24px 48px !important;
   margin-top: 36px !important;
   padding-top: 24px !important;
+  border-top: 1px solid var(--line) !important;
+}
+html[data-theme="dark"] .wds-hero-meta,
+html[data-theme="dark"] .project-hero-meta,
+body.dark-theme .wds-hero-meta,
+body.dark-theme .project-hero-meta {
   border-top: 1px solid rgba(255, 255, 255, 0.14) !important;
 }
 .wds-hero-meta dt,
@@ -883,13 +1014,26 @@ section.section,
   font-size: 11px !important;
   letter-spacing: 0.14em !important;
   text-transform: uppercase !important;
-  color: rgba(255, 255, 255, 0.5) !important;
+  color: var(--ink-dim) !important;
   margin-bottom: 4px !important;
+}
+html[data-theme="dark"] .wds-hero-meta dt,
+html[data-theme="dark"] .project-meta-label,
+body.dark-theme .wds-hero-meta dt,
+body.dark-theme .project-meta-label {
+  color: rgba(255, 255, 255, 0.5) !important;
 }
 .wds-hero-meta dd,
 .project-meta-value {
   font-size: 14.5px !important;
   line-height: 1.4 !important;
+  font-weight: 600;
+  color: var(--ink) !important;
+}
+html[data-theme="dark"] .wds-hero-meta dd,
+html[data-theme="dark"] .project-meta-value,
+body.dark-theme .wds-hero-meta dd,
+body.dark-theme .project-meta-value {
   color: #ffffff !important;
 }
 
@@ -1362,10 +1506,11 @@ html[data-theme="light"] .wds-hero h1 em {
   color: var(--ink-mid);
 }
 .pj-title {
+  font-family: var(--ff);
   font-size: clamp(34px, 5.2vw, 64px);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1.06;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
   color: var(--ink);
   margin-bottom: 20px;
   max-width: 24ch;
@@ -1816,6 +1961,102 @@ html[data-theme="light"] .wds-hero h1 em {
 
 .reveal-on-scroll {
   opacity: 1; /* safe default */
+}
+
+/* ── Full Bleed Hero Banner ── */
+.hero-fullbleed {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  max-height: clamp(340px, 46vw, 560px);
+  overflow: hidden;
+  background: #0b0b0b;
+}
+.hero-fullbleed img {
+  width: 100%;
+  height: 100%;
+  max-height: clamp(340px, 46vw, 560px);
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ── Closing Consultation CTA ── */
+.cta-consult {
+  margin-top: clamp(64px, 8vw, 96px);
+  padding: clamp(36px, 5vw, 56px) 0;
+  border-top: 1px solid var(--line);
+}
+.cta-consult .project-section-title {
+  font-family: var(--ff) !important;
+  font-size: clamp(26px, 3.4vw, 42px) !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.03em !important;
+  color: var(--ink) !important;
+  margin-bottom: 12px !important;
+}
+.cta-consult .project-text {
+  font-size: clamp(15px, 1.4vw, 18px);
+  color: var(--ink-mid);
+  margin-bottom: 24px;
+}
+.btn-primary,
+.cta-consult .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: var(--ink);
+  color: var(--bg) !important;
+  border-radius: var(--r-pill);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  border: 1px solid var(--ink);
+  transition: transform 140ms ease, opacity 140ms ease, background 140ms ease;
+}
+.btn-primary:hover,
+.cta-consult .btn-primary:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+/* ── Prev / Next Navigation ── */
+.nav-project {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 0 48px;
+  margin-top: 40px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+.nav-project a,
+.nav-project-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-mid) !important;
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: var(--r-pill);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  transition: all 140ms ease;
+}
+.nav-project a:hover,
+.nav-project-link:hover {
+  color: var(--ink) !important;
+  border-color: var(--ink);
+  background: var(--line);
+  transform: translateY(-1px);
 }
 
 
