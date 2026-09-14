@@ -89,14 +89,14 @@ test('every nav item carries the same weight — only the current page is marked
   const expected = [
     ['interactive.html', 'Interactive'], ['ai-products.html', 'AI Products'], ['ai-tools.html', 'AI Tools'],
     ['work.html', 'Product Design'], ['brand.html', 'Brand &amp; Visual'],
-    ['about.html', 'About'], ['contact.html', 'Contact'],
+    ['about.html', 'About'], ['publications.html', 'Publications'], ['workshop.html', 'Workshops'], ['contact.html', 'Contact'],
   ];
 
   for (const page of mainPages) {
     const html = read(page);
     const nav = navDestinations(html, page);
-    assert.deepEqual(nav.slice(0, 7).map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
-    for (const { href, tag } of nav.slice(0, 7)) {
+    assert.deepEqual(nav.map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
+    for (const { href, tag } of nav) {
       assert.equal(hasClass(tag, 'is-lead'), false, `${page}: ${href} must not carry the retired lead tier`);
     }
     assert.equal(/\.nav-links a\.is-lead\s*\{/.test(html), false, `${page}: the lead-tier rule must be gone from the CSS too`);

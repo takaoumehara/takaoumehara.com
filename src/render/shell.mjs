@@ -14,6 +14,8 @@ const NAV = [
   ["work.html", "Product Design"],
   ["brand.html", "Brand &amp; Visual"],
   ["about.html", "About"],
+  ["publications.html", "Publications"],
+  ["workshop.html", "Workshops"],
   ["contact.html", "Contact"],
 ];
 const NAV_DIVIDER_AT = 5;   // before About

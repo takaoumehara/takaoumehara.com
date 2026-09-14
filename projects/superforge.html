@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,15 +22,6 @@
   <style>
 
     :root {
-      --bg: #fbfaf7;
-      --ink: #121212;
-      --ink-mid: #4c4841;
-      --ink-dim: #76716a;
-      --line: rgba(18,18,18,0.08);
-      --border: rgba(18,18,18,0.10);
-      --ff: "Outfit", system-ui, -apple-system, sans-serif;
-      --ff-mono: ui-monospace, "SF Mono", Menlo, monospace;
-      --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
       /* Cyan, the accent the owner specified for this project. The text-weight
          value is cyan-700 so that white-on-accent and accent-on-white both clear
          4.5:1; the brighter cyan is used only for glows, where nothing is read. */
@@ -43,13 +34,18 @@
     html { scroll-behavior: smooth; }
     body { min-height: 100vh; color: var(--ink); background: var(--bg); font-family: var(--ff); }
 
-    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: rgba(255,255,255,0.92); border-bottom: 1px solid var(--line); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: var(--nav-bg); border-bottom: 1px solid var(--line); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
     .nav-logo { display: flex; flex-direction: column; gap: 3px; color: var(--ink); line-height: 1; text-decoration: none; }
-    .nav-logo-name { font-size: 15px; font-weight: 600; letter-spacing: -0.018em; }
+    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.018em; }
     .nav-logo-tag { color: var(--ink-dim); font-size: 10.5px; font-weight: 400; letter-spacing: 0.02em; }
-    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links li { position: relative; }
     .nav-links a { color: var(--ink-mid); font-size: 13px; letter-spacing: 0.01em; text-decoration: none; transition: color 160ms ease; }
     .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
     .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; appearance: none; background: none; border: none; cursor: pointer; }
     .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
     .nav-toggle span:nth-child(1) { top: 0; }
@@ -59,7 +55,7 @@
     .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
     .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
 
-    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(255,255,255,0.94); border-top: 1px solid rgba(18,18,18,0.07); border-bottom: 1px solid rgba(18,18,18,0.07); border-left: 1px solid var(--border); border-radius: 6px 0 0 6px; writing-mode: vertical-rl; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .lang-switch { position: fixed; right: 0; bottom: 80px; z-index: 100; display: flex; align-items: center; gap: 5px; padding: 16px 9px; background: rgba(18,18,18,0.94); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); border-left: 1px solid var(--border); border-radius: 6px 0 0 6px; writing-mode: vertical-rl; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
     .lang-btn { padding: 0; appearance: none; background: none; border: none; color: var(--ink-dim); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 160ms ease; }
     .lang-btn.is-active { color: var(--ink); font-weight: 600; }
     .lang-sep { color: rgba(18,18,18,0.18); font-size: 9px; }
@@ -113,6 +109,8 @@
       <li><a href="../work.html">Product Design</a></li>
       <li><a href="../brand.html">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="../about.html">About</a></li>
+      <li><a href="../publications.html">Publications</a></li>
+      <li><a href="../workshop.html">Workshops</a></li>
       <li><a href="../contact.html">Contact</a></li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>

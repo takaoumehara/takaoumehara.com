@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <title>About — Takao Umehara</title>
-  <meta name="description" content="About Takao Umehara — NYC-based product designer, educator, and innovation strategist blending product craft, brand systems, and AI-era frameworks.">
+  <meta name="description" content="About Takao Umehara — Design &amp; AI Executive · Venture Builder · Educator. Operating before the answer is obvious across brand, product, education, and AI systems.">
   <link rel="canonical" href="https://takaoumehara.com/about.html">
   <meta property="og:title" content="About — Takao Umehara">
-  <meta property="og:description" content="NYC-based product designer, educator, and innovation strategist blending product craft, brand systems, and AI-era frameworks.">
+  <meta property="og:description" content="Design &amp; AI Executive · Venture Builder · Educator. Operating before the answer is obvious across brand, product, education, and AI systems.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://takaoumehara.com/about.html">
   <meta property="og:image" content="assets/about/TakaoUmehara_passport.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="About — Takao Umehara">
-  <meta name="twitter:description" content="NYC-based product designer, educator, and innovation strategist blending product craft, brand systems, and AI-era frameworks.">
+  <meta name="twitter:description" content="Design &amp; AI Executive · Venture Builder · Educator. Operating before the answer is obvious across brand, product, education, and AI systems.">
   <meta name="twitter:image" content="assets/about/TakaoUmehara_passport.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -281,17 +281,25 @@ html.lang-jp body { font-family: var(--ff-jp); }
   align-items: start;
 }
 
+.hero-role {
+  font-size: clamp(14px, 1.4vw, 17px);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink-mid);
+  margin-bottom: 12px;
+}
+
 .hero-headline {
-  font-size: clamp(34px, 4.8vw, 58px);
+  font-size: clamp(34px, 4.8vw, 56px);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.08;
   letter-spacing: -0.03em;
   color: var(--ink);
   margin-bottom: 24px;
 }
 
 html.lang-jp .hero-headline {
-  font-size: clamp(28px, 4vw, 46px);
+  font-size: clamp(28px, 4vw, 44px);
   letter-spacing: -0.015em;
   line-height: 1.25;
 }
@@ -306,6 +314,13 @@ html.lang-jp .hero-headline {
 .hero-subdesc {
   font-size: clamp(14px, 1.25vw, 16px);
   line-height: 1.65;
+  color: var(--ink-dim);
+}
+
+.hero-location {
+  margin-top: 18px;
+  font-size: 13.5px;
+  font-weight: 500;
   color: var(--ink-dim);
 }
 
@@ -359,19 +374,19 @@ html.lang-jp .hero-headline {
   color: var(--ink-mid);
 }
 
-/* ─── Educator & Coach Dual Card ─── */
+/* ─── Teaching & Mentorship Cards ─── */
 .feature-cards {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 28px;
-  margin-top: 24px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 28px;
 }
 
 .feature-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--r-card);
-  padding: clamp(28px, 4vw, 40px);
+  padding: clamp(24px, 3vw, 36px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -393,30 +408,30 @@ html.lang-jp .hero-headline {
 }
 
 .feature-card h3 {
-  font-size: clamp(22px, 2.4vw, 30px);
+  font-size: clamp(20px, 2.2vw, 24px);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.2;
   letter-spacing: -0.02em;
   color: var(--ink);
   margin-bottom: 14px;
 }
 
 .feature-card p {
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.65;
   color: var(--ink-mid);
   margin-bottom: 16px;
 }
 
 .feature-meta {
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--ink-dim);
   border-top: 1px solid var(--line);
   padding-top: 14px;
   margin-top: auto;
 }
 
-/* ─── Sections Headings ─── */
+/* ─── Sections Headings & Intros ─── */
 .section {
   padding: clamp(48px, 6vw, 80px) 0;
   border-bottom: 1px solid var(--line);
@@ -433,11 +448,19 @@ html.lang-jp .hero-headline {
   color: var(--ink);
 }
 
-/* ─── Core Capabilities Grid ─── */
+.section-intro {
+  font-size: clamp(15px, 1.4vw, 17px);
+  line-height: 1.65;
+  color: var(--ink-mid);
+  max-width: 860px;
+  margin-top: 14px;
+}
+
+/* ─── Four Recurring Modes Grid ─── */
 .capabilities-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
 }
 
 .capability-block {
@@ -445,6 +468,8 @@ html.lang-jp .hero-headline {
   border: 1px solid var(--border);
   border-radius: var(--r-card);
   padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
 }
 
 .capability-num {
@@ -452,21 +477,87 @@ html.lang-jp .hero-headline {
   letter-spacing: 0.16em;
   font-weight: 700;
   color: var(--ink-dim);
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 
 .capability-title {
-  font-size: 19px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.015em;
+  line-height: 1.25;
   color: var(--ink);
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .capability-desc {
   font-size: 14px;
   line-height: 1.6;
   color: var(--ink-mid);
+}
+
+/* ─── Ideas & Methods Grid ─── */
+.ideas-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 28px;
+}
+
+.idea-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-card);
+  padding: clamp(24px, 3vw, 34px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.idea-tag {
+  display: inline-block;
+  font-size: 10.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink);
+  margin-bottom: 16px;
+  align-self: flex-start;
+}
+
+.idea-card h3 {
+  font-size: clamp(20px, 2.2vw, 24px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+
+.idea-card p {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--ink-mid);
+  margin-bottom: 20px;
+}
+
+.idea-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  margin-top: auto;
+  transition: opacity 140ms ease;
+}
+
+.idea-link:hover {
+  opacity: 0.7;
 }
 
 /* ─── Career Timeline ─── */
@@ -656,9 +747,14 @@ footer {
 @media (max-width: 980px) {
   .highlights-row { grid-template-columns: repeat(2, 1fr); }
   .feature-cards { grid-template-columns: 1fr; }
-  .capabilities-grid { grid-template-columns: 1fr; }
+  .capabilities-grid { grid-template-columns: repeat(2, 1fr); }
+  .ideas-grid { grid-template-columns: 1fr; }
   .works-grid { grid-template-columns: 1fr; }
   .timeline-item { grid-template-columns: 1fr; gap: 10px; }
+}
+
+@media (max-width: 640px) {
+  .capabilities-grid { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 768px) {
@@ -711,9 +807,9 @@ footer {
       <li><a href="work.html">Product Design</a></li>
       <li><a href="brand.html">Brand &amp; Visual</a></li>
       <li class="is-tierbreak"><a href="about.html" class="is-active" aria-current="page">About</a></li>
-      <li><a href="contact.html">Contact</a></li>
       <li><a href="publications.html">Publications</a></li>
       <li><a href="workshop.html">Workshops</a></li>
+      <li><a href="contact.html">Contact</a></li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
@@ -727,17 +823,25 @@ footer {
             <span class="t-en">About &amp; Practice</span>
             <span class="t-jp">自己紹介と活動理念</span>
           </span>
+          <p class="hero-role">
+            <span class="t-en">Design &amp; AI Executive · Venture Builder · Educator</span>
+            <span class="t-jp">Design &amp; AI Executive · Venture Builder · Educator</span>
+          </p>
           <h1 class="hero-headline">
-            <span class="t-en">Product designer, educator, and innovation strategist based in New York City.</span>
-            <span class="t-jp">ニューヨーク在住のプロダクトデザイナー、教育者、イノベーション・ストラテジスト。</span>
+            <span class="t-en">I do my best work before the answer is obvious.</span>
+            <span class="t-jp">答えがまだ見えていないところから、形にしていく。</span>
           </h1>
           <p class="hero-desc">
-            <span class="t-en">For over 20 years, I have worked across branding, product design, playful learning, and AI-driven platforms. My practice balances executive-level strategic leadership with obsessive hands-on making.</span>
-            <span class="t-jp is-block">20年以上にわたり、ブランディング、プロダクト設計、プレイフルラーニング、そして生成AIプラットフォームの現場を横断。事業戦略を牽引するリーダーシップと、細部まで自ら手を動かして形にするクラフトマンシップの両立を信条としています。</span>
+            <span class="t-en">I work at the beginning of things &mdash; finding possibilities, connecting disciplines that are usually kept separate, and turning ambiguous ideas into products, experiences, ventures, and systems people can actually react to.</span>
+            <span class="t-jp is-block">僕がいちばん力を出せるのは、「何をつくるか」がまだはっきり決まっていない段階です。<br>まだ見えていない可能性を見つけて、一見関係のないものをつなぎ、人が触ったり試したりできるところまで持っていく。そこから次に進める状態をつくる。それが、自分のいちばん得意な仕事だと思っています。</span>
           </p>
           <p class="hero-subdesc">
-            <span class="t-en">Whether teaching Advanced Typography at SVA, coaching 20 startup founders at SOSV, or building flagship enterprise AI platforms for Verizon, I bridge conceptual rigor with tangible execution.</span>
-            <span class="t-jp is-block">SVA（School of Visual Arts）でのタイポグラフィ教育、SOSVでの20名のスタートアップ創業者育成、さらにはVerizonの大規模AIプラットフォーム構築まで、概念の深さと手触りのある実装を一貫してつなぎます。</span>
+            <span class="t-en">Over 20+ years, I&rsquo;ve worked across brand, product, education, interactive experiences, enterprise systems, and AI. The medium keeps changing. The instinct doesn&rsquo;t: find the possibility, make it tangible, and create momentum.</span>
+            <span class="t-jp is-block">ブランド、プロダクト、教育、インタラクティブ、エンタープライズ、AI。20年以上、扱うものは何度も変わってきました。でも、自分の中ではやっていることはそれほど変わっていません。可能性を見つけ、手触りのある形にして、前に進む力をつくる。ずっとそれを続けています。</span>
+          </p>
+          <p class="hero-location">
+            <span class="t-en">Based in New York, working across the U.S. and Japan.</span>
+            <span class="t-jp">ニューヨークを拠点に、アメリカと日本の間で仕事をしています。</span>
           </p>
         </div>
         <figure class="about-portrait">
@@ -754,47 +858,51 @@ footer {
         <div class="highlight-item">
           <div class="highlight-num">20+</div>
           <div class="highlight-label">
-            <span class="t-en">Years of craft spanning brand, UX, education, and AI architecture</span>
-            <span class="t-jp is-block">ブランド、UX、教育、AI設計まで20年におよぶ実績</span>
+            <span class="t-en">Years across brand, product, education, interactive work, and AI</span>
+            <span class="t-jp is-block">ブランド、プロダクト、教育、インタラクティブ、AIを横断した実践年数</span>
           </div>
         </div>
         <div class="highlight-item">
-          <div class="highlight-num">10+</div>
+          <div class="highlight-num">40+ / 80+</div>
           <div class="highlight-label">
-            <span class="t-en">ELA Quests launches at Amplify Education reaching millions of students</span>
-            <span class="t-jp is-block">全米数百万人へ届けたAmplify Educationの学習プロダクト立ち上げ</span>
+            <span class="t-en">Designers &amp; cross-functional stakeholders supported by AI-enabled product workflows at Verizon</span>
+            <span class="t-jp is-block">VerizonでAIワークフローを活用したデザイナーおよび関係者</span>
           </div>
         </div>
         <div class="highlight-item">
           <div class="highlight-num">20</div>
           <div class="highlight-label">
-            <span class="t-en">Startup founders coached at SOSV across Food &amp; Blockchain ventures</span>
+            <span class="t-en">Startup founders coached through SOSV across Food &amp; Blockchain ventures</span>
             <span class="t-jp is-block">SOSVでメンタリングしたフード＆ブロックチェーン領域の創業者</span>
           </div>
         </div>
         <div class="highlight-item">
           <div class="highlight-num">11K+</div>
           <div class="highlight-label">
-            <span class="t-en">Copies sold of <em>extra•ordinary</em> (Rockport Publishing worldwide)</span>
-            <span class="t-jp is-block">世界で11,000部以上を刊行した著書『extra•ordinary』</span>
+            <span class="t-en">Copies sold of <em>Extra Ordinary</em>, the creativity book co-authored with Hisako Ichiki</span>
+            <span class="t-jp is-block">著書『Extra Ordinary』の世界累計発行部数（Rockport Publishing）</span>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Educator & Startup Coach Focus ── -->
+  <!-- ── Teaching, Mentoring & Playful Learning ── -->
   <section class="section">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">
-          <span class="t-en">Pedagogy &amp; Venture Mentorship</span>
-          <span class="t-jp">教育と起業家支援</span>
+          <span class="t-en">Discovery &amp; Pedagogy</span>
+          <span class="t-jp">教育と探求</span>
         </span>
         <h2 class="section-title">
-          <span class="t-en">Educator and startup coach</span>
-          <span class="t-jp">教育者として、スタートアップの伴走者として</span>
+          <span class="t-en">Teaching, mentoring &amp; playful learning</span>
+          <span class="t-jp">教えること、学ぶこと、遊ぶこと</span>
         </h2>
+        <p class="section-intro">
+          <span class="t-en">Learning has been a recurring part of my work &mdash; from designing large EdTech products to teaching typography, coaching startup founders, and making small games for kids. I&rsquo;m especially interested in learning that feels like discovery rather than instruction.</span>
+          <span class="t-jp is-block">教育は、ずっと仕事の一部にあります。大きなEdTechプロダクトをつくることもあれば、SVAでタイポグラフィを教えたり、スタートアップの創業者と一緒に事業を考えたり、子どものために小さなゲームをつくったりすることもあります。昔から好きなのは、学ぶことを「教えられるもの」ではなく、自分で触って、試して、気づいていくものにすることです。</span>
+        </p>
       </div>
 
       <div class="feature-cards">
@@ -839,21 +947,42 @@ footer {
             <span class="t-jp is-block">SOSV アクセラレーター · 20名の創業者メンタリング · プロダクトデザイン &amp; ブランド戦略</span>
           </div>
         </div>
+
+        <div class="feature-card">
+          <div>
+            <span class="feature-tag">
+              <span class="t-en">Playful Learning</span>
+              <span class="t-jp">遊びと学びの実験</span>
+            </span>
+            <h3>
+              <span class="t-en">Classroom Games &amp; Discovery Tools</span>
+              <span class="t-jp">遊びから広がる学びのツール</span>
+            </h3>
+            <p>
+              <span class="t-en">Designed tactile learning tools and classroom games, including kanji recombination puzzles that let children assemble character components like physical building blocks. Learning that feels like solving an intriguing puzzle rather than filling out another worksheet.</span>
+              <span class="t-jp is-block">漢字を部首やパーツに分けて組み立てるパズルなど、子どものための学習ゲームやツールも制作。プリントをもう1枚解かせるのではなく、「これ、自分で解きたい」と自然に夢中になれる学びの形を探求しています。</span>
+            </p>
+          </div>
+          <div class="feature-meta">
+            <span class="t-en">Playful Learning · Classroom Tools · Kanji Recombination Puzzle</span>
+            <span class="t-jp is-block">プレイフルラーニング · 学習ツール実験 · 漢字組み立てパズル</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ── Core Practice ── -->
+  <!-- ── Four Recurring Modes ── -->
   <section class="section">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">
-          <span class="t-en">Expertise</span>
-          <span class="t-jp">専門領域</span>
+          <span class="t-en">Recurring Modes</span>
+          <span class="t-jp">実践の領域</span>
         </span>
         <h2 class="section-title">
-          <span class="t-en">Four pillars of practice</span>
-          <span class="t-jp">4つの探求と実践の柱</span>
+          <span class="t-en">Four areas I keep returning to</span>
+          <span class="t-jp">何度も戻ってくる4つの領域</span>
         </h2>
       </div>
 
@@ -861,37 +990,134 @@ footer {
         <div class="capability-block">
           <div class="capability-num">01</div>
           <div class="capability-title">
-            <span class="t-en">Product Design &amp; Architecture</span>
-            <span class="t-jp">プロダクト設計 &amp; システム</span>
+            <span class="t-en">0→1 Product &amp; Venture Building</span>
+            <span class="t-jp">0→1 / Product &amp; Ventures</span>
           </div>
           <p class="capability-desc">
-            <span class="t-en">Complex multi-platform design systems, responsive web apps, and enterprise platforms. Designing clear workflows out of tangled operational systems.</span>
-            <span class="t-jp is-block">複雑なマルチプラットフォームのデザインシステム、Webアプリケーション、大規模業務基盤。絡み合った運用課題を直感的なUIへと昇華させます。</span>
+            <span class="t-en">From undefined opportunity to concept, prototype, product, and early validation. Connecting user insight with viable business models.</span>
+            <span class="t-jp is-block">まだ形になっていない可能性を、コンセプト、プロトタイプ、プロダクト、事業へ。何を作るべきかすら見えていない段階から、最初の検証可能な形を作り出します。</span>
           </p>
         </div>
 
         <div class="capability-block">
           <div class="capability-num">02</div>
           <div class="capability-title">
-            <span class="t-en">Playful Learning &amp; EdTech</span>
-            <span class="t-jp">プレイフルラーニング &amp; 教育</span>
+            <span class="t-en">Creative Direction &amp; Brand</span>
+            <span class="t-jp">Brand / Creative Direction</span>
           </div>
           <p class="capability-desc">
-            <span class="t-en">Over 13 years developing educational experiences that blend game mechanics, narrative quests, and accessible typography for millions of young minds.</span>
-            <span class="t-jp is-block">13年以上にわたり、ゲームメカニクス、物語的クエスト、アクセシブルな文字設計を融合した教育体験を開発。全米の学習現場に届けています。</span>
+            <span class="t-en">Connecting business intent, story, identity, experience, film, and creative execution into a coherent narrative system.</span>
+            <span class="t-jp is-block">ビジネスとして何を伝えるべきかを、言葉、ビジュアル、映像、体験まで一気通貫でつなげるクリエイティブディレクション。</span>
           </p>
         </div>
 
         <div class="capability-block">
           <div class="capability-num">03</div>
           <div class="capability-title">
-            <span class="t-en">AI Systems &amp; Context Grammar</span>
-            <span class="t-jp">AIアーキテクチャ &amp; 文法</span>
+            <span class="t-en">Playful Learning &amp; EdTech</span>
+            <span class="t-jp">Playful Learning / EdTech</span>
           </div>
           <p class="capability-desc">
-            <span class="t-en">Pioneering UX patterns for autonomous agentic workflows, multi-model handoffs, and conversational interfaces that keep human intent in full control.</span>
-            <span class="t-jp is-block">自律型AIエージェント、モデル間引き継ぎ、人間の意図を精密に反映する対話型UIなど、次世代AIプロダクトのUX規範を先駆けて開発。</span>
+            <span class="t-en">Designing learning experiences people want to participate in &mdash; from large-scale education products reaching millions to small games and workshops.</span>
+            <span class="t-jp is-block">学ぶことを、参加したくなる体験に変える。全米数百万人規模のEdTechプロダクトから、子ども向けの小さなゲームやワークショップまで。</span>
           </p>
+        </div>
+
+        <div class="capability-block">
+          <div class="capability-num">04</div>
+          <div class="capability-title">
+            <span class="t-en">AI Systems &amp; Emerging Interaction</span>
+            <span class="t-jp">AI / Emerging Interaction</span>
+          </div>
+          <p class="capability-desc">
+            <span class="t-en">Exploring how AI changes products, interfaces, workflows, decision-making, and the fundamental relationship between people and software.</span>
+            <span class="t-jp is-block">AIによって、プロダクト、インターフェース、仕事の仕方、意思決定そのものがどう変わるか。人とソフトウェアの新しい関係性を探る。</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Ideas & Methods ── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">
+          <span class="t-en">Intellectual Foundations</span>
+          <span class="t-jp">思考と方法論</span>
+        </span>
+        <h2 class="section-title">
+          <span class="t-en">Ideas &amp; methods</span>
+          <span class="t-jp">ずっと考えてきたこと</span>
+        </h2>
+        <p class="section-intro">
+          <span class="t-en">Some ideas have stayed with me much longer than any particular medium. They form the underlying thread connecting my early books to my current AI frameworks.</span>
+          <span class="t-jp is-block">AIよりずっと前から、僕が興味を持ってきたのは、「見慣れたものを、どうすれば違って見られるか」ということでした。扱うテーマや技術は変わってきましたが、この問いは、今の仕事にも深くつながっています。</span>
+        </p>
+      </div>
+
+      <div class="ideas-grid">
+        <div class="idea-card">
+          <div>
+            <span class="idea-tag">
+              <span class="t-en">Book · Rockport Publishing (2005)</span>
+              <span class="t-jp">出版（2005年）</span>
+            </span>
+            <h3>
+              <span class="t-en">Extra Ordinary</span>
+              <span class="t-jp">Extra Ordinary</span>
+            </h3>
+            <p>
+              <span class="t-en">Co-authored with Hisako Ichiki, <em>Extra Ordinary: An Amusing Guide for Unleashing Your Creativity</em> explored how to see possibilities in things we normally overlook. Looking back, it was the earliest articulation of the instinct that still guides my work today.</span>
+              <span class="t-jp is-block">2005年、Hisako Ichikiとの共著で『Extra Ordinary: An Amusing Guide for Unleashing Your Creativity』（Rockport Publishing）を出版。身の回りの何気ないものを少し違う角度から見ることで、そこに新しい可能性を見つける。いま振り返ると、現在の仕事につながる考え方の原点のひとつでした。</span>
+            </p>
+          </div>
+          <a href="projects/extraordinary.html" class="idea-link">
+            <span class="t-en">View Case Study &rarr;</span>
+            <span class="t-jp">ケーススタディを見る &rarr;</span>
+          </a>
+        </div>
+
+        <div class="idea-card">
+          <div>
+            <span class="idea-tag">
+              <span class="t-en">Framework &amp; Workshop</span>
+              <span class="t-jp">思考フレームワーク</span>
+            </span>
+            <h3>
+              <span class="t-en">Break Bias</span>
+              <span class="t-jp">Break Bias</span>
+            </h3>
+            <p>
+              <span class="t-en">New ideas don&rsquo;t fail from lack of creativity; they fail because unexamined assumptions narrow what seems possible. Break Bias is a structured method for surfacing and dismantling default industry, user, and business model biases before generating solutions.</span>
+              <span class="t-jp is-block">新しいアイデアが出ない理由は、アイデアがないからではなく、無意識に「これはこういうものだ」と決めてしまっているからかもしれません。Break Biasは、商品、業界、ユーザー、ビジネスモデルについての前提や思い込みを意図的に外し、枠そのものを壊した状態から新しい事業や体験を発想する方法です。</span>
+            </p>
+          </div>
+          <a href="breakbias.html" class="idea-link">
+            <span class="t-en">Explore Break Bias &rarr;</span>
+            <span class="t-jp">Break Bias を見る &rarr;</span>
+          </a>
+        </div>
+
+        <div class="idea-card">
+          <div>
+            <span class="idea-tag">
+              <span class="t-en">AI Interaction Paradigm</span>
+              <span class="t-jp">AI時代のインタラクション</span>
+            </span>
+            <h3>
+              <span class="t-en">Intent First</span>
+              <span class="t-jp">Intent First</span>
+            </h3>
+            <p>
+              <span class="t-en">Designing systems around human intent rather than predetermined UI paths. As AI becomes an active collaborator, software must interpret, clarify, and execute what the user actually wants to accomplish &mdash; shifting design from screen layouts to intent architectures.</span>
+              <span class="t-jp is-block">画面や機能から考え始めるのではなく、人がそもそも何を成し遂げたいのか、どんな意図を持っているのかからシステムを設計する。AIが単なる道具から協働者になる時代において、人とソフトウェアの対話をどう構築するかを探る最新の研究・実践です。</span>
+            </p>
+          </div>
+          <a href="intentfirst.html" class="idea-link">
+            <span class="t-en">Explore Intent First &rarr;</span>
+            <span class="t-jp">Intent First を見る &rarr;</span>
+          </a>
         </div>
       </div>
     </div>
@@ -902,13 +1128,17 @@ footer {
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">
-          <span class="t-en">Experience</span>
-          <span class="t-jp">経歴</span>
+          <span class="t-en">Trajectory</span>
+          <span class="t-jp">歩み</span>
         </span>
         <h2 class="section-title">
-          <span class="t-en">Leadership &amp; career trajectory</span>
-          <span class="t-jp">キャリアの歩み</span>
+          <span class="t-en">Different mediums. Same instinct.</span>
+          <span class="t-jp">扱うものは変わった。でも、興味の中心はあまり変わっていない。</span>
         </h2>
+        <p class="section-intro">
+          <span class="t-en">My career has moved through branding, interaction, education, product design, enterprise systems, and AI. From the outside, those can look like separate careers. To me, they&rsquo;ve mostly been different ways of asking the same question: What becomes possible when we change the way we look at the problem?</span>
+          <span class="t-jp is-block">ブランド、インタラクティブ、教育、プロダクト、CX、AI。外から見ると何度も仕事を変えてきたように見えるかもしれません。でも自分では、同じ好奇心を違うメディアで追いかけてきた感覚の方が近いです。</span>
+        </p>
       </div>
 
       <div class="timeline-list">
@@ -921,8 +1151,22 @@ footer {
             </div>
           </div>
           <div class="timeline-desc">
-            <span class="t-en">Leading a specialized studio partnering with ventures and enterprises in the US and Japan. Product design, brand architecture, and AI-era product strategies for clients like T-Mobile, Emerson Collective, and Tokyo Metropolitan Government.</span>
+            <span class="t-en">Leading a specialized studio partnering with ventures and enterprises across the US and Japan. Advising on AI product strategy, brand architecture, and 0→1 venture creation for clients including T-Mobile, Emerson Collective, and the Tokyo Metropolitan Government.</span>
             <span class="t-jp is-block">日米の企業やスタートアップと協働するクリエイティブスタジオを主宰。T-Mobile、Emerson Collective、東京都などのプロダクト設計、ブランド構築、AI戦略を推進。</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-org">Verizon</div>
+            <div class="timeline-role">
+              <span class="t-en">Design &amp; AI Workflow Lead (2024 – Present)</span>
+              <span class="t-jp">デザイン &amp; AI ワークフロー・リード（2024年〜現在）</span>
+            </div>
+          </div>
+          <div class="timeline-desc">
+            <span class="t-en">Leading AI workflow transformation across product design organizations. Enabling 40+ designers and 80+ cross-functional partners to adopt generative tools, agentic prototypes, and scalable design systems.</span>
+            <span class="t-jp is-block">プロダクトデザイン組織におけるAIワークフロー変革を主導。40名以上のデザイナーと80名以上のステークホルダーが自律型プロトタイピングや生成ツールを活用できる仕組みを構築。</span>
           </div>
         </div>
 
@@ -956,20 +1200,6 @@ footer {
 
         <div class="timeline-item">
           <div>
-            <div class="timeline-org">Amplify Education</div>
-            <div class="timeline-role">
-              <span class="t-en">Product Design Lead / Design Strategy Coach (2013 – 2020)</span>
-              <span class="t-jp">プロダクトデザインリード / デザイン戦略コーチ（2013〜2020年）</span>
-            </div>
-          </div>
-          <div class="timeline-desc">
-            <span class="t-en">Spearheaded 10+ ELA Quests releases, combining narrative storytelling, gamified mechanics, and educational standards into learning apps used daily by millions of US students.</span>
-            <span class="t-jp is-block">ELA Questsシリーズ10作以上のプロダクト立ち上げを主導。物語とゲーム性、学習指導要領を融合し、全米数百万人の児童・生徒が利用する教育基盤を構築。</span>
-          </div>
-        </div>
-
-        <div class="timeline-item">
-          <div>
             <div class="timeline-org">Concentrix Catalyst</div>
             <div class="timeline-role">
               <span class="t-en">Lead Product Designer (2020 – 2021)</span>
@@ -979,6 +1209,20 @@ footer {
           <div class="timeline-desc">
             <span class="t-en">Architected a major US banking portal spanning 105 screens, full design system tokens, and seamless self-service servicing for cardholders nationwide.</span>
             <span class="t-jp is-block">全米大手銀行のクレジットカードポータルを設計。105画面のUI、網羅的なデザインシステム、強固なアクセシビリティを策定。</span>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div>
+            <div class="timeline-org">Amplify Education</div>
+            <div class="timeline-role">
+              <span class="t-en">Product Design Lead / Design Strategy Coach (2013 – 2020)</span>
+              <span class="t-jp">プロダクトデザインリード / デザイン戦略コーチ（2013〜2020年）</span>
+            </div>
+          </div>
+          <div class="timeline-desc">
+            <span class="t-en">Spearheaded 10+ ELA Quests releases, combining narrative storytelling, gamified mechanics, and educational standards into learning apps used daily by millions of US students.</span>
+            <span class="t-jp is-block">ELA Questsシリーズ10作以上のプロダクト立ち上げを主導。物語とゲーム性、学習指導要領を融合し、全米数百万人の児童・生徒が利用する教育基盤を構築。</span>
           </div>
         </div>
 
@@ -999,18 +1243,22 @@ footer {
     </div>
   </section>
 
-  <!-- ── Notable Clients ── -->
+  <!-- ── Notable Organizations ── -->
   <section class="section">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">
-          <span class="t-en">Partnerships</span>
-          <span class="t-jp">主なクライアント</span>
+          <span class="t-en">Partnerships &amp; Experience</span>
+          <span class="t-jp">協働実績</span>
         </span>
         <h2 class="section-title">
-          <span class="t-en">Organizations and brands</span>
+          <span class="t-en">Selected organizations across my career</span>
           <span class="t-jp">協働した主な企業・機関</span>
         </h2>
+        <p class="section-intro">
+          <span class="t-en">Organizations I have worked with, for, or alongside across studio client engagements, full-time leadership, higher education, and venture mentorship.</span>
+          <span class="t-jp is-block">スタジオでのクライアントワーク、所属組織、大学教育、メンタリングを通じて関わってきた主な企業・機関。</span>
+        </p>
       </div>
 
       <div class="clients-grid">
@@ -1033,7 +1281,7 @@ footer {
     </div>
   </section>
 
-  <!-- ── Find Me Online ── -->
+  <!-- ── Find Me Online / Action Deck ── -->
   <section class="section">
     <div class="container">
       <div class="section-head">
@@ -1042,18 +1290,19 @@ footer {
           <span class="t-jp">著作・ワークショップ・リンク</span>
         </span>
         <h2 class="section-title">
-          <span class="t-en">Publications, workshops &amp; direct contact</span>
-          <span class="t-jp">著書、ワークショップ、各種リンク</span>
+          <span class="t-en">Explore my work, writing &amp; ideas</span>
+          <span class="t-jp">プロジェクト・執筆・対話</span>
         </h2>
       </div>
 
       <div class="links-row">
         <a href="publications.html" class="btn-pill btn-primary">Publications</a>
         <a href="workshop.html" class="btn-pill btn-primary">Workshops</a>
+        <a href="intentfirst.html" class="btn-pill btn-secondary">Intent First</a>
+        <a href="breakbias.html" class="btn-pill btn-secondary">Break Bias</a>
         <a href="contact.html" class="btn-pill btn-secondary">Contact Page</a>
         <a href="https://linkedin.com/in/takaoumehara/" target="_blank" rel="noopener" class="btn-pill btn-secondary">LinkedIn</a>
         <a href="https://intentfirst.substack.com/" target="_blank" rel="noopener" class="btn-pill btn-secondary">Substack</a>
-        <a href="https://breakbias.medium.com/" target="_blank" rel="noopener" class="btn-pill btn-secondary">Medium</a>
       </div>
     </div>
   </section>
@@ -1090,7 +1339,8 @@ footer {
   (() => {
     const html = document.documentElement;
     const btns = [...document.querySelectorAll(".lang-btn")];
-    const saved = localStorage.getItem("tu-lang") || "en";
+    const urlParams = new URLSearchParams(window.location.search);
+    const saved = urlParams.get("lang") || localStorage.getItem("tu-lang") || "en";
     const setLang = (lang) => {
       html.classList.toggle("lang-jp", lang === "jp");
       html.lang = lang === "jp" ? "ja" : "en";
