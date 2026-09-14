@@ -65,43 +65,50 @@
       <button class="nav-toggle" id="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- ── Breadcrumb ── -->
-  <div class="breadcrumb">
-    <a href="../brand.html">Brand & Visual</a>
-    <span>/</span>
-    <a href="#">Konosaki</a>
+  <!-- ── Full-Bleed Main Visual Hero ── -->
+  <div class="hero-fullbleed">
+    <img src="../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png" alt="Konosaki Consulting Brand Visual" loading="eager">
   </div>
 
-  <!-- ── Hero ── -->
-  <section data-vt-hero class="project-hero">
-    <div class="project-hero-img" style="background-image:url('../assets/konosaki/Konosaki-brand-extension/uploads/Screenshot%202026-07-22%20at%2014.13.17.png');"></div>
-    <div class="project-hero-overlay"></div>
-    <div class="project-hero-content">
-      <div class="project-hero-tags">
-        <span class="project-hero-tag">Brand Identity</span>
-        <span class="project-hero-tag">Website</span>
-        <span class="project-hero-tag">AI-Assisted</span>
-      </div>
-      <h1 class="project-hero-title">
+  <!-- ── Breadcrumb ── -->
+  <div class="breadcrumb" style="max-width:var(--col); margin:0 auto; padding:clamp(20px, 3vw, 32px) var(--gutter) 16px;">
+    <a href="../brand.html">Brand &amp; Visual</a>
+    <span>/</span>
+    Konosaki
+  </div>
+
+  <!-- ── Hero Aligned (festival-design.html structure) ── -->
+  <header data-vt-hero class="pj-hero" style="border-bottom:1px solid var(--line); padding-bottom:clamp(36px, 4vw, 56px);">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker" style="color:var(--accent-orange, #c2410c);">Brand &amp; Visual · Consulting · Bilingual Brand</span>
+      <ul class="pj-tags">
+        <li>Brand Identity</li>
+        <li>Website</li>
+        <li>AI-Assisted</li>
+        <li>Design System</li>
+      </ul>
+      <h1 class="pj-title" style="font-family:var(--ff); font-weight:800; letter-spacing:-0.035em;">
         Konosaki — Cross-Border Consulting Brand
-        
       </h1>
-      <div class="project-hero-meta">
-        <div class="project-meta-item">
-          <span class="project-meta-label">Client</span>
-          <span class="project-meta-value">Konosaki LLC</span>
+      <p class="pj-summary">
+        A complete brand system and bilingual web experience for a cross-border consulting firm connecting Japan and global markets — built around the concept of the bridge.
+      </p>
+      <dl class="pj-meta">
+        <div>
+          <dt>Client</dt>
+          <dd>Konosaki LLC</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Role</span>
-          <span class="project-meta-value">Design & Build (Creativity Is Everywhere LLC)</span>
+        <div>
+          <dt>Role</dt>
+          <dd>Design &amp; Build (Creativity Is Everywhere LLC)</dd>
         </div>
-        <div class="project-meta-item">
-          <span class="project-meta-label">Live Site</span>
-          <span class="project-meta-value">konosaki-co.vercel.app</span>
+        <div>
+          <dt>Live Site</dt>
+          <dd><a href="https://konosaki-co.vercel.app/" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">konosaki-co.vercel.app &#8599;</a></dd>
         </div>
-      </div>
+      </dl>
     </div>
-  </section>
+  </header>
 
   <!-- ── Body ── -->
   <main class="project-body">
@@ -166,7 +173,6 @@
         </h2>
         <p class="project-text">
           The identity lives at <a href="https://konosaki-co.vercel.app/" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline; text-underline-offset:2px;">konosaki-co.vercel.app</a>. A bilingual site with parallax storytelling and seamless page transitions &mdash; designed and built to demonstrate the brand system in motion. Every interaction reinforces the "bridge" concept: smooth crossings between Japanese and English, between sections, between ideas.
-           。、、。「」。、、、。</span>
         </p>
       </div>
     </div>
@@ -843,34 +849,38 @@ document.querySelectorAll('.g-cell img').forEach(img => {
 });
 
 // ── Template slide scaling ──
-  (() => {
+(() => {
   const fit = (el) => {
     const inner = el.querySelector('.tpl-inner');
     if (!inner) return;
-    inner.style.transform = `scale(${el.clientWidth / parseFloat(inner.dataset.w || 1920)})`;
+    const w = parseFloat(inner.dataset.w || 1920);
+    const scale = el.clientWidth / w;
+    inner.style.transform = `scale(${scale})`;
   };
   const els = document.querySelectorAll('.tpl-slide, .tpl-card');
+  els.forEach(el => fit(el));
   const ro = new ResizeObserver(entries => entries.forEach(e => fit(e.target)));
-  els.forEach(el => { fit(el); ro.observe(el); });
-});
+  els.forEach(el => ro.observe(el));
+  window.addEventListener('resize', () => els.forEach(el => fit(el)));
+})();
 
-  // ── Mobile Nav ──
-  (() => {
-    const toggle = document.getElementById('nav-toggle');
-    const links = document.querySelector('.nav-links');
-    if (toggle && links) {
-      toggle.addEventListener('click', () => {
-        toggle.classList.toggle('is-open');
-        links.classList.toggle('is-open');
+// ── Mobile Nav ──
+(() => {
+  const toggle = document.getElementById('nav-toggle');
+  const links = document.querySelector('.nav-links');
+  if (toggle && links) {
+    toggle.addEventListener('click', () => {
+      toggle.classList.toggle('is-open');
+      links.classList.toggle('is-open');
+    });
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        toggle.classList.remove('is-open');
+        links.classList.remove('is-open');
       });
-      links.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-          toggle.classList.remove('is-open');
-          links.classList.remove('is-open');
-        });
-      });
-    }
-  });
+    });
+  }
+})();
 
   // ── Lightbox ──
   (() => {
