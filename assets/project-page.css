@@ -6,12 +6,6 @@
    refined Outfit typography, structured editorial chapters, and 100% English text.
    Dark by default; <html data-theme="light"> switches a page to the paper theme. */
 
-@font-face { font-family: "Outfit"; src: url("fonts/Outfit-Light.ttf") format("truetype"); font-weight: 300; font-style: normal; font-display: swap; }
-@font-face { font-family: "Outfit"; src: url("fonts/Outfit-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: "Outfit"; src: url("fonts/Outfit-Medium.ttf") format("truetype"); font-weight: 500; font-style: normal; font-display: swap; }
-@font-face { font-family: "Outfit"; src: url("fonts/Outfit-SemiBold.ttf") format("truetype"); font-weight: 600; font-style: normal; font-display: swap; }
-@font-face { font-family: "Outfit"; src: url("fonts/Outfit-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: "Outfit"; src: url("fonts/Outfit-ExtraBold.ttf") format("truetype"); font-weight: 800; font-style: normal; font-display: swap; }
 
 :root {
   --bg: #0b0b0b;
@@ -2059,5 +2053,174 @@ html[data-theme="light"] .wds-hero h1 em {
   transform: translateY(-1px);
 }
 
+/* ── Tool Mechanics & Diagram Component ── */
+.tool-mech {
+  background: transparent !important;
+  padding: clamp(38px, 4.6vw, 64px) 0 !important;
+  border-bottom: 1px solid var(--line);
+}
+.mech-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr) !important;
+  gap: clamp(36px, 5vw, 84px) !important;
+  align-items: center !important;
+}
+.tool-mech h3 {
+  font-family: var(--ff) !important;
+  font-weight: 800 !important;
+  font-size: clamp(24px, 3.2vw, 38px) !important;
+  letter-spacing: -0.03em !important;
+  line-height: 1.12 !important;
+  color: var(--ink) !important;
+  margin-bottom: 18px !important;
+}
+.mech-lead {
+  font-size: clamp(15px, 1.4vw, 17px) !important;
+  line-height: 1.72 !important;
+  color: var(--ink-mid) !important;
+  max-width: 62ch !important;
+}
+.mech-lead strong {
+  color: var(--ink) !important;
+  font-weight: 600 !important;
+}
+.mech-lead code {
+  font-family: var(--ff-mono);
+  font-size: 0.9em;
+  padding: 2px 6px;
+  background: var(--surface-dim);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+.mech-facts {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 8px !important;
+  margin-top: 28px !important;
+}
+.mech-fact {
+  background: var(--surface) !important;
+  border: 1px solid var(--border) !important;
+  border-top: 3px solid var(--m-tint, var(--accent-orange)) !important;
+  padding: 16px 16px 18px !important;
+  border-radius: var(--r-card, 6px) !important;
+  transition: transform 140ms ease, border-color 140ms ease;
+}
+.mech-fact:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+}
+.mech-fact-l {
+  font-size: 10.5px !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-dim) !important;
+  margin-bottom: 7px !important;
+  font-weight: 600 !important;
+}
+.mech-fact-v {
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: var(--ink-mid) !important;
+  font-weight: 500 !important;
+}
+.mech-ctas {
+  display: flex !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+  margin-top: 28px !important;
+}
+.story-cta {
+  display: inline-flex !important;
+  align-items: center !important;
+  padding: 10px 22px !important;
+  border-radius: var(--r-pill) !important;
+  border: 1px solid var(--ink) !important;
+  background: var(--ink) !important;
+  color: var(--bg) !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.08em !important;
+  text-decoration: none !important;
+  text-transform: uppercase !important;
+  transition: all 140ms ease !important;
+}
+.story-cta:hover {
+  opacity: 0.88 !important;
+  transform: translateY(-1px) !important;
+}
 
+/* Diagram styling — strictly bounded and responsive */
+.mech-figure {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  width: 100% !important;
+  max-width: 380px !important;
+  margin: 0 auto !important;
+}
+.diagram {
+  width: 100% !important;
+  max-width: 320px !important;
+  height: auto !important;
+  max-height: 260px !important;
+  overflow: visible !important;
+  display: block !important;
+}
+.diagram .ink {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.diagram .tint {
+  fill: none;
+  stroke: var(--m-tint, var(--accent-orange));
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.diagram .tint-fill {
+  fill: var(--m-tint, var(--accent-orange));
+  stroke: none;
+}
+.diagram .faint {
+  fill: none;
+  stroke: var(--border-strong, rgba(20,20,20,0.22));
+  stroke-width: 1.5;
+  stroke-dasharray: 4 5;
+  stroke-linecap: round;
+}
+.diagram text {
+  font-family: var(--ff) !important;
+  font-size: 7.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  fill: var(--ink) !important;
+  text-transform: uppercase !important;
+}
+.diagram .draw {
+  stroke-dasharray: 340;
+  stroke-dashoffset: 0;
+}
+.diagram .pulse {
+  transform-origin: center;
+  transform-box: fill-box;
+}
 
+@media (max-width: 900px) {
+  .mech-grid {
+    grid-template-columns: 1fr !important;
+    gap: 36px !important;
+  }
+  .mech-figure {
+    justify-content: center !important;
+  }
+  .diagram {
+    max-width: 260px !important;
+  }
+  .mech-facts {
+    grid-template-columns: 1fr !important;
+  }
+}
