@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,37 +18,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2');
-      font-weight: 400;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2');
-      font-weight: 500;
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'Geist Sans';
-      src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2');
-      font-weight: 600;
-      font-display: swap;
-    }
 
     /* ─── Tokens ─── */
     :root {
-      --bg: #0b0b0b;
-      --ink: #ffffff;
-      --ink-mid: rgba(255, 255, 255, 0.76);
-      --ink-dim: rgba(255, 255, 255, 0.44);
-      --line: rgba(255, 255, 255, 0.12);
-      --border: rgba(255, 255, 255, 0.16);
-      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #76716a;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --ff: "Outfit", system-ui, -apple-system, sans-serif;
       --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
       /* Project accent: blue (Product Design) */
       --acc: #2563eb;
@@ -126,7 +108,7 @@
     /* ═══ Slide deck (wds-*) ═══ */
     .deck { max-width: 1360px; margin: 0 auto; padding: 0 20px 8px; }
     .wds-slide { margin-bottom: 2px; }
-    .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
+    .wds-serif { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
     .wds-kick { font-size: clamp(11px, 0.85vw, 13px); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
 
     /* Hero — real UI art under a dark scrim, blue glow */
@@ -163,12 +145,8 @@
     /* Video pair — dark slide. Video needs true black: the players letterbox
        their own frame, and any lighter ground draws that edge as a seam. */
     .wds-video { background: #000; color: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
-    /* Scrolled, the section breaks out of the 1360px deck to full viewport
-       width so the black is the whole band, not a card floating on the page.
-       Deck view is untouched — there each slide already fills the screen. */
-    html:not([data-view="deck-v"]) .wds-video { width: 100vw; margin-inline: calc(50% - 50vw); }
     .wds-video .wds-kick { color: rgba(255,255,255,0.5); margin-bottom: 10px; }
-    .wds-video h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; margin-bottom: 26px; }
+    .wds-video h2 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; margin-bottom: 26px; }
     .video-compare { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; margin: 0 auto; }
     .video-label { font-size: clamp(11px, 0.8vw, 13px); letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 10px; text-align: center; }
     .video-frame { position: relative; width: 100%; aspect-ratio: 9/16; border-radius: 4px; overflow: hidden; background: #000; }
@@ -180,12 +158,12 @@
     .wds-world--before { background: #161619; color: #fff; }
     .wds-world--after { background: var(--acc); color: #fff; }
     .wds-world-tag { font-size: clamp(10px, 0.78vw, 12.5px); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 14px; }
-    .wds-world--before .wds-world-tag { color: rgba(255,255,255,0.42); }
-    .wds-world--after .wds-world-tag { color: rgba(255,255,255,0.72); }
-    .wds-world h4 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.7vw, 34px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 16px; }
+    .wds-world--before .wds-world-tag { color: rgba(255,255,255,0.62); }
+    .wds-world--after .wds-world-tag { color: rgba(255,255,255,0.92); }
+    .wds-world h4 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.7vw, 34px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 16px; }
     .wds-world p { font-size: clamp(14.5px, 1.08vw, 18px); line-height: 1.66; margin-bottom: 22px; max-width: 44ch; }
     .wds-world--before p { color: rgba(255,255,255,0.58); }
-    .wds-world--after p { color: rgba(255,255,255,0.86); }
+    .wds-world--after p { color: rgba(255,255,255,0.94); }
     .wds-world .wds-chips { margin-top: 0; }
     .wds-world--before .wds-chip { border: 1px solid rgba(255,255,255,0.18); color: rgba(255,255,255,0.82); }
     .wds-world--after .wds-chip { border-color: rgba(255,255,255,0.34); color: #fff; }
@@ -226,7 +204,7 @@
     .fix-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; margin-top: 30px; }
     .fix-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
     .fix-card { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: clamp(24px, 2vw, 34px) clamp(22px, 1.9vw, 32px) clamp(26px, 2.2vw, 36px); }
-    .fix-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(26px, 2.1vw, 34px); line-height: 1; letter-spacing: -0.03em; color: var(--acc); margin-bottom: 14px; }
+    .fix-num { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-size: clamp(26px, 2.1vw, 34px); line-height: 1; letter-spacing: -0.03em; color: var(--acc); margin-bottom: 14px; }
     .fix-before { font-size: clamp(13px, 0.98vw, 16px); color: var(--ink-dim); margin-bottom: 9px; }
     .fix-arrow { font-size: 17px; color: rgba(18,18,18,0.22); margin-bottom: 9px; }
     .fix-after { font-size: clamp(15px, 1.15vw, 19px); font-weight: 600; letter-spacing: -0.015em; line-height: 1.5; color: var(--ink); }
@@ -239,7 +217,7 @@
     .wds-evidence .wds-kick { margin-bottom: 10px; }
     .wds-evidence.is-dark .wds-kick { color: rgba(255,255,255,0.5); }
     .wds-evidence.is-cream .wds-kick { color: var(--acc); }
-    .wds-evidence h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
+    .wds-evidence h2 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
     .wds-evidence-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; max-width: 64ch; margin-bottom: 28px; }
     .wds-evidence.is-dark .wds-evidence-lead { color: rgba(255,255,255,0.62); }
     .wds-evidence.is-cream .wds-evidence-lead { color: var(--ink-mid); }
@@ -272,7 +250,7 @@
        differently, and this is the one slide that must stay true to the text. */
     .wds-structure { background: transparent; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
     .wds-structure .wds-kick { color: var(--acc); margin-bottom: 10px; }
-    .wds-structure h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
+    .wds-structure h2 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 22ch; margin-bottom: 14px; }
     .wds-structure-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
     .ia-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 30px; }
     .ia-panel { background: #fff; border: 1px solid var(--line); padding: clamp(22px, 2vw, 34px); }
@@ -303,7 +281,7 @@
     }
     .wds-craft > * { position: relative; z-index: 1; }
     .wds-craft .wds-kick { color: rgba(255,255,255,0.5); margin-bottom: 10px; }
-    .wds-craft h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(28px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.06; max-width: 21ch; margin-bottom: 16px; }
+    .wds-craft h2 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(28px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1.06; max-width: 21ch; margin-bottom: 16px; }
     .wds-craft h2 em { font-style: italic; color: var(--acc-tint); }
     .wds-craft-lead { font-size: clamp(15px, 1.18vw, 19.5px); line-height: 1.7; color: rgba(255,255,255,0.7); max-width: 64ch; }
     .wds-craft-lead strong { color: #fff; font-weight: 600; }
@@ -318,21 +296,21 @@
        closing line reads as a conclusion rather than as a claim of completeness. */
     .wds-retro { background: #fff; border-top: 1px solid var(--line); padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
     .wds-retro .wds-kick { color: var(--ink-dim); margin-bottom: 10px; }
-    .wds-retro h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 14px; }
+    .wds-retro h2 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 14px; }
     .wds-retro-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
     .retro-list { display: grid; gap: 2px; margin-top: 28px; }
     .retro-item { display: grid; grid-template-columns: auto 1fr; gap: clamp(16px, 1.8vw, 30px); align-items: start; background: transparent; padding: clamp(20px, 1.9vw, 30px) clamp(20px, 1.8vw, 30px); }
-    .retro-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(20px, 1.8vw, 28px); color: var(--acc); line-height: 1; }
+    .retro-num { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-size: clamp(20px, 1.8vw, 28px); color: var(--acc); line-height: 1; }
     .retro-title { font-size: clamp(15.5px, 1.2vw, 20px); line-height: 1.4; color: var(--ink); margin-bottom: 8px; }
     .retro-body { font-size: clamp(13.5px, 1.02vw, 17px); line-height: 1.62; color: var(--ink-mid); max-width: 78ch; }
 
     /* Proof — cream slide, the numbers (once on the page) */
     .wds-proof { background: transparent; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
-    .wds-proof h2 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 16px; }
+    .wds-proof h2 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(27px, 3.8vw, 48px); letter-spacing: -0.03em; line-height: 1.04; max-width: 20ch; margin-bottom: 16px; }
     .wds-proof-lead { font-size: clamp(15px, 1.15vw, 19px); line-height: 1.7; color: var(--ink-mid); max-width: 64ch; }
     .proof-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 28px; }
     .proof-stat { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--acc); padding: clamp(22px, 1.8vw, 32px) clamp(20px, 1.7vw, 30px) clamp(24px, 2vw, 34px); }
-    .proof-stat-num { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(30px, 3.2vw, 44px); letter-spacing: -0.03em; color: var(--ink); margin-bottom: 8px; }
+    .proof-stat-num { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-size: clamp(30px, 3.2vw, 44px); letter-spacing: -0.03em; color: var(--ink); margin-bottom: 8px; }
     .proof-stat-label { font-size: clamp(13px, 1vw, 16.5px); line-height: 1.55; color: var(--ink-mid); }
     @media (max-width: 700px) { .proof-stats { grid-template-columns: 1fr; } }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,20 +18,17 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&amp;family=Noto+Sans+JP:wght@400;500;600&amp;display=swap" rel="stylesheet">
   <style>
-    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
-    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight: 500; font-display: swap; }
-    @font-face { font-family: 'Geist Sans'; src: url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
     :root {
-      --bg: #0b0b0b;
-      --ink: #ffffff;
-      --ink-mid: rgba(255, 255, 255, 0.76);
-      --ink-dim: rgba(255, 255, 255, 0.44);
-      --line: rgba(255, 255, 255, 0.12);
-      --border: rgba(255, 255, 255, 0.16);
-      --ff: "Geist Sans", system-ui, -apple-system, sans-serif;
+      --bg: #fbfaf7;
+      --ink: #121212;
+      --ink-mid: #4c4841;
+      --ink-dim: #76716a;
+      --line: rgba(18,18,18,0.08);
+      --border: rgba(18,18,18,0.10);
+      --ff: "Outfit", system-ui, -apple-system, sans-serif;
       --ff-mono: ui-monospace, "SF Mono", Menlo, monospace;
       --ff-jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
       /* Cyan, the accent the owner specified for this project. The text-weight
@@ -80,7 +77,7 @@
     /* ═══ Slide deck ═══ */
     .deck { max-width: 1240px; margin: 0 auto; padding: 8px 20px 8px; }
     .wds-slide { margin-bottom: 2px; }
-    .wds-serif { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
+    .wds-serif { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; letter-spacing: -0.03em; line-height: 0.98; }
     .wds-kick { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; }
     html.lang-jp .wds-serif { line-height: 1.2; letter-spacing: -0.01em; }
     html.lang-jp .wds-serif em { white-space: nowrap; }
@@ -124,7 +121,7 @@
     .tw-tag { font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600; margin-bottom: 18px; }
     .tw-before .tw-tag { color: var(--ink-dim); }
     .tw-after .tw-tag { color: #67e8f9; }
-    .tw-col h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.7vw, 36px); letter-spacing: -0.02em; line-height: 1.08; margin-bottom: 16px; }
+    .tw-col h3 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.7vw, 36px); letter-spacing: -0.02em; line-height: 1.08; margin-bottom: 16px; }
     .tw-col p { font-size: clamp(14px, 1.3vw, 16px); line-height: 1.74; }
     .tw-before p { color: var(--ink-mid); }
     .tw-after p { color: rgba(255,255,255,0.68); }
@@ -137,7 +134,7 @@
     /* ─── Cream / plain content slide ─── */
     .tool-mech { background: transparent; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
     .tool-mech.is-plain { background: #fff; }
-    .tool-mech h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
+    .tool-mech h3 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 16px; }
     .mech-lead { font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.72; color: var(--ink-mid); max-width: 66ch; }
     .mech-lead strong { color: var(--ink); font-weight: 600; }
     .mech-lead code, .tree-note code, .move code, .retro-item code { font-family: var(--ff-mono); font-size: 0.88em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
@@ -171,7 +168,7 @@
 
     /* ─── Evidence figures ─── */
     .ev { background: transparent; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
-    .ev h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.8vw, 38px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 14px; }
+    .ev h3 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(23px, 2.8vw, 38px); letter-spacing: -0.02em; line-height: 1.06; margin-bottom: 14px; }
     .ev-lead { font-size: clamp(14px, 1.35vw, 16px); line-height: 1.72; color: var(--ink-mid); max-width: 66ch; }
     .ev-lead code { font-family: var(--ff-mono); font-size: 0.88em; background: rgba(18,18,18,0.06); padding: 1px 5px; }
     .ev-figwrap { margin-top: 30px; }
@@ -181,12 +178,12 @@
     html.lang-jp .ev-fig.t-en { display: none; }
     .ev-fig.t-jp { display: none; }
     html.lang-jp .ev-fig.t-jp { display: block; }
-    .ev-cap { margin-top: 12px; font-size: 12px; line-height: 1.6; color: var(--ink-dim); }
+    .ev-cap { margin-top: 12px; font-size: 12px; line-height: 1.6; color: var(--ink-mid); }
 
     /* ─── Craft (dark) ─── */
     .craft { background: #131316; color: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
     .craft .wds-kick { color: rgba(255,255,255,0.5); }
-    .craft h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; color: #fff; margin-bottom: 16px; }
+    .craft h3 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; color: #fff; margin-bottom: 16px; }
     .craft-lead { font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.74; color: rgba(255,255,255,0.68); max-width: 66ch; }
     .craft-cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; margin-top: 32px; }
     .craft-col { background: rgba(255,255,255,0.045); border: 1px solid rgba(255,255,255,0.11); padding: 22px 22px 24px; }
@@ -206,10 +203,10 @@
 
     /* ─── Proof — the only numbers on the page ─── */
     .proof { background: transparent; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
-    .proof h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
+    .proof h3 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
     .proof-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2px; margin-top: 30px; }
     .proof-cell { background: #fff; border: 1px solid var(--line); border-top: 3px solid var(--a-tool); padding: 24px 22px 26px; }
-    .proof-n { font-family: "DM Serif Display", Georgia, serif; font-size: clamp(34px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1; margin-bottom: 12px; }
+    .proof-n { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-size: clamp(34px, 4vw, 52px); letter-spacing: -0.03em; line-height: 1; margin-bottom: 12px; }
     .proof-d { font-size: 13px; line-height: 1.65; color: var(--ink-mid); }
     .proof-close { margin-top: 30px; font-size: clamp(14.5px, 1.4vw, 16.5px); line-height: 1.74; color: var(--ink-mid); max-width: 66ch; }
     .proof-close strong { color: var(--ink); font-weight: 600; }
@@ -219,7 +216,7 @@
 
     /* ─── Retrospective ─── */
     .retro { background: #fff; padding: clamp(38px, 4.6vw, 64px) clamp(24px, 3vw, 50px); }
-    .retro h3 { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
+    .retro h3 { font-family: "Newsreader", "EB Garamond", Georgia, serif; font-weight: 400; font-size: clamp(24px, 3vw, 40px); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 14px; }
     .retro-lead { font-size: clamp(14px, 1.35vw, 16px); line-height: 1.72; color: var(--ink-mid); max-width: 66ch; }
     .retro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-top: 30px; }
     .retro-item { background: var(--bg); border: 1px solid var(--line); padding: 24px 24px 26px; }

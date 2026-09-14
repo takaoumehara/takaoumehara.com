@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,11 +18,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..600&family=Noto+Sans+JP:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Regular.woff2') format('woff2'); font-weight:400; font-display:swap; }
-    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-Medium.woff2') format('woff2'); font-weight:500; font-display:swap; }
-    @font-face { font-family:'Geist Sans'; src:url('https://cdn.jsdelivr.net/npm/geist@1.7.0/dist/fonts/geist-sans/Geist-SemiBold.woff2') format('woff2'); font-weight:600; font-display:swap; }
       /* ─── Cross-document view transition — docs/page-transitions.md ───────
        The card the visitor clicked grows into this page's hero band while the
        rest of the page cross-fades under it. It takes both documents: the
@@ -88,7 +85,7 @@
          keep the full-chroma hue so saturation reads as deliberate. */
       --p-violet: #57359b;
       --p-blue: #1f4a9c;
-      --p-orange: #c9620e;
+      --p-orange: #b4520a;
       --p-green: #16783c;
       --p-amber: #cf7d10;
       /* 5-3C'02 Rich palette */
@@ -161,7 +158,7 @@
     .project-hero-content { position:relative; z-index:2; padding:56px 32px; max-width:1200px; margin:0 auto; width:100%; }
     .project-hero-tags { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
     .project-hero-tag { font-size:10px; letter-spacing:0.14em; text-transform:uppercase; color:rgba(255,255,255,0.7); border:1px solid rgba(255,255,255,0.24); padding:5px 9px; }
-    .project-hero-title { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(32px,5vw,64px); font-weight:400; letter-spacing:-0.03em; line-height:0.93; color:#fff; max-width:860px; margin-bottom:24px; }
+    .project-hero-title { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:clamp(32px,5vw,64px); font-weight:400; letter-spacing:-0.03em; line-height:0.93; color:#fff; max-width:860px; margin-bottom:24px; }
     .project-hero-subtitle { font-size:17px; line-height:1.68; color:rgba(255,255,255,0.62); max-width:680px; margin-bottom:32px; }
     .project-hero-meta { display:flex; gap:32px; flex-wrap:wrap; }
     .project-meta-item { display:flex; flex-direction:column; gap:3px; }
@@ -175,7 +172,7 @@
 
     .project-body { max-width:1200px; margin:0 auto; padding:64px 32px 80px; }
     .project-overview { display:grid; grid-template-columns:1fr 1.6fr; gap:64px; margin-bottom:72px; padding-bottom:72px; border-bottom:1px solid var(--line); }
-    .project-section-title { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(22px,2.4vw,30px); font-weight:400; letter-spacing:-0.02em; margin-bottom:20px; }
+    .project-section-title { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:clamp(22px,2.4vw,30px); font-weight:400; letter-spacing:-0.02em; margin-bottom:20px; }
     .project-text { font-size:16px; line-height:1.72; color:var(--ink-mid); margin-bottom:20px; }
     .project-aside-label { font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:16px; }
     .project-aside-stat { margin-bottom:24px; }
@@ -241,13 +238,13 @@
     .wf-bar-orange { background:var(--p-orange); flex:1; }
     .wf-bar-green { background:var(--p-green); }
     .wf-bar-blue { background:var(--p-blue); flex:1.5; }
-    .wf-bar-yellow { background:var(--p-amber); color:#fff; }
+    .wf-bar-yellow { background:var(--p-amber); color:#141414; }
     .wf-tools-bar { display:flex; gap:2px; margin-bottom:16px; }
     .wf-tool { padding:8px 16px; font-size:10px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-dim); border:1px solid var(--line); flex:1; text-align:center; }
 
     /* ─── Big Statement ─── */
     .big-statement { margin:8px 0 72px; }
-    .big-statement h2 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(38px,5.6vw,76px); line-height:1.06; letter-spacing:-0.03em; max-width:1020px; margin-top:8px; }
+    .big-statement h2 { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(38px,5.6vw,76px); line-height:1.06; letter-spacing:-0.03em; max-width:1020px; margin-top:8px; }
     .big-statement .hl { box-shadow:inset 0 -0.24em 0 0 rgba(249,115,22,0.26); }
     .big-statement-note { font-size:16px; line-height:1.7; color:var(--ink-mid); max-width:640px; margin-top:24px; }
     .big-statement-sub { margin-top:36px; display:flex; gap:48px; flex-wrap:wrap; }
@@ -753,11 +750,11 @@
       .pg-flow { display:grid; grid-template-columns:repeat(6,1fr); gap:2px; margin-top:2px; }
       .pg-stage { background:#fff; border:1px solid var(--line); display:flex; flex-direction:column; }
       .pg-stage-top { padding:20px 16px 16px; flex:1; }
-      .pg-stage-n { font-family:"DM Serif Display",Georgia,serif; font-size:24px; line-height:1; letter-spacing:-0.03em; color:var(--ink-dim); margin-bottom:12px; }
+      .pg-stage-n { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:24px; line-height:1; letter-spacing:-0.03em; color:var(--ink-dim); margin-bottom:12px; }
       .pg-stage-t { font-size:13px; font-weight:600; letter-spacing:-0.01em; line-height:1.25; margin-bottom:7px; }
       .pg-stage-d { font-size:11.5px; line-height:1.5; color:var(--ink-dim); }
       .pg-pain { margin-top:auto; min-height:122px; padding:14px 16px 16px; background:#fbeceb; border-top:1px solid rgba(217,45,32,0.18); }
-      .pg-pain-tag { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:#d92d20; font-weight:600; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
+      .pg-pain-tag { font-size:9px; letter-spacing:0.14em; text-transform:uppercase; color:#b42318; font-weight:600; margin-bottom:6px; display:flex; align-items:center; gap:6px; }
       .pg-pain-tag::before { content:""; width:7px; height:7px; border-radius:50%; background:#d92d20; flex-shrink:0; }
       .pg-pain-d { font-size:11.5px; line-height:1.52; color:#933029; }
       .pg-flow-cap { font-size:12px; letter-spacing:0.02em; color:var(--ink-dim); margin-top:14px; }
@@ -768,7 +765,7 @@
       .wds-head { margin:clamp(48px,7vh,88px) 0 24px; padding-bottom:20px; border-bottom:2px solid var(--ink); }
       html[data-view^="deck"] .wds-head { margin-top:0; }
       .wds-head-eyebrow { display:block; font-size:12px; letter-spacing:0.16em; text-transform:uppercase; font-weight:600; color:var(--ink-dim); margin-bottom:14px; }
-      .wds-head-title { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(32px,5vw,64px); letter-spacing:-0.03em; line-height:0.96; }
+      .wds-head-title { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(32px,5vw,64px); letter-spacing:-0.03em; line-height:0.96; }
       .wds-head-role { display:block; font-family:var(--ff); font-size:clamp(12.5px,1.1vw,14.5px); letter-spacing:0.06em; text-transform:uppercase; color:var(--ink-dim); font-weight:600; margin-top:14px; }
     </style>
 
@@ -975,7 +972,7 @@
         </div>
         <div class="sol-arrow">&rarr;</div>
         <div class="sol-agent">
-          <div class="sol-label" style="color:#f97316;">AI Solution</div>
+          <div class="sol-label" style="color:#c2410c;">AI Solution</div>
           <div class="sol-name">Master Brain</div>
           <div class="sol-desc">Three-layer knowledge hub (Brand, Research, Project) on NotebookLM. Single source of truth that eliminates tribal knowledge dependency.</div>
         </div>
@@ -988,7 +985,7 @@
         </div>
         <div class="sol-arrow">&rarr;</div>
         <div class="sol-agent">
-          <div class="sol-label" style="color:#16a34a;">AI Solution</div>
+          <div class="sol-label" style="color:#15803d;">AI Solution</div>
           <div class="sol-name">Justin &mdash; Edge Case Detector</div>
           <div class="sol-desc">4-layer deep scan across data, system, user state, and temporal layers. Outputs a Logic Gap Matrix before a single line of code is written.</div>
         </div>
@@ -1001,7 +998,7 @@
         </div>
         <div class="sol-arrow">&rarr;</div>
         <div class="sol-agent">
-          <div class="sol-label" style="color:#2563eb;">AI Solution</div>
+          <div class="sol-label" style="color:#1d4ed8;">AI Solution</div>
           <div class="sol-name">Sally &mdash; Principal CX Strategist</div>
           <div class="sol-desc">Behavioral-science-grounded agent (Fogg, Nudge Theory, Cognitive Load, Nielsen&rsquo;s Heuristics) that audits flows and returns ranked strategic options. Replaces the void where user testing should have been.</div>
         </div>
@@ -1014,7 +1011,7 @@
         </div>
         <div class="sol-arrow">&rarr;</div>
         <div class="sol-agent">
-          <div class="sol-label" style="color:#eab308;">AI Solution</div>
+          <div class="sol-label" style="color:#a16207;">AI Solution</div>
           <div class="sol-name">WDS &mdash; Strategic Design Collective</div>
           <div class="sol-desc">Multi-agent design engine with specialist roles. The system does the scaffolding. Humans do the judgment.</div>
         </div>
@@ -1024,7 +1021,7 @@
     <!-- ── Scan → deep-dive boundary ── -->
     <div class="project-section reveal-on-scroll deck-slide" style="text-align:center; padding:clamp(40px,6vh,72px) 0; border-top:1px solid var(--line); margin-top:24px;">
       <div style="font-size:11px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-dim); font-weight:600; margin-bottom:14px;">You&rsquo;ve seen the what &middot; below is the how</div>
-      <h2 class="wds-serif" style="font-family:'DM Serif Display',Georgia,serif; font-weight:400; font-size:clamp(28px,4vw,52px); letter-spacing:-0.03em; line-height:1.0; max-width:20ch; margin:0 auto;">The deep dive &mdash; each system, up close.</h2>
+      <h2 class="wds-serif" style="font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(28px,4vw,52px); letter-spacing:-0.03em; line-height:1.0; max-width:20ch; margin:0 auto;">The deep dive &mdash; each system, up close.</h2>
       <p style="font-size:14px; line-height:1.7; color:var(--ink-mid); max-width:52ch; margin:16px auto 0;">Everything above is the whole story in brief. Read on for how each agent actually works &mdash; or jump with the rail on the left.</p>
     </div>
 
@@ -1033,17 +1030,17 @@
       /* ─── Master Brain three-brain architecture ─── */
       .mb-feed { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
       .mb-source { padding:clamp(28px,3.4vw,46px) clamp(22px,2.6vw,38px); color:#fff; }
-      .mb-source .mb-tag { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.72; margin-bottom:12px; }
-      .mb-source h5 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(21px,2.5vw,32px); letter-spacing:-0.02em; line-height:1.04; margin-bottom:12px; }
+      .mb-source .mb-tag { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.92; margin-bottom:12px; }
+      .mb-source h5 { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(21px,2.5vw,32px); letter-spacing:-0.02em; line-height:1.04; margin-bottom:12px; }
       .mb-source p { font-size:13px; line-height:1.6; opacity:0.86; max-width:36ch; }
       .mb-source--brand { background:var(--p-violet); }
       .mb-source--research { background:var(--p-blue); }
       .mb-join { display:flex; align-items:center; justify-content:center; gap:12px; padding:13px; background:#161619; color:rgba(255,255,255,0.6); font-size:10.5px; letter-spacing:0.18em; text-transform:uppercase; font-weight:600; }
       .mb-join::before, .mb-join::after { content:"\2193"; font-size:15px; opacity:0.8; }
       .mb-hub { background:var(--p-orange); color:#fff; padding:clamp(34px,4.6vw,66px) clamp(26px,3vw,52px); }
-      .mb-hub .mb-tag { font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.72); margin-bottom:16px; }
-      .mb-hub h4 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(30px,4.6vw,62px); letter-spacing:-0.03em; line-height:0.98; max-width:15ch; }
-      .mb-hub p { font-size:clamp(14px,1.4vw,16.5px); line-height:1.68; color:rgba(255,255,255,0.88); max-width:56ch; margin-top:18px; }
+      .mb-hub .mb-tag { font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.92); margin-bottom:16px; }
+      .mb-hub h4 { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(30px,4.6vw,62px); letter-spacing:-0.03em; line-height:0.98; max-width:15ch; }
+      .mb-hub p { font-size:clamp(14px,1.4vw,16.5px); line-height:1.68; color:#ffffff; max-width:56ch; margin-top:18px; }
       .mb-out { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
       .mb-out-item { background:rgba(255,255,255,0.72); border:1px solid var(--line); padding:24px 20px; border-top:3px solid #f97316; }
       .mb-out-item h6 { font-size:13px; font-weight:600; letter-spacing:-0.01em; margin-bottom:8px; }
@@ -1133,7 +1130,7 @@
       .wds-hero.jc-hero h3 em { color:#4ade80; }
       .jc-trap { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:30px; }
       .jc-trap-card { background:#0f0f10; color:#fff; padding:clamp(28px,3vw,40px) clamp(22px,2.4vw,32px); }
-      .jc-trap-n { font-family:"DM Serif Display",Georgia,serif; font-size:30px; line-height:1; letter-spacing:-0.03em; color:rgba(255,255,255,0.32); margin-bottom:16px; }
+      .jc-trap-n { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:30px; line-height:1; letter-spacing:-0.03em; color:rgba(255,255,255,0.32); margin-bottom:16px; }
       .jc-trap-t { font-size:18px; font-weight:600; letter-spacing:-0.015em; margin-bottom:10px; }
       .jc-trap-d { font-size:13px; line-height:1.62; color:rgba(255,255,255,0.56); }
       .jc-trap-card.is-cost { background:#7f1d1d; }
@@ -1148,12 +1145,12 @@
       .jc-inputs span { font-size:11.5px; letter-spacing:0.01em; padding:6px 12px; border:1px solid var(--border); border-radius:6px; color:var(--ink-mid); background:rgba(255,255,255,0.7); }
       .jc-layers { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
       .jc-layer { padding:clamp(26px,2.8vw,38px) clamp(20px,2vw,26px); color:#fff; }
-      .jc-layer-n { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.72; margin-bottom:12px; }
-      .jc-layer-t { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(20px,2.2vw,27px); letter-spacing:-0.02em; margin-bottom:10px; }
+      .jc-layer-n { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; opacity:0.9; margin-bottom:12px; }
+      .jc-layer-t { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(20px,2.2vw,27px); letter-spacing:-0.02em; margin-bottom:10px; }
       .jc-layer-d { font-size:12.5px; line-height:1.56; opacity:0.9; }
       .jc-payoff { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:2px; }
       .jc-pay { background:rgba(255,255,255,0.72); border:1px solid var(--line); border-top:3px solid #16a34a; padding:26px 24px; }
-      .jc-pay-t { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:#16a34a; font-weight:600; margin-bottom:10px; }
+      .jc-pay-t { font-size:11px; letter-spacing:0.14em; text-transform:uppercase; color:#15803d; font-weight:600; margin-bottom:10px; }
       .jc-pay-d { font-size:13px; line-height:1.6; color:var(--ink-mid); }
       @media (max-width:900px) { .jc-trap { grid-template-columns:1fr; } .jc-scan-head { grid-template-columns:1fr; } .jc-scan-img { max-width:150px; } .jc-layers { grid-template-columns:1fr 1fr; } .jc-payoff { grid-template-columns:1fr; } }
       @media (max-width:520px) { .jc-layers { grid-template-columns:1fr; } }
@@ -1201,7 +1198,7 @@
       <!-- Slide 3 — the 4-layer deep scan -->
       <div class="wds-slide deck-slide">
         <div class="jc-scan-head">
-          <img class="jc-scan-img" src="../assets/verizon-ai-agents/agent-justin-portrait.jpg" alt="Illustrated portrait of Justin Case, the Edge Case Detector AI agent, examining a layered wireframe stack with a magnifying glass" loading="lazy" onerror="this.remove">
+          <img class="jc-scan-img" src="../assets/verizon-ai-agents/agent-justin-portrait.jpg" alt="Illustrated portrait of Justin Case, the Edge Case Detector AI agent, examining a layered wireframe stack with a magnifying glass" loading="lazy" onerror="this.remove()">
           <div>
             <div class="wds-kick" style="color:#16a34a;">The 4-Layer Deep Scan Protocol</div>
             <h4 class="wds-serif jc-scan-title">Four layers. Every gap ranked. No code written yet.</h4>
@@ -1245,7 +1242,7 @@
           
         </p>
         <div class="mb-owned" style="margin-top:24px; padding-top:22px;">
-          <div class="mb-owned-tag" style="color:#16a34a;">Held up to scrutiny</div>
+          <div class="mb-owned-tag" style="color:#15803d;">Held up to scrutiny</div>
           <div class="mb-owned-txt">On a plan-migration initiative, the PM and engineers reviewed Justin's findings line by line and rated most four to five stars &mdash; catches like a suspended-line migration trap and legacy-promo removal that would otherwise have surfaced months later, in production.</div>
         </div>
         <div class="jc-payoff">
@@ -1275,7 +1272,7 @@
       .sl-in-tag { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:18px; }
       .sl-file { display:flex; gap:13px; align-items:baseline; padding:14px 0; border-top:1px solid var(--border); }
       .sl-file:first-of-type { border-top:none; padding-top:0; }
-      .sl-file-n { font-family:"DM Serif Display",Georgia,serif; font-size:19px; color:#2563eb; line-height:1; flex-shrink:0; }
+      .sl-file-n { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:19px; color:#2563eb; line-height:1; flex-shrink:0; }
       .sl-file-t { font-size:14px; font-weight:600; letter-spacing:-0.01em; margin-bottom:3px; }
       .sl-file-d { font-size:12px; color:var(--ink-mid); line-height:1.5; }
       .sl-bridge { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; background:var(--p-amber); color:#141414; padding:0 clamp(16px,2vw,26px); min-width:84px; text-align:center; }
@@ -1283,7 +1280,7 @@
       .sl-bridge-label { font-size:10px; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; }
       .sl-hub { background:#161619; color:#fff; padding:clamp(30px,3.4vw,48px) clamp(26px,3vw,42px); }
       .sl-hub-tag { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:#60a5fa; margin-bottom:14px; }
-      .sl-hub h5 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(24px,3vw,38px); letter-spacing:-0.02em; line-height:1.02; margin-bottom:22px; }
+      .sl-hub h5 { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(24px,3vw,38px); letter-spacing:-0.02em; line-height:1.02; margin-bottom:22px; }
       .sl-layers3 { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
       .sl-l3 { padding:16px 15px; border:1px solid rgba(255,255,255,0.14); }
       .sl-l3-t { font-size:13.5px; font-weight:600; margin-bottom:5px; }
@@ -1488,7 +1485,7 @@
       .wds-show { margin:4px 0 8px; }
       .wds-slide { margin-bottom:2px; }
       .wds-kick { font-size:11px; letter-spacing:0.2em; text-transform:uppercase; font-weight:600; margin-bottom:22px; }
-      .wds-serif { font-family:"DM Serif Display",Georgia,serif; font-weight:400; letter-spacing:-0.03em; line-height:0.98; }
+      .wds-serif { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; letter-spacing:-0.03em; line-height:0.98; }
 
       /* Slide 1 — hero statement */
       .wds-hero { position:relative; overflow:hidden; background:#0d0d0f; color:#fff; padding:clamp(46px,6.5vw,96px) clamp(28px,5vw,78px); }
@@ -1506,9 +1503,9 @@
       .wds-world--eng { background:#161619; color:#fff; }
       .wds-world--des { background: transparent; color:var(--ink); }
       .wds-world-tag { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; margin-bottom:14px; }
-      .wds-world--eng .wds-world-tag { color:rgba(255,255,255,0.42); }
+      .wds-world--eng .wds-world-tag { color:rgba(255,255,255,0.62); }
       .wds-world--des .wds-world-tag { color:var(--ink-dim); }
-      .wds-world h4 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(24px,2.8vw,36px); letter-spacing:-0.02em; line-height:1.05; margin-bottom:16px; }
+      .wds-world h4 { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(24px,2.8vw,36px); letter-spacing:-0.02em; line-height:1.05; margin-bottom:16px; }
       .wds-world p { font-size:14px; line-height:1.62; margin-bottom:20px; max-width:40ch; }
       .wds-world--eng p { color:rgba(255,255,255,0.56); }
       .wds-world--des p { color:var(--ink-mid); }
@@ -1523,9 +1520,9 @@
       /* Slide 3 — three moves */
       .wds-moves { display:grid; gap:2px; }
       .wds-move { display:grid; grid-template-columns:minmax(150px,0.85fr) 1.7fr; gap:clamp(20px,3vw,46px); align-items:center; padding:clamp(30px,4vw,52px) clamp(24px,3vw,46px); background:rgba(255,255,255,0.72); border:1px solid var(--line); border-top:3px solid; }
-      .wds-move-num { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(48px,7vw,96px); line-height:0.88; letter-spacing:-0.04em; }
+      .wds-move-num { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:clamp(48px,7vw,96px); line-height:0.88; letter-spacing:-0.04em; }
       .wds-move-num small { display:block; font-family:var(--ff); font-size:11px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-top:16px; }
-      .wds-move h4 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(22px,2.6vw,33px); letter-spacing:-0.02em; line-height:1.08; margin-bottom:14px; }
+      .wds-move h4 { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(22px,2.6vw,33px); letter-spacing:-0.02em; line-height:1.08; margin-bottom:14px; }
       .wds-move p { font-size:14.5px; line-height:1.68; color:var(--ink-mid); margin-bottom:14px; }
       .wds-move p:last-child { margin-bottom:0; }
       .wds-move .wds-file { display:flex; flex-wrap:wrap; gap:7px; margin-top:18px; }
@@ -1534,33 +1531,33 @@
       /* Techniques strip */
       .wds-tech { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
       .wds-tech-item { background:#161619; color:#fff; padding:clamp(26px,3vw,40px) clamp(22px,2.4vw,32px); }
-      .wds-tech-n { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:12px; }
+      .wds-tech-n { font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:rgba(255,255,255,0.62); margin-bottom:12px; }
       .wds-tech-t { font-size:17px; font-weight:600; letter-spacing:-0.015em; line-height:1.2; margin-bottom:10px; }
       .wds-tech-d { font-size:13px; line-height:1.6; color:rgba(255,255,255,0.56); }
 
       /* Slide 4 — adoption */
       .wds-adopt { background: transparent; padding:clamp(38px,4.6vw,64px) clamp(24px,3vw,50px); }
-      .wds-adopt h4 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(28px,4vw,52px); letter-spacing:-0.03em; line-height:1.02; max-width:18ch; margin-bottom:20px; }
+      .wds-adopt h4 { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(28px,4vw,52px); letter-spacing:-0.03em; line-height:1.02; max-width:18ch; margin-bottom:20px; }
       .wds-adopt-lead { font-size:clamp(14.5px,1.4vw,16.5px); line-height:1.72; color:var(--ink-mid); max-width:62ch; }
       .wds-adopt-lead strong { color:var(--ink); font-weight:600; }
       .wds-flow { display:grid; grid-template-columns:repeat(6,1fr); gap:2px; margin-top:32px; }
       .wds-flow-step { background:#fff; border:1px solid var(--line); padding:18px 16px; }
-      .wds-flow-n { font-family:"DM Serif Display",Georgia,serif; font-size:26px; line-height:1; letter-spacing:-0.03em; margin-bottom:12px; }
+      .wds-flow-n { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:26px; line-height:1; letter-spacing:-0.03em; margin-bottom:12px; }
       .wds-flow-t { font-size:12.5px; font-weight:600; letter-spacing:-0.005em; margin-bottom:5px; }
       .wds-flow-d { font-size:11.5px; line-height:1.5; color:var(--ink-dim); }
       .wds-teach { display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; margin-top:26px; padding-top:24px; border-top:1px solid var(--border); }
-      .wds-teach-num { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(34px,4vw,52px); line-height:1; letter-spacing:-0.04em; }
+      .wds-teach-num { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:clamp(34px,4vw,52px); line-height:1; letter-spacing:-0.04em; }
       .wds-teach-txt { font-size:13.5px; line-height:1.6; color:var(--ink-mid); max-width:46ch; }
 
       /* Slide 5 — WDS collective */
       .wds-collective-head { padding:clamp(30px,3.4vw,44px) clamp(24px,3vw,44px) clamp(20px,2.4vw,30px); background:rgba(255,255,255,0.72); border:1px solid var(--line); }
-      .wds-collective-head h4 { font-family:"DM Serif Display",Georgia,serif; font-weight:400; font-size:clamp(26px,3.6vw,46px); letter-spacing:-0.03em; line-height:1.02; margin-bottom:16px; }
+      .wds-collective-head h4 { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-weight:400; font-size:clamp(26px,3.6vw,46px); letter-spacing:-0.03em; line-height:1.02; margin-bottom:16px; }
       .wds-collective-head p { font-size:14.5px; line-height:1.7; color:var(--ink-mid); max-width:74ch; }
       .wds-agents { display:grid; grid-template-columns:repeat(5,1fr); gap:2px; }
       .wds-agent { display:flex; flex-direction:column; background:rgba(255,255,255,0.72); border:1px solid var(--line); }
       .wds-agent-figure { position:relative; aspect-ratio:1/1; overflow:hidden; display:flex; align-items:center; justify-content:center; }
       .wds-agent-figure img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-      .wds-agent-mono { font-family:"DM Serif Display",Georgia,serif; font-size:clamp(42px,4.4vw,68px); color:rgba(255,255,255,0.92); }
+      .wds-agent-mono { font-family:"Newsreader", "EB Garamond", Georgia, serif; font-size:clamp(42px,4.4vw,68px); color:rgba(255,255,255,0.92); }
       .wds-agent-body { padding:18px 18px 22px; border-top:3px solid; flex:1; }
       .wds-agent-seq { font-size:9.5px; letter-spacing:0.16em; text-transform:uppercase; color:var(--ink-dim); margin-bottom:8px; }
       .wds-agent-name { font-size:20px; font-weight:600; letter-spacing:-0.025em; margin-bottom:3px; }
@@ -1750,7 +1747,7 @@
         <div class="wds-agent">
           <div class="wds-agent-figure" style="background:linear-gradient(155deg,#f97316,#c2410c);">
             <span class="wds-agent-mono">M</span>
-            <img src="../assets/verizon-ai-agents/agent-mimir-portrait.jpg" alt="Illustrated portrait of Mimir, the WDS Orchestrator AI agent, a wise guide routing work to the right specialist" loading="lazy" onerror="this.remove">
+            <img src="../assets/verizon-ai-agents/agent-mimir-portrait.jpg" alt="Illustrated portrait of Mimir, the WDS Orchestrator AI agent, a wise guide routing work to the right specialist" loading="lazy" onerror="this.remove()">
           </div>
           <div class="wds-agent-body" style="border-top-color:#f97316;">
             <div class="wds-agent-seq">Agent 01</div>
@@ -1762,7 +1759,7 @@
         <div class="wds-agent">
           <div class="wds-agent-figure" style="background:linear-gradient(155deg,#2563eb,#1e40af);">
             <span class="wds-agent-mono">S</span>
-            <img src="../assets/verizon-ai-agents/agent-saga-portrait.jpg" alt="Illustrated portrait of Saga, the WDS Analyst AI agent, a strategic thinker mapping business goals to user psychology" loading="lazy" onerror="this.remove">
+            <img src="../assets/verizon-ai-agents/agent-saga-portrait.jpg" alt="Illustrated portrait of Saga, the WDS Analyst AI agent, a strategic thinker mapping business goals to user psychology" loading="lazy" onerror="this.remove()">
           </div>
           <div class="wds-agent-body" style="border-top-color:#2563eb;">
             <div class="wds-agent-seq">Agent 02</div>
@@ -1774,7 +1771,7 @@
         <div class="wds-agent">
           <div class="wds-agent-figure" style="background:linear-gradient(155deg,#16a34a,#15803d);">
             <span class="wds-agent-mono">F</span>
-            <img src="../assets/verizon-ai-agents/agent-freya-portrait.jpg" alt="Illustrated portrait of Freya, the WDS Designer AI agent, a UX/UI specialist turning strategy into interaction flows" loading="lazy" onerror="this.remove">
+            <img src="../assets/verizon-ai-agents/agent-freya-portrait.jpg" alt="Illustrated portrait of Freya, the WDS Designer AI agent, a UX/UI specialist turning strategy into interaction flows" loading="lazy" onerror="this.remove()">
           </div>
           <div class="wds-agent-body" style="border-top-color:#16a34a;">
             <div class="wds-agent-seq">Agent 03</div>
@@ -1786,7 +1783,7 @@
         <div class="wds-agent">
           <div class="wds-agent-figure" style="background:linear-gradient(155deg,#eab308,#a16207);">
             <span class="wds-agent-mono">I</span>
-            <img src="../assets/verizon-ai-agents/agent-idunn-portrait.jpg" alt="Illustrated portrait of Idunn, the WDS Architect and PM AI agent, bridging design concepts to technical requirements" loading="lazy" onerror="this.remove">
+            <img src="../assets/verizon-ai-agents/agent-idunn-portrait.jpg" alt="Illustrated portrait of Idunn, the WDS Architect and PM AI agent, bridging design concepts to technical requirements" loading="lazy" onerror="this.remove()">
           </div>
           <div class="wds-agent-body" style="border-top-color:#eab308;">
             <div class="wds-agent-seq">Agent 04</div>
@@ -1798,7 +1795,7 @@
         <div class="wds-agent">
           <div class="wds-agent-figure" style="background:linear-gradient(155deg,#7c3aed,#5b21b6);">
             <span class="wds-agent-mono">E</span>
-            <img src="../assets/verizon-ai-agents/agent-eira-portrait.jpg" alt="Illustrated portrait of Eira, the WDS Visual Designer AI agent, creating visual concepts, brand explorations, and design tokens" loading="lazy" onerror="this.remove">
+            <img src="../assets/verizon-ai-agents/agent-eira-portrait.jpg" alt="Illustrated portrait of Eira, the WDS Visual Designer AI agent, creating visual concepts, brand explorations, and design tokens" loading="lazy" onerror="this.remove()">
           </div>
           <div class="wds-agent-body" style="border-top-color:#7c3aed;">
             <div class="wds-agent-seq">Agent 05</div>
