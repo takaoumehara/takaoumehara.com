@@ -259,6 +259,39 @@
       z-index: 10 !important;
     }
 
+    /* ─── Prototype Code view ─── */
+    .proto-code {
+      display: none !important;
+      margin: 0 !important;
+      width: 100% !important;
+      max-height: 720px !important;
+      overflow: auto !important;
+      padding: 24px 28px !important;
+      background: #0d1117 !important;
+      color: #c9d1d9 !important;
+      font-family: var(--ff-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace) !important;
+      font-size: 12.5px !important;
+      line-height: 1.65 !important;
+      white-space: pre !important;
+      tab-size: 2 !important;
+      border: none !important;
+      box-sizing: border-box !important;
+      text-align: left !important;
+    }
+    .proto-viewport.is-code {
+      display: block !important;
+      padding: 0 !important;
+      background: #0d1117 !important;
+      min-height: 480px !important;
+    }
+    .proto-viewport.is-code > iframe,
+    .proto-viewport.is-code .iphone-frame {
+      display: none !important;
+    }
+    .proto-viewport.is-code .proto-code {
+      display: block !important;
+    }
+
     /* ─── Code blocks ─── */
     .ds-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 8px 0 40px; }
     .code-block { background: #0d1117; border: 1px solid #1e2430; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; min-width: 0; }
@@ -968,6 +1001,7 @@
         // Code panel (created lazily, appended to the viewport)
         const codeEl = document.createElement('pre');
         codeEl.className = 'proto-code';
+        codeEl.style.display = 'none';
         viewport.appendChild(codeEl);
         let codeLoaded = false;
         const loadCode = () => {
@@ -975,9 +1009,18 @@
           codeLoaded = true;
           codeEl.textContent = 'Loading source…';
           fetch(src)
-            .then(r => r.text())
+            .then(r => {
+              if (!r.ok) throw new Error('HTTP ' + r.status);
+              return r.text();
+            })
             .then(txt => { codeEl.textContent = txt; })
-            .catch(() => { codeEl.textContent = 'Could not load source in the frame. Use “Open Full Screen” and view the page source.'; });
+            .catch(() => {
+              codeEl.textContent = '<!-- Source Code Preview -->\n\n'
+                + '/* Note: When viewed locally via file://, browser security restricts fetch() calls.\n'
+                + '   On the live web (https://www.takaoumehara.com), the full source code loads here.\n'
+                + '   To view this prototype\'s source locally, click "Open Full Screen →" above\n'
+                + '   and choose "View Page Source" in your browser. */';
+            });
         };
 
         // Default to mobile (iPhone frame)
@@ -988,9 +1031,21 @@
             btns.forEach(b => b.classList.remove('is-active'));
             btn.classList.add('is-active');
             const v = btn.dataset.view;
-            viewport.classList.toggle('is-mobile', v === 'mobile');
-            viewport.classList.toggle('is-code', v === 'code');
-            if (v === 'code') loadCode();
+            if (v === 'code') {
+              viewport.classList.remove('is-mobile');
+              viewport.classList.add('is-code');
+              codeEl.style.display = 'block';
+              loadCode();
+            } else if (v === 'mobile') {
+              viewport.classList.remove('is-code');
+              viewport.classList.add('is-mobile');
+              codeEl.style.display = 'none';
+            } else {
+              // desktop
+              viewport.classList.remove('is-code');
+              viewport.classList.remove('is-mobile');
+              codeEl.style.display = 'none';
+            }
           });
         });
 
