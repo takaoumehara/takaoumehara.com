@@ -28,8 +28,12 @@ assets/xq-directory/XQ_DIRECTORY.mp4
 # thumb.jpg / still.jpg / preview.mp4 next to them, never these.
 assets/*/masters
 
-# Source of the generated pages — not part of the deployed site
-src
+# src/ is deployed: the Studio (studio/) imports the engine and the renderer as
+# ES modules straight from src/, and the API functions import them too. The
+# data is the same public content the pages are rendered from. Pitch material
+# (job descriptions of companies applied to) stays out; the samples are shipped.
+src/pitches/*
+!src/pitches/samples
 
 # Draft-lens previews (node src/build.mjs --preview)
 lens/_preview

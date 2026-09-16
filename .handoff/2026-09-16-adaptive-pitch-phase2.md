@@ -9,7 +9,7 @@ Handoff: `.handoff/2026-09-16-adaptive-pitch-phase2.md`
 Passphrase: 「Direct は与えるものではなく、稼ぐもの」
 Goal: 求人票を読んで、証拠ライブラリから 3〜5 件を選び、企業専用 Lens の下書きと
   「何が合い・何が無いか」のレポートを出す。LLM を呼ばず、規則と語彙表だけで。
-State: **Phase 2 ＋ Phase 3a（Fit Ledger）完了。** `npm test` 106/106。ブランチ `claude/peaceful-rubin-j7wsvg`、PR #17。
+State: **Phase 2 ＋ 3a（Fit Ledger）＋ 3b（Studio、GitHub publish）完了。** `npm test` 118/118、Studio の Chromium テスト 1/1。ブランチ `claude/peaceful-rubin-j7wsvg`、PR #17。
   計画の全体（3b Studio＋GitHub ログイン publish、3c 公開デモ、3d 配布）は
   `/root/.claude/plans/glowing-roaming-nebula.md` に書いた内容を §16 に写す予定（次のセッション）。
   `src/lenses/stripe.json` は draft（未公開）。`lens/stripe/index.html` は無い。
@@ -26,6 +26,12 @@ Running: プロセスは無し。
 （direct 100 / partial 60 / adjacent 30 / none 0）を並べる。`src/analyze/fit.mjs`、
 `validate.mjs` の `fitCeiling()`（本人は level を下げられるが上げられない）、
 `sections.mjs` の `fitSection()`。設計は §16.6。年数・学位の行は載せず、脚注で「履歴書で答える」。
+
+## Phase 3b — Studio（2026-09-16）
+
+`/studio/`。エンジンと描画をブラウザで（`src/` を ES モジュールとして配信）。公開は `api/publish`
+（GitHub OAuth、owner のみ、Git Data API で 1 commit）。設計と**本人がやる 3 手順（OAuth App・環境変数・初回 Publish）**は §16.7。
+**GitHub 実 API と Vercel 上の実行は未検証。**
 
 ## 使い方
 

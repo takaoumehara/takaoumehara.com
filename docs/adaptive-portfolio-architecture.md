@@ -701,3 +701,51 @@ experiment / tool / venture → `solo`。Festival の chair と KOJI FIZZ の「
 
 データへの含意: **`contribution.mine` の 1 行が台帳の説得力そのもの。** 1 行 = 自分がした 1 つの具体的な行為に整える。
 `scripts/audit-evidence.mjs` が 40 語超の行や 3 つ以上を詰めた行を指摘する（`docs/evidence-gaps.md`）。
+
+### 16.7 Studio — ブラウザで貼って、見て、GitHub の名前で公開する（Phase 3b、2026-09-16）
+
+`/studio/`（noindex、nav に無い）。本人の決定は「最初から GitHub ログイン＋自動 commit」。
+
+**画面はサーバー無しで動く。** `studio/studio.mjs` は `src/analyze`・`src/validate.mjs`・`src/render` を
+**ビルドと同じ ES モジュールのまま**ブラウザで import する（バンドラ無し、依存ゼロ）。データは
+`assets/studio/library.json`（`node src/build.mjs` が書く、証拠 46 件＋語彙表、`_notes` は落とす）。
+そのために `.vercelignore` は `src/` を配信対象に戻した（`src/pitches/*` だけ除外、`samples` は配信）。
+`src/analyze/jd.mjs` からファイル入力と語彙表の読み込みを `intake.node.mjs` に分けたので、
+`studio.mjs` から辿れるモジュールに `node:` の import は 1 つも無い（テストが走査する）。
+
+| 画面 | 何が起きるか |
+|---|---|
+| 貼る／URL | URL は `/api/fetch-jd`（サーバー側で取得。ログイン必須。読めなければ貼り付けへ誘導） |
+| Analyze | `analyzeJob → scoreEvidence → selectProof → draftLens` をその場で実行。下書きと台帳とプレビュー |
+| 直す | カードの framing（承認済み angle のみ）・表示/非表示、台帳の level（**上限までしか選べない**）・引用行（その記録の `mine` のみ）・注記、hero / lede / CTA の文（EN・JP） |
+| Guard | 変更のたびに `validateLens` をブラウザで実行。赤い行が 1 つでもあれば公開ボタンは押せない |
+| Preview | `renderLens` をブラウザで実行し iframe に描画。**ビルドと同じコード** |
+| Publish | `POST /api/publish { lens }` → サーバーで再検証・再描画・**1 commit**（`src/lenses/<slug>.json`、`lens/<slug>/index.html`、`assets/studio/library.json`）→ Vercel が `/lens/<slug>` を配信 |
+| Download | JSON と report.md。API が無い環境（ローカルの `python3 -m http.server`）でも手で commit できる |
+
+**API（`api/`、Vercel Functions、Web 標準の `Request → Response`、依存ゼロ）**
+
+| 関数 | 役割 |
+|---|---|
+| `auth/login` | GitHub OAuth（scope `public_repo`）。state cookie |
+| `auth/callback` | code → token。**`OWNER_LOGIN` 以外は 403**。セッションは AES-GCM で封じた HttpOnly cookie（8 時間）。サーバーに保存しない |
+| `auth/me` · `auth/logout` | |
+| `fetch-jd` | `readJobText({ url })` をサーバーで |
+| `publish` | `_lib/publish.mjs`: `validateAll` → `renderAll` → `_lib/github.mjs` の Git Data API で commit。`PUBLISH_MODE=pr` なら `studio/<slug>-…` ブランチ＋PR |
+
+決定論: 関数が commit する HTML は `node src/build.mjs` が書くものと一字一句同じ（テストが比較する）。
+`renderAll` に `assetExists` を渡せるようにした — 関数のバンドルには画像が無いので、画像の存在検査は
+直前のビルドの結果を信頼する（新しい Lens は画像を足さない）。
+
+**本人がやること（1 回だけ）**
+
+1. GitHub → Settings → Developer settings → OAuth Apps → New。Callback URL: `https://takaoumehara.com/api/auth/callback`
+2. Vercel のプロジェクトの Environment Variables:
+   `GITHUB_CLIENT_ID`、`GITHUB_CLIENT_SECRET`、`SESSION_SECRET`（`openssl rand -hex 32`）、`OWNER_LOGIN=takaoumehara`、
+   任意で `REPO`（既定 `takaoumehara/takaoumehara.com`）、`PUBLISH_BRANCH`（既定 `main`）、`PUBLISH_MODE`（`commit` か `pr`）、`SITE_URL`
+3. デプロイ後 `/studio/` → Sign in → サンプルで 1 回 Publish → `/lens/stripe` が開く → `git pull` して `npm test` が通ることを確認
+
+**検証したこと・していないこと**: Node のテスト 12 件（封印、owner 以外の拒否、fetch-jd、publish の commit 内容と HTML の一致、PR モード）と、
+Chromium で `/studio/` にサンプルを貼って 5 カード・台帳・プレビュー・Claim Guard の赤線が出ること。
+**GitHub の実 API と Vercel 上の実行は未検証**（この作業環境から外向き通信不可）。Web 標準ハンドラ（`export function GET(request)`）が
+Vercel の Node ランタイムで動く前提。動かなければ `(req, res)` 形式への薄い変換を `api/_lib` に足す。

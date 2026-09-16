@@ -2,7 +2,7 @@
 // model calls: the same posting always produces the same analysis, and nothing
 // here can invent a capability that is not in the taxonomy.
 //
-//   readJobText({ url | file | text })  → { text, title?, company?, source }
+//   readJobText({ url | text })         → { text, title?, company?, source }   (file input: intake.node.mjs)
 //   extractJobText(html)                → text (schema.org JobPosting first, then the page body)
 //   analyzeJob(text, { lexicon, capabilities, title, company }) → JobAnalysis
 //
@@ -12,12 +12,8 @@
 //   seniority           { id, label }
 //   requirements        [{ name, hits }]             — named tools / credentials found
 //   lines               [{ text, section, weight }]  — the posting, sectioned
-import { readFileSync } from "node:fs";
-import { join, dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const HERE = dirname(fileURLToPath(import.meta.url));
-export const loadLexicon = () => JSON.parse(readFileSync(join(HERE, "lexicon.json"), "utf8"));
+// This module runs in Node and in the browser (Phase 3b Studio), so it reads
+// no files. loadLexicon() and file input live in ./intake.node.mjs.
 
 // ── Intake ──────────────────────────────────────────────────────────────────
 
@@ -107,9 +103,8 @@ export async function fetchJobPage(url, { fetchImpl = globalThis.fetch, timeoutM
  * with `.reason` = "unreadable" when a fetched page carries too little text
  * (a JavaScript-rendered board, a login wall), so the caller can offer paste.
  */
-export async function readJobText({ url, file, text, fetchImpl } = {}) {
+export async function readJobText({ url, text, fetchImpl } = {}) {
   if (text != null) return { text: String(text).trim(), source: "text" };
-  if (file) return { text: readFileSync(file, "utf8").trim(), source: file };
   if (url) {
     let html;
     try { html = await fetchJobPage(url, { fetchImpl }); } catch (error) {
@@ -204,7 +199,8 @@ export function detectTitle(text, given) {
 
 const MAX_HITS_PER_PHRASE = 4;
 
-export function analyzeJob(text, { lexicon = loadLexicon(), capabilities, title, company } = {}) {
+export function analyzeJob(text, { lexicon, capabilities, title, company } = {}) {
+  if (!lexicon) throw new Error("analyzeJob needs a lexicon (loadLexicon() from intake.node.mjs, or the fetched lexicon.json)");
   const capIds = new Set(capabilities.map((c) => c.id));
   const lines = sectionize(text, lexicon);
   const jobTitle = detectTitle(text, title);

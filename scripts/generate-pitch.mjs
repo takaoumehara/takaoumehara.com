@@ -30,7 +30,8 @@ import { existsSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { loadLibrary, ROOT } from "../src/lib/load.mjs";
 import { validateLens, evidenceCorpus } from "../src/validate.mjs";
-import { readJobText, analyzeJob, loadLexicon, guessCompany, slugify, phraseRegex, MIN_WORDS } from "../src/analyze/jd.mjs";
+import { analyzeJob, guessCompany, slugify, phraseRegex, MIN_WORDS } from "../src/analyze/jd.mjs";
+import { loadLexicon, readJobInput } from "../src/analyze/intake.node.mjs";
 import { scoreEvidence, selectProof, requirementCheck } from "../src/analyze/match.mjs";
 import { draftLens } from "../src/analyze/draft.mjs";
 import { renderReport } from "../src/analyze/report.mjs";
@@ -62,7 +63,7 @@ async function readStdin({ interactive }) {
 }
 
 export async function generatePitch({ company, role, slug, url, file, text, max = 5, force = false, publish = false, outDir = ROOT, lib = loadLibrary(), lexicon = loadLexicon(), fetchImpl, seenAt = new Date().toISOString().slice(0, 10) } = {}) {
-  const job = await readJobText({ url, file, text, fetchImpl });
+  const job = await readJobInput({ url, file, text, fetchImpl });
   company = company ?? job.company ?? (url ? guessCompany(url) : undefined);
   if (!company) {
     const error = new Error("Could not tell which company this is. Pass --company \"Name\".");

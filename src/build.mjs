@@ -10,7 +10,8 @@
 // are skipped. Any validation error aborts the whole build.
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { loadLibrary, loadLenses, loadCategories, ROOT } from "./lib/load.mjs";
+import { loadLibrary, loadLenses, loadCategories, serializeLibrary, ROOT } from "./lib/load.mjs";
+import { loadLexicon } from "./analyze/intake.node.mjs";
 import { validateAll } from "./validate.mjs";
 import { renderLens } from "./render/page.mjs";
 import { renderCategory } from "./render/category.mjs";
@@ -25,8 +26,8 @@ export function outputPath(lens) {
 export const previewPath = (lens) => `lens/_preview/${lens.slug}/index.html`;
 
 /** Render every published lens. Returns Map<relativePath, html>. Throws on validation errors. */
-export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categories = loadCategories(), preview = false } = {}) {
-  const errors = validateAll(lib, lenses, { assetExists: (path) => existsSync(join(ROOT, path)) }, categories);
+export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categories = loadCategories(), preview = false, assetExists = (path) => existsSync(join(ROOT, path)) } = {}) {
+  const errors = validateAll(lib, lenses, { assetExists }, categories);
   if (errors.length) {
     const error = new Error(`Validation failed (${errors.length}):\n  - ${errors.join("\n  - ")}`);
     error.details = errors;
@@ -69,6 +70,10 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
       ctx: { base: "", canonical: `${SITE_URL}/now` },
     }));
   }
+
+  // The evidence library as one JSON, for the Studio (studio/) and the public demo.
+  // Generated and committed like every other page, so the deterministic-publishing test covers it.
+  pages.set("assets/studio/library.json", JSON.stringify(serializeLibrary(lib, { lexicon: loadLexicon(), lensSlugs: lenses.map((l) => l.slug) })) + "\n");
 
   // Dedicated Japanese Edition at /ja (ja/index.html)
   const defaultLens = lenses.find((l) => l.slug === "default");
