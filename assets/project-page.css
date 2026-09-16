@@ -3137,3 +3137,256 @@ html[data-theme="light"] .wds-hero h1 em {
   text-decoration: underline !important;
 }
 
+/* ── Enhanced Breadcrumb ── */
+.breadcrumb {
+  max-width: var(--col);
+  margin: 0 auto;
+  padding: clamp(16px, 2.5vw, 24px) var(--gutter) clamp(10px, 1.5vw, 16px);
+  color: var(--ink-dim);
+  font-family: var(--ff);
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.breadcrumb a {
+  color: var(--ink-dim);
+  text-decoration: none;
+  transition: color 140ms ease;
+}
+.breadcrumb a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+.breadcrumb-sep {
+  color: var(--line);
+  font-weight: 400;
+  user-select: none;
+}
+.breadcrumb-current {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ── Information Architecture: Before / After & Fix Grid (CLI Studios) ── */
+.wds-structure {
+  padding: clamp(56px, 7vw, 96px) var(--gutter);
+  max-width: var(--col);
+  margin: 0 auto;
+}
+.wds-structure-lead {
+  max-width: 68ch;
+  font-size: clamp(16px, 1.8vw, 18px);
+  line-height: 1.65;
+  color: var(--ink-mid);
+  margin-top: 14px;
+  margin-bottom: clamp(32px, 4vw, 48px);
+}
+.wds-fixes-lead {
+  max-width: 68ch;
+  font-size: clamp(15px, 1.6vw, 17px);
+  line-height: 1.6;
+  color: var(--ink-mid);
+  font-weight: 500;
+}
+
+.ia-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 3vw, 32px);
+  margin-top: 24px;
+}
+@media (max-width: 840px) {
+  .ia-pair {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ia-panel {
+  border-radius: 14px;
+  padding: clamp(22px, 3vw, 32px);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  background: rgba(220, 38, 38, 0.03);
+  border: 1px solid rgba(220, 38, 38, 0.18);
+}
+.ia-panel--after {
+  background: rgba(5, 150, 105, 0.03);
+  border: 1px solid rgba(5, 150, 105, 0.22);
+}
+
+.ia-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  background: rgba(220, 38, 38, 0.09);
+  color: #dc2626;
+  margin-bottom: 24px;
+  align-self: flex-start;
+}
+.ia-panel--after .ia-tag {
+  background: rgba(5, 150, 105, 0.10);
+  color: #059669;
+}
+
+/* Tree node visualization for Before */
+.ia-node {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1px solid rgba(18, 18, 18, 0.12);
+  border-radius: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  margin: 4px 0;
+}
+.ia-modal {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: #fee2e2;
+  color: #991b1b;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.ia-sub {
+  margin-left: 20px;
+  padding-left: 16px;
+  border-left: 2px dashed rgba(220, 38, 38, 0.28);
+  display: flex;
+  flex-direction: column;
+}
+
+.ia-dead {
+  margin-top: 24px;
+  padding: 14px 18px;
+  background: rgba(220, 38, 38, 0.06);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #991b1b;
+  font-weight: 500;
+}
+
+/* Four peer sections for After */
+.ia-secs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 12px 0 20px;
+}
+@media (max-width: 540px) {
+  .ia-secs {
+    grid-template-columns: 1fr;
+  }
+}
+.ia-sec {
+  padding: 14px 16px;
+  background: var(--surface);
+  border: 1px solid rgba(5, 150, 105, 0.22);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+}
+.ia-sec-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.ia-sec-note {
+  font-size: 12px;
+  color: var(--ink-dim);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.ia-flat {
+  margin-top: auto;
+  padding: 14px 18px;
+  background: rgba(5, 150, 105, 0.08);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #065f46;
+  font-weight: 500;
+}
+
+/* 5 Problems -> 5 Fixes Grid */
+.fix-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 20px;
+}
+.fix-card {
+  display: grid;
+  grid-template-columns: 44px 1.1fr 28px 1.5fr;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 22px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+.fix-card:hover {
+  border-color: rgba(5, 150, 105, 0.35);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+}
+@media (max-width: 768px) {
+  .fix-card {
+    grid-template-columns: 36px 1fr;
+    gap: 8px 12px;
+  }
+  .fix-arrow {
+    display: none;
+  }
+  .fix-after {
+    grid-column: 2 / -1;
+  }
+}
+.fix-num {
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-dim);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 4px 8px;
+  border-radius: 6px;
+  text-align: center;
+}
+.fix-before {
+  font-size: 13.5px;
+  color: var(--ink-dim);
+  text-decoration: line-through;
+  text-decoration-color: rgba(220, 38, 38, 0.5);
+  line-height: 1.4;
+}
+.fix-arrow {
+  font-size: 16px;
+  font-weight: 700;
+  color: #059669;
+  text-align: center;
+}
+.fix-after {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.45;
+}
+
+

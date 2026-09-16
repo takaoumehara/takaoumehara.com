@@ -16,7 +16,11 @@ const STATUS_LABEL = {
   live: { en: "Live", jp: "公開中" }, "in-progress": { en: "In progress", jp: "制作中" }, shipped: { en: "Shipped", jp: "リリース済み" },
   released: { en: "Released", jp: "公開済み" },
 };
-export const status = (value) => `<span class="pill pill--status">${t(STATUS_LABEL[value] ?? value)}</span>`;
+export const status = (value) => {
+  if (!value) return "";
+  const label = STATUS_LABEL[value] ?? value;
+  return `<span class="pill pill--status">${t(label)}</span>`;
+};
 
 // The input vocabulary is the argument on these cards, so it is bilingual.
 // These are the exact words the hand-built interactive.html uses.
