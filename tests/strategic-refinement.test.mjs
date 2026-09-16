@@ -106,3 +106,29 @@ test("Interactive category page visible title is Interactive & Playable", () => 
   const html = read("interactive.html");
   assert.match(html, /Interactive &amp; Playable/);
 });
+
+test("workshop.html and publications.html are warm paper light mode and not dark mode", () => {
+  const ws = read("workshop.html");
+  const pub = read("publications.html");
+
+  assert.match(ws, /--bg:\s*#f3f2ee/);
+  assert.ok(!ws.includes("--bg: #0c0d0e"));
+  assert.match(ws, /color:\s*#4a4a44/); // nav-sub text contrast
+
+  assert.match(pub, /--bg:\s*#f3f2ee/);
+  assert.ok(!pub.includes("--bg: #0c0d0e"));
+  assert.match(pub, /color:\s*#4a4a44/); // nav-sub text contrast
+});
+
+test("Resona emphasis is Creative technology and never Web animation", () => {
+  const index = read("index.html");
+  const jaIndex = read("ja/index.html");
+
+  assert.match(index, /Creative technology · Live now/);
+  assert.ok(!index.includes("Web animation · Live now"));
+
+  assert.match(jaIndex, /Creative technology · Live now/);
+  assert.match(jaIndex, /クリエイティブテクノロジー · 公開中/);
+  assert.ok(!jaIndex.includes("ウェブアニメーション · 公開中"));
+});
+
