@@ -67,7 +67,7 @@ test("one h1 per page, and the nav marks the section you are standing in", () =>
   for (const c of categories) {
     const html = read(c.output);
     assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, `${c.output}: exactly one h1`);
-    const active = [...html.matchAll(/<a href="([^"]+)" class="is-active" aria-current="page">/g)].map((m) => m[1]);
+    const active = [...html.matchAll(/<a\b[^>]*\bhref="([^"]+)"[^>]*\bclass="[^"]*\bis-active\b[^"]*"[^>]*\baria-current="page"[^>]*>/g)].map((m) => m[1]);
     assert.deepEqual(active, [c.output], `${c.output}: its own nav item, and only its own`);
   }
 });

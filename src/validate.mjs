@@ -62,7 +62,7 @@ const normaliseToken = (token) => token.replace(/\s+/g, "").replace(/x/gi, "×")
 // "30" in "a question worth thirty minutes" and forced a Japanese sentence to be
 // written as 三十分 to sneak past, which is worse writing than the guard saved.
 // The guard exists to stop invented experience, not to police ordinary numbers.
-const NON_EVIDENTIAL_FIGURES = new Set(["30", "15", "20", "60", "1", "2", "3"]);
+const NON_EVIDENTIAL_FIGURES = new Set(["0", "30", "15", "20", "60", "1", "2", "3"]);
 
 function tokensMissingFrom(text, corpus) {
   const have = numericTokens(corpus);

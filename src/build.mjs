@@ -13,6 +13,7 @@ import { loadLibrary, loadLenses, loadCategories, ROOT } from "./lib/load.mjs";
 import { validateAll } from "./validate.mjs";
 import { renderLens } from "./render/page.mjs";
 import { renderCategory } from "./render/category.mjs";
+import { renderWorkArchive } from "./render/archive.mjs";
 
 export const SITE_URL = "https://takaoumehara.com";
 
@@ -47,6 +48,22 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
       ctx: { base: "", canonical: `${SITE_URL}/${category.output}` },
     }));
   }
+
+  // Unified Work Archive at /work (work/index.html)
+  pages.set("work/index.html", renderWorkArchive({
+    lib, css,
+    ctx: { base: "../", canonical: `${SITE_URL}/work` },
+  }));
+
+  // Dedicated Japanese Edition at /ja (ja/index.html)
+  const defaultLens = lenses.find((l) => l.slug === "default");
+  if (defaultLens) {
+    pages.set("ja/index.html", renderLens({
+      lens: defaultLens, lib, css,
+      ctx: { base: "../", canonical: `${SITE_URL}/ja`, lang: "ja" },
+    }));
+  }
+
   return pages;
 }
 

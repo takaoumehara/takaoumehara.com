@@ -7,18 +7,50 @@ import { esc, href, plain } from "./html.mjs";
 // carries the same weight — only the page you are on is emphasised. The old
 // three-item "lead" tier made Product Design read as disabled from a Brand &
 // Visual page, which is the kind of thing nobody can explain out loud.
-const NAV = [
-  ["interactive.html", "Interactive"],
-  ["ai-products.html", "AI Products"],
-  ["ai-tools.html", "AI Tools"],
-  ["work.html", "Product Design"],
-  ["brand.html", "Brand &amp; Visual"],
-  ["about.html", "About"],
-  ["publications.html", "Publications"],
-  ["workshop.html", "Workshops"],
-  ["contact.html", "Contact"],
+// Canonical navigation: 6 clear entry points, mapping existing deep archive pages underneath.
+const CANONICAL_NAV = [
+  {
+    label: "Work",
+    path: "work.html",
+    sub: [
+      { path: "work.html", label: "Product &amp; Experience Design" },
+      { path: "brand.html", label: "Brand &amp; Creative" },
+    ],
+  },
+  {
+    label: "Builds",
+    path: "interactive.html",
+    sub: [
+      { path: "interactive.html", label: "Interactive &amp; Playable" },
+      { path: "ai-products.html", label: "AI Products &amp; Systems" },
+      { path: "ai-tools.html", label: "AI Tools" },
+    ],
+  },
+  {
+    label: "Ideas",
+    path: "publications.html",
+    sub: [
+      { path: "publications.html", label: "Publications" },
+      { path: "breakbias.html", label: "Break Bias" },
+      { path: "workshop.html", label: "Workshops" },
+      { path: "intentfirst.html", label: "Intent First" },
+    ],
+  },
+  {
+    label: "About",
+    path: "about.html",
+    isTierbreak: true,
+  },
+  {
+    label: "Contact",
+    path: "contact.html",
+  },
+  {
+    label: "Studio ↗",
+    path: "https://creativityiseverywhere.com",
+    external: true,
+  },
 ];
-const NAV_DIVIDER_AT = 5;   // before About
 
 export function head({ lens, ctx, css }) {
   const og = ctx.ogImage ? `<meta property="og:image" content="${esc(href(ctx, ctx.ogImage))}">` : "";
@@ -47,11 +79,30 @@ ${css}
 }
 
 export function nav(ctx, activePath) {
-  const items = NAV.map(([path, label], index) => {
-    const li = index === NAV_DIVIDER_AT ? ` class="is-tierbreak"` : "";
-    const here = path === activePath ? ` class="is-active" aria-current="page"` : "";
-    return `      <li${li}><a href="${esc(href(ctx, path))}"${here}>${label}</a></li>`;
+  const items = CANONICAL_NAV.map((item) => {
+    const isSubActive = item.sub?.some((s) => s.path === activePath);
+    const isParentActive = item.path === activePath || isSubActive;
+    const tierbreak = item.isTierbreak ? ` is-tierbreak` : "";
+    const subClass = item.sub ? ` has-sub` : "";
+    const target = item.external ? ` target="_blank" rel="noopener"` : "";
+
+    const subMenu = item.sub
+      ? `\n        <div class="nav-sub">\n` +
+        item.sub.map((s) => {
+          const here = s.path === activePath ? ` class="nav-sub-link is-active" aria-current="page"` : ` class="nav-sub-link"`;
+          return `          <a href="${esc(href(ctx, s.path))}"${here}>${s.label}</a>`;
+        }).join("\n") +
+        `\n        </div>`
+      : "";
+
+    const ariaCurrent = (!item.sub && item.path === activePath) ? ` aria-current="page"` : "";
+    const activeCls = isParentActive ? ` class="nav-link is-active"` : ` class="nav-link"`;
+
+    return `      <li class="nav-item${tierbreak}${subClass}">
+        <a href="${item.external ? esc(item.path) : esc(href(ctx, item.path))}"${activeCls}${ariaCurrent}${target}>${item.label}</a>${subMenu}
+      </li>`;
   }).join("\n");
+
   return `  <nav class="site-nav">
     <a href="${esc(href(ctx, "index.html"))}" class="nav-logo">
       <span class="nav-logo-name">Takao Umehara</span>

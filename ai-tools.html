@@ -158,11 +158,35 @@ html.lang-jp .t-jp.is-block { display: block; }
 .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
 .nav-logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
 .nav-logo-tag { font-size: 11px; letter-spacing: 0.04em; color: var(--ink-dim); font-weight: 400; text-transform: lowercase; }
-.nav-links { display: flex; gap: 28px; list-style: none; }
-.nav-links li { position: relative; }
-.nav-links a { font-size: 13.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none; letter-spacing: -0.005em; transition: color 160ms ease; }
-.nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-.nav-links .is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--line); }
+.nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+.nav-item { position: relative; }
+.nav-item > a { font-size: 13.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none; letter-spacing: -0.005em; transition: color 160ms ease; padding: 6px 0; }
+.nav-item > a:hover, .nav-item > a.is-active { color: var(--ink); font-weight: 600; }
+.nav-item.is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--line); }
+
+/* Dropdown sub-menu */
+.nav-sub {
+  display: none;
+  position: absolute; top: 100%; left: -14px; min-width: 220px;
+  background: rgba(243, 242, 238, 0.98); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  padding: 6px 0; box-shadow: 0 10px 30px -4px rgba(11, 11, 11, 0.08);
+  list-style: none; z-index: 60;
+}
+.nav-item.has-sub:hover .nav-sub,
+.nav-item.has-sub:focus-within .nav-sub {
+  display: block;
+}
+.nav-sub li { list-style: none; margin: 0; padding: 0; border: none !important; }
+.nav-sub a {
+  display: block; padding: 8px 16px;
+  font-size: 12.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none;
+  transition: background 140ms ease, color 140ms ease;
+}
+.nav-sub a:hover, .nav-sub a.is-active {
+  color: var(--ink); background: rgba(11, 11, 11, 0.05); font-weight: 600;
+}
+
 .nav-toggle { display: none; appearance: none; background: none; border: none; cursor: pointer; width: 44px; height: 44px; position: relative; padding: 0; }
 .nav-toggle > span { display: block; position: absolute; left: 8px; width: 28px; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
 .nav-toggle span:nth-child(1) { top: 12px; }
@@ -175,8 +199,10 @@ html.lang-jp .t-jp.is-block { display: block; }
   .nav-toggle { display: block; }
   .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; padding: 0; background: rgba(243, 242, 238, 0.98); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   .nav-links.is-open { display: flex; }
-  .nav-links li { border-top: 1px solid var(--line); }
-  .nav-links a { display: block; padding: 14px 20px; }
+  .nav-links li.nav-item { border-top: 1px solid var(--line); }
+  .nav-item > a { display: block; padding: 14px 20px; }
+  .nav-sub { display: flex; flex-direction: column; position: static; background: rgba(11, 11, 11, 0.03); border: none; border-radius: 0; box-shadow: none; padding: 2px 0 10px 18px; }
+  .nav-sub a { padding: 8px 16px; font-size: 13px; }
   .nav-links .is-tierbreak::before { display: none; }
 }
 
@@ -523,6 +549,52 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
   .cat-grid { grid-template-columns: 1fr; gap: 44px; }
 }
 
+/* ── Work Archive Filter Bar ── */
+.archive-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 32px 0 44px;
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-family: var(--ff);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 140ms ease;
+  line-height: 1;
+}
+.filter-btn:hover {
+  color: var(--ink);
+  border-color: var(--ink-dim);
+  background: #ffffff;
+}
+.filter-btn.is-active {
+  color: #ffffff;
+  background: var(--ink);
+  border-color: var(--ink);
+  font-weight: 600;
+}
+.filter-btn.is-active .filter-count {
+  color: rgba(255, 255, 255, 0.75);
+}
+.filter-count {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+.cat-card.is-hidden {
+  display: none !important;
+}
+
 /* ── Universal Page transitions: Clean Fade Out / Fade In ────────────────
    Universal cross-fade for seamless, elegant page navigation across all views.
    No thumbnail morphs, no black wipe curtain. */
@@ -565,22 +637,46 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links" id="primary-nav-links">
-      <li><a href="interactive.html">Interactive</a></li>
-      <li><a href="ai-products.html">AI Products</a></li>
-      <li><a href="ai-tools.html" class="is-active" aria-current="page">AI Tools</a></li>
-      <li><a href="work.html">Product Design</a></li>
-      <li><a href="brand.html">Brand &amp; Visual</a></li>
-      <li class="is-tierbreak"><a href="about.html">About</a></li>
-      <li><a href="publications.html">Publications</a></li>
-      <li><a href="workshop.html">Workshops</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li class="nav-item has-sub">
+        <a href="work.html" class="nav-link">Work</a>
+        <div class="nav-sub">
+          <a href="work.html" class="nav-sub-link">Product &amp; Experience Design</a>
+          <a href="brand.html" class="nav-sub-link">Brand &amp; Creative</a>
+        </div>
+      </li>
+      <li class="nav-item has-sub">
+        <a href="interactive.html" class="nav-link is-active">Builds</a>
+        <div class="nav-sub">
+          <a href="interactive.html" class="nav-sub-link">Interactive &amp; Playable</a>
+          <a href="ai-products.html" class="nav-sub-link">AI Products &amp; Systems</a>
+          <a href="ai-tools.html" class="nav-sub-link is-active" aria-current="page">AI Tools</a>
+        </div>
+      </li>
+      <li class="nav-item has-sub">
+        <a href="publications.html" class="nav-link">Ideas</a>
+        <div class="nav-sub">
+          <a href="publications.html" class="nav-sub-link">Publications</a>
+          <a href="breakbias.html" class="nav-sub-link">Break Bias</a>
+          <a href="workshop.html" class="nav-sub-link">Workshops</a>
+          <a href="intentfirst.html" class="nav-sub-link">Intent First</a>
+        </div>
+      </li>
+      <li class="nav-item is-tierbreak">
+        <a href="about.html" class="nav-link">About</a>
+      </li>
+      <li class="nav-item">
+        <a href="contact.html" class="nav-link">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://creativityiseverywhere.com" class="nav-link" target="_blank" rel="noopener">Studio ↗</a>
+      </li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav-links"><span></span><span></span><span></span></button>
   </nav>
   <main class="cat-page">
     <header class="cat-head">
       <h1 class="cat-title"><span class="t-en">AI Tools</span><span class="t-jp">AI ツール</span></h1>
-      <p class="cat-lede"><span class="t-en">I build the tools I build the products with. All open source, all installable today.</span><span class="t-jp is-block">プロダクトをつくる道具を、自分でつくる。全部オープンソース、いますぐ入る。</span></p>
+      <p class="cat-lede"><span class="t-en">I build some of the tools I wish existed while building products. All open source on GitHub.</span><span class="t-jp is-block">プロダクトをつくる中で「あればいいのに」と思った道具を自分でつくる。すべて GitHub で公開中。</span></p>
       <p class="cat-count">7<span class="t-en"> projects</span><span class="t-jp"> 件</span></p>
     </header>
 

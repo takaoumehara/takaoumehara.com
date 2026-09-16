@@ -158,11 +158,35 @@ html.lang-jp .t-jp.is-block { display: block; }
 .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
 .nav-logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
 .nav-logo-tag { font-size: 11px; letter-spacing: 0.04em; color: var(--ink-dim); font-weight: 400; text-transform: lowercase; }
-.nav-links { display: flex; gap: 28px; list-style: none; }
-.nav-links li { position: relative; }
-.nav-links a { font-size: 13.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none; letter-spacing: -0.005em; transition: color 160ms ease; }
-.nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-.nav-links .is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--line); }
+.nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+.nav-item { position: relative; }
+.nav-item > a { font-size: 13.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none; letter-spacing: -0.005em; transition: color 160ms ease; padding: 6px 0; }
+.nav-item > a:hover, .nav-item > a.is-active { color: var(--ink); font-weight: 600; }
+.nav-item.is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--line); }
+
+/* Dropdown sub-menu */
+.nav-sub {
+  display: none;
+  position: absolute; top: 100%; left: -14px; min-width: 220px;
+  background: rgba(243, 242, 238, 0.98); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  padding: 6px 0; box-shadow: 0 10px 30px -4px rgba(11, 11, 11, 0.08);
+  list-style: none; z-index: 60;
+}
+.nav-item.has-sub:hover .nav-sub,
+.nav-item.has-sub:focus-within .nav-sub {
+  display: block;
+}
+.nav-sub li { list-style: none; margin: 0; padding: 0; border: none !important; }
+.nav-sub a {
+  display: block; padding: 8px 16px;
+  font-size: 12.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none;
+  transition: background 140ms ease, color 140ms ease;
+}
+.nav-sub a:hover, .nav-sub a.is-active {
+  color: var(--ink); background: rgba(11, 11, 11, 0.05); font-weight: 600;
+}
+
 .nav-toggle { display: none; appearance: none; background: none; border: none; cursor: pointer; width: 44px; height: 44px; position: relative; padding: 0; }
 .nav-toggle > span { display: block; position: absolute; left: 8px; width: 28px; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
 .nav-toggle span:nth-child(1) { top: 12px; }
@@ -175,8 +199,10 @@ html.lang-jp .t-jp.is-block { display: block; }
   .nav-toggle { display: block; }
   .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; padding: 0; background: rgba(243, 242, 238, 0.98); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   .nav-links.is-open { display: flex; }
-  .nav-links li { border-top: 1px solid var(--line); }
-  .nav-links a { display: block; padding: 14px 20px; }
+  .nav-links li.nav-item { border-top: 1px solid var(--line); }
+  .nav-item > a { display: block; padding: 14px 20px; }
+  .nav-sub { display: flex; flex-direction: column; position: static; background: rgba(11, 11, 11, 0.03); border: none; border-radius: 0; box-shadow: none; padding: 2px 0 10px 18px; }
+  .nav-sub a { padding: 8px 16px; font-size: 13px; }
   .nav-links .is-tierbreak::before { display: none; }
 }
 
@@ -523,6 +549,52 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
   .cat-grid { grid-template-columns: 1fr; gap: 44px; }
 }
 
+/* ── Work Archive Filter Bar ── */
+.archive-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 32px 0 44px;
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-family: var(--ff);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 140ms ease;
+  line-height: 1;
+}
+.filter-btn:hover {
+  color: var(--ink);
+  border-color: var(--ink-dim);
+  background: #ffffff;
+}
+.filter-btn.is-active {
+  color: #ffffff;
+  background: var(--ink);
+  border-color: var(--ink);
+  font-weight: 600;
+}
+.filter-btn.is-active .filter-count {
+  color: rgba(255, 255, 255, 0.75);
+}
+.filter-count {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+.cat-card.is-hidden {
+  display: none !important;
+}
+
 /* ── Universal Page transitions: Clean Fade Out / Fade In ────────────────
    Universal cross-fade for seamless, elegant page navigation across all views.
    No thumbnail morphs, no black wipe curtain. */
@@ -565,24 +637,44 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links" id="primary-nav-links">
-      <li><a href="../../interactive.html">Interactive</a></li>
-      <li><a href="../../ai-products.html">AI Products</a></li>
-      <li><a href="../../ai-tools.html">AI Tools</a></li>
-      <li><a href="../../work.html">Product Design</a></li>
-      <li><a href="../../brand.html">Brand &amp; Visual</a></li>
-      <li class="is-tierbreak"><a href="../../about.html">About</a></li>
-      <li><a href="../../publications.html">Publications</a></li>
-      <li><a href="../../workshop.html">Workshops</a></li>
-      <li><a href="../../contact.html">Contact</a></li>
+      <li class="nav-item has-sub">
+        <a href="../../work.html" class="nav-link">Work</a>
+        <div class="nav-sub">
+          <a href="../../work.html" class="nav-sub-link">Product &amp; Experience Design</a>
+          <a href="../../brand.html" class="nav-sub-link">Brand &amp; Creative</a>
+        </div>
+      </li>
+      <li class="nav-item has-sub">
+        <a href="../../interactive.html" class="nav-link">Builds</a>
+        <div class="nav-sub">
+          <a href="../../interactive.html" class="nav-sub-link">Interactive &amp; Playable</a>
+          <a href="../../ai-products.html" class="nav-sub-link">AI Products &amp; Systems</a>
+          <a href="../../ai-tools.html" class="nav-sub-link">AI Tools</a>
+        </div>
+      </li>
+      <li class="nav-item has-sub">
+        <a href="../../publications.html" class="nav-link">Ideas</a>
+        <div class="nav-sub">
+          <a href="../../publications.html" class="nav-sub-link">Publications</a>
+          <a href="../../breakbias.html" class="nav-sub-link">Break Bias</a>
+          <a href="../../workshop.html" class="nav-sub-link">Workshops</a>
+          <a href="../../intentfirst.html" class="nav-sub-link">Intent First</a>
+        </div>
+      </li>
+      <li class="nav-item is-tierbreak">
+        <a href="../../about.html" class="nav-link">About</a>
+      </li>
+      <li class="nav-item">
+        <a href="../../contact.html" class="nav-link">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://creativityiseverywhere.com" class="nav-link" target="_blank" rel="noopener">Studio ↗</a>
+      </li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav-links"><span></span><span></span><span></span></button>
   </nav>
   <section class="hero" id="top">
-    <p class="hero-id">
-      <b>Takao Umehara</b>
-      <span class="hero-id-sep">·</span> <span class="t-en">AI &amp; Product Executive · Agentic UX</span><span class="t-jp">AI とプロダクトの責任者 · Agentic UX</span>
-      <span class="hero-id-sep">·</span> <span class="t-en">New York ↔ Japan</span><span class="t-jp">ニューヨーク ↔ 日本</span>
-    </p>
+    <p class="hero-id"><b>Takao Umehara</b> <span class="hero-id-sep">·</span> <span class="t-en">New York ↔ Japan</span><span class="t-jp">ニューヨーク ↔ 日本</span></p>
     <p class="hero-eyebrow"><span class="t-en">Product leadership in the age of agents</span><span class="t-jp">エージェントの時代に、プロダクトを率いる</span></p>
     <h1 class="hero-line"><span class="t-en">I design how people and AI share the work.</span><span class="t-jp">人と AI が仕事を分け合う設計をする。</span></h1>
     <p class="hero-sub"><span class="t-en">Inside a locked-down enterprise I built ten AI agents into the workflow a design organisation already used, and moved product decisions to where they are cheap to change. Before that: live-coded prototypes as the spec at a telecom, and product design leadership at Amplify reaching millions of students. Now: a design language for agentic products, and ventures built to test it.</span><span class="t-jp is-block">使える AI が Gemini だけ、という大企業の中で、すでに回っていた仕事の流れに 10 体のエージェントを差し込んだ。判断が「まだ安く直せる」段階へ前に動いた。その前は通信会社で、動くプロトタイプを仕様書の代わりに使った。Amplify では何百万人の生徒に届くプロダクトを率いた。いまはエージェント型プロダクトのためのデザイン言語と、それを試す事業。</span></p>
@@ -733,53 +825,47 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
 
   <section class="band capabilities" id="capabilities">
     <div class="section-head">
-      <h2 class="section-title"><span class="t-en">Where I can be useful to leadership</span><span class="t-jp">一緒に考えられること</span></h2>
-      <p class="section-lede"><span class="t-en">I&#39;m most valuable before the answer is known — when a team needs to figure out what to build, not just polish what is already decided.</span><span class="t-jp is-block">僕がいちばん役に立つのは、すでに決まったものをきれいに仕上げるときより、「そもそも何をやるべきなんだろう」というところから考えるときです。</span></p>
+      <h2 class="section-title"><span class="t-en">Where I can be useful</span><span class="t-jp">一緒に考えられること</span></h2>
+      <p class="section-lede"><span class="t-en">I work best before the answer is known — taking unclear ideas and making them tangible enough to test and move forward.</span><span class="t-jp is-block">僕がいちばん役に立つのは、すでに決まったものをきれいに仕上げるときより、「そもそも何をつくるべきか」というところから考えるときです。</span></p>
     </div>
     <div class="cap-grid">
       <div class="cap-card">
-        <h3 class="cap-title"><span class="t-en">0→1 &amp; New Ventures</span><span class="t-jp">0→1 / 新規事業</span></h3>
-        <p class="cap-question"><span class="t-en">What should we build next?</span><span class="t-jp">次に何をつくるべきか。</span></p>
-        <p class="cap-desc"><span class="t-en">Opportunity discovery, venture concepts, early validation, and prototypes that make ideas tangible enough to test.</span><span class="t-jp">まだ形のない段階から可能性を見出し、検証可能な試作や事業構想として形にする。</span></p>
-        <span class="cap-evidence">intentfirst · MyBrainSpec · BreakBias</span>
+        <h3 class="cap-title"><span class="t-en">0→1 Products &amp; Ventures</span><span class="t-jp">0→1 / 新規事業</span></h3>
+        <p class="cap-desc"><span class="t-en">Taking ambiguous concepts from zero to validated working products and new business models.</span><span class="t-jp">まだ答えのない曖昧な発想から、実際に検証できる動くプロダクトや事業の形をつくる。</span></p>
+        <span class="cap-evidence">Intent First · MyBrainSpec · Break Bias</span>
       </div>
       <div class="cap-card">
-        <h3 class="cap-title"><span class="t-en">Product, CX &amp; AI</span><span class="t-jp">Product / CX / AI</span></h3>
-        <p class="cap-question"><span class="t-en">How should technology change customer experience?</span><span class="t-jp">新しい技術によって、体験や仕事の仕方をどう変えるか。</span></p>
-        <p class="cap-desc"><span class="t-en">Product strategy, experience systems, and embedding autonomous AI agents and workflows into real operations.</span><span class="t-jp">プロダクト戦略、顧客体験システム、そして自律型 AI やワークフローを実際の現場に組み込む設計。</span></p>
-        <span class="cap-evidence">Verizon AI Workflow · Amplify Quests</span>
+        <h3 class="cap-title"><span class="t-en">Interactive Experiences</span><span class="t-jp">インタラクティブ体験</span></h3>
+        <p class="cap-desc"><span class="t-en">Designing playful, multi-device physical and digital experiences that bring people together.</span><span class="t-jp">画面にとどまらず、身体や音、複数のスマホを使って人が集まり熱中する場を設計する。</span></p>
+        <span class="cap-evidence">Resona · Rakugaki Jam · Festival Reinvention</span>
+      </div>
+      <div class="cap-card">
+        <h3 class="cap-title"><span class="t-en">AI Prototypes</span><span class="t-jp">AI プロトタイプ</span></h3>
+        <p class="cap-desc"><span class="t-en">Building functional AI agents and working software to validate possibilities before full-scale engineering.</span><span class="t-jp">本格開発に入る前に、動く AI エージェントやソフトウェアを直接つくり可能性を素早く確かめる。</span></p>
+        <span class="cap-evidence">Verizon AI Workflow · AI Tools · Moime</span>
+      </div>
+      <div class="cap-card">
+        <h3 class="cap-title"><span class="t-en">Product / CX / AI</span><span class="t-jp">Product / CX / AI</span></h3>
+        <p class="cap-desc"><span class="t-en">Architecting complex enterprise product systems and embedding AI directly into human workflows.</span><span class="t-jp">大規模なプロダクト基盤を設計し、日々の業務や体験に馴染む形で AI を組み込む。</span></p>
+        <span class="cap-evidence">Verizon · T-Mobile · Amplify ELA Quests</span>
       </div>
       <div class="cap-card">
         <h3 class="cap-title"><span class="t-en">Brand &amp; Creative Direction</span><span class="t-jp">Brand / Creative Direction</span></h3>
-        <p class="cap-question"><span class="t-en">What should this mean to people?</span><span class="t-jp">この会社やプロダクトは、人にとってどんな存在になるべきか。</span></p>
-        <p class="cap-desc"><span class="t-en">Setting the narrative, visual and interaction language, and holding creative intent all the way through execution.</span><span class="t-jp">言葉、印、ビジュアル、ふるまい。その存在の手ざわりを決め、チームの手を経て世に出るまで狙いを保ち続ける。</span></p>
-        <span class="cap-evidence">Resona · Ogilvy · extra•ordinary</span>
+        <p class="cap-desc"><span class="t-en">Defining brand narrative, visual language, and interaction craft from strategy through launch.</span><span class="t-jp">企業の核となる物語、視覚言語、手ざわりを定め、世に出るまで貫く。</span></p>
+        <span class="cap-evidence">KOJI FIZZ · extra•ordinary · Ogilvy</span>
       </div>
       <div class="cap-card">
-        <h3 class="cap-title"><span class="t-en">Break Bias Workshops</span><span class="t-jp">Break Bias ワークショップ</span></h3>
-        <p class="cap-question"><span class="t-en">What assumptions are preventing new possibilities?</span><span class="t-jp">今の発想を縛っている前提は何か。</span></p>
-        <p class="cap-desc"><span class="t-en">Structured innovation workshops for surfacing inherited assumptions and breaking them to uncover new ground.</span><span class="t-jp">業界やプロダクトに対して無意識に持っている前提を意図的に外し、新しい事業や体験の可能性を切り拓く。</span></p>
-        <span class="cap-evidence">Google · Microsoft · Tiffany &amp; Co.</span>
-      </div>
-      <div class="cap-card">
-        <h3 class="cap-title"><span class="t-en">US ↔ Japan</span><span class="t-jp">US ↔ Japan</span></h3>
-        <p class="cap-question"><span class="t-en">How should products move between cultures?</span><span class="t-jp">アメリカと日本の間で、どう動かすか。</span></p>
-        <p class="cap-desc"><span class="t-en">Bilingual and cross-cultural leadership bridging US and Japanese markets, product nuances, and executive teams.</span><span class="t-jp">日米両方のビジネス文化とデザイン感覚を深く理解し、プロダクトやブランドを越境して機能させる。</span></p>
+        <h3 class="cap-title"><span class="t-en">Japan ↔ US</span><span class="t-jp">Japan ↔ US</span></h3>
+        <p class="cap-desc"><span class="t-en">Bridging product sensibilities, business cultures, and cross-border expansion between Tokyo and New York.</span><span class="t-jp">ニューヨークと東京の両方の商習慣・文化感覚を理解し、プロダクトの越境を支える。</span></p>
         <span class="cap-evidence">Bilingual Practice · NY ↔ Tokyo</span>
-      </div>
-      <div class="cap-card">
-        <h3 class="cap-title"><span class="t-en">Executive &amp; Fractional Partnership</span><span class="t-jp">経営・プロジェクトへの参画</span></h3>
-        <p class="cap-question"><span class="t-en">Senior leadership before full-time hiring makes sense.</span><span class="t-jp">フルタイムを採用する前の、確かな推進力。</span></p>
-        <p class="cap-desc"><span class="t-en">Hands-on partnership at the executive level: advisory, fractional design &amp; AI leadership, and venture sprint sprints.</span><span class="t-jp">経営陣への助言、週数日のエグゼクティブ参画など、柔軟な枠組みで 0→1 の推進力を提供する。</span></p>
-        <span class="cap-evidence">Creativity is Everywhere LLC</span>
       </div>
     </div>
   </section>
 
   <section class="band career" id="career">
     <div class="section-head">
-      <h2 class="section-title"><span class="t-en">20 Years of Craft: Brand, Product, and AI</span><span class="t-jp">20 年の軌跡：ブランド、プロダクト、AI へ</span></h2>
-      <p class="section-lede"><span class="t-en">Twenty years across different platforms. The medium kept changing — brand, interactive spaces, education, enterprise systems, AI agents. The underlying curiosity never did.</span><span class="t-jp is-block">20 年、仕事のジャンルを何度も変えてきたというより、同じ好奇心を違うメディアで追い続けてきました。</span></p>
+      <h2 class="section-title"><span class="t-en">Different mediums. Same instinct.</span><span class="t-jp">媒体は変わっても、感覚は同じ。</span></h2>
+      <p class="section-lede"><span class="t-en">20+ years across brand, interactive experiences, education, product, enterprise systems, and AI. The medium kept changing — the underlying instinct did not.</span><span class="t-jp is-block">ブランド、空間体験、教育、プロダクト、企業基盤、そして AI。20 年以上にわたりメディアは変わり続けても、根底にある衝動は変わりません。</span></p>
     </div>
     <ol class="arc">
       <li class="arc-cell is-quiet">

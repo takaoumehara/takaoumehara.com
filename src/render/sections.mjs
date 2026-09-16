@@ -11,6 +11,7 @@ export function sectionHead(title, lede, opts = {}) {
 
 const STATUS_LABEL = {
   active: { en: "Active", jp: "進行中" }, validating: { en: "Validating", jp: "検証中" }, prototype: { en: "Prototype", jp: "プロトタイプ" },
+  "case-study": { en: "Case Study", jp: "ケーススタディ" }, "case study": { en: "Case Study", jp: "ケーススタディ" },
   paused: { en: "Paused", jp: "一時停止" }, archived: { en: "Archived", jp: "アーカイブ" }, "handed-off": { en: "Handed off", jp: "引き継ぎ済み" },
   live: { en: "Live", jp: "公開中" }, "in-progress": { en: "In progress", jp: "制作中" }, shipped: { en: "Shipped", jp: "リリース済み" },
   released: { en: "Released", jp: "公開済み" },
@@ -195,7 +196,7 @@ export function careerArcSection({ section, lens, lib, ctx }) {
       </li>`;
   }).join("\n");
   return `  <section class="band career" id="career">
-${sectionHead(section.title ?? { en: "20 Years of Craft: Brand, Product, and AI", jp: "20 年の軌跡：ブランド、プロダクト、AI へ" }, section.lede ?? { en: "Twenty years across different platforms. The medium kept changing — brand, interactive spaces, education, enterprise systems, AI agents. The underlying curiosity never did.", jp: "20 年、仕事のジャンルを何度も変えてきたというより、同じ好奇心を違うメディアで追い続けてきました。" })}
+${sectionHead(section.title ?? { en: "Different mediums. Same instinct.", jp: "媒体は変わっても、感覚は同じ。" }, section.lede ?? { en: "20+ years across brand, interactive experiences, education, product, enterprise systems, and AI. The medium kept changing — the underlying instinct did not.", jp: "ブランド、空間体験、教育、プロダクト、企業基盤、そして AI。20 年以上にわたりメディアは変わり続けても、根底にある衝動は変わりません。" })}
     <ol class="arc">
 ${cells}
     </ol>
@@ -203,81 +204,73 @@ ${cells}
   </section>`;
 }
 
-// ── Where I can be useful to leadership ─────────────────────────────────────
+// ── Where I can be useful ───────────────────────────────────────────────────
 const LEADERSHIP_AREAS = [
   {
     id: "zero-to-one",
-    title: { en: "0→1 & New Ventures", jp: "0→1 / 新規事業" },
-    question: { en: "What should we build next?", jp: "次に何をつくるべきか。" },
+    title: { en: "0→1 Products & Ventures", jp: "0→1 / 新規事業" },
     desc: {
-      en: "Opportunity discovery, venture concepts, early validation, and prototypes that make ideas tangible enough to test.",
-      jp: "まだ形のない段階から可能性を見出し、検証可能な試作や事業構想として形にする。"
+      en: "Taking ambiguous concepts from zero to validated working products and new business models.",
+      jp: "まだ答えのない曖昧な発想から、実際に検証できる動くプロダクトや事業の形をつくる。"
     },
-    evidence: "intentfirst · MyBrainSpec · BreakBias"
+    evidence: "Intent First · MyBrainSpec · Break Bias"
+  },
+  {
+    id: "interactive-experiences",
+    title: { en: "Interactive Experiences", jp: "インタラクティブ体験" },
+    desc: {
+      en: "Designing playful, multi-device physical and digital experiences that bring people together.",
+      jp: "画面にとどまらず、身体や音、複数のスマホを使って人が集まり熱中する場を設計する。"
+    },
+    evidence: "Resona · Rakugaki Jam · Festival Reinvention"
+  },
+  {
+    id: "ai-prototypes",
+    title: { en: "AI Prototypes", jp: "AI プロトタイプ" },
+    desc: {
+      en: "Building functional AI agents and working software to validate possibilities before full-scale engineering.",
+      jp: "本格開発に入る前に、動く AI エージェントやソフトウェアを直接つくり可能性を素早く確かめる。"
+    },
+    evidence: "Verizon AI Workflow · AI Tools · Moime"
   },
   {
     id: "product-cx-ai",
-    title: { en: "Product, CX & AI", jp: "Product / CX / AI" },
-    question: { en: "How should technology change customer experience?", jp: "新しい技術によって、体験や仕事の仕方をどう変えるか。" },
+    title: { en: "Product / CX / AI", jp: "Product / CX / AI" },
     desc: {
-      en: "Product strategy, experience systems, and embedding autonomous AI agents and workflows into real operations.",
-      jp: "プロダクト戦略、顧客体験システム、そして自律型 AI やワークフローを実際の現場に組み込む設計。"
+      en: "Architecting complex enterprise product systems and embedding AI directly into human workflows.",
+      jp: "大規模なプロダクト基盤を設計し、日々の業務や体験に馴染む形で AI を組み込む。"
     },
-    evidence: "Verizon AI Workflow · Amplify Quests"
+    evidence: "Verizon · T-Mobile · Amplify ELA Quests"
   },
   {
     id: "brand-creative",
     title: { en: "Brand & Creative Direction", jp: "Brand / Creative Direction" },
-    question: { en: "What should this mean to people?", jp: "この会社やプロダクトは、人にとってどんな存在になるべきか。" },
     desc: {
-      en: "Setting the narrative, visual and interaction language, and holding creative intent all the way through execution.",
-      jp: "言葉、印、ビジュアル、ふるまい。その存在の手ざわりを決め、チームの手を経て世に出るまで狙いを保ち続ける。"
+      en: "Defining brand narrative, visual language, and interaction craft from strategy through launch.",
+      jp: "企業の核となる物語、視覚言語、手ざわりを定め、世に出るまで貫く。"
     },
-    evidence: "Resona · Ogilvy · extra•ordinary"
-  },
-  {
-    id: "break-bias",
-    title: { en: "Break Bias Workshops", jp: "Break Bias ワークショップ" },
-    question: { en: "What assumptions are preventing new possibilities?", jp: "今の発想を縛っている前提は何か。" },
-    desc: {
-      en: "Structured innovation workshops for surfacing inherited assumptions and breaking them to uncover new ground.",
-      jp: "業界やプロダクトに対して無意識に持っている前提を意図的に外し、新しい事業や体験の可能性を切り拓く。"
-    },
-    evidence: "Google · Microsoft · Tiffany & Co."
+    evidence: "KOJI FIZZ · extra•ordinary · Ogilvy"
   },
   {
     id: "japan-us",
-    title: { en: "US ↔ Japan", jp: "US ↔ Japan" },
-    question: { en: "How should products move between cultures?", jp: "アメリカと日本の間で、どう動かすか。" },
+    title: { en: "Japan ↔ US", jp: "Japan ↔ US" },
     desc: {
-      en: "Bilingual and cross-cultural leadership bridging US and Japanese markets, product nuances, and executive teams.",
-      jp: "日米両方のビジネス文化とデザイン感覚を深く理解し、プロダクトやブランドを越境して機能させる。"
+      en: "Bridging product sensibilities, business cultures, and cross-border expansion between Tokyo and New York.",
+      jp: "ニューヨークと東京の両方の商習慣・文化感覚を理解し、プロダクトの越境を支える。"
     },
     evidence: "Bilingual Practice · NY ↔ Tokyo"
-  },
-  {
-    id: "partnership",
-    title: { en: "Executive & Fractional Partnership", jp: "経営・プロジェクトへの参画" },
-    question: { en: "Senior leadership before full-time hiring makes sense.", jp: "フルタイムを採用する前の、確かな推進力。" },
-    desc: {
-      en: "Hands-on partnership at the executive level: advisory, fractional design & AI leadership, and venture sprint sprints.",
-      jp: "経営陣への助言、週数日のエグゼクティブ参画など、柔軟な枠組みで 0→1 の推進力を提供する。"
-    },
-    evidence: "Creativity is Everywhere LLC"
   }
 ];
 
 export function capabilitiesSection({ section, lens, lib, ctx, usedEvidence }) {
-  // If the lens has a customized 5-area leadership focus, render that cleanly:
   const cards = LEADERSHIP_AREAS.map((area) => `      <div class="cap-card">
         <h3 class="cap-title">${t(area.title)}</h3>
-        <p class="cap-question">${t(area.question)}</p>
         <p class="cap-desc">${t(area.desc)}</p>
         <span class="cap-evidence">${esc(area.evidence)}</span>
       </div>`).join("\n");
 
   return `  <section class="band capabilities" id="capabilities">
-${sectionHead(section.title ?? { en: "Where I can be useful to leadership", jp: "一緒に考えられること" }, section.lede ?? { en: "I'm most valuable before the answer is known — when a team needs to figure out what to build, not just polish what is already decided.", jp: "僕がいちばん役に立つのは、すでに決まったものをきれいに仕上げるときより、「そもそも何をやるべきなんだろう」というところから考えるときです。" })}
+${sectionHead(section.title ?? { en: "Where I can be useful", jp: "一緒に考えられること" }, section.lede ?? { en: "I work best before the answer is known — taking unclear ideas and making them tangible enough to test and move forward.", jp: "僕がいちばん役に立つのは、すでに決まったものをきれいに仕上げるときより、「そもそも何をつくるべきか」というところから考えるときです。" })}
     <div class="cap-grid">
 ${cards}
     </div>

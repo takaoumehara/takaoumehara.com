@@ -5,12 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
-  <title>AI Products — Takao Umehara</title>
-  <meta name="description" content="AI products by Takao Umehara. Research, an enterprise agent fleet, and working products you can open now.">
+  <title>AI Products &amp; Systems — Takao Umehara</title>
+  <meta name="description" content="AI products and systems by Takao Umehara. Self-built ventures, enterprise agent fleets, and working models you can experience.">
   
   <link rel="canonical" href="https://takaoumehara.com/ai-products.html">
-  <meta property="og:title" content="AI Products — Takao Umehara">
-  <meta property="og:description" content="AI products by Takao Umehara. Research, an enterprise agent fleet, and working products you can open now.">
+  <meta property="og:title" content="AI Products &amp; Systems — Takao Umehara">
+  <meta property="og:description" content="AI products and systems by Takao Umehara. Self-built ventures, enterprise agent fleets, and working models you can experience.">
   <meta property="og:type" content="website">
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -158,11 +158,35 @@ html.lang-jp .t-jp.is-block { display: block; }
 .nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
 .nav-logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--ink); }
 .nav-logo-tag { font-size: 11px; letter-spacing: 0.04em; color: var(--ink-dim); font-weight: 400; text-transform: lowercase; }
-.nav-links { display: flex; gap: 28px; list-style: none; }
-.nav-links li { position: relative; }
-.nav-links a { font-size: 13.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none; letter-spacing: -0.005em; transition: color 160ms ease; }
-.nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
-.nav-links .is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--line); }
+.nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+.nav-item { position: relative; }
+.nav-item > a { font-size: 13.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none; letter-spacing: -0.005em; transition: color 160ms ease; padding: 6px 0; }
+.nav-item > a:hover, .nav-item > a.is-active { color: var(--ink); font-weight: 600; }
+.nav-item.is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--line); }
+
+/* Dropdown sub-menu */
+.nav-sub {
+  display: none;
+  position: absolute; top: 100%; left: -14px; min-width: 220px;
+  background: rgba(243, 242, 238, 0.98); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  padding: 6px 0; box-shadow: 0 10px 30px -4px rgba(11, 11, 11, 0.08);
+  list-style: none; z-index: 60;
+}
+.nav-item.has-sub:hover .nav-sub,
+.nav-item.has-sub:focus-within .nav-sub {
+  display: block;
+}
+.nav-sub li { list-style: none; margin: 0; padding: 0; border: none !important; }
+.nav-sub a {
+  display: block; padding: 8px 16px;
+  font-size: 12.5px; font-weight: 500; color: var(--ink-mid); text-decoration: none;
+  transition: background 140ms ease, color 140ms ease;
+}
+.nav-sub a:hover, .nav-sub a.is-active {
+  color: var(--ink); background: rgba(11, 11, 11, 0.05); font-weight: 600;
+}
+
 .nav-toggle { display: none; appearance: none; background: none; border: none; cursor: pointer; width: 44px; height: 44px; position: relative; padding: 0; }
 .nav-toggle > span { display: block; position: absolute; left: 8px; width: 28px; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
 .nav-toggle span:nth-child(1) { top: 12px; }
@@ -175,8 +199,10 @@ html.lang-jp .t-jp.is-block { display: block; }
   .nav-toggle { display: block; }
   .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; padding: 0; background: rgba(243, 242, 238, 0.98); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   .nav-links.is-open { display: flex; }
-  .nav-links li { border-top: 1px solid var(--line); }
-  .nav-links a { display: block; padding: 14px 20px; }
+  .nav-links li.nav-item { border-top: 1px solid var(--line); }
+  .nav-item > a { display: block; padding: 14px 20px; }
+  .nav-sub { display: flex; flex-direction: column; position: static; background: rgba(11, 11, 11, 0.03); border: none; border-radius: 0; box-shadow: none; padding: 2px 0 10px 18px; }
+  .nav-sub a { padding: 8px 16px; font-size: 13px; }
   .nav-links .is-tierbreak::before { display: none; }
 }
 
@@ -523,6 +549,52 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
   .cat-grid { grid-template-columns: 1fr; gap: 44px; }
 }
 
+/* ── Work Archive Filter Bar ── */
+.archive-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 32px 0 44px;
+}
+.filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-family: var(--ff);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-mid);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 140ms ease;
+  line-height: 1;
+}
+.filter-btn:hover {
+  color: var(--ink);
+  border-color: var(--ink-dim);
+  background: #ffffff;
+}
+.filter-btn.is-active {
+  color: #ffffff;
+  background: var(--ink);
+  border-color: var(--ink);
+  font-weight: 600;
+}
+.filter-btn.is-active .filter-count {
+  color: rgba(255, 255, 255, 0.75);
+}
+.filter-count {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--ink-dim);
+}
+.cat-card.is-hidden {
+  display: none !important;
+}
+
 /* ── Universal Page transitions: Clean Fade Out / Fade In ────────────────
    Universal cross-fade for seamless, elegant page navigation across all views.
    No thumbnail morphs, no black wipe curtain. */
@@ -565,27 +637,54 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
       <span class="nav-logo-tag">creativity is everywhere</span>
     </a>
     <ul class="nav-links" id="primary-nav-links">
-      <li><a href="interactive.html">Interactive</a></li>
-      <li><a href="ai-products.html" class="is-active" aria-current="page">AI Products</a></li>
-      <li><a href="ai-tools.html">AI Tools</a></li>
-      <li><a href="work.html">Product Design</a></li>
-      <li><a href="brand.html">Brand &amp; Visual</a></li>
-      <li class="is-tierbreak"><a href="about.html">About</a></li>
-      <li><a href="publications.html">Publications</a></li>
-      <li><a href="workshop.html">Workshops</a></li>
-      <li><a href="contact.html">Contact</a></li>
+      <li class="nav-item has-sub">
+        <a href="work.html" class="nav-link">Work</a>
+        <div class="nav-sub">
+          <a href="work.html" class="nav-sub-link">Product &amp; Experience Design</a>
+          <a href="brand.html" class="nav-sub-link">Brand &amp; Creative</a>
+        </div>
+      </li>
+      <li class="nav-item has-sub">
+        <a href="interactive.html" class="nav-link is-active">Builds</a>
+        <div class="nav-sub">
+          <a href="interactive.html" class="nav-sub-link">Interactive &amp; Playable</a>
+          <a href="ai-products.html" class="nav-sub-link is-active" aria-current="page">AI Products &amp; Systems</a>
+          <a href="ai-tools.html" class="nav-sub-link">AI Tools</a>
+        </div>
+      </li>
+      <li class="nav-item has-sub">
+        <a href="publications.html" class="nav-link">Ideas</a>
+        <div class="nav-sub">
+          <a href="publications.html" class="nav-sub-link">Publications</a>
+          <a href="breakbias.html" class="nav-sub-link">Break Bias</a>
+          <a href="workshop.html" class="nav-sub-link">Workshops</a>
+          <a href="intentfirst.html" class="nav-sub-link">Intent First</a>
+        </div>
+      </li>
+      <li class="nav-item is-tierbreak">
+        <a href="about.html" class="nav-link">About</a>
+      </li>
+      <li class="nav-item">
+        <a href="contact.html" class="nav-link">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a href="https://creativityiseverywhere.com" class="nav-link" target="_blank" rel="noopener">Studio ↗</a>
+      </li>
     </ul>
     <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Menu" aria-expanded="false" aria-controls="primary-nav-links"><span></span><span></span><span></span></button>
   </nav>
   <main class="cat-page">
     <header class="cat-head">
-      <h1 class="cat-title"><span class="t-en">AI Products</span><span class="t-jp">AI プロダクト</span></h1>
-      <p class="cat-lede"><span class="t-en">The AI is inside the product, not bolted on. Each card says how.</span><span class="t-jp is-block">AI は製品の中にある。横付けではなく。どう入っているかは各カードに。</span></p>
+      <h1 class="cat-title"><span class="t-en">AI Products &amp; Systems</span><span class="t-jp">AI プロダクト &amp; システム</span></h1>
+      <p class="cat-lede"><span class="t-en">0→1 working products and enterprise AI systems embedded into real operations.</span><span class="t-jp is-block">自ら手掛ける 0→1 のプロダクトと、実際の組織現場に組み込まれたエンタープライズ AI システム。</span></p>
       <p class="cat-count">5<span class="t-en"> projects</span><span class="t-jp"> 件</span></p>
     </header>
 
-    <section class="cat-group">
-
+    <section class="cat-group" aria-label="Products I’m Building">
+      <div class="cat-group-head">
+        <h2 class="cat-group-title"><span class="t-en">Products I’m Building</span><span class="t-jp">自ら開発しているプロダクト</span></h2>
+        <p class="cat-group-note"><span class="t-en">Active ventures and 0→1 products created and led by Takao</span><span class="t-jp">自ら構想・開発を主導するアクティブなプロダクトと新規事業</span></p>
+      </div>
       <div class="cat-grid">
         <article class="cat-card" tabindex="0" data-href="intentfirst.html">
           <div class="cat-card-media"><div class="card-art card-art--intent"><span class="card-art-label">intentfirst.ai</span></div></div>
@@ -595,26 +694,6 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
             <p class="cat-card-kind"><span class="t-en">Context Grammar · AI design research</span><span class="t-jp">Context Grammar · AI デザイン研究</span></p>
             <p class="cat-card-desc"><span class="t-en">A thesis, not a product: the vocabulary AI needs to read intent, not just input.</span><span class="t-jp is-block">プロダクトではなく主張。AI が入力ではなく意図を読むための語彙。</span></p>
             <a class="cat-card-cta" href="intentfirst.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
-          </div>
-        </article>
-        <article class="cat-card" tabindex="0" data-href="projects/verizon-ai-agents.html">
-          <div class="cat-card-media"><img src="assets/thumbs/verizon-ai-agents.jpg" alt="" loading="lazy"></div>
-          <div class="cat-card-body">
-            <p class="chips"><span class="pill pill--status"></span></p>
-            <h3 class="cat-card-title"><span class="t-en">Verizon AI Workflow</span><span class="t-jp">AI による UX ワークフローの変革</span></h3>
-            <p class="cat-card-kind"><span class="t-en">Agent fleet · Case study</span><span class="t-jp">エージェント群 · ケーススタディ</span></p>
-            <p class="cat-card-desc"><span class="t-en">Ten agents built into the tools 42 designers already used.</span><span class="t-jp is-block">42 人のデザイナーが既に使っている道具の中に、10 のエージェントを入れた。</span></p>
-            <a class="cat-card-cta" href="projects/verizon-ai-agents.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
-          </div>
-        </article>
-        <article class="cat-card" tabindex="0" data-href="projects/amazon-firetv.html">
-          <div class="cat-card-media"><img src="assets/thumbs/amazon-firetv.jpg" alt="" loading="lazy"></div>
-          <div class="cat-card-body">
-            <p class="chips"><span class="pill pill--status"></span></p>
-            <h3 class="cat-card-title"><span class="t-en">Amazon Shopping on Fire TV</span><span class="t-jp">Fire TV 向け Amazon ショッピング</span></h3>
-            <p class="cat-card-kind"><span class="t-en">10-foot UI · Voice UX · Snap Pair</span><span class="t-jp">10 フィート UI · 音声 UX · Snap Pair</span></p>
-            <p class="cat-card-desc"><span class="t-en">Amazon shopping rebuilt for the TV: D-pad, voice, and your phone as the remote.</span><span class="t-jp is-block">テレビのための Amazon。D-pad と音声、そしてリモコンになるスマホ。</span></p>
-            <a class="cat-card-cta" href="projects/amazon-firetv.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
         <article class="cat-card">
@@ -635,6 +714,35 @@ html.lang-jp .cat-card-title { font-family: var(--ff-jp); font-weight: 600; font
             
             <p class="cat-card-desc"><span class="t-en">A link-in-bio page that reads the dates and codes off your flyer.</span><span class="t-jp is-block">チラシから日付とコードを読み取る、リンクまとめページ。</span></p>
             
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="cat-group" aria-label="AI Product / System Work">
+      <div class="cat-group-head">
+        <h2 class="cat-group-title"><span class="t-en">AI Product / System Work</span><span class="t-jp">AI プロダクト・システム導入実績</span></h2>
+        <p class="cat-group-note"><span class="t-en">Enterprise systems and consumer AI integrations for organizations</span><span class="t-jp">企業・組織におけるエンタープライズ AI およびコンシューマー AI システムの実装</span></p>
+      </div>
+      <div class="cat-grid">
+        <article class="cat-card" tabindex="0" data-href="projects/verizon-ai-agents.html">
+          <div class="cat-card-media"><img src="assets/thumbs/verizon-ai-agents.jpg" alt="" loading="lazy"></div>
+          <div class="cat-card-body">
+            <p class="chips"><span class="pill pill--status"><span class="t-en">Case Study</span><span class="t-jp">ケーススタディ</span></span></p>
+            <h3 class="cat-card-title"><span class="t-en">Verizon AI Workflow</span><span class="t-jp">AI による UX ワークフローの変革</span></h3>
+            <p class="cat-card-kind"><span class="t-en">Agent fleet · Case study</span><span class="t-jp">エージェント群 · ケーススタディ</span></p>
+            <p class="cat-card-desc"><span class="t-en">Ten agents built into the tools 42 designers already used.</span><span class="t-jp is-block">42 人のデザイナーが既に使っている道具の中に、10 のエージェントを入れた。</span></p>
+            <a class="cat-card-cta" href="projects/verizon-ai-agents.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
+          </div>
+        </article>
+        <article class="cat-card" tabindex="0" data-href="projects/amazon-firetv.html">
+          <div class="cat-card-media"><img src="assets/thumbs/amazon-firetv.jpg" alt="" loading="lazy"></div>
+          <div class="cat-card-body">
+            <p class="chips"><span class="pill pill--status"><span class="t-en">Case Study</span><span class="t-jp">ケーススタディ</span></span></p>
+            <h3 class="cat-card-title"><span class="t-en">Amazon Shopping on Fire TV</span><span class="t-jp">Fire TV 向け Amazon ショッピング</span></h3>
+            <p class="cat-card-kind"><span class="t-en">10-foot UI · Voice UX · Snap Pair</span><span class="t-jp">10 フィート UI · 音声 UX · Snap Pair</span></p>
+            <p class="cat-card-desc"><span class="t-en">Amazon shopping rebuilt for the TV: D-pad, voice, and your phone as the remote.</span><span class="t-jp is-block">テレビのための Amazon。D-pad と音声、そしてリモコンになるスマホ。</span></p>
+            <a class="cat-card-cta" href="projects/amazon-firetv.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
       </div>

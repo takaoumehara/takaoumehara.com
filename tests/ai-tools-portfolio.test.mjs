@@ -87,9 +87,21 @@ function navDestinations(html, page) {
 // pages about the person.
 test('every nav item carries the same weight — only the current page is marked', () => {
   const expected = [
-    ['interactive.html', 'Interactive'], ['ai-products.html', 'AI Products'], ['ai-tools.html', 'AI Tools'],
-    ['work.html', 'Product Design'], ['brand.html', 'Brand &amp; Visual'],
-    ['about.html', 'About'], ['publications.html', 'Publications'], ['workshop.html', 'Workshops'], ['contact.html', 'Contact'],
+    [ 'work.html', 'Work' ],
+    [ 'work.html', 'Product &amp; Experience Design' ],
+    [ 'brand.html', 'Brand &amp; Creative' ],
+    [ 'interactive.html', 'Builds' ],
+    [ 'interactive.html', 'Interactive &amp; Playable' ],
+    [ 'ai-products.html', 'AI Products &amp; Systems' ],
+    [ 'ai-tools.html', 'AI Tools' ],
+    [ 'publications.html', 'Ideas' ],
+    [ 'publications.html', 'Publications' ],
+    [ 'breakbias.html', 'Break Bias' ],
+    [ 'workshop.html', 'Workshops' ],
+    [ 'intentfirst.html', 'Intent First' ],
+    [ 'about.html', 'About' ],
+    [ 'contact.html', 'Contact' ],
+    [ 'https://creativityiseverywhere.com', 'Studio ↗' ],
   ];
 
   for (const page of mainPages) {
@@ -102,7 +114,7 @@ test('every nav item carries the same weight — only the current page is marked
     assert.equal(/\.nav-links a\.is-lead\s*\{/.test(html), false, `${page}: the lead-tier rule must be gone from the CSS too`);
     // Drawn as a pseudo-element on the item after the work sections, so the
     // nav's spacing stays even — a separator element made that gap double-width.
-    assert.match(html, /<li\b[^>]*\bclass\s*=\s*["']is-tierbreak["'][^>]*><a href="(?:\.\.\/)?about\.html"/i, `${page}: the divider sits before About`);
+    assert.match(html, /<li\b[^>]*\bclass\s*=\s*["'][^"']*\bis-tierbreak\b[^"']*["'][^>]*>\s*<a href="(?:\.\.\/)?about\.html"/i, `${page}: the divider sits before About`);
     assert.equal(/class\s*=\s*["']nav-rule["']/i.test(html), false, `${page}: the separator must not occupy a nav slot`);
   }
 });
@@ -118,7 +130,7 @@ test('each themed page marks its own nav item active', () => {
     'contact.html': 'contact.html',
   };
   for (const [page, href] of Object.entries(activeByPage)) {
-    const active = navDestinations(read(page), page).find((item) => item.href === href)?.tag;
+    const active = navDestinations(read(page), page).find((item) => item.href === href && attr(item.tag, 'aria-current') === 'page')?.tag;
     assert.ok(active && hasClass(active, 'is-active') && attr(active, 'aria-current') === 'page', `${page}: its own nav item must be active`);
   }
 });
