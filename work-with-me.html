@@ -79,8 +79,8 @@
   --ff-jp: "Outfit", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
   --ff-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --col: 1160px;
-  --gutter: clamp(20px, 4vw, 40px);
+  --col: 1200px;
+  --gutter: clamp(20px, 3vw, 36px);
 
   --r-sm: 8px;
   --r-card: clamp(14px, 1.8vw, 22px);
@@ -188,77 +188,83 @@ html.lang-jp .t-jp.is-block { display: block; }
   font-size: 10px;
 }
 
-/* ── Navigation ── */
+/* ── Nav & Themed Tokens ────────────────────────────────────────────────── */
+:root {
+  --nav-bg: rgba(243, 242, 238, 0.92);
+  --nav-border: rgba(11, 11, 11, 0.08);
+  --nav-fg: #0b0b0b;
+  --nav-fg-mid: #4a4a44;
+  --nav-fg-dim: #76716a;
+  --nav-indicator: #0b0b0b;
+  --nav-drop-bg: rgba(243, 242, 238, 0.98);
+  --nav-drop-border: rgba(11, 11, 11, 0.12);
+  --nav-drop-fg: #4a4a44;
+  --nav-drop-fg-hover: #0b0b0b;
+  --nav-drop-hover-bg: rgba(11, 11, 11, 0.05);
+  --nav-drop-dot: #ff6b35;
+  --nav-drop-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.10);
+}
+
 .site-nav {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  position: sticky; top: 0; z-index: 40;
+  display: flex; justify-content: space-between; align-items: center;
   padding: 16px var(--gutter);
-  background: rgba(243, 242, 238, 0.92);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border-bottom: 1px solid var(--line);
+  background: var(--nav-bg); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--nav-border);
 }
-
-.nav-logo {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  text-decoration: none;
-  line-height: 1;
-}
-
-.nav-logo-name {
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-
-.nav-logo-tag {
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--ink-dim);
-  font-weight: 400;
-  text-transform: lowercase;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 26px;
-  list-style: none;
-}
-
-.nav-links a {
-  font-size: 13.5px;
-  color: var(--ink-mid);
-  text-decoration: none;
-  transition: color 160ms ease;
-}
-
-.nav-links a:hover,
-.nav-links a.is-active {
-  color: var(--ink);
-  font-weight: 600;
-}
-
-.nav-links .is-tierbreak {
+.nav-logo { display: flex; flex-direction: column; gap: 3px; text-decoration: none; line-height: 1; }
+.nav-logo-name { font-size: 16px; font-weight: 700; letter-spacing: -0.02em; color: var(--nav-fg); }
+.nav-logo-tag { font-size: 11px; letter-spacing: 0.04em; color: var(--nav-fg-dim); font-weight: 400; text-transform: lowercase; }
+.nav-links { display: flex; gap: 28px; list-style: none; align-items: center; }
+.nav-item { position: relative; }
+.nav-item > a {
   position: relative;
+  font-size: 13.5px; font-weight: 500; color: var(--nav-fg-mid);
+  text-decoration: none; letter-spacing: -0.005em;
+  transition: color 160ms ease; padding: 8px 0;
+  display: inline-block;
 }
-
-.nav-links .is-tierbreak::before {
+.nav-item > a:hover { color: var(--nav-fg); }
+.nav-item > a.is-active {
+  color: var(--nav-fg); font-weight: 600;
+}
+.nav-item > a.is-active::after {
   content: "";
   position: absolute;
-  left: -14px;
-  top: 50%;
-  width: 1px;
-  height: 12px;
-  margin-top: -6px;
-  background: var(--line);
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--nav-indicator);
+  border-radius: 2px;
+}
+.nav-item.is-tierbreak::before { content: ""; position: absolute; left: -15px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px; background: var(--nav-border); }
+
+/* Dropdown sub-menu */
+.nav-sub {
+  display: none;
+  position: absolute; top: 100%; left: -14px; min-width: 220px;
+  background: var(--nav-drop-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--nav-drop-border); border-radius: var(--r-sm);
+  padding: 6px 0; box-shadow: var(--nav-drop-shadow);
+  list-style: none; z-index: 60;
+}
+.nav-item.has-sub:hover .nav-sub,
+.nav-item.has-sub:focus-within .nav-sub {
+  display: block;
+}
+.nav-sub li { list-style: none; margin: 0; padding: 0; border: none !important; }
+.nav-sub a {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 16px;
+  font-size: 12.5px; font-weight: 500; color: var(--nav-drop-fg); text-decoration: none;
+  transition: background 140ms ease, color 140ms ease;
+}
+.nav-sub a:hover {
+  color: var(--nav-drop-fg-hover); background: var(--nav-drop-hover-bg);
+}
+.nav-sub a.is-active {
+  color: var(--nav-drop-fg-hover); background: var(--nav-drop-hover-bg); font-weight: 600;
 }
 
 .nav-toggle {

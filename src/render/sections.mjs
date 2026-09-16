@@ -10,6 +10,7 @@ export function sectionHead(title, lede, opts = {}) {
 }
 
 const STATUS_LABEL = {
+  building: { en: "Building", jp: "開発中" }, exploring: { en: "Exploring", jp: "構想中" },
   active: { en: "Active", jp: "進行中" }, validating: { en: "Validating", jp: "検証中" }, prototype: { en: "Prototype", jp: "プロトタイプ" },
   "case-study": { en: "Case Study", jp: "ケーススタディ" }, "case study": { en: "Case Study", jp: "ケーススタディ" },
   paused: { en: "Paused", jp: "一時停止" }, archived: { en: "Archived", jp: "アーカイブ" }, "handed-off": { en: "Handed off", jp: "引き継ぎ済み" },
@@ -104,17 +105,24 @@ ${cards}
 
 // ── What I'm building now ───────────────────────────────────────────────────
 export function venturesSection({ section, lib, ctx }) {
+  const nowMap = new Map((lib.now?.items ?? []).map((item) => [item.id, item]));
   const cards = section.items.map((id) => {
     const v = lib.evidence.get(id);
     if (!v) return "";
-    const link = v.links?.external ?? v.links?.caseStudy;
+    const nowItem = nowMap.get(id);
+    const itemStatus = nowItem?.status ?? v.status;
+    const whyText = nowItem?.why ?? v.thesis;
+    const whatText = nowItem?.oneLine ?? v.experiment;
+    const nextText = nowItem?.next ?? v.question;
+    const link = nowItem?.links?.live ?? nowItem?.links?.caseStudy ?? nowItem?.links?.repo ?? nowItem?.links?.external ?? v.links?.external ?? v.links?.caseStudy;
+
     const rows = [
-      [{ en: "Why", jp: "なぜ" }, v.thesis],
-      [{ en: "What", jp: "何をつくったか" }, v.experiment],
-      [{ en: "Next", jp: "次に確かめたいこと" }, v.question],
+      [{ en: "Why", jp: "なぜ" }, whyText],
+      [{ en: "What", jp: "何をつくったか" }, whatText],
+      [{ en: "Next", jp: "次に確かめたいこと" }, nextText],
     ].map(([label, value]) => `<div class="venture-row"><dt>${t(label)}</dt><dd>${tb(value)}</dd></div>`).join("");
     return `      <article class="venture-card">
-        <div class="venture-head"><h3 class="card-title">${displayTitle(v)}</h3>${status(v.status)}</div>
+        <div class="venture-head"><h3 class="card-title">${displayTitle(v)}</h3>${status(itemStatus)}</div>
         <dl class="venture-rows">${rows}</dl>
         ${link ? `<a class="card-link" href="${esc(href(ctx, link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${/^https?:/.test(link) ? `<span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span>` : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`}</a>` : ""}
       </article>`;
