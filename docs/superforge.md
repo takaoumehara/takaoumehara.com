@@ -1,6 +1,6 @@
 # superforge — project settings
 
-> Written by: superforge · Last updated: 2026-08-02
+> Written by: superforge · Last updated: 2026-09-16
 
 ## Language
 会話: 日本語

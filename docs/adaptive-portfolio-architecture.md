@@ -1,6 +1,6 @@
-# Adaptive Career Portfolio — アーキテクチャ提案 (Phase 1)
+# Adaptive Career Portfolio — アーキテクチャ提案 (Phase 1–3)
 
-> Written by: superforge (architecture) · Last updated: 2026-09-11
+> Written by: superforge (architecture) · Last updated: 2026-09-16
 > 原則: **One Takao. One evidence base. Different lenses.**
 > 実装は `src/` 以下。生成物は `index.html` と `lens/<slug>/index.html`。
 
@@ -739,7 +739,12 @@ experiment / tool / venture → `solo`。Festival の chair と KOJI FIZZ の「
 
 **本人がやること（1 回だけ）**
 
-1. GitHub → Settings → Developer settings → OAuth Apps → New。Callback URL: `https://takaoumehara.com/api/auth/callback`
+1. GitHub → Settings → Developer settings → **OAuth Apps** → New OAuth App。
+   Homepage URL: `https://takaoumehara.com` / Authorization callback URL: `https://takaoumehara.com/api/auth/callback`
+   - **GitHub App ではない。** 画面が似ていて間違えやすいが、GitHub App は権限モデルと
+     refresh token の扱いが違い、`api/auth/callback.mjs` の `exchangeCode()` が通らない。
+   - callback URL は**ホスト名まで完全一致**。Vercel のプレビュー URL では動かない。
+     試すのは本番ドメインで、この PR をマージしてデプロイした後（それまで `/api/auth/*` は存在しない）。
 2. Vercel のプロジェクトの Environment Variables:
    `GITHUB_CLIENT_ID`、`GITHUB_CLIENT_SECRET`、`SESSION_SECRET`（`openssl rand -hex 32`）、`OWNER_LOGIN=takaoumehara`、
    任意で `REPO`（既定 `takaoumehara/takaoumehara.com`）、`PUBLISH_BRANCH`（既定 `main`）、`PUBLISH_MODE`（`commit` か `pr`）、`SITE_URL`
@@ -761,3 +766,39 @@ Studio と同じモジュール（`try/try.mjs`）で、調整 UI と公開ボ�
   万一落ちたら描画せず「別の求人票で」と言う。
 - 索引される（noindex ではない）。**これ自体が作品**: 「嘘をつかない機械」を採用側が自分の求人で触れる。
 - 導線: `work-with-me.html` の "Hiring" の段に 1 行。ほかのページからの導線は本人の判断。
+
+### 16.9 Phase 3d — 配布（計画。未着手、2026-09-16）
+
+**他の人が自分のサイトで同じことをできる形にする。** 本人の決定は 3 つ。
+
+| 論点 | 決定 |
+|---|---|
+| 形 | **GitHub テンプレート repo**（npm パッケージではない）。`adaptive-portfolio-template` |
+| タクソノミー | **デザイナー用 1 種**だけ用意。他職種は導入スキルが面接形式で作る |
+| ライセンス | **MIT**（`LICENSE` を追加。現在リポジトリにライセンスが無い） |
+
+**中身**: engine（`src/analyze` / `src/validate.mjs` / `src/lib` / `src/render` の既定テーマ /
+`scripts` / `studio` / `try` / `api`）＋ **空の `src/data`** ＋ 例 1 件 ＋ 導入スキル。
+使う人は `Use this template` → AI コーディング環境で `/setup-portfolio` を走らせると、
+面接形式で `profile` → 能力（デザイナー用タクソノミーから選ぶ）→ 実績 1 件ずつ
+（`mine` / `team` / `notMine` / `metrics.confidence` を必ず聞く）が埋まり、
+`node src/build.mjs --check` が通るまで付き合う。下敷きは `docs/portfolio-content-intake-prompt.md` v3。
+
+**汎用化が要る箇所**（2026-09-16 に実測。すべて `profile.json` か新しい `site.json` から読む形に）:
+
+| ファイル | 何が固有か |
+|---|---|
+| `src/validate.mjs` | エラー文 2 か所の "Takao"（`contribution.mine` と NotMine Guard） |
+| `src/render/sections.mjs` | lens note の既定文（"work from Takao's career archive"） |
+| `src/render/archive.mjs` · `now.mjs` | SEO の title / description |
+| `src/render/shell.mjs` | ナビのロゴ名、スタジオの URL、7 項目のナビ構成そのもの |
+| `studio/studio.mjs` · `studio/index.html` | `SITE` 定数、ブランド名 |
+| `try/index.html` · `try/try.mjs` | title / description / canonical |
+| `api/publish.mjs` · `api/_lib/github.mjs` | `REPO` の既定値、user-agent |
+
+**テストの分割**: `tests/pitch-engine.test.mjs` と `tests/studio.test.mjs` は本人の記録に依存している
+（`verizon-*` / `koji-fizz` / `festival-*` / `credit-card-portal`）。テンプレート側は例 1 件で通る
+汎用テストに書き直す。`about-portrait` / `ai-tools-portfolio` / `lens-system` / `page-transitions` は
+このサイト固有なので持って行かない。
+
+**前提**: **3b が本人のサイトで実際に動いてから配る。** 自分で使っていないものは配らない。

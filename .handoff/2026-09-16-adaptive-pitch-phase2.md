@@ -1,5 +1,7 @@
 # Adaptive Pitch Engine — Phase 2（JD → Lens 下書き）
 
+> **このファイルは `.handoff/2026-09-16-adaptive-pitch-studio.md` に置き換えられた。そちらを読むこと。**
+
 > `.handoff/2026-09-12-adaptive-portfolio-phase1.md` の続き。Phase 1 の内容はそちら。
 
 ## Resume Capsule
