@@ -15,6 +15,7 @@
 //   --publish          Write status "published" instead of "draft" (you still have to build)
 //   --out-dir <dir>    Write everywhere under <dir> instead of the repo (tests)
 //   --json             Print the analysis as JSON on stdout instead of the summary
+//   --seen <date>      Date the posting was seen (default: today); printed under the Fit Ledger
 //
 // Writes
 //   src/lenses/<slug>.json          the Lens draft (validated with src/validate.mjs before writing)
@@ -60,7 +61,7 @@ async function readStdin({ interactive }) {
   return Buffer.concat(chunks).toString("utf8").replace(/(^|\n)END\s*$/, "").trim();
 }
 
-export async function generatePitch({ company, role, slug, url, file, text, max = 5, force = false, publish = false, outDir = ROOT, lib = loadLibrary(), lexicon = loadLexicon(), fetchImpl } = {}) {
+export async function generatePitch({ company, role, slug, url, file, text, max = 5, force = false, publish = false, outDir = ROOT, lib = loadLibrary(), lexicon = loadLexicon(), fetchImpl, seenAt = new Date().toISOString().slice(0, 10) } = {}) {
   const job = await readJobText({ url, file, text, fetchImpl });
   company = company ?? job.company ?? (url ? guessCompany(url) : undefined);
   if (!company) {
@@ -85,7 +86,8 @@ export async function generatePitch({ company, role, slug, url, file, text, max 
   const scored = scoreEvidence(analysis, lib);
   const picks = selectProof(scored, analysis, { max: Math.max(3, Math.min(5, Number(max) || 5)) });
   const source = job.source === "text" ? "pasted text" : job.source;
-  const lens = draftLens({ company, slug, analysis, picks, lib, lexicon, source, scored });
+  const requirements = requirementCheck(analysis, lib, { phraseRegex, evidenceCorpus });
+  const lens = draftLens({ company, slug, analysis, picks, lib, lexicon, source, scored, requirements, seenAt });
   if (publish) lens.status = "published";
 
   const errors = validateLens(lens, lib);
@@ -95,8 +97,7 @@ export async function generatePitch({ company, role, slug, url, file, text, max 
     error.details = errors;
     throw error;
   }
-  const requirements = requirementCheck(analysis, lib, { phraseRegex, evidenceCorpus });
-  const report = renderReport({ company, slug, analysis, picks, lib, lensPath: `src/lenses/${slug}.json`, source, requirements, scoredCount: scored.length });
+  const report = renderReport({ company, slug, analysis, picks, lib, lensPath: `src/lenses/${slug}.json`, source, requirements, scoredCount: scored.length, fit: lens.fit });
 
   const pitchDir = join(outDir, "src", "pitches", slug);
   mkdirSync(join(outDir, "src", "lenses"), { recursive: true });
@@ -119,6 +120,11 @@ function summary(result) {
   out.push(`Top asks: ${Object.entries(analysis.capabilityWeights).slice(0, 6).map(([id, w]) => `${label(id)} ${Math.round(w * 100)}%`).join(", ")}`);
   out.push("");
   for (const [i, p] of picks.entries()) out.push(`  ${i + 1}. ${p.match === "direct" ? "DIRECT      " : "TRANSFERABLE"} ${p.item.shortTitle ?? p.item.title}  ← ${p.matched.slice(0, 3).map((m) => `${label(m.id)}/${m.strength}`).join(", ")}`);
+  const fit = result.lens.fit;
+  if (fit?.rows?.length) {
+    out.push(`\nFit ledger (${fit.rows.length} requirement lines):`);
+    for (const row of fit.rows) out.push(`  ${row.level.padEnd(8)} ${row.ask.slice(0, 70)}${row.ask.length > 70 ? "…" : ""}${row.evidence?.[0] ? `  ← ${row.evidence[0].id}${row.evidence[0].line ? " (quoted)" : ""}` : ""}`);
+  }
   const missing = requirements.filter((r) => !r.foundIn.length);
   if (missing.length) out.push(`\nNamed in the posting, not in the record: ${missing.map((r) => r.name).join(", ")}`);
   out.push(`\nWrote ${result.lensPath}\n      ${join(result.pitchDir, "report.md")}`);
@@ -136,7 +142,7 @@ async function main() {
     if (!text) { console.error("Nothing to analyse. Pass --url, --jd <file>, or paste the posting."); process.exit(2); }
   }
   try {
-    const result = await generatePitch({ company: args.company, role: args.role, slug: args.slug, url: args.url, file: args.jd, text, max: args.max, force: args.force, publish: args.publish, outDir: args["out-dir"] ?? ROOT });
+    const result = await generatePitch({ company: args.company, role: args.role, slug: args.slug, url: args.url, file: args.jd, text, max: args.max, force: args.force, publish: args.publish, outDir: args["out-dir"] ?? ROOT, ...(args.seen ? { seenAt: args.seen } : {}) });
     if (args.json) { const { lines, ...rest } = result.analysis; console.log(JSON.stringify({ ...rest, picks: result.picks.map((p) => ({ id: p.item.slug, match: p.match, score: p.score })) }, null, 2)); }
     else process.stdout.write(summary(result));
   } catch (error) {

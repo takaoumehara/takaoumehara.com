@@ -72,7 +72,7 @@ export function proofCard({ ref, item, ctx, index }) {
       ? `<a class="card-link" href="${esc(item.links.live)}" target="_blank" rel="noopener"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></a>`
       : "";
   const target = item.links?.caseStudy ? ` data-href="${esc(href(ctx, item.links.caseStudy))}"` : item.links?.live ? ` data-href="${esc(item.links.live)}" data-external="true"` : "";
-  return `      <article class="proof-card is-${size}" tabindex="0"${target}>
+  return `      <article class="proof-card is-${size}" id="card-${esc(item.slug)}" tabindex="0"${target}>
         ${cardMedia(item, ctx)}
         <div class="card-body">
           ${ref.emphasis ? `<p class="card-emphasis">${t(ref.emphasis)}</p>` : ""}

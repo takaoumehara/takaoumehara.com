@@ -22,6 +22,7 @@
 | `metrics[].confidence` — この数字は "unverified" なので、どのページにも出せない。出どころを basis に書くか、消す | 3 |
 | `narrative.constraints` — 制約は何だったか。予算・期間・使える道具・社内事情・最初から選べなかったこと | 24 |
 | `narrative.decisions` — 自分が下した判断を 1 つ。なぜそうしたか、何を諦めたか。[{ decision, why, tradeoff }]。現場の責任者が見るのはここ | 26 |
+| `contribution.mine` — 台帳はこの行を 1 行ずつ引用する。3 つの行為を 1 行に詰めた行や、40 語を超える行は割る。1 行 = 自分がした 1 つのこと | 0 |
 | `angles` — 語り口が 1 つしかないので、どのレンズでも同じ話になる。承認済みの言い換えを 1〜2 本（product / business / creative / leadership など） | 2 |
 
 対象 46 件のうち、空欄が 1 つ以上ある実績: 31 件

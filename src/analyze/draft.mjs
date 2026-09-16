@@ -6,6 +6,7 @@
 // labels. The person then rewrites the hero in their own voice; the Claim
 // Guard and NotMine Guard re-check whatever they write at build time.
 import { chooseAngle, chooseMetrics } from "./match.mjs";
+import { buildFit } from "./fit.mjs";
 
 // The site sets a space between Latin and Japanese (docs/japanese-voice.md
 // §3.3). Templates splice Latin names into Japanese sentences, so fix the seams.
@@ -70,7 +71,7 @@ function emphasisFor(pick, lib, seen) {
   return { en: [label.en, ...caps].join(" · "), jp: [label.jp, ...caps].join(" · ") };
 }
 
-export function draftLens({ company, slug, analysis, picks, lib, lexicon, source, scored = [] }) {
+export function draftLens({ company, slug, analysis, picks, lib, lexicon, source, scored = [], requirements = [], seenAt }) {
   const name = lib.profile.name;
   const title = analysis.title;
   const areas = keyAreas(analysis);
@@ -94,6 +95,7 @@ export function draftLens({ company, slug, analysis, picks, lib, lexicon, source
     return ref;
   });
 
+  const fit = buildFit({ analysis, picks, lib, lexicon, seenAt, requirements });
   const sections = [{
     type: "proof",
     lede: {
@@ -102,6 +104,8 @@ export function draftLens({ company, slug, analysis, picks, lib, lexicon, source
     },
     items,
   }];
+  // The ledger sits right after the cards: the ten-second read, then the proof line by line.
+  if (fit.rows.length) sections.push({ type: "fit" });
 
   // When the posting leans on AI or on interactive work, show the tools or the
   // playable pieces that back it — but only ones not already on a proof card.
@@ -139,6 +143,7 @@ export function draftLens({ company, slug, analysis, picks, lib, lexicon, source
     },
     capabilityPriority,
     sections,
+    fit,
     chapters,
     cta: {
       title: {

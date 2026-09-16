@@ -9,7 +9,9 @@ Handoff: `.handoff/2026-09-16-adaptive-pitch-phase2.md`
 Passphrase: 「Direct は与えるものではなく、稼ぐもの」
 Goal: 求人票を読んで、証拠ライブラリから 3〜5 件を選び、企業専用 Lens の下書きと
   「何が合い・何が無いか」のレポートを出す。LLM を呼ばず、規則と語彙表だけで。
-State: **実装・テスト完了。** `npm test` 99/99。ブランチ `claude/peaceful-rubin-j7wsvg`。
+State: **Phase 2 ＋ Phase 3a（Fit Ledger）完了。** `npm test` 106/106。ブランチ `claude/peaceful-rubin-j7wsvg`、PR #17。
+  計画の全体（3b Studio＋GitHub ログイン publish、3c 公開デモ、3d 配布）は
+  `/root/.claude/plans/glowing-roaming-nebula.md` に書いた内容を §16 に写す予定（次のセッション）。
   `src/lenses/stripe.json` は draft（未公開）。`lens/stripe/index.html` は無い。
 Next: 本人の作業 — ①`docs/evidence-gaps.md` の空欄を埋める（31 件）②実在の求人 URL で
   `--url` を試す（作業環境からは外向き通信不可で未検証）③Stripe の下書きの hero を書き直して
@@ -17,6 +19,13 @@ Next: 本人の作業 — ①`docs/evidence-gaps.md` の空欄を埋める（31 
 Read first: `docs/adaptive-portfolio-architecture.md` §16、`src/pitches/stripe/report.md`、
   `src/analyze/lexicon.json`（語彙表。ここを育てると精度が上がる）
 Running: プロセスは無し。
+
+## Phase 3a — Fit Ledger（2026-09-16、本人の要望で追加）
+
+求人票の要件 1 行ずつに「自分が何をしたか（`contribution.mine` の逐語）」と度合い
+（direct 100 / partial 60 / adjacent 30 / none 0）を並べる。`src/analyze/fit.mjs`、
+`validate.mjs` の `fitCeiling()`（本人は level を下げられるが上げられない）、
+`sections.mjs` の `fitSection()`。設計は §16.6。年数・学位の行は載せず、脚注で「履歴書で答える」。
 
 ## 使い方
 

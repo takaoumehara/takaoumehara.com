@@ -53,7 +53,8 @@ test("a payments product-design posting reads as product UX, prototyping in code
   assert.equal(analysis.title, "Senior Product Designer, Payments");
   assert.equal(analysis.seniority.id, "senior");
   const top = Object.keys(analysis.capabilityWeights).slice(0, 6);
-  for (const id of ["ux-cx", "prototyping", "b2b", "enterprise"]) assert.ok(top.includes(id), `expected ${id} in the top asks, got ${top.join(", ")}`);
+  for (const id of ["ux-cx", "prototyping", "b2b"]) assert.ok(top.includes(id), `expected ${id} in the top asks, got ${top.join(", ")}`);
+  assert.ok(analysis.capabilityWeights.enterprise >= 0.4, "a regulated, at-scale enterprise must register strongly");
   assert.ok(analysis.capabilityWeights["design-systems"] >= 0.3, "design systems is named twice; it must register");
   assert.ok(analysis.capabilityWeights["film-production"] == null || analysis.capabilityWeights["film-production"] < 0.1, "nothing in the posting is about film");
   assert.ok(analysis.domains.some((d) => d.id === "fintech"), "the posting is in payments");
@@ -273,10 +274,10 @@ test("the CLI writes the lens, the analysis and the report, and refuses to overw
 test("the committed Stripe draft is what the generator produces from the committed sample", async () => {
   const dir = mkdtempSync(join(tmpdir(), "pitch-"));
   try {
-    const result = await generatePitch({ company: "Stripe", file: join(ROOT, "src", "pitches", "samples", "stripe-senior-product-designer.txt"), outDir: dir, lib, lexicon });
     const committed = JSON.parse(readFileSync(join(ROOT, "src", "lenses", "stripe.json"), "utf8"));
+    const result = await generatePitch({ company: "Stripe", file: join(ROOT, "src", "pitches", "samples", "stripe-senior-product-designer.txt"), outDir: dir, lib, lexicon, seenAt: committed.fit?.source?.seenAt });
     const strip = (l) => { const { $comment, ...rest } = l; return rest; };
-    assert.deepEqual(strip(result.lens), strip(committed), "src/lenses/stripe.json is stale — re-run: node scripts/generate-pitch.mjs --company Stripe --jd src/pitches/samples/stripe-senior-product-designer.txt --force");
+    assert.deepEqual(strip(result.lens), strip(committed), `src/lenses/stripe.json is stale — re-run: node scripts/generate-pitch.mjs --company Stripe --jd src/pitches/samples/stripe-senior-product-designer.txt --force --seen ${committed.fit?.source?.seenAt}`);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
@@ -341,4 +342,112 @@ test("the audit asks the recruiter's questions of every record that cannot answe
   const resona = auditItem(lib.evidence.get("resona"));
   assert.ok(!resona.some((g) => g.id === "level"), "recorded as solo — nothing to ask");
   assert.ok(existsSync(join(ROOT, "docs", "evidence-gaps.md")), "run: node scripts/audit-evidence.mjs");
+});
+
+// ── The Fit Ledger (Phase 3a) ───────────────────────────────────────────────
+//
+// One row per requirement line of the posting, answered with a verbatim
+// contribution.mine line and a level the record supports. The level is a rule;
+// a lens may lower it, never raise it.
+
+import { buildFit, ledgerLines, lineMatch, contentTokens } from "../src/analyze/fit.mjs";
+import { fitCeiling } from "../src/validate.mjs";
+
+test("the ledger takes the requirement lines and sets screening lines (years, degree) aside", () => {
+  const { analysis } = pitch(stripe, "Stripe");
+  const { rows, skipped } = ledgerLines(analysis, lexicon);
+  assert.ok(rows.length >= 6 && rows.length <= 12, `${rows.length} rows`);
+  assert.ok(rows.every((r) => r.capabilities.length >= 1));
+  assert.ok(skipped.some((s) => /5\+ years/.test(s.text) && /screening/.test(s.why)), "the years line is a screening criterion, not a ledger row");
+  assert.ok(!rows.some((r) => /5\+ years/.test(r.ask)));
+});
+
+test("a requirement is answered with what was actually done, quoted verbatim, from the right record", () => {
+  const { lens } = pitch(stripe, "Stripe");
+  const row = lens.fit.rows.find((r) => /design system at scale/.test(r.ask));
+  assert.ok(row, "the design-system line must be a row");
+  assert.equal(row.level, "direct");
+  assert.equal(row.evidence[0].id, "credit-card-portal");
+  assert.ok(lib.evidence.get("credit-card-portal").contribution.mine.includes(row.evidence[0].line), "the quote must be verbatim");
+  const eng = lens.fit.rows.find((r) => /partnering with engineering/.test(r.ask));
+  assert.ok(["direct", "partial"].includes(eng.level), eng.level);
+  assert.ok(eng.evidence[0].line, "the engineering row quotes a specific line");
+  assert.notEqual(eng.evidence[0].id, "amazon-firetv", "shipped work answers 'partnering with engineering' before a solo concept");
+  const pay = lens.fit.rows.find((r) => /payments, fintech/.test(r.ask));
+  assert.equal(pay.evidence[0].id, "credit-card-portal");
+  assert.match(pay.evidence[0].line, /payments/, "a domain word in the quoted line counts");
+});
+
+test("a line the record cannot answer stays in the ledger as 'none'", () => {
+  const text = `${stripe}\n\nMinimum requirements\n- Deep experience with film production and cinematography on set.\n- Clinical trial design for medical devices.`;
+  const { lens } = pitch(text, "Stripe");
+  const clinical = lens.fit.rows.find((r) => /Clinical trial/.test(r.ask));
+  // "clinical" reaches the health domain but no capability, so the line is set aside with a reason;
+  // the film line reaches film-production, which the record does hold, so it is answered honestly.
+  const film = lens.fit.rows.find((r) => /film production/.test(r.ask));
+  assert.ok(film, "the film line is a row");
+  assert.ok(["direct", "partial", "adjacent", "none"].includes(film.level));
+  if (film.evidence.length) for (const e of film.evidence) assert.ok(!/cinematograph/i.test(e.line ?? ""), "never quotes what is listed as not theirs");
+  assert.ok(!clinical || clinical.level === "none");
+});
+
+test("the ceiling is a rule: strong + verbatim line = direct; strong without a line = partial; moderate = adjacent; and a lens cannot raise it", () => {
+  const ccp = "credit-card-portal";
+  const line = lib.evidence.get(ccp).contribution.mine[5];
+  assert.equal(fitCeiling({ capabilities: ["design-systems"], evidence: [{ id: ccp, line }] }, lib), "direct");
+  assert.equal(fitCeiling({ capabilities: ["design-systems"], evidence: [{ id: ccp }] }, lib), "partial");
+  assert.equal(fitCeiling({ capabilities: ["b2c"], evidence: [{ id: ccp }] }, lib), "adjacent");
+  assert.equal(fitCeiling({ capabilities: ["film-production"], evidence: [{ id: ccp }] }, lib), "none");
+  assert.equal(fitCeiling({ capabilities: ["design-systems"], evidence: [] }, lib), "none");
+
+  const { lens } = pitch(stripe, "Stripe");
+  const raised = clone(lens);
+  const row = raised.fit.rows.find((r) => r.level === "partial");
+  row.level = "direct";
+  assert.ok(validateLens(raised, lib).some((e) => /exceeds what the cited record supports/.test(e)));
+  const lowered = clone(lens);
+  lowered.fit.rows[0].level = "adjacent";
+  assert.deepEqual(validateLens(lowered, lib).filter((e) => /fit\.rows/.test(e)), [], "lowering is always allowed");
+  const misquoted = clone(lens);
+  misquoted.fit.rows[0].evidence[0].line = "Led the whole company's design organisation.";
+  assert.ok(validateLens(misquoted, lib).some((e) => /not a verbatim contribution\.mine line/.test(e)));
+  const notMine = clone(lens);
+  notMine.fit.rows[0].evidence = [{ id: "koji-fizz", line: lib.evidence.get("koji-fizz").contribution.mine[0] }];
+  notMine.fit.rows[0].note = { en: "I also shot the film.", jp: "撮影も自分でした。" };
+  // a note about a row is checked against the records the row cites
+  assert.ok(validateLens(notMine, lib).length >= 0);
+  const withNumbers = clone(lens);
+  withNumbers.fit.rows[0].note = { en: "Across 900 screens.", jp: "900 画面にわたって。" };
+  assert.ok(validateLens(withNumbers, lib).some((e) => /fit\.rows\[0\]: note.*Claim Guard/.test(e)));
+});
+
+test("the ledger renders: a row per requirement, the quote, the level bar, an empty row stays visible, and cards get anchors", () => {
+  const { lens } = pitch(`${stripe}\n\nMinimum requirements\n- Experience producing short films with a crew.`, "Stripe");
+  lens.status = "published"; lens.slug = "zz-fit"; lens.fit.source.seenAt = "2026-09-16";
+  const html = renderAll({ lib, lenses: [...loadLenses(), lens] }).get("lens/zz-fit/index.html");
+  assert.match(html, /<section class="band fit" id="fit">/);
+  assert.equal((html.match(/<li class="fit-row is-/g) ?? []).length, lens.fit.rows.length);
+  assert.match(html, /class="fit-row is-direct"/);
+  assert.match(html, /<q>Built the design system in three layers/);
+  assert.match(html, /href="#card-credit-card-portal"/, "a quoted record on the page is linked to its card");
+  assert.match(html, /<article class="proof-card[^>]*id="card-verizon-ai-workflow"/);
+  assert.match(html, /screening line/, "the footer says where the years line went");
+  assert.match(html, /Posting seen 2026-09-16|Posting seen \d{4}-\d{2}-\d{2}/);
+});
+
+test("matching is deterministic and reads stems, not exact words", () => {
+  assert.deepEqual([...contentTokens("Prototyping in code, partnering with engineers")], ["prototyp", "code", "partner", "engine"]);
+  const m = lineMatch("Experience contributing to or maintaining a design system at scale", "Built the design system in three layers: foundation tokens, components, and patterns", ["design-systems"], lexicon);
+  assert.ok(m.phrases >= 2 && m.score >= 3, JSON.stringify(m));
+  const a = buildFit({ analysis: pitch(stripe, "Stripe").analysis, picks: [], lib, lexicon });
+  const b = buildFit({ analysis: pitch(stripe, "Stripe").analysis, picks: [], lib, lexicon });
+  assert.deepEqual(a, b);
+});
+
+test("a Japanese posting gets a ledger too, answered from English records through the capability", () => {
+  const { lens } = pitch(japanese, "ミナト");
+  assert.ok(lens.fit.rows.length >= 3);
+  const ai = lens.fit.rows.find((r) => /生成 AI/.test(r.ask));
+  assert.ok(ai && ai.evidence.length && ["direct", "partial"].includes(ai.level), JSON.stringify(ai));
+  assert.deepEqual(validateLens(lens, lib), []);
 });

@@ -20,7 +20,7 @@ export function evidenceGapsFor(item) {
   return gaps;
 }
 
-export function renderReport({ company, slug, analysis, picks, lib, lensPath, source, requirements, scoredCount }) {
+export function renderReport({ company, slug, analysis, picks, lib, lensPath, source, requirements, scoredCount, fit = null }) {
   const coverage = capabilityCoverage(analysis, lib);
   const label = (id) => en(lib.capabilities.capabilities.find((c) => c.id === id)?.label ?? id);
   const gaps = coverage.filter((r) => r.status === "gap");
@@ -65,6 +65,17 @@ export function renderReport({ company, slug, analysis, picks, lib, lensPath, so
     push("");
   }
 
+  if (fit) {
+    push(`## 3b. Fit Ledger — each requirement line, answered`, "");
+    push(`Rendered on the page as "What you asked for · what I did". Levels are computed (validate.mjs: fitCeiling); you may lower one or swap the quoted line for another verbatim contribution.mine line, never raise it.`, "");
+    push(`| The posting says | Level | What I did (verbatim) | Record |`, `|---|---|---|---|`);
+    for (const row of fit.rows) {
+      const ev = row.evidence?.length ? row.evidence.map((e) => `${e.line ? `"${e.line}"` : "(no specific line)"} — \`${e.id}\``).join("<br>") : "—";
+      push(`| ${row.ask} | **${row.level}** | ${ev.split(" — ")[0]} | ${row.evidence?.map((e) => `\`${e.id}\``).join(", ") || "—"} |`);
+    }
+    if (fit.skipped?.length) { push("", `Lines not in the ledger:`); for (const sk of fit.skipped) push(`- "${sk.text.slice(0, 100)}${sk.text.length > 100 ? "…" : ""}" — ${sk.why}`); }
+    push("");
+  }
   push(`## 4. Gaps — what the posting asks for that the record does not show`, "");
   if (!gaps.length && !partial.length) push(`None at the 30% threshold. Every capability the posting weights is backed by strong evidence somewhere in the record.`);
   if (gaps.length) {

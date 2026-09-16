@@ -161,7 +161,8 @@ const isLatin = (s) => /^[\x00-\x7F]+$/.test(s);
 export function phraseRegex(phrase, { isPattern = false } = {}) {
   if (isPattern) return new RegExp(phrase, "giu");
   const body = escapeRe(phrase).replace(/\s+/g, "[\\s\\-]+");
-  return isLatin(phrase) ? new RegExp(`(?<![A-Za-z0-9])${body}(?![A-Za-z0-9])`, "giu") : new RegExp(body, "giu");
+  // A dot before or after is part of a name ("intentfirst.ai", "three.js"), not a word boundary.
+  return isLatin(phrase) ? new RegExp(`(?<![A-Za-z0-9.])${body}(?![A-Za-z0-9.])`, "giu") : new RegExp(body, "giu");
 }
 const countMatches = (re, text) => { re.lastIndex = 0; let n = 0; while (re.exec(text)) n += 1; return n; };
 

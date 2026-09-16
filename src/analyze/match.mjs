@@ -162,6 +162,6 @@ export function requirementCheck(analysis, lib, { phraseRegex, evidenceCorpus })
       const corpus = evidenceCorpus(item);
       if (req.patterns.some((p) => phraseRegex(p, { isPattern: true }).test(corpus))) where.push(item.slug);
     }
-    return { name: req.name, asked: req.found, foundIn: where.sort() };
+    return { name: req.name, asked: req.found, screen: Boolean(req.screen), foundIn: where.sort() };
   });
 }

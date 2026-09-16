@@ -250,6 +250,7 @@ export type Section =
   | { type: "career-arc"; title?: Localized; lede?: Localized }
   | { type: "capabilities"; title?: Localized; lede?: Localized }
   | { type: "studio"; title?: Localized; lede?: Localized }
+  | { type: "fit"; title?: Localized; lede?: Localized }                              // renders lens.fit (Fit Ledger)
   | { type: "contact" };
 
 export interface Lens {
@@ -276,6 +277,25 @@ export interface Lens {
    * Default: true for /lens/*, false for default.
    */
   lensNote?: boolean | Localized;
+  /**
+   * The Fit Ledger (Phase 3a): one row per requirement line of a posting,
+   * answered with a verbatim contribution.mine line and a level the record
+   * supports. Rendered by a { type: "fit" } section. validate.mjs recomputes
+   * each row's ceiling (fitCeiling) and rejects a level above it.
+   */
+  fit?: {
+    source?: { title?: string; company?: string | null; seenAt?: string };
+    rows: {
+      ask: string;                          // the posting's line, verbatim
+      section?: "requirements" | "preferred";
+      capabilities: string[];               // Capability ids the line names
+      level: "direct" | "partial" | "adjacent" | "none";
+      evidence: { id: string; line?: string }[];   // line = verbatim from that record's contribution.mine
+      note?: Localized;                     // the person's one line (Claim Guard applies)
+    }[];
+    requirements?: { name: string; asked: string[]; foundIn: string[] }[];
+    skipped?: { text: string; why: string }[];   // requirement lines not in the ledger, and why
+  };
   /**
    * Written by scripts/generate-pitch.mjs, never rendered. Raw material for a
    * résumé summary or cover letter. Every highlight line must be verbatim from

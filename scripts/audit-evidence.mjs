@@ -73,6 +73,12 @@ export const QUESTIONS = [
     suggest: () => null,
   },
   {
+    id: "mine-granularity", weight: 2, field: "contribution.mine",
+    ask: { en: "The Fit Ledger quotes these lines one at a time. Lines that pack three actions, or run past 40 words, should be split: one line, one thing you did.", jp: "台帳はこの行を 1 行ずつ引用する。3 つの行為を 1 行に詰めた行や、40 語を超える行は割る。1 行 = 自分がした 1 つのこと" },
+    missing: (it) => it.contribution.mine.some((l) => l.split(/\s+/).length > 40 || (l.match(/\b(and|,)\b/g) ?? []).length >= 4),
+    suggest: (it) => it.contribution.mine.filter((l) => l.split(/\s+/).length > 40 || (l.match(/\b(and|,)\b/g) ?? []).length >= 4).map((l) => `"${l.slice(0, 60)}…"`).join(", "),
+  },
+  {
     id: "angles", weight: 1, field: "angles",
     ask: { en: "Only one framing exists, so every lens tells this the same way. Add one or two approved retellings (product / business / creative / leadership …).", jp: "語り口が 1 つしかないので、どのレンズでも同じ話になる。承認済みの言い換えを 1〜2 本（product / business / creative / leadership など）" },
     missing: (it) => it.kind === "project" && !(it.angles && Object.keys(it.angles).length),

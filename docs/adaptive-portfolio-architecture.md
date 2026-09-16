@@ -665,3 +665,39 @@ experiment / tool / venture → `solo`。Festival の chair と KOJI FIZZ の「
 - 生成した `src/lenses/stripe.json` は draft のまま。`lens/stripe/index.html` は
   コミットしていない（公開は本人が `status: "published"` にして build する。原則 17）。
   プレビューは `node src/build.mjs --preview` → `lens/_preview/stripe/index.html`（git 管理外）。
+
+### 16.6 Fit Ledger — 求人票の 1 行ずつに「自分が何をしたか」で答える（Phase 3a、2026-09-16）
+
+本人の要望: 「なぜ答えられるのか」を、ポートフォリオのリンクではなく**自分が実際にした行為**で示し、
+どの程度答えられているかも出す。合計の % ではなく、**求人票の 1 行 = 台帳の 1 行**。
+
+```
+{ ask: "Experience contributing to or maintaining a design system at scale",   ← 求人票の行、逐語
+  capabilities: ["design-systems", "enterprise"],                                ← その行が名指しした能力
+  level: "direct",                                                               ← 規則で決まる上限（下げられるが上げられない）
+  evidence: [{ id: "credit-card-portal",
+               line: "Built the design system in three layers: …" }],           ← contribution.mine の逐語
+  note?: { en, jp } }                                                            ← 本人の 1 行。Claim Guard 対象
+```
+
+| level | バー | 意味（`validate.mjs` の `fitCeiling()`） |
+|---|---|---|
+| `direct` | 100 | その行の能力に `strong` を持つ記録があり、かつその記録の `contribution.mine` に対応する逐語の 1 行がある |
+| `partial` | 60 | `strong` はあるが対応する行が無い／`moderate` に対応する行がある |
+| `adjacent` | 30 | `moderate` のみ、または `adjacent` のみ |
+| `none` | 0 | 引用できる記録が無い。**行は消さない** |
+
+規則（`src/analyze/fit.mjs`）:
+
+1. 台帳に載るのは `requirements` / `preferred` の行。**年数・学位・ポートフォリオを問う行は載せない**（記録は「何年」に逐語で答えられない。履歴書で答える、と脚注に出す）。能力を 1 つも名指ししない行も載せない（言えることが無い）。
+2. 行 → 能力: 語彙表の句で拾い、最も強い能力の半分未満の能力は捨てる（"workflows" 1 語で `operations` が紛れ込み、無関係な記録を連れてくるのを防ぐ）。
+3. 記録 → 行: 語幹の重なり＋能力の句＋**業界語**（"payments" が問いと引用の両方にあれば加点）で `contribution.mine` の各行を採点。2 以上で「対応する行あり」。
+4. 記録の順位: 強度 ×2 ＋ 行の一致 ＋ ページに載っている記録 +1.5 ＋ **自主制作コンセプトは −1**（"partnering with engineering" に一人で作った概念作品が先に出た初回の結果から）。2 件目の引用は、明確に一致する逐語の行があるときだけ。
+5. `validate.mjs`: `evidence[].id` は公開記録、`line` はその記録の `contribution.mine` に逐語で存在、`level` は `fitCeiling()` の上限以下、`note` は Claim Guard / NotMine Guard。**本人は level を下げられるが上げられない。**
+
+描画は `{ type: "fit" }` セクション（`sections.mjs` の `fitSection()`）。見出し「What you asked for · what I did」。
+列は「求人票の行 / 度合いのバーと言葉 / 引用と記録へのリンク」。引用は英語の逐語（記録が英語なので、日本語表示でも訳さない）。
+ページに載っている記録はカードの `#card-<slug>` へ、載っていない記録はケーススタディへ飛ぶ。
+
+データへの含意: **`contribution.mine` の 1 行が台帳の説得力そのもの。** 1 行 = 自分がした 1 つの具体的な行為に整える。
+`scripts/audit-evidence.mjs` が 40 語超の行や 3 つ以上を詰めた行を指摘する（`docs/evidence-gaps.md`）。
