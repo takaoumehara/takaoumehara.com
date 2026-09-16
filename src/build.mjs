@@ -14,6 +14,7 @@ import { validateAll } from "./validate.mjs";
 import { renderLens } from "./render/page.mjs";
 import { renderCategory } from "./render/category.mjs";
 import { renderWorkArchive } from "./render/archive.mjs";
+import { renderNowPage } from "./render/now.mjs";
 
 export const SITE_URL = "https://takaoumehara.com";
 
@@ -54,6 +55,18 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
     lib, css,
     ctx: { base: "../", canonical: `${SITE_URL}/work` },
   }));
+
+  // Living Lab Bench at /now (now/index.html and now.html)
+  if (lib.now) {
+    pages.set("now/index.html", renderNowPage({
+      nowData: lib.now, lib, css,
+      ctx: { base: "../", canonical: `${SITE_URL}/now` },
+    }));
+    pages.set("now.html", renderNowPage({
+      nowData: lib.now, lib, css,
+      ctx: { base: "", canonical: `${SITE_URL}/now` },
+    }));
+  }
 
   // Dedicated Japanese Edition at /ja (ja/index.html)
   const defaultLens = lenses.find((l) => l.slug === "default");

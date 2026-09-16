@@ -141,6 +141,37 @@ body {
 }
 
 /* ── 6. COMMON SITE NAVIGATION ─────────────────────────────────────────── */
+:root {
+  --nav-bg: rgba(243, 242, 238, 0.92);
+  --nav-border: rgba(11, 11, 11, 0.08);
+  --nav-fg: #0b0b0b;
+  --nav-fg-mid: #4a4a44;
+  --nav-fg-dim: #76716a;
+  --nav-indicator: #0b0b0b;
+  --nav-drop-bg: rgba(243, 242, 238, 0.98);
+  --nav-drop-border: rgba(11, 11, 11, 0.12);
+  --nav-drop-fg: #4a4a44;
+  --nav-drop-fg-hover: #0b0b0b;
+  --nav-drop-hover-bg: rgba(11, 11, 11, 0.05);
+  --nav-drop-dot: #ff6b35;
+  --nav-drop-shadow: 0 12px 36px -4px rgba(11, 11, 11, 0.08);
+}
+html[data-theme="dark"], .theme-dark {
+  --nav-bg: rgba(12, 13, 14, 0.92);
+  --nav-border: rgba(255, 255, 255, 0.10);
+  --nav-fg: #f4f4f6;
+  --nav-fg-mid: rgba(244, 244, 246, 0.74);
+  --nav-fg-dim: rgba(244, 244, 246, 0.44);
+  --nav-indicator: #ffffff;
+  --nav-drop-bg: rgba(19, 20, 22, 0.98);
+  --nav-drop-border: rgba(255, 255, 255, 0.14);
+  --nav-drop-fg: rgba(244, 244, 246, 0.78);
+  --nav-drop-fg-hover: #ffffff;
+  --nav-drop-hover-bg: rgba(255, 255, 255, 0.08);
+  --nav-drop-dot: #ff6b35;
+  --nav-drop-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.50);
+}
+
 .site-nav {
   position: sticky;
   top: 0;
@@ -150,7 +181,7 @@ body {
   align-items: center;
   padding: 16px var(--gutter);
   background: var(--nav-bg);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--nav-border);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
@@ -158,52 +189,66 @@ body {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  color: var(--ink);
+  color: var(--nav-fg);
   line-height: 1;
   text-decoration: none;
 }
 .nav-logo-name {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   letter-spacing: -0.02em;
 }
 .nav-logo-tag {
   font-family: var(--ff-mono);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  color: var(--nav-fg-dim);
 }
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 28px;
   list-style: none;
 }
 .nav-links a {
-  font-size: 13px;
+  position: relative;
+  font-size: 13.5px;
   font-weight: 500;
-  color: var(--ink-mid);
+  color: var(--nav-fg-mid);
   text-decoration: none;
-  transition: color 140ms ease;
+  letter-spacing: -0.005em;
+  transition: color 160ms ease;
+  padding: 8px 0;
+  display: inline-block;
 }
-.nav-links a:hover,
-.nav-links a.is-active {
-  color: var(--ink);
+.nav-links a:hover {
+  color: var(--nav-fg);
 }
 .nav-links a.is-active {
+  color: var(--nav-fg);
   font-weight: 600;
+}
+.nav-links a.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--nav-indicator);
+  border-radius: 2px;
 }
 .nav-item { position: relative; }
 .nav-item.is-tierbreak::before {
   content: "";
   position: absolute;
-  left: -14px;
+  left: -15px;
   top: 50%;
   width: 1px;
-  height: 12px;
-  margin-top: -6px;
-  background: var(--line);
+  height: 11px;
+  margin-top: -5.5px;
+  background: var(--nav-border);
 }
 .nav-sub {
   display: none;
@@ -211,13 +256,13 @@ body {
   top: 100%;
   left: -14px;
   min-width: 220px;
-  background: rgba(243, 242, 238, 0.98);
+  background: var(--nav-drop-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--line);
-  border-radius: var(--r-sm, 6px);
+  border: 1px solid var(--nav-drop-border);
+  border-radius: var(--r-sm, 8px);
   padding: 6px 0;
-  box-shadow: 0 10px 30px -4px rgba(11, 11, 11, 0.08);
+  box-shadow: var(--nav-drop-shadow);
   list-style: none;
   z-index: 60;
 }
@@ -226,19 +271,36 @@ body {
   display: block;
 }
 .nav-sub a {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   padding: 8px 16px;
   font-size: 12.5px;
   font-weight: 500;
-  color: #4a4a44;
+  color: var(--nav-drop-fg);
   text-decoration: none;
   transition: background 140ms ease, color 140ms ease;
 }
-.nav-sub a:hover,
+.nav-sub a:hover {
+  color: var(--nav-drop-fg-hover);
+  background: var(--nav-drop-hover-bg);
+}
 .nav-sub a.is-active {
-  color: #0b0b0b;
-  background: rgba(11, 11, 11, 0.05);
+  color: var(--nav-drop-fg-hover);
+  background: var(--nav-drop-hover-bg);
   font-weight: 600;
+}
+.nav-sub a.is-active::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--nav-drop-dot);
+  flex-shrink: 0;
+}
+.nav-sub a.is-active::after {
+  display: none !important;
 }
 .nav-toggle {
   display: none;

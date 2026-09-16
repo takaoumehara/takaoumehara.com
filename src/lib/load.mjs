@@ -37,6 +37,7 @@ export function loadLibrary(dataDir = DATA_DIR) {
     roles: readJson(join(dataDir, "roles.json")).roles,
     theses: readJson(join(dataDir, "theses.json")).theses,
     ideas: existsSync(join(dataDir, "ideas.json")) ? readJson(join(dataDir, "ideas.json")) : [],
+    now: existsSync(join(dataDir, "now.json")) ? readJson(join(dataDir, "now.json")) : null,
     evidence,
     sources,
   };

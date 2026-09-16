@@ -4,25 +4,26 @@
 import { esc, href, plain } from "./html.mjs";
 
 // Five sections of work, then the two pages about the person. Every item
-// carries the same weight — only the page you are on is emphasised. The old
-// three-item "lead" tier made Product Design read as disabled from a Brand &
-// Visual page, which is the kind of thing nobody can explain out loud.
-// Canonical navigation: 6 clear entry points, mapping existing deep archive pages underneath.
+// carries the same weight — only the page you are on is emphasised.
+// Canonical 5+1 navigation: Work, Now, Ideas, About, Work with me, Studio ↗.
 const CANONICAL_NAV = [
   {
     label: "Work",
     path: "work.html",
     sub: [
+      { path: "work/index.html", label: "All Work" },
       { path: "work.html", label: "Product &amp; Experience Design" },
       { path: "brand.html", label: "Brand &amp; Creative" },
+      { path: "ai-products.html", label: "AI Products &amp; Systems" },
     ],
   },
   {
-    label: "Builds",
-    path: "interactive.html",
+    label: "Now",
+    path: "now.html",
     sub: [
+      { path: "now.html", label: "What I’m Working On" },
+      { path: "now.html#ventures", label: "Active Ventures" },
       { path: "interactive.html", label: "Interactive &amp; Playable" },
-      { path: "ai-products.html", label: "AI Products &amp; Systems" },
       { path: "ai-tools.html", label: "AI Tools" },
     ],
   },
@@ -42,7 +43,7 @@ const CANONICAL_NAV = [
     isTierbreak: true,
   },
   {
-    label: "Contact",
+    label: "Work with me",
     path: "contact.html",
   },
   {
@@ -79,9 +80,10 @@ ${css}
 }
 
 export function nav(ctx, activePath) {
+  const normActive = activePath === "now/index.html" ? "now.html" : (activePath === "work/index.html" ? "work/index.html" : activePath);
   const items = CANONICAL_NAV.map((item) => {
-    const isSubActive = item.sub?.some((s) => s.path === activePath);
-    const isParentActive = item.path === activePath || isSubActive;
+    const isSubActive = item.sub?.some((s) => s.path === normActive);
+    const isParentActive = item.path === normActive || isSubActive || (normActive === "work/index.html" && item.path === "work.html");
     const tierbreak = item.isTierbreak ? ` is-tierbreak` : "";
     const subClass = item.sub ? ` has-sub` : "";
     const target = item.external ? ` target="_blank" rel="noopener"` : "";
@@ -89,13 +91,13 @@ export function nav(ctx, activePath) {
     const subMenu = item.sub
       ? `\n        <div class="nav-sub">\n` +
         item.sub.map((s) => {
-          const here = s.path === activePath ? ` class="nav-sub-link is-active" aria-current="page"` : ` class="nav-sub-link"`;
+          const here = s.path === normActive ? ` class="nav-sub-link is-active" aria-current="page"` : ` class="nav-sub-link"`;
           return `          <a href="${esc(href(ctx, s.path))}"${here}>${s.label}</a>`;
         }).join("\n") +
         `\n        </div>`
       : "";
 
-    const ariaCurrent = (!item.sub && item.path === activePath) ? ` aria-current="page"` : "";
+    const ariaCurrent = (!item.sub && item.path === normActive) ? ` aria-current="page"` : "";
     const activeCls = isParentActive ? ` class="nav-link is-active"` : ` class="nav-link"`;
 
     return `      <li class="nav-item${tierbreak}${subClass}">

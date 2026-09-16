@@ -88,11 +88,14 @@ function navDestinations(html, page) {
 test('every nav item carries the same weight — only the current page is marked', () => {
   const expected = [
     [ 'work.html', 'Work' ],
+    [ 'work/index.html', 'All Work' ],
     [ 'work.html', 'Product &amp; Experience Design' ],
     [ 'brand.html', 'Brand &amp; Creative' ],
-    [ 'interactive.html', 'Builds' ],
-    [ 'interactive.html', 'Interactive &amp; Playable' ],
     [ 'ai-products.html', 'AI Products &amp; Systems' ],
+    [ 'now.html', 'Now' ],
+    [ 'now.html', 'What I’m Working On' ],
+    [ 'now.html#ventures', 'Active Ventures' ],
+    [ 'interactive.html', 'Interactive &amp; Playable' ],
     [ 'ai-tools.html', 'AI Tools' ],
     [ 'publications.html', 'Ideas' ],
     [ 'publications.html', 'Publications' ],
@@ -100,7 +103,7 @@ test('every nav item carries the same weight — only the current page is marked
     [ 'workshop.html', 'Workshops' ],
     [ 'intentfirst.html', 'Intent First' ],
     [ 'about.html', 'About' ],
-    [ 'contact.html', 'Contact' ],
+    [ 'contact.html', 'Work with me' ],
     [ 'https://creativityiseverywhere.com', 'Studio ↗' ],
   ];
 
