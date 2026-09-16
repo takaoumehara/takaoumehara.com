@@ -375,6 +375,7 @@ html.lang-jp .hero-line { font-family: var(--ff-jp); font-style: normal; font-we
 html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 600; letter-spacing: 0; }
 .card-meta { font-size: 12.5px; color: var(--ink-dim); }
 .card-flag { display: inline-block; margin-left: 6px; padding: 1px 7px; border: 1px solid var(--border); border-radius: 999px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; }
+.card-flag--role { color: var(--ink-mid); border-color: var(--ink-dim); }
 .card-desc { font-size: 15px; line-height: 1.66; color: var(--ink-mid); }
 .card-desc :where(.t-en) { display: block; }
 .card-link { align-self: flex-start; font-size: 12.5px; font-weight: 500; letter-spacing: 0.02em; color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.22); padding-bottom: 1px; margin-top: 4px; transition: border-color 160ms ease; }
@@ -383,6 +384,33 @@ html.lang-jp .card-title { font-family: var(--ff-jp); font-weight: 600; letter-s
 .metrics { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 6px; }
 .metric dt { font-family: var(--ff); font-size: 26px; font-weight: 700; line-height: 1; letter-spacing: -0.03em; }
 .metric dd { font-size: 12px; color: var(--ink-dim); margin-top: 3px; max-width: 18ch; line-height: 1.35; }
+
+/* Fit Ledger */
+.fit-rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.fit-row { display: grid; grid-template-columns: minmax(0, 1.2fr) 200px minmax(0, 1.4fr); gap: 12px 32px; padding: 22px 0; border-bottom: 1px solid var(--line); align-items: start; }
+.fit-ask { font-size: 15px; line-height: 1.5; color: var(--ink); margin: 0; }
+.fit-level { display: flex; flex-direction: column; gap: 8px; padding-top: 4px; }
+.fit-bar { display: block; height: 4px; width: 100%; background: var(--line); border-radius: 2px; overflow: hidden; }
+.fit-bar > i { display: block; height: 100%; background: var(--ink); }
+.fit-row.is-none .fit-bar > i { background: transparent; }
+.fit-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); font-weight: 600; }
+.fit-row.is-direct .fit-label { color: var(--ink); }
+.fit-evidence { font-size: 14px; line-height: 1.55; color: var(--ink-mid); margin: 0 0 6px; }
+.fit-evidence q { quotes: "“" "”"; }
+.fit-evidence.is-empty { color: var(--ink-dim); }
+.fit-sep { color: var(--ink-dim); margin: 0 4px; }
+.fit-where { color: var(--ink); text-decoration: none; border-bottom: 1px solid rgba(18,18,18,0.22); white-space: nowrap; }
+.fit-where:hover { border-color: var(--ink); }
+.fit-note { grid-column: 1 / -1; font-size: 14px; line-height: 1.55; color: var(--ink-mid); margin: 0; }
+.fit-reqs { list-style: none; margin: 28px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px 28px; font-size: 13px; color: var(--ink-mid); }
+.fit-reqs b { font-weight: 600; color: var(--ink); }
+.fit-req.is-empty b { color: var(--ink-dim); }
+.fit-foot { margin-top: 28px; font-size: 12.5px; line-height: 1.6; color: var(--ink-dim); max-width: 78ch; }
+@media (max-width: 860px) {
+  .fit-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .fit-level { flex-direction: row; align-items: center; gap: 12px; }
+  .fit-bar { width: 120px; flex: none; }
+}
 
 .contrib { margin-top: 6px; border-top: 1px dashed var(--border); padding-top: 8px; }
 .contrib summary { cursor: pointer; font-size: 12px; letter-spacing: 0.04em; color: var(--ink-dim); list-style: none; display: flex; align-items: center; gap: 8px; }
@@ -972,12 +1000,12 @@ html.lang-jp .now-invite-title {
       <p class="section-lede"><span class="t-en">Different mediums. Same instinct: finding possibilities and making them tangible.</span><span class="t-jp is-block">扱っているものは違いますが、自分では意外と同じことをしているつもりです。まだ形のない可能性を見つけて、人が触れられるところまで持っていく。</span></p>
     </div>
     <div class="proof-grid">
-      <article class="proof-card is-lead" tabindex="0" data-href="projects/resona.html">
+      <article class="proof-card is-lead" id="card-resona" tabindex="0" data-href="projects/resona.html">
         <div class="card-media"><img src="assets/resona/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/resona/preview.webm" type="video/webm"><source src="assets/resona/preview.mp4" type="video/mp4"></video></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Creative technology · Live now</span><span class="t-jp">クリエイティブテクノロジー · 公開中</span></p>
           <h3 class="card-title"><span class="t-en">Resona</span><span class="t-jp">響</span></h3>
-          <p class="card-meta">Designer &amp; builder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
+          <p class="card-meta">Designer &amp; builder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span> <span class="card-flag card-flag--role"><span class="t-en">Solo</span><span class="t-jp">ひとりで</span></span></p>
           <p class="card-desc"><span class="t-en">Motion that tells you what something means before you read a word.</span><span class="t-jp is-block">言葉を読む前に、動きが意味を伝える。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
@@ -985,7 +1013,7 @@ html.lang-jp .now-invite-title {
           <a class="card-link" href="projects/resona.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
         </div>
       </article>
-      <article class="proof-card is-standard" tabindex="0" data-href="projects/verizon-ai-agents.html">
+      <article class="proof-card is-standard" id="card-verizon-ai-workflow" tabindex="0" data-href="projects/verizon-ai-agents.html">
         <div class="card-media"><img src="assets/thumbs/verizon-ai-agents.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Enterprise AI · Product operations</span><span class="t-jp">エンタープライズ AI · プロダクト運用</span></p>
@@ -998,12 +1026,12 @@ html.lang-jp .now-invite-title {
           <a class="card-link" href="projects/verizon-ai-agents.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
         </div>
       </article>
-      <article class="proof-card is-standard" tabindex="0" data-href="projects/festival-design.html">
+      <article class="proof-card is-standard" id="card-festival-reinvention" tabindex="0" data-href="projects/festival-design.html">
         <div class="card-media"><img src="assets/thumbs/festival-design.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Business transformation · Volunteer</span><span class="t-jp">事業の転換 · ボランティア</span></p>
           <h3 class="card-title"><span class="t-en">Reinventing a Festival After COVID</span><span class="t-jp">秋祭りのデザイン</span></h3>
-          <p class="card-meta">New York Japanese Saturday School — Akimatsuri · Festival Chairperson &amp; Creative Director (volunteer) · 2022–2024 <span class="card-flag"><span class="t-en">Volunteer role</span><span class="t-jp">ボランティア</span></span></p>
+          <p class="card-meta">New York Japanese Saturday School — Akimatsuri · Festival Chairperson &amp; Creative Director (volunteer) · 2022–2024 <span class="card-flag"><span class="t-en">Volunteer role</span><span class="t-jp">ボランティア</span></span> <span class="card-flag card-flag--role"><span class="t-en">Led</span><span class="t-jp">率いた</span></span></p>
           <p class="card-desc"><span class="t-en">A business-model transformation under hard constraints: the old revenue pillar (donated food, parent volunteers from the food industry) was gone. Games had been three small booths. Rebuilt as the main engine, game revenue grew more than 3× over three years and profitability became far more stable.</span><span class="t-jp is-block">コロナで食という収益の柱が消えた。もともと 3 つの屋台だったゲームを主力に据え直した。3 年で売上は 3 倍以上に伸び、収益の安定度も上がった。</span></p>
           <dl class="metrics"><div class="metric"><dt>3×+</dt><dd><span class="t-en">game revenue growth over three years</span><span class="t-jp">ゲーム収益、3 年で 3 倍超</span></dd></div><div class="metric"><dt>3 → 11</dt><dd><span class="t-en">games, inherited → designed and built</span><span class="t-jp">ゲーム数、3→11 に拡大</span></dd></div></dl>
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
@@ -1011,12 +1039,12 @@ html.lang-jp .now-invite-title {
           <a class="card-link" href="projects/festival-design.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
         </div>
       </article>
-      <article class="proof-card is-standard" tabindex="0" data-href="intentfirst.html">
+      <article class="proof-card is-standard" id="card-intentfirst" tabindex="0" data-href="intentfirst.html">
         <div class="card-media"><div class="card-art card-art--intent"><span class="card-art-label">intentfirst.ai</span></div></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">AI venture · Active</span><span class="t-jp">AI ベンチャー · 進行中</span></p>
           <h3 class="card-title">intentfirst.ai</h3>
-          <p class="card-meta">Founder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
+          <p class="card-meta">Founder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span> <span class="card-flag card-flag--role"><span class="t-en">Solo</span><span class="t-jp">ひとりで</span></span></p>
           <p class="card-desc"><span class="t-en">A thesis, not a product: the vocabulary AI needs to read intent, not just input.</span><span class="t-jp is-block">プロダクトではなく主張。AI が入力ではなく意図を読むための語彙。</span></p>
           <dl class="metrics"><div class="metric"><dt>8</dt><dd><span class="t-en">Context Tokens defining a user&#39;s state</span><span class="t-jp">利用者の状態を示す項目</span></dd></div><div class="metric"><dt>3</dt><dd><span class="t-en">memory layers — Identity, Accumulated Learning, Right Now</span><span class="t-jp">記憶モデルの層</span></dd></div></dl>
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
@@ -1024,7 +1052,7 @@ html.lang-jp .now-invite-title {
           <a class="card-link" href="intentfirst.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
         </div>
       </article>
-      <article class="proof-card is-standard" tabindex="0" data-href="projects/ela-quests.html">
+      <article class="proof-card is-standard" id="card-ela-quests" tabindex="0" data-href="projects/ela-quests.html">
         <div class="card-media"><img src="assets/thumbs/ela-quests.jpg" alt="" loading="lazy"></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Product leadership · EdTech</span><span class="t-jp">プロダクトリーダーシップ · EdTech</span></p>
@@ -1037,12 +1065,12 @@ html.lang-jp .now-invite-title {
           <a class="card-link" href="projects/ela-quests.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
         </div>
       </article>
-      <article class="proof-card is-standard" tabindex="0" data-href="projects/rakugaki-jam.html">
+      <article class="proof-card is-standard" id="card-rakugaki-jam" tabindex="0" data-href="projects/rakugaki-jam.html">
         <div class="card-media"><img src="assets/rakugaki-jam/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="assets/rakugaki-jam/preview.webm" type="video/webm"><source src="assets/rakugaki-jam/preview.mp4" type="video/mp4"></video></div>
         <div class="card-body">
           <p class="card-emphasis"><span class="t-en">Interactive · Live now</span><span class="t-jp">インタラクティブ · 公開中</span></p>
           <h3 class="card-title">Rakugaki Jam</h3>
-          <p class="card-meta">Designer &amp; builder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span></p>
+          <p class="card-meta">Designer &amp; builder <span class="card-flag"><span class="t-en">Own venture</span><span class="t-jp">自身のベンチャー</span></span> <span class="card-flag card-flag--role"><span class="t-en">Solo</span><span class="t-jp">ひとりで</span></span></p>
           <p class="card-desc"><span class="t-en">Doodle on your phone, then fling it onto the wall screen.</span><span class="t-jp is-block">スマホで落書きして、壁の画面へ投げ込む。</span></p>
           
           <details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>

@@ -422,7 +422,8 @@ test("a preview ships both encodings, and never replaces the still", () => {
 test("no card clip autoplays, every one is hidden from assistive tech, and each offers both encodings", () => {
   // A grid of cards that all start playing on load is a bandwidth bill and a
   // motion hazard. They play on hover or focus, from src/render/shell.mjs.
-  const pages = [outputPath(byslug("default")), ...lenses.filter((l) => l.slug !== "default").map(outputPath), join(ROOT, "interactive.html")];
+  // Draft lenses (Phase 2 pitch drafts) are validated but not written, so only published ones have a page.
+  const pages = [outputPath(byslug("default")), ...lenses.filter((l) => l.slug !== "default" && l.status === "published").map(outputPath), join(ROOT, "interactive.html")];
   let seen = 0;
   for (const page of pages) {
     const html = readFileSync(page, "utf8");

@@ -43,6 +43,27 @@ export function loadLibrary(dataDir = DATA_DIR) {
   };
 }
 
+/**
+ * The library as one JSON document, for the browser (studio/). Every item is
+ * public data already rendered on the site; maintenance notes (_notes) are
+ * dropped. hydrateLibrary() in ./library.mjs turns it back into a Library.
+ */
+export function serializeLibrary(lib, { lexicon, lensSlugs = [] } = {}) {
+  const strip = ({ _notes, ...item }) => item;
+  return {
+    profile: lib.profile,
+    capabilities: lib.capabilities,
+    chapters: lib.chapters,
+    roles: lib.roles,
+    theses: lib.theses,
+    ideas: lib.ideas ?? [],
+    now: lib.now ?? null,
+    evidence: [...lib.evidence.values()].map(strip),
+    lenses: lensSlugs,
+    ...(lexicon ? { lexicon } : {}),
+  };
+}
+
 export function loadLenses(lensDir = LENS_DIR) {
   return readDir(lensDir).map(({ file, data }) => ({ ...data, _file: file }));
 }

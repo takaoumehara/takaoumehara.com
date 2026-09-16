@@ -1,0 +1,3938 @@
+{
+  "$comment": "Vocabulary the JD analyser uses. Data, not code: to teach the engine a new phrase, add it here. Every `capabilities` key must exist in src/data/capabilities.json (the build checks). A phrase is matched case-insensitively; Latin phrases match on word boundaries, Japanese phrases match as substrings. `weight` is how strongly one occurrence points at that capability — 1.5 for phrases that only mean this, 1 for ordinary ones, 0.5 for words that appear in every posting.",
+  "capabilities": {
+    "creative-direction": [
+      {
+        "p": "creative direction",
+        "w": 1.5
+      },
+      {
+        "p": "creative director",
+        "w": 1.5
+      },
+      {
+        "p": "art direction",
+        "w": 1.5
+      },
+      {
+        "p": "art director",
+        "w": 1.5
+      },
+      {
+        "p": "creative lead",
+        "w": 1.2
+      },
+      {
+        "p": "creative vision",
+        "w": 1.2
+      },
+      {
+        "p": "concepting",
+        "w": 1
+      },
+      {
+        "p": "campaign",
+        "w": 0.8
+      },
+      {
+        "p": "campaigns",
+        "w": 0.8
+      },
+      {
+        "p": "creative excellence",
+        "w": 1
+      },
+      {
+        "p": "visual direction",
+        "w": 1.2
+      },
+      {
+        "p": "クリエイティブディレクション",
+        "w": 1.5
+      },
+      {
+        "p": "クリエイティブディレクター",
+        "w": 1.5
+      },
+      {
+        "p": "アートディレクション",
+        "w": 1.5
+      },
+      {
+        "p": "アートディレクター",
+        "w": 1.5
+      },
+      {
+        "p": "表現",
+        "w": 0.6
+      }
+    ],
+    "brand": [
+      {
+        "p": "brand",
+        "w": 1
+      },
+      {
+        "p": "branding",
+        "w": 1.2
+      },
+      {
+        "p": "brand identity",
+        "w": 1.5
+      },
+      {
+        "p": "visual identity",
+        "w": 1.5
+      },
+      {
+        "p": "identity system",
+        "w": 1.5
+      },
+      {
+        "p": "logo",
+        "w": 1
+      },
+      {
+        "p": "brand guidelines",
+        "w": 1.5
+      },
+      {
+        "p": "brand strategy",
+        "w": 1.5
+      },
+      {
+        "p": "rebrand",
+        "w": 1.5
+      },
+      {
+        "p": "brand voice",
+        "w": 1.2
+      },
+      {
+        "p": "ブランド",
+        "w": 1
+      },
+      {
+        "p": "ブランディング",
+        "w": 1.2
+      },
+      {
+        "p": "ロゴ",
+        "w": 1
+      },
+      {
+        "p": "VI",
+        "w": 0.8
+      }
+    ],
+    "storytelling": [
+      {
+        "p": "storytelling",
+        "w": 1.5
+      },
+      {
+        "p": "narrative",
+        "w": 1.2
+      },
+      {
+        "p": "story",
+        "w": 0.8
+      },
+      {
+        "p": "stories",
+        "w": 0.8
+      },
+      {
+        "p": "copywriting",
+        "w": 1
+      },
+      {
+        "p": "messaging",
+        "w": 0.8
+      },
+      {
+        "p": "content strategy",
+        "w": 1
+      },
+      {
+        "p": "editorial",
+        "w": 1
+      },
+      {
+        "p": "communicate",
+        "w": 0.4
+      },
+      {
+        "p": "present",
+        "w": 0.4
+      },
+      {
+        "p": "presentations",
+        "w": 0.6
+      },
+      {
+        "p": "ストーリー",
+        "w": 1.2
+      },
+      {
+        "p": "物語",
+        "w": 1.2
+      },
+      {
+        "p": "ナラティブ",
+        "w": 1.2
+      },
+      {
+        "p": "伝える",
+        "w": 0.5
+      }
+    ],
+    "film-production": [
+      {
+        "p": "film",
+        "w": 1.2
+      },
+      {
+        "p": "films",
+        "w": 1.2
+      },
+      {
+        "p": "video production",
+        "w": 1.5
+      },
+      {
+        "p": "video",
+        "w": 0.8
+      },
+      {
+        "p": "production company",
+        "w": 1.5
+      },
+      {
+        "p": "commercial",
+        "w": 0.6
+      },
+      {
+        "p": "commercials",
+        "w": 1
+      },
+      {
+        "p": "shoot",
+        "w": 1
+      },
+      {
+        "p": "shoots",
+        "w": 1
+      },
+      {
+        "p": "motion graphics",
+        "w": 0.8
+      },
+      {
+        "p": "映像",
+        "w": 1.2
+      },
+      {
+        "p": "動画制作",
+        "w": 1.5
+      },
+      {
+        "p": "フィルム",
+        "w": 1
+      },
+      {
+        "p": "撮影",
+        "w": 1
+      }
+    ],
+    "interactive": [
+      {
+        "p": "interactive",
+        "w": 1.2
+      },
+      {
+        "p": "installation",
+        "w": 1.2
+      },
+      {
+        "p": "installations",
+        "w": 1.2
+      },
+      {
+        "p": "immersive",
+        "w": 1.2
+      },
+      {
+        "p": "experiential",
+        "w": 1.2
+      },
+      {
+        "p": "real-time",
+        "w": 1
+      },
+      {
+        "p": "realtime",
+        "w": 1
+      },
+      {
+        "p": "multiplayer",
+        "w": 1.2
+      },
+      {
+        "p": "physical computing",
+        "w": 1.5
+      },
+      {
+        "p": "sensor",
+        "w": 1
+      },
+      {
+        "p": "sensors",
+        "w": 1
+      },
+      {
+        "p": "creative coding",
+        "w": 1.5
+      },
+      {
+        "p": "generative",
+        "w": 0.8
+      },
+      {
+        "p": "spatial",
+        "w": 0.8
+      },
+      {
+        "p": "playful",
+        "w": 1
+      },
+      {
+        "p": "games",
+        "w": 0.8
+      },
+      {
+        "p": "game design",
+        "w": 1.2
+      },
+      {
+        "p": "インタラクティブ",
+        "w": 1.2
+      },
+      {
+        "p": "体験型",
+        "w": 1.2
+      },
+      {
+        "p": "没入",
+        "w": 1.2
+      },
+      {
+        "p": "インスタレーション",
+        "w": 1.5
+      },
+      {
+        "p": "リアルタイム",
+        "w": 1
+      },
+      {
+        "p": "ゲーム",
+        "w": 0.8
+      }
+    ],
+    "product-strategy": [
+      {
+        "p": "product strategy",
+        "w": 1.5
+      },
+      {
+        "p": "roadmap",
+        "w": 1.2
+      },
+      {
+        "p": "roadmaps",
+        "w": 1.2
+      },
+      {
+        "p": "prioritization",
+        "w": 1.2
+      },
+      {
+        "p": "prioritisation",
+        "w": 1.2
+      },
+      {
+        "p": "prioritize",
+        "w": 1
+      },
+      {
+        "p": "prioritise",
+        "w": 1
+      },
+      {
+        "p": "product vision",
+        "w": 1.5
+      },
+      {
+        "p": "vision",
+        "w": 0.6
+      },
+      {
+        "p": "strategy",
+        "w": 0.6
+      },
+      {
+        "p": "strategic",
+        "w": 0.6
+      },
+      {
+        "p": "okrs",
+        "w": 1
+      },
+      {
+        "p": "business goals",
+        "w": 1
+      },
+      {
+        "p": "product thinking",
+        "w": 1.5
+      },
+      {
+        "p": "product sense",
+        "w": 1.5
+      },
+      {
+        "p": "product judgment",
+        "w": 1.5
+      },
+      {
+        "p": "define the product",
+        "w": 1.5
+      },
+      {
+        "p": "what to build",
+        "w": 1.5
+      },
+      {
+        "p": "scope",
+        "w": 0.8
+      },
+      {
+        "p": "trade-offs",
+        "w": 1.2
+      },
+      {
+        "p": "tradeoffs",
+        "w": 1.2
+      },
+      {
+        "p": "product requirements",
+        "w": 1
+      },
+      {
+        "p": "prd",
+        "w": 1
+      },
+      {
+        "p": "outcomes",
+        "w": 0.8
+      },
+      {
+        "p": "product direction",
+        "w": 1.5
+      },
+      {
+        "p": "product decisions",
+        "w": 1.5
+      },
+      {
+        "p": "プロダクト戦略",
+        "w": 1.5
+      },
+      {
+        "p": "ロードマップ",
+        "w": 1.2
+      },
+      {
+        "p": "優先順位",
+        "w": 1.2
+      },
+      {
+        "p": "戦略",
+        "w": 0.6
+      },
+      {
+        "p": "プロダクト思考",
+        "w": 1.5
+      },
+      {
+        "p": "要件定義",
+        "w": 1
+      },
+      {
+        "p": "何を作るか",
+        "w": 1.5
+      }
+    ],
+    "ux-cx": [
+      {
+        "p": "ux",
+        "w": 1
+      },
+      {
+        "p": "user experience",
+        "w": 1.2
+      },
+      {
+        "p": "customer experience",
+        "w": 1.2
+      },
+      {
+        "p": "cx",
+        "w": 1
+      },
+      {
+        "p": "end-to-end",
+        "w": 1
+      },
+      {
+        "p": "end to end",
+        "w": 1
+      },
+      {
+        "p": "user flows",
+        "w": 1.2
+      },
+      {
+        "p": "user flow",
+        "w": 1.2
+      },
+      {
+        "p": "user journeys",
+        "w": 1.2
+      },
+      {
+        "p": "user journey",
+        "w": 1.2
+      },
+      {
+        "p": "journey",
+        "w": 0.6
+      },
+      {
+        "p": "usability",
+        "w": 1.2
+      },
+      {
+        "p": "usability testing",
+        "w": 1.2
+      },
+      {
+        "p": "user research",
+        "w": 1.2
+      },
+      {
+        "p": "research",
+        "w": 0.6
+      },
+      {
+        "p": "interaction design",
+        "w": 1.5
+      },
+      {
+        "p": "information architecture",
+        "w": 1.2
+      },
+      {
+        "p": "wireframes",
+        "w": 1
+      },
+      {
+        "p": "user-centered",
+        "w": 1
+      },
+      {
+        "p": "human-centered",
+        "w": 1
+      },
+      {
+        "p": "onboarding",
+        "w": 1
+      },
+      {
+        "p": "checkout",
+        "w": 1
+      },
+      {
+        "p": "conversion",
+        "w": 0.6
+      },
+      {
+        "p": "customer",
+        "w": 0.4
+      },
+      {
+        "p": "customers",
+        "w": 0.4
+      },
+      {
+        "p": "users",
+        "w": 0.4
+      },
+      {
+        "p": "user needs",
+        "w": 1
+      },
+      {
+        "p": "user problems",
+        "w": 1
+      },
+      {
+        "p": "accessibility",
+        "w": 1
+      },
+      {
+        "p": "accessible",
+        "w": 0.8
+      },
+      {
+        "p": "wcag",
+        "w": 1.2
+      },
+      {
+        "p": "craft",
+        "w": 0.8
+      },
+      {
+        "p": "high-quality",
+        "w": 0.4
+      },
+      {
+        "p": "product design",
+        "w": 1
+      },
+      {
+        "p": "product designer",
+        "w": 1
+      },
+      {
+        "p": "ui",
+        "w": 0.6
+      },
+      {
+        "p": "visual design",
+        "w": 0.8
+      },
+      {
+        "p": "UX",
+        "w": 1
+      },
+      {
+        "p": "ユーザー体験",
+        "w": 1.2
+      },
+      {
+        "p": "顧客体験",
+        "w": 1.2
+      },
+      {
+        "p": "CX",
+        "w": 1
+      },
+      {
+        "p": "ユーザーリサーチ",
+        "w": 1.2
+      },
+      {
+        "p": "インタラクションデザイン",
+        "w": 1.5
+      },
+      {
+        "p": "導線",
+        "w": 1
+      },
+      {
+        "p": "使いやすさ",
+        "w": 1
+      },
+      {
+        "p": "ユーザビリティ",
+        "w": 1.2
+      },
+      {
+        "p": "プロダクトデザイン",
+        "w": 1
+      },
+      {
+        "p": "UI",
+        "w": 0.6
+      },
+      {
+        "p": "アクセシビリティ",
+        "w": 1
+      }
+    ],
+    "service-design": [
+      {
+        "p": "service design",
+        "w": 1.5
+      },
+      {
+        "p": "service blueprint",
+        "w": 1.5
+      },
+      {
+        "p": "omnichannel",
+        "w": 1.2
+      },
+      {
+        "p": "omni-channel",
+        "w": 1.2
+      },
+      {
+        "p": "in-store",
+        "w": 1.2
+      },
+      {
+        "p": "retail",
+        "w": 0.8
+      },
+      {
+        "p": "physical",
+        "w": 0.6
+      },
+      {
+        "p": "touchpoints",
+        "w": 1
+      },
+      {
+        "p": "touchpoint",
+        "w": 1
+      },
+      {
+        "p": "frontline",
+        "w": 1
+      },
+      {
+        "p": "operations design",
+        "w": 1.2
+      },
+      {
+        "p": "offline",
+        "w": 0.8
+      },
+      {
+        "p": "サービスデザイン",
+        "w": 1.5
+      },
+      {
+        "p": "店舗",
+        "w": 1
+      },
+      {
+        "p": "接点",
+        "w": 1
+      },
+      {
+        "p": "オムニチャネル",
+        "w": 1.2
+      },
+      {
+        "p": "オフライン",
+        "w": 0.8
+      }
+    ],
+    "zero-to-one": [
+      {
+        "p": "0 to 1",
+        "w": 1.5
+      },
+      {
+        "p": "0→1",
+        "w": 1.5
+      },
+      {
+        "p": "0-1",
+        "w": 1.5
+      },
+      {
+        "p": "0-to-1",
+        "w": 1.5
+      },
+      {
+        "p": "zero to one",
+        "w": 1.5
+      },
+      {
+        "p": "zero-to-one",
+        "w": 1.5
+      },
+      {
+        "p": "from scratch",
+        "w": 1.2
+      },
+      {
+        "p": "new product",
+        "w": 1.2
+      },
+      {
+        "p": "new products",
+        "w": 1.2
+      },
+      {
+        "p": "greenfield",
+        "w": 1.5
+      },
+      {
+        "p": "early-stage",
+        "w": 1.2
+      },
+      {
+        "p": "early stage",
+        "w": 1.2
+      },
+      {
+        "p": "incubate",
+        "w": 1.2
+      },
+      {
+        "p": "incubation",
+        "w": 1.2
+      },
+      {
+        "p": "launch",
+        "w": 0.8
+      },
+      {
+        "p": "launching",
+        "w": 0.8
+      },
+      {
+        "p": "mvp",
+        "w": 1.2
+      },
+      {
+        "p": "ambiguity",
+        "w": 1.2
+      },
+      {
+        "p": "ambiguous",
+        "w": 1.2
+      },
+      {
+        "p": "undefined",
+        "w": 1
+      },
+      {
+        "p": "white space",
+        "w": 1.2
+      },
+      {
+        "p": "whitespace",
+        "w": 1
+      },
+      {
+        "p": "net new",
+        "w": 1.2
+      },
+      {
+        "p": "ground up",
+        "w": 1.2
+      },
+      {
+        "p": "new bets",
+        "w": 1.2
+      },
+      {
+        "p": "emerging",
+        "w": 0.6
+      },
+      {
+        "p": "exploratory",
+        "w": 1
+      },
+      {
+        "p": "explore",
+        "w": 0.5
+      },
+      {
+        "p": "unproven",
+        "w": 1
+      },
+      {
+        "p": "new surfaces",
+        "w": 1
+      },
+      {
+        "p": "new experiences",
+        "w": 0.8
+      },
+      {
+        "p": "0→1",
+        "w": 1.5
+      },
+      {
+        "p": "ゼロイチ",
+        "w": 1.5
+      },
+      {
+        "p": "ゼロから",
+        "w": 1.2
+      },
+      {
+        "p": "新規プロダクト",
+        "w": 1.2
+      },
+      {
+        "p": "立ち上げ",
+        "w": 1.2
+      },
+      {
+        "p": "MVP",
+        "w": 1.2
+      },
+      {
+        "p": "曖昧",
+        "w": 1.2
+      },
+      {
+        "p": "不確実",
+        "w": 1
+      }
+    ],
+    "design-systems": [
+      {
+        "p": "design system",
+        "w": 1.5
+      },
+      {
+        "p": "design systems",
+        "w": 1.5
+      },
+      {
+        "p": "component library",
+        "w": 1.5
+      },
+      {
+        "p": "components",
+        "w": 0.8
+      },
+      {
+        "p": "design tokens",
+        "w": 1.5
+      },
+      {
+        "p": "tokens",
+        "w": 0.8
+      },
+      {
+        "p": "pattern library",
+        "w": 1.5
+      },
+      {
+        "p": "ui kit",
+        "w": 1.2
+      },
+      {
+        "p": "consistency",
+        "w": 0.8
+      },
+      {
+        "p": "consistent",
+        "w": 0.5
+      },
+      {
+        "p": "scalable",
+        "w": 0.5
+      },
+      {
+        "p": "systematic",
+        "w": 0.6
+      },
+      {
+        "p": "foundations",
+        "w": 0.8
+      },
+      {
+        "p": "guidelines",
+        "w": 0.6
+      },
+      {
+        "p": "standards",
+        "w": 0.5
+      },
+      {
+        "p": "デザインシステム",
+        "w": 1.5
+      },
+      {
+        "p": "コンポーネント",
+        "w": 0.8
+      },
+      {
+        "p": "トークン",
+        "w": 0.8
+      },
+      {
+        "p": "一貫性",
+        "w": 0.8
+      },
+      {
+        "p": "共通化",
+        "w": 1
+      },
+      {
+        "p": "ガイドライン",
+        "w": 0.6
+      },
+      {
+        "p": "patterns",
+        "w": 0.8
+      },
+      {
+        "p": "systems thinking",
+        "w": 1.2
+      },
+      {
+        "p": "reusable",
+        "w": 0.8
+      }
+    ],
+    "growth": [
+      {
+        "p": "growth",
+        "w": 1.2
+      },
+      {
+        "p": "acquisition",
+        "w": 1
+      },
+      {
+        "p": "activation",
+        "w": 1.2
+      },
+      {
+        "p": "retention",
+        "w": 1.2
+      },
+      {
+        "p": "conversion",
+        "w": 0.8
+      },
+      {
+        "p": "funnel",
+        "w": 1.2
+      },
+      {
+        "p": "funnels",
+        "w": 1.2
+      },
+      {
+        "p": "experimentation",
+        "w": 1
+      },
+      {
+        "p": "a/b test",
+        "w": 1.2
+      },
+      {
+        "p": "a/b testing",
+        "w": 1.2
+      },
+      {
+        "p": "a/b tests",
+        "w": 1.2
+      },
+      {
+        "p": "metrics-driven",
+        "w": 1
+      },
+      {
+        "p": "data-driven",
+        "w": 0.8
+      },
+      {
+        "p": "data-informed",
+        "w": 0.8
+      },
+      {
+        "p": "kpi",
+        "w": 0.8
+      },
+      {
+        "p": "kpis",
+        "w": 0.8
+      },
+      {
+        "p": "engagement",
+        "w": 0.6
+      },
+      {
+        "p": "adoption",
+        "w": 0.8
+      },
+      {
+        "p": "グロース",
+        "w": 1.2
+      },
+      {
+        "p": "成長",
+        "w": 0.8
+      },
+      {
+        "p": "獲得",
+        "w": 0.8
+      },
+      {
+        "p": "継続率",
+        "w": 1.2
+      },
+      {
+        "p": "コンバージョン",
+        "w": 0.8
+      },
+      {
+        "p": "A/B テスト",
+        "w": 1.2
+      },
+      {
+        "p": "ABテスト",
+        "w": 1.2
+      },
+      {
+        "p": "KPI",
+        "w": 0.8
+      },
+      {
+        "p": "改善",
+        "w": 0.5
+      }
+    ],
+    "business-transformation": [
+      {
+        "p": "transformation",
+        "w": 1.5
+      },
+      {
+        "p": "transform",
+        "w": 1
+      },
+      {
+        "p": "change management",
+        "w": 1.5
+      },
+      {
+        "p": "modernize",
+        "w": 1.2
+      },
+      {
+        "p": "modernise",
+        "w": 1.2
+      },
+      {
+        "p": "modernization",
+        "w": 1.2
+      },
+      {
+        "p": "modernisation",
+        "w": 1.2
+      },
+      {
+        "p": "legacy",
+        "w": 1.2
+      },
+      {
+        "p": "overhaul",
+        "w": 1.2
+      },
+      {
+        "p": "reinvent",
+        "w": 1.2
+      },
+      {
+        "p": "reimagine",
+        "w": 1
+      },
+      {
+        "p": "re-platform",
+        "w": 1.2
+      },
+      {
+        "p": "replatform",
+        "w": 1.2
+      },
+      {
+        "p": "turnaround",
+        "w": 1.2
+      },
+      {
+        "p": "operating model",
+        "w": 1.2
+      },
+      {
+        "p": "business model",
+        "w": 1
+      },
+      {
+        "p": "ways of working",
+        "w": 1
+      },
+      {
+        "p": "adoption across",
+        "w": 1
+      },
+      {
+        "p": "evangelize",
+        "w": 1
+      },
+      {
+        "p": "evangelise",
+        "w": 1
+      },
+      {
+        "p": "変革",
+        "w": 1.5
+      },
+      {
+        "p": "刷新",
+        "w": 1.2
+      },
+      {
+        "p": "レガシー",
+        "w": 1.2
+      },
+      {
+        "p": "改革",
+        "w": 1.2
+      },
+      {
+        "p": "事業転換",
+        "w": 1.5
+      },
+      {
+        "p": "ビジネスモデル",
+        "w": 1
+      },
+      {
+        "p": "DX",
+        "w": 1
+      }
+    ],
+    "new-ventures": [
+      {
+        "p": "venture",
+        "w": 1.5
+      },
+      {
+        "p": "ventures",
+        "w": 1.5
+      },
+      {
+        "p": "startup",
+        "w": 1.2
+      },
+      {
+        "p": "start-up",
+        "w": 1.2
+      },
+      {
+        "p": "startups",
+        "w": 1.2
+      },
+      {
+        "p": "founder",
+        "w": 1.2
+      },
+      {
+        "p": "founders",
+        "w": 1
+      },
+      {
+        "p": "founding",
+        "w": 1.2
+      },
+      {
+        "p": "entrepreneur",
+        "w": 1.5
+      },
+      {
+        "p": "entrepreneurial",
+        "w": 1.5
+      },
+      {
+        "p": "new business",
+        "w": 1.5
+      },
+      {
+        "p": "new businesses",
+        "w": 1.5
+      },
+      {
+        "p": "incubation",
+        "w": 1
+      },
+      {
+        "p": "spin-off",
+        "w": 1.2
+      },
+      {
+        "p": "business building",
+        "w": 1.5
+      },
+      {
+        "p": "intrapreneur",
+        "w": 1.5
+      },
+      {
+        "p": "new lines of business",
+        "w": 1.5
+      },
+      {
+        "p": "新規事業",
+        "w": 1.5
+      },
+      {
+        "p": "起業",
+        "w": 1.5
+      },
+      {
+        "p": "スタートアップ",
+        "w": 1.2
+      },
+      {
+        "p": "事業開発",
+        "w": 1.2
+      },
+      {
+        "p": "事業創出",
+        "w": 1.5
+      },
+      {
+        "p": "創業",
+        "w": 1.2
+      },
+      {
+        "p": "ベンチャー",
+        "w": 1.2
+      }
+    ],
+    "operations": [
+      {
+        "p": "operations",
+        "w": 1.2
+      },
+      {
+        "p": "operational",
+        "w": 1
+      },
+      {
+        "p": "process",
+        "w": 0.6
+      },
+      {
+        "p": "processes",
+        "w": 0.6
+      },
+      {
+        "p": "workflow",
+        "w": 1
+      },
+      {
+        "p": "workflows",
+        "w": 1
+      },
+      {
+        "p": "design ops",
+        "w": 1.5
+      },
+      {
+        "p": "designops",
+        "w": 1.5
+      },
+      {
+        "p": "rituals",
+        "w": 1
+      },
+      {
+        "p": "efficiency",
+        "w": 0.8
+      },
+      {
+        "p": "budget",
+        "w": 1
+      },
+      {
+        "p": "budgets",
+        "w": 1
+      },
+      {
+        "p": "resourcing",
+        "w": 1
+      },
+      {
+        "p": "planning",
+        "w": 0.5
+      },
+      {
+        "p": "velocity",
+        "w": 0.8
+      },
+      {
+        "p": "tooling",
+        "w": 0.8
+      },
+      {
+        "p": "運営",
+        "w": 1.2
+      },
+      {
+        "p": "業務",
+        "w": 0.5
+      },
+      {
+        "p": "プロセス",
+        "w": 0.6
+      },
+      {
+        "p": "ワークフロー",
+        "w": 1
+      },
+      {
+        "p": "効率",
+        "w": 0.8
+      },
+      {
+        "p": "予算",
+        "w": 1
+      },
+      {
+        "p": "デザインオプス",
+        "w": 1.5
+      }
+    ],
+    "revenue-strategy": [
+      {
+        "p": "revenue",
+        "w": 1.5
+      },
+      {
+        "p": "pricing",
+        "w": 1.2
+      },
+      {
+        "p": "monetization",
+        "w": 1.5
+      },
+      {
+        "p": "monetisation",
+        "w": 1.5
+      },
+      {
+        "p": "business model",
+        "w": 1
+      },
+      {
+        "p": "profitability",
+        "w": 1.5
+      },
+      {
+        "p": "p&l",
+        "w": 1.5
+      },
+      {
+        "p": "unit economics",
+        "w": 1.5
+      },
+      {
+        "p": "commercial",
+        "w": 0.8
+      },
+      {
+        "p": "go-to-market",
+        "w": 1.2
+      },
+      {
+        "p": "gtm",
+        "w": 1.2
+      },
+      {
+        "p": "sales",
+        "w": 0.6
+      },
+      {
+        "p": "business impact",
+        "w": 1
+      },
+      {
+        "p": "business outcomes",
+        "w": 1
+      },
+      {
+        "p": "収益",
+        "w": 1.5
+      },
+      {
+        "p": "売上",
+        "w": 1.5
+      },
+      {
+        "p": "価格",
+        "w": 1.2
+      },
+      {
+        "p": "マネタイズ",
+        "w": 1.5
+      },
+      {
+        "p": "収益化",
+        "w": 1.5
+      },
+      {
+        "p": "黒字",
+        "w": 1.2
+      },
+      {
+        "p": "事業インパクト",
+        "w": 1
+      }
+    ],
+    "ai": [
+      {
+        "p": "ai",
+        "w": 1.2
+      },
+      {
+        "p": "artificial intelligence",
+        "w": 1.5
+      },
+      {
+        "p": "machine learning",
+        "w": 1.2
+      },
+      {
+        "p": "ml",
+        "w": 1
+      },
+      {
+        "p": "llm",
+        "w": 1.5
+      },
+      {
+        "p": "llms",
+        "w": 1.5
+      },
+      {
+        "p": "large language model",
+        "w": 1.5
+      },
+      {
+        "p": "large language models",
+        "w": 1.5
+      },
+      {
+        "p": "generative ai",
+        "w": 1.5
+      },
+      {
+        "p": "generative",
+        "w": 0.8
+      },
+      {
+        "p": "genai",
+        "w": 1.5
+      },
+      {
+        "p": "gen ai",
+        "w": 1.5
+      },
+      {
+        "p": "gpt",
+        "w": 1.2
+      },
+      {
+        "p": "copilot",
+        "w": 1
+      },
+      {
+        "p": "models",
+        "w": 0.5
+      },
+      {
+        "p": "model",
+        "w": 0.4
+      },
+      {
+        "p": "ai-powered",
+        "w": 1.5
+      },
+      {
+        "p": "ai-native",
+        "w": 1.5
+      },
+      {
+        "p": "ai-first",
+        "w": 1.5
+      },
+      {
+        "p": "ai products",
+        "w": 1.5
+      },
+      {
+        "p": "ai product",
+        "w": 1.5
+      },
+      {
+        "p": "ai features",
+        "w": 1.5
+      },
+      {
+        "p": "ai feature",
+        "w": 1.5
+      },
+      {
+        "p": "intelligent",
+        "w": 0.8
+      },
+      {
+        "p": "automation",
+        "w": 0.8
+      },
+      {
+        "p": "prompt",
+        "w": 1
+      },
+      {
+        "p": "prompts",
+        "w": 1
+      },
+      {
+        "p": "prompting",
+        "w": 1.2
+      },
+      {
+        "p": "rag",
+        "w": 1.2
+      },
+      {
+        "p": "ai tools",
+        "w": 1.2
+      },
+      {
+        "p": "ai tooling",
+        "w": 1.2
+      },
+      {
+        "p": "AI",
+        "w": 1.2
+      },
+      {
+        "p": "人工知能",
+        "w": 1.5
+      },
+      {
+        "p": "機械学習",
+        "w": 1.2
+      },
+      {
+        "p": "生成 AI",
+        "w": 1.5
+      },
+      {
+        "p": "生成AI",
+        "w": 1.5
+      },
+      {
+        "p": "LLM",
+        "w": 1.5
+      },
+      {
+        "p": "自動化",
+        "w": 0.8
+      },
+      {
+        "p": "プロンプト",
+        "w": 1
+      }
+    ],
+    "agentic-ux": [
+      {
+        "p": "agent",
+        "w": 1.2
+      },
+      {
+        "p": "agents",
+        "w": 1.2
+      },
+      {
+        "p": "agentic",
+        "w": 1.5
+      },
+      {
+        "p": "multi-agent",
+        "w": 1.5
+      },
+      {
+        "p": "assistant",
+        "w": 1
+      },
+      {
+        "p": "assistants",
+        "w": 1
+      },
+      {
+        "p": "conversational",
+        "w": 1.2
+      },
+      {
+        "p": "chatbot",
+        "w": 1
+      },
+      {
+        "p": "chat",
+        "w": 0.6
+      },
+      {
+        "p": "human-in-the-loop",
+        "w": 1.5
+      },
+      {
+        "p": "human in the loop",
+        "w": 1.5
+      },
+      {
+        "p": "autonomy",
+        "w": 1
+      },
+      {
+        "p": "autonomous",
+        "w": 1
+      },
+      {
+        "p": "orchestration",
+        "w": 1
+      },
+      {
+        "p": "tool use",
+        "w": 1.2
+      },
+      {
+        "p": "mcp",
+        "w": 1.5
+      },
+      {
+        "p": "copilot",
+        "w": 0.8
+      },
+      {
+        "p": "co-pilot",
+        "w": 0.8
+      },
+      {
+        "p": "agent experiences",
+        "w": 1.5
+      },
+      {
+        "p": "human-ai",
+        "w": 1.5
+      },
+      {
+        "p": "human and ai",
+        "w": 1.5
+      },
+      {
+        "p": "trust",
+        "w": 0.4
+      },
+      {
+        "p": "エージェント",
+        "w": 1.5
+      },
+      {
+        "p": "対話型",
+        "w": 1.2
+      },
+      {
+        "p": "アシスタント",
+        "w": 1
+      },
+      {
+        "p": "自律",
+        "w": 1
+      },
+      {
+        "p": "チャット",
+        "w": 0.6
+      },
+      {
+        "p": "人と AI",
+        "w": 1.5
+      }
+    ],
+    "creative-technology": [
+      {
+        "p": "creative technology",
+        "w": 1.5
+      },
+      {
+        "p": "creative technologist",
+        "w": 1.5
+      },
+      {
+        "p": "creative coding",
+        "w": 1.5
+      },
+      {
+        "p": "webgl",
+        "w": 1.5
+      },
+      {
+        "p": "three.js",
+        "w": 1.5
+      },
+      {
+        "p": "shaders",
+        "w": 1.5
+      },
+      {
+        "p": "generative",
+        "w": 0.6
+      },
+      {
+        "p": "emerging technology",
+        "w": 1.5
+      },
+      {
+        "p": "emerging technologies",
+        "w": 1.5
+      },
+      {
+        "p": "emerging tech",
+        "w": 1.5
+      },
+      {
+        "p": "ar",
+        "w": 1
+      },
+      {
+        "p": "vr",
+        "w": 1
+      },
+      {
+        "p": "xr",
+        "w": 1.2
+      },
+      {
+        "p": "mixed reality",
+        "w": 1.2
+      },
+      {
+        "p": "augmented reality",
+        "w": 1.2
+      },
+      {
+        "p": "computer vision",
+        "w": 1.2
+      },
+      {
+        "p": "hardware",
+        "w": 0.8
+      },
+      {
+        "p": "spatial computing",
+        "w": 1.5
+      },
+      {
+        "p": "new technologies",
+        "w": 1
+      },
+      {
+        "p": "cutting-edge",
+        "w": 0.8
+      },
+      {
+        "p": "frontier",
+        "w": 1
+      },
+      {
+        "p": "experimental",
+        "w": 0.8
+      },
+      {
+        "p": "new interaction paradigms",
+        "w": 1.5
+      },
+      {
+        "p": "new modalities",
+        "w": 1.2
+      },
+      {
+        "p": "voice",
+        "w": 0.6
+      },
+      {
+        "p": "multimodal",
+        "w": 1.2
+      },
+      {
+        "p": "クリエイティブテクノロジー",
+        "w": 1.5
+      },
+      {
+        "p": "新しい技術",
+        "w": 1
+      },
+      {
+        "p": "AR",
+        "w": 1
+      },
+      {
+        "p": "VR",
+        "w": 1
+      },
+      {
+        "p": "XR",
+        "w": 1.2
+      },
+      {
+        "p": "最先端",
+        "w": 0.8
+      },
+      {
+        "p": "テクノロジスト",
+        "w": 1.5
+      }
+    ],
+    "prototyping": [
+      {
+        "p": "prototype",
+        "w": 1.2
+      },
+      {
+        "p": "prototypes",
+        "w": 1.2
+      },
+      {
+        "p": "prototyping",
+        "w": 1.5
+      },
+      {
+        "p": "proof of concept",
+        "w": 1.2
+      },
+      {
+        "p": "poc",
+        "w": 1
+      },
+      {
+        "p": "rapid",
+        "w": 0.6
+      },
+      {
+        "p": "hands-on",
+        "w": 1
+      },
+      {
+        "p": "hands on",
+        "w": 1
+      },
+      {
+        "p": "code",
+        "w": 0.8
+      },
+      {
+        "p": "coding",
+        "w": 1
+      },
+      {
+        "p": "front-end",
+        "w": 1
+      },
+      {
+        "p": "frontend",
+        "w": 1
+      },
+      {
+        "p": "html",
+        "w": 1
+      },
+      {
+        "p": "css",
+        "w": 1
+      },
+      {
+        "p": "javascript",
+        "w": 1
+      },
+      {
+        "p": "react",
+        "w": 1
+      },
+      {
+        "p": "swift",
+        "w": 1
+      },
+      {
+        "p": "swiftui",
+        "w": 1
+      },
+      {
+        "p": "build",
+        "w": 0.5
+      },
+      {
+        "p": "builder",
+        "w": 1
+      },
+      {
+        "p": "ship",
+        "w": 0.6
+      },
+      {
+        "p": "shipping",
+        "w": 0.6
+      },
+      {
+        "p": "vibe coding",
+        "w": 1.5
+      },
+      {
+        "p": "cursor",
+        "w": 1
+      },
+      {
+        "p": "claude code",
+        "w": 1.5
+      },
+      {
+        "p": "working software",
+        "w": 1.2
+      },
+      {
+        "p": "high-fidelity",
+        "w": 1
+      },
+      {
+        "p": "hi-fi",
+        "w": 1
+      },
+      {
+        "p": "interactive prototypes",
+        "w": 1.5
+      },
+      {
+        "p": "figma",
+        "w": 0.6
+      },
+      {
+        "p": "tangible",
+        "w": 1
+      },
+      {
+        "p": "test ideas",
+        "w": 1
+      },
+      {
+        "p": "プロトタイプ",
+        "w": 1.2
+      },
+      {
+        "p": "試作",
+        "w": 1.2
+      },
+      {
+        "p": "プロトタイピング",
+        "w": 1.5
+      },
+      {
+        "p": "実装",
+        "w": 0.8
+      },
+      {
+        "p": "コード",
+        "w": 0.8
+      },
+      {
+        "p": "動くもの",
+        "w": 1.2
+      },
+      {
+        "p": "手を動かす",
+        "w": 1.2
+      }
+    ],
+    "executive-partnership": [
+      {
+        "p": "executive",
+        "w": 1.2
+      },
+      {
+        "p": "executives",
+        "w": 1.2
+      },
+      {
+        "p": "c-suite",
+        "w": 1.5
+      },
+      {
+        "p": "c-level",
+        "w": 1.5
+      },
+      {
+        "p": "leadership team",
+        "w": 1.2
+      },
+      {
+        "p": "senior leadership",
+        "w": 1.2
+      },
+      {
+        "p": "senior leaders",
+        "w": 1.2
+      },
+      {
+        "p": "ceo",
+        "w": 1.2
+      },
+      {
+        "p": "cpo",
+        "w": 1.2
+      },
+      {
+        "p": "cto",
+        "w": 1
+      },
+      {
+        "p": "cdo",
+        "w": 1.2
+      },
+      {
+        "p": "founders",
+        "w": 0.8
+      },
+      {
+        "p": "board",
+        "w": 0.8
+      },
+      {
+        "p": "vp",
+        "w": 0.8
+      },
+      {
+        "p": "vps",
+        "w": 0.8
+      },
+      {
+        "p": "influence",
+        "w": 0.8
+      },
+      {
+        "p": "advise",
+        "w": 1
+      },
+      {
+        "p": "advisor",
+        "w": 1
+      },
+      {
+        "p": "advisory",
+        "w": 1
+      },
+      {
+        "p": "exec",
+        "w": 1
+      },
+      {
+        "p": "execs",
+        "w": 1
+      },
+      {
+        "p": "trusted partner",
+        "w": 1
+      },
+      {
+        "p": "経営",
+        "w": 1.2
+      },
+      {
+        "p": "経営陣",
+        "w": 1.5
+      },
+      {
+        "p": "役員",
+        "w": 1.2
+      },
+      {
+        "p": "CEO",
+        "w": 1.2
+      },
+      {
+        "p": "CxO",
+        "w": 1.5
+      },
+      {
+        "p": "経営層",
+        "w": 1.5
+      },
+      {
+        "p": "意思決定者",
+        "w": 1.2
+      }
+    ],
+    "cross-functional-leadership": [
+      {
+        "p": "cross-functional",
+        "w": 1.5
+      },
+      {
+        "p": "cross functional",
+        "w": 1.5
+      },
+      {
+        "p": "cross-functionally",
+        "w": 1.5
+      },
+      {
+        "p": "partner with engineering",
+        "w": 1.5
+      },
+      {
+        "p": "partner with product",
+        "w": 1.5
+      },
+      {
+        "p": "work closely with",
+        "w": 1
+      },
+      {
+        "p": "partner closely",
+        "w": 1.2
+      },
+      {
+        "p": "collaborate",
+        "w": 0.6
+      },
+      {
+        "p": "collaboration",
+        "w": 0.6
+      },
+      {
+        "p": "collaborative",
+        "w": 0.5
+      },
+      {
+        "p": "stakeholders",
+        "w": 1
+      },
+      {
+        "p": "stakeholder",
+        "w": 1
+      },
+      {
+        "p": "stakeholder management",
+        "w": 1.5
+      },
+      {
+        "p": "alignment",
+        "w": 1
+      },
+      {
+        "p": "align",
+        "w": 0.8
+      },
+      {
+        "p": "influence without authority",
+        "w": 1.5
+      },
+      {
+        "p": "engineering partners",
+        "w": 1.2
+      },
+      {
+        "p": "product managers",
+        "w": 1
+      },
+      {
+        "p": "product manager",
+        "w": 0.8
+      },
+      {
+        "p": "pms",
+        "w": 0.8
+      },
+      {
+        "p": "engineers",
+        "w": 0.8
+      },
+      {
+        "p": "data scientists",
+        "w": 0.8
+      },
+      {
+        "p": "marketing",
+        "w": 0.5
+      },
+      {
+        "p": "across teams",
+        "w": 1.2
+      },
+      {
+        "p": "across the organization",
+        "w": 1.2
+      },
+      {
+        "p": "across the organisation",
+        "w": 1.2
+      },
+      {
+        "p": "across the company",
+        "w": 1.2
+      },
+      {
+        "p": "matrix",
+        "w": 0.8
+      },
+      {
+        "p": "横断",
+        "w": 1.5
+      },
+      {
+        "p": "部門をまたいで",
+        "w": 1.5
+      },
+      {
+        "p": "連携",
+        "w": 0.8
+      },
+      {
+        "p": "協働",
+        "w": 0.8
+      },
+      {
+        "p": "エンジニアと",
+        "w": 1
+      },
+      {
+        "p": "PM と",
+        "w": 1
+      },
+      {
+        "p": "調整",
+        "w": 0.6
+      },
+      {
+        "p": "巻き込",
+        "w": 1.2
+      },
+      {
+        "p": "関係部署",
+        "w": 1.2
+      },
+      {
+        "p": "関係者",
+        "w": 0.8
+      },
+      {
+        "p": "partnering with",
+        "w": 1.0
+      },
+      {
+        "p": "partnership with",
+        "w": 1.0
+      },
+      {
+        "p": "engineering",
+        "w": 0.3
+      },
+      {
+        "p": "with engineers",
+        "w": 1.0
+      },
+      {
+        "p": "engineering and product",
+        "w": 1.0
+      },
+      {
+        "p": "product and engineering",
+        "w": 1.0
+      }
+    ],
+    "team-leadership": [
+      {
+        "p": "manage",
+        "w": 0.8
+      },
+      {
+        "p": "managing",
+        "w": 0.8
+      },
+      {
+        "p": "management",
+        "w": 0.6
+      },
+      {
+        "p": "people manager",
+        "w": 1.5
+      },
+      {
+        "p": "people management",
+        "w": 1.5
+      },
+      {
+        "p": "direct reports",
+        "w": 1.5
+      },
+      {
+        "p": "mentor",
+        "w": 1.2
+      },
+      {
+        "p": "mentoring",
+        "w": 1.2
+      },
+      {
+        "p": "mentorship",
+        "w": 1.2
+      },
+      {
+        "p": "coach",
+        "w": 1
+      },
+      {
+        "p": "coaching",
+        "w": 1
+      },
+      {
+        "p": "hire",
+        "w": 1
+      },
+      {
+        "p": "hiring",
+        "w": 1
+      },
+      {
+        "p": "build a team",
+        "w": 1.5
+      },
+      {
+        "p": "grow the team",
+        "w": 1.5
+      },
+      {
+        "p": "team lead",
+        "w": 1.2
+      },
+      {
+        "p": "lead a team",
+        "w": 1.5
+      },
+      {
+        "p": "leading a team",
+        "w": 1.5
+      },
+      {
+        "p": "lead designers",
+        "w": 1.2
+      },
+      {
+        "p": "head of",
+        "w": 1.2
+      },
+      {
+        "p": "director",
+        "w": 0.8
+      },
+      {
+        "p": "design manager",
+        "w": 1.5
+      },
+      {
+        "p": "manager",
+        "w": 0.8
+      },
+      {
+        "p": "performance",
+        "w": 0.4
+      },
+      {
+        "p": "career development",
+        "w": 1.2
+      },
+      {
+        "p": "team culture",
+        "w": 1
+      },
+      {
+        "p": "raise the bar",
+        "w": 0.8
+      },
+      {
+        "p": "quality bar",
+        "w": 0.8
+      },
+      {
+        "p": "set the bar",
+        "w": 0.8
+      },
+      {
+        "p": "critique",
+        "w": 0.8
+      },
+      {
+        "p": "design reviews",
+        "w": 0.8
+      },
+      {
+        "p": "マネジメント",
+        "w": 1.2
+      },
+      {
+        "p": "マネージャー",
+        "w": 1
+      },
+      {
+        "p": "育成",
+        "w": 1.2
+      },
+      {
+        "p": "メンター",
+        "w": 1.2
+      },
+      {
+        "p": "採用",
+        "w": 1
+      },
+      {
+        "p": "チームを率い",
+        "w": 1.5
+      },
+      {
+        "p": "部下",
+        "w": 1.2
+      },
+      {
+        "p": "組織",
+        "w": 0.6
+      },
+      {
+        "p": "リーダー",
+        "w": 0.8
+      },
+      {
+        "p": "統括",
+        "w": 1.2
+      }
+    ],
+    "partner-direction": [
+      {
+        "p": "agency",
+        "w": 1.2
+      },
+      {
+        "p": "agencies",
+        "w": 1.2
+      },
+      {
+        "p": "vendors",
+        "w": 1.2
+      },
+      {
+        "p": "vendor",
+        "w": 1.2
+      },
+      {
+        "p": "external partners",
+        "w": 1.5
+      },
+      {
+        "p": "partners",
+        "w": 0.6
+      },
+      {
+        "p": "production partners",
+        "w": 1.5
+      },
+      {
+        "p": "freelancers",
+        "w": 1.2
+      },
+      {
+        "p": "contractors",
+        "w": 1.2
+      },
+      {
+        "p": "studio",
+        "w": 0.8
+      },
+      {
+        "p": "outsourced",
+        "w": 1.2
+      },
+      {
+        "p": "outsourcing",
+        "w": 1.2
+      },
+      {
+        "p": "briefing",
+        "w": 1
+      },
+      {
+        "p": "briefs",
+        "w": 1
+      },
+      {
+        "p": "代理店",
+        "w": 1.2
+      },
+      {
+        "p": "外部パートナー",
+        "w": 1.5
+      },
+      {
+        "p": "制作会社",
+        "w": 1.5
+      },
+      {
+        "p": "協力会社",
+        "w": 1.2
+      },
+      {
+        "p": "ベンダー",
+        "w": 1.2
+      },
+      {
+        "p": "外注",
+        "w": 1.2
+      },
+      {
+        "p": "ディレクション",
+        "w": 0.8
+      }
+    ],
+    "enterprise": [
+      {
+        "p": "enterprise",
+        "w": 1.2
+      },
+      {
+        "p": "large organization",
+        "w": 1.2
+      },
+      {
+        "p": "large organisation",
+        "w": 1.2
+      },
+      {
+        "p": "fortune 500",
+        "w": 1.5
+      },
+      {
+        "p": "global company",
+        "w": 1
+      },
+      {
+        "p": "complex organization",
+        "w": 1.2
+      },
+      {
+        "p": "complex organisation",
+        "w": 1.2
+      },
+      {
+        "p": "complex",
+        "w": 0.4
+      },
+      {
+        "p": "regulated",
+        "w": 1.2
+      },
+      {
+        "p": "regulation",
+        "w": 1
+      },
+      {
+        "p": "regulatory",
+        "w": 1
+      },
+      {
+        "p": "compliance",
+        "w": 1.2
+      },
+      {
+        "p": "governance",
+        "w": 1.2
+      },
+      {
+        "p": "matrixed",
+        "w": 1.2
+      },
+      {
+        "p": "at scale",
+        "w": 1
+      },
+      {
+        "p": "large-scale",
+        "w": 1
+      },
+      {
+        "p": "multiple business units",
+        "w": 1.2
+      },
+      {
+        "p": "corporate",
+        "w": 0.8
+      },
+      {
+        "p": "financial services",
+        "w": 0.8
+      },
+      {
+        "p": "banking",
+        "w": 0.8
+      },
+      {
+        "p": "telecom",
+        "w": 0.8
+      },
+      {
+        "p": "constraints",
+        "w": 0.6
+      },
+      {
+        "p": "security",
+        "w": 0.5
+      },
+      {
+        "p": "risk",
+        "w": 0.5
+      },
+      {
+        "p": "大企業",
+        "w": 1.5
+      },
+      {
+        "p": "大規模",
+        "w": 1
+      },
+      {
+        "p": "エンタープライズ",
+        "w": 1.2
+      },
+      {
+        "p": "規制",
+        "w": 1.2
+      },
+      {
+        "p": "ガバナンス",
+        "w": 1.2
+      },
+      {
+        "p": "コンプライアンス",
+        "w": 1.2
+      },
+      {
+        "p": "全社",
+        "w": 1
+      },
+      {
+        "p": "金融",
+        "w": 0.8
+      }
+    ],
+    "b2b": [
+      {
+        "p": "b2b",
+        "w": 1.5
+      },
+      {
+        "p": "business-to-business",
+        "w": 1.5
+      },
+      {
+        "p": "enterprise customers",
+        "w": 1.2
+      },
+      {
+        "p": "saas",
+        "w": 1.2
+      },
+      {
+        "p": "business customers",
+        "w": 1.2
+      },
+      {
+        "p": "merchants",
+        "w": 1
+      },
+      {
+        "p": "merchant",
+        "w": 1
+      },
+      {
+        "p": "developers",
+        "w": 0.8
+      },
+      {
+        "p": "developer experience",
+        "w": 1.2
+      },
+      {
+        "p": "platform",
+        "w": 0.5
+      },
+      {
+        "p": "api",
+        "w": 0.8
+      },
+      {
+        "p": "apis",
+        "w": 0.8
+      },
+      {
+        "p": "dashboard",
+        "w": 0.8
+      },
+      {
+        "p": "dashboards",
+        "w": 0.8
+      },
+      {
+        "p": "admin",
+        "w": 0.8
+      },
+      {
+        "p": "internal tools",
+        "w": 1.2
+      },
+      {
+        "p": "professional users",
+        "w": 1.2
+      },
+      {
+        "p": "operators",
+        "w": 0.8
+      },
+      {
+        "p": "businesses",
+        "w": 0.6
+      },
+      {
+        "p": "sellers",
+        "w": 0.8
+      },
+      {
+        "p": "teams who",
+        "w": 0.5
+      },
+      {
+        "p": "B2B",
+        "w": 1.5
+      },
+      {
+        "p": "toB",
+        "w": 1.5
+      },
+      {
+        "p": "法人",
+        "w": 1.2
+      },
+      {
+        "p": "SaaS",
+        "w": 1.2
+      },
+      {
+        "p": "業務用",
+        "w": 1
+      },
+      {
+        "p": "事業者",
+        "w": 1
+      },
+      {
+        "p": "加盟店",
+        "w": 1
+      },
+      {
+        "p": "開発者向け",
+        "w": 1.2
+      }
+    ],
+    "b2c": [
+      {
+        "p": "b2c",
+        "w": 1.5
+      },
+      {
+        "p": "consumer",
+        "w": 1.2
+      },
+      {
+        "p": "consumers",
+        "w": 1.2
+      },
+      {
+        "p": "consumer product",
+        "w": 1.5
+      },
+      {
+        "p": "consumer products",
+        "w": 1.5
+      },
+      {
+        "p": "mobile app",
+        "w": 1
+      },
+      {
+        "p": "app",
+        "w": 0.4
+      },
+      {
+        "p": "shoppers",
+        "w": 1
+      },
+      {
+        "p": "everyday",
+        "w": 0.6
+      },
+      {
+        "p": "mass market",
+        "w": 1.2
+      },
+      {
+        "p": "millions of users",
+        "w": 1.2
+      },
+      {
+        "p": "millions of",
+        "w": 0.8
+      },
+      {
+        "p": "retail customers",
+        "w": 1
+      },
+      {
+        "p": "subscribers",
+        "w": 1
+      },
+      {
+        "p": "players",
+        "w": 1
+      },
+      {
+        "p": "students",
+        "w": 1
+      },
+      {
+        "p": "learners",
+        "w": 1
+      },
+      {
+        "p": "patients",
+        "w": 1
+      },
+      {
+        "p": "members",
+        "w": 0.6
+      },
+      {
+        "p": "families",
+        "w": 0.8
+      },
+      {
+        "p": "individuals",
+        "w": 0.6
+      },
+      {
+        "p": "B2C",
+        "w": 1.5
+      },
+      {
+        "p": "toC",
+        "w": 1.5
+      },
+      {
+        "p": "消費者",
+        "w": 1.2
+      },
+      {
+        "p": "生活者",
+        "w": 1.2
+      },
+      {
+        "p": "一般ユーザー",
+        "w": 1.2
+      },
+      {
+        "p": "アプリ",
+        "w": 0.4
+      },
+      {
+        "p": "個人向け",
+        "w": 1.2
+      }
+    ],
+    "global": [
+      {
+        "p": "global",
+        "w": 1
+      },
+      {
+        "p": "globally",
+        "w": 1
+      },
+      {
+        "p": "international",
+        "w": 1.2
+      },
+      {
+        "p": "worldwide",
+        "w": 1.2
+      },
+      {
+        "p": "multiple markets",
+        "w": 1.2
+      },
+      {
+        "p": "across markets",
+        "w": 1.2
+      },
+      {
+        "p": "regions",
+        "w": 0.8
+      },
+      {
+        "p": "localization",
+        "w": 1.2
+      },
+      {
+        "p": "localisation",
+        "w": 1.2
+      },
+      {
+        "p": "multi-market",
+        "w": 1.2
+      },
+      {
+        "p": "emea",
+        "w": 1
+      },
+      {
+        "p": "apac",
+        "w": 1
+      },
+      {
+        "p": "cross-cultural",
+        "w": 1.2
+      },
+      {
+        "p": "time zones",
+        "w": 0.8
+      },
+      {
+        "p": "countries",
+        "w": 0.8
+      },
+      {
+        "p": "グローバル",
+        "w": 1.2
+      },
+      {
+        "p": "海外",
+        "w": 1
+      },
+      {
+        "p": "国際",
+        "w": 1
+      },
+      {
+        "p": "多言語",
+        "w": 1.2
+      },
+      {
+        "p": "ローカライズ",
+        "w": 1.2
+      },
+      {
+        "p": "世界",
+        "w": 0.6
+      }
+    ],
+    "japan-us": [
+      {
+        "p": "japan",
+        "w": 1.5
+      },
+      {
+        "p": "japanese",
+        "w": 1.5
+      },
+      {
+        "p": "tokyo",
+        "w": 1.5
+      },
+      {
+        "p": "bilingual",
+        "w": 1.5
+      },
+      {
+        "p": "japanese-speaking",
+        "w": 1.5
+      },
+      {
+        "p": "us and japan",
+        "w": 1.5
+      },
+      {
+        "p": "asia",
+        "w": 0.8
+      },
+      {
+        "p": "east asia",
+        "w": 1
+      },
+      {
+        "p": "cross-border",
+        "w": 1
+      },
+      {
+        "p": "new york",
+        "w": 0.4
+      },
+      {
+        "p": "日本",
+        "w": 1
+      },
+      {
+        "p": "日本語",
+        "w": 1.2
+      },
+      {
+        "p": "英語",
+        "w": 1.2
+      },
+      {
+        "p": "バイリンガル",
+        "w": 1.5
+      },
+      {
+        "p": "日米",
+        "w": 1.5
+      },
+      {
+        "p": "米国",
+        "w": 1
+      },
+      {
+        "p": "アメリカ",
+        "w": 1
+      },
+      {
+        "p": "海外展開",
+        "w": 1.2
+      },
+      {
+        "p": "北米",
+        "w": 1
+      },
+      {
+        "p": "ネイティブ",
+        "w": 0.8
+      }
+    ]
+  },
+  "themes": {
+    "$comment": "What the posting is really about, in words a reader can see. A theme is scored from its capabilities' weights. `angles` is the order in which an evidence item's approved framings are tried for a card under this theme; `label` becomes the 'focus on …' phrase in the lens note.",
+    "ai-products": {
+      "label": {
+        "en": "AI products",
+        "jp": "AI プロダクト"
+      },
+      "capabilities": [
+        "ai",
+        "agentic-ux"
+      ],
+      "angles": [
+        "creative-tech",
+        "product",
+        "transformation"
+      ]
+    },
+    "design-systems": {
+      "label": {
+        "en": "design systems",
+        "jp": "デザインシステム"
+      },
+      "capabilities": [
+        "design-systems"
+      ],
+      "angles": [
+        "product"
+      ]
+    },
+    "zero-to-one": {
+      "label": {
+        "en": "new products from zero",
+        "jp": "新規プロダクトの立ち上げ"
+      },
+      "capabilities": [
+        "zero-to-one",
+        "new-ventures"
+      ],
+      "angles": [
+        "venture",
+        "product"
+      ]
+    },
+    "growth-revenue": {
+      "label": {
+        "en": "growth and revenue",
+        "jp": "成長と収益"
+      },
+      "capabilities": [
+        "growth",
+        "revenue-strategy"
+      ],
+      "angles": [
+        "business",
+        "venture"
+      ]
+    },
+    "transformation": {
+      "label": {
+        "en": "change inside a large organisation",
+        "jp": "大きな組織の中での変革"
+      },
+      "capabilities": [
+        "business-transformation",
+        "enterprise",
+        "operations"
+      ],
+      "angles": [
+        "transformation",
+        "business",
+        "product"
+      ]
+    },
+    "product-ux": {
+      "label": {
+        "en": "end-to-end product UX",
+        "jp": "プロダクトの UX 全体"
+      },
+      "capabilities": [
+        "ux-cx",
+        "product-strategy",
+        "prototyping"
+      ],
+      "angles": [
+        "product"
+      ]
+    },
+    "brand-creative": {
+      "label": {
+        "en": "brand and creative direction",
+        "jp": "ブランドと表現"
+      },
+      "capabilities": [
+        "brand",
+        "creative-direction",
+        "storytelling",
+        "film-production"
+      ],
+      "angles": [
+        "creative",
+        "leadership"
+      ]
+    },
+    "interactive-tech": {
+      "label": {
+        "en": "interactive and emerging technology",
+        "jp": "インタラクティブと新しい技術"
+      },
+      "capabilities": [
+        "interactive",
+        "creative-technology"
+      ],
+      "angles": [
+        "creative-tech",
+        "creative"
+      ]
+    },
+    "leadership": {
+      "label": {
+        "en": "leading teams and partners",
+        "jp": "チームと関係者を率いること"
+      },
+      "capabilities": [
+        "team-leadership",
+        "cross-functional-leadership",
+        "executive-partnership",
+        "partner-direction"
+      ],
+      "angles": [
+        "leadership",
+        "transformation"
+      ]
+    },
+    "service-physical": {
+      "label": {
+        "en": "service and physical experience",
+        "jp": "サービスと場の体験"
+      },
+      "capabilities": [
+        "service-design"
+      ],
+      "angles": [
+        "business",
+        "creative"
+      ]
+    },
+    "global-japan": {
+      "label": {
+        "en": "Japan and global markets",
+        "jp": "日本とグローバル市場"
+      },
+      "capabilities": [
+        "japan-us",
+        "global"
+      ],
+      "angles": [
+        "leadership",
+        "business"
+      ]
+    },
+    "audience": {
+      "label": {
+        "en": "who it is for",
+        "jp": "誰に向けたものか"
+      },
+      "capabilities": [
+        "b2b",
+        "b2c"
+      ],
+      "angles": [
+        "product",
+        "business"
+      ],
+      "quiet": true
+    }
+  },
+  "sections": {
+    "$comment": "Headings that change how much a line counts. A line under 'Requirements' is what they will screen on; a line under 'Benefits' is not about the candidate at all.",
+    "requirements": {
+      "weight": 1.5,
+      "headings": [
+        "requirements",
+        "qualifications",
+        "what you'll bring",
+        "what you will bring",
+        "what you bring",
+        "what we're looking for",
+        "what we are looking for",
+        "who you are",
+        "you have",
+        "you are",
+        "minimum qualifications",
+        "basic qualifications",
+        "must have",
+        "must-haves",
+        "skills",
+        "experience",
+        "about you",
+        "ideal candidate",
+        "we're looking for",
+        "we are looking for",
+        "what you need",
+        "you might be a fit",
+        "you'll thrive",
+        "必須",
+        "求める",
+        "応募資格",
+        "応募条件",
+        "スキル",
+        "経験",
+        "求める人物像",
+        "必須条件"
+      ]
+    },
+    "preferred": {
+      "weight": 1.0,
+      "headings": [
+        "preferred qualifications",
+        "nice to have",
+        "nice-to-haves",
+        "nice-to-have",
+        "bonus points",
+        "bonus",
+        "a plus",
+        "preferred",
+        "歓迎",
+        "歓迎条件",
+        "あれば尚可",
+        "あれば歓迎"
+      ]
+    },
+    "responsibilities": {
+      "weight": 1.25,
+      "headings": [
+        "responsibilities",
+        "what you'll do",
+        "what you will do",
+        "in this role",
+        "the role",
+        "about the role",
+        "your impact",
+        "you will",
+        "day to day",
+        "day-to-day",
+        "what you'll be doing",
+        "the opportunity",
+        "the team",
+        "業務内容",
+        "仕事内容",
+        "職務",
+        "ミッション",
+        "役割",
+        "ポジション概要",
+        "募集背景"
+      ]
+    },
+    "context": {
+      "weight": 0.4,
+      "headings": [
+        "about us",
+        "about the company",
+        "who we are",
+        "our mission",
+        "benefits",
+        "perks",
+        "compensation",
+        "salary",
+        "pay range",
+        "pay transparency",
+        "equal opportunity",
+        "eeo",
+        "diversity",
+        "how we hire",
+        "interview process",
+        "hybrid work",
+        "location",
+        "会社概要",
+        "福利厚生",
+        "給与",
+        "待遇",
+        "選考",
+        "私たちについて",
+        "当社について",
+        "勤務地",
+        "勤務時間",
+        "休日"
+      ]
+    }
+  },
+  "seniority": {
+    "$comment": "First match wins, checked against the title before the body.",
+    "levels": [
+      {
+        "id": "executive",
+        "label": {
+          "en": "Executive",
+          "jp": "経営幹部"
+        },
+        "patterns": [
+          "chief",
+          "\\bvp\\b",
+          "vice president",
+          "cdo",
+          "cpo",
+          "執行役員",
+          "CxO"
+        ]
+      },
+      {
+        "id": "director",
+        "label": {
+          "en": "Director",
+          "jp": "ディレクター"
+        },
+        "patterns": [
+          "head of",
+          "director",
+          "部長",
+          "責任者",
+          "本部長"
+        ]
+      },
+      {
+        "id": "staff",
+        "label": {
+          "en": "Staff / Principal",
+          "jp": "スタッフ・プリンシパル"
+        },
+        "patterns": [
+          "principal",
+          "\\bstaff\\b",
+          "distinguished",
+          "プリンシパル"
+        ]
+      },
+      {
+        "id": "lead",
+        "label": {
+          "en": "Lead / Manager",
+          "jp": "リード・マネージャー"
+        },
+        "patterns": [
+          "\\blead\\b",
+          "manager",
+          "リード",
+          "マネージャー"
+        ]
+      },
+      {
+        "id": "senior",
+        "label": {
+          "en": "Senior",
+          "jp": "シニア"
+        },
+        "patterns": [
+          "senior",
+          "\\bsr\\.?\\b",
+          "シニア"
+        ]
+      },
+      {
+        "id": "junior",
+        "label": {
+          "en": "Junior",
+          "jp": "ジュニア"
+        },
+        "patterns": [
+          "junior",
+          "associate",
+          "intern",
+          "entry[- ]level",
+          "ジュニア",
+          "新卒"
+        ]
+      }
+    ],
+    "default": {
+      "id": "mid",
+      "label": {
+        "en": "Mid-level",
+        "jp": "中堅"
+      }
+    }
+  },
+  "requirements": {
+    "$comment": "Named tools, methods and credentials a screener may search for literally. Each is looked up in the JD and then in the evidence library, so the report can say 'the posting asks for X; the record mentions it here / nowhere'. Not used for scoring.",
+    "items": [
+      {
+        "name": "Figma",
+        "patterns": [
+          "figma"
+        ]
+      },
+      {
+        "name": "Sketch",
+        "patterns": [
+          "\\bsketch\\b"
+        ]
+      },
+      {
+        "name": "Adobe Creative Suite",
+        "patterns": [
+          "adobe",
+          "photoshop",
+          "illustrator",
+          "after effects"
+        ]
+      },
+      {
+        "name": "Framer",
+        "patterns": [
+          "framer"
+        ]
+      },
+      {
+        "name": "ProtoPie / Principle / Origami",
+        "patterns": [
+          "protopie",
+          "\\bprinciple\\b",
+          "origami"
+        ]
+      },
+      {
+        "name": "Webflow",
+        "patterns": [
+          "webflow"
+        ]
+      },
+      {
+        "name": "HTML / CSS / JavaScript",
+        "patterns": [
+          "\\bhtml\\b",
+          "\\bcss\\b",
+          "javascript",
+          "typescript"
+        ]
+      },
+      {
+        "name": "React",
+        "patterns": [
+          "\\breact\\b"
+        ]
+      },
+      {
+        "name": "Swift / iOS",
+        "patterns": [
+          "\\bswift\\b",
+          "swiftui",
+          "\\bios\\b"
+        ]
+      },
+      {
+        "name": "Android",
+        "patterns": [
+          "android",
+          "kotlin"
+        ]
+      },
+      {
+        "name": "Unity / Unreal",
+        "patterns": [
+          "\\bunity\\b",
+          "unreal"
+        ]
+      },
+      {
+        "name": "WebGL / three.js",
+        "patterns": [
+          "webgl",
+          "three\\.js",
+          "shaders?"
+        ]
+      },
+      {
+        "name": "SQL / data analysis",
+        "patterns": [
+          "\\bsql\\b",
+          "data analysis",
+          "analytics"
+        ]
+      },
+      {
+        "name": "Python",
+        "patterns": [
+          "python"
+        ]
+      },
+      {
+        "name": "Jira / Agile",
+        "patterns": [
+          "\\bjira\\b",
+          "agile",
+          "scrum"
+        ]
+      },
+      {
+        "name": "User research",
+        "patterns": [
+          "user research",
+          "usability testing",
+          "user interviews",
+          "ユーザーリサーチ",
+          "ユーザーインタビュー"
+        ]
+      },
+      {
+        "name": "A/B testing / experimentation",
+        "patterns": [
+          "a/b test",
+          "experimentation",
+          "A/B テスト",
+          "ABテスト"
+        ]
+      },
+      {
+        "name": "Accessibility (WCAG)",
+        "patterns": [
+          "accessibility",
+          "wcag",
+          "a11y",
+          "アクセシビリティ"
+        ]
+      },
+      {
+        "name": "Design tokens",
+        "patterns": [
+          "design tokens",
+          "tokens"
+        ]
+      },
+      {
+        "name": "Motion design",
+        "patterns": [
+          "motion design",
+          "animation",
+          "micro-interactions",
+          "モーション"
+        ]
+      },
+      {
+        "name": "Data visualization",
+        "patterns": [
+          "data visualization",
+          "data visualisation",
+          "dashboards?"
+        ]
+      },
+      {
+        "name": "LLM / prompt work",
+        "patterns": [
+          "\\bllms?\\b",
+          "prompt",
+          "生成 AI",
+          "生成AI",
+          "LLM"
+        ]
+      },
+      {
+        "name": "AI agents / MCP",
+        "patterns": [
+          "agents?",
+          "agentic",
+          "\\bmcp\\b",
+          "エージェント"
+        ]
+      },
+      {
+        "name": "Gemini / NotebookLM",
+        "patterns": [
+          "gemini",
+          "notebooklm"
+        ]
+      },
+      {
+        "name": "Cursor / Claude Code / AI coding tools",
+        "patterns": [
+          "\\bcursor\\b",
+          "claude code",
+          "copilot",
+          "vibe coding"
+        ]
+      },
+      {
+        "name": "Japanese language",
+        "patterns": [
+          "japanese",
+          "日本語",
+          "bilingual",
+          "バイリンガル"
+        ]
+      },
+      {
+        "name": "English language",
+        "patterns": [
+          "english",
+          "英語"
+        ],
+        "screen": true
+      },
+      {
+        "name": "Degree",
+        "patterns": [
+          "bachelor",
+          "\\bba\\b",
+          "\\bbfa\\b",
+          "\\bmfa\\b",
+          "degree",
+          "学位",
+          "大卒"
+        ],
+        "screen": true
+      },
+      {
+        "name": "Years of experience",
+        "patterns": [
+          "\\d+\\+?\\s*(?:years|yrs)",
+          "\\d+\\s*年以上"
+        ],
+        "screen": true
+      },
+      {
+        "name": "Portfolio",
+        "patterns": [
+          "portfolio",
+          "ポートフォリオ"
+        ],
+        "screen": true
+      }
+    ]
+  },
+  "domains": {
+    "$comment": "Industry words in the posting, matched against each record's context.industries. A record from the same domain is what a screener looks for first, so it earns a bonus that the coverage discount cannot take away.",
+    "fintech": {
+      "label": {
+        "en": "payments and financial services",
+        "jp": "決済と金融"
+      },
+      "patterns": [
+        "payments?",
+        "fintech",
+        "financial services",
+        "financial infrastructure",
+        "banking",
+        "bank",
+        "credit card",
+        "insurance",
+        "lending",
+        "wallet",
+        "checkout"
+      ],
+      "industries": [
+        "banking",
+        "fintech",
+        "financial",
+        "insurance",
+        "payments",
+        "web3"
+      ]
+    },
+    "education": {
+      "label": {
+        "en": "education",
+        "jp": "教育"
+      },
+      "patterns": [
+        "education",
+        "edtech",
+        "students",
+        "teachers",
+        "classroom",
+        "schools?",
+        "curriculum"
+      ],
+      "industries": [
+        "education",
+        "edtech"
+      ]
+    },
+    "telecom": {
+      "label": {
+        "en": "telecom",
+        "jp": "通信"
+      },
+      "patterns": [
+        "telecom",
+        "telecommunications",
+        "wireless",
+        "carrier",
+        "mobile network"
+      ],
+      "industries": [
+        "telecom"
+      ]
+    },
+    "commerce": {
+      "label": {
+        "en": "commerce and retail",
+        "jp": "コマースと小売"
+      },
+      "patterns": [
+        "e-commerce",
+        "ecommerce",
+        "commerce",
+        "retail",
+        "shopping",
+        "marketplace",
+        "merchants?"
+      ],
+      "industries": [
+        "e-commerce",
+        "retail",
+        "consumer electronics",
+        "beauty"
+      ]
+    },
+    "consumer-brand": {
+      "label": {
+        "en": "consumer brands",
+        "jp": "消費財ブランド"
+      },
+      "patterns": [
+        "cpg",
+        "consumer goods",
+        "beverage",
+        "food and beverage",
+        "fmcg",
+        "lifestyle brand",
+        "fashion",
+        "apparel"
+      ],
+      "industries": [
+        "beverage",
+        "consumer brand",
+        "food",
+        "fashion"
+      ]
+    },
+    "public": {
+      "label": {
+        "en": "public sector and community",
+        "jp": "公共と地域"
+      },
+      "patterns": [
+        "government",
+        "public sector",
+        "civic",
+        "non-profit",
+        "nonprofit",
+        "social impact",
+        "sustainability"
+      ],
+      "industries": [
+        "public sector",
+        "sustainability",
+        "community",
+        "consulting"
+      ]
+    },
+    "media": {
+      "label": {
+        "en": "media and entertainment",
+        "jp": "メディアとエンタメ"
+      },
+      "patterns": [
+        "media",
+        "entertainment",
+        "publishing",
+        "streaming",
+        "gaming"
+      ],
+      "industries": [
+        "media",
+        "entertainment",
+        "publishing",
+        "event tech"
+      ]
+    },
+    "health": {
+      "label": {
+        "en": "health",
+        "jp": "ヘルスケア"
+      },
+      "patterns": [
+        "health",
+        "healthcare",
+        "medical",
+        "patients?",
+        "wellness",
+        "clinical"
+      ],
+      "industries": [
+        "health",
+        "healthcare",
+        "medical"
+      ]
+    }
+  }
+}

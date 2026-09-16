@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Studio — a lens from a posting</title>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="studio.css">
+</head>
+<body>
+  <header class="st-head">
+    <div>
+      <a class="st-brand" href="../">Takao Umehara</a>
+      <span class="st-title">Studio · a lens from a posting</span>
+    </div>
+    <div class="st-auth" id="auth">
+      <span class="st-muted">Checking sign-in…</span>
+    </div>
+  </header>
+
+  <main class="st-main">
+    <section class="st-panel" id="controls">
+      <h1 class="st-h1">Paste a job description. See which work answers it.</h1>
+      <p class="st-lede">Nothing here invents experience: the cards, the quotes and the ledger come from the record, and every sentence you write is checked before it can be published. <a href="../docs/adaptive-portfolio-architecture.md" class="st-link">How it works →</a></p>
+
+      <form id="intake" class="st-form" autocomplete="off">
+        <label class="st-field"><span>Posting URL</span>
+          <div class="st-row"><input type="url" id="url" placeholder="https://boards.greenhouse.io/company/jobs/123"><button type="button" class="st-btn st-btn--ghost" id="fetch">Fetch</button></div>
+          <small class="st-hint" id="fetch-hint">Fetching needs sign-in. If a page will not read (JavaScript-rendered, login), paste the text below.</small>
+        </label>
+        <label class="st-field"><span>Job description <button type="button" class="st-inline" id="sample">load a sample</button></span>
+          <textarea id="jd" rows="12" placeholder="Paste the posting — title through requirements."></textarea>
+        </label>
+        <div class="st-grid3">
+          <label class="st-field"><span>Company</span><input type="text" id="company" placeholder="Stripe"></label>
+          <label class="st-field"><span>Role title <small>(optional)</small></span><input type="text" id="role" placeholder="from the posting"></label>
+          <label class="st-field"><span>Slug → /lens/…</span><input type="text" id="slug" placeholder="stripe" pattern="[a-z0-9-]+"></label>
+        </div>
+        <div class="st-actions">
+          <button type="submit" class="st-btn" id="analyze">Analyze</button>
+          <span class="st-muted" id="status"></span>
+        </div>
+      </form>
+
+      <div id="result" hidden>
+        <section class="st-block">
+          <h2 class="st-h2">What the posting asks for</h2>
+          <p id="summary" class="st-summary"></p>
+        </section>
+
+        <section class="st-block">
+          <h2 class="st-h2">Proof <span class="st-muted" id="proof-count"></span></h2>
+          <p class="st-hint">Direct is earned: strong evidence on two of the five heaviest asks. Change a framing, or drop a card; the page re-renders.</p>
+          <ol class="st-list" id="proof"></ol>
+        </section>
+
+        <section class="st-block">
+          <h2 class="st-h2">Fit Ledger</h2>
+          <p class="st-hint">One row per requirement line. You can lower a level or pick another verbatim line of what you did — never raise a level, never write a new fact. A row the record cannot answer stays.</p>
+          <ol class="st-list" id="ledger"></ol>
+        </section>
+
+        <section class="st-block">
+          <h2 class="st-h2">Words on the page</h2>
+          <p class="st-hint">Write these in your own voice. Numbers must already exist in the records this lens shows; the guard below says so if not.</p>
+          <div id="copy"></div>
+        </section>
+
+        <section class="st-block" id="guard-block">
+          <h2 class="st-h2">Guard</h2>
+          <ul class="st-errors" id="errors"><li class="st-ok">Nothing to fix.</li></ul>
+        </section>
+
+        <section class="st-block st-publish">
+          <h2 class="st-h2">Publish</h2>
+          <div class="st-actions">
+            <button type="button" class="st-btn" id="publish" disabled>Publish to /lens/…</button>
+            <button type="button" class="st-btn st-btn--ghost" id="download">Download JSON</button>
+            <button type="button" class="st-btn st-btn--ghost" id="download-report">Download report</button>
+          </div>
+          <p class="st-hint" id="publish-hint"></p>
+          <p class="st-result" id="publish-result" hidden></p>
+        </section>
+      </div>
+    </section>
+
+    <section class="st-preview">
+      <div class="st-preview-bar"><span id="preview-label">Preview</span><span class="st-muted" id="preview-note">The page, rendered by the same code that builds the site.</span></div>
+      <iframe id="preview" title="Lens preview" sandbox="allow-same-origin"></iframe>
+    </section>
+  </main>
+
+  <script type="module" src="studio.mjs"></script>
+</body>
+</html>

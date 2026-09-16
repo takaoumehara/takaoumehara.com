@@ -1,6 +1,6 @@
-# Adaptive Career Portfolio — アーキテクチャ提案 (Phase 1)
+# Adaptive Career Portfolio — アーキテクチャ提案 (Phase 1–3)
 
-> Written by: superforge (architecture) · Last updated: 2026-09-11
+> Written by: superforge (architecture) · Last updated: 2026-09-16
 > 原則: **One Takao. One evidence base. Different lenses.**
 > 実装は `src/` 以下。生成物は `index.html` と `lens/<slug>/index.html`。
 
@@ -580,3 +580,225 @@ Phase 1 の直後に見つかった 2 つの欠陥と、その対処。
 4. §13 の「言語スイッチを out-specify してはならない」は `lens.css` だけの話ではない。
    `assets/*.css` で同じ欠陥を再発させたので、テストの走査範囲を広げた。
    **`display` を指定する子孫 `span` セレクタは `.t-en` / `.t-jp` に届く。** `> span` を使う。
+
+## 16. Phase 2 — Adaptive Pitch Engine（2026-09-16）
+
+求人票（JD）を読み、証拠ライブラリから最も合う実績を選び、その企業専用の Lens の
+**下書き**を書く。`scripts/generate-pitch.mjs`。§8 の図がそのまま実装になった。
+
+```
+node scripts/generate-pitch.mjs --url "https://…/jobs/123"                # URL から
+node scripts/generate-pitch.mjs --company "Stripe" --jd path/to/jd.txt     # ファイルから
+node scripts/generate-pitch.mjs --company "Stripe"                         # 貼り付け（Ctrl-D で確定）
+```
+
+出力は 4 つ。`src/lenses/<slug>.json`（status: draft）、`src/pitches/<slug>/report.md`
+（何が合い、何が合わず、何を埋めるべきか）、同 `analysis.json`、同 `jd.txt`。
+
+### 16.1 ブリーフからの変更点（検証して直したところ）
+
+| ブリーフ | 実装 | 理由 |
+|---|---|---|
+| 「JD 解析（LLM）」 | **LLM を呼ばない。** 語彙表（`src/analyze/lexicon.json`）と規則だけ | 同じ JD から常に同じ結果が出る。API キー不要で他人も使える。`docs/gemini-studio-salvage-review.md` §4 の教訓 — LLM の自由文は検証ではなく「お願い」でしか縛れない — を、そもそも自由文を書かせないことで塞いだ |
+| `angles` を「企業向けに上書き」 | Lens は **承認済み angle を選ぶだけ**。`summaryOverride` は生成しない | §4 の原則。上書きは Claim Guard の対象になるが、そもそも生成器に事実文を書かせない |
+| `lensNote` に企業名と重点領域 | `lensNote` が `boolean | Localized` になった。文字列なら Claim Guard を通る | 既存の 2 lens は従来どおり定型文 |
+| `tailoredResume` | Lens JSON に持つが**描画しない**。`highlights[].line` は `contribution.mine` の逐語。validator が Claim Guard / NotMine Guard を当てる | 履歴書に貼る文章もページと同じ基準 |
+| カードに「役割・成果タグ」 | **役割フラグ 1 つ**（`contribution.level` + `teamSize` → "Led · team of 6"）。成果は既存の metric 行 | 成功基準 D「カードに tag 一覧を並べない」。空ピルは `1a7b109` で修正済み |
+| 「27 能力・27 実績」 | 実際は 28 能力・46 実績（projects 26 · ventures 4 · experiments 8 · tools 8） | 数え直し |
+| 「70 件のテスト」 | 70 → **99**（`tests/pitch-engine.test.mjs` 29 件を追加） | |
+
+### 16.2 採用側の 2 つの読み方に対して、何を出すか
+
+| 読者 | 時間 | ページで見えるもの | 出どころ |
+|---|---|---|---|
+| 人事・リクルーター | 10〜30 秒 | eyebrow（職種名 · 企業名）、先頭カードの emphasis（"Direct evidence · UX / CX · Enterprise"）、役割フラグ（"Led"）、数字 2 つ | JD の職種名、`capabilities[].strength`、`contribution.level`、`metrics`（unverified は出ない） |
+| 現場の責任者 | 2〜5 分 | 承認済み angle の本文、「自分がしたこと · チームがしたこと」、ケーススタディの制約 | `angles`、`contribution.mine / team`、`narrative.constraints` |
+| 本人（公開前） | — | `report.md` の「採用側が聞くが記録が答えられないこと」「JD が求めるが記録に無いもの」 | `scripts/audit-evidence.mjs` の質問と `capabilityCoverage()` |
+
+**"Direct" は与えるものではなく、稼ぐもの。** 求人の重い上位 5 能力のうち 2 つ以上に
+`strong` の証拠があるとき（または最重要 1 つ＋同じ業界のとき）だけ。それ以外は
+"Transferable" とカードに書く。決済会社の求人に学校祭が "Direct" と出た初回の結果を見て、
+この規則にした。
+
+### 16.3 選び方（規則。全部読める）
+
+1. **JD → 能力の重み**: 語彙表の句が、JD のどの節にあるかで重みを変えて数える
+   （Requirements ×1.5 / Responsibilities ×1.25 / Preferred ×1.0 / 会社紹介・待遇 ×0.4）。
+   1 つの能力の中では**最も強い句を満額、残りを半額**で足す —「build / ship / code」の
+   羅列が「design system」の明示に勝たないように。
+2. **実績のスコア**: Σ 重み × 強度（strong 1 / moderate .55 / adjacent .2）に、
+   種別（project 1 / venture .85 / tool・experiment .6）、契約形態（concept .8）、
+   使える指標の数、ケーススタディの有無、直近か、**同じ業界か（×1.3）** を掛ける。
+3. **3〜5 件を選ぶ**: 貪欲法。重い上位 6 能力について、すでに選んだカードが証明済みの
+   分だけ割り引く。**上位能力に strong が 1 つも無い実績は「全部重複」と同じ扱い** —
+   これが無いと、クリエイティブディレクター求人で Coca-Cola より Verizon AI が先に出た。
+4. **angle**: JD の主題（`lexicon.themes`）ごとに angle の優先順が決まっている。
+   実績が持っていなければ `cardLine` に落ちる。
+5. **指標**: `stated` → `approximate` の順に 2 つ。`unverified` は候補にすら入らない。
+
+### 16.4 記録の空欄（`docs/evidence-gaps.md`）
+
+採用側が必ず聞くのに、記録が答えられない項目を `scripts/audit-evidence.mjs` が洗い出す。
+答えを入れる先として型を 3 つ足した（`src/schema.d.ts`）。
+
+| フィールド | 値 | 意味 |
+|---|---|---|
+| `contribution.level` | `solo / led / co-led / contributor / advised` | どこまで自分がやったか。カードにフラグとして出る |
+| `contribution.teamSize` | 整数 | 中心になって動いた人数。不明なら書かない |
+| `outcome` | `{ status: measured / reported / shipped / unknown, note }` | 数字が無い実績の「その後」。**`unknown` は正当な値** — 推測した数字より強い |
+| `narrative.decisions` | `[{ decision, why, tradeoff }]` | 判断とその理由。現場の責任者が見るのはここ |
+
+今回埋めたのは、記録に文字どおり書いてあるものだけ（役職が "Solo"、`team` が空の
+experiment / tool / venture → `solo`。Festival の chair と KOJI FIZZ の「クライアント側を
+自分が回した」→ `led`）。残り 31 件の空欄は本人が埋める。**埋めないという選択も正しい** —
+無い数字は無いまま、`unknown` と書く。
+
+### 16.5 触っていないもの・できなかったもの
+
+- 既存 3 lens の JSON、既存の証拠の事実、`index.html` の構成 — 変更なし
+  （役割フラグが出るようになった分だけ生成 HTML は差分がある）。
+- `--url` の**実サイトでの取得は未検証**（作業環境から外向き通信が塞がれていた）。
+  ローカル HTTP サーバーと、schema.org `JobPosting` を埋め込んだ HTML でテストした。
+  JS で描画される求人ページは読めないので、その場合は本文だけ貼り付ける（コマンドが案内する）。
+- サンプルの JD 3 本（`src/pitches/samples/`）は**この実装のために書いた例文**で、
+  実在の求人票の転載ではない。
+- 生成した `src/lenses/stripe.json` は draft のまま。`lens/stripe/index.html` は
+  コミットしていない（公開は本人が `status: "published"` にして build する。原則 17）。
+  プレビューは `node src/build.mjs --preview` → `lens/_preview/stripe/index.html`（git 管理外）。
+
+### 16.6 Fit Ledger — 求人票の 1 行ずつに「自分が何をしたか」で答える（Phase 3a、2026-09-16）
+
+本人の要望: 「なぜ答えられるのか」を、ポートフォリオのリンクではなく**自分が実際にした行為**で示し、
+どの程度答えられているかも出す。合計の % ではなく、**求人票の 1 行 = 台帳の 1 行**。
+
+```
+{ ask: "Experience contributing to or maintaining a design system at scale",   ← 求人票の行、逐語
+  capabilities: ["design-systems", "enterprise"],                                ← その行が名指しした能力
+  level: "direct",                                                               ← 規則で決まる上限（下げられるが上げられない）
+  evidence: [{ id: "credit-card-portal",
+               line: "Built the design system in three layers: …" }],           ← contribution.mine の逐語
+  note?: { en, jp } }                                                            ← 本人の 1 行。Claim Guard 対象
+```
+
+| level | バー | 意味（`validate.mjs` の `fitCeiling()`） |
+|---|---|---|
+| `direct` | 100 | その行の能力に `strong` を持つ記録があり、かつその記録の `contribution.mine` に対応する逐語の 1 行がある |
+| `partial` | 60 | `strong` はあるが対応する行が無い／`moderate` に対応する行がある |
+| `adjacent` | 30 | `moderate` のみ、または `adjacent` のみ |
+| `none` | 0 | 引用できる記録が無い。**行は消さない** |
+
+規則（`src/analyze/fit.mjs`）:
+
+1. 台帳に載るのは `requirements` / `preferred` の行。**年数・学位・ポートフォリオを問う行は載せない**（記録は「何年」に逐語で答えられない。履歴書で答える、と脚注に出す）。能力を 1 つも名指ししない行も載せない（言えることが無い）。
+2. 行 → 能力: 語彙表の句で拾い、最も強い能力の半分未満の能力は捨てる（"workflows" 1 語で `operations` が紛れ込み、無関係な記録を連れてくるのを防ぐ）。
+3. 記録 → 行: 語幹の重なり＋能力の句＋**業界語**（"payments" が問いと引用の両方にあれば加点）で `contribution.mine` の各行を採点。2 以上で「対応する行あり」。
+4. 記録の順位: 強度 ×2 ＋ 行の一致 ＋ ページに載っている記録 +1.5 ＋ **自主制作コンセプトは −1**（"partnering with engineering" に一人で作った概念作品が先に出た初回の結果から）。2 件目の引用は、明確に一致する逐語の行があるときだけ。
+5. `validate.mjs`: `evidence[].id` は公開記録、`line` はその記録の `contribution.mine` に逐語で存在、`level` は `fitCeiling()` の上限以下、`note` は Claim Guard / NotMine Guard。**本人は level を下げられるが上げられない。**
+
+描画は `{ type: "fit" }` セクション（`sections.mjs` の `fitSection()`）。見出し「What you asked for · what I did」。
+列は「求人票の行 / 度合いのバーと言葉 / 引用と記録へのリンク」。引用は英語の逐語（記録が英語なので、日本語表示でも訳さない）。
+ページに載っている記録はカードの `#card-<slug>` へ、載っていない記録はケーススタディへ飛ぶ。
+
+データへの含意: **`contribution.mine` の 1 行が台帳の説得力そのもの。** 1 行 = 自分がした 1 つの具体的な行為に整える。
+`scripts/audit-evidence.mjs` が 40 語超の行や 3 つ以上を詰めた行を指摘する（`docs/evidence-gaps.md`）。
+
+### 16.7 Studio — ブラウザで貼って、見て、GitHub の名前で公開する（Phase 3b、2026-09-16）
+
+`/studio/`（noindex、nav に無い）。本人の決定は「最初から GitHub ログイン＋自動 commit」。
+
+**画面はサーバー無しで動く。** `studio/studio.mjs` は `src/analyze`・`src/validate.mjs`・`src/render` を
+**ビルドと同じ ES モジュールのまま**ブラウザで import する（バンドラ無し、依存ゼロ）。データは
+`assets/studio/library.json`（`node src/build.mjs` が書く、証拠 46 件＋語彙表、`_notes` は落とす）。
+そのために `.vercelignore` は `src/` を配信対象に戻した（`src/pitches/*` だけ除外、`samples` は配信）。
+`src/analyze/jd.mjs` からファイル入力と語彙表の読み込みを `intake.node.mjs` に分けたので、
+`studio.mjs` から辿れるモジュールに `node:` の import は 1 つも無い（テストが走査する）。
+
+| 画面 | 何が起きるか |
+|---|---|
+| 貼る／URL | URL は `/api/fetch-jd`（サーバー側で取得。ログイン必須。読めなければ貼り付けへ誘導） |
+| Analyze | `analyzeJob → scoreEvidence → selectProof → draftLens` をその場で実行。下書きと台帳とプレビュー |
+| 直す | カードの framing（承認済み angle のみ）・表示/非表示、台帳の level（**上限までしか選べない**）・引用行（その記録の `mine` のみ）・注記、hero / lede / CTA の文（EN・JP） |
+| Guard | 変更のたびに `validateLens` をブラウザで実行。赤い行が 1 つでもあれば公開ボタンは押せない |
+| Preview | `renderLens` をブラウザで実行し iframe に描画。**ビルドと同じコード** |
+| Publish | `POST /api/publish { lens }` → サーバーで再検証・再描画・**1 commit**（`src/lenses/<slug>.json`、`lens/<slug>/index.html`、`assets/studio/library.json`）→ Vercel が `/lens/<slug>` を配信 |
+| Download | JSON と report.md。API が無い環境（ローカルの `python3 -m http.server`）でも手で commit できる |
+
+**API（`api/`、Vercel Functions、Web 標準の `Request → Response`、依存ゼロ）**
+
+| 関数 | 役割 |
+|---|---|
+| `auth/login` | GitHub OAuth（scope `public_repo`）。state cookie |
+| `auth/callback` | code → token。**`OWNER_LOGIN` 以外は 403**。セッションは AES-GCM で封じた HttpOnly cookie（8 時間）。サーバーに保存しない |
+| `auth/me` · `auth/logout` | |
+| `fetch-jd` | `readJobText({ url })` をサーバーで |
+| `publish` | `_lib/publish.mjs`: `validateAll` → `renderAll` → `_lib/github.mjs` の Git Data API で commit。`PUBLISH_MODE=pr` なら `studio/<slug>-…` ブランチ＋PR |
+
+決定論: 関数が commit する HTML は `node src/build.mjs` が書くものと一字一句同じ（テストが比較する）。
+`renderAll` に `assetExists` を渡せるようにした — 関数のバンドルには画像が無いので、画像の存在検査は
+直前のビルドの結果を信頼する（新しい Lens は画像を足さない）。
+
+**本人がやること（1 回だけ）**
+
+1. GitHub → Settings → Developer settings → **OAuth Apps** → New OAuth App。
+   Homepage URL: `https://takaoumehara.com` / Authorization callback URL: `https://takaoumehara.com/api/auth/callback`
+   - **GitHub App ではない。** 画面が似ていて間違えやすいが、GitHub App は権限モデルと
+     refresh token の扱いが違い、`api/auth/callback.mjs` の `exchangeCode()` が通らない。
+   - callback URL は**ホスト名まで完全一致**。Vercel のプレビュー URL では動かない。
+     試すのは本番ドメインで、この PR をマージしてデプロイした後（それまで `/api/auth/*` は存在しない）。
+2. Vercel のプロジェクトの Environment Variables:
+   `GITHUB_CLIENT_ID`、`GITHUB_CLIENT_SECRET`、`SESSION_SECRET`（`openssl rand -hex 32`）、`OWNER_LOGIN=takaoumehara`、
+   任意で `REPO`（既定 `takaoumehara/takaoumehara.com`）、`PUBLISH_BRANCH`（既定 `main`）、`PUBLISH_MODE`（`commit` か `pr`）、`SITE_URL`
+3. デプロイ後 `/studio/` → Sign in → サンプルで 1 回 Publish → `/lens/stripe` が開く → `git pull` して `npm test` が通ることを確認
+
+**検証したこと・していないこと**: Node のテスト 12 件（封印、owner 以外の拒否、fetch-jd、publish の commit 内容と HTML の一致、PR モード）と、
+Chromium で `/studio/` にサンプルを貼って 5 カード・台帳・プレビュー・Claim Guard の赤線が出ること。
+**GitHub の実 API と Vercel 上の実行は未検証**（この作業環境から外向き通信不可）。Web 標準ハンドラ（`export function GET(request)`）が
+Vercel の Node ランタイムで動く前提。動かなければ `(req, res)` 形式への薄い変換を `api/_lib` に足す。
+
+### 16.8 公開デモ `/try/`（Phase 3c、2026-09-16）
+
+訪問者（採用側）が自分の求人票を貼ると、このサイトがその求人向けに並べ替わる。保存も公開もしない、ブラウザ内だけ。
+Studio と同じモジュール（`try/try.mjs`）で、調整 UI と公開ボタンが無いだけ。
+
+- hero の note と lens note を**「訪問者が貼った求人票から自動で並べた表示で、本人は手を入れていない」**に差し替える。
+  誰が並べたかを言わない表示は、承認していない主張に見えるから。
+- 生成器は事実文を書かないので、見知らぬ求人票でも嘘は出ない。`validateLens` をブラウザでも通し、
+  万一落ちたら描画せず「別の求人票で」と言う。
+- 索引される（noindex ではない）。**これ自体が作品**: 「嘘をつかない機械」を採用側が自分の求人で触れる。
+- 導線: `work-with-me.html` の "Hiring" の段に 1 行。ほかのページからの導線は本人の判断。
+
+### 16.9 Phase 3d — 配布（計画。未着手、2026-09-16）
+
+**他の人が自分のサイトで同じことをできる形にする。** 本人の決定は 3 つ。
+
+| 論点 | 決定 |
+|---|---|
+| 形 | **GitHub テンプレート repo**（npm パッケージではない）。`adaptive-portfolio-template` |
+| タクソノミー | **デザイナー用 1 種**だけ用意。他職種は導入スキルが面接形式で作る |
+| ライセンス | **MIT**（`LICENSE` を追加。現在リポジトリにライセンスが無い） |
+
+**中身**: engine（`src/analyze` / `src/validate.mjs` / `src/lib` / `src/render` の既定テーマ /
+`scripts` / `studio` / `try` / `api`）＋ **空の `src/data`** ＋ 例 1 件 ＋ 導入スキル。
+使う人は `Use this template` → AI コーディング環境で `/setup-portfolio` を走らせると、
+面接形式で `profile` → 能力（デザイナー用タクソノミーから選ぶ）→ 実績 1 件ずつ
+（`mine` / `team` / `notMine` / `metrics.confidence` を必ず聞く）が埋まり、
+`node src/build.mjs --check` が通るまで付き合う。下敷きは `docs/portfolio-content-intake-prompt.md` v3。
+
+**汎用化が要る箇所**（2026-09-16 に実測。すべて `profile.json` か新しい `site.json` から読む形に）:
+
+| ファイル | 何が固有か |
+|---|---|
+| `src/validate.mjs` | エラー文 2 か所の "Takao"（`contribution.mine` と NotMine Guard） |
+| `src/render/sections.mjs` | lens note の既定文（"work from Takao's career archive"） |
+| `src/render/archive.mjs` · `now.mjs` | SEO の title / description |
+| `src/render/shell.mjs` | ナビのロゴ名、スタジオの URL、7 項目のナビ構成そのもの |
+| `studio/studio.mjs` · `studio/index.html` | `SITE` 定数、ブランド名 |
+| `try/index.html` · `try/try.mjs` | title / description / canonical |
+| `api/publish.mjs` · `api/_lib/github.mjs` | `REPO` の既定値、user-agent |
+
+**テストの分割**: `tests/pitch-engine.test.mjs` と `tests/studio.test.mjs` は本人の記録に依存している
+（`verizon-*` / `koji-fizz` / `festival-*` / `credit-card-portal`）。テンプレート側は例 1 件で通る
+汎用テストに書き直す。`about-portrait` / `ai-tools-portfolio` / `lens-system` / `page-transitions` は
+このサイト固有なので持って行かない。
+
+**前提**: **3b が本人のサイトで実際に動いてから配る。** 自分で使っていないものは配らない。

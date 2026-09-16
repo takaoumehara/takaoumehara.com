@@ -33,6 +33,7 @@ test("every project page opts into view transitions in the head", () => {
 
 test("all generated listing pages opt into view transitions", () => {
   for (const [path, html] of renderAll()) {
+    if (!path.endsWith(".html")) continue; // the build also writes assets/studio/library.json
     assert.ok(
       head(html).includes("@view-transition { navigation: auto; }"),
       `${path}: no view-transition opt-in in head`,

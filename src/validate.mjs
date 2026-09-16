@@ -15,10 +15,49 @@ const ENGAGEMENTS = new Set(["employee", "freelance", "volunteer", "own-venture"
 const STRENGTHS = new Set(["strong", "moderate", "adjacent"]);
 const CONFIDENCE = new Set(["stated", "approximate", "unverified"]);
 const VISIBILITY = new Set(["public", "lens-only", "private"]);
-const SECTION_TYPES = new Set(["proof", "exploring", "experiments", "ventures", "ideas", "tools", "career-arc", "capabilities", "studio", "contact"]);
+const SECTION_TYPES = new Set(["proof", "exploring", "experiments", "ventures", "ideas", "tools", "career-arc", "capabilities", "studio", "contact", "fit"]);
 const VENTURE_STATUS = new Set(["active", "validating", "prototype", "paused", "archived", "handed-off"]);
 const EXPERIMENT_STATUS = new Set(["live", "in-progress", "prototype", "shipped"]);
 const TOOL_STATUS = new Set(["released", "in-progress"]);
+// How much of the work was the person's. Printed on the card as a flag, so it
+// must be one of these words and nothing softer.
+const LEVELS = new Set(["solo", "led", "co-led", "contributor", "advised"]);
+// Whether an outcome is on record at all. "unknown" is a legitimate, honest value.
+const OUTCOME_STATUS = new Set(["measured", "reported", "shipped", "unknown"]);
+
+// The Fit Ledger's levels, highest first, with the share of the bar each fills.
+// "direct" is the record answering the line with a specific thing the person
+// did; "none" is an honest empty row. See fitCeiling() for the rule.
+export const FIT_LEVELS = { direct: 100, partial: 60, adjacent: 30, none: 0 };
+const FIT_RANK = { direct: 3, partial: 2, adjacent: 1, none: 0 };
+
+/**
+ * The highest level the record supports for one ledger row. Computed from the
+ * cited evidence only, so a lens may lower a row's level but never raise it:
+ *   direct    strong evidence on a row capability AND a verbatim contribution line
+ *   partial   strong evidence without a line, or moderate evidence with one
+ *   adjacent  moderate without a line, or adjacent only
+ *   none      nothing cited, or the cited record has none of the row's capabilities
+ */
+export function fitCeiling(row, lib) {
+  let best = "none";
+  for (const ref of row.evidence ?? []) {
+    const item = lib.evidence.get(ref?.id);
+    if (!item) continue;
+    const order = { strong: 3, moderate: 2, adjacent: 1 };
+    let strength = "";
+    for (const c of item.capabilities) {
+      if ((row.capabilities ?? []).includes(c.id) && (order[c.strength] ?? 0) > (order[strength] ?? 0)) strength = c.strength;
+    }
+    if (!strength) continue;
+    const hasLine = typeof ref.line === "string" && item.contribution.mine.includes(ref.line);
+    const level = strength === "strong" ? (hasLine ? "direct" : "partial")
+      : strength === "moderate" ? (hasLine ? "partial" : "adjacent")
+        : "adjacent";
+    if (FIT_RANK[level] > FIT_RANK[best]) best = level;
+  }
+  return best;
+}
 
 /** Flatten a Localized value to the text it carries (both languages). */
 export function localizedText(value) {
@@ -34,9 +73,11 @@ export function evidenceCorpus(item) {
     localizedText(item.summary),
     ...Object.values(item.angles ?? {}).map(localizedText),
     ...(item.metrics ?? []).flatMap((m) => [m.value, localizedText(m.label), m.basis]),
+    localizedText(item.cardLine), localizedText(item.cardKind),
     ...(item.contribution?.mine ?? []),
     ...(item.contribution?.team ?? []),
     ...(item.narrative ? JSON.stringify(item.narrative) : []),
+    localizedText(item.outcome?.note),
     localizedText(item.thesis), localizedText(item.experiment), localizedText(item.question),
     ...(item.stack ?? []),
   ];
@@ -109,6 +150,13 @@ export function validateLibrary(lib, { assetExists } = {}) {
     if (!localizedText(item.summary)) errors.push(`${where}: missing summary`);
     if (!VISIBILITY.has(item.visibility)) errors.push(`${where}: invalid visibility "${item.visibility}"`);
     if (!Array.isArray(item.contribution?.mine) || item.contribution.mine.length === 0) errors.push(`${where}: contribution.mine must list at least one thing Takao did`);
+    if (item.contribution?.level != null && !LEVELS.has(item.contribution.level)) errors.push(`${where}: contribution.level "${item.contribution.level}" must be one of ${[...LEVELS].join(" / ")}`);
+    if (item.contribution?.teamSize != null && !(Number.isInteger(item.contribution.teamSize) && item.contribution.teamSize > 0)) errors.push(`${where}: contribution.teamSize must be a whole number of people (omit it when unknown)`);
+    if (item.contribution?.level === "solo" && item.contribution.teamSize > 1) errors.push(`${where}: contribution.level "solo" with teamSize ${item.contribution.teamSize} contradicts itself`);
+    if (item.outcome != null) {
+      if (!OUTCOME_STATUS.has(item.outcome.status)) errors.push(`${where}: outcome.status "${item.outcome.status}" must be one of ${[...OUTCOME_STATUS].join(" / ")}`);
+      if (item.outcome.status === "measured" && !(item.metrics ?? []).some((m) => m.confidence !== "unverified")) errors.push(`${where}: outcome.status "measured" needs at least one metric that is not unverified`);
+    }
     if (!Array.isArray(item.capabilities) || item.capabilities.length === 0) errors.push(`${where}: needs at least one capability`);
     for (const claim of item.capabilities ?? []) {
       if (!capIds.has(claim.id)) errors.push(`${where}: unknown capability "${claim.id}"`);
@@ -165,6 +213,13 @@ function checkGuards(errors, where, text, item, corpus) {
       if (lower.includes(phrase.toLowerCase())) errors.push(`${where}: NotMine Guard — "${phrase}" is listed as not Takao's contribution on ${item.slug}`);
     }
   }
+}
+
+/** The text a ledger row's note may draw numbers from: the records it cites, plus the lens's own. */
+function heroCorpusFor(row, lib, used) {
+  const items = new Map(used);
+  for (const ref of row.evidence ?? []) { const item = lib.evidence.get(ref?.id); if (item) items.set(item.slug, item); }
+  return [...items.values()].map(evidenceCorpus).join(" \n ");
 }
 
 export function lensEvidenceIds(lens) {
@@ -238,6 +293,33 @@ export function validateLens(lens, lib) {
     }
   }
 
+  // The Fit Ledger: every row cites real records, quotes them verbatim, and
+  // claims no more than the record supports.
+  const hasFitSection = (lens.sections ?? []).some((s) => s.type === "fit");
+  if (hasFitSection && !lens.fit) errors.push(`${where}: a "fit" section needs a fit block`);
+  if (lens.fit) {
+    if (!Array.isArray(lens.fit.rows)) errors.push(`${where}: fit.rows must be an array`);
+    for (const [index, row] of (lens.fit.rows ?? []).entries()) {
+      const rw = `${where}: fit.rows[${index}]`;
+      if (!row.ask || typeof row.ask !== "string") errors.push(`${rw}: ask must be the posting's line, verbatim`);
+      if (!(row.level in FIT_LEVELS)) errors.push(`${rw}: level "${row.level}" must be one of ${Object.keys(FIT_LEVELS).join(" / ")}`);
+      for (const capId of row.capabilities ?? []) if (!capIds.has(capId)) errors.push(`${rw}: unknown capability "${capId}"`);
+      for (const [j, ref] of (row.evidence ?? []).entries()) {
+        const item = lib.evidence.get(ref?.id);
+        if (!item) { errors.push(`${rw}: evidence[${j}] names unknown record "${ref?.id}"`); continue; }
+        if (item.visibility === "private") errors.push(`${rw}: evidence[${j}] "${ref.id}" is private`);
+        if (ref.line != null && !item.contribution.mine.includes(ref.line)) errors.push(`${rw}: evidence[${j}] line is not a verbatim contribution.mine line of "${ref.id}"`);
+        checkGuards(errors, `${rw}: evidence[${j}].line`, ref.line, item, evidenceCorpus(item));
+      }
+      const ceiling = fitCeiling(row, lib);
+      if (row.level in FIT_LEVELS && FIT_RANK[row.level] > FIT_RANK[ceiling]) errors.push(`${rw}: level "${row.level}" exceeds what the cited record supports ("${ceiling}") — a lens may lower a level, never raise it`);
+      checkGuards(errors, `${rw}: note`, row.note, null, heroCorpusFor(row, lib, used));
+    }
+    for (const [index, req] of (lens.fit.requirements ?? []).entries()) {
+      for (const id of req.foundIn ?? []) if (!lib.evidence.has(id)) errors.push(`${where}: fit.requirements[${index}] names unknown record "${id}"`);
+    }
+  }
+
   // Capability priority: only sell what the evidence in this lens actually shows.
   for (const capId of lens.capabilityPriority ?? []) {
     if (!capIds.has(capId)) { errors.push(`${where}: unknown capability "${capId}" in capabilityPriority`); continue; }
@@ -254,6 +336,26 @@ export function validateLens(lens, lib) {
   for (const field of ["eyebrow", "title", "body", "note"]) checkGuards(errors, `${where}: hero.${field}`, lens.hero?.[field], null, heroCorpus);
   checkGuards(errors, `${where}: cta.title`, lens.cta?.title, null, heroCorpus);
   checkGuards(errors, `${where}: cta.body`, lens.cta?.body, null, heroCorpus);
+  for (const [index, section] of (lens.sections ?? []).entries()) {
+    checkGuards(errors, `${where}: sections[${index}].lede`, section.lede, null, heroCorpus);
+    checkGuards(errors, `${where}: sections[${index}].title`, section.title, null, heroCorpus);
+  }
+  // lensNote may be a boolean (show the standard note or not) or the note itself.
+  if (lens.lensNote != null && typeof lens.lensNote !== "boolean") {
+    if (!localizedText(lens.lensNote)) errors.push(`${where}: lensNote must be true, false, or a Localized string`);
+    checkGuards(errors, `${where}: lensNote`, lens.lensNote, null, heroCorpus);
+  }
+  // tailoredResume is never rendered, but it is text a person may paste into a
+  // résumé, so it is held to the same standard as the page.
+  if (lens.tailoredResume) {
+    checkGuards(errors, `${where}: tailoredResume.summary`, lens.tailoredResume.summary, null, heroCorpus);
+    for (const [index, h] of (lens.tailoredResume.highlights ?? []).entries()) {
+      const item = h?.id ? lib.evidence.get(h.id) : null;
+      if (!item) { errors.push(`${where}: tailoredResume.highlights[${index}] must name evidence by id`); continue; }
+      if (!used.has(h.id)) errors.push(`${where}: tailoredResume.highlights[${index}] cites "${h.id}", which this lens does not show`);
+      checkGuards(errors, `${where}: tailoredResume.highlights[${index}]`, h.line, item, evidenceCorpus(item));
+    }
+  }
 
   return errors;
 }

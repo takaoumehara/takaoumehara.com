@@ -3,13 +3,15 @@
 //
 //   node src/build.mjs            write the pages
 //   node src/build.mjs --check    validate only, write nothing
+//   node src/build.mjs --preview  also render draft lenses to lens/_preview/<slug>/ (git-ignored, not deployed)
 //
 // The default lens renders to /index.html. Every other published lens renders
 // to /lens/<slug>/index.html, which Vercel serves at /lens/<slug>. Draft lenses
 // are skipped. Any validation error aborts the whole build.
 import { mkdirSync, writeFileSync, readFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
-import { loadLibrary, loadLenses, loadCategories, ROOT } from "./lib/load.mjs";
+import { loadLibrary, loadLenses, loadCategories, serializeLibrary, ROOT } from "./lib/load.mjs";
+import { loadLexicon } from "./analyze/intake.node.mjs";
 import { validateAll } from "./validate.mjs";
 import { renderLens } from "./render/page.mjs";
 import { renderCategory } from "./render/category.mjs";
@@ -21,10 +23,11 @@ export const SITE_URL = "https://takaoumehara.com";
 export function outputPath(lens) {
   return lens.slug === "default" ? "index.html" : `lens/${lens.slug}/index.html`;
 }
+export const previewPath = (lens) => `lens/_preview/${lens.slug}/index.html`;
 
 /** Render every published lens. Returns Map<relativePath, html>. Throws on validation errors. */
-export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categories = loadCategories() } = {}) {
-  const errors = validateAll(lib, lenses, { assetExists: (path) => existsSync(join(ROOT, path)) }, categories);
+export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categories = loadCategories(), preview = false, assetExists = (path) => existsSync(join(ROOT, path)) } = {}) {
+  const errors = validateAll(lib, lenses, { assetExists }, categories);
   if (errors.length) {
     const error = new Error(`Validation failed (${errors.length}):\n  - ${errors.join("\n  - ")}`);
     error.details = errors;
@@ -33,8 +36,8 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
   const css = readFileSync(join(ROOT, "src", "render", "lens.css"), "utf8");
   const pages = new Map();
   for (const lens of lenses) {
-    if (lens.status !== "published") continue;
-    const path = outputPath(lens);
+    if (lens.status !== "published" && !preview) continue;
+    const path = lens.status === "published" ? outputPath(lens) : previewPath(lens);
     const depth = path.split("/").length - 1;
     const ctx = {
       base: "../".repeat(depth),
@@ -68,6 +71,10 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
     }));
   }
 
+  // The evidence library as one JSON, for the Studio (studio/) and the public demo.
+  // Generated and committed like every other page, so the deterministic-publishing test covers it.
+  pages.set("assets/studio/library.json", JSON.stringify(serializeLibrary(lib, { lexicon: loadLexicon(), lensSlugs: lenses.map((l) => l.slug) })) + "\n");
+
   // Dedicated Japanese Edition at /ja (ja/index.html)
   const defaultLens = lenses.find((l) => l.slug === "default");
   if (defaultLens) {
@@ -82,9 +89,10 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
 
 function main() {
   const checkOnly = process.argv.includes("--check");
+  const preview = process.argv.includes("--preview");
   let pages;
   try {
-    pages = renderAll();
+    pages = renderAll({ preview });
   } catch (error) {
     console.error(error.message);
     process.exit(1);

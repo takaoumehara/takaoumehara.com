@@ -106,6 +106,32 @@ export interface Contribution {
   team?: string[];            // what others did — name them where the source does
   /** Phrases that must never appear in any Lens text about this item. */
   notMine?: string[];
+  /**
+   * How much of the work was the person's. Rendered on proof cards as a flag
+   * ("Led · team of 6", "Solo"), so it is one of five words and nothing softer.
+   * Omit when the record does not say; the card then shows no flag.
+   */
+  level?: "solo" | "led" | "co-led" | "contributor" | "advised";
+  /** People who did the core work, including the person. Omit when unknown. */
+  teamSize?: number;
+}
+
+/**
+ * What happened afterwards, when there is no metric to say it. "unknown" is a
+ * legitimate value: it is what an honest record says instead of a guessed number.
+ */
+export interface Outcome {
+  status: "measured" | "reported" | "shipped" | "unknown";
+  /** One line: what was reported and by whom, or why nothing is known. */
+  note?: Localized;
+  basis?: string;
+}
+
+/** One judgment call — what a design manager reads for. */
+export interface Decision {
+  decision: string;
+  why: string;
+  tradeoff?: string;
 }
 
 export interface EvidenceBase {
@@ -129,6 +155,7 @@ export interface EvidenceBase {
   capabilities: CapabilityClaim[];
   contribution: Contribution;
   metrics?: Metric[];
+  outcome?: Outcome;
   chapter?: string;           // Chapter.id
   context?: {
     industries?: string[];
@@ -167,6 +194,7 @@ export interface Project extends EvidenceBase {
     problem?: string;
     opportunity?: string;
     constraints?: string[];
+    decisions?: Decision[];
     built?: string[];
     impact?: { business?: string[]; user?: string[]; organizational?: string[] };
   };
@@ -222,6 +250,7 @@ export type Section =
   | { type: "career-arc"; title?: Localized; lede?: Localized }
   | { type: "capabilities"; title?: Localized; lede?: Localized }
   | { type: "studio"; title?: Localized; lede?: Localized }
+  | { type: "fit"; title?: Localized; lede?: Localized }                              // renders lens.fit (Fit Ledger)
   | { type: "contact" };
 
 export interface Lens {
@@ -242,6 +271,38 @@ export interface Lens {
     secondary?: { label: Localized; href: string };
   };
   seo: { title: string; description: string; noindex: boolean };
-  /** Show the one-line "Same experience. Different lens." note. Default: true for /lens/*, false for default. */
-  lensNote?: boolean;
+  /**
+   * The one-line "Same experience. Different lens." note. true / false shows or
+   * hides the standard sentence; a Localized value replaces it (Claim Guard applies).
+   * Default: true for /lens/*, false for default.
+   */
+  lensNote?: boolean | Localized;
+  /**
+   * The Fit Ledger (Phase 3a): one row per requirement line of a posting,
+   * answered with a verbatim contribution.mine line and a level the record
+   * supports. Rendered by a { type: "fit" } section. validate.mjs recomputes
+   * each row's ceiling (fitCeiling) and rejects a level above it.
+   */
+  fit?: {
+    source?: { title?: string; company?: string | null; seenAt?: string };
+    rows: {
+      ask: string;                          // the posting's line, verbatim
+      section?: "requirements" | "preferred";
+      capabilities: string[];               // Capability ids the line names
+      level: "direct" | "partial" | "adjacent" | "none";
+      evidence: { id: string; line?: string }[];   // line = verbatim from that record's contribution.mine
+      note?: Localized;                     // the person's one line (Claim Guard applies)
+    }[];
+    requirements?: { name: string; asked: string[]; foundIn: string[] }[];
+    skipped?: { text: string; why: string }[];   // requirement lines not in the ledger, and why
+  };
+  /**
+   * Written by scripts/generate-pitch.mjs, never rendered. Raw material for a
+   * résumé summary or cover letter. Every highlight line must be verbatim from
+   * the cited item's contribution.mine; the validator checks it like page text.
+   */
+  tailoredResume?: {
+    summary: Localized;
+    highlights: { id: string; role?: string; match?: "direct" | "transferable"; line: string }[];
+  };
 }

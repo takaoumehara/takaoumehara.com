@@ -5,7 +5,7 @@ import { hero } from "./hero.mjs";
 import { proofSection } from "./proof.mjs";
 import {
   exploringSection, experimentsSection, venturesSection, ideasSection, toolsSection,
-  careerArcSection, capabilitiesSection, studioSection, contactSection,
+  careerArcSection, capabilitiesSection, studioSection, contactSection, fitSection,
 } from "./sections.mjs";
 import { lensEvidenceIds } from "../validate.mjs";
 
@@ -16,6 +16,7 @@ const SECTIONS = {
   ventures: venturesSection,
   ideas: ideasSection,
   tools: toolsSection,
+  fit: fitSection,
   "career-arc": careerArcSection,
   capabilities: capabilitiesSection,
   studio: studioSection,
