@@ -3389,4 +3389,132 @@ html[data-theme="light"] .wds-hero h1 em {
   line-height: 1.45;
 }
 
+/* ── Cinematic Full-Bleed Video Section (Before & After) ── */
+.wds-video {
+  width: 100vw !important;
+  position: relative !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  background: #000000 !important;
+  color: #ffffff !important;
+  padding: clamp(64px, 8vw, 112px) var(--gutter) !important;
+  box-sizing: border-box !important;
+}
+.wds-video .wds-kick {
+  color: rgba(255, 255, 255, 0.6) !important;
+  max-width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+}
+.wds-video h2,
+.wds-video .wds-serif {
+  color: #ffffff !important;
+  max-width: var(--col);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: clamp(32px, 4vw, 52px) !important;
+}
+.wds-video .video-compare {
+  max-width: var(--col) !important;
+  margin: 0 auto !important;
+}
+.wds-video .video-label {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.14em !important;
+}
+.wds-video .video-frame {
+  background: #000000 !important;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.12) !important;
+}
+
+/* ── Section Breathing Space & Gallery Labels ── */
+.gallery-label {
+  font-family: var(--ff) !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: var(--ink-dim) !important;
+  margin-top: clamp(64px, 8vw, 100px) !important;
+  margin-bottom: 24px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+.gallery-label::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+.wds-evidence .gallery-label:first-of-type {
+  margin-top: clamp(24px, 3vw, 40px) !important;
+}
+
+/* ── Hand-drawn Wireframe Sketches Feature (Slide 5: Five Problems, One Structure) ── */
+.ia-sketches-feature {
+  margin: clamp(40px, 5vw, 64px) 0 clamp(24px, 3vw, 40px) !important;
+}
+.sketch-cell {
+  background: #ffffff !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--r) !important;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04) !important;
+  padding: clamp(14px, 2vw, 24px) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.sketch-cell img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+/* ── Interaction Flow Diagram: Full Black, Zero White Margins ── */
+.g-cell.flow-diagram,
+.wds-evidence .g-row:has(img[src*="Interaction_Flow"]) .g-cell {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 0 !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14) !important;
+}
+.g-cell.flow-diagram img,
+.wds-evidence .g-row:has(img[src*="Interaction_Flow"]) img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  display: block !important;
+  background: #000000 !important;
+  padding: 0 !important;
+  border-radius: var(--r) !important;
+}
+
+/* ── Core Screens (Before & After, Slide 7): Uniform Full Width, Pure Black, No White Margins ── */
+.wds-evidence.is-cream .g-cell,
+.g-cell.screen-compare {
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  padding: 0 !important;
+  width: 100% !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08) !important;
+}
+.wds-evidence.is-cream .g-cell img,
+.g-cell.screen-compare img {
+  width: 100% !important;
+  height: auto !important;
+  max-height: none !important;
+  object-fit: contain !important;
+  display: block !important;
+  background: #000000 !important;
+  padding: 0 !important;
+  border-radius: var(--r) !important;
+}
+
+
 

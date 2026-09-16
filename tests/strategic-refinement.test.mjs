@@ -132,3 +132,30 @@ test("Resona emphasis is Creative technology and never Web animation", () => {
   assert.ok(!jaIndex.includes("ウェブアニメーション · 公開中"));
 });
 
+test("contact.html and work-with-me.html share site standard gutter and nav tokens", () => {
+  const contact = read("contact.html");
+  const workWithMe = read("work-with-me.html");
+
+  for (const html of [contact, workWithMe]) {
+    assert.match(html, /--gutter:\s*clamp\(20px,\s*3vw,\s*36px\)/);
+    assert.match(html, /--col:\s*1200px/);
+    assert.match(html, /gap:\s*28px/);
+    assert.match(html, /\.nav-item\s*>\s*a\.is-active::after/);
+  }
+});
+
+test("Homepage H1 headline leads with concrete high-business-value executive capability statement", () => {
+  const index = read("index.html");
+  const jaIndex = read("ja/index.html");
+
+  assert.match(index, /<h1 class="hero-line"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
+  assert.match(jaIndex, /<h1 class="hero-line"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
+  assert.match(jaIndex, /曖昧なアイデアを、実際に触れる体験や、動く AI プロトタイプ、0→1 のプロダクトにする。/);
+});
+
+test("Homepage ventures section synchronizes live status and content from now.json", () => {
+  const index = read("index.html");
+  assert.match(index, /Moime\.app<\/h3><span class="pill pill--status"><span class="t-en">Building<\/span>/);
+});
+
+
