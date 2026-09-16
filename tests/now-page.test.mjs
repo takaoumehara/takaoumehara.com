@@ -29,8 +29,7 @@ test("/now cards display Why it exists and What's next", () => {
 
 test("/now page marks Now nav item active", () => {
   const html = read("now/index.html");
-  assert.match(html, /<li class="nav-item has-sub">\s*<a href="(?:\.\.\/)?now\.html" class="nav-link is-active"/, "Now nav parent must be active");
-  assert.match(html, /<a href="(?:\.\.\/)?now\.html" class="nav-sub-link is-active" aria-current="page">What I’m Working On<\/a>/, "What I'm Working On must be active page");
+  assert.match(html, /<li class="nav-item">\s*<a href="(?:\.\.\/)?now\.html" class="nav-link is-active" aria-current="page">Now<\/a>/, "Now nav must be active page");
 });
 
 test("work-with-me.html exists and features Good Fit guidelines and Studio bridge", () => {

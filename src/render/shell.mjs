@@ -5,7 +5,7 @@ import { esc, href, plain } from "./html.mjs";
 
 // Five sections of work, then the two pages about the person. Every item
 // carries the same weight — only the page you are on is emphasised.
-// Canonical 5+1 navigation: Work, Now, Ideas, About, Work with me, Studio ↗.
+// Canonical navigation: Work, Now, Writing, Workshops, About, Work with me, Studio ↗.
 const CANONICAL_NAV = [
   {
     label: "Work",
@@ -13,29 +13,23 @@ const CANONICAL_NAV = [
     sub: [
       { path: "work/index.html", label: "All Work" },
       { path: "work.html", label: "Product &amp; Experience Design" },
-      { path: "brand.html", label: "Brand &amp; Creative" },
       { path: "ai-products.html", label: "AI Products &amp; Systems" },
+      { path: "ai-tools.html", label: "AI Tools" },
+      { path: "interactive.html", label: "Interactive &amp; Playable" },
+      { path: "brand.html", label: "Brand &amp; Creative" },
     ],
   },
   {
     label: "Now",
     path: "now.html",
-    sub: [
-      { path: "now.html", label: "What I’m Working On" },
-      { path: "now.html#ventures", label: "Active Ventures" },
-      { path: "interactive.html", label: "Interactive &amp; Playable" },
-      { path: "ai-tools.html", label: "AI Tools" },
-    ],
   },
   {
-    label: "Ideas",
+    label: "Writing",
     path: "publications.html",
-    sub: [
-      { path: "publications.html", label: "Publications" },
-      { path: "breakbias.html", label: "Break Bias" },
-      { path: "workshop.html", label: "Workshops" },
-      { path: "intentfirst.html", label: "Intent First" },
-    ],
+  },
+  {
+    label: "Workshops",
+    path: "workshop.html",
   },
   {
     label: "About",
@@ -80,7 +74,10 @@ ${css}
 }
 
 export function nav(ctx, activePath) {
-  const normActive = activePath === "now/index.html" ? "now.html" : (activePath === "work/index.html" ? "work/index.html" : activePath);
+  let normActive = activePath === "now/index.html" ? "now.html" : (activePath === "work/index.html" ? "work/index.html" : activePath);
+  if (normActive === "work-with-me.html") normActive = "contact.html";
+  if (normActive === "breakbias.html") normActive = "workshop.html";
+  if (normActive === "intentfirst.html") normActive = "ai-products.html";
   const items = CANONICAL_NAV.map((item) => {
     const isSubActive = item.sub?.some((s) => s.path === normActive);
     const isParentActive = item.path === normActive || isSubActive || (normActive === "work/index.html" && item.path === "work.html");

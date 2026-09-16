@@ -240,15 +240,6 @@ html[data-theme="dark"], .theme-dark {
 .nav-sub a.is-active {
   color: var(--nav-drop-fg-hover); background: var(--nav-drop-hover-bg); font-weight: 600;
 }
-.nav-sub a.is-active::before {
-  content: "";
-  display: inline-block;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--nav-drop-dot);
-  flex-shrink: 0;
-}
 
 .nav-toggle { display: none; appearance: none; background: none; border: none; cursor: pointer; width: 44px; height: 44px; position: relative; padding: 0; }
 .nav-toggle > span { display: block; position: absolute; left: 8px; width: 28px; height: 1.5px; background: var(--nav-fg); transition: transform 280ms ease, opacity 180ms ease; }
@@ -935,29 +926,22 @@ html.lang-jp .now-invite-title {
       <li class="nav-item has-sub">
         <a href="../work.html" class="nav-link is-active">Work</a>
         <div class="nav-sub">
-          <a href="../work/index.html" class="nav-sub-link">All Work</a>
-          <a href="../work.html" class="nav-sub-link is-active" aria-current="page">Product &amp; Experience Design</a>
-          <a href="../brand.html" class="nav-sub-link">Brand &amp; Creative</a>
+          <a href="../work/index.html" class="nav-sub-link is-active" aria-current="page">All Work</a>
+          <a href="../work.html" class="nav-sub-link">Product &amp; Experience Design</a>
           <a href="../ai-products.html" class="nav-sub-link">AI Products &amp; Systems</a>
-        </div>
-      </li>
-      <li class="nav-item has-sub">
-        <a href="../now.html" class="nav-link">Now</a>
-        <div class="nav-sub">
-          <a href="../now.html" class="nav-sub-link">What I’m Working On</a>
-          <a href="../now.html#ventures" class="nav-sub-link">Active Ventures</a>
-          <a href="../interactive.html" class="nav-sub-link">Interactive &amp; Playable</a>
           <a href="../ai-tools.html" class="nav-sub-link">AI Tools</a>
+          <a href="../interactive.html" class="nav-sub-link">Interactive &amp; Playable</a>
+          <a href="../brand.html" class="nav-sub-link">Brand &amp; Creative</a>
         </div>
       </li>
-      <li class="nav-item has-sub">
-        <a href="../publications.html" class="nav-link">Ideas</a>
-        <div class="nav-sub">
-          <a href="../publications.html" class="nav-sub-link">Publications</a>
-          <a href="../breakbias.html" class="nav-sub-link">Break Bias</a>
-          <a href="../workshop.html" class="nav-sub-link">Workshops</a>
-          <a href="../intentfirst.html" class="nav-sub-link">Intent First</a>
-        </div>
+      <li class="nav-item">
+        <a href="../now.html" class="nav-link">Now</a>
+      </li>
+      <li class="nav-item">
+        <a href="../publications.html" class="nav-link">Writing</a>
+      </li>
+      <li class="nav-item">
+        <a href="../workshop.html" class="nav-link">Workshops</a>
       </li>
       <li class="nav-item is-tierbreak">
         <a href="../about.html" class="nav-link">About</a>
@@ -980,36 +964,32 @@ html.lang-jp .now-invite-title {
           <span><span class="t-en">All</span><span class="t-jp">すべて</span></span>
           <span class="filter-count">46</span>
         </button>
-        <button type="button" class="filter-btn" data-filter="zero-to-one">
-          <span><span class="t-en">0→1</span><span class="t-jp">0→1</span></span>
-          <span class="filter-count">37</span>
+        <button type="button" class="filter-btn" data-filter="product">
+          <span><span class="t-en">Product Design</span><span class="t-jp">プロダクト</span></span>
+          <span class="filter-count">13</span>
         </button>
-        <button type="button" class="filter-btn" data-filter="ai">
-          <span><span class="t-en">AI</span><span class="t-jp">AI</span></span>
-          <span class="filter-count">15</span>
+        <button type="button" class="filter-btn" data-filter="ai-products">
+          <span><span class="t-en">AI Products</span><span class="t-jp">AI プロダクト</span></span>
+          <span class="filter-count">6</span>
+        </button>
+        <button type="button" class="filter-btn" data-filter="ai-tools">
+          <span><span class="t-en">AI Tools</span><span class="t-jp">AI ツール</span></span>
+          <span class="filter-count">7</span>
         </button>
         <button type="button" class="filter-btn" data-filter="interactive">
-          <span><span class="t-en">Interactive</span><span class="t-jp">インタラクティブ</span></span>
-          <span class="filter-count">21</span>
-        </button>
-        <button type="button" class="filter-btn" data-filter="product">
-          <span><span class="t-en">Product</span><span class="t-jp">プロダクト</span></span>
-          <span class="filter-count">25</span>
+          <span><span class="t-en">Interactive &amp; Playable</span><span class="t-jp">インタラクティブ</span></span>
+          <span class="filter-count">9</span>
         </button>
         <button type="button" class="filter-btn" data-filter="brand">
-          <span><span class="t-en">Brand</span><span class="t-jp">ブランド</span></span>
-          <span class="filter-count">15</span>
-        </button>
-        <button type="button" class="filter-btn" data-filter="learning">
-          <span><span class="t-en">Learning</span><span class="t-jp">教育・学習</span></span>
-          <span class="filter-count">9</span>
+          <span><span class="t-en">Brand &amp; Creative</span><span class="t-jp">ブランド</span></span>
+          <span class="filter-count">12</span>
         </button>
       </div>
       <p class="cat-count"><span id="archive-count">46</span><span class="t-en"> projects</span><span class="t-jp"> 件</span></p>
     </header>
 
     <div class="cat-grid">
-        <article class="cat-card" data-tags="all zero-to-one ai interactive product" tabindex="0" data-href="../projects/amazon-firetv.html">
+        <article class="cat-card" data-tags="all ai-products" tabindex="0" data-href="../projects/amazon-firetv.html">
           <div class="cat-card-media"><img src="../assets/thumbs/amazon-firetv.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Case Study</span><span class="t-jp">ケーススタディ</span></span></p>
@@ -1019,7 +999,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/amazon-firetv.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product learning" tabindex="0" data-href="../projects/carnegie.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/carnegie.html">
           <div class="cat-card-media"><img src="../assets/thumbs/carnegie.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1029,7 +1009,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/carnegie.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product" tabindex="0" data-href="../projects/cli-studios.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/cli-studios.html">
           <div class="cat-card-media"><img src="../assets/thumbs/cli-studios.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1039,7 +1019,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/cli-studios.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all product brand" tabindex="0" data-href="../projects/coca-cola.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/coca-cola.html">
           <div class="cat-card-media"><img src="../assets/thumbs/coca-cola.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1069,7 +1049,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/dnt.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product learning" tabindex="0" data-href="../projects/edutrack.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/edutrack.html">
           <div class="cat-card-media"><img src="../assets/thumbs/edutrack.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1079,7 +1059,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/edutrack.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive product brand learning" tabindex="0" data-href="../projects/ela-quests.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/ela-quests.html">
           <div class="cat-card-media"><img src="../assets/thumbs/ela-quests.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1089,7 +1069,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/ela-quests.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one brand learning" tabindex="0" data-href="../projects/extraordinary.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/extraordinary.html">
           <div class="cat-card-media"><img src="../assets/thumbs/extraordinary.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1099,7 +1079,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/extraordinary.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive product brand" tabindex="0" data-href="../projects/festival-design.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/festival-design.html">
           <div class="cat-card-media"><img src="../assets/thumbs/festival-design.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1109,7 +1089,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/festival-design.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product brand" tabindex="0" data-href="../projects/graffitiwear.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/graffitiwear.html">
           <div class="cat-card-media"><img src="../assets/thumbs/graffitiwear.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1119,7 +1099,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/graffitiwear.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product" tabindex="0" data-href="../projects/hummingbird.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/hummingbird.html">
           <div class="cat-card-media"><img src="../assets/thumbs/hummingbird.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1129,7 +1109,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/hummingbird.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive brand">
+        <article class="cat-card" data-tags="all interactive">
           <div class="cat-card-media"><div class="card-art card-art--motion"><span class="card-art-label">Kanji Puzzle</span></div></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Handwriting</span><span class="t-jp">手描き</span></span><span class="pill pill--status"><span class="t-en">Shipped</span><span class="t-jp">リリース済み</span></span></p>
@@ -1149,7 +1129,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/kitadoko.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product brand" tabindex="0" data-href="../projects/koji-fizz.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/koji-fizz.html">
           <div class="cat-card-media"><img src="../assets/thumbs/koji-fizz.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1159,7 +1139,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/koji-fizz.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all ai interactive product brand" tabindex="0" data-href="../projects/konosaki.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/konosaki.html">
           <div class="cat-card-media"><img src="../assets/thumbs/konosaki.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1169,7 +1149,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/konosaki.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product brand learning" tabindex="0" data-href="../projects/menlomath.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/menlomath.html">
           <div class="cat-card-media"><img src="../assets/thumbs/menlomath.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1179,7 +1159,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/menlomath.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all product brand learning" tabindex="0" data-href="../projects/odell-education.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/odell-education.html">
           <div class="cat-card-media"><img src="../assets/thumbs/odell-education.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1189,7 +1169,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/odell-education.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one brand" tabindex="0" data-href="../projects/skateboard-egift.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/skateboard-egift.html">
           <div class="cat-card-media"><img src="../assets/thumbs/skateboard-egift.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1199,7 +1179,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/skateboard-egift.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all ai product" tabindex="0" data-href="../projects/tmobile.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/tmobile.html">
           <div class="cat-card-media"><img src="../assets/thumbs/tmobile.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1229,7 +1209,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/value-frontier.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive product" tabindex="0" data-href="../projects/verizon-ai-agents.html">
+        <article class="cat-card" data-tags="all product ai-products" tabindex="0" data-href="../projects/verizon-ai-agents.html">
           <div class="cat-card-media"><img src="../assets/thumbs/verizon-ai-agents.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Case Study</span><span class="t-jp">ケーススタディ</span></span></p>
@@ -1239,7 +1219,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/verizon-ai-agents.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product" tabindex="0" data-href="../projects/verizon-totalwireless.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/verizon-totalwireless.html">
           <div class="cat-card-media"><img src="../assets/thumbs/verizon-totalwireless.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1249,7 +1229,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/verizon-totalwireless.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product learning" tabindex="0" data-href="../projects/vocab-app.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/vocab-app.html">
           <div class="cat-card-media"><img src="../assets/thumbs/vocab-app.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1259,7 +1239,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/vocab-app.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product" tabindex="0" data-href="../projects/web3-wallet.html">
+        <article class="cat-card" data-tags="all product" tabindex="0" data-href="../projects/web3-wallet.html">
           <div class="cat-card-media"><img src="../assets/thumbs/web3-wallet.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1269,7 +1249,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/web3-wallet.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product brand learning" tabindex="0" data-href="../projects/xq.html">
+        <article class="cat-card" data-tags="all brand" tabindex="0" data-href="../projects/xq.html">
           <div class="cat-card-media"><img src="../assets/thumbs/xq.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"></span></p>
@@ -1279,7 +1259,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/xq.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one product" tabindex="0" data-href="../breakbias.html">
+        <article class="cat-card" data-tags="all ai-products" tabindex="0" data-href="../breakbias.html">
           <div class="cat-card-media"><div class="card-art card-art--bias"><span class="card-art-label">BreakBias</span></div></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Active</span><span class="t-jp">進行中</span></span></p>
@@ -1289,7 +1269,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../breakbias.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai product" tabindex="0" data-href="../intentfirst.html">
+        <article class="cat-card" data-tags="all ai-products" tabindex="0" data-href="../intentfirst.html">
           <div class="cat-card-media"><div class="card-art card-art--intent"><span class="card-art-label">intentfirst.ai</span></div></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Active</span><span class="t-jp">進行中</span></span></p>
@@ -1299,7 +1279,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../intentfirst.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai product">
+        <article class="cat-card" data-tags="all ai-products">
           <div class="cat-card-media"><div class="card-art card-art--insta"><span class="card-art-label">Moime.app / Elegant link-in-bio</span></div></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Prototype</span><span class="t-jp">プロトタイプ</span></span></p>
@@ -1309,7 +1289,7 @@ html.lang-jp .now-invite-title {
             
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai product">
+        <article class="cat-card" data-tags="all ai-products">
           <div class="cat-card-media"><div class="card-art card-art--brain"><span class="card-art-label">My Brain Spec / Personalized self-check</span></div></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Validating</span><span class="t-jp">検証中</span></span></p>
@@ -1319,7 +1299,7 @@ html.lang-jp .now-invite-title {
             
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive" tabindex="0" data-href="https://emojiblast.creativityiseverywhere.com/" data-external="true">
+        <article class="cat-card" data-tags="all interactive" tabindex="0" data-href="https://emojiblast.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><img src="../assets/emoji-blast/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../assets/emoji-blast/preview.webm" type="video/webm"><source src="../assets/emoji-blast/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2 台のスマホ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
@@ -1329,7 +1309,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="https://emojiblast.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive" tabindex="0" data-href="http://kaogame.creativityiseverywhere.com/" data-external="true">
+        <article class="cat-card" data-tags="all interactive" tabindex="0" data-href="http://kaogame.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><div class="card-art card-art--kao"><span class="card-art-label">Kao Game 顔ゲーム</span></div></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Face</span><span class="t-jp">表情</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
@@ -1339,7 +1319,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="http://kaogame.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive" tabindex="0" data-href="../projects/koe-baku.html">
+        <article class="cat-card" data-tags="all interactive" tabindex="0" data-href="../projects/koe-baku.html">
           <div class="cat-card-media"><img src="../assets/koebaku/hero.jpg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Voice</span><span class="t-jp">声</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
@@ -1349,7 +1329,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/koe-baku.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive" tabindex="0" data-href="http://marubatsu20.creativityiseverywhere.com/" data-external="true">
+        <article class="cat-card" data-tags="all interactive" tabindex="0" data-href="http://marubatsu20.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><img src="../assets/marubatsu/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../assets/marubatsu/preview.webm" type="video/webm"><source src="../assets/marubatsu/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Two phones</span><span class="t-jp">2 台のスマホ</span></span><span class="pill pill--status"><span class="t-en">Shipped</span><span class="t-jp">リリース済み</span></span></p>
@@ -1359,7 +1339,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="http://marubatsu20.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive learning" tabindex="0" data-href="https://rakugakijam.creativityiseverywhere.com/" data-external="true">
+        <article class="cat-card" data-tags="all interactive" tabindex="0" data-href="https://rakugakijam.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><img src="../assets/rakugaki-jam/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../assets/rakugaki-jam/preview.webm" type="video/webm"><source src="../assets/rakugaki-jam/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Handwriting</span><span class="t-jp">手描き</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
@@ -1369,7 +1349,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="https://rakugakijam.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive" tabindex="0" data-href="https://resonamotion.com/" data-external="true">
+        <article class="cat-card" data-tags="all interactive" tabindex="0" data-href="https://resonamotion.com/" data-external="true">
           <div class="cat-card-media"><img src="../assets/resona/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../assets/resona/preview.webm" type="video/webm"><source src="../assets/resona/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Pointer</span><span class="t-jp">ポインタ</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
@@ -1379,7 +1359,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="https://resonamotion.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive" tabindex="0" data-href="http://typespace.creativityiseverywhere.com/" data-external="true">
+        <article class="cat-card" data-tags="all interactive" tabindex="0" data-href="http://typespace.creativityiseverywhere.com/" data-external="true">
           <div class="cat-card-media"><img src="../assets/typespace/thumb.jpg" alt="" loading="lazy"><video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true"><source src="../assets/typespace/preview.webm" type="video/webm"><source src="../assets/typespace/preview.mp4" type="video/mp4"></video></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Typing</span><span class="t-jp">タイピング</span></span><span class="pill pill--status"><span class="t-en">Live</span><span class="t-jp">公開中</span></span></p>
@@ -1389,7 +1369,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="http://typespace.creativityiseverywhere.com/" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one interactive" tabindex="0" data-href="../projects/werewolf.html">
+        <article class="cat-card" data-tags="all interactive" tabindex="0" data-href="../projects/werewolf.html">
           <div class="cat-card-media"><img src="../assets/werewolf/ghost-wolf.png" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--in"><span class="t-en">Every phone</span><span class="t-jp">その場の全端末</span></span><span class="pill pill--status"><span class="t-en">In progress</span><span class="t-jp">制作中</span></span></p>
@@ -1399,7 +1379,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/werewolf.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive" tabindex="0" data-href="../projects/cross-model-handoff.html">
+        <article class="cat-card" data-tags="all ai-tools" tabindex="0" data-href="../projects/cross-model-handoff.html">
           <div class="cat-card-media"><img src="../assets/ai-tools/cross-model-handoff.svg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Released</span><span class="t-jp">公開済み</span></span></p>
@@ -1409,7 +1389,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/cross-model-handoff.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive" tabindex="0" data-href="../projects/failforward.html">
+        <article class="cat-card" data-tags="all ai-tools" tabindex="0" data-href="../projects/failforward.html">
           <div class="cat-card-media"><img src="../assets/ai-tools/failforward.svg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Released</span><span class="t-jp">公開済み</span></span></p>
@@ -1419,7 +1399,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/failforward.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive" tabindex="0" data-href="../projects/interactive-experience-skills.html">
+        <article class="cat-card" data-tags="all ai-tools" tabindex="0" data-href="../projects/interactive-experience-skills.html">
           <div class="cat-card-media"><img src="../assets/ai-tools/interactive-experience-skills.svg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Released</span><span class="t-jp">公開済み</span></span></p>
@@ -1429,7 +1409,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/interactive-experience-skills.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive" tabindex="0" data-href="../projects/intuitive-game-design.html">
+        <article class="cat-card" data-tags="all ai-tools" tabindex="0" data-href="../projects/intuitive-game-design.html">
           <div class="cat-card-media"><img src="../assets/ai-tools/intuitive-game-design.svg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Released</span><span class="t-jp">公開済み</span></span></p>
@@ -1439,7 +1419,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/intuitive-game-design.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive" tabindex="0" data-href="../projects/multilingual-readme.html">
+        <article class="cat-card" data-tags="all ai-tools" tabindex="0" data-href="../projects/multilingual-readme.html">
           <div class="cat-card-media"><img src="../assets/ai-tools/multilingual-readme.svg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Released</span><span class="t-jp">公開済み</span></span></p>
@@ -1449,7 +1429,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/multilingual-readme.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive" tabindex="0" data-href="../projects/snap-pair.html">
+        <article class="cat-card" data-tags="all ai-tools" tabindex="0" data-href="../projects/snap-pair.html">
           <div class="cat-card-media"><img src="../assets/ai-tools/snap-pair.svg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Released</span><span class="t-jp">公開済み</span></span></p>
@@ -1459,7 +1439,7 @@ html.lang-jp .now-invite-title {
             <a class="cat-card-cta" href="../projects/snap-pair.html"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>
           </div>
         </article>
-        <article class="cat-card" data-tags="all zero-to-one ai interactive" tabindex="0" data-href="../projects/superforge.html">
+        <article class="cat-card" data-tags="all ai-tools" tabindex="0" data-href="../projects/superforge.html">
           <div class="cat-card-media"><img src="../assets/ai-tools/superforge.svg" alt="" loading="lazy"></div>
           <div class="cat-card-body">
             <p class="chips"><span class="pill pill--status"><span class="t-en">Released</span><span class="t-jp">公開済み</span></span></p>

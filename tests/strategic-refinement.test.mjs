@@ -8,7 +8,7 @@ import { loadLibrary, ROOT } from "../src/lib/load.mjs";
 const read = (path) => readFileSync(join(ROOT, path), "utf8");
 const lib = loadLibrary();
 
-test("Work archive (/work/index.html) is generated from lib.evidence with 7 filter tabs", () => {
+test("Work archive (/work/index.html) is generated from lib.evidence with 6 canonical discipline filter tabs", () => {
   assert.ok(existsSync(join(ROOT, "work/index.html")), "work/index.html must exist");
   const html = read("work/index.html");
 
@@ -17,7 +17,7 @@ test("Work archive (/work/index.html) is generated from lib.evidence with 7 filt
   assert.equal(cards.length, lib.evidence.size, "all evidence items must be rendered");
 
   // Filter tabs must exist
-  const expectedFilters = ["all", "zero-to-one", "ai", "interactive", "product", "brand", "learning"];
+  const expectedFilters = ["all", "product", "ai-products", "ai-tools", "interactive", "brand"];
   for (const f of expectedFilters) {
     assert.match(html, new RegExp(`data-filter="${f}"`), `Filter tab ${f} must exist`);
   }

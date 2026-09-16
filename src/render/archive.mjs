@@ -28,84 +28,41 @@ const cardName = (item) => {
     : esc(name);
 };
 
+const PRODUCT_SLUGS = new Set([
+  "verizon-ai-workflow", "verizon-totalwireless", "tmobile", "cli-studios",
+  "web3-wallet", "credit-card-portal", "hummingbird", "ux-audit",
+  "ela-quests", "menlomath", "vocab-app", "edutrack", "carnegie",
+]);
+
+const AI_PRODUCT_SLUGS = new Set([
+  "intentfirst", "mybrainspec", "moime", "verizon-ai-workflow", "amazon-firetv", "breakbias",
+]);
+
+const AI_TOOL_SLUGS = new Set([
+  "superforge", "snap-pair", "interactive-experience-skills", "intuitive-game-design",
+  "cross-model-handoff", "failforward", "multilingual-readme",
+]);
+
+const INTERACTIVE_SLUGS = new Set([
+  "resona", "kao-game", "rakugaki-jam", "typespace", "koe-baku",
+  "emoji-blast", "marubatsu", "werewolf", "kanji-puzzle",
+]);
+
+const BRAND_SLUGS = new Set([
+  "coca-cola", "value-frontier", "odell-education", "konosaki", "dnt",
+  "kitadoko", "festival-reinvention", "xq", "extraordinary", "koji-fizz",
+  "graffitiwear", "skateboard-egift",
+]);
+
 export function getFilterTags(item) {
   const tags = new Set(["all"]);
-  const caps = new Set((item.capabilities || []).map((c) => c.id));
   const slug = item.slug;
 
-  // 0→1
-  if (
-    caps.has("zero-to-one") || caps.has("new-ventures") || caps.has("prototyping") ||
-    item.kind === "venture" ||
-    [
-      "intentfirst", "mybrainspec", "moime", "resona", "kao-game", "rakugaki-jam",
-      "typespace", "koe-baku", "emoji-blast", "marubatsu", "werewolf", "superforge",
-      "snap-pair", "koji-fizz", "festival-reinvention", "graffitiwear", "skateboard-egift",
-      "cli-studios", "web3-wallet", "hummingbird", "ela-quests",
-    ].includes(slug)
-  ) {
-    tags.add("zero-to-one");
-  }
-
-  // AI
-  if (
-    caps.has("ai") || caps.has("agentic-ux") ||
-    item.kind === "tool" ||
-    [
-      "intentfirst", "mybrainspec", "moime", "verizon-ai-workflow", "amazon-firetv",
-      "superforge", "snap-pair", "interactive-experience-skills", "intuitive-game-design",
-      "cross-model-handoff", "failforward", "multilingual-readme",
-    ].includes(slug)
-  ) {
-    tags.add("ai");
-  }
-
-  // Interactive
-  if (
-    caps.has("interactive") || caps.has("creative-technology") ||
-    item.kind === "experiment" ||
-    [
-      "resona", "kao-game", "rakugaki-jam", "typespace", "koe-baku",
-      "emoji-blast", "marubatsu", "werewolf", "snap-pair",
-    ].includes(slug)
-  ) {
-    tags.add("interactive");
-  }
-
-  // Product
-  if (
-    caps.has("ux-cx") || caps.has("product-strategy") || caps.has("design-systems") ||
-    caps.has("enterprise") || caps.has("b2b") || caps.has("b2c") ||
-    [
-      "verizon-ai-workflow", "verizon-totalwireless", "tmobile", "cli-studios",
-      "web3-wallet", "credit-card-portal", "hummingbird", "ux-audit", "amazon-firetv",
-      "intentfirst", "mybrainspec", "moime", "ela-quests", "menlomath", "vocab-app",
-      "edutrack", "carnegie",
-    ].includes(slug)
-  ) {
-    tags.add("product");
-  }
-
-  // Brand
-  if (
-    caps.has("brand") || caps.has("creative-direction") || caps.has("storytelling") || caps.has("film-production") ||
-    [
-      "coca-cola", "value-frontier", "odell-education", "konosaki", "dnt", "kitadoko",
-      "festival-reinvention", "xq", "extraordinary", "koji-fizz", "graffitiwear", "skateboard-egift",
-    ].includes(slug)
-  ) {
-    tags.add("brand");
-  }
-
-  // Learning
-  if (
-    [
-      "ela-quests", "menlomath", "vocab-app", "edutrack", "carnegie",
-      "odell-education", "xq", "extraordinary", "rakugaki-jam",
-    ].includes(slug)
-  ) {
-    tags.add("learning");
-  }
+  if (PRODUCT_SLUGS.has(slug)) tags.add("product");
+  if (AI_PRODUCT_SLUGS.has(slug)) tags.add("ai-products");
+  if (AI_TOOL_SLUGS.has(slug)) tags.add("ai-tools");
+  if (INTERACTIVE_SLUGS.has(slug)) tags.add("interactive");
+  if (BRAND_SLUGS.has(slug)) tags.add("brand");
 
   return [...tags];
 }
@@ -138,12 +95,11 @@ function archiveCard(item, ctx) {
 
 const FILTERS = [
   { id: "all", label: { en: "All", jp: "すべて" } },
-  { id: "zero-to-one", label: { en: "0→1", jp: "0→1" } },
-  { id: "ai", label: { en: "AI", jp: "AI" } },
-  { id: "interactive", label: { en: "Interactive", jp: "インタラクティブ" } },
-  { id: "product", label: { en: "Product", jp: "プロダクト" } },
-  { id: "brand", label: { en: "Brand", jp: "ブランド" } },
-  { id: "learning", label: { en: "Learning", jp: "教育・学習" } },
+  { id: "product", label: { en: "Product Design", jp: "プロダクト" } },
+  { id: "ai-products", label: { en: "AI Products", jp: "AI プロダクト" } },
+  { id: "ai-tools", label: { en: "AI Tools", jp: "AI ツール" } },
+  { id: "interactive", label: { en: "Interactive & Playable", jp: "インタラクティブ" } },
+  { id: "brand", label: { en: "Brand & Creative", jp: "ブランド" } },
 ];
 
 export function renderWorkArchive({ lib, css, ctx }) {
@@ -174,7 +130,7 @@ export function renderWorkArchive({ lib, css, ctx }) {
 <html lang="en" data-category="work-archive">
 ${head({ lens: seo, ctx: pageCtx, css })}
 <body>
-${nav(pageCtx, "work.html")}
+${nav(pageCtx, "work/index.html")}
   <main class="cat-page">
     <header class="cat-head">
       <h1 class="cat-title"><span class="t-en">Work Archive</span><span class="t-jp">制作・開発アーカイブ</span></h1>
