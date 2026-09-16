@@ -9,7 +9,7 @@ Handoff: `.handoff/2026-09-16-adaptive-pitch-phase2.md`
 Passphrase: 「Direct は与えるものではなく、稼ぐもの」
 Goal: 求人票を読んで、証拠ライブラリから 3〜5 件を選び、企業専用 Lens の下書きと
   「何が合い・何が無いか」のレポートを出す。LLM を呼ばず、規則と語彙表だけで。
-State: **Phase 2 ＋ 3a（Fit Ledger）＋ 3b（Studio、GitHub publish）完了。** `npm test` 118/118、Studio の Chromium テスト 1/1。ブランチ `claude/peaceful-rubin-j7wsvg`、PR #17。
+State: **Phase 2 ＋ 3a（Fit Ledger）＋ 3b（Studio、GitHub publish）＋ 3c（公開デモ `/try/`）完了。3d（配布）は未着手。** `npm test` 118/118、Studio の Chromium テスト 1/1。ブランチ `claude/peaceful-rubin-j7wsvg`、PR #17。
   計画の全体（3b Studio＋GitHub ログイン publish、3c 公開デモ、3d 配布）は
   `/root/.claude/plans/glowing-roaming-nebula.md` に書いた内容を §16 に写す予定（次のセッション）。
   `src/lenses/stripe.json` は draft（未公開）。`lens/stripe/index.html` は無い。

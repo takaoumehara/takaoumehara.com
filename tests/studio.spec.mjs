@@ -29,3 +29,21 @@ test.describe("Studio", () => {
     expect(errors, errors.join("\n")).toEqual([]);
   });
 });
+
+test.describe("Try it (public demo)", () => {
+  test("a visitor pastes a posting and sees the arranged page, with the note saying who arranged it", async ({ page }) => {
+    const errors = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    await page.goto("/try/", { waitUntil: "load" });
+    await expect(page.locator("#status")).toContainText("Paste a posting", { timeout: 15000 });
+    await page.click("#sample");
+    await page.click("#analyze");
+    await expect(page.locator("#result")).toBeVisible();
+    await expect(page.locator("#note")).toContainText("Stripe");
+    const frame = page.frameLocator("#preview");
+    await expect(frame.locator("#proof .proof-card")).toHaveCount(5, { timeout: 10000 });
+    await expect(frame.locator(".hero-note")).toContainText("Arranged from the posting you pasted");
+    await expect(frame.locator(".lens-note")).toContainText("pasted by the visitor");
+    expect(errors, errors.join("\n")).toEqual([]);
+  });
+});

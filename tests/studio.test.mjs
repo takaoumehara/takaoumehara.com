@@ -199,7 +199,9 @@ test("the Studio is noindex, off the nav, and every module it imports is browser
     }
   };
   walk(join(ROOT, "studio", "studio.mjs"));
+  walk(join(ROOT, "try", "try.mjs"));
   assert.ok(seen.size >= 10, `walked ${seen.size} modules`);
+  assert.ok(!/robots" content="noindex/.test(readFileSync(join(ROOT, "try", "index.html"), "utf8")), "the public demo is meant to be found");
   for (const f of ["src/analyze/jd.mjs", "src/analyze/draft.mjs", "src/render/page.mjs", "src/validate.mjs", "src/lib/library.mjs"]) assert.ok(seen.has(join(ROOT, f)), `${f} is in the graph`);
 });
 
