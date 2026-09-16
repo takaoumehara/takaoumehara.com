@@ -580,3 +580,88 @@ Phase 1 の直後に見つかった 2 つの欠陥と、その対処。
 4. §13 の「言語スイッチを out-specify してはならない」は `lens.css` だけの話ではない。
    `assets/*.css` で同じ欠陥を再発させたので、テストの走査範囲を広げた。
    **`display` を指定する子孫 `span` セレクタは `.t-en` / `.t-jp` に届く。** `> span` を使う。
+
+## 16. Phase 2 — Adaptive Pitch Engine（2026-09-16）
+
+求人票（JD）を読み、証拠ライブラリから最も合う実績を選び、その企業専用の Lens の
+**下書き**を書く。`scripts/generate-pitch.mjs`。§8 の図がそのまま実装になった。
+
+```
+node scripts/generate-pitch.mjs --url "https://…/jobs/123"                # URL から
+node scripts/generate-pitch.mjs --company "Stripe" --jd path/to/jd.txt     # ファイルから
+node scripts/generate-pitch.mjs --company "Stripe"                         # 貼り付け（Ctrl-D で確定）
+```
+
+出力は 4 つ。`src/lenses/<slug>.json`（status: draft）、`src/pitches/<slug>/report.md`
+（何が合い、何が合わず、何を埋めるべきか）、同 `analysis.json`、同 `jd.txt`。
+
+### 16.1 ブリーフからの変更点（検証して直したところ）
+
+| ブリーフ | 実装 | 理由 |
+|---|---|---|
+| 「JD 解析（LLM）」 | **LLM を呼ばない。** 語彙表（`src/analyze/lexicon.json`）と規則だけ | 同じ JD から常に同じ結果が出る。API キー不要で他人も使える。`docs/gemini-studio-salvage-review.md` §4 の教訓 — LLM の自由文は検証ではなく「お願い」でしか縛れない — を、そもそも自由文を書かせないことで塞いだ |
+| `angles` を「企業向けに上書き」 | Lens は **承認済み angle を選ぶだけ**。`summaryOverride` は生成しない | §4 の原則。上書きは Claim Guard の対象になるが、そもそも生成器に事実文を書かせない |
+| `lensNote` に企業名と重点領域 | `lensNote` が `boolean | Localized` になった。文字列なら Claim Guard を通る | 既存の 2 lens は従来どおり定型文 |
+| `tailoredResume` | Lens JSON に持つが**描画しない**。`highlights[].line` は `contribution.mine` の逐語。validator が Claim Guard / NotMine Guard を当てる | 履歴書に貼る文章もページと同じ基準 |
+| カードに「役割・成果タグ」 | **役割フラグ 1 つ**（`contribution.level` + `teamSize` → "Led · team of 6"）。成果は既存の metric 行 | 成功基準 D「カードに tag 一覧を並べない」。空ピルは `1a7b109` で修正済み |
+| 「27 能力・27 実績」 | 実際は 28 能力・46 実績（projects 26 · ventures 4 · experiments 8 · tools 8） | 数え直し |
+| 「70 件のテスト」 | 70 → **99**（`tests/pitch-engine.test.mjs` 29 件を追加） | |
+
+### 16.2 採用側の 2 つの読み方に対して、何を出すか
+
+| 読者 | 時間 | ページで見えるもの | 出どころ |
+|---|---|---|---|
+| 人事・リクルーター | 10〜30 秒 | eyebrow（職種名 · 企業名）、先頭カードの emphasis（"Direct evidence · UX / CX · Enterprise"）、役割フラグ（"Led"）、数字 2 つ | JD の職種名、`capabilities[].strength`、`contribution.level`、`metrics`（unverified は出ない） |
+| 現場の責任者 | 2〜5 分 | 承認済み angle の本文、「自分がしたこと · チームがしたこと」、ケーススタディの制約 | `angles`、`contribution.mine / team`、`narrative.constraints` |
+| 本人（公開前） | — | `report.md` の「採用側が聞くが記録が答えられないこと」「JD が求めるが記録に無いもの」 | `scripts/audit-evidence.mjs` の質問と `capabilityCoverage()` |
+
+**"Direct" は与えるものではなく、稼ぐもの。** 求人の重い上位 5 能力のうち 2 つ以上に
+`strong` の証拠があるとき（または最重要 1 つ＋同じ業界のとき）だけ。それ以外は
+"Transferable" とカードに書く。決済会社の求人に学校祭が "Direct" と出た初回の結果を見て、
+この規則にした。
+
+### 16.3 選び方（規則。全部読める）
+
+1. **JD → 能力の重み**: 語彙表の句が、JD のどの節にあるかで重みを変えて数える
+   （Requirements ×1.5 / Responsibilities ×1.25 / Preferred ×1.0 / 会社紹介・待遇 ×0.4）。
+   1 つの能力の中では**最も強い句を満額、残りを半額**で足す —「build / ship / code」の
+   羅列が「design system」の明示に勝たないように。
+2. **実績のスコア**: Σ 重み × 強度（strong 1 / moderate .55 / adjacent .2）に、
+   種別（project 1 / venture .85 / tool・experiment .6）、契約形態（concept .8）、
+   使える指標の数、ケーススタディの有無、直近か、**同じ業界か（×1.3）** を掛ける。
+3. **3〜5 件を選ぶ**: 貪欲法。重い上位 6 能力について、すでに選んだカードが証明済みの
+   分だけ割り引く。**上位能力に strong が 1 つも無い実績は「全部重複」と同じ扱い** —
+   これが無いと、クリエイティブディレクター求人で Coca-Cola より Verizon AI が先に出た。
+4. **angle**: JD の主題（`lexicon.themes`）ごとに angle の優先順が決まっている。
+   実績が持っていなければ `cardLine` に落ちる。
+5. **指標**: `stated` → `approximate` の順に 2 つ。`unverified` は候補にすら入らない。
+
+### 16.4 記録の空欄（`docs/evidence-gaps.md`）
+
+採用側が必ず聞くのに、記録が答えられない項目を `scripts/audit-evidence.mjs` が洗い出す。
+答えを入れる先として型を 3 つ足した（`src/schema.d.ts`）。
+
+| フィールド | 値 | 意味 |
+|---|---|---|
+| `contribution.level` | `solo / led / co-led / contributor / advised` | どこまで自分がやったか。カードにフラグとして出る |
+| `contribution.teamSize` | 整数 | 中心になって動いた人数。不明なら書かない |
+| `outcome` | `{ status: measured / reported / shipped / unknown, note }` | 数字が無い実績の「その後」。**`unknown` は正当な値** — 推測した数字より強い |
+| `narrative.decisions` | `[{ decision, why, tradeoff }]` | 判断とその理由。現場の責任者が見るのはここ |
+
+今回埋めたのは、記録に文字どおり書いてあるものだけ（役職が "Solo"、`team` が空の
+experiment / tool / venture → `solo`。Festival の chair と KOJI FIZZ の「クライアント側を
+自分が回した」→ `led`）。残り 31 件の空欄は本人が埋める。**埋めないという選択も正しい** —
+無い数字は無いまま、`unknown` と書く。
+
+### 16.5 触っていないもの・できなかったもの
+
+- 既存 3 lens の JSON、既存の証拠の事実、`index.html` の構成 — 変更なし
+  （役割フラグが出るようになった分だけ生成 HTML は差分がある）。
+- `--url` の**実サイトでの取得は未検証**（作業環境から外向き通信が塞がれていた）。
+  ローカル HTTP サーバーと、schema.org `JobPosting` を埋め込んだ HTML でテストした。
+  JS で描画される求人ページは読めないので、その場合は本文だけ貼り付ける（コマンドが案内する）。
+- サンプルの JD 3 本（`src/pitches/samples/`）は**この実装のために書いた例文**で、
+  実在の求人票の転載ではない。
+- 生成した `src/lenses/stripe.json` は draft のまま。`lens/stripe/index.html` は
+  コミットしていない（公開は本人が `status: "published"` にして build する。原則 17）。
+  プレビューは `node src/build.mjs --preview` → `lens/_preview/stripe/index.html`（git 管理外）。

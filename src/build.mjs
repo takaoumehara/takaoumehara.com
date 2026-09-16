@@ -3,6 +3,7 @@
 //
 //   node src/build.mjs            write the pages
 //   node src/build.mjs --check    validate only, write nothing
+//   node src/build.mjs --preview  also render draft lenses to lens/_preview/<slug>/ (git-ignored, not deployed)
 //
 // The default lens renders to /index.html. Every other published lens renders
 // to /lens/<slug>/index.html, which Vercel serves at /lens/<slug>. Draft lenses
@@ -21,9 +22,10 @@ export const SITE_URL = "https://takaoumehara.com";
 export function outputPath(lens) {
   return lens.slug === "default" ? "index.html" : `lens/${lens.slug}/index.html`;
 }
+export const previewPath = (lens) => `lens/_preview/${lens.slug}/index.html`;
 
 /** Render every published lens. Returns Map<relativePath, html>. Throws on validation errors. */
-export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categories = loadCategories() } = {}) {
+export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categories = loadCategories(), preview = false } = {}) {
   const errors = validateAll(lib, lenses, { assetExists: (path) => existsSync(join(ROOT, path)) }, categories);
   if (errors.length) {
     const error = new Error(`Validation failed (${errors.length}):\n  - ${errors.join("\n  - ")}`);
@@ -33,8 +35,8 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
   const css = readFileSync(join(ROOT, "src", "render", "lens.css"), "utf8");
   const pages = new Map();
   for (const lens of lenses) {
-    if (lens.status !== "published") continue;
-    const path = outputPath(lens);
+    if (lens.status !== "published" && !preview) continue;
+    const path = lens.status === "published" ? outputPath(lens) : previewPath(lens);
     const depth = path.split("/").length - 1;
     const ctx = {
       base: "../".repeat(depth),
@@ -82,9 +84,10 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
 
 function main() {
   const checkOnly = process.argv.includes("--check");
+  const preview = process.argv.includes("--preview");
   let pages;
   try {
-    pages = renderAll();
+    pages = renderAll({ preview });
   } catch (error) {
     console.error(error.message);
     process.exit(1);

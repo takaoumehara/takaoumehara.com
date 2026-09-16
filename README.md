@@ -14,6 +14,8 @@ src/render/          components: (data, ctx) => HTML string. lens.css is inlined
 src/validate.mjs     schema checks + Claim Guard + NotMine Guard (build fails on any violation)
 src/build.mjs        deterministic publishing: writes index.html and lens/<slug>/index.html
 src/schema.d.ts      the types, for editor completion and as documentation
+src/analyze/         Phase 2: job-description analysis → evidence matching → lens draft (no model calls)
+scripts/             generate-pitch.mjs (JD → lens draft + report), audit-evidence.mjs (record gaps)
 ```
 
 ## Editing
@@ -25,6 +27,29 @@ src/schema.d.ts      the types, for editor completion and as documentation
 To add a lens for one opportunity: copy `src/lenses/creative.json` to `src/lenses/<slug>.json`,
 change the hero, the `items` and the CTA, keep `"noindex": true`, build, commit. The page is
 `https://takaoumehara.com/lens/<slug>`.
+
+## A lens from a job description
+
+```bash
+node scripts/generate-pitch.mjs --url "https://boards.greenhouse.io/<company>/jobs/<id>"
+node scripts/generate-pitch.mjs --company "Stripe" --jd path/to/jd.txt
+node scripts/generate-pitch.mjs --company "Stripe"        # then paste the posting, Ctrl-D
+```
+
+It reads the posting into the capability taxonomy (no model, no API key — a lexicon in
+`src/analyze/lexicon.json`), scores every record, picks 3–5 pieces of proof, and writes
+`src/lenses/<slug>.json` as a **draft** plus `src/pitches/<slug>/report.md`: what matched,
+what did not, and which record fields a hiring manager will ask about that are still empty.
+A page the engine cannot read (JavaScript-rendered, login) is refused with a paste workaround.
+
+Then: read the report, rewrite the hero in your own words, `npm run preview` (renders drafts
+to `lens/_preview/<slug>/`, git-ignored), set `"status": "published"`, `npm run generate`,
+`npm test`, commit. Every sentence you write is checked by the Claim Guard and NotMine Guard.
+
+`npm run audit` writes `docs/evidence-gaps.md`: for each record, the questions a recruiter
+asks that the record cannot answer yet (how much was yours, team size, dates, outcome).
+Answer them in `src/data/**` — or record `outcome.status: "unknown"` honestly.
+Design notes: `docs/adaptive-portfolio-architecture.md` §16.
 
 Everything else (`about.html`, `work.html`, `projects/*.html`, …) is still hand-built HTML and is
 linked from the evidence as case-study detail. `index-console.html` is the previous hand-built homepage.

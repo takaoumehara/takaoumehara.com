@@ -13,6 +13,26 @@ const ENGAGEMENT_LABEL = {
   employee: null, unstated: null,
 };
 
+// The one flag a recruiter scans for: how much of this was the person's. It
+// comes from contribution.level / teamSize on the record, never from a lens, and
+// it prints nothing when the record does not say.
+const LEVEL_LABEL = {
+  solo: { en: "Solo", jp: "ひとりで" },
+  led: { en: "Led", jp: "率いた" },
+  "co-led": { en: "Co-led", jp: "共同で率いた" },
+  contributor: { en: "Contributor", jp: "一員として" },
+  advised: { en: "Advised", jp: "助言" },
+};
+export function roleFlag(item) {
+  const level = LEVEL_LABEL[item.contribution?.level];
+  if (!level) return "";
+  const size = item.contribution.teamSize;
+  const label = size && item.contribution.level !== "solo"
+    ? { en: `${level.en} · team of ${size}`, jp: `${level.jp} · ${size} 人` }
+    : level;
+  return ` <span class="card-flag card-flag--role">${t(label)}</span>`;
+}
+
 export const periodLabel = (period) => {
   if (!period) return "";
   if (!period.end) return period.start;
@@ -57,7 +77,7 @@ export function proofCard({ ref, item, ctx, index }) {
         <div class="card-body">
           ${ref.emphasis ? `<p class="card-emphasis">${t(ref.emphasis)}</p>` : ""}
           <h3 class="card-title">${displayTitle(item)}</h3>
-          <p class="card-meta">${meta}${engagement ? ` <span class="card-flag">${t(engagement)}</span>` : ""}</p>
+          <p class="card-meta">${meta}${engagement ? ` <span class="card-flag">${t(engagement)}</span>` : ""}${roleFlag(item)}</p>
           <p class="card-desc">${tb(summary)}</p>
           ${metricRow(item, ref.metricIds)}
           ${contributionDetails(item)}

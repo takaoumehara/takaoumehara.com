@@ -66,3 +66,9 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   - 言語スイッチは `<html lang>` も `ja` / `en` に切り替える。
   - `display` を指定する**子孫** `span` セレクタは `.t-en` / `.t-jp` に届く。`> span` を使う。
   - タップ目標は 24px（WCAG 2.2 §2.5.8）。
+- **Adaptive Pitch Engine**（2026-09-16、Phase 2）: 求人票 → `scripts/generate-pitch.mjs` →
+  `src/lenses/<slug>.json`（draft）＋ `src/pitches/<slug>/report.md`。**LLM は呼ばない**（語彙表と規則）。
+  生成器は事実文を書かない。"Direct" は上位 5 能力のうち 2 つ以上に strong があるときだけ。
+  記録の空欄は `scripts/audit-evidence.mjs` → `docs/evidence-gaps.md`。**無い数字は無いまま**
+  （`outcome.status: "unknown"`）。設計は `docs/adaptive-portfolio-architecture.md` §16。
+  draft は build されない。見るなら `node src/build.mjs --preview`（`lens/_preview/` は git 管理外）。

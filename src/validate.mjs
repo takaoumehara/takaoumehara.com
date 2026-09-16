@@ -19,6 +19,11 @@ const SECTION_TYPES = new Set(["proof", "exploring", "experiments", "ventures", 
 const VENTURE_STATUS = new Set(["active", "validating", "prototype", "paused", "archived", "handed-off"]);
 const EXPERIMENT_STATUS = new Set(["live", "in-progress", "prototype", "shipped"]);
 const TOOL_STATUS = new Set(["released", "in-progress"]);
+// How much of the work was the person's. Printed on the card as a flag, so it
+// must be one of these words and nothing softer.
+const LEVELS = new Set(["solo", "led", "co-led", "contributor", "advised"]);
+// Whether an outcome is on record at all. "unknown" is a legitimate, honest value.
+const OUTCOME_STATUS = new Set(["measured", "reported", "shipped", "unknown"]);
 
 /** Flatten a Localized value to the text it carries (both languages). */
 export function localizedText(value) {
@@ -34,9 +39,11 @@ export function evidenceCorpus(item) {
     localizedText(item.summary),
     ...Object.values(item.angles ?? {}).map(localizedText),
     ...(item.metrics ?? []).flatMap((m) => [m.value, localizedText(m.label), m.basis]),
+    localizedText(item.cardLine), localizedText(item.cardKind),
     ...(item.contribution?.mine ?? []),
     ...(item.contribution?.team ?? []),
     ...(item.narrative ? JSON.stringify(item.narrative) : []),
+    localizedText(item.outcome?.note),
     localizedText(item.thesis), localizedText(item.experiment), localizedText(item.question),
     ...(item.stack ?? []),
   ];
@@ -109,6 +116,13 @@ export function validateLibrary(lib, { assetExists } = {}) {
     if (!localizedText(item.summary)) errors.push(`${where}: missing summary`);
     if (!VISIBILITY.has(item.visibility)) errors.push(`${where}: invalid visibility "${item.visibility}"`);
     if (!Array.isArray(item.contribution?.mine) || item.contribution.mine.length === 0) errors.push(`${where}: contribution.mine must list at least one thing Takao did`);
+    if (item.contribution?.level != null && !LEVELS.has(item.contribution.level)) errors.push(`${where}: contribution.level "${item.contribution.level}" must be one of ${[...LEVELS].join(" / ")}`);
+    if (item.contribution?.teamSize != null && !(Number.isInteger(item.contribution.teamSize) && item.contribution.teamSize > 0)) errors.push(`${where}: contribution.teamSize must be a whole number of people (omit it when unknown)`);
+    if (item.contribution?.level === "solo" && item.contribution.teamSize > 1) errors.push(`${where}: contribution.level "solo" with teamSize ${item.contribution.teamSize} contradicts itself`);
+    if (item.outcome != null) {
+      if (!OUTCOME_STATUS.has(item.outcome.status)) errors.push(`${where}: outcome.status "${item.outcome.status}" must be one of ${[...OUTCOME_STATUS].join(" / ")}`);
+      if (item.outcome.status === "measured" && !(item.metrics ?? []).some((m) => m.confidence !== "unverified")) errors.push(`${where}: outcome.status "measured" needs at least one metric that is not unverified`);
+    }
     if (!Array.isArray(item.capabilities) || item.capabilities.length === 0) errors.push(`${where}: needs at least one capability`);
     for (const claim of item.capabilities ?? []) {
       if (!capIds.has(claim.id)) errors.push(`${where}: unknown capability "${claim.id}"`);
@@ -254,6 +268,26 @@ export function validateLens(lens, lib) {
   for (const field of ["eyebrow", "title", "body", "note"]) checkGuards(errors, `${where}: hero.${field}`, lens.hero?.[field], null, heroCorpus);
   checkGuards(errors, `${where}: cta.title`, lens.cta?.title, null, heroCorpus);
   checkGuards(errors, `${where}: cta.body`, lens.cta?.body, null, heroCorpus);
+  for (const [index, section] of (lens.sections ?? []).entries()) {
+    checkGuards(errors, `${where}: sections[${index}].lede`, section.lede, null, heroCorpus);
+    checkGuards(errors, `${where}: sections[${index}].title`, section.title, null, heroCorpus);
+  }
+  // lensNote may be a boolean (show the standard note or not) or the note itself.
+  if (lens.lensNote != null && typeof lens.lensNote !== "boolean") {
+    if (!localizedText(lens.lensNote)) errors.push(`${where}: lensNote must be true, false, or a Localized string`);
+    checkGuards(errors, `${where}: lensNote`, lens.lensNote, null, heroCorpus);
+  }
+  // tailoredResume is never rendered, but it is text a person may paste into a
+  // résumé, so it is held to the same standard as the page.
+  if (lens.tailoredResume) {
+    checkGuards(errors, `${where}: tailoredResume.summary`, lens.tailoredResume.summary, null, heroCorpus);
+    for (const [index, h] of (lens.tailoredResume.highlights ?? []).entries()) {
+      const item = h?.id ? lib.evidence.get(h.id) : null;
+      if (!item) { errors.push(`${where}: tailoredResume.highlights[${index}] must name evidence by id`); continue; }
+      if (!used.has(h.id)) errors.push(`${where}: tailoredResume.highlights[${index}] cites "${h.id}", which this lens does not show`);
+      checkGuards(errors, `${where}: tailoredResume.highlights[${index}]`, h.line, item, evidenceCorpus(item));
+    }
+  }
 
   return errors;
 }

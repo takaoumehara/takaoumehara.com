@@ -298,8 +298,13 @@ export function contactSection({ lens, lib, ctx, showLensNote }) {
   const secondary = lens.cta.secondary
     ? `<a href="${esc(href(ctx, lens.cta.secondary.href))}" class="hero-alt">${t(lens.cta.secondary.label)}</a>`
     : `<a href="${esc(lib.profile.contact.linkedin)}" target="_blank" rel="noopener" class="hero-alt"><span class="t-en">Or reach me on LinkedIn →</span><span class="t-jp">LinkedIn でも →</span></a>`;
+  // The note is the standard sentence, or the lens's own (a Localized value,
+  // checked by the Claim Guard) when it wants to name what it was arranged for.
+  const noteText = showLensNote && typeof showLensNote === "object"
+    ? tb(showLensNote)
+    : `<span class="t-en">This view surfaces work from Takao's career archive most relevant to this opportunity. Same experience. Different lens.</span><span class="t-jp">このページは、Takao のキャリアの記録から、この機会にもっとも関係の深い仕事を選んで見せています。同じ経験。違うレンズ。</span>`;
   const note = showLensNote
-    ? `    <p class="lens-note"><span class="t-en">This view surfaces work from Takao's career archive most relevant to this opportunity. Same experience. Different lens.</span><span class="t-jp">このページは、Takao のキャリアの記録から、この機会にもっとも関係の深い仕事を選んで見せています。同じ経験。違うレンズ。</span> <a href="${esc(href(ctx, "index.html"))}"><span class="t-en">The whole story →</span><span class="t-jp">全体の物語 →</span></a></p>`
+    ? `    <p class="lens-note">${noteText} <a href="${esc(href(ctx, "index.html"))}"><span class="t-en">The whole story →</span><span class="t-jp">全体の物語 →</span></a></p>`
     : "";
   return `  <section class="end" id="contact">
     <h2 class="end-line">${t(lens.cta.title)}</h2>
