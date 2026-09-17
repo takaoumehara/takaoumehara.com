@@ -29,8 +29,12 @@ export default defineConfig({
     { name: "desktop", use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 }, launchOptions } },
     { name: "phone", use: { ...devices["Desktop Chrome"], viewport: { width: 390, height: 844 }, launchOptions } },
   ],
+  // --ignore-lock: Astro 7 backgrounds `astro dev` when it detects an AI agent
+  // (AI_AGENT / CLAUDECODE in the environment) and the launcher exits at once,
+  // which Playwright reads as the server dying. The flag keeps it in the
+  // foreground; it is harmless for a person or CI.
   webServer: {
-    command: `npx astro dev --port ${PORT} --host 127.0.0.1`,
+    command: `npx astro dev --port ${PORT} --host 127.0.0.1 --ignore-lock`,
     url: `http://127.0.0.1:${PORT}/index.html`,
     reuseExistingServer: true,
     timeout: 120_000,

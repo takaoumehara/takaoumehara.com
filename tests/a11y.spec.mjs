@@ -23,6 +23,7 @@ const PAGES = [
   ["/about.html", "About"],
   ["/contact.html", "Contact"],
   ["/projects/koji-fizz.html", "a case study (KOJI FIZZ)"],
+  ["/projects/werewolf.html", "a dark case study (Werewolf)"],
 ];
 
 for (const [path, name] of PAGES) {

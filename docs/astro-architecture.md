@@ -27,6 +27,7 @@
 ```
 astro.config.mjs
 public/                      ← 旧 assets/ を public/assets/ へ git mv。favicon.svg、projects/amazon-firetv/（静的デモ）
+  projects/*.html            シェルを持たない単体ツール（shopping-on-fire-tv、werewolf-card-{gallery,viewer,position-editor}）。抽出せずそのまま配信
 src/
   data/ lenses/ categories/  無変更
   analyze/ lib/ validate.mjs 無変更（lib/site.mjs を追加: Vite の import.meta.glob で同じ Library を組む）
@@ -58,7 +59,7 @@ tests/                       dist（.vercel/output/static）を検査
 - 中身: 名前 + 一行（`/`）・「All work」（`/all/`）・言語スイッチ・About カード・ページ nav（Now / Writing / Workshops / About / Work with me / Studio ↗）・**カテゴリ別の作品一覧**（`<details>` × 5、現在地のカテゴリだけ `open`、項目 = サムネ + 名前 + `cardLine`）。
 - 右カラム `<div class="main">` はページ本文。旧 `--col: 1200px` は右カラム内の最大幅として残る。
 - 900px 以下: サイドバーは上部バー（名前 + Menu）になり、一覧はボタンで開く。
-- サイドバーのトークンは `--side-*` で独立させる。手書きページは `design-system.css` が `:root` を上書きする（ダーク既定）ので、共通トークンに乗ると崩れる。
+- サイドバーのトークンは `--side-*` で独立させる。手書きページは `design-system.css` が `:root` を上書きする（ダーク既定）ので、共通トークンに乗ると崩れる。逆に `site.css` はページ CSS より後に束ねられるので、`data-theme="dark"` のページ（Interactive の 8 本）には `site.css` 側で `html[data-theme="dark"] { --bg … }` を再宣言して暗いまま出す（無いと紙色の上に白文字が乗る）。
 - Cross-document View Transitions は継続。サイドバーに `view-transition-name: side` を与え、右だけ入れ替わる。
 
 ## 3. データの読み方
@@ -88,6 +89,9 @@ tests/                       dist（.vercel/output/static）を検査
 - `<Image>` による画像最適化。手書き本文の `<img>` はそのまま。
 
 ## 7. 移植で分かったこと（次に触る人へ）
+
+- **手書きページの末尾 `<script>` は、ページ固有の IIFE と共通ボイラープレート（言語切替・モバイル nav）が 1 つの `<script>` に融合していることがある**（werewolf.html のカードデッキ）。`scripts/extract-page.mjs` はトップレベルの `})();` で分割し、ボイラープレート部分だけ捨てる。main 側で手書きページが更新されたら、そのファイルを `projects/` に置いて抽出し直す（ROOT_PAGES を空にしたコピーで 1 件だけ回せる）。
+- 抽出し直した本文に `data-vt-hero` が無いと `tests/page-transitions.test.mjs` が落ちる。ヒーローの media 要素に付け直す。
 
 - **Astro のフロントマターは、テンプレートリテラルの `${…}` の中に別のテンプレートリテラルを
   入れると解析できない**（`` `<dl>${rows.map((r) => `<div>${r}</div>`).join("")}</dl>` `` の形）。

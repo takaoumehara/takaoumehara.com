@@ -29,7 +29,7 @@ export function sourceExists(path, root = ROOT) {
   const project = /^projects\/([a-z0-9-]+)\.html$/.exec(path);
   if (project) {
     const slug = project[1];
-    return at("src", "case-studies", `${slug}.html`) || at("src", "pages", "projects", `${slug}.astro`) || at("src", "pages", "projects", `${slug}.mdx`) || at(path);
+    return at("src", "case-studies", `${slug}.html`) || at("src", "pages", "projects", `${slug}.astro`) || at("src", "pages", "projects", `${slug}.mdx`) || at("public", path) || at(path);
   }
   const page = /^([a-z0-9-]+)\.html$/.exec(path);
   if (page) return at("src", "fragments", `${page[1]}.html`) || at("src", "pages", `${page[1]}.astro`) || at(path);

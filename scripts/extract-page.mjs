@@ -140,6 +140,16 @@ function readMeta(html) {
 }
 
 // ── Body extraction: </nav> … <footer, plus page-specific trailing scripts ─
+// One top-level IIFE of a trailing <script>: is it the shared boilerplate?
+// (language toggle · mobile nav · scroll reveal · image fade — see above.)
+function isBoilerplatePart(part) {
+  if (/lang-btn/.test(part) && /localStorage/.test(part)) return true;
+  if (/getElementById\(['"]nav-toggle['"]\)/.test(part)) return true;
+  if (/IntersectionObserver/.test(part) && /reveal/.test(part)) return true;
+  if (/querySelectorAll\(['"]img['"]\)/.test(part) && /(loaded|complete)/.test(part) && part.length < 800) return true;
+  return false;
+}
+
 function extractBody(html) {
   const navEndMatch = /<\/nav>/i.exec(html);
   if (!navEndMatch) return null; // no top nav at all (shopping-on-fire-tv.html — handled separately)
@@ -175,8 +185,17 @@ function extractBody(html) {
       // work-with-me.html use "tu_lang" instead of "tu-lang"), so match on
       // the stable pair (.lang-btn + localStorage) rather than the key name.
       const isSharedBoilerplate = /lang-btn/.test(content) && /localStorage/.test(content);
-      if (isWipe || isSharedBoilerplate) { droppedScripts++; continue; }
-      kept.push(raw);
+      if (isWipe) { droppedScripts++; continue; }
+      if (!isSharedBoilerplate) { kept.push(raw); continue; }
+      // A page may fuse its own IIFE with the boilerplate ones in a single
+      // <script> (werewolf.html: the card-deck demo, then the language toggle,
+      // then the mobile nav). Split on the top-level `})();` closers and keep
+      // only the parts that are not boilerplate.
+      const parts = content.split(/(?<=\n  \}\)\(\);)/).map((p) => p.trim()).filter(Boolean);
+      const own = parts.filter((p) => !isBoilerplatePart(p));
+      if (own.length === parts.length) { kept.push(raw); continue; }
+      droppedScripts++;
+      if (own.length) kept.push(`<script${attrs}>\n  ${own.join("\n\n  ")}\n  </script>`);
     }
   }
 

@@ -77,6 +77,21 @@
   --a4: rgba(11, 11, 11, 0.06);
 }
 
+/* A hand-built page that declares itself dark (data-theme="dark": the eight
+   Interactive case studies) keeps design-system.css's dark ink. This sheet is
+   bundled after the page's own, so without this block the paper tokens above
+   would win the :root tie and the page's hard-coded white text would sit on
+   paper. Mirrors design-system.css :root. */
+html[data-theme="dark"] {
+  --bg: #0b0b0b;
+  --ink: #ffffff;
+  --ink-mid: rgba(255, 255, 255, 0.76);
+  --ink-dim: rgba(255, 255, 255, 0.52);
+  --line: rgba(255, 255, 255, 0.12);
+  --border: rgba(255, 255, 255, 0.16);
+  --surface: #141416;
+}
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {

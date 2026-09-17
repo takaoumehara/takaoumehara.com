@@ -49,3 +49,12 @@ Q3 Ink & Paper のまま。覆すなら `Sidebar.astro` と `shell.css`。
 - Preview URL の中身（ページが実際に表示されるか）はこの環境から通信できず未確認。本人が開いて見る。
 - `/api/*` と `/studio/` の Publish は GitHub をスタブしたテストのみ（前回と同じ）。
 - `index-*.html`（旧ホームページの保存版 5 枚）はリポジトリ直下に残したまま。配信されない。
+
+## main との合流（PR #20 werewolf 更新）
+
+`f166d96`（werewolf ケーススタディの全面更新 + カードツール 3 ページ + 画像 134MB）を merge commit で取り込んだ。
+
+- `projects/werewolf.html` → `scripts/extract-page.mjs` で `src/case-studies/werewolf.{html,css,json}` を再抽出。末尾の `<script>` にカードデッキの IIFE が同居していたので、抽出器がボイラープレートだけ捨てるよう修正。`data-vt-hero` を hero に付け直し。
+- `projects/werewolf-card-{gallery,viewer,position-editor}.html` は nav/footer を持たない単体ツール → `public/projects/` にそのまま置く（`../assets/werewolf/...` 参照はそのまま通る）。`src/lib/load.mjs` の `sourceExists` が `public/projects/` も見るようにした。
+- `assets/werewolf/**` → `public/assets/werewolf/**`。生成物（`interactive.html` `work/index.html` `assets/studio/library.json`）は取り込まない（ビルドが作る）。
+- `src/styles/site.css` の「衝突」は git が `interactive.html` との改名と誤認したもの。HEAD 側をそのまま採用。
