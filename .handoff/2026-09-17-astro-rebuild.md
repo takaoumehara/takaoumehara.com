@@ -42,7 +42,10 @@ Q3 Ink & Paper のまま。覆すなら `Sidebar.astro` と `shell.css`。
 
 ## 未検証（正直に）
 
-- **Vercel 上の実ビルド。** ローカルの `astro build` は通るが、本番のビルドは PR の Preview デプロイで確認する。
-  途中の WIP コミットは意図的に壊れていた。
+- ~~Vercel 上の実ビルド~~ → **確認済み**（`94d5962` で両プロジェクトとも Ready）。落ちていた原因は
+  `.vercelignore` の無指定パターン（`tools` / `scripts` が `src/data/tools` と `src/scripts` にも一致）と、
+  除外フォルダ `src/pitches` の中にあったサンプル求人票。再現法: `git ls-files -ci --exclude-from=.vercelignore`
+  で消える一覧を出し、それを消したコピーで `npm ci && npm run build`。
+- Preview URL の中身（ページが実際に表示されるか）はこの環境から通信できず未確認。本人が開いて見る。
 - `/api/*` と `/studio/` の Publish は GitHub をスタブしたテストのみ（前回と同じ）。
 - `index-*.html`（旧ホームページの保存版 5 枚）はリポジトリ直下に残したまま。配信されない。
