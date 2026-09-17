@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Posting | Senior Product Designer, Payments (Senior) |
-| Source | src/pitches/samples/stripe-senior-product-designer.txt |
+| Source | src/analyze/samples/stripe-senior-product-designer.txt |
 | Length | 609 words · requirements 11 lines · responsibilities 9 lines |
 | Lens draft | `src/lenses/stripe.json` (status: draft — not built until you publish it) |
 | Evidence scored | 45 of 46 items matched at least one capability |

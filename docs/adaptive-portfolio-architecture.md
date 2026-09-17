@@ -663,7 +663,7 @@ experiment / tool / venture → `solo`。Festival の chair と KOJI FIZZ の「
 - `--url` の**実サイトでの取得は未検証**（作業環境から外向き通信が塞がれていた）。
   ローカル HTTP サーバーと、schema.org `JobPosting` を埋め込んだ HTML でテストした。
   JS で描画される求人ページは読めないので、その場合は本文だけ貼り付ける（コマンドが案内する）。
-- サンプルの JD 3 本（`src/pitches/samples/`）は**この実装のために書いた例文**で、
+- サンプルの JD 3 本（`src/analyze/samples/`）は**この実装のために書いた例文**で、
   実在の求人票の転載ではない。
 - 生成した `src/lenses/stripe.json` は draft のまま。`lens/stripe/index.html` は
   コミットしていない（公開は本人が `status: "published"` にして build する。原則 17）。

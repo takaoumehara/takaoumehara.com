@@ -8,7 +8,7 @@ import { phraseRegex } from "../analyze/jd.mjs";
 import { draftLens } from "../analyze/draft.mjs";
 import { validateLens, evidenceCorpus } from "../validate.mjs";
 import { hydrateLibrary } from "../lib/library.mjs";
-import sample from "../pitches/samples/stripe-senior-product-designer.txt?raw";
+import sample from "../analyze/samples/stripe-senior-product-designer.txt?raw";
 
 const $ = (id) => document.getElementById(id);
 const state = { lib: null, lexicon: null };

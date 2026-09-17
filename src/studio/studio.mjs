@@ -13,7 +13,7 @@ import { draftLens } from "../analyze/draft.mjs";
 import { renderReport } from "../analyze/report.mjs";
 import { validateLens, evidenceCorpus, fitCeiling, FIT_LEVELS } from "../validate.mjs";
 import { hydrateLibrary } from "../lib/library.mjs";
-import sample from "../pitches/samples/stripe-senior-product-designer.txt?raw";
+import sample from "../analyze/samples/stripe-senior-product-designer.txt?raw";
 
 const $ = (id) => document.getElementById(id);
 const el = (tag, attrs = {}, children = []) => {

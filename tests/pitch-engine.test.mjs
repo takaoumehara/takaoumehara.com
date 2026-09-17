@@ -27,7 +27,7 @@ import { generatePitch } from "../scripts/generate-pitch.mjs";
 const lib = loadLibrary();
 const lexicon = loadLexicon();
 const caps = lib.capabilities.capabilities;
-const sample = (name) => readFileSync(join(ROOT, "src", "pitches", "samples", name), "utf8");
+const sample = (name) => readFileSync(join(ROOT, "src", "analyze", "samples", name), "utf8");
 const stripe = sample("stripe-senior-product-designer.txt");
 const creative = sample("creative-director-brand-studio.txt");
 const japanese = sample("jp-new-business-product-designer.txt");
@@ -257,13 +257,13 @@ test("the CLI writes the lens, the analysis and the report, and refuses to overw
   const dir = mkdtempSync(join(tmpdir(), "pitch-"));
   try {
     const run = (args) => execFileSync("node", [join(ROOT, "scripts", "generate-pitch.mjs"), ...args], { encoding: "utf8", stdio: ["pipe", "pipe", "pipe"] });
-    const out = run(["--company", "Stripe", "--jd", join(ROOT, "src", "pitches", "samples", "stripe-senior-product-designer.txt"), "--out-dir", dir]);
+    const out = run(["--company", "Stripe", "--jd", join(ROOT, "src", "analyze", "samples", "stripe-senior-product-designer.txt"), "--out-dir", dir]);
     assert.match(out, /DIRECT/);
     for (const f of ["src/lenses/stripe.json", "src/pitches/stripe/report.md", "src/pitches/stripe/analysis.json", "src/pitches/stripe/jd.txt"]) assert.ok(existsSync(join(dir, f)), f);
     const lens = JSON.parse(readFileSync(join(dir, "src", "lenses", "stripe.json"), "utf8"));
     assert.deepEqual(validateLens(lens, lib), []);
     assert.match(readFileSync(join(dir, "src", "pitches", "stripe", "report.md"), "utf8"), /## 4\. Gaps/);
-    assert.throws(() => run(["--company", "Stripe", "--jd", join(ROOT, "src", "pitches", "samples", "stripe-senior-product-designer.txt"), "--out-dir", dir]), /already exists/);
+    assert.throws(() => run(["--company", "Stripe", "--jd", join(ROOT, "src", "analyze", "samples", "stripe-senior-product-designer.txt"), "--out-dir", dir]), /already exists/);
     // Paste mode: the posting on stdin.
     const pasted = execFileSync("node", [join(ROOT, "scripts", "generate-pitch.mjs"), "--company", "Stripe", "--slug", "stripe-2", "--out-dir", dir], { encoding: "utf8", input: stripe });
     assert.match(pasted, /pasted text/);
@@ -274,9 +274,9 @@ test("the committed Stripe draft is what the generator produces from the committ
   const dir = mkdtempSync(join(tmpdir(), "pitch-"));
   try {
     const committed = JSON.parse(readFileSync(join(ROOT, "src", "lenses", "stripe.json"), "utf8"));
-    const result = await generatePitch({ company: "Stripe", file: join(ROOT, "src", "pitches", "samples", "stripe-senior-product-designer.txt"), outDir: dir, lib, lexicon, seenAt: committed.fit?.source?.seenAt });
+    const result = await generatePitch({ company: "Stripe", file: join(ROOT, "src", "analyze", "samples", "stripe-senior-product-designer.txt"), outDir: dir, lib, lexicon, seenAt: committed.fit?.source?.seenAt });
     const strip = (l) => { const { $comment, ...rest } = l; return rest; };
-    assert.deepEqual(strip(result.lens), strip(committed), `src/lenses/stripe.json is stale — re-run: node scripts/generate-pitch.mjs --company Stripe --jd src/pitches/samples/stripe-senior-product-designer.txt --force --seen ${committed.fit?.source?.seenAt}`);
+    assert.deepEqual(strip(result.lens), strip(committed), `src/lenses/stripe.json is stale — re-run: node scripts/generate-pitch.mjs --company Stripe --jd src/analyze/samples/stripe-senior-product-designer.txt --force --seen ${committed.fit?.source?.seenAt}`);
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 

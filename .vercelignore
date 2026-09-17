@@ -31,6 +31,7 @@ public/assets/xq-directory/XQ_DIRECTORY.mp4
 public/assets/*/masters
 
 # Pitch material (job descriptions of companies applied to) stays out of the
-# deploy; the samples are bundled into the Studio page at build time.
-src/pitches/*
-!src/pitches/samples
+# deploy. The sample postings the Studio and the tests use live in
+# src/analyze/samples, outside this folder, so no negation pattern is needed
+# (a build that could not find the sample failed on Vercel).
+src/pitches

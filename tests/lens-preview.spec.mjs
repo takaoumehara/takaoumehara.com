@@ -14,7 +14,7 @@ import { draftLens } from "../src/analyze/draft.mjs";
 
 const lib = loadLibrary();
 const lexicon = loadLexicon();
-const stripe = readFileSync(join(ROOT, "src", "pitches", "samples", "stripe-senior-product-designer.txt"), "utf8");
+const stripe = readFileSync(join(ROOT, "src", "analyze", "samples", "stripe-senior-product-designer.txt"), "utf8");
 
 function pitch(text, company = "Acme") {
   const analysis = analyzeJob(text, { lexicon, capabilities: lib.capabilities.capabilities, company });
