@@ -1,0 +1,69 @@
+---
+// The Fit Ledger: one row per line of the posting's requirements. The level
+// is the record's (validate.mjs: fitCeiling), the quote is verbatim from
+// contribution.mine, and a row the record cannot answer stays on the page as
+// "Not on record". Ported from fitSection() in src/render/sections.mjs.
+import { esc, t, tb, plain, url } from "../../lib/html.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lens: any; lib: any }
+const { section, lens, lib } = Astro.props;
+
+const FIT_LABEL: Record<string, { en: string; jp: string }> = {
+  direct: { en: "Direct · I did this", jp: "直接 · 自分がした" },
+  partial: { en: "Partial · related work on record", jp: "部分的 · 近い仕事はある" },
+  adjacent: { en: "Adjacent", jp: "周辺" },
+  none: { en: "Not on record", jp: "記録に無い" },
+};
+const FIT_WIDTH: Record<string, number> = { direct: 100, partial: 60, adjacent: 30, none: 0 };
+
+const fit = lens.fit;
+let html = "";
+if (fit?.rows?.length) {
+  const onPage = new Set();
+  for (const s of lens.sections ?? []) for (const ref of s.items ?? []) onPage.add(typeof ref === "string" ? ref : ref.id);
+  const where = (id: string) => {
+    const item = lib.evidence.get(id);
+    if (!item) return "";
+    const name = esc(plain(item.shortTitle ?? item.title));
+    if (onPage.has(id)) return `<a class="fit-where" href="#card-${esc(id)}">${name}</a>`;
+    const link = item.links?.caseStudy ?? item.links?.live ?? item.links?.external;
+    return link ? `<a class="fit-where" href="${esc(url(link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${name}</a>` : `<span class="fit-where">${name}</span>`;
+  };
+  const rows = fit.rows.map((row: any) => {
+    const label = FIT_LABEL[row.level] ?? FIT_LABEL.none;
+    const evidence = (row.evidence ?? []).map((ref: any) => ref.line
+      ? `<p class="fit-evidence"><q>${esc(ref.line)}</q> <span class="fit-sep">·</span> ${where(ref.id)}</p>`
+      : `<p class="fit-evidence"><span class="t-en">Related work:</span><span class="t-jp">近い仕事:</span> ${where(ref.id)}</p>`).join("");
+    const note = row.note ? `<p class="fit-note">${tb(row.note)}</p>` : "";
+    return `      <li class="fit-row is-${esc(row.level)}">
+        <p class="fit-ask">${esc(row.ask)}</p>
+        <div class="fit-level" aria-label="${esc(label.en)}"><span class="fit-bar"><i style="width:${FIT_WIDTH[row.level] ?? 0}%"></i></span><span class="fit-label">${t(label)}</span></div>
+        <div class="fit-answer">${evidence || `<p class="fit-evidence is-empty"><span class="t-en">Nothing on record answers this line. I would rather say so than stretch.</span><span class="t-jp">この行に答えられる記録は無い。無理に伸ばすより、無いと書く。</span></p>`}</div>
+        ${note}
+      </li>`;
+  }).join("\n");
+  const named = (fit.requirements ?? []).map((r: any) => `<li class="fit-req${r.foundIn?.length ? "" : " is-empty"}"><b>${esc(r.name)}</b> <span class="fit-sep">·</span> ${r.foundIn?.length ? r.foundIn.map(where).join(", ") : `<span class="t-en">not on record</span><span class="t-jp">記録に無い</span>`}</li>`).join("");
+  const src = fit.source ?? {};
+  const seen = src.seenAt ? ` <span class="t-en">Posting seen ${esc(src.seenAt)}.</span><span class="t-jp">求人票は ${esc(src.seenAt)} 時点。</span>` : "";
+  const screened = (fit.skipped ?? []).filter((sk: any) => /screening/.test(sk.why)).length;
+  const screenNote = screened ? ` <span class="t-en">${screened} screening line${screened > 1 ? "s" : ""} (years, degree, portfolio) ${screened > 1 ? "are" : "is"} answered in the résumé, not here.</span><span class="t-jp">年数・学位・ポートフォリオなどの ${screened} 行は、ここではなく履歴書で答える。</span>` : "";
+
+  html = `    <ol class="fit-rows">
+${rows}
+    </ol>
+    ${named ? `<ul class="fit-reqs">${named}</ul>` : ""}
+    <p class="fit-foot"><span class="t-en">Levels: Direct = strong evidence and a verbatim line of what I did · Partial = related strong work, or moderate work with a line · Adjacent = moderate or neighbouring work · Not on record = nothing to cite.</span><span class="t-jp">度合い: 直接 = 強い証拠と、自分がしたことの逐語 · 部分的 = 近い強い仕事、または中程度の仕事と逐語 · 周辺 = 中程度か隣接 · 記録に無い = 引用できるものが無い。</span>${seen}${screenNote}</p>`;
+}
+
+const lede = section.lede ?? {
+  en: `Each requirement line of the posting, against the record. The level is computed from the record and can only be lowered by hand: "Direct" means a specific thing I did; "Not on record" stays on the page.`,
+  jp: `募集要項の 1 行ずつを、記録と突き合わせた。度合いは記録から機械的に決まり、手で下げることはできても上げられない。「直接」は自分が実際にしたこと。「記録に無い」も消さずに残す。`,
+};
+---
+{fit?.rows?.length && (
+  <section class="band fit" id="fit">
+    <SectionHead title={section.title ?? { en: "What you asked for · what I did", jp: "募集要項と、自分がしたこと" }} lede={lede} />
+    <Fragment set:html={html} />
+  </section>
+)}

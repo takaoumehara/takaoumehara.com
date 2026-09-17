@@ -1,0 +1,79 @@
+---
+// Unified Work Archive (/work): every evidence project, filterable by
+// discipline. Pulls directly from lib.evidence without duplicating project
+// data — src/lib/archive.mjs carries the slug → tag lists so a test can
+// import getFilterTags without loading this component.
+import CategoryCard from "../category/CategoryCard.astro";
+import { t } from "../../lib/html.mjs";
+import { getFilterTags, FILTERS } from "../../lib/archive.mjs";
+
+interface Props { lib: any }
+const { lib } = Astro.props;
+
+// Ordered selection of evidence items (excluding items hidden from archive)
+const items = [...lib.evidence.values()].filter(
+  (item) => !item.hideInArchive && item.slug !== "kanji-puzzle"
+);
+const counts = {};
+for (const f of FILTERS) {
+  counts[f.id] = items.filter((item) => getFilterTags(item).includes(f.id)).length;
+}
+---
+<main class="cat-page" data-category="work-archive">
+  <header class="cat-head">
+    <h1 class="cat-title"><span class="t-en">Work Archive</span><span class="t-jp">制作・開発アーカイブ</span></h1>
+    <p class="cat-lede"><span class="t-en">20+ years of 0→1 products, AI systems, interactive experiences, brand identities, and learning platforms.</span><span class="t-jp is-block">0→1 のプロダクト、AI システム、インタラクティブ体験、ブランド、学びの基盤まで。</span></p>
+    <div class="archive-filters" role="tablist" aria-label="Filter work by discipline">
+      {FILTERS.map((f, i) => (
+        <button type="button" class={`filter-btn${i === 0 ? " is-active" : ""}`} data-filter={f.id}>
+          <span set:html={t(f.label)} />
+          <span class="filter-count">{counts[f.id]}</span>
+        </button>
+      ))}
+    </div>
+    <p class="cat-count"><span id="archive-count">{items.length}</span><span class="t-en"> projects</span><span class="t-jp"> 件</span></p>
+  </header>
+
+  <div class="cat-grid">
+    {items.map((item) => <CategoryCard item={item} tags={getFilterTags(item).join(" ")} />)}
+  </div>
+</main>
+
+<script>
+  // ── Work Archive Filter Bar ──
+  (() => {
+    const btns = document.querySelectorAll(".filter-btn");
+    const cards = document.querySelectorAll(".cat-card[data-tags]");
+    const countEl = document.getElementById("archive-count");
+    if (!btns.length || !cards.length) return;
+
+    function applyFilter(filter) {
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.filter === filter));
+      let visible = 0;
+      cards.forEach((card) => {
+        const tags = (card.dataset.tags || "").split(" ");
+        const show = filter === "all" || tags.includes(filter);
+        card.classList.toggle("is-hidden", !show);
+        if (show) visible += 1;
+      });
+      if (countEl) countEl.textContent = String(visible);
+      try {
+        if (filter !== "all") {
+          history.replaceState(null, "", "#" + filter);
+        } else if (window.location.hash) {
+          history.replaceState(null, "", window.location.pathname);
+        }
+      } catch (e) {}
+    }
+
+    btns.forEach((b) => {
+      b.addEventListener("click", () => applyFilter(b.dataset.filter));
+    });
+
+    const hash = window.location.hash.replace("#", "").toLowerCase();
+    if (hash) {
+      const match = document.querySelector(`.filter-btn[data-filter="${hash}"]`);
+      if (match) applyFilter(hash);
+    }
+  })();
+</script>

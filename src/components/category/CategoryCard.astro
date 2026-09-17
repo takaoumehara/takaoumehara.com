@@ -1,0 +1,45 @@
+---
+// A single piece of work: the same card shape on every category page and on
+// the /work archive (which passes `tags` so its filter bar has something to
+// read off `data-tags`). The whole card is one clickable region — `data-href`
+// plus a real `<a>` inside, per docs/superforge.md's WCAG pin.
+import { t, tb, mediaFill } from "../../lib/html.mjs";
+import { status, inputLabel, cardName } from "../../lib/labels.mjs";
+import { destination } from "../../lib/site.mjs";
+
+interface Props {
+  item: any;
+  tags?: string; // space-separated filter tags; only the archive passes this
+}
+const { item, tags } = Astro.props;
+
+const to = destination(item);
+const chips = [
+  item.input ? `<span class="pill pill--in">${inputLabel(item.input)}</span>` : "",
+  status(item.status),
+].filter(Boolean).join("");
+---
+<article
+  class="cat-card"
+  data-tags={tags}
+  tabindex={to ? "0" : undefined}
+  data-href={to ? to.url : undefined}
+  data-external={to?.external ? "true" : undefined}
+>
+  <div class="cat-card-media" set:html={mediaFill(item)} />
+  <div class="cat-card-body">
+    {chips && <p class="chips" set:html={chips} />}
+    <h3 class="cat-card-title" set:html={cardName(item)} />
+    {item.cardKind && <p class="cat-card-kind" set:html={t(item.cardKind)} />}
+    <p class="cat-card-desc" set:html={tb(item.cardLine ?? item.summary)} />
+    {to && (
+      <a
+        class="cat-card-cta"
+        href={to.url}
+        target={to.external ? "_blank" : undefined}
+        rel={to.external ? "noopener" : undefined}
+        set:html={t(to.label)}
+      />
+    )}
+  </div>
+</article>

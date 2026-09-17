@@ -1,0 +1,43 @@
+---
+// What I'm building now: the Living Lab items, folded with lib.now when a
+// live status/why/what/next is on record. Ported from venturesSection() in
+// src/render/sections.mjs.
+import { esc, t, tb, url } from "../../lib/html.mjs";
+import { status, displayTitle } from "../../lib/labels.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lib: any }
+const { section, lib } = Astro.props;
+
+const nowMap = new Map((lib.now?.items ?? []).map((item: any) => [item.id, item]));
+const cards = section.items.map((id: string) => {
+  const v = lib.evidence.get(id);
+  if (!v) return "";
+  const nowItem: any = nowMap.get(id);
+  const itemStatus = nowItem?.status ?? v.status;
+  const whyText = nowItem?.why ?? v.thesis;
+  const whatText = nowItem?.oneLine ?? v.experiment;
+  const nextText = nowItem?.next ?? v.question;
+  const link = nowItem?.links?.live ?? nowItem?.links?.caseStudy ?? nowItem?.links?.repo ?? nowItem?.links?.external ?? v.links?.external ?? v.links?.caseStudy;
+
+  const rows = [
+    [{ en: "Why", jp: "なぜ" }, whyText],
+    [{ en: "What", jp: "何をつくったか" }, whatText],
+    [{ en: "Next", jp: "次に確かめたいこと" }, nextText],
+  ].map(([label, value]) => `<div class="venture-row"><dt>${t(label)}</dt><dd>${tb(value)}</dd></div>`).join("");
+  return `      <article class="venture-card">
+        <div class="venture-head"><h3 class="card-title">${displayTitle(v)}</h3>${status(itemStatus)}</div>
+        <dl class="venture-rows">${rows}</dl>
+        ${link ? `<a class="card-link" href="${esc(url(link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${/^https?:/.test(link) ? `<span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span>` : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`}</a>` : ""}
+      </article>`;
+}).filter(Boolean).join("\n");
+
+const defaultLede = {
+  en: "Products, ventures, tools, and experiments currently in motion. Some may grow into businesses. Others may simply teach me what to build next.",
+  jp: "プロダクト、事業、ツール、実験。事業として育つものもあれば、試して終わるものもあります。どちらも、次に何をつくるかを考えるための材料です。",
+};
+---
+<section class="band ventures" id="ventures">
+  <SectionHead title={section.title ?? { en: "What I'm building now", jp: "いま、つくっているもの。" }} lede={section.lede ?? defaultLede} />
+  <div class="venture-grid" set:html={cards} />
+</section>

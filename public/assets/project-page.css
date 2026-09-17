@@ -2059,14 +2059,15 @@ html[data-theme="light"] .wds-hero h1 em {
   opacity: 1; /* safe default */
 }
 
-/* ── Full Bleed Hero Banner ── */
+/* ── Full Bleed Hero Banner ──
+   Astro migration: this used to sit directly under <body>, so breaking out
+   to 100vw with a -50vw margin bled it to the true viewport edges. It now
+   renders inside the Astro shell's right-hand column (.main, next to the
+   sidebar) with nothing padding it, so "full bleed" is just the column's
+   own width — no viewport math needed, and none of the vw tricks that used
+   to reach past the sidebar and overlap it. */
 .hero-fullbleed {
-  width: 100vw;
-  position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
+  width: 100%;
   max-height: clamp(340px, 46vw, 560px);
   overflow: hidden;
   background: #0b0b0b;

@@ -1,0 +1,24 @@
+---
+// The Japanese edition of the default lens. Same content, same components as
+// src/pages/index.astro — only lang and canonical differ. The switch itself
+// (Site.astro / Sidebar.astro) reads lang="ja" and pins to this page.
+import Site from "../../layouts/Site.astro";
+import LensPage from "../../components/lens/LensPage.astro";
+import { getLibrary, defaultLens } from "../../lib/site.mjs";
+const lib = getLibrary();
+const lens = defaultLens();
+
+const firstProofRef = lens.sections.find((s: any) => s.type === "proof")?.items?.[0];
+const firstItem = firstProofRef ? lib.evidence.get(firstProofRef.id) : null;
+const ogImage = firstItem?.assets?.hero ?? firstItem?.assets?.thumb;
+---
+<Site
+  title={lens.seo.title}
+  description={lens.seo.description}
+  canonical="https://takaoumehara.com/ja"
+  lensSlug="default"
+  lang="ja"
+  ogImage={ogImage}
+>
+  <LensPage lens={lens} lib={lib} />
+</Site>

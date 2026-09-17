@@ -1,0 +1,16 @@
+---
+// The `<h2>` + optional lede every band section opens with. Ported from
+// sectionHead() in src/render/sections.mjs — every other section component
+// uses this instead of repeating the markup.
+import { t, tb } from "../../lib/html.mjs";
+
+interface Props {
+  title: string | { en: string; jp?: string };
+  lede?: string | { en: string; jp?: string } | null;
+}
+const { title, lede } = Astro.props;
+---
+<div class="section-head">
+  <h2 class="section-title" set:html={t(title)} />
+  {lede && <p class="section-lede" set:html={tb(lede)} />}
+</div>

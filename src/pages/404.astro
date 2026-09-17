@@ -1,0 +1,9 @@
+---
+// Hand-built page, extracted by scripts/extract-page.mjs into
+// src/fragments/404.{html,css,json}. See src/components/FragmentPage.astro.
+import FragmentPage from "../components/FragmentPage.astro";
+import body from "../fragments/404.html?raw";
+import css from "../fragments/404.css?raw";
+import meta from "../fragments/404.json";
+---
+<FragmentPage meta={meta} body={body} css={css} current="/404.html" noindex />

@@ -1,0 +1,35 @@
+---
+// Different mediums. Same instinct.: the chapter timeline, with the lens's
+// chapters emphasised. Ported from careerArcSection() in
+// src/render/sections.mjs.
+import { esc, t, tb, url } from "../../lib/html.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lens: any; lib: any }
+const { section, lens, lib } = Astro.props;
+
+const emphasised = new Set(lens.chapters ?? []);
+const cells = lib.chapters.map((chapter: any) => {
+  const roles = (chapter.roles ?? []).map((id: string) => lib.roles.find((r: any) => r.id === id)).filter(Boolean);
+  const roleRows = roles.map((r: any) => {
+    const period = r.period ? `<span class="arc-period">${esc(r.period.start)}${r.period.end ? `–${esc(r.period.end)}` : ""}</span>` : "";
+    return `<li><b>${esc(r.organization)}</b> <span class="arc-title">${esc(r.title)}</span>${period}</li>`;
+  }).join("");
+  const cls = emphasised.size ? (emphasised.has(chapter.id) ? " is-emphasised" : " is-quiet") : "";
+  return `      <li class="arc-cell${cls}">
+        <h3 class="arc-label">${t(chapter.label)}${chapter.period ? ` <span class="arc-period">${esc(chapter.period)}</span>` : ""}</h3>
+        <p class="arc-summary">${tb(chapter.summary)}</p>
+        ${roleRows ? `<ul class="arc-roles">${roleRows}</ul>` : ""}
+      </li>`;
+}).join("\n");
+
+const defaultLede = {
+  en: "20+ years across brand, interactive experiences, education, product, enterprise systems, and AI. The medium kept changing — the underlying instinct did not.",
+  jp: "ブランド、空間体験、教育、プロダクト、企業基盤、そして AI。20 年以上にわたりメディアは変わり続けても、根底にある衝動は変わりません。",
+};
+---
+<section class="band career" id="career">
+  <SectionHead title={section.title ?? { en: "Different mediums. Same instinct.", jp: "媒体は変わっても、感覚は同じ。" }} lede={section.lede ?? defaultLede} />
+  <ol class="arc" set:html={cells} />
+  <p class="arc-more"><a href={url("about.html")}><span class="t-en">Full background →</span><span class="t-jp">経歴の詳細 →</span></a></p>
+</section>

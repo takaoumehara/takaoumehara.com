@@ -1,0 +1,22 @@
+---
+// creativity is everywhere: the studio's own line, from lib.profile.studio.
+// Ported from studioSection() in src/render/sections.mjs.
+import { esc, tb } from "../../lib/html.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lib: any }
+const { section, lib } = Astro.props;
+const s = lib.profile.studio;
+
+const defaultLede = {
+  en: "The independent design & innovation studio I founded in 2006. This is where client work, ventures, interactive experiments, and executive partnerships take concrete shape.",
+  jp: "2006 年から続けているデザイン＆イノベーションスタジオです。クライアントワークだけでなく、自分たちのプロダクト、実験、新規事業、経営チームとの仕事もここから動かしています。",
+};
+---
+<section class="band studio" id="studio">
+  <SectionHead title={section.title ?? { en: "creativity is everywhere", jp: "creativity is everywhere" }} lede={section.lede ?? defaultLede} />
+  <div class="studio-row">
+    <p class="studio-note" set:html={tb(s.note)} />
+    <a class="btn-secondary" href={s.url} target="_blank" rel="noopener">{s.name} ↗</a>
+  </div>
+</section>

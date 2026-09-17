@@ -1,0 +1,21 @@
+---
+// Category page: Interactive & Playable. src/categories/interactive.json is
+// the data; this file only wires it into the shell. Edit the category or the
+// underlying evidence, not this page.
+import Site from "../layouts/Site.astro";
+import CategoryPage from "../components/category/CategoryPage.astro";
+import { getCategories, getLibrary } from "../lib/site.mjs";
+
+const lib = getLibrary();
+const category = getCategories().find((c) => c.slug === "interactive");
+const first = lib.evidence.get(category.groups[0].items[0]);
+---
+<Site
+  title={category.seo.title}
+  description={category.seo.description}
+  canonical={"https://takaoumehara.com/" + category.output}
+  ogImage={first?.assets?.hero ?? first?.assets?.thumb}
+  current={"/" + category.output}
+>
+  <CategoryPage category={category} lib={lib} />
+</Site>

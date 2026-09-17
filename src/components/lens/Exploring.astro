@@ -1,0 +1,32 @@
+---
+// What I'm exploring now: a thesis or an in-motion venture per cell. Ported
+// from exploringSection() in src/render/sections.mjs.
+import { esc, t, tb, plain, url } from "../../lib/html.mjs";
+import { status } from "../../lib/labels.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lib: any }
+const { section, lib } = Astro.props;
+
+const cells = section.items.map((id: string) => {
+  const thesis = lib.theses.find((th: any) => th.id === id);
+  if (thesis) {
+    return `      <div class="explore-cell">
+        <h3 class="explore-statement">${t(thesis.statement)}</h3>
+        ${thesis.body ? `<p class="explore-body">${tb(thesis.body)}</p>` : ""}
+      </div>`;
+  }
+  const venture = lib.evidence.get(id);
+  const link = venture.links?.external ?? venture.links?.caseStudy;
+  return `      <div class="explore-cell">
+        <p class="explore-kicker">${esc(venture.shortTitle ?? venture.title)} ${status(venture.status)}</p>
+        <h3 class="explore-statement">${t(venture.question)}</h3>
+        <p class="explore-body">${tb(venture.thesis)}</p>
+        ${link ? `<a class="card-link" href="${esc(url(link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${esc(plain(venture.shortTitle ?? venture.title))} →</a>` : ""}
+      </div>`;
+}).join("\n");
+---
+<section class="band exploring" id="exploring">
+  <SectionHead title={section.title ?? { en: "What I'm exploring now", jp: "いま探っていること" }} lede={section.lede} />
+  <div class="explore-grid" set:html={cells} />
+</section>

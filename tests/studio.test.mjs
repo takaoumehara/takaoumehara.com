@@ -1,22 +1,20 @@
-// Phase 3b — the Studio (studio/) and its API (api/).
+// The Studio (src/pages/studio, src/studio/*.mjs) and its API (src/server,
+// src/pages/api/**).
 //
 // The page runs the engine in the browser on the same modules the build uses;
 // the API signs the owner in with GitHub and commits a lens under their name.
-// These tests run the handlers directly with a stubbed GitHub.
+// These tests run the handlers directly with a stubbed GitHub — no Astro.
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
-import { loadLibrary, loadLenses, ROOT } from "../src/lib/load.mjs";
+import { loadLibrary, loadLenses, loadCategories, ROOT, serializeLibrary } from "../src/lib/load.mjs";
 import { hydrateLibrary } from "../src/lib/library.mjs";
-import { renderAll } from "../src/build.mjs";
-import { seal, unseal, currentUser, parseCookies, cookie, SESSION_COOKIE, STATE_COOKIE } from "../api/_lib/session.mjs";
-import { commitFiles } from "../api/_lib/github.mjs";
-import { prepareLens, publishLens } from "../api/_lib/publish.mjs";
-import { GET as login } from "../api/auth/login.mjs";
-import { handleCallback } from "../api/auth/callback.mjs";
-import { handleFetch } from "../api/fetch-jd.mjs";
-import { handlePublish } from "../api/publish.mjs";
+import { loadLexicon } from "../src/analyze/intake.node.mjs";
+import { seal, unseal, currentUser, parseCookies, cookie, SESSION_COOKIE, STATE_COOKIE } from "../src/server/session.mjs";
+import { commitFiles } from "../src/server/github.mjs";
+import { prepareLens, publishLens } from "../src/server/publish.mjs";
+import { handleLogin, handleCallback, handleFetchJd, handlePublish } from "../src/server/handlers.mjs";
 
 process.env.GITHUB_CLIENT_ID = "test-client";
 process.env.GITHUB_CLIENT_SECRET = "test-secret";
@@ -26,6 +24,7 @@ process.env.SITE_URL = "https://takaoumehara.com";
 
 const lib = loadLibrary();
 const lenses = loadLenses();
+const categories = loadCategories();
 const owner = { login: "takaoumehara", token: "gho_test", exp: Date.now() + 60_000 };
 const stripeDraft = () => JSON.parse(readFileSync(join(ROOT, "src", "lenses", "stripe.json"), "utf8"));
 
@@ -74,7 +73,7 @@ test("only the owner's session counts, and an expired one does not", async () =>
 // ── OAuth ───────────────────────────────────────────────────────────────────
 
 test("login sends the owner to GitHub with a state cookie and the public_repo scope only", () => {
-  const r = login(new Request("https://takaoumehara.com/api/auth/login"));
+  const r = handleLogin(new Request("https://takaoumehara.com/api/auth/login"));
   assert.equal(r.status, 302);
   const to = new URL(r.headers.get("location"));
   assert.equal(to.origin + to.pathname, "https://github.com/login/oauth/authorize");
@@ -106,34 +105,34 @@ test("the callback refuses a mismatched state, refuses anyone but the owner, and
 // ── Fetching a posting ──────────────────────────────────────────────────────
 
 test("fetch-jd needs the owner, reads a page server-side, and reports an unreadable one with the paste workaround", async () => {
-  const anon = await handleFetch(new Request("https://takaoumehara.com/api/fetch-jd?url=https://jobs.example.com/1"));
+  const anon = await handleFetchJd(new Request("https://takaoumehara.com/api/fetch-jd?url=https://jobs.example.com/1"));
   assert.equal(anon.status, 401);
   const page = `<html><body><main><h1>Senior Product Designer</h1>${"<p>Design systems, prototyping in code, user research, partnering with engineering.</p>".repeat(8)}</main></body></html>`;
   const fetchImpl = async () => new Response(page, { status: 200, headers: { "content-type": "text/html" } });
-  const ok = await handleFetch(new Request("https://takaoumehara.com/api/fetch-jd?url=https://boards.greenhouse.io/acme/jobs/1"), { user: owner, fetchImpl });
+  const ok = await handleFetchJd(new Request("https://takaoumehara.com/api/fetch-jd?url=https://boards.greenhouse.io/acme/jobs/1"), { user: owner, fetchImpl });
   assert.equal(ok.status, 200);
   const data = await ok.json();
   assert.match(data.text, /Senior Product Designer/);
   assert.equal(data.company, "Acme");
-  const empty = await handleFetch(new Request("https://takaoumehara.com/api/fetch-jd?url=https://jobs.example.com/1"), { user: owner, fetchImpl: async () => new Response("<html><body><div id=app></div></body></html>") });
+  const empty = await handleFetchJd(new Request("https://takaoumehara.com/api/fetch-jd?url=https://jobs.example.com/1"), { user: owner, fetchImpl: async () => new Response("<html><body><div id=app></div></body></html>") });
   assert.equal(empty.status, 422);
   assert.equal((await empty.json()).reason, "unreadable");
 });
 
 // ── Publishing ──────────────────────────────────────────────────────────────
 
-test("publish validates like the build, renders the same HTML, and commits lens + page + library index in one commit", async () => {
+test("publish validates the lens against the whole library and commits only the lens JSON", async () => {
   const gh = fakeGitHub();
   const draft = stripeDraft();
-  const result = await publishLens({ lens: draft, user: owner, env: { REPO: "takaoumehara/takaoumehara.com", PUBLISH_BRANCH: "main", PUBLISH_MODE: "commit", SITE_URL: "https://takaoumehara.com" }, fetchImpl: gh.fetchImpl, lib, lenses });
+  const result = await publishLens({ lens: draft, user: owner, env: { REPO: "takaoumehara/takaoumehara.com", PUBLISH_BRANCH: "main", PUBLISH_MODE: "commit", SITE_URL: "https://takaoumehara.com" }, fetchImpl: gh.fetchImpl, lib, lenses, categories });
   assert.equal(result.url, "https://takaoumehara.com/lens/stripe");
   assert.equal(result.sha, "new-commit");
-  assert.deepEqual(result.files, ["src/lenses/stripe.json", "lens/stripe/index.html", "assets/studio/library.json"]);
+  assert.deepEqual(result.files, ["src/lenses/stripe.json"], "only the lens JSON is committed — Vercel builds the page from it");
   const blobs = gh.calls.filter((c) => /\/git\/blobs$/.test(c.url)).map((c) => c.body.content);
-  const published = { ...draft, status: "published" };
-  const expected = renderAll({ lib, lenses: [...lenses.filter((l) => l.slug !== "stripe").map(({ _file, ...l }) => l), published], assetExists: () => true });
-  assert.equal(blobs[1], expected.get("lens/stripe/index.html"), "the committed page is byte-for-byte what node src/build.mjs would write");
-  assert.equal(JSON.parse(blobs[0]).status, "published");
+  assert.equal(blobs.length, 1, "one blob: the lens, no page, no library index");
+  const committed = JSON.parse(blobs[0]);
+  assert.equal(committed.status, "published");
+  assert.equal(committed.slug, "stripe");
   assert.ok(gh.calls.some((c) => c.method === "PATCH" && /refs\/heads\/main/.test(c.url)), "fast-forwards main");
   assert.ok(gh.calls.every((c) => !c.url.includes("/user") || c.method === "GET"));
   const commit = gh.calls.find((c) => /\/git\/commits$/.test(c.url));
@@ -145,7 +144,7 @@ test("publish refuses an invalid lens with the guard's findings, and the default
   const gh = fakeGitHub();
   const bad = stripeDraft();
   bad.hero.body = { en: "I led 400 designers.", jp: "400 人を率いた。" };
-  await assert.rejects(publishLens({ lens: bad, user: owner, env: { REPO: "x/y" }, fetchImpl: gh.fetchImpl, lib, lenses }), (e) => e.status === 422 && e.details.some((d) => /Claim Guard/.test(d)));
+  await assert.rejects(publishLens({ lens: bad, user: owner, env: { REPO: "x/y" }, fetchImpl: gh.fetchImpl, lib, lenses, categories }), (e) => e.status === 422 && e.details.some((d) => /Claim Guard/.test(d)));
   assert.equal(gh.calls.length, 0, "nothing reaches GitHub");
   assert.throws(() => prepareLens({ ...stripeDraft(), slug: "default" }), /default lens/);
   assert.throws(() => prepareLens({ ...stripeDraft(), slug: "Bad Slug" }), /kebab-case/);
@@ -153,7 +152,7 @@ test("publish refuses an invalid lens with the guard's findings, and the default
 
 test("PUBLISH_MODE=pr commits to a new branch and opens a pull request instead", async () => {
   const gh = fakeGitHub();
-  const result = await publishLens({ lens: stripeDraft(), user: owner, env: { REPO: "x/y", PUBLISH_BRANCH: "main", PUBLISH_MODE: "pr" }, fetchImpl: gh.fetchImpl, lib, lenses });
+  const result = await publishLens({ lens: stripeDraft(), user: owner, env: { REPO: "x/y", PUBLISH_BRANCH: "main", PUBLISH_MODE: "pr" }, fetchImpl: gh.fetchImpl, lib, lenses, categories });
   assert.equal(result.prUrl, "https://github.com/x/y/pull/99");
   assert.match(result.branch, /^studio\/stripe-/);
   assert.ok(!gh.calls.some((c) => c.method === "PATCH"), "main is not touched");
@@ -165,7 +164,7 @@ test("the publish handler needs a session and a JSON body", async () => {
   const noBody = await handlePublish(new Request("https://takaoumehara.com/api/publish", { method: "POST", body: "nope" }), { user: owner });
   assert.equal(noBody.status, 400);
   const gh = fakeGitHub();
-  const ok = await handlePublish(new Request("https://takaoumehara.com/api/publish", { method: "POST", body: JSON.stringify({ lens: stripeDraft() }) }), { user: owner, fetchImpl: gh.fetchImpl, lib, lenses, env: { REPO: "x/y", SITE_URL: "https://takaoumehara.com" } });
+  const ok = await handlePublish(new Request("https://takaoumehara.com/api/publish", { method: "POST", body: JSON.stringify({ lens: stripeDraft() }) }), { user: owner, fetchImpl: gh.fetchImpl, lib, lenses, categories, env: { REPO: "x/y", SITE_URL: "https://takaoumehara.com" } });
   assert.equal(ok.status, 200);
   assert.equal((await ok.json()).url, "https://takaoumehara.com/lens/stripe");
 });
@@ -182,9 +181,9 @@ test("commitFiles sends one blob per file and one commit on top of the branch he
 // ── The page and its modules ────────────────────────────────────────────────
 
 test("the Studio is noindex, off the nav, and every module it imports is browser-safe (no node: imports anywhere in the graph)", () => {
-  const html = readFileSync(join(ROOT, "studio", "index.html"), "utf8");
-  assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
-  assert.match(html, /studio\.mjs/);
+  const studioPage = readFileSync(join(ROOT, "src", "pages", "studio", "index.astro"), "utf8");
+  assert.match(studioPage, /<meta name="robots" content="noindex, nofollow">/);
+  assert.match(studioPage, /studio\.mjs/);
   assert.ok(!/studio/.test(readFileSync(join(ROOT, "src", "render", "shell.mjs"), "utf8")), "the Studio is not in the site nav");
 
   const seen = new Set();
@@ -194,19 +193,22 @@ test("the Studio is noindex, off the nav, and every module it imports is browser
     const src = readFileSync(file, "utf8");
     for (const m of src.matchAll(/^import\s[^'"]*['"]([^'"]+)['"]/gm)) {
       const spec = m[1];
+      if (spec.endsWith("?raw")) continue; // a text asset (the sample posting), not a module
       assert.ok(!spec.startsWith("node:"), `${file.replace(ROOT, "")} imports ${spec}, which a browser cannot load`);
       if (spec.startsWith(".")) walk(resolve(dirname(file), spec));
     }
   };
-  walk(join(ROOT, "studio", "studio.mjs"));
-  walk(join(ROOT, "try", "try.mjs"));
-  assert.ok(seen.size >= 10, `walked ${seen.size} modules`);
-  assert.ok(!/robots" content="noindex/.test(readFileSync(join(ROOT, "try", "index.html"), "utf8")), "the public demo is meant to be found");
-  for (const f of ["src/analyze/jd.mjs", "src/analyze/draft.mjs", "src/render/page.mjs", "src/validate.mjs", "src/lib/library.mjs"]) assert.ok(seen.has(join(ROOT, f)), `${f} is in the graph`);
+  walk(join(ROOT, "src", "studio", "studio.mjs"));
+  walk(join(ROOT, "src", "studio", "try.mjs"));
+  assert.ok(seen.size >= 8, `walked ${seen.size} modules`);
+  const tryPage = readFileSync(join(ROOT, "src", "pages", "try", "index.astro"), "utf8");
+  assert.ok(!/robots" content="noindex/.test(tryPage), "the public demo is meant to be found");
+  for (const f of ["src/analyze/jd.mjs", "src/analyze/draft.mjs", "src/validate.mjs", "src/lib/library.mjs"]) assert.ok(seen.has(join(ROOT, f)), `${f} is in the graph`);
 });
 
-test("the library JSON the Studio loads hydrates into the same evidence the build uses", () => {
-  const json = JSON.parse(readFileSync(join(ROOT, "assets", "studio", "library.json"), "utf8"));
+test("the library JSON the Studio and /try load (assets/studio/library.json.ts serializeLibrary()) hydrates into the same evidence the build uses", () => {
+  const lexicon = loadLexicon();
+  const json = serializeLibrary(lib, { lexicon, lensSlugs: lenses.map((l) => l.slug) });
   const hydrated = hydrateLibrary(json);
   assert.equal(hydrated.evidence.size, lib.evidence.size);
   assert.ok(hydrated.lexicon?.capabilities, "the lexicon travels with the library");
@@ -215,8 +217,4 @@ test("the library JSON the Studio loads hydrates into the same evidence the buil
     const { _notes, ...rest } = item;
     assert.deepEqual(hydrated.evidence.get(slug), rest, `${slug} survives the round trip (without _notes)`);
   }
-  const vercelignore = readFileSync(join(ROOT, ".vercelignore"), "utf8");
-  assert.ok(!/^src\s*$/m.test(vercelignore), "src/ must be deployed: the Studio imports it as ES modules");
-  assert.match(vercelignore, /src\/pitches\/\*/);
-  assert.ok(existsSync(join(ROOT, "vercel.json")));
 });

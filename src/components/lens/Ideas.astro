@@ -1,0 +1,46 @@
+---
+// Ideas & methods: the long-running thinking behind the current work. Ported
+// from ideasSection() in src/render/sections.mjs. Always shows lib.ideas — no
+// lens picks these, so `section.items` is not read.
+import { esc, t, tb, url } from "../../lib/html.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lib: any }
+const { section, lib } = Astro.props;
+
+const items = lib.ideas ?? [];
+const cards = items.map((idea: any) => {
+  const link = idea.links?.external ?? idea.links?.caseStudy;
+  const linkHtml = link
+    ? `<a class="card-link" href="${esc(url(link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${/^https?:/.test(link) ? `<span class="t-en">Explore ↗</span><span class="t-jp">詳細 ↗</span>` : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`}</a>`
+    : "";
+  const coverHtml = idea.assets?.cover
+    ? `<div class="idea-cover"><img src="${esc(url(idea.assets.cover))}" alt="${esc(idea.title)}" loading="lazy" /></div>`
+    : "";
+  const taglineHtml = idea.tagline
+    ? `<p class="idea-tagline">${t(idea.tagline)}</p>`
+    : "";
+  return `      <article class="idea-card${coverHtml ? " has-cover" : ""}">
+        ${coverHtml}
+        <div class="idea-content">
+          <div class="idea-head">
+            <span class="pill">${esc(idea.year)}</span>
+            <h3 class="card-title">${esc(idea.title)}</h3>
+            <span class="idea-role">${esc(idea.role)}</span>
+          </div>
+          ${taglineHtml}
+          <p class="idea-summary">${tb(idea.summary)}</p>
+          ${linkHtml}
+        </div>
+      </article>`;
+}).join("\n");
+
+const defaultLede = {
+  en: "Long before my current work in AI and ventures, I was interested in a simpler question: How do we see possibilities in things we normally overlook?",
+  jp: "AI よりずっと前から、僕が興味を持ってきたのは、「見慣れたものを、どうすれば違って見られるか」ということでした。扱うテーマや技術は変わってきましたが、この問いは今の仕事にも深くつながっています。",
+};
+---
+<section class="band ideas" id="ideas">
+  <SectionHead title={section.title ?? { en: "Ideas & methods", jp: "ずっと考えてきたこと" }} lede={section.lede ?? defaultLede} />
+  <div class="ideas-grid" set:html={cards} />
+</section>

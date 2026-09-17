@@ -1,0 +1,24 @@
+---
+// Same content as src/pages/now.astro, served at /now/ — the old build
+// produced both now.html and now/index.html for this page; Astro's
+// build.format: 'file' needs two source files to keep doing that.
+import Site from "../../layouts/Site.astro";
+import NowPage from "../../components/now/NowPage.astro";
+import { getLibrary } from "../../lib/site.mjs";
+
+const lib = getLibrary();
+const nowData = lib.now;
+
+const seo = {
+  title: "Now — Takao Umehara",
+  description: "Active ventures, running prototypes, and open-source tools currently on Takao Umehara's desk.",
+};
+---
+<Site
+  title={seo.title}
+  description={seo.description}
+  canonical="https://takaoumehara.com/now"
+  current="/now.html"
+>
+  <NowPage nowData={nowData} />
+</Site>

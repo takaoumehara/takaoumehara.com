@@ -1,0 +1,41 @@
+---
+// I make things to think: the playable / prototype work. Ported from
+// experimentsSection() in src/render/sections.mjs.
+import { esc, t, tb, url, mediaFill } from "../../lib/html.mjs";
+import { status, inputLabel, displayTitle } from "../../lib/labels.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lib: any }
+const { section, lib } = Astro.props;
+
+const cards = section.items.map((ref: any) => {
+  const item = lib.evidence.get(ref.id);
+  // A card gets one line. The lens may still reframe it with an approved angle;
+  // the full summary belongs on the page behind the card, not on the card.
+  const summary = ref.summaryOverride ?? (ref.angle ? item.angles[ref.angle] : item.cardLine ?? item.summary);
+  const live = item.playable && item.links?.live;
+  const link = live
+    ? `<a class="card-link" href="${esc(item.links.live)}" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>`
+    : item.links?.caseStudy ? `<a class="card-link" href="${esc(url(item.links.caseStudy))}"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>` : "";
+  const target = live ? ` data-href="${esc(item.links.live)}" data-external="true"` : item.links?.caseStudy ? ` data-href="${esc(url(item.links.caseStudy))}"` : "";
+  const art = mediaFill(item);
+  return `      <article class="exp-card" tabindex="0"${target}>
+        <div class="exp-media">${art}</div>
+        <div class="card-body">
+          <p class="chips"><span class="pill pill--in">${inputLabel(item.input)}</span>${status(item.status)}</p>
+          <h3 class="card-title">${displayTitle(item)}</h3>
+          <p class="card-desc">${tb(summary)}</p>
+          ${link}
+        </div>
+      </article>`;
+}).join("\n");
+
+const defaultLede = {
+  en: "Input: a voice, a face, a drawn line, every phone in the room. Output: a screen bigger than the one you are holding. Almost none of it is AI — it is networking, tracking and timing.",
+  jp: "入力は声・表情・手描きの線・その場のスマホ全部。出力は手元より大きな画面。ほとんど AI ではなく、通信とトラッキングとタイミングの仕事。",
+};
+---
+<section class="band experiments" id="experiments">
+  <SectionHead title={section.title ?? { en: "I make things to think", jp: "考えるために、つくる" }} lede={section.lede ?? defaultLede} />
+  <div class="exp-grid" set:html={cards} />
+</section>

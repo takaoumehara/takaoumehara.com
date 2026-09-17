@@ -1,13 +1,18 @@
 ---
 // The canonical site: the default lens (src/lenses/default.json), rendered
-// through the same components every other lens uses. Sections are ported in
-// src/components/lens/LensPage.astro; until then the hero stands alone.
+// through the same components every other lens uses (src/components/lens/LensPage.astro).
 import Site from "../layouts/Site.astro";
-import Hero from "../components/lens/Hero.astro";
+import LensPage from "../components/lens/LensPage.astro";
 import { getLibrary, defaultLens } from "../lib/site.mjs";
 const lib = getLibrary();
 const lens = defaultLens();
+
+// The og:image fallback: the first proof item's hero, or its thumb. Ported
+// from renderLens() in src/render/page.mjs.
+const firstProofRef = lens.sections.find((s: any) => s.type === "proof")?.items?.[0];
+const firstItem = firstProofRef ? lib.evidence.get(firstProofRef.id) : null;
+const ogImage = firstItem?.assets?.hero ?? firstItem?.assets?.thumb;
 ---
-<Site title={lens.seo.title} description={lens.seo.description} canonical="https://takaoumehara.com/" lensSlug="default">
-  <Hero lens={lens} lib={lib} />
+<Site title={lens.seo.title} description={lens.seo.description} canonical="https://takaoumehara.com/" lensSlug="default" ogImage={ogImage}>
+  <LensPage lens={lens} lib={lib} />
 </Site>

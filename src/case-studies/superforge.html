@@ -1,0 +1,245 @@
+<div class="breadcrumb">
+    <a href="../ai-tools.html">AI Tools</a>
+    <span>/</span>
+    <a href="#">superforge</a>
+  </div>
+
+  <main class="deck">
+
+    <!-- ═══ 1 · Hero ═══ -->
+    <header data-vt-hero class="wds-hero wds-slide reveal-on-scroll">
+      <p class="wds-kick">Skill system · 14 Claude Code skills · Model tiering</p>
+      <div class="wds-chips">
+        <span class="wds-chip">14 agent skills</span>
+        <span class="wds-chip">Model tiering</span>
+        <span class="wds-chip">Persistent docs</span>
+        <span class="wds-chip">MIT</span>
+      </div>
+      <h1 class="wds-serif">A multi-agent system built to make AI development <em>repeatable</em>.</h1>
+      <p class="wds-hero-lead">AI coding assistants lose their context the moment a session is cleared, and the quality of the output goes with it. I split development into <strong>fourteen specialist skills</strong>, gave every subtask a model sized to its difficulty, and required each skill to write its result to a file before reporting back. Rebuilding the same instructions every morning stops being part of the job — and the token bill stops paying for it.</p>
+      <div class="mech-ctas">
+        <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
+      </div>
+      <dl class="wds-hero-meta">
+        <div><dt>Client</dt><dd>Personal project · open source</dd></div>
+        <div><dt>Role</dt><dd>Lead developer &amp; prompt systems architect</dd></div>
+        <div><dt>Year</dt><dd>2026 — ongoing</dd></div>
+      </dl>
+    </header>
+
+    <!-- ═══ 2 · The Tension ═══ -->
+    <section class="wds-slide reveal-on-scroll" aria-label="The tension">
+      <div class="tw">
+        <div class="tw-col tw-before">
+          <p class="tw-tag">Where it started</p>
+          <h3>Single-model transient chats</h3>
+          <p>Standard workflows pass every task — from business strategy down to a minor text replacement — to a single expensive model. Decisions live only in a temporary chat window, so the same setup gets explained again the next morning.</p>
+          <div class="tw-chips">
+            <span class="tw-chip">High API cost</span>
+            <span class="tw-chip">Lost context</span>
+            <span class="tw-chip">Ad-hoc prompts</span>
+          </div>
+        </div>
+        <div class="tw-col tw-after">
+          <p class="tw-tag">What it became</p>
+          <h3>Tiered models &amp; saved assets</h3>
+          <p>Tasks are triaged into five complexity tiers, and the bottom one — bulk text that never touches the repository — is offloaded to a local CLI at no cost. Every skill writes a structured file under <code>docs/</code>, so the context survives a session reset or a switch to another tool.</p>
+          <div class="tw-chips">
+            <span class="tw-chip">5 model tiers</span>
+            <span class="tw-chip">docs/ persistence</span>
+            <span class="tw-chip">0-cost local run</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 3 · Approach ═══ -->
+    <section class="tool-statement st-cyan wds-slide reveal-on-scroll">
+      <p class="wds-kick">The decision</p>
+      <h2 class="wds-serif">Task complexity must determine <em>model selection</em>.</h2>
+      <p class="st-lead">To settle the trade-off between speed, depth and cost, I gave up on relying on a single model. An orchestration hub reads the task it is handed and assigns it a tier. High-reasoning models are reserved for architectural and business judgment; mechanical work is spread across fast, light ones.</p>
+    </section>
+
+    <!-- ═══ 4 · Structure ═══ -->
+    <section class="tool-mech wds-slide reveal-on-scroll" aria-label="Structure">
+      <h3>One timeline became a workshop with four rooms.</h3>
+      <p class="mech-lead">The old structure was not really a structure. Thinking, building and checking all shared one thread, so nothing showed how far a decision had actually got. The new tree gives each phase its own skills and its own output file — and it is the file, not the conversation, that carries the project forward.</p>
+      <div class="tree-grid">
+        <div class="tree is-before">
+          <p class="tree-label">Before</p>
+          <pre><b>One chat session</b>
+ ├─ app concept       (typed by hand)
+ ├─ UI design talk    (typed by hand)
+ ├─ code &amp; debug      (typed by hand)
+ └─ session cleared   → everything gone</pre>
+          <p class="tree-note">Scrolling back through old logs, or explaining the same thing again, was a daily cost.</p>
+        </div>
+        <div class="tree is-after">
+          <p class="tree-label">After</p>
+          <pre><b>HUB: superforge</b>  (tiering + routing)
+ ├─ 1. THINK  brain / biz / brand
+ │            → product-idea.md, business-model.md
+ ├─ 2. BUILD  ui / dev
+ │            → design.md, plan.md
+ ├─ 3. TEST   test / debug / a11y / secure
+ │            → failforward.md, security.md
+ └─ 4. SHIP   roast / verify / ship / handoff
+              → ship-readiness.md, llms.txt</pre>
+          <p class="tree-note">One long prompt became fourteen skills with a single responsibility each, so the constraints and checks a given job needs can be injected on their own.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 5 · Moves ═══ -->
+    <section class="tool-mech is-plain wds-slide reveal-on-scroll" aria-label="How it was built">
+      <h3>Four decisions, in the order they were made.</h3>
+      <div class="moves">
+        <div class="move">
+          <div class="move-n">01</div>
+          <h4>Fourteen roles and one front desk</h4>
+          <p>To stop a single prompt from running away with the whole job, I defined four phases — think, build, test, ship — modelled on how client work is actually staged, and placed fourteen skills inside them. The central <code>superforge</code> skill routes each task.</p>
+        </div>
+        <div class="move">
+          <div class="move-n">02</div>
+          <h4>A cost-and-capability matrix, five tiers deep</h4>
+          <p>Rules for when each model earns its place: Opus for judgment, Fable for long unattended runs, Sonnet for volume, Haiku for fast audits. Text work that never touches the repository moves to the local <code>gemini</code> CLI, which costs nothing to run.</p>
+        </div>
+        <div class="move">
+          <div class="move-n">03</div>
+          <h4>docs/ as the single source of truth</h4>
+          <p>So that a project can continue after the conversation is gone, every skill is required to write a specific format of Markdown or HTML into <code>docs/</code> when it finishes. Switch tools or switch models, and the work resumes immediately.</p>
+        </div>
+        <div class="move">
+          <div class="move-n">04</div>
+          <h4>Refusing the average answer</h4>
+          <p>To avoid the safe, unremarkable answer a model defaults to, I built in a <strong>BreakBias</strong> engine that forces ideas past the obvious, and a <strong>FailForward</strong> memory that learns from past bugs and can be searched before a new one is diagnosed.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 6 · Evidence — the map ═══ -->
+    <section class="ev wds-slide reveal-on-scroll" aria-label="The skill map">
+      <h3>One sentence, and where it goes</h3>
+      <p class="ev-lead">The whole system seen from the typing end: what you actually enter, which skill takes it, in what order, and the file each one leaves behind. Every name on the right is a file that outlives the session.</p>
+      <div class="ev-figwrap">
+        <img class="ev-fig" src="../assets/superforge/superforge-map.svg?v=2" width="980" height="580" loading="lazy" decoding="async" alt="The superforge front desk. One typed sentence is routed through four phases — Think (brain, biz, brand), Build (ui, dev), Prove (test, debug, a11y, secure) and Ship (roast, verify, ship, handoff) — and each skill writes its own file under docs/.">
+        
+      </div>
+      <p class="ev-cap">The figure is SVG rather than a screenshot — the labels inside it are real text, and they change language along with the rest of the page.</p>
+    </section>
+
+    <!-- ═══ 7 · Evidence — model tiers ═══ -->
+    <section class="ev wds-slide reveal-on-scroll" aria-label="Model tiers">
+      <h3>The tier is chosen before any agent is spawned</h3>
+      <p class="ev-lead">Judgment costs more than volume, so the two are never billed the same. The bottom tier is the interesting one: work that needs no repository access runs on the local <code>gemini</code> CLI and consumes no Anthropic usage at all.</p>
+      <div class="ev-figwrap">
+        <img class="ev-fig" src="../assets/superforge/superforge-models.svg?v=2" width="980" height="620" loading="lazy" decoding="async" alt="Model tier table. A judgment, A endurance, B volume, C routine and D bulk text, mapped across Claude, Gemini, Codex and Kimi. Tier D never touches the repository, so it stays off Anthropic usage entirely.">
+        
+      </div>
+    </section>
+
+    <!-- ═══ 8 · Craft ═══ -->
+    <section class="craft wds-slide reveal-on-scroll" aria-label="How AI was used">
+      <p class="wds-kick">How AI was used</p>
+      <h3>The model wrote the scaffolding. The opinions it could not.</h3>
+      <p class="craft-lead">More than eighteen configurations of the skill set were tried. The test for each was the same: clear the session completely, and see whether the next model could resume at the same quality from the written files alone.</p>
+      <div class="craft-cols">
+        <div class="craft-col">
+          <p class="craft-col-l">What AI did</p>
+          <p>Wrote the boilerplate for all fourteen skills, generated the first pass of the documentation in five languages, and ran the test workflows.</p>
+        </div>
+        <div class="craft-col">
+          <p class="craft-col-l">Where it fell short</p>
+          <p>Followed faithfully, the output collapsed toward the polished but familiar — a design or an idea you have seen somewhere before. The sharp product decisions and the strict security and accessibility rules were the first things to fall out.</p>
+        </div>
+        <div class="craft-col">
+          <p class="craft-col-l">What I added</p>
+          <ul>
+            <li>The BreakBias engine, which breaks the average idea on purpose</li>
+            <li>The VVA Matrix — visual density and tone made measurable on four axes</li>
+            <li>FailForward, which tags a bug's root cause so it is recalled next time</li>
+            <li>A sources ledger carrying verification dates, so changes to external models cannot rot the system quietly</li>
+          </ul>
+        </div>
+      </div>
+      <div class="drop">
+        <p class="drop-label">Considered and dropped</p>
+        <div class="drop-grid">
+          <div class="drop-item">
+            <h4>A one-click generator</h4>
+            <p><b>The appeal:</b> say "build me an app" once, and let the whole pipeline finish in the background.</p>
+            <p><b>Why not:</b> the human is shut out of the decisions that matter — tone, business model — and what comes back is a mountain of code too large to correct.</p>
+          </div>
+          <div class="drop-item">
+            <h4>One giant prompt</h4>
+            <p><b>The appeal:</b> one file to manage, and the easiest thing in the world to distribute and update.</p>
+            <p><b>Why not:</b> the context window fills, the instructions begin contradicting each other, and the model quietly skips the security checks and the UI token constraints.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 9 · Proof ═══ -->
+    <section class="proof wds-slide reveal-on-scroll" aria-label="Proof">
+      <h3>What is actually in it</h3>
+      <div class="proof-grid">
+        <div class="proof-cell">
+          <div class="proof-n">14</div>
+          <p class="proof-d">specialist skills, covering the whole development lifecycle</p>
+        </div>
+        <div class="proof-cell">
+          <div class="proof-n">5</div>
+          <p class="proof-d">languages the README and documentation ship in</p>
+        </div>
+        <div class="proof-cell">
+          <div class="proof-n">Tier D</div>
+          <p class="proof-d">runs entirely locally — bulk text work that costs nothing to run</p>
+        </div>
+      </div>
+      <p class="proof-close">What this design moves is a developer's morning. <strong>The time spent re-explaining the same premises to a model drops to zero</strong>, the decisions that used to evaporate stay written down, and the token bill is spent where judgment is actually needed.</p>
+      <div class="proof-stack">
+        <p class="proof-stack-l">Built with</p>
+        <p>Claude Code Skills · Antigravity IDE · Codex CLI · Gemini CLI<br>
+           Opus 5 / Fable 5 / Sonnet 5 / Haiku 4.5 / gemini-3.6-flash<br>
+           SVG architecture visualization · install.sh / install.ps1<br>
+           BreakBias engine · FailForward debug memory</p>
+      </div>
+      <div class="mech-ctas">
+        <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
+      </div>
+    </section>
+
+    <!-- ═══ 10 · Retrospective ═══ -->
+    <section class="retro wds-slide reveal-on-scroll" aria-label="What is unresolved">
+      <h3>Two things this has not solved</h3>
+      <p class="retro-lead">Both are structural rather than incidental — they are the price of building on top of models someone else ships.</p>
+      <div class="retro-grid">
+        <div class="retro-item">
+          <div class="retro-n">01</div>
+          <h4>The inevitable decay of external model APIs</h4>
+          <p>Model names and API specifications change every few months. A <code>SOURCES.md</code> ledger carrying verification dates keeps the drift visible, but the update logic is not automated — periodic manual or workflow checking is still the running cost of this system.</p>
+        </div>
+        <div class="retro-item">
+          <div class="retro-n">02</div>
+          <h4>Visual feedback limits in a CLI agent environment</h4>
+          <p>The HTML and CSS that <code>superforge-ui</code> produces is strong, but in a CLI-first agent environment there is a lag before a human can look at the rendered result and adjust it. Making headless-browser screenshots seamless is the piece still open.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ 11 · Closing ═══ -->
+    <section class="tool-statement st-cyan wds-slide reveal-on-scroll">
+      <p class="wds-kick">Why it matters</p>
+      <h2 class="wds-serif">Turn conversational chaos into <em>persistent structure</em>.</h2>
+      <div class="mech-ctas">
+        <a class="story-cta" href="https://github.com/takaoumehara/superforge-skill" target="_blank" rel="noopener" aria-label="View superforge on GitHub (opens in a new tab)">GitHub ↗</a>
+        <a class="story-cta" href="../ai-tools.html">Explore other AI Tools →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <div class="project-nav">
+    <a href="cross-model-handoff.html" class="project-nav-link">&larr; cross-model-handoff</a>
+    <a href="interactive-experience-skills.html" class="project-nav-link">Next: interactive-experience-skills &rarr;</a>
+  </div>

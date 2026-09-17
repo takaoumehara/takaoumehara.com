@@ -1,0 +1,27 @@
+---
+// The unified Work Archive: every evidence project, filterable by discipline.
+// src/components/archive/WorkArchive.astro does the rendering; this page only
+// wires it into the shell.
+import Site from "../../layouts/Site.astro";
+import WorkArchive from "../../components/archive/WorkArchive.astro";
+import { getLibrary } from "../../lib/site.mjs";
+
+const lib = getLibrary();
+const items = [...lib.evidence.values()].filter(
+  (item) => !item.hideInArchive && item.slug !== "kanji-puzzle"
+);
+
+const seo = {
+  title: "Work Archive — Takao Umehara",
+  description: "Unified work archive by Takao Umehara. 0→1 products, AI systems, interactive experiences, brand identities, and learning platforms.",
+};
+---
+<Site
+  title={seo.title}
+  description={seo.description}
+  canonical="https://takaoumehara.com/work"
+  ogImage={items[0]?.assets?.hero}
+  current="/work/"
+>
+  <WorkArchive lib={lib} />
+</Site>

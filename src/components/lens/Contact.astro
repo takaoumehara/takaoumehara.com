@@ -1,0 +1,37 @@
+---
+// The closing CTA every lens page ends with. Ported from contactSection() in
+// src/render/sections.mjs. showLensNote is the lens's own note (an object,
+// checked by the Claim Guard), `true` for the standard sentence, or falsy to
+// hide the note entirely (the root/default page).
+import { esc, t, tb, url } from "../../lib/html.mjs";
+
+interface Props { lens: any; lib: any; showLensNote?: boolean | { en: string; jp?: string } }
+const { lens, lib, showLensNote } = Astro.props;
+
+// "index.html" is the one hard-coded site path here; every other href on this
+// page comes from lens/library data. It resolves to the site root.
+const siteUrl = (path: string) => (path === "index.html" ? "/" : url(path));
+
+const secondary = lens.cta.secondary
+  ? `<a href="${esc(siteUrl(lens.cta.secondary.href))}" class="hero-alt">${t(lens.cta.secondary.label)}</a>`
+  : `<a href="${esc(lib.profile.contact.linkedin)}" target="_blank" rel="noopener" class="hero-alt"><span class="t-en">Or reach me on LinkedIn →</span><span class="t-jp">LinkedIn でも →</span></a>`;
+
+// The note is the standard sentence, or the lens's own (a Localized value,
+// checked by the Claim Guard) when it wants to name what it was arranged for.
+const noteText = showLensNote && typeof showLensNote === "object"
+  ? tb(showLensNote)
+  : `<span class="t-en">This view surfaces work from Takao's career archive most relevant to this opportunity. Same experience. Different lens.</span><span class="t-jp">このページは、Takao のキャリアの記録から、この機会にもっとも関係の深い仕事を選んで見せています。同じ経験。違うレンズ。</span>`;
+const note = showLensNote
+  ? `    <p class="lens-note">${noteText} <a href="${esc(siteUrl("index.html"))}"><span class="t-en">The whole story →</span><span class="t-jp">全体の物語 →</span></a></p>`
+  : "";
+---
+<section class="end" id="contact">
+  <h2 class="end-line" set:html={t(lens.cta.title)} />
+  {lens.cta.body && <p class="end-sub" set:html={tb(lens.cta.body)} />}
+  <div class="end-actions">
+    <a href={siteUrl(lens.cta.primary.href)} class="btn-primary" set:html={t(lens.cta.primary.label)} />
+    <Fragment set:html={secondary} />
+  </div>
+  <p class="end-mail"><a href={`mailto:${lib.profile.contact.email}`}>{lib.profile.contact.email}</a></p>
+  <Fragment set:html={note} />
+</section>

@@ -1,0 +1,66 @@
+---
+// The Studio's and /try's preview: POST a lens draft, get back the rendered
+// page. Re-validates like the build (Claim Guard included) and renders with
+// the exact components the built pages use — src/components/lens/LensPage.astro.
+// Runs on demand: the Studio and /try load this into an iframe's srcdoc, so
+// relative URLs need a <base> (added in the layout's head slot below).
+export const prerender = false;
+
+import Site from "../../layouts/Site.astro";
+import LensPage from "../../components/lens/LensPage.astro";
+import { getSite } from "../../lib/site.mjs";
+import { validateLens } from "../../validate.mjs";
+
+if (Astro.request.method !== "POST") {
+  return new Response("POST a lens (as { lens } or the lens object itself) as JSON to preview it.", {
+    status: 405,
+    headers: { "content-type": "text/plain", allow: "POST" },
+  });
+}
+
+let body: any;
+try {
+  body = await Astro.request.json();
+} catch {
+  return new Response(JSON.stringify({ errors: ["invalid JSON body"] }), {
+    status: 422,
+    headers: { "content-type": "application/json" },
+  });
+}
+const lens = body?.lens ?? body;
+lens.status = "published";
+
+// The library only — /lens/preview runs from the deployed function's bundle,
+// which does not carry public/, so asset paths cannot be checked here (they
+// already were, at build time, for everything that shipped).
+const { lib } = getSite({ checkAssets: false });
+
+const errors = validateLens(lens, lib, { assetExists: () => true });
+if (errors.length) {
+  return new Response(JSON.stringify({ errors }), {
+    status: 422,
+    headers: { "content-type": "application/json" },
+  });
+}
+
+// The lens's own note (a Localized value, already Claim-Guarded above) when
+// it set one; the standard sentence otherwise — never hidden, this is always
+// an arranged view, not the canonical site.
+const showLensNote = lens.lensNote != null && typeof lens.lensNote === "object" ? lens.lensNote : true;
+
+const firstProofRef = lens.sections.find((s: any) => s.type === "proof")?.items?.[0];
+const firstItem = firstProofRef ? lib.evidence.get(firstProofRef.id) : null;
+const ogImage = firstItem?.assets?.hero ?? firstItem?.assets?.thumb;
+---
+<Site
+  title={lens.seo?.title ?? lens.slug}
+  description={lens.seo?.description}
+  canonical={`https://takaoumehara.com/lens/${lens.slug}`}
+  noindex={true}
+  lensSlug={lens.slug}
+  ogImage={ogImage}
+  footer={false}
+>
+  <base href="/" slot="head" />
+  <LensPage lens={lens} lib={lib} showLensNote={showLensNote} />
+</Site>
