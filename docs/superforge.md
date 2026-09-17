@@ -84,3 +84,31 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   記録の空欄は `scripts/audit-evidence.mjs` → `docs/evidence-gaps.md`。**無い数字は無いまま**
   （`outcome.status: "unknown"`）。設計は `docs/adaptive-portfolio-architecture.md` §16。
   draft は build されない。見るなら `npm run dev` → `/lens/<slug>/`。
+- **見た目は PORTO ROCHA**（2026-09-17、本人「見た目を original に近づけて」）: トークンは
+  `docs/design/porto-rocha/`（本人が添付した tokens.json / DESIGN.md）を正とし、`src/styles/tokens.css` に写す。
+  - 色は **黒・グレー・白 + System Blue（#007aff、リンクと現在地だけ）**。カードは枠線でも影でもなく
+    **薄いグレーの塗り（`--pr-card`）** で区切る。角丸 8px。装飾なし（紙のグレインは廃止）。
+  - 書体は **SF Pro（Apple）→ Inter → system-ui**、**ウェイトは 400 だけ**。階層はサイズと色で作る。
+    本文 14px / 補足 13px グレー / 見出し 23px（+0.02em）。日本語は Hiragino Sans → Noto Sans JP。
+  - グレーの文字色は `#808080` ではなく **`#666666`**（白地で 5.7:1、現在行のグレー `#e9e9e9` 上で 4.8:1）、青い文字は `#007aff` ではなく **`#0062cc`**（5.3:1）。
+    a11y の pin「4.5:1 未満の文字色を使わない」を優先。`#007aff` そのものは文字を持たない塗り（トグルのトラック）にだけ使う（`--pr-blue-fill`）。
+  - **ダークモード**あり（サイドバーのスイッチ、`localStorage "tu-theme"`、`html[data-theme]`）。
+    `theme: "dark"` のケーススタディ（Interactive の 8 本）は `data-theme-lock` で常に暗く、スイッチは無効表示。
+- **サイドバー**（2026-09-17 改訂）: 幅 `clamp(320px, 25vw, 420px)`。上から
+  「Show all projects」ピル（→ `/all/`）＋ダークモードのトグル＋言語ボタン（JP/EN を交互に）、
+  ワードマーク（大文字・23px）＋ニューヨーク時刻の時計、About カード（`positioning[1]` と
+  Now / Writing / Workshops / Work with me / Studio のリンク行）、カテゴリごとの作品行
+  （グレーのカード・64px サムネ・14px 名前・13px グレー 1 行・行間 8px、**全カテゴリ展開**、折りたたみ可）。
+  About は独立リンクではなくカードのラベルがリンク。
+- **ページ遷移は同一文書内**（2026-09-17）: Astro の `<ClientRouter />` で右カラムだけ差し替え、
+  `<aside class="side">` は `transition:persist` で残す（スクロール位置・折りたたみ・時計が消えない）。
+  `src/scripts/site.js` は `astro:page-load` で毎回初期化し直し、`astro:after-swap` で言語クラスと
+  テーマ属性を戻す（ルーターは `<html>` の属性を新ページのもので置き換えるため）。
+  カードの `data-href` は `navigate()` 経由。**`window.location` で遷移しない。**
+  ケーススタディ本文の inline `<script>` は遷移後も実行される（werewolf のデッキで確認済み）。
+- **トップページ**（2026-09-17）: 画像グリッド **3 列 → 1100px 以下 2 列 → 640px 以下 1 列**。
+  見出しは `positioning[1]`（"I turn ambiguous ideas into …"）。default lens は `/lens/default/` に移動。
+  カテゴリページと `/all/` も同じカード部品。「説明文つき 3 列 / タイル 4 列」の旧規則はこれで置き換え。
+- **ケーススタディの冒頭**（2026-09-17）: 本文の前に `narrative.problem` / `narrative.built` /
+  `narrative.impact` から **The challenge / The solution / Impact** のグレーカード列を出す
+  （`src/components/project/ProjectStrip.astro`）。データに無いものは出さない。文章は書き足さない。

@@ -45,7 +45,7 @@ html.lang-jp .side { font-family: var(--pr-ff-jp); }
   content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%;
   background: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 160ms ease;
 }
-.side-theme[aria-checked="true"] { background: var(--pr-blue); }
+.side-theme[aria-checked="true"] { background: var(--pr-blue-fill); }
 .side-theme[aria-checked="true"]::after { transform: translateX(20px); }
 .side-theme:disabled { cursor: default; opacity: 0.55; }
 .side-theme:focus-visible, .side-lang:focus-visible, .side-all:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
@@ -64,7 +64,7 @@ html[data-lang-fixed] .side-lang { display: none; }
   letter-spacing: var(--tracking-display); text-transform: uppercase;
 }
 .side-clock { margin: 44px 0 0; font-size: var(--text-lg); line-height: var(--leading-lg); color: var(--pr-ink); font-variant-numeric: tabular-nums; }
-.side-clock span { display: block; }
+.side-clock > span { display: block; }
 
 /* ── About ──────────────────────────────────────────────────────────────── */
 .side-about { padding: var(--sp-3); margin-bottom: var(--sp-1); }
@@ -104,8 +104,7 @@ html[data-lang-fixed] .side-lang { display: none; }
 .side-line { font-size: var(--text-sm); line-height: 1.3; color: var(--pr-ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 .side-foot { margin: var(--sp-4) 0 0; padding: var(--sp-3) 0 0; font-size: var(--text-sm); color: var(--pr-ink-2); border-top: 1px solid var(--pr-line); }
-.side-foot a { color: var(--pr-blue); }
-.side-foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.side-foot a { color: var(--pr-blue); text-decoration: underline; text-underline-offset: 3px; }
 
 /* The rail is its own view-transition group and never animates. */
 ::view-transition-group(side), ::view-transition-old(side), ::view-transition-new(side) { animation: none; }

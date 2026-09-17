@@ -90,6 +90,21 @@ tests/                       dist（.vercel/output/static）を検査
 
 ## 7. 移植で分かったこと（次に触る人へ）
 
+- **見た目の第 2 段（PORTO ROCHA 寄せ、2026-09-17）**: トークンは `src/styles/tokens.css` の `--pr-*` が正。
+  `site.css` の旧名（`--bg` `--ink` `--ink-dim` `--surface` `--r-card` …）はその別名。
+  手書きページの `design-system.css` は `:root` の `--ff` `--bg` `--ink` を上書きするので、
+  サイドバーだけは `--pr-*` を直接読む（`--ff` を読むと Outfit になる — 実際になった）。
+- **同一文書内の遷移**: `Site.astro` の `<ClientRouter />`。サイドバーは `transition:persist="side"`。
+  ルーターは `<html>` の属性を新ページのもので置き換えるので、言語クラスとテーマ属性は
+  `astro:after-swap` で戻す（`Site.astro` の inline script）。永続化した要素でもスクロール位置は
+  移動時に 0 に戻るので、`astro:before-swap` で控えて `after-swap` で戻す（`site.js`）。
+  `site.js` は 1 回だけ読み込まれる module。初期化は全部 `astro:page-load` から呼ぶ。
+  カードの `data-href` は `navigate()`（`astro:transitions/client`）。`window.location` を使うと全画面が更新される。
+- **Astro 7 の dev サーバーは AI エージェント環境だと勝手にバックグラウンド化する**
+  （`AI_AGENT` / `CLAUDECODE` を見て `--background` 相当になる）。Playwright の `webServer` は
+  ランチャーが即終了して「exited early」になるので、`playwright.config.mjs` は `--ignore-lock` を付けて前面に固定している。
+  手で立てるときも `npx astro dev --port 4180 --host 127.0.0.1 --ignore-lock`。止めるのは pid で（`pkill -f "astro dev"` は自分のシェルも殺す）。
+
 - **手書きページの末尾 `<script>` は、ページ固有の IIFE と共通ボイラープレート（言語切替・モバイル nav）が 1 つの `<script>` に融合していることがある**（werewolf.html のカードデッキ）。`scripts/extract-page.mjs` はトップレベルの `})();` で分割し、ボイラープレート部分だけ捨てる。main 側で手書きページが更新されたら、そのファイルを `projects/` に置いて抽出し直す（ROOT_PAGES を空にしたコピーで 1 件だけ回せる）。
 - 抽出し直した本文に `data-vt-hero` が無いと `tests/page-transitions.test.mjs` が落ちる。ヒーローの media 要素に付け直す。
 

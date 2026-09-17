@@ -56,15 +56,17 @@ function cssRuleBody(css, selector) {
 }
 
 function sidebar(html, page) {
-  const side = html.match(/<aside class="side"[\s\S]*?<\/aside>/i)?.[0];
+  const side = html.match(/<aside[^>]*class="side"[\s\S]*?<\/aside>/i)?.[0];
   assert.ok(side, `${page}: missing sidebar`);
   return side;
 }
 function pageLinks(html, page) {
   const nav = sidebar(html, page).match(/<nav class="side-pages"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
   assert.ok(nav, `${page}: missing the page links`);
+  // Labels are bilingual span pairs; the English one is the label.
+  const label = (inner) => (inner.match(/<span class="t-en">([\s\S]*?)<\/span>/)?.[1] ?? inner).replace(/<[^>]+>/g, '').trim();
   return [...nav.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)].map((match) => ({
-    href: attr(match[0], 'href'), label: match[1].replace(/<[^>]+>/g, '').trim(), tag: match[0],
+    href: attr(match[0], 'href'), label: label(match[1]), tag: match[0],
   }));
 }
 function workGroups(html, page) {
@@ -77,16 +79,16 @@ function workGroups(html, page) {
 
 // ── Sidebar consistency ──
 
-// The top nav is gone; the sidebar carries the same two things on every page:
-// the pages about the person (in one order) and the five sections of the work
-// (in one order, each a fold with every piece in it). Only the page you are on
-// is marked — with aria-current, not with a colour someone has to infer.
+// The top nav is gone; the rail carries the same things on every page: the
+// About card (which also holds the pages about the person, in one order) and
+// the five sections of the work (in one order, every group open, every piece
+// in it). Only the page you are on is marked — with aria-current, not with a
+// colour someone has to infer.
 test('every page carries the same sidebar: the pages in order, the five sections in order', () => {
   const expectedPages = [
     [ '/now/', 'Now' ],
     [ '/publications.html', 'Writing' ],
     [ '/workshop.html', 'Workshops' ],
-    [ '/about.html', 'About' ],
     [ '/contact.html', 'Work with me' ],
     [ 'https://creativityiseverywhere.com', 'Studio ↗' ],
   ];
@@ -95,35 +97,35 @@ test('every page carries the same sidebar: the pages in order, the five sections
     const html = read(page);
     assert.deepEqual(pageLinks(html, page).map(({ href, label }) => [href, label]), expectedPages, `${page}: page links`);
     assert.deepEqual(workGroups(html, page).map((g) => g.label), expectedGroups, `${page}: work groups`);
-    assert.match(sidebar(html, page), /<a class="side-all" href="\/all\/"/, `${page}: the "All work" link`);
+    assert.match(sidebar(html, page), /<a class="side-all" href="\/all\/"/, `${page}: the "Show all projects" link`);
+    assert.match(sidebar(html, page), /<a class="side-label" href="\/about\.html"/, `${page}: the About card links to the About page`);
+    assert.match(sidebar(html, page), /<button class="side-theme" id="theme-switch" type="button" role="switch"/, `${page}: the theme switch`);
+    assert.match(sidebar(html, page), /<button class="side-lang" id="lang-cycle" type="button"/, `${page}: the language button`);
     assert.match(sidebar(html, page), /<button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">/, `${page}: the phone menu button`);
   }
 });
 
 test('each page marks itself current in the sidebar, and only itself', () => {
   const currentByPage = {
-    'about.html': '/about.html',
+    'now/index.html': '/now/',
     'contact.html': '/contact.html',
   };
   for (const [page, href] of Object.entries(currentByPage)) {
     const current = pageLinks(read(page), page).filter((item) => attr(item.tag, 'aria-current') === 'page');
     assert.deepEqual(current.map((item) => item.href), [href], `${page}: its own link must be the only aria-current one`);
   }
-  const openByPage = {
-    'interactive.html': 'Interactive &amp; Playable',
-    'ai-products.html': 'AI Products &amp; Systems',
-    'ai-tools.html': 'AI Tools',
-    'work.html': 'Product &amp; Experience Design',
-    'brand.html': 'Brand &amp; Creative',
-  };
-  for (const [page, label] of Object.entries(openByPage)) {
-    const open = workGroups(read(page), page).filter((g) => g.open);
-    assert.deepEqual(open.map((g) => g.label), [label], `${page}: its own section must be the only open group`);
+  assert.match(sidebar(read('about.html'), 'about'), /<a class="side-label" href="\/about\.html"[^>]*aria-current="page"/, 'about.html: the About card marks itself');
+  assert.equal(pageLinks(read('about.html'), 'about').some((item) => attr(item.tag, 'aria-current') === 'page'), false, 'about.html: no page link is current');
+  // Every group is open on every page (the reference lists everything), and
+  // a case study marks its own row and nothing else.
+  for (const page of ['interactive.html', 'brand.html', 'projects/koji-fizz.html']) {
+    const groups = workGroups(read(page), page);
+    assert.equal(groups.length, 5, `${page}: five groups`);
+    assert.ok(groups.every((g) => g.open), `${page}: every group open`);
   }
-  // A case study opens its section and marks its own row.
   const koji = read('projects/koji-fizz.html');
-  assert.deepEqual(workGroups(koji, 'koji').filter((g) => g.open).map((g) => g.label), ['Brand &amp; Creative']);
-  assert.match(sidebar(koji, 'koji'), /<a class="side-item" href="\/projects\/koji-fizz\.html" aria-current="page"/);
+  assert.match(sidebar(koji, 'koji'), /<a class="side-item" href="\/projects\/koji-fizz\.html"[^>]*aria-current="page"/);
+  assert.equal((sidebar(koji, 'koji').match(/class="side-item"[^>]*aria-current="page"/g) ?? []).length, 1, 'koji: one current row');
 });
 
 // ── Homepage: generated from the default Lens ──

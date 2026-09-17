@@ -28,7 +28,7 @@ test("/now cards display Why it exists and What's next", () => {
 
 test("/now marks Now as the current page in the sidebar", () => {
   const html = read("now/index.html");
-  assert.match(html, /<a href="\/now\/" aria-current="page">Now<\/a>/, "the Now link must be aria-current");
+  assert.match(html, /<a href="\/now\/"[^>]*aria-current="page"[^>]*><span class="t-en">Now<\/span>/, "the Now link must be aria-current");
 });
 
 test("work-with-me.html exists and features Good Fit guidelines and Studio bridge", () => {
@@ -39,12 +39,17 @@ test("work-with-me.html exists and features Good Fit guidelines and Studio bridg
   assert.match(html, /Creativity Is Everywhere LLC/, "must link to studio LLC");
 });
 
-test("the sidebar uses self-contained tokens without inheriting page colors", () => {
-  // The hand-built pages redefine :root (design-system.css is dark by default).
-  // The sidebar must read the same on every page, so its colours are its own.
-  const css = readFileSync(join(ROOT, "src", "styles", "shell.css"), "utf8");
-  for (const token of ["--side-bg:", "--side-ink:", "--side-dim:", "--side-line:", "--side-surface:"]) {
-    assert.match(css, new RegExp(token), `must declare ${token}`);
+test("the sidebar reads its own tokens, which no hand-built page redefines", () => {
+  // The hand-built pages' design-system.css redefines :root (--bg, --ink,
+  // --ff). The rail reads --pr-* names from src/styles/tokens.css, which
+  // nothing else declares, so it looks the same on every page.
+  const tokens = readFileSync(join(ROOT, "src", "styles", "tokens.css"), "utf8");
+  for (const token of ["--pr-ink:", "--pr-ink-2:", "--pr-canvas:", "--pr-card:", "--pr-line:", "--pr-blue:", "--pr-ff:"]) {
+    assert.match(tokens, new RegExp(token), `must declare ${token}`);
   }
-  assert.match(css, /\.side \{[^}]*background: var\(--side-bg\)/);
+  assert.match(tokens, /html\[data-theme="dark"\] \{[^}]*--pr-canvas: #000000/, "the dark theme turns the same tokens over");
+  const css = readFileSync(join(ROOT, "src", "styles", "shell.css"), "utf8");
+  assert.match(css, /\.side \{[^}]*background: var\(--pr-canvas\)/);
+  assert.match(css, /\.side \{[^}]*font-family: var\(--pr-ff\)/);
+  assert.equal(/var\(--ff\)|var\(--bg\)|var\(--ink\)/.test(css), false, "shell.css must not read the overridable aliases");
 });

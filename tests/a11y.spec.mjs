@@ -43,7 +43,7 @@ test("the Japanese switch changes the document language, not only the visible te
   // screen reader reads the Japanese with an English voice.
   await page.goto("/", { waitUntil: "load" });
   if (testInfo.project.name === "phone") await page.getByRole("button", { name: "Menu" }).click();
-  await page.getByRole("button", { name: "JP" }).click();
+  await page.getByRole("button", { name: "Switch to Japanese" }).click();
   await expect(page.locator("html")).toHaveClass(/lang-jp/);
   await expect(page.locator("html")).toHaveAttribute("lang", "ja");
 });
@@ -62,12 +62,12 @@ test("every card that opens something can be reached and opened from the keyboar
   }
 });
 
-test("the sidebar lists every section of the work, folds all but the current one, and opens on a phone from a button", async ({ page }, testInfo) => {
+test("the sidebar lists every section of the work open, marks the current row, and opens on a phone from a button", async ({ page }, testInfo) => {
   await page.goto("/projects/koji-fizz.html", { waitUntil: "load" });
   const side = page.locator("#side");
   const groups = side.locator("details.side-group");
   await expect(groups).toHaveCount(5);
-  await expect(side.locator("details.side-group[open]")).toHaveCount(1);
+  await expect(side.locator("details.side-group[open]")).toHaveCount(5);
   await expect(side.locator('.side-item[aria-current="page"]')).toHaveCount(1);
   if (testInfo.project.name === "phone") {
     const panel = page.locator("#side-panel");
@@ -79,6 +79,7 @@ test("the sidebar lists every section of the work, folds all but the current one
     await expect(panel).toBeVisible();
   } else {
     await expect(page.locator("#side-panel")).toBeVisible();
+    await expect(page.getByRole("switch", { name: "Dark mode" })).toHaveAttribute("aria-checked", "false");
     // Nothing in the right column may run under the sidebar or past the viewport.
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, "horizontal overflow").toBeLessThanOrEqual(0);
