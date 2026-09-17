@@ -1,14 +1,17 @@
-# Build/dev artifacts — not part of the deployed site
-.git
-node_modules
-tests
-test-results
-playwright-report
-docs
-.handoff
-.claude
-tools
-scripts
+# Build/dev artifacts — not part of the deployed site.
+# Patterns are anchored to the repository root: an unanchored "tools" or
+# "scripts" also matches src/data/tools and src/scripts (gitignore semantics),
+# which stripped records and the site's script before the Vercel build.
+/.git
+/node_modules
+/tests
+/test-results
+/playwright-report
+/docs
+/.handoff
+/.claude
+/tools
+/scripts
 
 # Unreferenced raw source footage (not linked from any page).
 # Several exceed Vercel's 100 MB per-file limit; mirrors .gitignore.
@@ -34,4 +37,4 @@ public/assets/*/masters
 # deploy. The sample postings the Studio and the tests use live in
 # src/analyze/samples, outside this folder, so no negation pattern is needed
 # (a build that could not find the sample failed on Vercel).
-src/pitches
+/src/pitches
