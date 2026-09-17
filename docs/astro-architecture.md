@@ -13,7 +13,7 @@
 |---|---|
 | バージョン | **Astro 7.3**（8.0 は MDX / Vercel アダプタが未対応。peer が `^7`） |
 | 出力 | `output: 'static'` + `@astrojs/vercel`。ほぼ全ページは静的。**オンデマンド描画は 2 種だけ** — `/lens/preview`（Studio と /try のプレビュー）と `/api/*` |
-| URL | **ほぼそのまま。** `build.format: 'preserve'`（Vercel アダプタが `directory` に上書きするので、アダプタの後で戻す）で `about.astro → about.html`、`projects/[slug].astro → projects/<slug>.html`、`lens/[slug]/index.astro → lens/<slug>/index.html`。**例外 2 つ**: Astro は `work.html` と `work/` を同じ経路とみなすので、Work Archive は `/work/` → **`/all/`** に移動（`vercel.json` で 301）。同じ理由で `now.html` は廃止し `/now/` に 301 |
+| URL | **ほぼそのまま。** `build.format: 'preserve'`（Vercel アダプタが `directory` に上書きするので、アダプタの後で戻す）で `about.astro → about.html`、`projects/[slug].astro → projects/<slug>.html`、`lens/[slug]/index.astro → lens/<slug>/index.html`。**例外 2 つ**: Astro は `work.html` と `work/` を同じ経路とみなすので、Work Archive は `/work/` → **`/all/`** に移動（`public/` の静的リダイレクトページで転送）。同じ理由で `now.html` は廃止し `/now/` へ転送 |
 | 生成 HTML の commit | **やめる。** commit するのはソース。公開 HTML は Vercel がビルドする。「PR の diff = 公開 HTML」の役割は Vercel の Preview デプロイが担う |
 | データ | `src/data`・`src/lenses`・`src/categories` は**無変更**。`validate.mjs`（Claim Guard）・`analyze/`（求人票エンジン）も無変更 |
 | 旧レンダラー `src/render/*.mjs`・`src/build.mjs` | `.astro` コンポーネントに移植して**削除** |

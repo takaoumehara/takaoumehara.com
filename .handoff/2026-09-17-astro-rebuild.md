@@ -15,7 +15,7 @@ State: **完了して push 済み。** ブランチ `claude/exciting-cerf-xgoyxb
   旧 `src/render/*`・`src/build.mjs`・生成 HTML・手書き HTML はすべて削除。
 Next: **本人が Preview デプロイ（PR #19 の Vercel コメント）を見て「これで行く」を言う。** その後 draft を外してマージ。
   マージ後に確認: (1) Vercel が Astro としてビルドしたか（`vercel.json` の `framework`）、
-  (2) `/work/` → `/all/`、`/now.html` → `/now/` の 301、(3) `/studio/` の Publish が Lens JSON だけを commit するか。
+  (2) `/work/` → `/all/`、`/now.html` → `/now/` の転送（`public/` の静的ページ）、(3) `/studio/` の Publish が Lens JSON だけを commit するか。
   コード側の次: ケーススタディを 1 件ずつ MDX へ（`src/components/case/` の部品はまだ無い）。
 Read first: `docs/astro-architecture.md`（設計と §7 の落とし穴）、`docs/sidebar-layout-proposal.md`（なぜこの形か）、
   `src/layouts/Site.astro` + `src/components/Sidebar.astro`（シェル）、`src/lib/site.mjs`（データの入口）。
@@ -32,8 +32,8 @@ Running: プロセス無し。PR #19 を subscribe 中。
 | `studio/`, `try/`, `api/` | `src/pages/studio/`, `src/pages/try/`, `src/studio/*.mjs`, `src/pages/api/*.ts`, `src/server/*.mjs` |
 | `assets/` | `public/assets/` |
 | プレビュー（ブラウザ内の文字列レンダラー） | `POST /lens/preview`（オンデマンド、実コンポーネントで描画） |
-| `/work/`（Work Archive） | `/all/`（301） |
-| `now.html` | `/now/`（301） |
+| `/work/`（Work Archive） | `/all/`（静的ページで転送） |
+| `now.html` | `/now/`（静的ページで転送） |
 
 ## 決めたこと（本人の 3 問への既定値）
 

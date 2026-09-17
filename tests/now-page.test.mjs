@@ -7,8 +7,8 @@ import { read, exists } from "./_dist.mjs";
 
 test("/now page is built at now/index.html, and the old now.html address redirects to it", () => {
   assert.ok(exists("now/index.html"), "now/index.html must exist");
-  const vercel = JSON.parse(readFileSync(join(ROOT, "vercel.json"), "utf8"));
-  assert.ok(vercel.redirects.some((r) => r.source === "/now.html" && r.destination === "/now/"), "vercel.json must redirect now.html");
+  assert.match(read("now.html"), /http-equiv="refresh" content="0; url=\/now\/"/, "now.html must redirect to /now/");
+  assert.match(read("work/index.html"), /http-equiv="refresh" content="0; url=\/all\/"/, "the old archive address must redirect to /all/");
 
   const html = read("now/index.html");
   assert.match(html, /<h1 class="now-title">/, "must have now-title h1");
