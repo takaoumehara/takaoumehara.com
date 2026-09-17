@@ -24,6 +24,9 @@ const PAGES = [
   ["/contact.html", "Contact"],
   ["/projects/koji-fizz.html", "a case study (KOJI FIZZ)"],
   ["/projects/werewolf.html", "a dark case study (Werewolf)"],
+  ["/projects/value-frontier.html", "a bento case study (Value Frontier)"],
+  ["/projects/ela-quests.html", "a bento case study with video and embeds (ELA Quests)"],
+  ["/projects/resona.html", "a dark bento case study (Resona)"],
 ];
 
 for (const [path, name] of PAGES) {
@@ -38,11 +41,14 @@ for (const [path, name] of PAGES) {
   });
 }
 
-test("the Japanese switch changes the document language, not only the visible text", async ({ page, isMobile }, testInfo) => {
+test("the Japanese switch changes the document language, not only the visible text", async ({ page }) => {
   // Half this site is Japanese behind a toggle. If <html lang> stays "en", a
   // screen reader reads the Japanese with an English voice.
   await page.goto("/", { waitUntil: "load" });
-  if (testInfo.project.name === "phone") await page.getByRole("button", { name: "Menu" }).click();
+  // The landing page has no rail, so no phone menu to open first; every other
+  // page keeps the switch behind it.
+  const menu = page.getByRole("button", { name: "Menu" });
+  if (await menu.count()) await menu.click();
   await page.getByRole("button", { name: "Switch to Japanese" }).click();
   await expect(page.locator("html")).toHaveClass(/lang-jp/);
   await expect(page.locator("html")).toHaveAttribute("lang", "ja");

@@ -5,6 +5,9 @@ const mainPages = [
   'index.html', 'work.html', 'brand.html', 'ai-tools.html', 'ai-products.html', 'interactive.html',
   'about.html', 'contact.html', 'breakbias.html', 'intentfirst.html', '404.html',
 ];
+// The landing page deliberately has no rail: it is the name, the sentence and
+// the work, and the rail arrives on the first click (src/pages/index.astro).
+const railPages = mainPages.filter((page) => page !== 'index.html');
 
 const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const classSelector = (name) =>
@@ -93,7 +96,7 @@ test('every page carries the same sidebar: the pages in order, the five sections
     [ 'https://creativityiseverywhere.com', 'Studio ↗' ],
   ];
   const expectedGroups = [ 'Interactive &amp; Playable', 'AI Products &amp; Systems', 'AI Tools', 'Product &amp; Experience Design', 'Brand &amp; Creative' ];
-  for (const page of mainPages) {
+  for (const page of railPages) {
     const html = read(page);
     assert.deepEqual(pageLinks(html, page).map(({ href, label }) => [href, label]), expectedPages, `${page}: page links`);
     assert.deepEqual(workGroups(html, page).map((g) => g.label), expectedGroups, `${page}: work groups`);
@@ -103,6 +106,15 @@ test('every page carries the same sidebar: the pages in order, the five sections
     assert.match(sidebar(html, page), /<button class="side-lang" id="lang-cycle" type="button"/, `${page}: the language button`);
     assert.match(sidebar(html, page), /<button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">/, `${page}: the phone menu button`);
   }
+});
+
+test('the landing page carries no rail, and offers the way into the one that has it', () => {
+  const html = read('index.html');
+  assert.equal(/<aside[^>]*class="side"/.test(html), false, 'index.html must not carry the rail');
+  assert.match(html, /<a href="\/all\/" class="is-primary"/, 'index.html needs the way through to /all/');
+  // Theme and language still have to be reachable without the rail.
+  assert.match(html, /<button class="side-theme" id="theme-switch" type="button" role="switch"/);
+  assert.match(html, /<button class="side-lang" id="lang-cycle" type="button"/);
 });
 
 test('each page marks itself current in the sidebar, and only itself', () => {
@@ -220,7 +232,7 @@ test('no main page carries the stale "Agentic UX" or "AI Tools & Infrastructure"
   for (const page of mainPages) {
     const html = read(page);
     // "Agentic UX" is fine as a capability or thesis label; it must not come back as a category (a sidebar group or section title).
-    const side = sidebar(html, page);
+    const side = page === 'index.html' ? html : sidebar(html, page);
     assert.equal(/>\s*Agentic UX\s*</.test(side), false, `${page}: stale "Agentic UX" sidebar label`);
     assert.equal(/<h2\b[^>]*>\s*(?:<span[^>]*>)?\s*Agentic UX\s*</.test(html), false, `${page}: stale "Agentic UX" section title`);
     assert.equal(/AI Tools\s*&amp;\s*Infrastructure/.test(html), false, `${page}: stale "AI Tools & Infrastructure" label`);

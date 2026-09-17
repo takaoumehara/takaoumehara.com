@@ -106,9 +106,29 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   テーマ属性を戻す（ルーターは `<html>` の属性を新ページのもので置き換えるため）。
   カードの `data-href` は `navigate()` 経由。**`window.location` で遷移しない。**
   ケーススタディ本文の inline `<script>` は遷移後も実行される（werewolf のデッキで確認済み）。
-- **トップページ**（2026-09-17）: 画像グリッド **3 列 → 1100px 以下 2 列 → 640px 以下 1 列**。
-  見出しは `positioning[1]`（"I turn ambiguous ideas into …"）。default lens は `/lens/default/` に移動。
-  カテゴリページと `/all/` も同じカード部品。「説明文つき 3 列 / タイル 4 列」の旧規則はこれで置き換え。
+- **トップページ**（2026-09-17 改訂）: **サイドバーなしのランディング**（`Site.astro` の `chrome={false}`）。
+  名前と `positioning[1]`（"I turn ambiguous ideas into …"、ページ唯一の `<h1>`）を大きく、
+  下に全作品のベントー。**並びと大きさは読み込みのたびに変わる**（`src/lib/bentoShapes.mjs` の
+  パターン表を、サーバーは決め打ち・ブラウザは乱数で歩く。表は `define:vars` で渡すので 1 か所）。
+  「2 つのリスト」＝ 左のレールと `/all/` の分野フィルタ。トップにはどちらも無く、
+  **最初のクリックで現れる**（レールは `::view-transition-new(side):only-child` で左から入る）。
+  default lens は `/lens/default/`。カテゴリページと `/all/` は従来の 3 列カードのまま
+  （`src/components/grid/`）— ベントーはトップとベントー化したケーススタディだけ。
+  トップの旧「画像グリッド 3 列」の pin はこれで置き換え。
+- **ベントー**（2026-09-17）: 詳細は `docs/bento-layout.md`。**12 カラム + 正方形の行ユニット**
+  （`cqw` で算出、`.bento` は必ず `.bento-wrap` の中）。セルは `w` 列 × `h` 行 = **w : h の比**。
+  レイアウトは「行」単位で、**1 行の `w` の合計は必ず 12**、高さは行に 1 つ — これをビルドが検査するので穴が空かない。
+  `w` に使う値は **3 / 4 / 6 / 12 だけ**（1100px 以下で 12 → 6 カラムに落ちるため、8 は軌道からはみ出す）。
+  行は `minmax(unit, auto)` なので文字は切れずに伸びる。余白は `--bento-gap` だけで、中央 1200px の列は使わない。
+- **ケーススタディのベントー化**（2026-09-17）: `src/bento/<slug>.json` があればその slug は
+  ベントーで描く（`src/components/bento/BentoPage.astro`）。ヒーロー（大きく・動く作品なら動画）→
+  タイトルと案件の事実 → Challenge / Solution / Impact → 作品の行、の順。
+  ベントーのページは `design-system.css` / `project-page.css` を**読まない**（サイトのトークンだけで描く）。
+  **42 本のうち 3 本だけ**（resona / ela-quests / value-frontier）。残りは手書き本文のまま。
+  1 本変換するたびに `src/case-studies/<slug>.{html,css,json}` を消す（`tests/bento.test.mjs` が二重の出どころを落とす）。
+  文章は置き換え前のページの本人の文と `src/data/` から取る。**レイアウトのために書き足さない。**
+- **スクロールバーは 1 本**（2026-09-17、本人「スクロールバーがブラウザの一番右に出ているだけ」）:
+  レールは自分で縦スクロールするが `scrollbar-width: none` でバーを描かない（`shell.css`）。
 - **ケーススタディの冒頭**（2026-09-17）: 本文の前に `narrative.problem` / `narrative.built` /
   `narrative.impact` から **The challenge / The solution / Impact** のグレーカード列を出す
   （`src/components/project/ProjectStrip.astro`）。データに無いものは出さない。文章は書き足さない。

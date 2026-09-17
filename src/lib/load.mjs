@@ -18,7 +18,8 @@ export const EVIDENCE_KINDS = ["projects", "ventures", "experiments", "tools"];
 /**
  * A site-relative path the data points at exists in the source tree:
  *   assets/…             → public/assets/…
- *   projects/<slug>.html → src/case-studies/<slug>.html (a fragment) or
+ *   projects/<slug>.html → src/bento/<slug>.json (a bento layout),
+ *                          src/case-studies/<slug>.html (a fragment) or
  *                          src/pages/projects/<slug>.astro|.mdx
  *   <page>.html          → src/fragments/<page>.html or src/pages/<page>.astro
  * Anything still sitting at the old place (a hand-built HTML at the repo root)
@@ -29,7 +30,7 @@ export function sourceExists(path, root = ROOT) {
   const project = /^projects\/([a-z0-9-]+)\.html$/.exec(path);
   if (project) {
     const slug = project[1];
-    return at("src", "case-studies", `${slug}.html`) || at("src", "pages", "projects", `${slug}.astro`) || at("src", "pages", "projects", `${slug}.mdx`) || at("public", path) || at(path);
+    return at("src", "bento", `${slug}.json`) || at("src", "case-studies", `${slug}.html`) || at("src", "pages", "projects", `${slug}.astro`) || at("src", "pages", "projects", `${slug}.mdx`) || at("public", path) || at(path);
   }
   const page = /^([a-z0-9-]+)\.html$/.exec(path);
   if (page) return at("src", "fragments", `${page[1]}.html`) || at("src", "pages", `${page[1]}.astro`) || at(path);

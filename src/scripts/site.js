@@ -79,6 +79,19 @@ function markCurrent() {
     else link.removeAttribute("aria-current");
   });
 }
+// Theme and language live in the rail on most pages and in the corner of the
+// landing page, which has no rail. One delegated listener covers both, and
+// survives the rail being persisted across a swap while the page is not.
+let controlsBound = false;
+function bindControls() {
+  if (controlsBound) return;
+  controlsBound = true;
+  document.addEventListener("click", (event) => {
+    if (event.target.closest("#theme-switch")) toggleTheme();
+    else if (event.target.closest("#lang-cycle")) setLang(currentLang() === "jp" ? "en" : "jp");
+  });
+}
+
 let sidebarBound = false;
 function bindSidebar() {
   const side = document.getElementById("side");
@@ -91,8 +104,6 @@ function bindSidebar() {
       toggle.setAttribute("aria-expanded", String(open));
     });
   }
-  document.getElementById("theme-switch")?.addEventListener("click", toggleTheme);
-  document.getElementById("lang-cycle")?.addEventListener("click", () => setLang(currentLang() === "jp" ? "en" : "jp"));
   // The first paint: bring the current row into view without scrolling the page.
   const current = side.querySelector('.side-item[aria-current="page"]');
   if (current && window.matchMedia("(min-width: 901px)").matches) {
@@ -156,6 +167,16 @@ function bindPreviews() {
   });
 }
 
+// ── The landing page's bento ────────────────────────────────────────────────
+// On a full load the inline script in LandingGrid.astro has already cut the
+// grid before first paint. This is for coming back to the landing page through
+// the client-side router, where the markup arrives fresh and uncut.
+function cutBentoGrids() {
+  document.querySelectorAll(".work-bento").forEach((grid) => {
+    if (typeof window.__tuCutBento === "function") window.__tuCutBento(grid);
+  });
+}
+
 // ── Case-study bodies: reveal on scroll, fade images in ─────────────────────
 function bindReveal() {
   const targets = document.querySelectorAll(".reveal-on-scroll:not(.is-visible)");
@@ -179,7 +200,9 @@ function bindReveal() {
 function onPageLoad() {
   setLang(html.dataset.langFixed || store.get("tu-lang") || "en");
   applyTheme();
+  bindControls();
   bindSidebar();
+  cutBentoGrids();
   markCurrent();
   closePhoneMenu();
   startClock();

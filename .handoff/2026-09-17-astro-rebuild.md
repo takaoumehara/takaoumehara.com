@@ -6,18 +6,20 @@
 
 Project: takaoumehara.com
 Handoff: `.handoff/2026-09-17-astro-rebuild.md`
-Passphrase: 「サイドバーは動かない、右だけが変わる」
+Passphrase: 「サイドバーは動かない、右だけが変わる」／第 3 段は「行の合計はいつも 12」
 Goal: 本人の決定「Astro で完全に作り直しちゃって」（2026-09-17）。参照は PORTO ROCHA —
   左に固定サイドバー（カテゴリ別の作品一覧）、右にページ本文。手書き HTML をやめる。
-State: **完了して push 済み。** ブランチ `claude/exciting-cerf-xgoyxb`、PR #19（draft）。
-  `npm test`（astro build + node --test）118/118、`npm run test:e2e`（axe WCAG 2.2 AA・キーボード・
-  言語スイッチ・サイドバー・Studio・/lens/preview）48/48。
+State: **第 3 段（ベントー）まで完了して push 済み。** ブランチ `claude/exciting-cerf-xgoyxb`、PR #19（draft）。
+  `npm test`（astro build + node --test）138/138、`npm run test:e2e`（axe WCAG 2.2 AA・キーボード・
+  言語スイッチ・サイドバー・Studio・/lens/preview）56/56。
   旧 `src/render/*`・`src/build.mjs`・生成 HTML・手書き HTML はすべて削除。
 Next: **本人が Preview デプロイ（PR #19 の Vercel コメント）を見て「これで行く」を言う。** その後 draft を外してマージ。
+  いちばん見てほしいのは第 3 段: トップのベントーが毎回変わるか、クリックで左のレールが入ってくるか、
+  ベントーの 3 本（resona / ela-quests / value-frontier）が全幅で気持ちよく出ているか。
   マージ後に確認: (1) Vercel が Astro としてビルドしたか（`vercel.json` の `framework`）、
   (2) `/work/` → `/all/`、`/now.html` → `/now/` の転送（`public/` の静的ページ）、(3) `/studio/` の Publish が Lens JSON だけを commit するか。
-  コード側の次: ケーススタディを 1 件ずつ MDX へ（`src/components/case/` の部品はまだ無い）。
-Read first: `docs/astro-architecture.md`（設計と §7 の落とし穴）、`docs/sidebar-layout-proposal.md`（なぜこの形か）、
+  コード側の次: 残り 39 本のケーススタディを 1 本ずつベントーへ（`docs/bento-layout.md` の形に沿って）。
+Read first: `docs/bento-layout.md`（ベントーの骨格と JSON の形）、`docs/astro-architecture.md`（設計と §7 の落とし穴）、
   `src/layouts/Site.astro` + `src/components/Sidebar.astro`（シェル）、`src/lib/site.mjs`（データの入口）。
 Running: プロセス無し。PR #19 を subscribe 中。
 
@@ -78,3 +80,53 @@ Q3 Ink & Paper のまま。覆すなら `Sidebar.astro` と `shell.css`。
 
 - Vercel 上での動作は commit ごとに Ready を確認しているが、Preview の中身（同一文書内の遷移が Vercel の CDN 経由でも同じに動くか）はこの環境から開けない。本人が開いて、左のリストが消えないこと・時計が止まらないことを見る。
 - ダークモードでの手書きページ 33 本（`theme: light` のもの）は KOJI FIZZ しか目視していない。`design-system.css` のトークンで描かれている部分は反転するが、色を直書きした箇所（例: 白背景の画像）は暗いまま残る。気になるページがあれば `theme: "light"` を lock にする案（`data-theme-lock="light"`）が最短。
+
+## 第 3 段: ベントー（同日、本人の指示 4 点）
+
+本人の指示（原文の要点）:
+
+1. スクロールバーがブラウザの一番右に 1 本だけ。左のリストに出るのは嬉しくない。
+2. トップは名前と "I turn ambiguous ideas into …" をデカく、残りは大小のグリッド。
+   元のインスピレーションより**さらにダイナミック**で、**毎回リロードするとシャッフル／大きさが変わる**と嬉しい。
+   **クリックすると、この 2 つのリストとプロジェクトが見えるビューに変わっていく。**
+3. PDP は hero graphic / motion がでかく、その下に概要。ほかの必要なテキストもベントーに入れる。
+   ベントーは**ビューポートの幅を最大限**使う（Odell Education のようなマージンだらけをやめる）。
+   2 / 3 / 4 分割、ほとんどは 100% か 2 分割。
+4. まず resona（dark）/ amplify / value frontier の 3 本で形を固める。
+
+本人に確認して決めたこと（`AskUserQuestion`）:
+
+- **「amplify」= ELA Quests**（`src/data/projects/ela-quests.json`）。もう 1 件の Amplify（Vocabulary App）ではない。
+- **トップにサイドバーは出さない。** 「2 つのリスト」＝ 左のレールと `/all/` の分野フィルタで、
+  どちらも最初のクリックで現れる。
+
+| 何 | どこ |
+|---|---|
+| ベントーの骨格（12 カラム・正方形の行ユニット・行単位の配置） | `src/styles/bento.css`、設計は `docs/bento-layout.md` |
+| レイアウトの読み込みと検査（行が 12 を満たすか、画像が disk にあるか、embed に title があるか） | `src/lib/bento.mjs`（`getStaticPaths()` で走る＝ビルドが落ちる） |
+| ケーススタディの描画 | `src/components/bento/{BentoPage,BentoCell}.astro` |
+| ケーススタディの中身 | `src/bento/{resona,ela-quests,value-frontier}.json` |
+| トップ（レールなし） | `src/pages/index.astro` + `src/components/landing/{Landing,LandingGrid}.astro` + `src/styles/landing.css` |
+| 毎回変わる並び／大きさ | `src/lib/bentoShapes.mjs`（パターン表）。サーバーは `steadyPick()`、ブラウザは `Math.random()`。表は `define:vars` でインラインスクリプトに渡す（二重に書かない） |
+| レールを消す口 | `Site.astro` の `chrome`（既定 true）。`.shell--bare`（`shell.css`） |
+| レールが左から入ってくる遷移 | `::view-transition-new(side):only-child`（`shell.css`） |
+| レールのスクロールバーを消す | `.side { scrollbar-width: none }` + `::-webkit-scrollbar`（`shell.css`） |
+
+テスト: `npm test` 138/138、`npm run test:e2e` 56/56。
+新しい `tests/bento.test.mjs` が、行が 12 を満たすこと・`<h1>` が 1 つ・`data-vt-hero` が 1 つ・
+`cs-strip` があること・`design-system.css` を読んでいないこと・変換済み slug に手書き本文が残っていないこと、を見る。
+`tests/home-grid.test.mjs` はランディング用に書き直した。a11y の PAGES にベントー 3 本を足した。
+
+この環境で Playwright を回すときは `PLAYWRIGHT_CHROMIUM_PATH=/opt/pw-browsers/chromium npm run test:e2e`
+（headless shell が入っていない。`npx playwright install` は禁止）。
+
+### 残り（次に触る人へ）
+
+- **ケーススタディ 42 本のうち 39 本は手書き本文のまま**（中央 1200px、`design-system.css`）。
+  1 本ずつ `src/bento/<slug>.json` を足して `src/case-studies/<slug>.{html,css,json}` を消す。
+  `tests/bento.test.mjs` が二重の出どころを落とすので、消し忘れは気づける。
+- ベントーの本文の**日本語**。置き換え前のページが英語だけだった長文は英語のまま置いた
+  （今までのページと同じ挙動）。見出し・ラベル・キャプションは `{en, jp}`。訳すなら別の変更で。
+- 画像の切り取りはまだ `object-fit` 任せ。`fit: "contain"` / `focus` で個別に逃がしてあるが、
+  本当に作り直したほうがいい素材（ELA Quests のスクリーンショット群）は残っている。
+- Vercel 上での見え方は未確認（この環境から Preview を開けない）。本人が見る。

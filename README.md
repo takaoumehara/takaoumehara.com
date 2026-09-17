@@ -2,7 +2,7 @@
 
 Personal site of Takao Umehara. **One Takao. One evidence base. Different lenses.**
 
-Built with [Astro](https://astro.build). The homepage, every `/lens/<slug>` page, the
+Built with [Astro](https://astro.build). The landing page, every `/lens/<slug>` page, the
 category pages and the work archive are rendered from a structured career evidence
 library. A Lens is a configuration that selects, orders and frames that evidence for
 one audience — it cannot add facts. Architecture and rationale:
@@ -13,12 +13,13 @@ and `docs/astro-architecture.md` (how the site is built).
 src/data/            the Career Evidence Library (projects, ventures, experiments, tools, roles, theses, taxonomy)
 src/lenses/          one JSON per lens — default.json → /, <slug>.json → /lens/<slug>
 src/categories/      the five sections of the work, one JSON each → /interactive.html, /ai-products.html …
-src/layouts/         Site.astro — the shell: the sidebar (the work by category), the page, the footer
-src/components/      Astro components: lens sections, category cards, the archive, /now
-src/case-studies/    the 42 case-study bodies (HTML fragments; MDX is the next step), one per /projects/<slug>.html
+src/layouts/         Site.astro — the shell: the sidebar (the work by category), the page, the footer. chrome={false} drops the rail (the landing page)
+src/components/      Astro components: lens sections, category cards, the archive, /now, the bento (bento/) and the landing page (landing/)
+src/bento/           one JSON per case study drawn as a bento — rows of cells that fill the viewport (docs/bento-layout.md)
+src/case-studies/    the case-study bodies not converted yet (HTML fragments), one per /projects/<slug>.html
 src/fragments/       the bodies of the hand-built pages (about, contact, publications, workshop …)
 src/pages/           routes (about.astro → /about.html, projects/[slug].astro → /projects/<slug>.html, all/index.astro → /all/). Static except /lens/preview and /api/*
-src/styles/          site.css (the design), shell.css (the sidebar)
+src/styles/          site.css (the design), shell.css (the sidebar), bento.css (the bento grid), grid.css, landing.css
 src/lib/             site.mjs (data for the pages, validated once per build), html.mjs, labels.mjs, load.mjs
 src/validate.mjs     schema checks + Claim Guard + NotMine Guard (the build fails on any violation)
 src/analyze/         the Adaptive Pitch Engine: job description → evidence matching → lens draft (no model calls)

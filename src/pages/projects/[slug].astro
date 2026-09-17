@@ -1,14 +1,22 @@
 ---
-// One route for every case study, built from src/case-studies/<slug>.{html,css,json}
-// (see scripts/extract-page.mjs). build.format: 'file' turns this into
-// /projects/<slug>.html — the same URL the hand-built pages always had.
+// One route for every case study. A study is written one of two ways:
+//
+//   • src/bento/<slug>.json — a bento layout (hero, title, the strip, then
+//     rows of cells that fill the width). This is where the set is going.
+//   • src/case-studies/<slug>.{html,css,json} — the hand-built body the page
+//     has always had, extracted by scripts/extract-page.mjs. Still how most
+//     of the studies are written; being converted a few at a time.
+//
+// build.format: 'file' turns this into /projects/<slug>.html — the same URL
+// the hand-built pages always had.
 //
 // import.meta.glob() and the plain `const`s that read it are called INSIDE
 // getStaticPaths() and handed down through `props`, not read from module
 // scope in the page body below: Astro runs getStaticPaths() in its own
 // isolated pass to build the route manifest, and a module-scope binding
 // referenced only from inside that function comes back "is not defined" —
-// props are the documented way around it.
+// props are the documented way around it. (Imports from another module are
+// fine, which is why src/lib/bento.mjs may be called from both.)
 //
 // This page renders <Site> itself instead of going through FragmentPage — the
 // Challenge/Solution strip (ProjectStrip) has to sit between the shell and the
@@ -16,53 +24,80 @@
 // below is copied verbatim from FragmentPage.astro; keep the two in sync.
 import Site from "../../layouts/Site.astro";
 import ProjectStrip from "../../components/project/ProjectStrip.astro";
+import BentoPage from "../../components/bento/BentoPage.astro";
 import { evidenceForCaseStudy } from "../../lib/site.mjs";
+import { bentoLayouts, validateAllBento } from "../../lib/bento.mjs";
 
 export async function getStaticPaths() {
+  // A bad row (widths that do not add up to twelve, a picture that is not on
+  // disk) fails the build here, next to the Claim Guard, rather than shipping
+  // a page with a hole in it.
+  validateAllBento();
+
   const htmlFiles = import.meta.glob("../../case-studies/*.html", { query: "?raw", import: "default", eager: true });
   const cssFiles = import.meta.glob("../../case-studies/*.css", { query: "?raw", import: "default", eager: true });
   const jsonFiles = import.meta.glob("../../case-studies/*.json", { eager: true, import: "default" });
   const slugOf = (path: string) => path.split("/").pop()!.replace(/\.\w+$/, "");
+  const layouts = bentoLayouts();
 
-  return Object.keys(htmlFiles).map((path) => {
+  const fromFragments = Object.keys(htmlFiles).map((path) => {
     const slug = slugOf(path);
     return {
       params: { slug },
       props: {
+        layout: null,
         body: htmlFiles[path],
         css: cssFiles[path.replace(/\.html$/, ".css")],
         meta: jsonFiles[path.replace(/\.html$/, ".json")],
       },
     };
   });
+
+  const fromBento = [...layouts.entries()].map(([slug, layout]) => ({
+    params: { slug },
+    props: { layout, body: null, css: null, meta: layout.seo ?? {} },
+  }));
+
+  // A slug with a bento layout wins: the layout replaces the hand-built body.
+  const taken = new Set(fromBento.map((route) => route.params.slug));
+  return [...fromBento, ...fromFragments.filter((route) => !taken.has(route.params.slug))];
 }
 
 const { slug } = Astro.params;
-const { body, css, meta } = Astro.props;
+const { layout, body, css, meta } = Astro.props;
 const current = `/projects/${slug}.html`;
 const item = evidenceForCaseStudy(slug);
 
 // Same canonical fallback FragmentPage uses: most hand-built pages never had
 // their own <link rel="canonical">, so it's computed from `current` rather
 // than Astro.url.pathname (unreliable this deep). Pages that DID carry one
-// (none under projects/ today, but the shape is shared with FragmentPage)
 // keep it verbatim.
 const canonical = meta.canonical ?? `https://takaoumehara.com${current}`;
+// A bento page is drawn entirely from the site's own tokens: it does not load
+// design-system.css / project-page.css, so its dark theme is the site's dark
+// theme and its width is the site's grid.
+const theme = layout ? layout.theme : meta.theme;
 ---
 <Site
   title={meta.title}
   description={meta.description}
   canonical={canonical}
   ogImage={meta.ogImage}
-  ogType={meta.ogType}
-  theme={meta.theme}
-  htmlClass={meta.htmlClass}
-  bodyClass={meta.bodyClass}
+  ogType={meta.ogType ?? (layout ? "article" : undefined)}
+  theme={theme}
+  htmlClass={layout ? undefined : meta.htmlClass}
+  bodyClass={layout ? "bento-body-page" : meta.bodyClass}
   current={current}
-  stylesheets={meta.stylesheets}
-  style={css}
-  fonts={meta.fonts}
+  stylesheets={layout ? [] : meta.stylesheets}
+  style={layout ? "" : css}
+  fonts={layout ? undefined : meta.fonts}
 >
-  <ProjectStrip item={item} />
-  <Fragment set:html={body} />
+  {layout ? (
+    <BentoPage layout={layout} item={item} />
+  ) : (
+    <Fragment>
+      <ProjectStrip item={item} />
+      <Fragment set:html={body} />
+    </Fragment>
+  )}
 </Site>

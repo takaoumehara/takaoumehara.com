@@ -35,10 +35,13 @@ src/
   layouts/Site.astro         head・サイドバー・右カラム・フッター・共通スクリプト。全ページがこれを使う
   components/
     Sidebar.astro            カテゴリ別の作品一覧（src/categories）・About カード・ページ nav・言語スイッチ
+    bento/                   BentoPage / BentoCell — src/bento/*.json を描く
+    landing/                 Landing / LandingGrid — サイドバーなしのトップ（chrome={false}）
     lens/                    Hero / Proof / Exploring / Experiments / Ventures / Ideas / Tools / CareerArc / Capabilities / Fit / Studio / Contact / LensPage
     category/                CategoryPage / Card
     archive/ now/            Work Archive / Living Lab Bench
-  case-studies/<slug>.html   ケーススタディ本文（nav〜footer の間）。<slug>.css = 旧 head の <style>。<slug>.json = title / description / og / 追加 CSS
+  bento/<slug>.json          ベントーで描くケーススタディのレイアウト（`docs/bento-layout.md`）。このファイルがある slug は case-studies/ を持たない
+  case-studies/<slug>.html   まだ手書きのケーススタディ本文（nav〜footer の間）。<slug>.css = 旧 head の <style>。<slug>.json = title / description / og / 追加 CSS
   fragments/<name>.html      一般ページ（about など）の本文。同じ 3 点セット
   pages/
     index.astro  ja/index.astro  lens/[slug]/index.astro  lens/preview.astro (prerender=false, POST)
@@ -107,6 +110,18 @@ tests/                       dist（.vercel/output/static）を検査
 
 - **手書きページの末尾 `<script>` は、ページ固有の IIFE と共通ボイラープレート（言語切替・モバイル nav）が 1 つの `<script>` に融合していることがある**（werewolf.html のカードデッキ）。`scripts/extract-page.mjs` はトップレベルの `})();` で分割し、ボイラープレート部分だけ捨てる。main 側で手書きページが更新されたら、そのファイルを `projects/` に置いて抽出し直す（ROOT_PAGES を空にしたコピーで 1 件だけ回せる）。
 - 抽出し直した本文に `data-vt-hero` が無いと `tests/page-transitions.test.mjs` が落ちる。ヒーローの media 要素に付け直す。
+
+- **ベントーの落とし穴**（2026-09-17、`docs/bento-layout.md` の実装メモ）:
+  - `grid-auto-rows: minmax(len, auto)` の軌道は**確定していない**ので、セルの子の `height: 100%` は解決しない
+    （動画がセルを埋めず、キャプションだけ下に残る、が実際に起きた）。**写真と動画はセルに対して
+    `position: absolute; inset: 0`**、文字のブロックは `.bento-cell { display: flex; flex-direction: column }` の
+    `flex: 1` で伸ばす。
+  - コンテナ問い合わせ単位はそのコンテナ自身では使えない。`.bento-wrap`（`container-type: inline-size`）と
+    `.bento`（`100cqw` を読む）を分けているのはそのため。
+  - `display` を指定する**子孫** `span` セレクタは `.t-en` / `.t-jp` に届く（pin にある通り）。
+    `.bento-caption span` で英語と日本語が同時に出た。`> span` にする。
+  - `.sr-only` は `grid.css` にしかなかった。ベントーのページは読まないので `bento.css` にも置いてある。
+  - `<iframe>` は `title` が無いと axe が落とす。`src/lib/bento.mjs` がビルド時に検査する。
 
 - **Astro のフロントマターは、テンプレートリテラルの `${…}` の中に別のテンプレートリテラルを
   入れると解析できない**（`` `<dl>${rows.map((r) => `<div>${r}</div>`).join("")}</dl>` `` の形）。

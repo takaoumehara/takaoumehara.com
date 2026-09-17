@@ -1,0 +1,99 @@
+---
+// Every piece of work on the landing page, as a bento.
+//
+// The build writes out one deterministic cut so the page is a real layout
+// before a single byte of JavaScript runs. The inline script below then
+// re-cuts it — new order, new sizes — while the browser is still parsing,
+// which is why the shuffle is never seen happening. src/lib/bentoShapes.mjs
+// owns the pattern table both halves walk.
+import "../../styles/bento.css";
+import { t, mediaFill } from "../../lib/html.mjs";
+import { cardName } from "../../lib/labels.mjs";
+import { destination } from "../../lib/site.mjs";
+import { BENTO_PATTERNS, BENTO_OPENERS, cutBento, steadyPick } from "../../lib/bentoShapes.mjs";
+
+interface Props { entries: { item: any; category?: string }[] }
+const { entries } = Astro.props;
+
+const shapes = cutBento(entries.length, steadyPick());
+
+const cards = entries.map(({ item, category }, i) => ({
+  item,
+  category,
+  to: destination(item),
+  // The same still + hover-clip (or lettered art plate) every grid on the site
+  // uses, so one card looks the same wherever it appears.
+  media: mediaFill(item),
+  shape: shapes[i],
+}));
+---
+<div class="bento-wrap">
+  <div class="bento work-bento" id="work-bento">
+    {cards.map(({ item, category, to, media, shape }) => (
+      <article
+        class="bento-cell grid-card cat-card"
+        id={item.slug}
+        data-kind="media"
+        data-w={shape.w}
+        data-h={shape.h}
+        style={`--w:${shape.w};--h:${shape.h}`}
+        data-category={category}
+        data-href={to ? to.url : undefined}
+        data-external={to?.external ? "true" : undefined}
+        tabindex={to ? "0" : undefined}
+      >
+        <Fragment set:html={media} />
+        <p class="bento-caption">
+          <b set:html={cardName(item)} />
+          <span set:html={t(item.cardLine ?? item.summary)} />
+        </p>
+        {to && (
+          <a class="bento-hit cat-card-cta" href={to.url}
+             target={to.external ? "_blank" : undefined} rel={to.external ? "noopener" : undefined}>
+            <span class="sr-only" set:html={t(to.label)} />
+          </a>
+        )}
+      </article>
+    ))}
+  </div>
+</div>
+
+<script is:inline define:vars={{ patterns: BENTO_PATTERNS, openers: BENTO_OPENERS }}>
+  // Re-cut the grid: a new order and new sizes on every load. This runs where
+  // it stands, while the document is still being parsed, so the first paint is
+  // already the shuffled layout — never the built one, briefly, then a jump.
+  window.__tuCutBento = function (grid) {
+    if (!grid || grid.dataset.cut === "1") return;
+    grid.dataset.cut = "1";
+    var cells = Array.prototype.slice.call(grid.children);
+    for (var i = cells.length - 1; i > 0; i -= 1) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var swap = cells[i]; cells[i] = cells[j]; cells[j] = swap;
+    }
+    var pick = function (n) { return Math.floor(Math.random() * n); };
+    var shapes = [];
+    var left = cells.length;
+    var table = openers;
+    while (left > 0) {
+      var options = table.filter(function (p) { return p.w.length <= left; });
+      var pattern = options.length ? options[pick(options.length)] : { w: [12], h: [5] };
+      var h = pattern.h[pick(pattern.h.length)];
+      for (var k = 0; k < pattern.w.length && left > 0; k += 1) {
+        shapes.push({ w: pattern.w[k], h: h });
+        left -= 1;
+      }
+      table = patterns;
+    }
+    var frag = document.createDocumentFragment();
+    cells.forEach(function (cell, index) {
+      var shape = shapes[index];
+      cell.dataset.w = shape.w;
+      cell.dataset.h = shape.h;
+      cell.style.setProperty("--w", shape.w);
+      cell.style.setProperty("--h", shape.h);
+      frag.appendChild(cell);
+    });
+    grid.appendChild(frag);
+  };
+  window.__tuCutBento(document.getElementById("work-bento"));
+</script>
