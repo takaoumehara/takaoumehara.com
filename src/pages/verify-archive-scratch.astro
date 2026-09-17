@@ -1,0 +1,12 @@
+---
+// Temporary verification-only page — not part of the deliverable, deleted
+// after use. Lets us render WorkArchive.astro directly, sidestepping the
+// /work/ ↔ /work.html route collision in dev.
+import Site from "../layouts/Site.astro";
+import WorkArchive from "../components/archive/WorkArchive.astro";
+import { getLibrary } from "../lib/site.mjs";
+const lib = getLibrary();
+---
+<Site title="verify" current="/work/">
+  <WorkArchive lib={lib} />
+</Site>
