@@ -1,0 +1,61 @@
+---
+// The one shim every hand-built page (42 case studies + 8 root pages) goes
+// through. scripts/extract-page.mjs split each hand-built .html into three
+// files — <slug>.html (the body, </nav>…<footer verbatim), <slug>.css (the
+// head's <style> blocks) and <slug>.json (title/description/og/… read from
+// the head) — and this component threads them back through Site.astro, the
+// shell every other page on the site uses too.
+//
+// The body is printed with set:html: it is already a finished chunk of
+// static markup (inline <style>/<script> included, see docs/astro-architecture.md
+// §1), not a component tree, so nothing here parses or re-renders it.
+import Site from "../layouts/Site.astro";
+
+interface PageMeta {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
+  fonts?: string;
+  stylesheets?: string[];
+  theme?: string;
+  htmlClass?: string;
+  bodyClass?: string;
+  canonical?: string;
+}
+interface Props {
+  meta: PageMeta;
+  body: string;
+  css: string;
+  current: string;   // this page's own site-relative path, e.g. "/projects/koji-fizz.html"
+  noindex?: boolean;
+}
+const { meta, body, css, current, noindex = false } = Astro.props;
+
+// Most hand-built pages never had a <link rel="canonical"> at all — Site.astro
+// already falls back to the page's own URL, but that fallback reads
+// Astro.url.pathname, which isn't reliable from inside a shared component, so
+// FragmentPage computes it explicitly from `current` instead. Pages that DID
+// carry an explicit canonical (about.html, …) keep it verbatim — including
+// work-with-me.html's, which points at "/work-with-me" without ".html". That
+// looks like a pre-existing typo in the original page, not something this
+// migration should "fix".
+const canonical = meta.canonical ?? `https://takaoumehara.com${current}`;
+---
+<Site
+  title={meta.title}
+  description={meta.description}
+  canonical={canonical}
+  noindex={noindex}
+  ogImage={meta.ogImage}
+  ogType={meta.ogType}
+  theme={meta.theme}
+  htmlClass={meta.htmlClass}
+  bodyClass={meta.bodyClass}
+  current={current}
+  stylesheets={meta.stylesheets}
+  style={css}
+  fonts={meta.fonts}
+>
+  <Fragment set:html={body} />
+</Site>

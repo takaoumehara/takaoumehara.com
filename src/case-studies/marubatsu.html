@@ -1,0 +1,200 @@
+<!-- ── Breadcrumb ── -->
+  <div class="pj-crumb">
+    <a href="../interactive.html">Interactive</a>
+    <span>/</span>
+    Marubatsu 2.0
+    
+  </div>
+
+  <!-- ── Hero ── -->
+  <header class="pj-hero">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker">Playable · Realtime Web</span>
+      <ul class="pj-tags">
+        <li>Game Design</li>
+        <li>Realtime Sync</li>
+        <li>AI Opponent</li>
+        <li>Next.js 16</li>
+      </ul>
+      <h1 class="pj-title">
+        Marubatsu 2.0: Online 4×4 tic-tac-toe
+        
+      </h1>
+      <p class="pj-summary">
+        A four-by-four board where you place two marks per turn and four in a row wins. Invented with my son on a school commute ferry, shipped as a real-time multiplayer arena with an adaptive AI adversary.
+        
+      </p>
+
+      <div class="pj-cta">
+        <a href="http://marubatsu20.creativityiseverywhere.com/" target="_blank" rel="noopener">
+          Play it live ↗
+          
+        </a>
+        <a href="../interactive.html">
+          ← All Interactive Projects
+          
+        </a>
+      </div>
+
+      <dl class="pj-meta">
+        <div>
+          <dt>Role</dt>
+          <dd>Game Design &amp; Architecture</dd>
+        </div>
+        <div>
+          <dt>Stack</dt>
+          <dd>Next.js 16 · Firebase RTDB · Gemini</dd>
+        </div>
+        <div>
+          <dt>Input</dt>
+          <dd>Touch, QR Pairing, AI Bot</dd>
+        </div>
+        <div>
+          <dt>Year</dt>
+          <dd>2025 – 2026</dd>
+        </div>
+      </dl>
+    </div>
+  </header>
+
+  <!-- ── Body ── -->
+  <main class="pj-body">
+
+    <!-- Hero Media -->
+    <figure class="pj-media" data-vt-hero>
+      <video autoplay loop muted playsinline controls poster="../assets/marubatsu/Marubatsu20-screenshot.png" width="1920" height="1080">
+        <source src="../assets/marubatsu/Marubatsu20.mov" type="video/mp4">
+        <source src="../assets/marubatsu/preview.webm" type="video/webm">
+      </video>
+      <figcaption>
+        Real-time match synced across desktop and mobile devices
+        
+      </figcaption>
+    </figure>
+
+    <!-- Key Metrics / Numbers -->
+    <dl class="pj-facts">
+      <div>
+        <dt>1</dt>
+        <dd>
+          Core rule changed: 2 marks a turn on a 4×4 grid
+          
+        </dd>
+      </div>
+      <div>
+        <dt>3</dt>
+        <dd>
+          Ways to play: Solo pass, AI opponent, or QR scan
+          
+        </dd>
+      </div>
+      <div>
+        <dt>9</dt>
+        <dd>
+          Localized languages with zero setup required
+          
+        </dd>
+      </div>
+      <div>
+        <dt>&lt;100ms</dt>
+        <dd>
+          Peer board synchronization via Firebase RTDB
+          
+        </dd>
+      </div>
+    </dl>
+
+    <!-- Key Architecture Points -->
+    <div class="pj-points">
+      <div class="pj-point">
+        <span class="pj-point-num">01</span>
+        <h2 class="pj-point-title">
+          The rule is the asset; the app is disposable.
+          
+        </h2>
+        <p class="pj-point-desc">
+          Tic-tac-toe was solved centuries ago, but placing two marks on a 4×4 grid revives tension instantly. The exact same ten win lines power the local game, the AI search tree, and the room referee.
+          
+        </p>
+      </div>
+
+      <div class="pj-point">
+        <span class="pj-point-num">02</span>
+        <h2 class="pj-point-title">
+          Instant pairing without accounts.
+          
+        </h2>
+        <p class="pj-point-desc">
+          Creating a room gives a 6-character shortcode and a QR code. The second phone scans and is in. No logins, no downloads, and the server only arbitrates the state.
+          
+        </p>
+      </div>
+
+      <div class="pj-point">
+        <span class="pj-point-num">03</span>
+        <h2 class="pj-point-title">
+          Gemini-first adaptive adversary.
+          
+        </h2>
+        <p class="pj-point-desc">
+          The AI opponent uses Gemini to generate playful contextual banter and tactical moves across four difficulty settings, falling back seamlessly to an offline search engine when network drops.
+          
+        </p>
+      </div>
+    </div>
+
+    <!-- Scenarios -->
+    <section class="pj-scenarios">
+      <h2>
+        Where it belongs
+        
+      </h2>
+      <ul class="pj-scenarios-list">
+        <li>
+          <strong>Two people with five minutes:</strong>
+          Waiting lounges, trains, cafes — pull out one phone or scan between two, with zero explanation needed.
+          
+        </li>
+        <li>
+          <strong>Shared-board engine pattern:</strong>
+          The lightweight pairing engine built here evolved into Snap Pair, enabling any quiz, voting board, or party game across phones.
+          
+        </li>
+        <li>
+          <strong>Multi-platform responsive web:</strong>
+          Plays equally well on touch screens, trackpads, and desktop browsers with full keyboard accessibility.
+          
+        </li>
+      </ul>
+    </section>
+
+    <!-- Contribution Split -->
+    <div class="pj-contrib">
+      <div>
+        <h3>
+          My Contribution
+          
+        </h3>
+        <ul>
+          <li>Co-invented the 4×4 two-marks game mechanic over hundreds of rounds</li>
+          <li>Designed complete UX/UI, board iconography, and tactile micro-interactions</li>
+          <li>Engineered the Next.js 16 and Firebase RTDB real-time pairing architecture</li>
+          <li>Integrated Gemini AI adversary with offline heuristic fallback</li>
+        </ul>
+      </div>
+      <div>
+        <h3>
+          Collaborators &amp; Heritage
+          
+        </h3>
+        <ul>
+          <li>Co-designed with Takao's son on the school ferry commute in New York</li>
+          <li>Original rule tested on paper napkins before writing a single line of code</li>
+          <li>Released as open-source web application under Creativity Is Everywhere LLC</li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Footer Navigation ── -->

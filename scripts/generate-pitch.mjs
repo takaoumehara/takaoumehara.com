@@ -129,7 +129,7 @@ function summary(result) {
   const missing = requirements.filter((r) => !r.foundIn.length);
   if (missing.length) out.push(`\nNamed in the posting, not in the record: ${missing.map((r) => r.name).join(", ")}`);
   out.push(`\nWrote ${result.lensPath}\n      ${join(result.pitchDir, "report.md")}`);
-  out.push(`Next: read the report, edit the hero, then  node src/build.mjs --preview  →  lens/_preview/${slug}/index.html`);
+  out.push(`Next: read the report, edit the hero, then  npm run dev  →  http://localhost:4321/lens/${slug}/`);
   return out.join("\n") + "\n";
 }
 

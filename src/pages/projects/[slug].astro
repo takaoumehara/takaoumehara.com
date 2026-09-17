@@ -1,0 +1,68 @@
+---
+// One route for every case study, built from src/case-studies/<slug>.{html,css,json}
+// (see scripts/extract-page.mjs). build.format: 'file' turns this into
+// /projects/<slug>.html — the same URL the hand-built pages always had.
+//
+// import.meta.glob() and the plain `const`s that read it are called INSIDE
+// getStaticPaths() and handed down through `props`, not read from module
+// scope in the page body below: Astro runs getStaticPaths() in its own
+// isolated pass to build the route manifest, and a module-scope binding
+// referenced only from inside that function comes back "is not defined" —
+// props are the documented way around it.
+//
+// This page renders <Site> itself instead of going through FragmentPage — the
+// Challenge/Solution strip (ProjectStrip) has to sit between the shell and the
+// hand-built body, and FragmentPage has no slot for that. The props mapping
+// below is copied verbatim from FragmentPage.astro; keep the two in sync.
+import Site from "../../layouts/Site.astro";
+import ProjectStrip from "../../components/project/ProjectStrip.astro";
+import { evidenceForCaseStudy } from "../../lib/site.mjs";
+
+export async function getStaticPaths() {
+  const htmlFiles = import.meta.glob("../../case-studies/*.html", { query: "?raw", import: "default", eager: true });
+  const cssFiles = import.meta.glob("../../case-studies/*.css", { query: "?raw", import: "default", eager: true });
+  const jsonFiles = import.meta.glob("../../case-studies/*.json", { eager: true, import: "default" });
+  const slugOf = (path: string) => path.split("/").pop()!.replace(/\.\w+$/, "");
+
+  return Object.keys(htmlFiles).map((path) => {
+    const slug = slugOf(path);
+    return {
+      params: { slug },
+      props: {
+        body: htmlFiles[path],
+        css: cssFiles[path.replace(/\.html$/, ".css")],
+        meta: jsonFiles[path.replace(/\.html$/, ".json")],
+      },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const { body, css, meta } = Astro.props;
+const current = `/projects/${slug}.html`;
+const item = evidenceForCaseStudy(slug);
+
+// Same canonical fallback FragmentPage uses: most hand-built pages never had
+// their own <link rel="canonical">, so it's computed from `current` rather
+// than Astro.url.pathname (unreliable this deep). Pages that DID carry one
+// (none under projects/ today, but the shape is shared with FragmentPage)
+// keep it verbatim.
+const canonical = meta.canonical ?? `https://takaoumehara.com${current}`;
+---
+<Site
+  title={meta.title}
+  description={meta.description}
+  canonical={canonical}
+  ogImage={meta.ogImage}
+  ogType={meta.ogType}
+  theme={meta.theme}
+  htmlClass={meta.htmlClass}
+  bodyClass={meta.bodyClass}
+  current={current}
+  stylesheets={meta.stylesheets}
+  style={css}
+  fonts={meta.fonts}
+>
+  <ProjectStrip item={item} />
+  <Fragment set:html={body} />
+</Site>

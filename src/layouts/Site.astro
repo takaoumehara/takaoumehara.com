@@ -1,0 +1,105 @@
+---
+// The one shell every page uses: head, the sidebar (Sidebar.astro), the page
+// in the right column, the footer, and src/scripts/site.js.
+//
+// Hand-built pages (case studies, about, contact …) pass their own stylesheets
+// through `stylesheets` and their page-specific CSS through `style`; they keep
+// design-system.css, which redefines :root, so the sidebar uses its own tokens.
+import "../styles/tokens.css";
+import "../styles/site.css";
+import "../styles/shell.css";
+import { ClientRouter } from "astro:transitions";
+import Sidebar from "../components/Sidebar.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+  canonical?: string;         // absolute URL; defaults to the page's own
+  noindex?: boolean;
+  ogImage?: string;           // site-relative or absolute
+  ogType?: string;
+  lang?: "en" | "ja";         // "ja" renders the Japanese edition and pins the switch
+  theme?: string;             // "dark" locks the page dark (art-directed case studies); otherwise the visitor's choice
+  htmlClass?: string;
+  bodyClass?: string;
+  current?: string;           // the path the sidebar treats as "here" (defaults to the URL)
+  stylesheets?: string[];     // extra <link rel="stylesheet"> hrefs, after site.css
+  style?: string;             // extra CSS, inlined in <head>
+  fonts?: string;             // a Google Fonts URL to use instead of the default
+  footer?: boolean;           // false hides the site footer (a page that carries its own)
+  lensSlug?: string;          // data-lens on <html>, kept for the tests and the Studio
+}
+const {
+  title, description = "", canonical, noindex = false, ogImage, ogType = "website",
+  lang = "en", theme, htmlClass = "", bodyClass, current, stylesheets = [], style = "",
+  fonts = "https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Noto+Sans+JP:wght@400&display=swap",
+  footer = true, lensSlug,
+} = Astro.props;
+
+const site = Astro.site ?? new URL("https://takaoumehara.com");
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site).href;
+const og = ogImage ? new URL(ogImage, site).href : undefined;
+const classes = [htmlClass, lang === "ja" ? "lang-jp" : ""].filter(Boolean).join(" ") || undefined;
+// The theme the HTML ships with. A page that declares itself dark stays dark
+// (data-theme-lock); every other page follows the visitor's switch, applied
+// by the inline script below before first paint and again after every swap.
+const themeLock = theme === "dark" ? "dark" : undefined;
+---
+<!DOCTYPE html>
+<html lang={lang} class={classes} data-theme={themeLock ?? "light"} data-theme-lock={themeLock} data-lens={lensSlug} data-lang-fixed={lang === "ja" ? "jp" : undefined}>
+<head>
+  <script is:inline>
+    // Visitor preferences, before the first paint and again after every
+    // client-side swap (the router replaces <html>'s attributes with the new
+    // page's). Theme: localStorage "tu-theme"; language: "tu-lang".
+    (function () {
+      var html = document.documentElement;
+      function apply() {
+        var theme = "light";
+        try { theme = localStorage.getItem("tu-theme") || "light"; } catch (e) {}
+        html.setAttribute("data-theme", html.getAttribute("data-theme-lock") || theme);
+        var fixed = html.getAttribute("data-lang-fixed");
+        var lang = fixed || "en";
+        if (!fixed) { try { lang = localStorage.getItem("tu-lang") || "en"; } catch (e) {} }
+        html.classList.toggle("lang-jp", lang === "jp");
+        html.lang = lang === "jp" ? "ja" : "en";
+      }
+      apply();
+      if (!window.__tuPrefs) { window.__tuPrefs = true; document.addEventListener("astro:after-swap", apply); }
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
+  <link rel="canonical" href={canonicalUrl}>
+  <meta property="og:title" content={title}>
+  {description && <meta property="og:description" content={description} />}
+  <meta property="og:type" content={ogType}>
+  <meta property="og:url" content={canonicalUrl}>
+  {og && <meta property="og:image" content={og} />}
+  {og && <meta name="twitter:card" content="summary_large_image" />}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href={fonts} rel="stylesheet">
+  {stylesheets.map((href) => <link rel="stylesheet" href={href} />)}
+  {style && <style set:html={style} />}
+  <slot name="head" />
+  <ClientRouter />
+</head>
+<body class={bodyClass}>
+  <div class="shell">
+    <Sidebar current={current} />
+    <div class="main" id="main">
+      <slot />
+      {footer && <Footer />}
+    </div>
+  </div>
+  <script>
+    import "../scripts/site.js";
+  </script>
+</body>
+</html>

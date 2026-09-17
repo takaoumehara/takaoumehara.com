@@ -1,5 +1,5 @@
-// Real-browser audit of every projects/*.html page.
-//   python3 -m http.server 4173 --bind 127.0.0.1 &
+// Real-browser audit of every /projects/<slug>.html page (src/case-studies/*.html).
+//   npx astro dev --port 4173 --host 127.0.0.1 &
 //   node tools/pdp-audit.mjs [slug ...]
 // Reports: failed requests, console errors, broken / invisible images and videos,
 // oversized media, off-brand fonts, low-contrast text, and horizontal overflow.
@@ -10,7 +10,7 @@ import { resolve } from "node:path";
 const BASE = "http://127.0.0.1:4173";
 const root = resolve(new URL("..", import.meta.url).pathname);
 const only = process.argv.slice(2);
-const pages = readdirSync(resolve(root, "projects"))
+const pages = readdirSync(resolve(root, "src", "case-studies"))
   .filter((f) => f.endsWith(".html"))
   .filter((f) => !only.length || only.includes(f.replace(/\.html$/, "")));
 const shotDir = resolve(root, ".audit");

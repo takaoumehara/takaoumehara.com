@@ -1,0 +1,83 @@
+---
+// Where I can be useful: the six fixed leadership areas, each with one piece
+// of named evidence. Ported from capabilitiesSection() in
+// src/render/sections.mjs — the area list is not lens-configurable, so
+// `section.items` is not read.
+import { esc, t } from "../../lib/html.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lens: any; lib: any; usedEvidence?: any[] }
+const { section } = Astro.props;
+
+const LEADERSHIP_AREAS = [
+  {
+    id: "zero-to-one",
+    title: { en: "0→1 Products & Ventures", jp: "0→1 / 新規事業" },
+    desc: {
+      en: "Taking ambiguous concepts from zero to validated working products and new business models.",
+      jp: "まだ答えのない曖昧な発想から、実際に検証できる動くプロダクトや事業の形をつくる。",
+    },
+    evidence: "Intent First · MyBrainSpec · Break Bias",
+  },
+  {
+    id: "interactive-experiences",
+    title: { en: "Interactive Experiences", jp: "インタラクティブ体験" },
+    desc: {
+      en: "Designing playful, multi-device physical and digital experiences that bring people together.",
+      jp: "画面にとどまらず、身体や音、複数のスマホを使って人が集まり熱中する場を設計する。",
+    },
+    evidence: "Resona · Rakugaki Jam · Festival Reinvention",
+  },
+  {
+    id: "ai-prototypes",
+    title: { en: "AI Prototypes", jp: "AI プロトタイプ" },
+    desc: {
+      en: "Building functional AI agents and working software to validate possibilities before full-scale engineering.",
+      jp: "本格開発に入る前に、動く AI エージェントやソフトウェアを直接つくり可能性を素早く確かめる。",
+    },
+    evidence: "Verizon AI Workflow · AI Tools · Moime",
+  },
+  {
+    id: "product-cx-ai",
+    title: { en: "Product / CX / AI", jp: "Product / CX / AI" },
+    desc: {
+      en: "Architecting complex enterprise product systems and embedding AI directly into human workflows.",
+      jp: "大規模なプロダクト基盤を設計し、日々の業務や体験に馴染む形で AI を組み込む。",
+    },
+    evidence: "Verizon · T-Mobile · Amplify ELA Quests",
+  },
+  {
+    id: "brand-creative",
+    title: { en: "Brand & Creative Direction", jp: "Brand / Creative Direction" },
+    desc: {
+      en: "Defining brand narrative, visual language, and interaction craft from strategy through launch.",
+      jp: "企業の核となる物語、視覚言語、手ざわりを定め、世に出るまで貫く。",
+    },
+    evidence: "KOJI FIZZ · extra•ordinary · Ogilvy",
+  },
+  {
+    id: "japan-us",
+    title: { en: "Japan ↔ US", jp: "Japan ↔ US" },
+    desc: {
+      en: "Bridging product sensibilities, business cultures, and cross-border expansion between Tokyo and New York.",
+      jp: "ニューヨークと東京の両方の商習慣・文化感覚を理解し、プロダクトの越境を支える。",
+    },
+    evidence: "Bilingual Practice · NY ↔ Tokyo",
+  },
+];
+
+const cards = LEADERSHIP_AREAS.map((area) => `      <div class="cap-card">
+        <h3 class="cap-title">${t(area.title)}</h3>
+        <p class="cap-desc">${t(area.desc)}</p>
+        <span class="cap-evidence">${esc(area.evidence)}</span>
+      </div>`).join("\n");
+
+const defaultLede = {
+  en: "I work best before the answer is known — taking unclear ideas and making them tangible enough to test and move forward.",
+  jp: "僕がいちばん役に立つのは、すでに決まったものをきれいに仕上げるときより、「そもそも何をつくるべきか」というところから考えるときです。",
+};
+---
+<section class="band capabilities" id="capabilities">
+  <SectionHead title={section.title ?? { en: "Where I can be useful", jp: "一緒に考えられること" }} lede={section.lede ?? defaultLede} />
+  <div class="cap-grid" set:html={cards} />
+</section>

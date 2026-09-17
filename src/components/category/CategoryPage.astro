@@ -1,0 +1,43 @@
+---
+// A category page: one section of the work, every item in it, nothing else.
+//
+// Against `/` and `/lens/<slug>`, which argue a case by selecting evidence, a
+// category page is the index — it shows everything in that section, in a fixed
+// order, at one size. That difference is the whole reason both exist
+// (docs/adaptive-portfolio-architecture.md §14.1), so the page is deliberately
+// plain: a title, one line, and the cards, in the shared PORTO ROCHA grid
+// (src/components/grid/WorkGrid.astro).
+//
+// `data-category` used to sit on <html> (src/render/category.mjs); Site.astro
+// has no prop for that, so it lives on this <main> instead — see the porting
+// report for the callout.
+import WorkGrid from "../grid/WorkGrid.astro";
+import { t, tb, plain } from "../../lib/html.mjs";
+
+interface Props { category: any; lib: any }
+const { category, lib } = Astro.props;
+const count = category.groups.reduce((n, g) => n + g.items.length, 0);
+---
+<main class="cat-page" data-category={category.slug}>
+  <header class="cat-head">
+    <h1 class="cat-title" set:html={t(category.title)} />
+    <p class="cat-lede" set:html={tb(category.lede)} />
+    <p class="cat-count">{count}<span class="t-en"> projects</span><span class="t-jp"> 件</span></p>
+  </header>
+
+  {category.groups.map((g) => {
+    const items = g.items.map((id) => lib.evidence.get(id)).filter(Boolean);
+    const entries = items.map((item) => ({ item, category: category.slug }));
+    return (
+      <section class="cat-group" aria-label={g.title ? plain(g.title) : undefined}>
+        {g.title && (
+          <div class="cat-group-head">
+            <h2 class="cat-group-title" set:html={t(g.title)} />
+            {g.note && <p class="cat-group-note" set:html={t(g.note)} />}
+          </div>
+        )}
+        <WorkGrid entries={entries} />
+      </section>
+    );
+  })}
+</main>

@@ -1,0 +1,73 @@
+---
+// One proof card: the framing the Lens chose, the metrics it chose to
+// surface, and — behind a <details> — the honest split of what Takao did and
+// what the team did. Ported from proofCard() in src/render/proof.mjs.
+import { esc, t, tb, url, mediaFill } from "../../lib/html.mjs";
+import { displayTitle, roleFlag, periodLabel, engagementLabel } from "../../lib/labels.mjs";
+
+// proofRef is the lens's reference into this card (angle, summaryOverride, emphasis, metricIds, size); item is the evidence record.
+interface Props { proofRef: any; item: any; index: number }
+const { proofRef, item, index } = Astro.props;
+
+// A card gets one line. The lens may still reframe it with an approved angle;
+// the full summary belongs on the page behind the card, not on the card.
+const summary = proofRef.summaryOverride ?? (proofRef.angle ? item.angles[proofRef.angle] : item.cardLine ?? item.summary);
+const size = proofRef.size ?? (index === 0 ? "lead" : "standard");
+const engagement = engagementLabel(item.engagement);
+const meta = [item.organization, item.role, periodLabel(item.period)].filter(Boolean).map(esc).join(" · ");
+
+const mediaItem = { ...item, assets: { art: "card-art--intent", ...item.assets } };
+const mediaHtml = mediaFill(mediaItem);
+
+// Astro's frontmatter compiler cannot parse a template literal nested inside
+// another one's ${...}, so every inner fragment is its own function/const
+// below and interpolated as a plain variable.
+const metricCell = (m) => `<div class="metric"><dt>${esc(m.value)}</dt><dd>${t(m.label)}</dd></div>`;
+function metricRow(metricIds) {
+  if (!metricIds?.length) return "";
+  const metrics = metricIds.map((id) => item.metrics.find((m) => m.id === id)).filter(Boolean);
+  const cells = metrics.map(metricCell).join("");
+  return `<dl class="metrics">${cells}</dl>`;
+}
+
+const contribLine = (line) => `<li>${esc(line)}</li>`;
+function contributionDetails() {
+  const mine = item.contribution.mine.map(contribLine).join("");
+  const teamLines = item.contribution.team?.length ? item.contribution.team.map(contribLine).join("") : "";
+  const team = item.contribution.team?.length
+    ? `<h4><span class="t-en">What the team did</span><span class="t-jp">チームがしたこと</span></h4><ul>${teamLines}</ul>`
+    : "";
+  return `<details class="contrib"><summary><span class="t-en">What I did · what the team did</span><span class="t-jp">自分がしたこと · チームがしたこと</span></summary>
+      <div class="contrib-body"><h4><span class="t-en">What I did</span><span class="t-jp">自分がしたこと</span></h4><ul>${mine}</ul>${team}</div></details>`;
+}
+
+const caseStudyHref = item.links?.caseStudy ? url(item.links.caseStudy) : null;
+const liveHref = item.links?.live ?? null;
+const dataHref = caseStudyHref ?? liveHref ?? undefined;
+const isExternal = !caseStudyHref && !!liveHref;
+const link = caseStudyHref
+  ? `<a class="card-link" href="${esc(caseStudyHref)}"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>`
+  : liveHref
+    ? `<a class="card-link" href="${esc(liveHref)}" target="_blank" rel="noopener"><span class="t-en">Open it ↗</span><span class="t-jp">開く ↗</span></a>`
+    : "";
+
+const emphasisHtml = proofRef.emphasis ? `<p class="card-emphasis">${t(proofRef.emphasis)}</p>` : "";
+const engagementFlag = engagement ? ` <span class="card-flag">${t(engagement)}</span>` : "";
+const bodyHtml = `${emphasisHtml}
+          <h3 class="card-title">${displayTitle(item)}</h3>
+          <p class="card-meta">${meta}${engagementFlag}${roleFlag(item)}</p>
+          <p class="card-desc">${tb(summary)}</p>
+          ${metricRow(proofRef.metricIds)}
+          ${contributionDetails()}
+          ${link}`;
+---
+<article
+  class={`proof-card is-${size}`}
+  id={`card-${item.slug}`}
+  tabindex="0"
+  data-href={dataHref}
+  data-external={isExternal ? "true" : undefined}
+>
+  <div class="card-media" set:html={mediaHtml} />
+  <div class="card-body" set:html={bodyHtml} />
+</article>

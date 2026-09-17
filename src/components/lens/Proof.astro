@@ -1,0 +1,17 @@
+---
+// Selected proof: the cards that carry the argument. Ported from
+// proofSection() in src/render/proof.mjs.
+import SectionHead from "./SectionHead.astro";
+import ProofCard from "./ProofCard.astro";
+
+interface Props { section: any; lib: any }
+const { section, lib } = Astro.props;
+---
+<section class="band proof" id="proof">
+  <SectionHead title={section.title ?? { en: "Selected proof", jp: "選んだ証拠" }} lede={section.lede} />
+  <div class="proof-grid">
+    {section.items.map((item: any, index: number) => (
+      <ProofCard proofRef={item} item={lib.evidence.get(item.id)} index={index} />
+    ))}
+  </div>
+</section>

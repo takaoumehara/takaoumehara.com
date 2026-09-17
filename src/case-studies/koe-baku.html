@@ -1,0 +1,190 @@
+<!-- ── Breadcrumb ── -->
+  <div class="pj-crumb">
+    <a href="../interactive.html">Interactive</a>
+    <span>/</span>
+    Koe Baku 声爆
+  </div>
+
+  <!-- ── Hero ── -->
+  <header class="pj-hero">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker">Playable · Social Play · Voice UX</span>
+      <ul class="pj-tags">
+        <li>Voice Peak RMS</li>
+        <li>Web Audio API</li>
+        <li>Snap Pair</li>
+        <li>Canvas Physics</li>
+      </ul>
+      <h1 class="pj-title">
+        <span class="t-en">Koe Baku: Shout-powered party game on the shared screen</span>
+        <span class="t-jp">声爆（Koe Baku）: 叫んで遊ぶパーティーゲーム</span>
+      </h1>
+      <p class="pj-summary">
+        <span class="t-en">Shout into your phone, and your voice bursts into explosive comic-book onomatopoeia across the shared screen. Volume is measured entirely on-device via the Web Audio API — zero raw audio ever leaves the handset. Paired in seconds via Snap Pair QR codes.</span>
+        <span class="t-jp">叫ぶと、声が画面の上でマンガの擬音になって弾けます。音量はスマホの中で測っていて、音声が外に出ることはありません。QRコードをスキャンするだけで何台でも参加できる、新感覚のソーシャル音声インタラクション。</span>
+      </p>
+
+      <div class="pj-cta">
+        <a href="../interactive.html">
+          <span class="t-en">← All Interactive Projects</span>
+          <span class="t-jp">← すべてのインタラクティブ作品</span>
+        </a>
+      </div>
+
+      <dl class="pj-meta">
+        <div>
+          <dt>Role</dt>
+          <dd>Concept, Sound UX &amp; Engineering</dd>
+        </div>
+        <div>
+          <dt>Stack</dt>
+          <dd>Snap Pair · Web Audio · HTML5 Canvas</dd>
+        </div>
+        <div>
+          <dt>Input</dt>
+          <dd>Voice Volume (On-Device Peak RMS)</dd>
+        </div>
+        <div>
+          <dt>Year</dt>
+          <dd>2026</dd>
+        </div>
+      </dl>
+    </div>
+  </header>
+
+  <!-- ── Body ── -->
+  <main class="pj-body">
+
+    <!-- Hero Media -->
+    <figure class="pj-media" data-vt-hero>
+      <img src="../assets/koebaku/hero.jpg" alt="Koe Baku on-screen onomatopoeia exploding in reaction to player vocal volume" width="1440" height="900" loading="lazy" style="width: 100%; height: auto; border-radius: var(--r-card, 16px); display: block; border: 1px solid rgba(255, 255, 255, 0.1);">
+      <figcaption>
+        <span class="t-en">Koe Baku — comic-book onomatopoeia bursting onto the screen in real-time response to vocal amplitude</span>
+        <span class="t-jp">声爆 — 叫び声の音量ピークに反応して、大画面にマンガ調の擬音がダイナミックに炸裂する様子</span>
+      </figcaption>
+    </figure>
+
+    <!-- Key Metrics / Numbers -->
+    <dl class="pj-facts">
+      <div>
+        <dt>0</dt>
+        <dd>
+          <span class="t-en">Audio recordings leaving the phone (100% on-device peak RMS measurement)</span>
+          <span class="t-jp">外部送信される音声データゼロ（端末内AudioWorkletで音量のみ測定）</span>
+        </dd>
+      </div>
+      <div>
+        <dt>&lt;50ms</dt>
+        <dd>
+          <span class="t-en">Latency from vocal peak to on-screen typographic explosion</span>
+          <span class="t-jp">叫び声のピークから画面上の擬音炸裂までのレスポンス</span>
+        </dd>
+      </div>
+      <div>
+        <dt>10s</dt>
+        <dd>
+          <span class="t-en">Scan-to-shout join time with no app install or account</span>
+          <span class="t-jp">QRスキャンから参加完了までの所要時間（アプリ・登録一切不要）</span>
+        </dd>
+      </div>
+      <div>
+        <dt>&infin;</dt>
+        <dd>
+          <span class="t-en">Simultaneous voices creating an explosive typographic soundscape</span>
+          <span class="t-jp">多人数が同時に叫んでも破綻しない分散型パーティクル物理</span>
+        </dd>
+      </div>
+    </dl>
+
+    <!-- Key Architecture Points -->
+    <div class="pj-points">
+      <div class="pj-point">
+        <span class="pj-point-num">01</span>
+        <h2 class="pj-point-title">
+          <span class="t-en">Private microphone, public explosion.</span>
+          <span class="t-jp">手元のマイクで叫び、大画面で爆発させる。</span>
+        </h2>
+        <p class="pj-point-desc">
+          <span class="t-en">Passing a physical microphone around a room induces self-conscious stage fright. Shouting into your own personal smartphone feels intimate, low-stakes, and safe — yet the instant detonation on the giant wall turns hesitation into shared, riotous laughter.</span>
+          <span class="t-jp">1本のマイクを回して人前で声を出すのは心理的ハードルが高いもの。自分のスマホに向かって叫ぶ体験はプライベートで気兼ねがなく、それが大画面にドカンと現れることで、内気な人でも一瞬で熱狂の輪に巻き込まれます。</span>
+        </p>
+      </div>
+
+      <div class="pj-point">
+        <span class="pj-point-num">02</span>
+        <h2 class="pj-point-title">
+          <span class="t-en">On-device RMS metering protects player privacy.</span>
+          <span class="t-jp">オンデバイス測定によるプライバシー保護。</span>
+        </h2>
+        <p class="pj-point-desc">
+          <span class="t-en">The Web Audio API samples sound levels locally using an AudioWorklet. Only discrete integer volume peaks and timing metadata are transmitted over Snap Pair room channels. Raw audio clips are never captured, buffered, or uploaded to any server.</span>
+          <span class="t-jp">Web Audio APIのAnalyserNodeを用い、端末内で音量RMS値のみをローカルに抽出。ネットワークに送られるのは「いつ、どれくらいの強さで叫んだか」のメタデータのみで、生音声データは端末の外へ一切流出しません。</span>
+        </p>
+      </div>
+
+      <div class="pj-point">
+        <span class="pj-point-num">03</span>
+        <h2 class="pj-point-title">
+          <span class="t-en">Manga onomatopoeia as kinetic juice.</span>
+          <span class="t-jp">マンガの擬音を「触感のあるジュース」にする。</span>
+        </h2>
+        <p class="pj-point-desc">
+          <span class="t-en">Shouts do not render as boring bar graphs; they detonate as dynamic comic sound effects (ドカーン, バーン, ギャー) rendered with kinetic physics, scale expansion, screen shakes, and particle decay, turning noise into tactile visual satisfaction.</span>
+          <span class="t-jp">音量を退屈なレベルメーターで表すのではなく、「ドカーン」「バーン」「ギャー」といった漫画の書き文字として撃ち出す。タイポグラフィのスケール拡大、画面の揺れ、煙や火花の減衰物理が、声を出す行為に最高の快感を与えます。</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Scenarios -->
+    <section class="pj-scenarios">
+      <h2>
+        <span class="t-en">Where it belongs</span>
+        <span class="t-jp">想定される体験シーン</span>
+      </h2>
+      <ul class="pj-scenarios-list">
+        <li>
+          <strong><span class="t-en">Party game &amp; icebreaker:</span><span class="t-jp">パーティーや懇親会のアイスブレイク:</span></strong>
+          <span class="t-en">Instant crowd energy without controllers, app downloads, or rule explanations. Everyone pulls out their phone and joins.</span>
+          <span class="t-jp">説明書もコントローラーもアプリインストールも不要。全員が手持ちのスマホをかざすだけで、一気に場の熱量が上がります。</span>
+        </li>
+        <li>
+          <strong><span class="t-en">Interactive concert &amp; VJ stage:</span><span class="t-jp">ライブステージ・VJとの連動:</span></strong>
+          <span class="t-en">Audience cheering directly fuels visual stage dynamics, transforming spectator noise into live generative concert graphics.</span>
+          <span class="t-jp">観客の歓声やコールがリアルタイムにステージ背後のビジュアル演出へと変換され、フロアと演者が一体になる音響体験。</span>
+        </li>
+        <li>
+          <strong><span class="t-en">Classroom &amp; youth workshops:</span><span class="t-jp">学校・教育現場での声出しワークショップ:</span></strong>
+          <span class="t-en">High-energy collective participation that ensures 100% audio privacy for children and students in educational settings.</span>
+          <span class="t-jp">音声録音を行わない厳格なオンデバイス設計により、子どもや教育現場でもプライバシー懸念なく安全に身体表現を楽しめます。</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Contribution Split -->
+    <div class="pj-contrib">
+      <div>
+        <h3>
+          <span class="t-en">My Contribution</span>
+          <span class="t-jp">担当領域</span>
+        </h3>
+        <ul>
+          <li><span class="t-en">Conceived voice-to-onomatopoeia interaction mechanics and audio-visual reward loops</span><span class="t-jp">音声から擬音への変換インタラクションおよびゲームフィールの設計</span></li>
+          <li><span class="t-en">Built on-device Web Audio RMS peak detection and privacy-first local processing</span><span class="t-jp">Web Audio APIによるオンデバイス音量解析とプライバシー保護アーキテクチャの実装</span></li>
+          <li><span class="t-en">Engineered Snap Pair multi-phone sync and HTML5 Canvas kinetic particle rendering</span><span class="t-jp">Snap Pairによるマルチデバイス同期およびCanvas上の動的タイポグラフィ物理演算</span></li>
+        </ul>
+      </div>
+      <div>
+        <h3>
+          <span class="t-en">Ecosystem</span>
+          <span class="t-jp">エコシステムにおける位置づけ</span>
+        </h3>
+        <ul>
+          <li><span class="t-en">A key experiment in the Playable collection exploring non-keyboard bodily input</span><span class="t-jp">キーボード以外の身体入力を探求するPlayableコレクションの中核作品</span></li>
+          <li><span class="t-en">Reference implementation for Snap Pair multi-device low-latency audio signaling</span><span class="t-jp">Snap Pairライブラリを活用したリアルタイム多人数参加型デモの実装例</span></li>
+        </ul>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Footer Navigation ── -->

@@ -1,0 +1,24 @@
+---
+// I build the tools I build with: a plain list, name → summary → stack.
+// Ported from toolsSection() in src/render/sections.mjs.
+import { esc, tb, url } from "../../lib/html.mjs";
+import SectionHead from "./SectionHead.astro";
+
+interface Props { section: any; lib: any }
+const { section, lib } = Astro.props;
+
+const rows = section.items.map((id: string) => {
+  const tool = lib.evidence.get(id);
+  if (!tool) return "";
+  const link = tool.links?.caseStudy ? url(tool.links.caseStudy) : tool.links?.repo;
+  return `      <li class="tool-row">
+        <a class="tool-name" href="${esc(link)}">${esc(tool.title)}</a>
+        <span class="tool-desc">${tb(tool.summary)}</span>
+        <span class="tool-meta">${esc((tool.stack ?? []).slice(0, 3).join(" · "))}${tool.license ? ` · ${esc(tool.license)}` : ""}</span>
+      </li>`;
+}).filter(Boolean).join("\n");
+---
+<section class="band tools" id="tools">
+  <SectionHead title={section.title ?? { en: "I build the tools I build with", jp: "道具のほうも、自分でつくる" }} lede={section.lede} />
+  <ul class="tool-list" set:html={rows} />
+</section>

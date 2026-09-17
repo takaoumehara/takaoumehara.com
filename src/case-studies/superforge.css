@@ -1,0 +1,56 @@
+:root {
+      /* Cyan, the accent the owner specified for this project. The text-weight
+         value is cyan-700 so that white-on-accent and accent-on-white both clear
+         4.5:1; the brighter cyan is used only for glows, where nothing is read. */
+      --a-tool: #0e7490;
+      --a-glow: #06b6d4;
+      --m-tint: var(--a-tool);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { min-height: 100vh; color: var(--ink); background: var(--bg); font-family: var(--ff); }
+
+    .site-nav { position: sticky; top: 0; z-index: 40; display: flex; justify-content: space-between; align-items: center; padding: 14px 32px; background: var(--nav-bg); border-bottom: 1px solid var(--line); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+    .nav-logo { display: flex; flex-direction: column; gap: 3px; color: var(--ink); line-height: 1; text-decoration: none; }
+    .nav-logo-name { font-size: 15px; font-weight: 700; letter-spacing: -0.018em; }
+    .nav-logo-tag { color: var(--ink-dim); font-size: 10.5px; font-weight: 400; letter-spacing: 0.02em; }
+    .nav-links { display: flex; align-items: center; gap: 24px; list-style: none; }
+    .nav-links li { position: relative; }
+    .nav-links a { color: var(--ink-mid); font-size: 13px; letter-spacing: 0.01em; text-decoration: none; transition: color 160ms ease; }
+    .nav-links a:hover, .nav-links a.is-active { color: var(--ink); font-weight: 600; }
+    .nav-links .is-tierbreak::before {
+      content: ""; position: absolute; left: -14px; top: 50%; width: 1px; height: 11px; margin-top: -5.5px;
+      background: var(--line);
+    }
+    .nav-toggle { display: none; width: 28px; height: 20px; padding: 0; position: relative; appearance: none; background: none; border: none; cursor: pointer; }
+    .nav-toggle span { position: absolute; left: 0; display: block; width: 100%; height: 1.5px; background: var(--ink); transition: transform 280ms ease, opacity 180ms ease; }
+    .nav-toggle span:nth-child(1) { top: 0; }
+    .nav-toggle span:nth-child(2) { top: 9px; }
+    .nav-toggle span:nth-child(3) { top: 18px; }
+    .nav-toggle.is-open span:nth-child(1) { top: 9px; transform: rotate(45deg); }
+    .nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.is-open span:nth-child(3) { top: 9px; transform: rotate(-45deg); }
+
+        .lang-btn { padding: 0; appearance: none; background: none; border: none; color: var(--ink-dim); cursor: pointer; font-family: var(--ff); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; transition: color 160ms ease; }
+    .lang-btn.is-active { color: var(--ink); font-weight: 600; }
+    .lang-sep { color: rgba(18,18,18,0.18); font-size: 9px; }
+    .t-jp { display: none; }
+    html.lang-jp .t-en { display: none; }
+    html.lang-jp .t-jp { display: inline; }
+    html.lang-jp .t-jp.is-block { display: block; }
+    html.lang-jp body { font-family: var(--ff-jp); }
+
+    .breadcrumb { padding: clamp(20px, 3vw, 32px) var(--gutter) clamp(12px, 2vw, 20px); max-width: var(--col); margin: 0 auto; }
+    .breadcrumb a { font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-dim); text-decoration: none; transition: color 160ms ease; font-family: var(--ff-mono); }
+    .breadcrumb a:hover { color: var(--ink); }
+    .breadcrumb span { font-size: 11.5px; color: var(--ink-dim); margin: 0 8px; }
+
+    /* ═══ Slide deck ═══ */
+    .deck { max-width: var(--col); margin: 0 auto; padding: 0 var(--gutter); }
+    .wds-slide { margin-bottom: 2px; }
+    .wds-serif { font-family: var(--ff); font-weight: 800; font-style: normal; letter-spacing: -0.035em; line-height: 1.04; color: var(--ink); }
+    .wds-serif em { font-style: normal; font-weight: 800; }
+    .wds-kick { font-family: var(--ff-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; margin-bottom: 22px; color: var(--ink-dim); }
+    html.lang-jp .wds-serif { line-height: 1.2; letter-spacing: -0.01em; }
+    html.lang-jp .wds-serif em { white-space: nowrap; }

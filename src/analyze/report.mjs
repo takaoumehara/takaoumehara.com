@@ -102,8 +102,8 @@ export function renderReport({ company, slug, analysis, picks, lib, lensPath, so
   push("", `## 6. Before publishing`, "");
   push(`1. Open \`${lensPath}\`. Rewrite \`hero.body\`, \`hero.note\`, the proof \`lede\` and \`cta\` in your own voice, in both languages. Keep every \`id\`, \`angle\` and \`metricIds\` — or change them to other values that exist on the record.`);
   push(`2. Fill the record gaps listed under each proof item (\`src/data/**\`), then re-run this script if you want the draft to pick them up.`);
-  push(`3. \`node src/build.mjs --preview\` writes \`lens/_preview/${slug}/index.html\` (git-ignored). Open it. Check the 10-second read: eyebrow, first card, its flag and its numbers.`);
-  push(`4. Set \`"status": "published"\`, run \`node src/build.mjs\`, then \`npm test\`. The Claim Guard and NotMine Guard run on everything you wrote.`);
+  push(`3. \`npm run dev\` renders the draft at \`http://localhost:4321/lens/${slug}/\` (drafts are not built). Open it. Check the 10-second read: eyebrow, first card, its flag and its numbers.`);
+  push(`4. Set \`"status": "published"\`, then \`npm test\` (it builds the site). The Claim Guard and NotMine Guard run on everything you wrote.`);
   push(`5. Commit the JSON and the generated \`lens/${slug}/index.html\` together. The page is \`/lens/${slug}\`; it is \`noindex\` — share the link directly.`);
   return lines.join("\n") + "\n";
 }

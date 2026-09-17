@@ -1,0 +1,22 @@
+---
+// Category page: Product & Experience Design. src/categories/work.json is the
+// data; this file only wires it into the shell. Not to be confused with the
+// unified /all/ archive (src/pages/all/index.astro) — this is one section
+// of the work, the archive is every project.
+import Site from "../layouts/Site.astro";
+import CategoryPage from "../components/category/CategoryPage.astro";
+import { getCategories, getLibrary } from "../lib/site.mjs";
+
+const lib = getLibrary();
+const category = getCategories().find((c) => c.slug === "work");
+const first = lib.evidence.get(category.groups[0].items[0]);
+---
+<Site
+  title={category.seo.title}
+  description={category.seo.description}
+  canonical={"https://takaoumehara.com/" + category.output}
+  ogImage={first?.assets?.hero ?? first?.assets?.thumb}
+  current={"/" + category.output}
+>
+  <CategoryPage category={category} lib={lib} />
+</Site>

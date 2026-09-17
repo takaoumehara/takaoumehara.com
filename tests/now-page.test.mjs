@@ -1,15 +1,14 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { ROOT } from "../src/lib/load.mjs";
+import { read, exists } from "./_dist.mjs";
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const read = (name) => readFileSync(join(root, name), "utf8");
-
-test("/now page is generated at both now/index.html and root alias now.html", () => {
-  assert.ok(existsSync(join(root, "now/index.html")), "now/index.html must exist");
-  assert.ok(existsSync(join(root, "now.html")), "now.html alias must exist");
+test("/now page is built at now/index.html, and the old now.html address redirects to it", () => {
+  assert.ok(exists("now/index.html"), "now/index.html must exist");
+  assert.match(read("now.html"), /http-equiv="refresh" content="0; url=\/now\/"/, "now.html must redirect to /now/");
+  assert.match(read("work/index.html"), /http-equiv="refresh" content="0; url=\/all\/"/, "the old archive address must redirect to /all/");
 
   const html = read("now/index.html");
   assert.match(html, /<h1 class="now-title">/, "must have now-title h1");
@@ -27,23 +26,30 @@ test("/now cards display Why it exists and What's next", () => {
   assert.match(html, /pill--now-status/, "cards must have status badges");
 });
 
-test("/now page marks Now nav item active", () => {
+test("/now marks Now as the current page in the sidebar", () => {
   const html = read("now/index.html");
-  assert.match(html, /<li class="nav-item">\s*<a href="(?:\.\.\/)?now\.html" class="nav-link is-active" aria-current="page">Now<\/a>/, "Now nav must be active page");
+  assert.match(html, /<a href="\/now\/"[^>]*aria-current="page"[^>]*><span class="t-en">Now<\/span>/, "the Now link must be aria-current");
 });
 
 test("work-with-me.html exists and features Good Fit guidelines and Studio bridge", () => {
-  assert.ok(existsSync(join(root, "work-with-me.html")), "work-with-me.html must exist");
+  assert.ok(exists("work-with-me.html"), "work-with-me.html must exist");
   const html = read("work-with-me.html");
   assert.match(html, /Where I am a great fit/, "must include Great Fit guidance");
   assert.match(html, /Where Studio or others fit better/, "must include studio referral boundaries");
   assert.match(html, /Creativity Is Everywhere LLC/, "must link to studio LLC");
 });
 
-test("navigation uses self-contained tokens without inheriting body colors", () => {
-  const css = read("src/render/lens.css");
-  assert.match(css, /--nav-bg:/, "must declare --nav-bg token");
-  assert.match(css, /--nav-drop-bg:/, "must declare --nav-drop-bg token");
-  assert.match(css, /--nav-drop-fg:/, "must declare --nav-drop-fg token");
-  assert.match(css, /--nav-drop-dot:/, "must declare active dot token");
+test("the sidebar reads its own tokens, which no hand-built page redefines", () => {
+  // The hand-built pages' design-system.css redefines :root (--bg, --ink,
+  // --ff). The rail reads --pr-* names from src/styles/tokens.css, which
+  // nothing else declares, so it looks the same on every page.
+  const tokens = readFileSync(join(ROOT, "src", "styles", "tokens.css"), "utf8");
+  for (const token of ["--pr-ink:", "--pr-ink-2:", "--pr-canvas:", "--pr-card:", "--pr-line:", "--pr-blue:", "--pr-ff:"]) {
+    assert.match(tokens, new RegExp(token), `must declare ${token}`);
+  }
+  assert.match(tokens, /html\[data-theme="dark"\] \{[^}]*--pr-canvas: #000000/, "the dark theme turns the same tokens over");
+  const css = readFileSync(join(ROOT, "src", "styles", "shell.css"), "utf8");
+  assert.match(css, /\.side \{[^}]*background: var\(--pr-canvas\)/);
+  assert.match(css, /\.side \{[^}]*font-family: var\(--pr-ff\)/);
+  assert.equal(/var\(--ff\)|var\(--bg\)|var\(--ink\)/.test(css), false, "shell.css must not read the overridable aliases");
 });

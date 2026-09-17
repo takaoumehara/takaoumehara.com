@@ -1,12 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
-import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const v3 = root;
-const read = (name) => readFileSync(join(v3, name), 'utf8');
+import { read, exists, resolveUrl } from './_dist.mjs';
 const mainPages = [
   'index.html', 'work.html', 'brand.html', 'ai-tools.html', 'ai-products.html', 'interactive.html',
   'about.html', 'contact.html', 'breakbias.html', 'intentfirst.html', '404.html',
@@ -61,106 +55,103 @@ function cssRuleBody(css, selector) {
   return '';
 }
 
-function hasFinalClosedMobileNavOverride(html) {
-  const baseFlexRules = [...html.matchAll(/\.nav-links\s*\{[^}]*\bdisplay\s*:\s*flex\b[^}]*\}/gi)];
-  const lastBaseFlex = baseFlexRules.at(-1);
-  if (!lastBaseFlex) return false;
-  const cssAfterBaseFlex = html.slice(lastBaseFlex.index + lastBaseFlex[0].length);
-  return /@media\s*\(max-width:\s*76[78]px\)\s*\{[\s\S]*?\.nav-links\s*\{[^}]*\bdisplay\s*:\s*none\b[^}]*\}[\s\S]*?\.nav-links\.is-open\s*\{[^}]*\bdisplay\s*:\s*flex\b[^}]*\}/i.test(cssAfterBaseFlex);
+function sidebar(html, page) {
+  const side = html.match(/<aside[^>]*class="side"[\s\S]*?<\/aside>/i)?.[0];
+  assert.ok(side, `${page}: missing sidebar`);
+  return side;
 }
-
-function navDestinations(html, page) {
-  const nav = html.match(/<ul\b[^>]*\bclass\s*=\s*(?:"[^"]*\bnav-links\b[^"]*"|'[^']*\bnav-links\b[^']*')[^>]*>([\s\S]*?)<\/ul>/i)?.[1];
-  assert.ok(nav, `${page}: missing primary nav`);
+function pageLinks(html, page) {
+  const nav = sidebar(html, page).match(/<nav class="side-pages"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
+  assert.ok(nav, `${page}: missing the page links`);
+  // Labels are bilingual span pairs; the English one is the label.
+  const label = (inner) => (inner.match(/<span class="t-en">([\s\S]*?)<\/span>/)?.[1] ?? inner).replace(/<[^>]+>/g, '').trim();
   return [...nav.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)].map((match) => ({
-    href: attr(match[0], 'href'), label: match[1].replace(/<[^>]+>/g, '').trim(), tag: match[0],
+    href: attr(match[0], 'href'), label: label(match[1]), tag: match[0],
+  }));
+}
+function workGroups(html, page) {
+  const nav = sidebar(html, page).match(/<nav class="side-work"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
+  assert.ok(nav, `${page}: missing the work groups`);
+  return [...nav.matchAll(/<details class="side-group"( open)?>\s*<summary>\s*<span>([\s\S]*?)<\/span>/gi)].map((match) => ({
+    open: Boolean(match[1]), label: match[2].replace(/<[^>]+>/g, '').trim(),
   }));
 }
 
-// ── Nav consistency ──
+// ── Sidebar consistency ──
 
-// The nav used to mark Interactive / AI Products / AI Tools as a "lead tier" at
-// full ink and leave the rest grey. On a Brand & Visual page that rendered
-// Product Design as though it were disabled, for a reason no reader could
-// infer. One rule now: every item is equal, and only the page you are on is
-// emphasised. The divider separates the five sections of work from the two
-// pages about the person.
-test('every nav item carries the same weight — only the current page is marked', () => {
-  const expected = [
-    [ 'work/index.html', 'Work' ],
-    [ 'interactive.html', 'Interactive &amp; Playable' ],
-    [ 'ai-products.html', 'AI Products &amp; Systems' ],
-    [ 'ai-tools.html', 'AI Tools' ],
-    [ 'work.html', 'Product &amp; Experience Design' ],
-    [ 'brand.html', 'Brand &amp; Creative' ],
-    [ 'now.html', 'Now' ],
-    [ 'publications.html', 'Writing' ],
-    [ 'workshop.html', 'Workshops' ],
-    [ 'about.html', 'About' ],
-    [ 'contact.html', 'Work with me' ],
+// The top nav is gone; the rail carries the same things on every page: the
+// About card (which also holds the pages about the person, in one order) and
+// the five sections of the work (in one order, every group open, every piece
+// in it). Only the page you are on is marked — with aria-current, not with a
+// colour someone has to infer.
+test('every page carries the same sidebar: the pages in order, the five sections in order', () => {
+  const expectedPages = [
+    [ '/now/', 'Now' ],
+    [ '/publications.html', 'Writing' ],
+    [ '/workshop.html', 'Workshops' ],
+    [ '/contact.html', 'Work with me' ],
     [ 'https://creativityiseverywhere.com', 'Studio ↗' ],
   ];
-
+  const expectedGroups = [ 'Interactive &amp; Playable', 'AI Products &amp; Systems', 'AI Tools', 'Product &amp; Experience Design', 'Brand &amp; Creative' ];
   for (const page of mainPages) {
     const html = read(page);
-    const nav = navDestinations(html, page);
-    assert.deepEqual(nav.map(({ href, label }) => [href, label]), expected, `${page}: primary-nav order`);
-    for (const { href, tag } of nav) {
-      assert.equal(hasClass(tag, 'is-lead'), false, `${page}: ${href} must not carry the retired lead tier`);
-    }
-    assert.equal(/\.nav-links a\.is-lead\s*\{/.test(html), false, `${page}: the lead-tier rule must be gone from the CSS too`);
-    // Drawn as a pseudo-element on the item after the work sections, so the
-    // nav's spacing stays even — a separator element made that gap double-width.
-    assert.match(html, /<li\b[^>]*\bclass\s*=\s*["'][^"']*\bis-tierbreak\b[^"']*["'][^>]*>\s*<a href="(?:\.\.\/)?about\.html"/i, `${page}: the divider sits before About`);
-    assert.equal(/class\s*=\s*["']nav-rule["']/i.test(html), false, `${page}: the separator must not occupy a nav slot`);
+    assert.deepEqual(pageLinks(html, page).map(({ href, label }) => [href, label]), expectedPages, `${page}: page links`);
+    assert.deepEqual(workGroups(html, page).map((g) => g.label), expectedGroups, `${page}: work groups`);
+    assert.match(sidebar(html, page), /<a class="side-all" href="\/all\/"/, `${page}: the "Show all projects" link`);
+    assert.match(sidebar(html, page), /<a class="side-label" href="\/about\.html"/, `${page}: the About card links to the About page`);
+    assert.match(sidebar(html, page), /<button class="side-theme" id="theme-switch" type="button" role="switch"/, `${page}: the theme switch`);
+    assert.match(sidebar(html, page), /<button class="side-lang" id="lang-cycle" type="button"/, `${page}: the language button`);
+    assert.match(sidebar(html, page), /<button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">/, `${page}: the phone menu button`);
   }
 });
 
-test('each themed page marks its own nav item active', () => {
-  const activeByPage = {
-    'ai-products.html': 'ai-products.html',
-    'interactive.html': 'interactive.html',
-    'ai-tools.html': 'ai-tools.html',
-    'work.html': 'work.html',
-    'brand.html': 'brand.html',
-    'about.html': 'about.html',
-    'contact.html': 'contact.html',
+test('each page marks itself current in the sidebar, and only itself', () => {
+  const currentByPage = {
+    'now/index.html': '/now/',
+    'contact.html': '/contact.html',
   };
-  for (const [page, href] of Object.entries(activeByPage)) {
-    const active = navDestinations(read(page), page).find((item) => item.href === href && attr(item.tag, 'aria-current') === 'page')?.tag;
-    assert.ok(active && hasClass(active, 'is-active') && attr(active, 'aria-current') === 'page', `${page}: its own nav item must be active`);
+  for (const [page, href] of Object.entries(currentByPage)) {
+    const current = pageLinks(read(page), page).filter((item) => attr(item.tag, 'aria-current') === 'page');
+    assert.deepEqual(current.map((item) => item.href), [href], `${page}: its own link must be the only aria-current one`);
   }
+  assert.match(sidebar(read('about.html'), 'about'), /<a class="side-label" href="\/about\.html"[^>]*aria-current="page"/, 'about.html: the About card marks itself');
+  assert.equal(pageLinks(read('about.html'), 'about').some((item) => attr(item.tag, 'aria-current') === 'page'), false, 'about.html: no page link is current');
+  // Every group is open on every page (the reference lists everything), and
+  // a case study marks its own row and nothing else.
+  for (const page of ['interactive.html', 'brand.html', 'projects/koji-fizz.html']) {
+    const groups = workGroups(read(page), page);
+    assert.equal(groups.length, 5, `${page}: five groups`);
+    assert.ok(groups.every((g) => g.open), `${page}: every group open`);
+  }
+  const koji = read('projects/koji-fizz.html');
+  assert.match(sidebar(koji, 'koji'), /<a class="side-item" href="\/projects\/koji-fizz\.html"[^>]*aria-current="page"/);
+  assert.equal((sidebar(koji, 'koji').match(/class="side-item"[^>]*aria-current="page"/g) ?? []).length, 1, 'koji: one current row');
 });
 
-test('final polish: repeated main-page mobile navs remain closed by default', () => {
-  const pages = mainPages.filter((page) => page !== 'ai-tools.html');
-  const missingOverrides = pages.filter((page) => !hasFinalClosedMobileNavOverride(read(page)));
-  assert.deepEqual(missingOverrides, [], `mobile override must hide .nav-links until it is-open: ${missingOverrides.join(', ')}`);
-  assert.ok(hasFinalClosedMobileNavOverride(read('ai-tools.html')), 'ai-tools.html must hide .nav-links until it is-open');
-});
+// ── The canonical lens: generated from the default Lens, at /lens/default/ ──
 
-// ── Homepage: generated from the default Lens ──
-
-// The homepage is no longer hand-built. It is rendered from src/lenses/default.json
-// over the evidence library in src/data (see docs/adaptive-portfolio-architecture.md),
-// so these tests check the composition, not the markup of any one card.
-test('homepage is generated from the default lens and leads with the hero, then Selected proof', () => {
-  const html = read('index.html');
-  assert.match(html, /GENERATED by src\/build\.mjs from src\/lenses\/default\.json/, 'index.html must be a build output');
-  assert.match(html, /<html lang="en" data-lens="default">/);
+// `/` is now the PORTO ROCHA image grid (src/pages/index.astro). The
+// whole-story page — hero, then Selected proof, then every other section —
+// is still rendered from src/lenses/default.json over the evidence library in
+// src/data (see docs/adaptive-portfolio-architecture.md), just at
+// /lens/default/ (src/pages/lens/[slug]/index.astro) instead of `/`. These
+// tests check the composition, not the markup of any one card.
+test('the default lens is rendered from src/lenses/default.json and leads with the hero, then Selected proof', () => {
+  const html = read('lens/default/index.html');
+  assert.match(html, /<html lang="en"[^>]* data-lens="default">/);
   const hero = html.indexOf('class="hero"');
   const proof = html.indexOf('id="proof"');
   assert.ok(hero >= 0 && proof > hero, 'the hero must come first, then Selected proof');
   assert.match(html, /I like the beginning of things\./, 'the canonical positioning must open the page');
 });
 
-test('homepage Selected proof spans experiment, enterprise and venture evidence', () => {
-  const html = read('index.html');
+test('the default lens\' Selected proof spans experiment, enterprise and venture evidence', () => {
+  const html = read('lens/default/index.html');
   const section = html.match(/<section\b[^>]*\bid\s*=\s*["']proof["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
   assert.ok(section, 'homepage needs a Selected proof section');
   const cards = [...section.matchAll(openWithClass('article', 'proof-card'))].length;
   assert.ok(cards >= 5 && cards <= 7, `Selected proof is a curated five to seven, got ${cards}`);
-  for (const href of [/(?:https:\/\/rakugakijam\.creativityiseverywhere\.com\/|https:\/\/rakugaki-jam\.vercel\.app|projects\/rakugaki-jam\.html)/, 'projects/verizon-ai-agents.html', 'projects/festival-design.html', 'projects/ela-quests.html']) {
+  for (const href of [/(?:https:\/\/rakugakijam\.creativityiseverywhere\.com\/|https:\/\/rakugaki-jam\.vercel\.app|\/projects\/rakugaki-jam\.html)/, '/projects/verizon-ai-agents.html', '/projects/festival-design.html', '/projects/ela-quests.html']) {
     const pattern = typeof href === 'string' ? `data-href\\s*=\\s*["']${escape(href)}["']` : `data-href\\s*=\\s*["']${href.source}["']`;
     assert.match(section, new RegExp(pattern), `Selected proof must include ${href}`);
   }
@@ -180,7 +171,7 @@ test('each AI Tools project detail page exists with its GitHub CTA and a link ba
     ['projects/intuitive-game-design.html', 'https://github.com/takaoumehara/intuitive-game-design-skill', 'intuitive-game-design'],
   ];
   for (const [page, githubUrl, label] of expected) {
-    assert.ok(existsSync(join(v3, page)), `${page} must exist`);
+    assert.ok(exists(page), `${page} must exist`);
     const html = read(page);
     const cta = anchors(html).find((tag) => attr(tag, 'href') === githubUrl);
     assert.ok(cta, `${label}: missing GitHub CTA linking ${githubUrl}`);
@@ -209,18 +200,17 @@ test('Amazon Fire TV project page labels itself under AI Products and links AI T
 
 // ── Cross-cutting integrity checks ──
 
-test('internal HTML links on every main page resolve to files and fragments', () => {
+test('internal HTML links on every main page resolve to built pages and fragments', () => {
   for (const page of mainPages) {
-    assert.ok(existsSync(join(v3, page)), `v3/${page} must exist`);
+    assert.ok(exists(page), `${page} must be built`);
     const html = read(page);
     for (const tag of anchors(html)) {
       const href = attr(tag, 'href');
       if (!href || /^(?:https?:|mailto:|tel:|javascript:)/i.test(href)) continue;
       const [target = '', fragment] = href.split('#');
-      if (target && !target.endsWith('.html')) continue;
-      const targetPage = target || page;
-      const targetPath = join(v3, targetPage);
-      assert.ok(existsSync(targetPath), `${page}: missing ${targetPage}`);
+      if (target && !target.endsWith('.html') && !target.endsWith('/')) continue;
+      const targetPage = target ? resolveUrl(page, target) : page;
+      assert.ok(exists(targetPage), `${page}: missing ${targetPage} (from ${href})`);
       if (fragment) assert.match(read(targetPage), new RegExp(`\\bid\\s*=\\s*["']${escape(fragment)}["']`), `${page}: missing ${href}`);
     }
   }
@@ -229,9 +219,9 @@ test('internal HTML links on every main page resolve to files and fragments', ()
 test('no main page carries the stale "Agentic UX" or "AI Tools & Infrastructure" labels', () => {
   for (const page of mainPages) {
     const html = read(page);
-    // "Agentic UX" is fine as a capability or thesis label; it must not come back as a category (nav item or section title).
-    const nav = html.match(/<ul\b[^>]*\bclass\s*=\s*["'][^"']*\bnav-links\b[^"']*["'][^>]*>[\s\S]*?<\/ul>/i)?.[0] ?? '';
-    assert.equal(/>\s*Agentic UX\s*</.test(nav), false, `${page}: stale "Agentic UX" nav label`);
+    // "Agentic UX" is fine as a capability or thesis label; it must not come back as a category (a sidebar group or section title).
+    const side = sidebar(html, page);
+    assert.equal(/>\s*Agentic UX\s*</.test(side), false, `${page}: stale "Agentic UX" sidebar label`);
     assert.equal(/<h2\b[^>]*>\s*(?:<span[^>]*>)?\s*Agentic UX\s*</.test(html), false, `${page}: stale "Agentic UX" section title`);
     assert.equal(/AI Tools\s*&amp;\s*Infrastructure/.test(html), false, `${page}: stale "AI Tools & Infrastructure" label`);
   }

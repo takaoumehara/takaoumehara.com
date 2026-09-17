@@ -3,7 +3,7 @@
 | | |
 |---|---|
 | Posting | Senior Product Designer, Payments (Senior) |
-| Source | src/pitches/samples/stripe-senior-product-designer.txt |
+| Source | src/analyze/samples/stripe-senior-product-designer.txt |
 | Length | 609 words · requirements 11 lines · responsibilities 9 lines |
 | Lens draft | `src/lenses/stripe.json` (status: draft — not built until you publish it) |
 | Evidence scored | 45 of 46 items matched at least one capability |
@@ -149,6 +149,6 @@ Screening criteria to answer in the résumé, not on the page: Years of experien
 
 1. Open `src/lenses/stripe.json`. Rewrite `hero.body`, `hero.note`, the proof `lede` and `cta` in your own voice, in both languages. Keep every `id`, `angle` and `metricIds` — or change them to other values that exist on the record.
 2. Fill the record gaps listed under each proof item (`src/data/**`), then re-run this script if you want the draft to pick them up.
-3. `node src/build.mjs --preview` writes `lens/_preview/stripe/index.html` (git-ignored). Open it. Check the 10-second read: eyebrow, first card, its flag and its numbers.
-4. Set `"status": "published"`, run `node src/build.mjs`, then `npm test`. The Claim Guard and NotMine Guard run on everything you wrote.
+3. `npm run dev` renders the draft at `http://localhost:4321/lens/stripe/` (drafts are not built). Open it. Check the 10-second read: eyebrow, first card, its flag and its numbers.
+4. Set `"status": "published"`, then `npm test` (it builds the site). The Claim Guard and NotMine Guard run on everything you wrote.
 5. Commit the JSON and the generated `lens/stripe/index.html` together. The page is `/lens/stripe`; it is `noindex` — share the link directly.

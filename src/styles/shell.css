@@ -1,0 +1,133 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   The shell: a fixed left rail (the person, then every piece of work by
+   category) and the page on the right. Proportions and rhythm follow PORTO
+   ROCHA (docs/design/porto-rocha/DESIGN.md): a ~25% rail, grey card rows with
+   a 64px tile, 14px names and 13px grey one-liners, 8px between rows, no
+   shadows. The rail is persisted across navigations (Site.astro), so its
+   scroll position, folds and clock survive a click.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.shell { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; align-items: start; }
+.main { min-width: 0; }
+
+.side {
+  position: sticky; top: 0; height: 100vh; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--pr-canvas); color: var(--pr-ink); font-family: var(--pr-ff); font-weight: var(--fw);
+  border-right: 1px solid var(--pr-line);
+  padding: var(--sp-3) var(--sp-3) var(--sp-5);
+  font-size: var(--text-body); line-height: var(--leading-body);
+  scrollbar-width: thin;
+  view-transition-name: side;
+}
+.side a { color: inherit; text-decoration: none; }
+.side *, .side *::before, .side *::after { box-sizing: border-box; }
+.side button { font: inherit; color: inherit; }
+html.lang-jp .side { font-family: var(--pr-ff-jp); }
+
+/* A grey block: the About card and every project row */
+.side-about, .side-item { background: var(--pr-card); border-radius: var(--r); }
+
+/* ── Controls: Show all projects · theme switch · language ─────────────── */
+.side-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.side-all {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--sp-3);
+  border-radius: var(--r-pill); background: var(--pr-card); font-size: var(--text-body);
+  transition: background 140ms ease;
+}
+.side-all:hover { background: var(--pr-card-2); }
+.side-all[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.side-ctl { display: flex; align-items: center; gap: var(--sp-1); }
+
+.side-theme {
+  appearance: none; cursor: pointer; position: relative; width: 51px; height: 31px; padding: 0; border: 0;
+  border-radius: var(--r-pill); background: var(--pr-card-2); transition: background 160ms ease;
+}
+.side-theme::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%;
+  background: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 160ms ease;
+}
+.side-theme[aria-checked="true"] { background: var(--pr-blue-fill); }
+.side-theme[aria-checked="true"]::after { transform: translateX(20px); }
+.side-theme:disabled { cursor: default; opacity: 0.55; }
+.side-theme:focus-visible, .side-lang:focus-visible, .side-all:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+
+.side-lang {
+  appearance: none; cursor: pointer; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
+  background: var(--pr-card); font-size: var(--text-sm); letter-spacing: 0.02em; transition: background 140ms ease;
+}
+.side-lang:hover { background: var(--pr-card-2); }
+html[data-lang-fixed] .side-lang { display: none; }
+
+/* ── Wordmark and the clock ─────────────────────────────────────────────── */
+.side-head { text-align: center; padding: 56px 0 48px; }
+.side-wordmark {
+  display: inline-block; font-family: var(--pr-ff-display); font-size: var(--text-display); line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display); text-transform: uppercase;
+}
+.side-clock { margin: 44px 0 0; font-size: var(--text-lg); line-height: var(--leading-lg); color: var(--pr-ink); font-variant-numeric: tabular-nums; }
+.side-clock > span { display: block; }
+
+/* ── About ──────────────────────────────────────────────────────────────── */
+.side-about { padding: var(--sp-3); margin-bottom: var(--sp-1); }
+.side-about .side-label { display: inline-block; font-size: var(--text-body); color: var(--pr-ink); }
+.side-about .side-label:hover { text-decoration: underline; text-underline-offset: 3px; }
+.side-about p { margin: 4px 0 0; font-size: var(--text-body); line-height: var(--leading-body); color: var(--pr-ink-2); }
+.side-pages { display: flex; flex-wrap: wrap; gap: 4px var(--sp-2); margin-top: var(--sp-2); }
+.side-pages a { font-size: var(--text-body); color: var(--pr-blue); }
+.side-pages a:hover, .side-pages a[aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── The work, by category ──────────────────────────────────────────────── */
+.side-work { display: flex; flex-direction: column; }
+.side-group > summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-3) var(--sp-1); font-size: var(--text-sm); color: var(--pr-ink-2); min-height: 40px;
+}
+.side-group > summary::-webkit-details-marker { display: none; }
+.side-group > summary:hover { color: var(--pr-ink); }
+.side-group > summary:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: -2px; border-radius: var(--r); }
+.side-count { font-variant-numeric: tabular-nums; }
+.side-count::after { content: "−"; display: inline-block; width: 1em; text-align: right; margin-left: var(--sp-1); }
+.side-group:not([open]) .side-count::after { content: "+"; }
+.side-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); }
+.side-item {
+  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--sp-2); align-items: center;
+  padding: var(--sp-2) var(--sp-3); min-height: 88px;
+  transition: background 140ms ease;
+}
+.side-item:hover { background: var(--pr-card-2); }
+.side-item[aria-current="page"] { background: var(--pr-card-2); }
+.side-item[aria-current="page"] .side-name { color: var(--pr-blue); }
+.side-thumb { width: 64px; aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--pr-canvas); display: grid; place-items: center; }
+.side-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.side-thumb .side-art { font-size: 9px; letter-spacing: 0.04em; text-align: center; line-height: 1.1; padding: 4px; color: var(--pr-ink-2); text-transform: uppercase; }
+.side-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.side-name { font-size: var(--text-body); line-height: 1.25; color: var(--pr-ink); }
+.side-line { font-size: var(--text-sm); line-height: 1.3; color: var(--pr-ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.side-foot { margin: var(--sp-4) 0 0; padding: var(--sp-3) 0 0; font-size: var(--text-sm); color: var(--pr-ink-2); border-top: 1px solid var(--pr-line); }
+.side-foot a { color: var(--pr-blue); text-decoration: underline; text-underline-offset: 3px; }
+
+/* The rail is its own view-transition group and never animates. */
+::view-transition-group(side), ::view-transition-old(side), ::view-transition-new(side) { animation: none; }
+
+/* ── Phones and narrow tablets: a top bar, the rail behind a button ──────── */
+.side-top { display: none; }
+@media (max-width: 900px) {
+  .shell { display: block; }
+  .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-right: 0; border-bottom: 1px solid var(--pr-line); padding: var(--sp-2) var(--sp-3); }
+  .side.is-open { overflow-y: auto; }
+  .side-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 40px; }
+  .side-top .side-wordmark { font-size: var(--text-lg); }
+  .side-toggle {
+    display: inline-flex; align-items: center; appearance: none; cursor: pointer; border: 0;
+    background: var(--pr-card); border-radius: var(--r-pill); font-size: var(--text-body); padding: 0 var(--sp-3); min-height: 40px;
+  }
+  .side-toggle[aria-expanded="true"] { background: var(--pr-ink); color: var(--pr-canvas); }
+  .side-panel { display: none; padding-top: var(--sp-3); }
+  .side.is-open .side-panel { display: block; }
+  .side-head { padding: var(--sp-5) 0; }
+  .side-head .side-wordmark { display: none; }
+  .side-clock { margin-top: 0; }
+  .side-item { min-height: 72px; }
+  .side-item .side-thumb { width: 48px; }
+  .side-item { grid-template-columns: 48px minmax(0, 1fr); }
+}

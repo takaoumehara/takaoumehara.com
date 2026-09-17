@@ -1,0 +1,21 @@
+---
+import { getLibrary } from "../lib/site.mjs";
+import { plain } from "../lib/html.mjs";
+const lib = getLibrary();
+const c = lib.profile.contact;
+---
+<footer>
+  <div class="site-footer">
+    <div>
+      <div class="footer-logo">{lib.profile.name}</div>
+      <div class="footer-llc">Design &amp; consulting through <strong>Creativity Is Everywhere LLC</strong></div>
+    </div>
+    <ul class="footer-links">
+      <li><a href={c.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+      {c.github && <li><a href={c.github} target="_blank" rel="noopener">GitHub</a></li>}
+      {c.medium && <li><a href={c.medium} target="_blank" rel="noopener">Medium</a></li>}
+      <li><a href="/intentfirst.html">intentfirst.ai</a></li>
+    </ul>
+    <div class="footer-copy">{plain(lib.profile.location)}</div>
+  </div>
+</footer>

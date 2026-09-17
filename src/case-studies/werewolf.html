@@ -1,0 +1,1228 @@
+<!-- ── Breadcrumb ── -->
+  <div class="pj-crumb">
+    <a href="../interactive.html">Interactive</a>
+    <span>/</span>
+    Werewolf Card Game 人狼
+  </div>
+
+  <!-- ── Hero ── -->
+  <header data-vt-hero class="pj-hero">
+    <div class="pj-hero-inner">
+      <span class="pj-kicker">Game Design · Woodcut Etching Art · Dual-Layer Compositing · Sub-pixel Alignment</span>
+      <ul class="pj-tags">
+        <li>Social Deduction</li>
+        <li>Dual-Layer Canvas</li>
+        <li>Position Calibration</li>
+        <li>25 Illustrated Roles</li>
+        <li>Spring Physics</li>
+        <li>Firebase RTDB</li>
+      </ul>
+      <h1 class="pj-title">
+        <span class="t-en">Werewolf: The Making of Dark Gothic Etching Cards</span>
+        <span class="t-jp">人狼（Werewolf）: 試行錯誤とこだわりが産んだダークゴシック・アートの極致</span>
+      </h1>
+      <p class="pj-summary">
+        <span class="t-en">A hybrid digital parlor game dealing 25 original hand-etched gothic role cards directly to players' smartphone screens. Built on a breakthrough dual-layer compositing architecture, custom sub-pixel calibration GUI, and spring-physics 3D parallax that transforms generative AI art into a cohesive, tactile masterpiece.</span>
+        <span class="t-jp">その場のスマホに直接配られる25種類の描き下ろし役職カード。AIによるスタイル破綻を克服した「多層レイヤー合成構造」、数ピクセル・数ミリ秒の干渉をミリ単位で調律する専用GUIエディタ、そしてスマホの傾きに連動するスプリング物理3D視差。妥協なき試行錯誤が産んだデジタルカードゲームの金字塔。</span>
+      </p>
+
+      <div class="hero-quick-ctas">
+        <a href="#live-deck" class="quick-cta-btn quick-cta-btn--gold">
+          <span>👁 Live Card Deck (インタラクティブ体験)</span>
+        </a>
+        <a href="#mobile-screens" class="quick-cta-btn quick-cta-btn--outline">
+          <span>📱 20 Mobile Screens (全20画面 英語UI)</span>
+        </a>
+        <a href="werewolf-card-gallery.html" target="_blank" class="quick-cta-btn quick-cta-btn--outline">
+          <span>🎴 All 25 Cards Gallery (全カード一覧 ↗)</span>
+        </a>
+        <a href="werewolf-card-position-editor.html" target="_blank" class="quick-cta-btn quick-cta-btn--outline">
+          <span>🎛 Position Editor (位置調律ツール ↗)</span>
+        </a>
+      </div>
+
+      <dl class="pj-meta" style="margin-top: 36px;">
+        <div>
+          <dt>Role</dt>
+          <dd>Game Design, Art Direction, Prompt Engineering, Calibration Tooling &amp; Full-Stack Dev</dd>
+        </div>
+        <div>
+          <dt>Architecture</dt>
+          <dd>Dual-Layer Compositing (Isolated Character PNG + Atmosphere BG) · Spring Physics · Gyro Parallax</dd>
+        </div>
+        <div>
+          <dt>Tech Stack</dt>
+          <dd>Vanilla JS · Canvas 2D · Custom GUI Editor · Firebase RTDB · Cloud Functions</dd>
+        </div>
+        <div>
+          <dt>Year</dt>
+          <dd>2026</dd>
+        </div>
+      </dl>
+    </div>
+  </header>
+
+  <!-- ── Main Case Study Body ── -->
+  <main class="pj-body">
+
+    <!-- Key Metrics / Facts -->
+    <dl class="pj-facts">
+      <div>
+        <dt>25</dt>
+        <dd>
+          <strong class="fact-label">
+            <span class="t-en">Illustrated Roles</span>
+            <span class="t-jp">描き下ろし役職数</span>
+          </strong>
+          <span class="t-en">Unique roles with custom calibrated scales, translations, and color offsets</span>
+          <span class="t-jp">1枚ずつ位置・スケール・色彩を調律した全 25 種の独自役職カード</span>
+        </dd>
+      </div>
+      <div>
+        <dt>2-Layer</dt>
+        <dd>
+          <strong class="fact-label">
+            <span class="t-en">Dual-Layer Canvas</span>
+            <span class="t-jp">多層分離構造</span>
+          </strong>
+          <span class="t-en">Hybrid architecture separating transparent characters from atmospheric backgrounds</span>
+          <span class="t-jp">キャラ透過層と細密背景を分離合成する多層レイヤー構造</span>
+        </dd>
+      </div>
+      <div>
+        <dt>0.01x</dt>
+        <dd>
+          <strong class="fact-label">
+            <span class="t-en">Sub-Pixel Precision</span>
+            <span class="t-jp">精密調律エディタ</span>
+          </strong>
+          <span class="t-en">Sub-pixel precision enabled by a bespoke browser-based Position Editor</span>
+          <span class="t-jp">専用 GUI エディタによる 0.01 倍・数ピクセル単位の精密調律</span>
+        </dd>
+      </div>
+      <div>
+        <dt>100%</dt>
+        <dd>
+          <strong class="fact-label">
+            <span class="t-en">Handset Privacy</span>
+            <span class="t-jp">手元の役職秘匿性</span>
+          </strong>
+          <span class="t-en">Nocturnal role privacy — tactile long-press reveal on personal handsets</span>
+          <span class="t-jp">長押し開示による手元端末での完全な役職秘匿性保証</span>
+        </dd>
+      </div>
+    </dl>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 1: LIVE INTERACTIVE CARD DECK
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter" id="live-deck">
+      <span class="chapter-tag">Interactive Experience · 01</span>
+      <h2 class="chapter-title">
+        <span class="t-en">The Interactive Card Deck: Experience the Handcrafted Tactility</span>
+        <span class="t-jp">ライブ・カードデッキ: 手作業で調律された手触りを体感する</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">Interact with the 25 cards directly in your browser. Move your cursor or tilt your device to feel the 3D spring-physics perspective. Switch between bilingual Japanese (with ruby furigana) and English typography, or toggle the background layer to observe the dual-layer compositing.</span>
+        <span class="t-jp">全25役職のカードをブラウザ上で直接操作できます。マウスカーソルを動かす（またはスマホを傾ける）と、スプリング物理演算による立体チルトが作動します。日本語（ルビ付き）と英語タイポグラフィの切り替えや、背景レイヤーのON/OFFによる多層合成の仕組みをお確かめください。</span>
+      </p>
+
+      <div class="deck-viewer-container">
+        <!-- Controls Bar -->
+        <div class="deck-controls">
+          <div class="deck-control-group">
+            <button class="deck-btn" id="deck-prev-btn" aria-label="Previous card">← PREV</button>
+            <select class="deck-select" id="role-picker" aria-label="Select role"></select>
+            <button class="deck-btn" id="deck-next-btn" aria-label="Next card">NEXT →</button>
+          </div>
+
+          <div class="deck-control-group">
+            <span style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:0.5px;">LANG:</span>
+            <div class="deck-lang-pill">
+              <button class="deck-lang-btn active" id="btn-deck-lang-ja">JP (日本語)</button>
+              <button class="deck-lang-btn" id="btn-deck-lang-en">EN (English)</button>
+            </div>
+          </div>
+
+          <div class="deck-control-group">
+            <span style="font-size:11px;font-weight:700;color:#94a3b8;letter-spacing:0.5px;">BG:</span>
+            <div class="deck-lang-pill">
+              <button class="deck-lang-btn active" id="btn-deck-bg-on">ON</button>
+              <button class="deck-lang-btn" id="btn-deck-bg-off">OFF</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- The 9:16 Smartphone Card Stage with 3D Tilt -->
+        <div class="card-stage" id="card-stage">
+          <div class="interactive-card" id="live-card">
+            <!-- Layer 1: Atmospheric Background -->
+            <div class="card-layer-bg" id="live-layer-bg"></div>
+            <!-- Layer 2: Isolated Character (with REFINED_POSITIONS transform) -->
+            <div class="card-layer-char" id="live-layer-char"></div>
+            
+            <!-- Japanese Title with Rubies -->
+            <div class="card-title-japanese" id="live-title-ja"></div>
+            <!-- English Title in Japanese Mode -->
+            <div class="card-title-en-rt" id="live-title-en-sub"></div>
+            <!-- Large English Title in English Mode -->
+            <div class="card-title-english-large" id="live-title-en-large" style="display:none;"></div>
+
+            <!-- Bottom Sticky Info Band -->
+            <div class="card-info-band">
+              <div class="camp-badge">
+                <img class="camp-badge-icon" id="live-camp-icon" src="../assets/werewolf/icons/camp/citizen.png" alt="Camp Icon">
+                <span id="live-camp-text">CITIZEN TEAM</span>
+              </div>
+              <p class="card-desc-text" id="live-desc-text"></p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:20px;font-size:12px;color:#94a3b8;font-family:'Cinzel',serif;letter-spacing:1px;text-align:center;">
+          <span class="t-en">✦ Hover cursor over card to activate 3D dynamic tilt physics ✦</span>
+          <span class="t-jp">✦ カード上でマウスを動かすと3Dチルト・スプリング物理が作動します ✦</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 2: CORE BREAKTHROUGH - DUAL-LAYER COMPOSITING
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter">
+      <span class="chapter-tag">Technical Breakthrough · 02</span>
+      <h2 class="chapter-title">
+        <span class="t-en">Phase 1: Style Cohesion &amp; The Bold Decision of "Dual-Layer Compositing"</span>
+        <span class="t-jp">Phase 1: 絵柄の同一化と「多層レイヤー構造」の英断</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">In the dawn of generative AI, the single greatest bottleneck was environmental collapse: generating a character alongside an elaborate gothic background inevitably destroyed character line weights, distorted facial anatomy, or randomized the art style. Our solution was an architected separation: completely isolating hand-drawn character etchings onto transparent alpha channels, while independently rendering richly atmospheric gothic backgrounds, compositing them dynamically at runtime in HTML and CSS.</span>
+        <span class="t-jp">本プロジェクトの最初の大きな壁は、「生成のたびに背景のテイストやキャラクターの顔立ちが変わってしまう」という生成AI固有の制約でした。Gペンによる細密な木版画調イラストの背後に背景を描き込ませようとすると、線の太さが崩壊し、ダークファンタジーとしての一貫性が失われてしまう現象に直面したのです。そこで下した英断が、「キャラクターの完全切り抜き透明化 × 細密背景の独立生成 × HTML上での多層レイヤー（重ね合わせ）合成」というハイブリッド構造でした。</span>
+      </p>
+
+      <!-- Interactive Layer Inspector -->
+      <div class="layer-inspector">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+          <h3 style="font-family:'Cinzel',serif;font-size:16px;color:#ffffff;">
+            <span class="t-en">Interactive Layer Deconstruction (Role: Ghost Wolf)</span>
+            <span class="t-jp">レイヤー分解エクスプローラー（サンプル: 狼の亡霊）</span>
+          </h3>
+          <div class="layer-tabs">
+            <button class="layer-tab-btn active" data-layer-view="composite">Full Composite (合成完成形)</button>
+            <button class="layer-tab-btn" data-layer-view="character">Character Alpha (キャラ透過層)</button>
+            <button class="layer-tab-btn" data-layer-view="background">Atmosphere BG (細密背景層)</button>
+          </div>
+        </div>
+
+        <div class="layer-display-stage">
+          <div class="layer-preview-box">
+            <img id="inspector-img-bg" src="../assets/werewolf/backgrounds/ghost_wolf_bg.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" alt="Background layer">
+            <img id="inspector-img-char" src="../assets/werewolf/characters/ghost_wolf_ver_a.png" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:translate3d(-2.03%,-2.77%,0) scale(1.38);" alt="Character layer">
+            <div id="inspector-img-typography" style="position:absolute;top:18px;left:14px;font-family:'LINE Seed JP';font-size:22px;color:#fff;writing-mode:vertical-rl;letter-spacing:2px;text-shadow:0 2px 8px #000;">
+              <ruby>狼<rt>おおかみ</rt></ruby>の<ruby>亡<rt>ぼう</rt></ruby><ruby>霊<rt>れい</rt></ruby>
+            </div>
+          </div>
+
+          <div class="layer-desc-pane">
+            <div id="layer-desc-composite">
+              <h4>✦ Multi-Layer Integration (完全統合ビュー)</h4>
+              <p>
+                <span class="t-en">Character artwork retains 100% of its original G-pen hatch lines, while the dark moonlit graveyard background creates deep environmental mood without interfering with the subject. Typography is dynamically superimposed with SVG drop-shadows.</span>
+                <span class="t-jp">キャラクター原画のクオリティを100%維持したまま、背後の細密な月夜の墓地背景を重ね合わせることで、圧倒的な世界観と視認性を両立。この完全分離こそが、後の「ジャイロ連動3D立体視差」を可能にする技術的礎となりました。</span>
+              </p>
+            </div>
+            <div id="layer-desc-character" style="display:none;">
+              <h4>✦ Isolated Alpha Channel (透明キャラクター原画)</h4>
+              <p>
+                <span class="t-en">Precise Chroma Key blue-fringe extraction removes edge artifacts around fur and fangs. Each character is an independent asset capable of individual scaling, translation, and spring-physics oscillation.</span>
+                <span class="t-jp">スクリプトによる色域判定で毛先や牙の微小な青被り（クロマキーノイズ）を完全除去。キャラクター単体を独立したアセットとして扱うことで、カード枠内でのピクセル単位の拡大・縮小・平行移動が自由自在になります。</span>
+              </p>
+            </div>
+            <div id="layer-desc-background" style="display:none;">
+              <h4>✦ Gothic Environment Layer (重厚な舞台背景)</h4>
+              <p>
+                <span class="t-en">Generated with dedicated atmospheric prompts focused on desaturated stone, eerie mist, and deep nocturnal shadows, providing a consistent sense of worldhood across all 25 role cards.</span>
+                <span class="t-jp">石造りの大聖堂、深い森、死者の霧など、役職の世界観に合わせた背景を専用プロンプトで生成。キャラクターと色彩トーンを共通化させることで、別のレイヤーでありながら最初から一枚の絵であったかのような調和を実現しています。</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 3: CARD POSITION EDITOR & MICRO-ALIGNMENT
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter">
+      <span class="chapter-tag">Engineering of Craft · 03</span>
+      <h2 class="chapter-title">
+        <span class="t-en">Phase 2: Sub-Pixel Precision &amp; The "Card Position Editor"</span>
+        <span class="t-jp">Phase 2: 「数ピクセル・数ミリ秒」のこだわりと専用エディタの開発</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">Consistency in a card game cannot be automated by code alone. When 25 illustrated characters possess differing eye heights, weapon silhouettes, and shoulder widths, mechanical placement creates jarring visual dissonance. To eliminate tedious code-recompile feedback loops, we built a dedicated in-browser GUI tool: <strong>Card Position Editor</strong>, enabling sub-pixel scaling, X/Y translation, and photometric calibration stored directly into deterministic JSON configurations.</span>
+        <span class="t-jp">カードゲームのプレミアム感は、「全体のルール」ではなく「数ピクセルの構図の一貫性」によって決まります。武器の突き出し方、頭の位置、肩幅が異なる25体のキャラクターを機械的に中央配置すると、カードをめくるたびに視線が乱高下してしまいます。そこで私たちは、コードの再ビルドをゼロにし、ブラウザ上で全カードを0.01倍・数ピクセル単位で直感的に調整できる専用ツール<strong>「Card Position Editor」</strong>を自作しました。</span>
+      </p>
+
+      <!-- Alignment Chronicles -->
+      <div class="chronicle-grid">
+        <div class="chronicle-card">
+          <h4>🛡️ Bodyguard: Head Clearance</h4>
+          <p>
+            <span class="t-en">The top of the Bodyguard's helm collided with the English typography. By applying a 0.92x scale and lowering the Y-axis by +3.82%, we achieved crisp typographic readability without sacrificing stature.</span>
+            <span class="t-jp">ボディガードの兜の頂点が英語タイトルと干渉。画像を0.92倍にスケール調整した上で、縦位置を+3.82%下げることで、頭部の威厳と英字の視認性を完全両立。</span>
+          </p>
+        </div>
+
+        <div class="chronicle-card">
+          <h4>⚔️ Knights: Underglow Emulation</h4>
+          <p>
+            <span class="t-en">A trio of three knights (Greatsword, Sword &amp; Shield, Crossbow) unified by reverse-engineering the distinctive orange underglow from the feet, scaling to 1.42x to balance three figures.</span>
+            <span class="t-jp">大剣・盾剣・ボウガンを持つ3人衆。足元から照り返すオレンジの逆光（アンダーグロウ）をプロンプト模倣し、3人の重厚感を1.42倍スケールで調律。</span>
+          </p>
+        </div>
+
+        <div class="chronicle-card">
+          <h4>✨ God: Chroma Key De-fringing</h4>
+          <p>
+            <span class="t-en">Extracted blonde hair and golden robes suffered from cyan edge fringes. Developed a pixel-by-pixel color-range removal script to isolate flawless golden edges.</span>
+            <span class="t-jp">金髪と黄金ローブの輪郭に生じた青緑（シアン）のクロマキーフチを、ピクセル単位の色域判定アルゴリズムで完全消去。濁りのない神聖な輝きを抽出。</span>
+          </p>
+        </div>
+
+        <div class="chronicle-card">
+          <h4>🔮 Counselor &amp; Necromancer</h4>
+          <p>
+            <span class="t-en">Deepened washed-out blue backgrounds into rich midnight tones, preventing white Japanese kanji from blending while ensuring English names avoid awkward line breaks.</span>
+            <span class="t-jp">白っぽく飛んでいた背景の青を深みのある濃紺へと色彩強化。白い漢字タイトルのコントラストを高め、ネクロマンサーの長い英語名の改行余白を調律。</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Callout to Position Editor Tool -->
+      <div style="background:rgba(229,184,111,0.08);border:1px solid rgba(229,184,111,0.3);border-radius:14px;padding:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:18px;">
+        <div>
+          <h4 style="font-family:'Cinzel',serif;color:var(--accent-gold-bright);font-size:16px;margin-bottom:6px;">
+            <span class="t-en">Explore the Full Calibration Tool: Card Position Editor</span>
+            <span class="t-jp">実際の位置調律ツール: Card Position Editor を試す</span>
+          </h4>
+          <p style="font-size:13px;color:#cbd5e1;line-height:1.5;">
+            <span class="t-en">Try the actual tool used during development. Adjust scale, translation, and tint in real time, inspect lock states, and copy serialized JSON.</span>
+            <span class="t-jp">開発現場で実際に使用されたWebベースの調律ツールです。全25枚のロック解除、ドラッグ移動、スライダー調整、JSON出力をブラウザでそのまま操作できます。</span>
+          </p>
+        </div>
+        <a href="werewolf-card-position-editor.html" target="_blank" class="quick-cta-btn quick-cta-btn--gold">
+          <span>LAUNCH POSITION EDITOR ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 4: THE FULL 25-ROLE ROSTER
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter" id="gallery-section">
+      <span class="chapter-tag">The Pantheon · 04</span>
+      <h2 class="chapter-title">
+        <span class="t-en">The Full Roster: All 25 Character Roles</span>
+        <span class="t-jp">全 25 役職カードギャラリー（市民・人狼・第三陣営）</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">Filter through the 25 illustrated roles across the Citizen Team, Werewolf Team, and Neutral Third Parties. Click any thumbnail below to instantly load and examine the role in the interactive 3D viewer above.</span>
+        <span class="t-jp">村を守る市民陣営、夜の闇に潜む人狼陣営、独自の狂気と勝利条件を持つ第三陣営。以下のサムネイルをクリックすると、上部のインタラクティブ 3D ビューアに瞬時にセットされます。</span>
+      </p>
+
+      <!-- Camp Filter Bar -->
+      <div class="gallery-filter-bar">
+        <button class="gallery-camp-btn active" data-camp="all">ALL (全 25 役職)</button>
+        <button class="gallery-camp-btn" data-camp="citizen">CITIZEN (市民陣営 · 14)</button>
+        <button class="gallery-camp-btn" data-camp="werewolf">WEREWOLF (人狼陣営 · 7)</button>
+        <button class="gallery-camp-btn" data-camp="neutral">NEUTRAL (第三陣営 · 4)</button>
+      </div>
+
+      <!-- Grid of 25 Cards -->
+      <div class="gallery-card-grid" id="pantheon-grid"></div>
+
+      <div style="text-align:center;margin-top:24px;">
+        <a href="werewolf-card-gallery.html" target="_blank" class="quick-cta-btn quick-cta-btn--outline">
+          <span>🎴 OPEN DEDICATED FULLSCREEN GALLERY ↗</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 5: HERALDIC CREST & LOGO IDENTITY
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter">
+      <span class="chapter-tag">Visual Identity · 05</span>
+      <h2 class="chapter-title">
+        <span class="t-en">Phase 4: Medieval Crest Shields &amp; Heraldic Logo Exploration</span>
+        <span class="t-jp">Phase 4: 中世紋章盾（Crest Shield）とロゴデザインの探求</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">The visual anchor of the game required an insignia that carried the tactile weight of physical antiquities. We conceptualized 8 distinctive directions grounded in medieval ironwork, silver filigree, and gothic stone relief, centering on the heraldic crest shield and the howling wolf.</span>
+        <span class="t-jp">ゲームの象徴となるロゴマークにも妥協はありませんでした。中世の古風な雰囲気に合わせ、銀細工と金細工で立体的に彫刻されたゴシック調の紋章盾（Crest Shield）を中心に据え、吠える狼をあしらった「Direction 01」をはじめ、8つの多角的なコンセプトを考案・検証しました。</span>
+      </p>
+
+      <div class="logo-grid">
+        <div class="logo-item">
+          <img src="../assets/werewolf/logos/logo_1.png" alt="Crest Shield Direction 01" loading="lazy">
+          <h5>Direction 01: Silver Crest</h5>
+          <p>立体彫刻された銀の紋章盾と咆哮する狼。正統派ゴシックファンタジーの象徴。</p>
+        </div>
+        <div class="logo-item">
+          <img src="../assets/werewolf/logos/logo_2.png" alt="Crest Shield Direction 02" loading="lazy">
+          <h5>Direction 02: Golden Sigil</h5>
+          <p>黄金の装飾と繊細なエッチングが織りなす、貴族の館に伝わる秘密結社の刻印。</p>
+        </div>
+        <div class="logo-item">
+          <img src="../assets/werewolf/logos/logo_3.png" alt="Crest Shield Direction 03" loading="lazy">
+          <h5>Direction 03: Blood Moon Beast</h5>
+          <p>真紅の夜空と鋭い鉤爪。人狼の狂気と血の宿命を前面に押し出したデザイン。</p>
+        </div>
+        <div class="logo-item">
+          <img src="../assets/werewolf/logos/logo_4.png" alt="Crest Shield Direction 04" loading="lazy">
+          <h5>Direction 04: Dark Iron Bastion</h5>
+          <p>重厚な黒鉄の砦と盾。村人たちが身を寄せ合う夜の恐怖と防壁を表現。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 6: TACTILE UX, SPRING PHYSICS & GYRO PARALLAX
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter">
+      <span class="chapter-tag">Tactile Engineering · 06</span>
+      <h2 class="chapter-title">
+        <span class="t-en">Phase 5: Spring Physics &amp; Gyro-Linked Parallax Tactility</span>
+        <span class="t-jp">Phase 5: スマホでの手触りと「スプリング物理3D視差」の極致</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">A digital card that merely loops an easing animation feels artificial and disposable. To breathe authentic tactile weight into the phone screen, we implemented asynchronous organic micro-drifts ("breathing float") coupled with interactive spring physics. When dragged, the card tilts dynamically in 3D; upon release, it snaps back with an elastic bounce calculated from physical spring constants.</span>
+        <span class="t-jp">単にイージングで拡大縮小を繰り返すだけのアニメーションは、機械的でチープな印象を与えます。そこで私たちは、微小な回転と平行移動を非同期でブレンドした「呼吸する浮遊感」を実装。さらに、指ドラッグに合わせてカードが3D傾斜し、指を離した瞬間にバネのように「ぷるん」とバウンスして復元するスプリング物理演算（Spring Physics）を組み込みました。</span>
+      </p>
+
+      <div class="chronicle-grid">
+        <div class="chronicle-card">
+          <h4>🌿 Breathing Organic Drift (有機的な呼吸)</h4>
+          <p>
+            <span class="t-en">A combined transform loop blending 0.5-degree rotation and 4px translation with asynchronous sinusoids, preventing the repetitive cadence of robotic loops.</span>
+            <span class="t-jp">規則的なループを排し、独立した正弦波による微小な回転と浮遊を合成。風にそよぐような自然で有機的な「呼吸感」を再現。</span>
+          </p>
+        </div>
+
+        <div class="chronicle-card">
+          <h4>🧲 Spring Physics Drag (バネの弾性復元力)</h4>
+          <p>
+            <span class="t-en">Calculates mouse velocity and pointer distance, driving angular tilt. Upon release, damped harmonic oscillator equations snap the card home elastically.</span>
+            <span class="t-jp">ポインターの速度と変位からカードの立体角を計算。指を離した瞬間、減衰振動方程式に基づいてカードが弾むように定位置へ帰還。</span>
+          </p>
+        </div>
+
+        <div class="chronicle-card">
+          <h4>📱 Gyroscope 3D Depth (スマホジャイロ連動)</h4>
+          <p>
+            <span class="t-en">Utilizes DeviceOrientationEvent on mobile handsets: tilting the physical phone displaces the foreground character and background at differing speeds, revealing tangible depth.</span>
+            <span class="t-jp">実機スマートフォンの傾き（ジャイロセンサー）に2つのレイヤーがリアルタイム連動。手前のキャラクターと奥の背景が互い違いにズレ、画面の奥に本物の奥行きが存在するような驚きを提供。</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 7: THE 20-SCREEN MOBILE LEDGER (ENGLISH UI)
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter" id="mobile-screens">
+      <span class="chapter-tag">Mobile Architecture · 07</span>
+      <h2 class="chapter-title">
+        <span class="t-en">The 20-Screen Mobile Ledger: End-to-End English Interface Flow</span>
+        <span class="t-jp">全20画面のモバイル台帳: 英語UIで巡る対面人狼のエンドツーエンド設計</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">Unlike parlor board games that force players to decipher crowded public screens, each player’s smartphone in GEKKA serves as a sealed personal ledger. Engineered for frictionless international play, all 20 screens were meticulously designed with English typography, responsive touch affordances, hold-to-reveal privacy seals, and millisecond-accurate socket synchronizations. Explore the full 20-screen English interface flow below.</span>
+        <span class="t-jp">大画面を見上げながら各自のスマートフォンを操作する対面人狼において、手元UIの直感性とプライバシー保護はゲーム体験の生命線です。本作では海外プレイヤーとも同一セッションを囲めるよう、全20画面におよぶ英語UIを完全実装。合言葉やQRによる即時入室から、長押しによる秘密の役職開示、夜の秘匿行動、白熱の評議タイマー、そして処刑と終幕の全貌開示まで、一連のゲームサイクルを洗練されたダークゴシックUIで完備しています。</span>
+      </p>
+
+      <!-- Phase Filter Tabs -->
+      <div class="screen-filter-bar">
+        <button class="screen-filter-btn active" data-phase="all">All 20 Screens (全20画面)</button>
+        <button class="screen-filter-btn" data-phase="setup">Phase 1: Setup &amp; Lobby (s01–s05)</button>
+        <button class="screen-filter-btn" data-phase="roles">Phase 2: Moderation &amp; Roles (s06–s09)</button>
+        <button class="screen-filter-btn" data-phase="night">Phase 3: Nocturnal Hunt (s10–s12)</button>
+        <button class="screen-filter-btn" data-phase="day">Phase 4: Council &amp; Verdict (s13–s20)</button>
+      </div>
+
+      <!-- 20-Screen Interactive Grid -->
+      <div class="screens-grid" id="screens-grid"></div>
+
+      <div style="margin-top:16px;font-size:12px;color:#94a3b8;font-family:'Cinzel',serif;letter-spacing:1px;text-align:center;">
+        <span class="t-en">✦ Click any mobile screen to inspect in full-resolution lightbox with architectural notes ✦</span>
+        <span class="t-jp">✦ いずれかの画面をクリックすると、高精細ライトボックスで設計意図とUIディテールを拡大閲覧できます ✦</span>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 8: SYSTEM ARCHITECTURE & SOCIAL PRESENCE
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter">
+      <span class="chapter-tag">System Architecture · 08</span>
+      <h2 class="chapter-title">
+        <span class="t-en">Social Architecture: Private Handsets, One Public Square</span>
+        <span class="t-jp">対面スマホ人狼（記録網）: 手元の秘密と大画面の劇空間</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">Physical werewolf suffers from telltale card noises, accidental peeking, and the burden of a human moderator who cannot play. Our architecture pairs everyone in the room via QR code in under 5 seconds with zero app install. Secret nocturnal identities stay strictly locked to individual phone screens (revealed via tactile long-press), while the shared TV display orchestrates debate timers, accusations, and dramatic executions.</span>
+        <span class="t-jp">紙のカードを使う人狼では、配る際の擦れや夜のフェーズでの物音で役職がバレてしまう問題がありました。本システムでは、QRコードをカメラで読み取るだけで5秒以内に部屋に参加（アプリインストール・登録一切不要）。秘密の役職は手元のスマホでの「長押し確認」に限定され、端末外観から役職が漏れるのを防ぎます。一方、テレビ等の大画面が中立なGM（記録者）として村の広場・タイマー・投票のドラマを進行します。</span>
+      </p>
+
+      <div class="pj-points">
+        <div class="pj-point">
+          <span class="pj-point-num">01</span>
+          <h3 class="pj-point-title">
+            <span class="t-en">Server-Authoritative State via Cloud Functions</span>
+            <span class="t-jp">Cloud Functions による完全なサーバー権威型進行</span>
+          </h3>
+          <p class="pj-point-desc">
+            <span class="t-en">Client handsets receive strictly filtered snapshots: public state for everybody, but nocturnal abilities and role IDs exist only in encrypted private channels. Cheating through client inspection is physically impossible.</span>
+            <span class="t-jp">Firebase Realtime Database のセキュリティルールにより、クライアントは自身の privateView しか受信できません。通信解析を行っても他人の役職が漏洩しない厳格なアーキテクチャを実現。</span>
+          </p>
+        </div>
+
+        <div class="pj-point">
+          <span class="pj-point-num">02</span>
+          <h3 class="pj-point-title">
+            <span class="t-en">Zero-Friction QR Onboarding in 5 Seconds</span>
+            <span class="t-jp">Snap PairによるQR一発参加。準備の手間ゼロ。</span>
+          </h3>
+          <p class="pj-point-desc">
+            <span class="t-en">No downloads or logins at a casual party. A single camera scan instantly pairs the handset to the session room state, automatically assigning private socket channels.</span>
+            <span class="t-jp">楽しい集まりの場で「まずアプリをダウンロードして」と頼むのは最大の興ざめ。QRコードをスキャンするだけでブラウザが開き即座に部屋へ同期。全員がストレスなく対話に集中できます。</span>
+          </p>
+        </div>
+
+        <div class="pj-point">
+          <span class="pj-point-num">03</span>
+          <h3 class="pj-point-title">
+            <span class="t-en">25 Illustrated Roles &amp; Infinite Strategic Depth</span>
+            <span class="t-jp">25種の多彩な役職と無限の心理戦</span>
+          </h3>
+          <p class="pj-point-desc">
+            <span class="t-en">From the subtle Double to the unhinged Dictator and elusive Mysterious Fox, the vast pantheon allows hosts to construct customized game dynamics suited for casual 5-player banter or 15-player tactical masterclasses.</span>
+            <span class="t-jp">影武者、独裁者、狼の子ども、妖狐、神様など、多層的な能力を持つ25役職を自由に編成可能。初心者から熟練者まで飽きることのない奥深い心理戦を演出します。</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════
+         SECTION 9: REFLECTIONS & CONCLUSION
+         ══════════════════════════════════════════════════ -->
+    <section class="case-chapter">
+      <span class="chapter-tag">Chronicles &amp; Reflection · 09</span>
+      <h2 class="chapter-title">
+        <span class="t-en">Conclusion: True Craftsmanship Lives in Sub-Pixels and Milliseconds</span>
+        <span class="t-jp">結論: クオリティは、数ピクセル・数ミリ秒のディテールへのこだわりの積み重ねによってのみ生まれる</span>
+      </h2>
+      <p class="chapter-lead">
+        <span class="t-en">This project proved that in an era where generative AI can output thousands of images in seconds, the soul of a digital artifact is determined entirely by what happens after the generation. By pairing human aesthetic conviction with purpose-built calibration tools and multi-layer rendering engines, digital cards transcend fleeting pixels, becoming living, tactile art.</span>
+        <span class="t-jp">この人狼カードデザイン開発が教えてくれたのは、<strong>「AIがどれほど美しい絵を瞬時に出力しようとも、プロダクトの魂は生成の後に注ぎ込まれる手仕事の調律によってしか宿らない」</strong>という真理でした。厳しい審美眼とそれを可能にする専用ツールの開発、そして数ピクセル・数ミリ秒の執拗な微調整の積み重ねによって、このカードは触って動かして永遠に眺めていられる「生きたアート」へと昇華したのです。</span>
+      </p>
+
+      <!-- Contribution Split -->
+      <div class="pj-contrib" style="margin-top:40px;">
+        <div>
+          <h3>
+            <span class="t-en">My Contribution</span>
+            <span class="t-jp">担当領域</span>
+          </h3>
+          <ul>
+            <li><span class="t-en">Art Direction &amp; Prompt Engineering for 25 woodcut etching characters &amp; backgrounds</span><span class="t-jp">25役職のGペン木版画エッチング調イラストおよび細密背景のプロンプト設計・アートディレクション</span></li>
+            <li><span class="t-en">Conceived &amp; built the Dual-Layer Compositing architecture &amp; Card Position Editor GUI tool</span><span class="t-jp">多層レイヤー分離合成構造の考案、およびブラウザ専用調律ツール「Card Position Editor」の開発</span></li>
+            <li><span class="t-en">Engineered 3D Spring-Physics tilt, gyroscope parallax, and bilingual typography</span><span class="t-jp">スプリング物理演算3Dチルト、スマホジャイロ連動、ルビ付き日英バイリンガルタイポグラフィの実装</span></li>
+            <li><span class="t-en">Designed &amp; built full-stack social deduction game engine on Firebase RTDB &amp; Cloud Functions</span><span class="t-jp">Firebase RTDB + Cloud Functions によるサーバー権威型対面スマホ人狼エンジンの設計・実装</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>
+            <span class="t-en">Ecosystem</span>
+            <span class="t-jp">エコシステムにおける位置づけ</span>
+          </h3>
+          <ul>
+            <li><span class="t-en">Part of the Playable laboratory exploring social presence and multi-device interaction</span><span class="t-jp">複数デバイスによる身体的・空間的プレイを探求するPlayableコレクションのフラッグシップ作品</span></li>
+            <li><span class="t-en">Demonstrates client-direct state segregation and zero-install parlor gameplay</span><span class="t-jp">大画面と個人スマホの状態分離制御を実証する最高峰のリファレンス実装</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer Navigation ── -->
+
+<script>
+  (() => {
+    // 25 Roles Canonical Definitions
+    const ROLES = [
+      { id: 'dictator', jp: '独裁者', en: 'Dictator', rubies: ['どく', 'さい', 'しゃ'], camp: 'citizen', desc_ja: '昼の議論を強制終了し、独断で1名を処刑できる権力者。', desc_en: 'Can forcefully end daytime debate and execute one player unilaterally.' },
+      { id: 'knights', jp: '騎士団', en: 'Knights', rubies: ['き', 'し', 'だん'], camp: 'citizen', desc_ja: '誇り高き聖騎士の集団。互いの無実を知り、村を守る防壁となる。', desc_en: 'Noble holy knights who know each other\'s innocence and guard the village.' },
+      { id: 'double', jp: '影武者', en: 'Double', rubies: ['かげ', 'む', 'しゃ'], camp: 'citizen', desc_ja: '主君の身代わりとして死を覚悟した忠臣。', desc_en: 'A loyal double willing to die in place of their lord.' },
+      { id: 'counselor', jp: 'カウンセラー', en: 'Counselor', rubies: [], camp: 'citizen', desc_ja: '人々の心の闇を看破し、狂気から解放する導き手。', desc_en: 'Sees through the darkness in minds, guiding players back from madness.' },
+      { id: 'necromancer', jp: '霊媒師', en: 'Necromancer', rubies: ['れい', 'ばい', 'し'], camp: 'citizen', desc_ja: '処刑された死者の魂と交信し、人間か人狼かを見破る。', desc_en: 'Channels the souls of the executed to discern whether they were human or wolf.' },
+      { id: 'trapper', jp: '罠師', en: 'Trapper', rubies: ['わな', 'し'], camp: 'citizen', desc_ja: '夜の道に鋼の罠を仕掛け、襲撃者を迎え撃つ。', desc_en: 'Lays steel traps in the night path to intercept nocturnal attackers.' },
+      { id: 'citizen', jp: '市民', en: 'Citizen', rubies: ['し', 'みん'], camp: 'citizen', desc_ja: '特別な能力は持たないが、数と推理で村を守る基本役職。', desc_en: 'A normal villager defending the community through deductive reasoning.' },
+      { id: 'prophet', jp: '予言者', en: 'Prophet', rubies: ['よ', 'げん', 'しゃ'], camp: 'citizen', desc_ja: '毎晩1名の真実の姿を透視し、人狼か否かを神託で知る。', desc_en: 'Divines the true form of one player each night to reveal if they are a wolf.' },
+      { id: 'bodyguard', jp: 'ボディガード', en: 'Bodyguard', rubies: [], camp: 'citizen', desc_ja: '毎夜1名を命がけで護衛し、人狼の襲撃から守り抜く。', desc_en: 'Guards one designated player each night, protecting them from wolf attack.' },
+      { id: 'twins', jp: '共有者', en: 'Twins', rubies: ['きょう', 'ゆう', 'しゃ'], camp: 'citizen', desc_ja: '血の絆で結ばれた二人。互いが人間であることを確信している。', desc_en: 'Bound by blood, these two know each other to be innocent humans.' },
+      { id: 'magician', jp: '奇術師', en: 'Magician', rubies: ['き', 'じゅつ', 'し'], camp: 'citizen', desc_ja: '幻影を操り、死後も自らの役職を偽装するトリックスター。', desc_en: 'A trickster manipulating illusions to disguise their true role even in death.' },
+      { id: 'hunter', jp: 'ハンター', en: 'Hunter', rubies: [], camp: 'citizen', desc_ja: '命を落とした瞬間、銃口を向けた道連れの1名を射抜く。', desc_en: 'Upon death, fires a final shot to take down one chosen target.' },
+      { id: 'tough_guy', jp: 'タフガイ', en: 'Tough Guy', rubies: [], camp: 'citizen', desc_ja: '強靭な肉体を持ち、人狼に襲撃されても翌日の夜まで耐え抜く。', desc_en: 'Endures a werewolf attack through sheer grit, surviving until the next night.' },
+      { id: 'spy', jp: 'スパイ', en: 'Spy', rubies: [], camp: 'citizen', desc_ja: '人狼陣営の潜伏情報を探る影の工作員。', desc_en: 'A shadow operative scouting clandestine movements of the wolf pack.' },
+      { id: 'betrayal_twin', jp: '裏切りの共有者', en: 'Betrayal Twin', rubies: ['うら', 'ぎ', '', '', 'きょう', 'ゆう', 'しゃ'], camp: 'werewolf', desc_ja: '共有者のふりをして市民に紛れ込む、人狼側のスパイ。', desc_en: 'Masquerades as a twin among the humans while secretly aiding the wolves.' },
+      { id: 'werewolf', jp: '人狼', en: 'Werewolf', rubies: ['じん', 'ろう'], camp: 'werewolf', desc_ja: '夜ごとに市民を喰らう魔獣。昼は人間の顔をして村を欺く。', desc_en: 'Feasts on villagers by night and deceives the community by day.' },
+      { id: 'traitor', jp: '内通者', en: 'Traitor', rubies: ['ない', 'つう', 'しゃ'], camp: 'werewolf', desc_ja: '人狼の勝利を願い、村を混乱に陥れる背信者。', desc_en: 'A subversive human working to ensure a werewolf victory.' },
+      { id: 'betrayer', jp: '裏切り者', en: 'Betrayer', rubies: ['うら', 'ぎ', '', 'もの'], camp: 'werewolf', desc_ja: '人狼に魂を売った狂信者。人狼の味方として嘘を重ねる。', desc_en: 'A zealot who sold their soul to the pack, sowing discord through lies.' },
+      { id: 'werewolf_child', jp: '人狼の子ども', en: "Werewolf's Child", rubies: ['じん', 'ろう', '', 'こ', '', ''], camp: 'werewolf', desc_ja: 'まだ幼き人狼。処刑されると翌夜、仲間が怒りの二連襲撃を行う。', desc_en: 'A young pup; if executed, the enraged pack claims two victims the next night.' },
+      { id: 'android', jp: 'アンドロイド', en: 'Android', rubies: [], camp: 'neutral', desc_ja: '冷徹な論理で勝敗の行方を計算する、感情なき機械人形。', desc_en: 'Calculates the outcome through cold logic, free of human emotions.' },
+      { id: 'lone_wolf', jp: '一匹狼', en: 'Lone Wolf', rubies: ['いっ', 'ぴき', 'おおかみ'], camp: 'werewolf', desc_ja: '群れを嫌い単独で行動する孤高の狼。仲間を裏切ることもある。', desc_en: 'A solitary wolf that disdains the pack and may turn against its brethren.' },
+      { id: 'god', jp: '神様', en: 'God', rubies: ['かみ', 'さま', ''], camp: 'neutral', desc_ja: 'すべてを超越した存在。独自の勝敗条件でゲームを支配する。', desc_en: 'A transcendent deity observing mortal struggles under unique win conditions.' },
+      { id: 'lovers', jp: '恋人', en: 'Lovers', rubies: ['こい', 'びと', ''], camp: 'neutral', desc_ja: '陣営を超えて愛し合う二人。最後まで共に生き残ることが目的。', desc_en: 'Two bound by mutual love across factions; must survive together to win.' },
+      { id: 'mysterious_fox', jp: '妖狐', en: 'Mysterious Fox', rubies: ['よう', 'こ', ''], camp: 'neutral', desc_ja: '人狼の襲撃では死なないが、予言者に占われると呪殺される幻の獣。', desc_en: 'Immune to wolf attacks, but instantly dies if investigated by the Prophet.' },
+      { id: 'ghost_wolf', jp: '狼の亡霊', en: 'Ghost Wolf', rubies: ['おおかみ', '', 'ぼう', 'れい'], camp: 'werewolf', desc_ja: '現世と幽界を彷徨う狼の魂。死してなお村に影を落とす。', desc_en: 'A phantom wolf wandering the veil, casting a sinister pall beyond death.' }
+    ];
+
+    // Canonical Calibrated Positions from Card Position Editor
+    const POSITIONS = {
+      dictator: { scale: 0.91, x: 1.76, y: 7.29 }, knights: { scale: 1.42, x: -2.36, y: -5.99 },
+      double: { scale: 0.94, x: -0.13, y: 4.98 }, counselor: { scale: 0.93, x: -2.9, y: 4.63 },
+      necromancer: { scale: 1.02, x: 0.75, y: 4.2 }, trapper: { scale: 0.96, x: -1, y: 4.28 },
+      citizen: { scale: 0.95, x: 2.21, y: 4.91 }, prophet: { scale: 0.95, x: -1.2, y: 2.93 },
+      bodyguard: { scale: 0.92, x: -1.25, y: 3.82 }, twins: { scale: 1.24, x: -0.39, y: 3.37 },
+      magician: { scale: 0.9, x: -2.72, y: 0.46 }, hunter: { scale: 1, x: -0.71, y: 0.72 },
+      tough_guy: { scale: 1, x: 0, y: 0 }, spy: { scale: 1, x: 0, y: 0 },
+      betrayal_twin: { scale: 0.89, x: -0.1, y: 5.32 }, werewolf: { scale: 0.98, x: 0.27, y: 8.16 },
+      traitor: { scale: 0.91, x: 1.75, y: 4.57 }, betrayer: { scale: 1, x: 1.57, y: 2.9 },
+      werewolf_child: { scale: 0.95, x: -0.15, y: 4.54 }, android: { scale: 1.02, x: 0.68, y: 4.56 },
+      lone_wolf: { scale: 1, x: -1.27, y: 4.8 }, god: { scale: 1.09, x: 0, y: 0 },
+      lovers: { scale: 1, x: 2.01, y: 0.52 }, mysterious_fox: { scale: 1, x: 0, y: 0 },
+      ghost_wolf: { scale: 1.38, x: -2.03, y: -2.77 }
+    };
+
+    let currentIndex = 0;
+    let deckLang = 'ja';
+    let deckBgOn = true;
+
+    // UI Elements
+    const picker = document.getElementById('role-picker');
+    const prevBtn = document.getElementById('deck-prev-btn');
+    const nextBtn = document.getElementById('deck-next-btn');
+    const btnLangJa = document.getElementById('btn-deck-lang-ja');
+    const btnLangEn = document.getElementById('btn-deck-lang-en');
+    const btnBgOn = document.getElementById('btn-deck-bg-on');
+    const btnBgOff = document.getElementById('btn-deck-bg-off');
+
+    const liveCard = document.getElementById('live-card');
+    const liveLayerBg = document.getElementById('live-layer-bg');
+    const liveLayerChar = document.getElementById('live-layer-char');
+    const liveTitleJa = document.getElementById('live-title-ja');
+    const liveTitleEnSub = document.getElementById('live-title-en-sub');
+    const liveTitleEnLarge = document.getElementById('live-title-en-large');
+    const liveCampIcon = document.getElementById('live-camp-icon');
+    const liveCampText = document.getElementById('live-camp-text');
+    const liveDescText = document.getElementById('live-desc-text');
+
+    // Populate Select Options
+    ROLES.forEach((role, idx) => {
+      const opt = document.createElement('option');
+      opt.value = idx;
+      opt.textContent = `${role.jp} (${role.en})`;
+      picker.appendChild(opt);
+    });
+
+    function updateDeckCard() {
+      const role = ROLES[currentIndex];
+      picker.value = currentIndex;
+
+      // Background Layer
+      if (deckBgOn) {
+        liveLayerBg.style.backgroundImage = `url('../assets/werewolf/backgrounds/${role.id}_bg.png')`;
+        liveLayerBg.style.opacity = '1';
+      } else {
+        liveLayerBg.style.opacity = '0';
+      }
+
+      // Character Layer
+      liveLayerChar.style.backgroundImage = `url('../assets/werewolf/characters/${role.id}_ver_a.png')`;
+      const pos = POSITIONS[role.id] || { scale: 1, x: 0, y: 0 };
+      liveLayerChar.style.transform = `translate3d(${pos.x}%, ${pos.y}%, 0) scale(${pos.scale})`;
+
+      // Titles
+      if (deckLang === 'ja') {
+        liveTitleJa.style.display = 'block';
+        liveTitleEnSub.style.display = 'block';
+        liveTitleEnLarge.style.display = 'none';
+
+        // Ruby Markup
+        let rubyHtml = '';
+        const chars = role.jp.split('');
+        chars.forEach((c, i) => {
+          const r = role.rubies[i];
+          if (r) {
+            rubyHtml += `<ruby>${c}<rt>${r}</rt></ruby>`;
+          } else {
+            rubyHtml += c;
+          }
+        });
+        liveTitleJa.innerHTML = rubyHtml;
+        liveTitleEnSub.textContent = role.en;
+        liveDescText.textContent = role.desc_ja;
+
+        if (role.camp === 'citizen') {
+          liveCampText.textContent = '市民陣営 (CITIZEN)';
+        } else if (role.camp === 'werewolf') {
+          liveCampText.textContent = '人狼陣営 (WEREWOLF)';
+        } else {
+          liveCampText.textContent = '第三陣営 (NEUTRAL)';
+        }
+      } else {
+        liveTitleJa.style.display = 'none';
+        liveTitleEnSub.style.display = 'none';
+        liveTitleEnLarge.style.display = 'block';
+
+        const len = role.en.length;
+        if (len > 15) {
+          liveTitleEnLarge.style.fontSize = '20px';
+        } else if (len > 11) {
+          liveTitleEnLarge.style.fontSize = '24px';
+        } else {
+          liveTitleEnLarge.style.fontSize = '30px';
+        }
+        liveTitleEnLarge.textContent = role.en;
+        liveDescText.textContent = role.desc_en;
+
+        if (role.camp === 'citizen') {
+          liveCampText.textContent = 'CITIZEN TEAM';
+        } else if (role.camp === 'werewolf') {
+          liveCampText.textContent = 'WEREWOLF TEAM';
+        } else {
+          liveCampText.textContent = 'NEUTRAL / THIRD';
+        }
+      }
+
+      // Camp Icon
+      const campIconFile = role.camp === 'fox' || role.camp === 'neutral' ? 'neutral.png' : `${role.camp}.png`;
+      liveCampIcon.src = `../assets/werewolf/icons/camp/${campIconFile}`;
+
+      if (typeof updatePantheonActive === 'function') {
+        updatePantheonActive();
+      }
+    }
+
+    // Event Handlers for Deck
+    picker.addEventListener('change', (e) => {
+      currentIndex = parseInt(e.target.value, 10);
+      updateDeckCard();
+    });
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + ROLES.length) % ROLES.length;
+      updateDeckCard();
+    });
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % ROLES.length;
+      updateDeckCard();
+    });
+
+    btnLangJa.addEventListener('click', () => {
+      deckLang = 'ja';
+      btnLangJa.classList.add('active');
+      btnLangEn.classList.remove('active');
+      updateDeckCard();
+    });
+    btnLangEn.addEventListener('click', () => {
+      deckLang = 'en';
+      btnLangEn.classList.add('active');
+      btnLangJa.classList.remove('active');
+      updateDeckCard();
+    });
+
+    btnBgOn.addEventListener('click', () => {
+      deckBgOn = true;
+      btnBgOn.classList.add('active');
+      btnBgOff.classList.remove('active');
+      updateDeckCard();
+    });
+    btnBgOff.addEventListener('click', () => {
+      deckBgOn = false;
+      btnBgOff.classList.add('active');
+      btnBgOn.classList.remove('active');
+      updateDeckCard();
+    });
+
+    // 3D Spring Physics Tilt on Card Stage
+    const stage = document.getElementById('card-stage');
+    let tiltX = 0, tiltY = 0;
+    let targetTiltX = 0, targetTiltY = 0;
+    let isHovering = false;
+
+    stage.addEventListener('mousemove', (e) => {
+      isHovering = true;
+      const rect = stage.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      targetTiltX = -(y / (rect.height / 2)) * 14;
+      targetTiltY = (x / (rect.width / 2)) * 14;
+    });
+
+    stage.addEventListener('mouseleave', () => {
+      isHovering = false;
+      targetTiltX = 0;
+      targetTiltY = 0;
+    });
+
+    // Spring loop
+    function springLoop() {
+      // Spring lerp
+      tiltX += (targetTiltX - tiltX) * 0.14;
+      tiltY += (targetTiltY - tiltY) * 0.14;
+
+      if (liveCard) {
+        liveCard.style.transform = `rotateX(${tiltX.toFixed(2)}deg) rotateY(${tiltY.toFixed(2)}deg)`;
+      }
+      requestAnimationFrame(springLoop);
+    }
+    springLoop();
+
+    // ── Layer Inspector Logic ──
+    const layerTabs = document.querySelectorAll('.layer-tab-btn');
+    const imgBg = document.getElementById('inspector-img-bg');
+    const imgChar = document.getElementById('inspector-img-char');
+    const typo = document.getElementById('inspector-img-typography');
+    const descComposite = document.getElementById('layer-desc-composite');
+    const descChar = document.getElementById('layer-desc-character');
+    const descBg = document.getElementById('layer-desc-background');
+
+    layerTabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        layerTabs.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const mode = btn.dataset.layerView;
+
+        if (mode === 'composite') {
+          imgBg.style.display = 'block';
+          imgChar.style.display = 'block';
+          typo.style.display = 'block';
+          descComposite.style.display = 'block';
+          descChar.style.display = 'none';
+          descBg.style.display = 'none';
+        } else if (mode === 'character') {
+          imgBg.style.display = 'none';
+          imgChar.style.display = 'block';
+          typo.style.display = 'none';
+          descComposite.style.display = 'none';
+          descChar.style.display = 'block';
+          descBg.style.display = 'none';
+        } else if (mode === 'background') {
+          imgBg.style.display = 'block';
+          imgChar.style.display = 'none';
+          typo.style.display = 'none';
+          descComposite.style.display = 'none';
+          descChar.style.display = 'none';
+          descBg.style.display = 'block';
+        }
+      });
+    });
+
+    // ── Build Full Roster Pantheon Grid (Compact Matrix) ──
+    const pantheonGrid = document.getElementById('pantheon-grid');
+
+    function updatePantheonActive() {
+      if (!pantheonGrid) return;
+      const items = pantheonGrid.querySelectorAll('.thumb-card-item');
+      items.forEach(item => {
+        if (parseInt(item.dataset.index, 10) === currentIndex) {
+          item.classList.add('is-selected');
+        } else {
+          item.classList.remove('is-selected');
+        }
+      });
+    }
+
+    function renderPantheon(campFilter) {
+      pantheonGrid.innerHTML = '';
+      ROLES.forEach((role, idx) => {
+        if (campFilter !== 'all' && role.camp !== campFilter) return;
+
+        const item = document.createElement('div');
+        item.className = 'thumb-card-item';
+        item.dataset.camp = role.camp;
+        item.dataset.index = idx;
+        if (idx === currentIndex) {
+          item.classList.add('is-selected');
+        }
+        item.title = `${role.jp} (${role.en}) · ${role.camp.toUpperCase()} - Click to load into 3D stage`;
+
+        const bg = document.createElement('div');
+        bg.className = 'thumb-bg';
+        bg.style.backgroundImage = `url('../assets/werewolf/backgrounds/${role.id}_bg.png')`;
+
+        const char = document.createElement('div');
+        char.className = 'thumb-char';
+        char.style.backgroundImage = `url('../assets/werewolf/characters/${role.id}_ver_a.png')`;
+        const pos = POSITIONS[role.id] || { scale: 1, x: 0, y: 0 };
+        char.style.transform = `translate3d(${pos.x}%, ${pos.y}%, 0) scale(${pos.scale})`;
+
+        // Corner Camp Badge
+        const campIconFile = role.camp === 'fox' || role.camp === 'neutral' ? 'neutral.png' : `${role.camp}.png`;
+        const badge = document.createElement('div');
+        badge.className = 'thumb-camp-badge';
+        const badgeImg = document.createElement('img');
+        badgeImg.src = `../assets/werewolf/icons/camp/${campIconFile}`;
+        badgeImg.alt = role.camp;
+        badge.appendChild(badgeImg);
+
+        // Compact Two-tier Name Label
+        const label = document.createElement('div');
+        label.className = 'thumb-label';
+        const jpSpan = document.createElement('span');
+        jpSpan.className = 'thumb-name-jp';
+        jpSpan.textContent = role.jp;
+        const enSpan = document.createElement('span');
+        enSpan.className = 'thumb-name-en';
+        enSpan.textContent = role.en;
+        label.appendChild(jpSpan);
+        label.appendChild(enSpan);
+
+        item.appendChild(bg);
+        item.appendChild(char);
+        item.appendChild(badge);
+        item.appendChild(label);
+
+        item.addEventListener('click', () => {
+          currentIndex = idx;
+          updateDeckCard();
+          const deckElem = document.getElementById('live-deck');
+          if (deckElem) {
+            deckElem.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+
+        pantheonGrid.appendChild(item);
+      });
+    }
+
+    // Filter Buttons
+    const campBtns = document.querySelectorAll('.gallery-camp-btn');
+    campBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        campBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderPantheon(btn.dataset.camp);
+      });
+    });
+
+    // Initial render
+    updateDeckCard();
+    renderPantheon('all');
+
+    // ── Build 20-Screen Mobile Ledger Grid & Lightbox ──
+    const SCREENS = [
+      {
+        id: 's01', num: '01', phase: 'setup', phaseLabel: 'Setup · 01',
+        titleEn: 'Title & Entry: GEKKA — SHADOWS', titleJp: 'タイトル・言語選択（月下ノ影）',
+        file: 's01.png',
+        descEn: 'The bilingual entrance gate. Players can toggle English or Japanese per handset, allowing multinational groups to sit at the same physical table without language barriers.',
+        descJp: '端末ごとの言語切替に対応したタイトル画面。多国籍なプレイヤーが同じ卓を囲んでも、各自の母国語でリアルタイムに同一セッションを体験できます。'
+      },
+      {
+        id: 's02', num: '02', phase: 'setup', phaseLabel: 'Setup · 02',
+        titleEn: 'Room Selection: Host or Join', titleJp: '部屋選択: ホスト開設 or 合言葉参加',
+        file: 's02.png',
+        descEn: 'Clean architectural bifurcation: hosts spin up a new room and broadcast to the TV, while guests tap into an existing room with a 6-character passcode.',
+        descJp: '卓を新設して大画面と同期する「ホスト」と、配られた合言葉を入力して手元で参加する「プレイヤー」の導線を明快に二分化。'
+      },
+      {
+        id: 's03', num: '03', phase: 'setup', phaseLabel: 'Setup · 03',
+        titleEn: 'Passcode & QR Code Onboarding', titleJp: '合言葉とQRコードによる5秒参加',
+        file: 's03.png',
+        descEn: 'Instant onboarding via camera QR scan or 6-digit passcode with clipboard auto-paste, reducing table setup time to under five seconds.',
+        descJp: 'スマートフォンのカメラでQRを読み取るか、6桁の合言葉を入力。クリップボードからの自動ペーストにも対応し、5秒で卓に参加可能。'
+      },
+      {
+        id: 's04', num: '04', phase: 'setup', phaseLabel: 'Setup · 04',
+        titleEn: 'Display Name & Player Marker', titleJp: '表示名入力と識別マーカー',
+        file: 's04.png',
+        descEn: 'Quick identity registration pairing display names with heraldic colored markers, ensuring unambiguous player identification during debates.',
+        descJp: '卓上での議論中に誰が誰かを一目で識別できるよう、プレイヤー名と固有のカラーマーカーを即座に登録。'
+      },
+      {
+        id: 's05', num: '05', phase: 'setup', phaseLabel: 'Lobby · 05',
+        titleEn: 'The Lobby: Real-Time Roster Sync', titleJp: '待合の間: リアルタイム参加同期',
+        file: 's05.png',
+        descEn: 'Real-time WebSocket lobby tracking connection and ready states across all handsets with dynamic participant count verification.',
+        descJp: '全員の接続状態と準備完了（Ready）をWebSocketsで即座に同期。規定人数が揃った時点でホストが安全にゲームを開始。'
+      },
+      {
+        id: 's06', num: '06', phase: 'roles', phaseLabel: 'Moderation · 06',
+        titleEn: 'Who Runs It: AI vs. Human Host', titleJp: '進行役選択: 記録者AI vs 人間の進行役',
+        file: 's06.png',
+        descEn: 'Hybrid game master architecture: choose between an automated AI Game Master that handles night calls, or a human storyteller using the phone as a digital ledger.',
+        descJp: '夜の判定やタイマーを全自動で裁く「記録者AI」と、人間が自らGMとして語り端末を記録帳として活用する「人間の進行役」を自在に選択。'
+      },
+      {
+        id: 's07', num: '07', phase: 'roles', phaseLabel: 'Roles · 07',
+        titleEn: 'Role Composition Balancer', titleJp: '役職構成: 25種の配役バランサー',
+        file: 's07.png',
+        descEn: 'Customizable role builder allowing hosts to mix and match from 25 illustrated roles across Citizen, Werewolf, and Third factions with live player count tallying.',
+        descJp: '市民・人狼・第三陣営にまたがる全25役職を直感的に増減し、卓の人数と難易度に合わせた黄金比のゲームバランスを構築。'
+      },
+      {
+        id: 's08', num: '08', phase: 'roles', phaseLabel: 'Privacy · 08',
+        titleEn: 'Role Assignment Dispatch', titleJp: '配役通知: 秘匿情報の着信',
+        file: 's08.png',
+        descEn: 'Subtle haptic screen signaling the encrypted arrival of the player\'s nocturnal identity without flashing any telltale graphics to neighbors.',
+        descJp: 'サーバーから暗号化ソケット経由で配役が手元端末に着信したことを告げる、周囲に絵柄を見せない配慮の行き届いた中継画面。'
+      },
+      {
+        id: 's09', num: '09', phase: 'roles', phaseLabel: 'Privacy · 09',
+        titleEn: 'Hold-to-Reveal Role Card', titleJp: '役職確認: 長押し秘匿ゲート',
+        file: 's09.png',
+        descEn: 'The cornerstone privacy mechanism: the card and abilities are only revealed while holding down touch, instantly re-sealing on release or device tilt.',
+        descJp: '対面プレイにおける最大の発明。画面を指で長押ししている間だけカードが開き、指を離すか端末を傾けると即座に封印されます。'
+      },
+      {
+        id: 's10', num: '10', phase: 'night', phaseLabel: 'Night · 10',
+        titleEn: 'Night Falls: Table Dimming', titleJp: '夜の訪れ: 一斉消灯と沈黙の合図',
+        file: 's10.png',
+        descEn: 'Full-screen atmospheric dusk transition with ambient lunar glow prompting all players to lower their voices for nocturnal actions.',
+        descJp: '青白い月光が静かに輝く夜の幕開け。卓全体の灯りを落とし、プレイヤーに沈黙と秘密の行動フェーズへの移行を促します。'
+      },
+      {
+        id: 's11', num: '11', phase: 'night', phaseLabel: 'Night · 11',
+        titleEn: 'Night Action: Ability Execution', titleJp: '夜の行動: 秘密能力の行使',
+        file: 's11.png',
+        descEn: 'Role-specific action matrix (Divine, Attack, Protect, Trap, Swap) rendered exclusively to authorized clients via private socket views.',
+        descJp: '予言者の占い、人狼の襲撃、騎士の護衛、罠師のトラップなど、各自の役職に応じた固有の夜間アクションを秘密裏に実行。'
+      },
+      {
+        id: 's12', num: '12', phase: 'night', phaseLabel: 'Night · 12',
+        titleEn: 'Silent Waiting: Universal Disguise', titleJp: '夜の待機: 挙動漏洩を防ぐ共通待合',
+        file: 's12.png',
+        descEn: 'A universal waiting state presented to ordinary citizens and active night roles alike, ensuring handset interaction times never reveal Seers or Wolves.',
+        descJp: '能力を持たない市民も同一の待機操作を行うことで、スマホを操作している時間の長さから役職が特定されるのを完全に防止。'
+      },
+      {
+        id: 's13', num: '13', phase: 'day', phaseLabel: 'Day · 13',
+        titleEn: 'Dawn Breaks: Incident Bulletin', titleJp: '夜明けの報告: 犠牲者の判明',
+        file: 's13.png',
+        descEn: 'Suspenseful morning announcement revealing whether someone fell victim to the wolf pack or if the village enjoyed a peaceful night.',
+        descJp: '静まり返った村に朝が訪れる。昨夜命を落とした犠牲者（または護衛成功による無犠牲）を厳かに告げる朝の記録。'
+      },
+      {
+        id: 's14', num: '14', phase: 'day', phaseLabel: 'Council · 14',
+        titleEn: 'The Council: Synchronized Debate Timer', titleJp: '評議: 同期タイマーと前夜の記録',
+        file: 's14.png',
+        descEn: 'Synchronized discussion clock displaying remaining debate seconds alongside logged nocturnal casualties to anchor deduction.',
+        descJp: '全プレイヤーの端末でミリ秒単位で同期する評議タイマー。前夜の犠牲者ログを常に確認しながら緊迫の舌戦を展開。'
+      },
+      {
+        id: 's15', num: '15', phase: 'day', phaseLabel: 'Vote · 15',
+        titleEn: 'Execution Ballot: Sealed Vote', titleJp: '処刑投票: 秘匿投票と確認シート',
+        file: 's15.png',
+        descEn: 'Private ballot submission with a two-step confirmation bottom sheet to eliminate mis-taps during heated accusations.',
+        descJp: '生存者から追放対象を選択。感情的な議論の最中でも誤タップが起きないよう、2段階の確認ボトムシートを採用。'
+      },
+      {
+        id: 's16', num: '16', phase: 'day', phaseLabel: 'Stalemate · 16',
+        titleEn: 'Tied Vote: Stalemate Resolution', titleJp: '同票・決選投票: 膠着状態の調停',
+        file: 's16.png',
+        descEn: 'Automated tiebreaker branch handling tied ballots smoothly without leaking individual voting patterns or causing confusion.',
+        descJp: '得票が同数となった場合の調停画面。個人の投票先を伏せたまま、決選投票または処刑見送りの判定を中立に下します。'
+      },
+      {
+        id: 's17', num: '17', phase: 'day', phaseLabel: 'Verdict · 17',
+        titleEn: 'The Verdict: Village Execution', titleJp: '追放の評決: 処刑者の宣告',
+        file: 's17.png',
+        descEn: 'Solemn execution bulletin announcing who was banished by popular vote, seamlessly triggering background win-condition verification.',
+        descJp: '村の合意として下された処刑結果を宣告。直ちにサーバー側でゲーム終了条件が判定されます。'
+      },
+      {
+        id: 's18', num: '18', phase: 'day', phaseLabel: 'Finale · 18',
+        titleEn: 'The Final Record: Victory & Full Reveal', titleJp: '終幕の記録: 陣営勝利と全正体の開示',
+        file: 's18.png',
+        descEn: 'The climactic finale: displays the winning faction banner (Citizen, Werewolf, Fox, Android) and unveils every secret player identity and card.',
+        descJp: '勝利陣営のゴールドバナーと共に、ゲーム中に伏せられていた全員の正体と陣営カードを一斉に開示するクライマックス。'
+      },
+      {
+        id: 's19', num: '19', phase: 'day', phaseLabel: 'Rematch · 19',
+        titleEn: 'Gather Once More: 1-Tap Rematch', titleJp: '再戦: ワンタップで次の卓へ',
+        file: 's19.png',
+        descEn: 'Instant rematch capability allowing the current table to immediately shuffle roles and kick off another round without re-entering passcodes.',
+        descJp: '同じメンバーのまま即座に配役をシャッフルして第2ゲームを開始。再ペアリングの手間を省き興奮を持続させます。'
+      },
+      {
+        id: 's20', num: '20', phase: 'day', phaseLabel: 'Recovery · 20',
+        titleEn: 'Resilient Recovery: Reconnecting State', titleJp: '接続復旧: 状態保持と自動復帰',
+        file: 's20.png',
+        descEn: 'Graceful offline handler holding last confirmed game state when a handset encounters packet drops, seamlessly re-joining on reconnection.',
+        descJp: '電波が途切れた際も直前のゲーム状態を保持し、パケット再疎通時に何事もなかったかのように自動復帰。'
+      }
+    ];
+
+    const screensGrid = document.getElementById('screens-grid');
+    const screenFilterBtns = document.querySelectorAll('.screen-filter-btn');
+
+    // Lightbox DOM Elements
+    const lightbox = document.getElementById('screen-lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxIdTag = document.getElementById('lightbox-id-tag');
+    const lightboxPhaseTag = document.getElementById('lightbox-phase-tag');
+    const lightboxTitleEn = document.getElementById('lightbox-title-en');
+    const lightboxTitleJp = document.getElementById('lightbox-title-jp');
+    const lightboxDescEn = document.getElementById('lightbox-desc-en');
+    const lightboxDescJp = document.getElementById('lightbox-desc-jp');
+    const lightboxCounter = document.getElementById('lightbox-counter');
+    const lightboxCloseBtn = document.getElementById('lightbox-close-btn');
+    const lightboxPrevBtn = document.getElementById('lightbox-prev-btn');
+    const lightboxNextBtn = document.getElementById('lightbox-next-btn');
+
+    let currentLightboxIdx = 0;
+
+    function renderScreensGrid(phaseFilter) {
+      if (!screensGrid) return;
+      screensGrid.innerHTML = '';
+
+      SCREENS.forEach((sc, idx) => {
+        if (phaseFilter !== 'all' && sc.phase !== phaseFilter) return;
+
+        const card = document.createElement('div');
+        card.className = 'screen-card';
+        card.dataset.idx = idx;
+
+        // Frame
+        const frame = document.createElement('div');
+        frame.className = 'screen-phone-frame';
+
+        const img = document.createElement('img');
+        img.src = `../assets/werewolf/screens/${sc.file}`;
+        img.alt = `${sc.id}: ${sc.titleEn}`;
+        img.loading = 'lazy';
+
+        const overlay = document.createElement('div');
+        overlay.className = 'screen-phone-overlay';
+        const inspectBadge = document.createElement('span');
+        inspectBadge.className = 'screen-inspect-badge';
+        inspectBadge.textContent = 'INSPECT FULL UI ↗';
+        overlay.appendChild(inspectBadge);
+
+        frame.appendChild(img);
+        frame.appendChild(overlay);
+
+        // Click opens lightbox
+        frame.addEventListener('click', () => openLightbox(idx));
+
+        // Meta
+        const meta = document.createElement('div');
+        meta.className = 'screen-meta';
+
+        const badgeRow = document.createElement('div');
+        badgeRow.className = 'screen-badge-row';
+        const idTag = document.createElement('span');
+        idTag.className = 'screen-id-tag';
+        idTag.textContent = `${sc.id.toUpperCase()}`;
+        const phaseTag = document.createElement('span');
+        phaseTag.className = 'screen-phase-tag';
+        phaseTag.textContent = sc.phaseLabel;
+        badgeRow.appendChild(idTag);
+        badgeRow.appendChild(phaseTag);
+
+        const titleEn = document.createElement('h4');
+        titleEn.className = 'screen-title-en';
+        titleEn.textContent = sc.titleEn;
+
+        const titleJp = document.createElement('div');
+        titleJp.className = 'screen-title-jp';
+        titleJp.textContent = sc.titleJp;
+
+        const insight = document.createElement('p');
+        insight.className = 'screen-insight';
+        insight.innerHTML = `<span class="t-en">${sc.descEn}</span><span class="t-jp">${sc.descJp}</span>`;
+
+        meta.appendChild(badgeRow);
+        meta.appendChild(titleEn);
+        meta.appendChild(titleJp);
+        meta.appendChild(insight);
+
+        card.appendChild(frame);
+        card.appendChild(meta);
+        screensGrid.appendChild(card);
+      });
+    }
+
+    // Filter Buttons Listener
+    screenFilterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        screenFilterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderScreensGrid(btn.dataset.phase);
+      });
+    });
+
+    function openLightbox(idx) {
+      currentLightboxIdx = idx;
+      updateLightboxContent();
+      lightbox.classList.add('is-open');
+      lightbox.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      lightbox.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    function updateLightboxContent() {
+      const sc = SCREENS[currentLightboxIdx];
+      if (!sc) return;
+      lightboxImg.src = `../assets/werewolf/screens/${sc.file}`;
+      lightboxIdTag.textContent = `${sc.id.toUpperCase()}`;
+      lightboxPhaseTag.textContent = sc.phaseLabel.toUpperCase();
+      lightboxTitleEn.textContent = sc.titleEn;
+      lightboxTitleJp.textContent = sc.titleJp;
+      lightboxDescEn.textContent = sc.descEn;
+      lightboxDescJp.textContent = sc.descJp;
+      lightboxCounter.textContent = `${currentLightboxIdx + 1} / ${SCREENS.length}`;
+    }
+
+    function nextScreen() {
+      currentLightboxIdx = (currentLightboxIdx + 1) % SCREENS.length;
+      updateLightboxContent();
+    }
+
+    function prevScreen() {
+      currentLightboxIdx = (currentLightboxIdx - 1 + SCREENS.length) % SCREENS.length;
+      updateLightboxContent();
+    }
+
+    if (lightboxCloseBtn) lightboxCloseBtn.addEventListener('click', closeLightbox);
+    if (lightboxPrevBtn) lightboxPrevBtn.addEventListener('click', prevScreen);
+    if (lightboxNextBtn) lightboxNextBtn.addEventListener('click', nextScreen);
+
+    // Close on background backdrop click
+    if (lightbox) {
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+    }
+
+    // Keyboard navigation
+    window.addEventListener('keydown', (e) => {
+      if (!lightbox || !lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      else if (e.key === 'ArrowRight') nextScreen();
+      else if (e.key === 'ArrowLeft') prevScreen();
+    });
+
+    // Render 20 screens initially
+    renderScreensGrid('all');
+
+  })();
+  </script>

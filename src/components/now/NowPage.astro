@@ -1,0 +1,182 @@
+---
+// The Living Lab Bench (/now): active ventures, prototypes, and tools in
+// motion. Ported from src/render/now.mjs — data comes from src/data/now.json
+// via lib.now, so the page has no data of its own.
+import { esc, t, url } from "../../lib/html.mjs";
+
+interface Props { nowData: any }
+const { nowData } = Astro.props;
+const items = nowData.items ?? [];
+
+const STATUS_BADGE = {
+  building: { en: "Building", jp: "開発中", color: "#d9531e" },
+  prototype: { en: "Prototype", jp: "試作中", color: "#6b4fbb" },
+  validating: { en: "Validating", jp: "検証中", color: "#1b7380" },
+  live: { en: "Live", jp: "公開中", color: "#2e7d32" },
+  exploring: { en: "Exploring", jp: "構想中", color: "#8a6d1a" },
+};
+
+function statusPill(statusKey) {
+  const badge = STATUS_BADGE[statusKey] ?? { en: statusKey, jp: statusKey, color: "#4a4a44" };
+  return `<span class="pill pill--now-status" style="--status-color: ${badge.color}">${t(badge)}</span>`;
+}
+
+const CATEGORY_LABEL = {
+  "ai-product": { en: "0→1 Product", jp: "0→1 プロダクト" },
+  "ai-tool": { en: "AI Tool", jp: "AI ツール" },
+  thesis: { en: "Thesis & Architecture", jp: "設計論・アーキテクチャ" },
+  "developer-tool": { en: "Developer Tool", jp: "開発ツール" },
+  interactive: { en: "Interactive Experiment", jp: "インタラクティブ実験" },
+};
+
+function nowCardHtml(item) {
+  const l = item.links ?? {};
+  let cta = "";
+  let dataHref = "";
+  if (l.live) {
+    const isExt = /^https?:/.test(l.live);
+    const liveUrl = isExt ? l.live : url(l.live);
+    cta = `<a class="card-link" href="${esc(liveUrl)}"${isExt ? ' target="_blank" rel="noopener"' : ""}><span class="t-en">Try live ↗</span><span class="t-jp">触ってみる ↗</span></a>`;
+    dataHref = ` data-href="${esc(liveUrl)}"${isExt ? ' data-external="true"' : ""}`;
+  } else if (l.repo) {
+    cta = `<a class="card-link" href="${esc(l.repo)}" target="_blank" rel="noopener"><span class="t-en">GitHub repo ↗</span><span class="t-jp">ソースコード ↗</span></a>`;
+    dataHref = ` data-href="${esc(l.repo)}" data-external="true"`;
+  } else if (l.caseStudy) {
+    cta = `<a class="card-link" href="${esc(url(l.caseStudy))}"><span class="t-en">Read case study →</span><span class="t-jp">詳細を読む →</span></a>`;
+    dataHref = ` data-href="${esc(url(l.caseStudy))}"`;
+  } else if (l.external) {
+    cta = `<a class="card-link" href="${esc(l.external)}" target="_blank" rel="noopener"><span class="t-en">Open project ↗</span><span class="t-jp">プロジェクトを開く ↗</span></a>`;
+    dataHref = ` data-href="${esc(l.external)}" data-external="true"`;
+  }
+
+  const stackPills = (item.stack ?? [])
+    .map((s) => `<span class="now-stack-pill">${esc(s)}</span>`)
+    .join("");
+
+  const cat = CATEGORY_LABEL[item.category] ?? { en: item.category, jp: item.category };
+
+  return `      <article class="now-card" data-category="${esc(item.category)}"${dataHref} tabindex="0">
+        <div class="now-card-top">
+          <span class="now-cat-tag">${t(cat)}</span>
+          ${statusPill(item.status)}
+        </div>
+        <h3 class="now-card-title">${esc(item.title)}</h3>
+        <p class="now-card-oneline">${t(item.oneLine)}</p>
+        <dl class="now-details">
+          <div class="now-row">
+            <dt class="now-dt"><span class="t-en">Why it exists</span><span class="t-jp">なぜ作るのか</span></dt>
+            <dd class="now-dd">${t(item.why)}</dd>
+          </div>
+          <div class="now-row">
+            <dt class="now-dt"><span class="t-en">What's next</span><span class="t-jp">次の一歩</span></dt>
+            <dd class="now-dd">${t(item.next)}</dd>
+          </div>
+        </dl>
+        ${stackPills ? `<div class="now-stack-row">${stackPills}</div>` : ""}
+        ${cta ? `<div class="now-card-foot">${cta}</div>` : ""}
+      </article>`;
+}
+
+const cardsHtml = items.map((item) => nowCardHtml(item)).join("\n");
+---
+<main class="now-page" data-page="now">
+  <header class="now-head">
+    <div class="now-meta-badge">
+      <span class="now-pulse-dot" />
+      <span class="t-en">Live Lab Bench · Updated {nowData.updatedAt}</span>
+      <span class="t-jp">現在の作業台 · {nowData.updatedAt} 更新</span>
+    </div>
+    <h1 class="now-title">
+      <span class="t-en">What I’m Working On</span>
+      <span class="t-jp">いま、つくっているもの</span>
+    </h1>
+    <p class="now-lede">
+      <span class="t-en">{nowData.lede.en}</span>
+      <span class="t-jp is-block">{nowData.lede.jp}</span>
+    </p>
+    <div class="now-filter-bar" role="group" aria-label="Filter current work">
+      <button type="button" class="filter-btn is-active" data-filter="all">
+        <span class="t-en">All ({items.length})</span>
+        <span class="t-jp">すべて ({items.length})</span>
+      </button>
+      <button type="button" class="filter-btn" data-filter="ai-product" id="ventures">
+        <span class="t-en">0→1 Products &amp; Ventures</span>
+        <span class="t-jp">0→1 プロダクト &amp; 事業</span>
+      </button>
+      <button type="button" class="filter-btn" data-filter="interactive" id="experiments">
+        <span class="t-en">Interactive</span>
+        <span class="t-jp">インタラクティブ</span>
+      </button>
+      <button type="button" class="filter-btn" data-filter="developer-tool" id="tools">
+        <span class="t-en">Developer Tools</span>
+        <span class="t-jp">開発ツール</span>
+      </button>
+      <span id="ai-product" style="display:none;" />
+    </div>
+  </header>
+
+  <div class="now-grid" set:html={cardsHtml} />
+
+  <section class="now-invite-band">
+    <div class="now-invite-inner">
+      <h2 class="now-invite-title">
+        <span class="t-en">Have a question or want to build something together?</span>
+        <span class="t-jp">プロトタイプを一緒に試したい、あるいはまだ名前のないアイデアの相談</span>
+      </h2>
+      <p class="now-invite-desc">
+        <span class="t-en">I collaborate with founders, leadership teams, and engineers who want to test ideas by building them.</span>
+        <span class="t-jp is-block">「まずは動くものを作って確かめたい」チームや創業者と、0→1 の検証をご一緒しています。</span>
+      </p>
+      <div class="now-invite-cta">
+        <a href={url("contact.html")} class="btn btn--primary">
+          <span class="t-en">Work with me →</span>
+          <span class="t-jp">相談してみる →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  // ── Now Filter & Hash Navigation ──
+  (() => {
+    const btns = document.querySelectorAll(".now-filter-bar .filter-btn");
+    const cards = document.querySelectorAll(".now-card[data-category]");
+    if (!btns.length || !cards.length) return;
+
+    const ALIASES = {
+      ventures: "ai-product",
+      "ai-product": "ai-product",
+      experiments: "interactive",
+      interactive: "interactive",
+      tools: "developer-tool",
+      "developer-tool": "developer-tool",
+    };
+
+    function applyFilter(filter) {
+      const canonicalFilter = ALIASES[filter] || filter;
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.filter === canonicalFilter));
+      cards.forEach((card) => {
+        const cat = card.dataset.category;
+        const show = canonicalFilter === "all" || cat === canonicalFilter;
+        card.classList.toggle("is-hidden", !show);
+      });
+      try {
+        if (filter !== "all") {
+          history.replaceState(null, "", "#" + filter);
+        } else if (window.location.hash) {
+          history.replaceState(null, "", window.location.pathname);
+        }
+      } catch (e) {}
+    }
+
+    btns.forEach((b) => {
+      b.addEventListener("click", () => applyFilter(b.dataset.filter));
+    });
+
+    const hash = window.location.hash.replace("#", "").toLowerCase();
+    if (hash && (ALIASES[hash] || hash === "all")) {
+      applyFilter(hash);
+    }
+  })();
+</script>

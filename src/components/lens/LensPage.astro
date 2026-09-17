@@ -1,0 +1,60 @@
+---
+// Assembles one Lens into a page: Hero + the sections in lens.sections order.
+// section.type → component; an unknown type is a build error. A contact
+// section is appended when the lens does not name one, exactly as
+// src/render/page.mjs did. Ported from renderLens() in that file — the
+// document shell (<head>, sidebar, footer) is now Site.astro, so this
+// component only owns the part that used to be `hero(...) + body.join(...)`.
+import { lensEvidenceIds } from "../../validate.mjs";
+import Hero from "./Hero.astro";
+import Proof from "./Proof.astro";
+import Exploring from "./Exploring.astro";
+import Experiments from "./Experiments.astro";
+import Ventures from "./Ventures.astro";
+import Ideas from "./Ideas.astro";
+import Tools from "./Tools.astro";
+import CareerArc from "./CareerArc.astro";
+import Capabilities from "./Capabilities.astro";
+import Fit from "./Fit.astro";
+import Studio from "./Studio.astro";
+import Contact from "./Contact.astro";
+
+interface Props {
+  lens: any;
+  lib: any;
+  // Whether to show the "Same experience. Different lens." note, or the
+  // lens's own note (a Localized value). Defaults to lens.lensNote, or true
+  // for every lens but the default one — the same rule page.mjs used.
+  showLensNote?: boolean | { en: string; jp?: string };
+}
+const { lens, lib, showLensNote } = Astro.props;
+
+const resolvedShowLensNote = showLensNote !== undefined ? showLensNote : (lens.lensNote ?? lens.slug !== "default");
+
+// Evidence used anywhere on this page, deduplicated — passed to capabilitiesSection
+// for parity with page.mjs, though that section does not read it.
+const usedEvidence = [...new Set(lensEvidenceIds(lens))].map((id: string) => lib.evidence.get(id)).filter(Boolean);
+
+const SECTION_COMPONENTS: Record<string, any> = {
+  proof: Proof,
+  exploring: Exploring,
+  experiments: Experiments,
+  ventures: Ventures,
+  ideas: Ideas,
+  tools: Tools,
+  fit: Fit,
+  "career-arc": CareerArc,
+  capabilities: Capabilities,
+  studio: Studio,
+};
+
+const hasContactSection = lens.sections.some((s: any) => s.type === "contact");
+---
+<Hero lens={lens} lib={lib} />
+{lens.sections.map((section: any) => {
+  if (section.type === "contact") return <Contact lens={lens} lib={lib} showLensNote={resolvedShowLensNote} />;
+  const Component = SECTION_COMPONENTS[section.type];
+  if (!Component) throw new Error(`LensPage: unknown section type "${section.type}" in lens "${lens.slug}"`);
+  return <Component section={section} lens={lens} lib={lib} usedEvidence={usedEvidence} />;
+})}
+{!hasContactSection && <Contact lens={lens} lib={lib} showLensNote={resolvedShowLensNote} />}

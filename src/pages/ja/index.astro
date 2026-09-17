@@ -1,0 +1,74 @@
+---
+// The Japanese edition of the home grid. Same content, same components as
+// src/pages/index.astro — only lang and canonical differ. The switch itself
+// (Site.astro / Sidebar.astro) reads lang="ja" and pins to this page.
+import Site from "../../layouts/Site.astro";
+import WorkGrid from "../../components/grid/WorkGrid.astro";
+import { tb, t } from "../../lib/html.mjs";
+import { getLibrary, gridEntries, orderedCategories, defaultLens } from "../../lib/site.mjs";
+
+const lib = getLibrary();
+const lens = defaultLens();
+const entries = gridEntries();
+const categories = orderedCategories();
+
+const FILTERS = [
+  { id: "all", label: { en: "All", jp: "すべて" }, count: entries.length },
+  ...categories.map((c) => ({
+    id: c.slug,
+    label: c.title,
+    count: c.groups.reduce((n, g) => n + g.items.length, 0),
+  })),
+];
+---
+<Site
+  title={lens.seo.title}
+  description={lens.seo.description}
+  canonical="https://takaoumehara.com/ja"
+  lang="ja"
+>
+  <main class="cat-page grid-home" data-category="home">
+    <header class="cat-head">
+      <p class="grid-headline" set:html={tb(lib.profile.positioning[1])} />
+      <div class="grid-filters" role="group" aria-label="Filter work by discipline">
+        {FILTERS.map((f, i) => (
+          <button type="button" class={`filter-btn${i === 0 ? " is-active" : ""}`} data-filter={f.id}>
+            <span set:html={t(f.label)} />
+            <span class="filter-count">{f.count}</span>
+          </button>
+        ))}
+      </div>
+    </header>
+    <WorkGrid entries={entries} />
+  </main>
+</Site>
+
+<script>
+  // ── Home grid filter bar ──
+  (() => {
+    const btns = document.querySelectorAll(".grid-home .filter-btn");
+    const cards = document.querySelectorAll(".grid-home .cat-card[data-category]");
+    if (!btns.length || !cards.length) return;
+
+    function applyFilter(filter) {
+      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.filter === filter));
+      cards.forEach((card) => {
+        const cats = (card.dataset.category || "").split(" ");
+        const show = filter === "all" || cats.includes(filter);
+        card.classList.toggle("is-hidden", !show);
+      });
+      try {
+        if (filter !== "all") history.replaceState(null, "", "#" + filter);
+        else if (window.location.hash) history.replaceState(null, "", window.location.pathname);
+      } catch (e) {}
+    }
+
+    btns.forEach((b) => b.addEventListener("click", () => applyFilter(b.dataset.filter)));
+
+    const hash = window.location.hash.replace("#", "").toLowerCase();
+    if (hash) {
+      const match = document.querySelector(`.grid-home .filter-btn[data-filter="${hash}"]`);
+      if (match) applyFilter(hash);
+    }
+  })();
+</script>
