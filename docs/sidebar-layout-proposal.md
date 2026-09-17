@@ -91,3 +91,84 @@ A の根拠: 前回の nav 変更（`78603c2`）も 27 ファイル一括置換�
 | Q1 | トップページの右カラムに何を出すか。(a) 今のヒーロー + Selected work を短く (b) About (c) 最初のプロジェクトをそのまま | **(a)** — 「目的に合わせる」の目的 = 採用と受注。3 秒で「この人のレベル」を答える面は残す |
 | Q2 | サイドバーの 45 件をどう見せるか。(a) カテゴリ折りたたみ、現在地だけ展開 (b) 全件展開（参照サイトと同じ） (c) カテゴリごとに上位 3 件 + 「すべて」 | **(a)** |
 | Q3 | 見た目をどこまで寄せるか。(a) 構造だけ移し、Ink & Paper / Outfit のまま (b) 参照サイトの薄いグレー角丸カードに寄せる | **(a)** — creativityiseverywhere.com と揃えた既定があるため |
+
+---
+
+## 7. 完全に作り替えるなら — 手書き HTML をやめる方法
+
+> 2026-09-17 追記。本人の問い:「完全につくりかえるとしたら、HTML 手書きじゃなくて、どうやるのが洗練された作り方？」
+
+### 7.1 結論: Astro
+
+| 選択肢 | 判断 | 理由 |
+|---|---|---|
+| **Astro**（静的出力 + Content Collections + MDX） | **推奨** | 今ある `src/data`（型つき JSON）・`validate.mjs`（Claim Guard）・`src/lenses` が、そのまま Content Collections + zod スキーマ + 動的ルートに対応する。View Transitions と `/ja` の i18n ルーティングが標準装備。Vercel は設定不要 |
+| 自前の生成器（`src/build.mjs`）を拡張 | 次善 | 依存ゼロは守れるが、レイアウト・MDX・画像最適化・i18n を自分で作ることになり、Astro を再発明する |
+| Next.js | 不要 | サーバーコンポーネントも SSR も要らない。静的サイトに対して重すぎる |
+| Eleventy | 可 | 軽いが、型つきコンテンツと MDX コンポーネントの面で Astro の方が今の構造に近い |
+| Framer / Webflow | 不可 | 証拠ライブラリと Lens エンジン（このサイトの独自性）を捨てることになる |
+
+### 7.2 何が「洗練」になるのか — ケーススタディが文章になる
+
+いちばん変わるのはプロジェクトページ。今は 42 ページが各 500 行の HTML で、同じ構造（ヒーロー → Tension → Approach → Shift → ギャラリー → 詳細）を毎回手で組んでいる。Astro では:
+
+```
+src/content/work/koji-fizz/
+  index.mdx        ← frontmatter = 今の koji-fizz.json（記録）、本文 = ケーススタディ
+  hero.jpg
+  gallery/…
+```
+
+```mdx
+---
+kind: project
+title: KOJI FIZZ — New York Edition
+role: Producer / Creative Partner
+contribution:
+  mine: [...]
+  notMine: [cinematograph, ...]
+---
+import { Tension, Approach, Shift, Gallery, Metric } from '@/components/case'
+
+<Tension>
+広告ではなく人物紹介として作った。…
+</Tension>
+
+<Gallery cols={3} items={[...]} />
+```
+
+- **記録と本文が 1 ファイル**。サイドバー・カード・Lens・ケーススタディが同じファイルを読む。今の「JSON と HTML に同じ説明が 2 回ある」状態が消える。
+- **レイアウトは 1 コンポーネント**。サイドバー型に変えるのも、後で別の型に変えるのも `Layout.astro` 1 か所。
+- **Claim Guard は残る**。zod スキーマで型を検査し、`notMine` の語が本文に出たらビルドで落とす（`astro:build:start` フック、または今の `validate.mjs` をそのまま呼ぶ）。
+- **画像**: `<Image>` がビルド時にサイズと形式を出す。手で 456MB を消した経験があるので、ここは効く。
+
+### 7.3 今の資産はどうなるか
+
+| 今 | Astro 後 |
+|---|---|
+| `src/data/**/*.json` | Content Collections（JSON のまま読める。MDX へは 1 件ずつ移行） |
+| `src/validate.mjs`・`src/analyze/*`（求人票エンジン） | **そのまま**（純粋 ESM。Studio のブラウザ側もそのまま import できる） |
+| `src/lenses/*.json` → `lens/<slug>/index.html` | `src/pages/lens/[slug].astro` + `getStaticPaths` |
+| `src/render/*.mjs`（文字列テンプレート） | `.astro` コンポーネントに書き直し（最後に捨てる） |
+| `projects/*.html`（手書き 42） | `public/` に置けば**未移行のまま配信できる**。1 件ずつ MDX に移す |
+| `api/*.mjs`（Vercel Functions） | そのまま。Studio の Publish は「Lens JSON だけ commit → Vercel がビルド」になり、**むしろ単純になる** |
+| 生成 HTML を commit する方針（§0 の決定） | **変わる。** commit するのはソースだけ。「公開される HTML を PR で見る」役割は Vercel の Preview デプロイが担う（PR #19 でも既に動いている） |
+| `tests/*.test.mjs`（生成物を検査） | `dist/` を検査する形で同じ流儀を続けられる |
+| `.t-en / .t-jp` の言語切替 | Astro の i18n ルーティングで `/ja/...` を別ページに。1 ページに両言語を埋め込む今の方式より軽く、検索エンジンにも正しい |
+
+### 7.4 順番（サイドバー型は段階 1 で手に入る）
+
+| 段階 | 内容 | 完了の証拠 |
+|---|---|---|
+| 1 | Astro の骨格 + `Layout.astro`（サイドバー）+ 既存 JSON を Content Collections で読む。手書き HTML は `public/` で未変更のまま配信 | トップとサイドバーが Astro、プロジェクトページは旧 HTML、`npm test` 緑 |
+| 2 | ケーススタディを MDX へ。価値の高い順に 1 セッション数件 | 移行済みページの axe 通過、旧 HTML 削除 |
+| 3 | Lens・`/ja`・`/work`・`/now` を Astro ページに | `src/render/` を削除できる |
+| 4 | 画像最適化・i18n ルーティング・View Transitions の仕上げ | Lighthouse と `npm run test:all` |
+
+段階 1 だけで §1〜§5 のサイドバー案と同じものが手に入る。つまり **§3 の A 案（シェル差し替え）と Astro 移行は競合しない** — A 案を Astro の `Layout.astro` で実装すれば、それが段階 1 になる。
+
+### 7.5 失うもの（正直に）
+
+- **依存ゼロ**。`docs/adaptive-portfolio-architecture.md` §0 で「フレームワークを入れない」と決めた。覆すことになる。Astro 本体とアダプタの更新に付き合う。
+- **「PR の diff = 公開 HTML」**。ソースの diff + Preview デプロイに置き換わる。
+- 42 ページの MDX 移行は機械化しきれない。構造は揃っているので下訳は自動化できるが、文章と画像の取捨は人が見る。
