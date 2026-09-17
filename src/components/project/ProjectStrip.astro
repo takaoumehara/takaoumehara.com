@@ -1,0 +1,156 @@
+---
+// The Challenge / Solution strip that opens a case study's content column,
+// above the hand-built body (see src/pages/projects/[slug].astro). Built from
+// the evidence record behind the page (src/lib/site.mjs's
+// evidenceForCaseStudy), never authored per page, so it only ever repeats
+// facts that already live in src/data/.
+//
+// narrative.* (projects) is English only — no narrative.jp exists anywhere in
+// the data. Records with a genuinely bilingual summary (every project and
+// experiment/venture/tool carries one) get the first card's label and body
+// swapped to that Japanese summary in the jp layer, via the .t-en/.t-jp span
+// pair t()/tb() already produce; every other line is plain English text that
+// shows in both languages, same convention as ProofCard's "what I did" list.
+import { t, tb, esc } from "../../lib/html.mjs";
+import { periodLabel } from "../../lib/labels.mjs";
+import { getLibrary, orderedCategories } from "../../lib/site.mjs";
+
+interface Props { item: any }
+const { item } = Astro.props;
+
+/** The first category (in nav order) whose groups list this record; chapters.json's
+ *  label is the fallback for a record no category lists (e.g. a hidden one). */
+function categoryLabel(record) {
+  for (const category of orderedCategories()) {
+    for (const group of category.groups ?? []) {
+      if (group.items?.includes(record.slug)) return category.title;
+    }
+  }
+  const chapter = getLibrary().chapters?.find((c) => c.id === record.chapter);
+  return chapter?.label ?? null;
+}
+
+const listHtml = (lines) => `<ul class="cs-strip-list">${lines.map((line) => `<li>${esc(line)}</li>`).join("")}</ul>`;
+const paraHtml = (value) => `<p class="cs-strip-text">${tb(value)}</p>`;
+
+/** Every card this record earns, in order: [{ label, bodyHtml }]. Empty when
+ *  the record has neither a narrative nor a summary — the strip then prints
+ *  nothing at all. */
+function buildCards(record) {
+  const cards = [];
+  const narrative = record.narrative;
+  const challengeEn = narrative?.problem ?? narrative?.situation;
+
+  if (narrative && challengeEn) {
+    // narrative has no Japanese; the record's own summary does. When it
+    // exists, the jp layer shows that overview instead of a half-translated
+    // "challenge" — a different label ("概要") for a different kind of text.
+    const summaryJp = record.summary?.jp;
+    const label = summaryJp ? { en: "The challenge", jp: "概要" } : { en: "The challenge", jp: "課題" };
+    const body = summaryJp ? { en: challengeEn, jp: summaryJp } : challengeEn;
+    cards.push({ label, bodyHtml: paraHtml(body) });
+
+    if (narrative.built) {
+      const built = Array.isArray(narrative.built) ? listHtml(narrative.built) : paraHtml(narrative.built);
+      cards.push({ label: { en: "The solution", jp: "つくったもの" }, bodyHtml: built });
+    }
+
+    const impactLines = narrative.impact ? Object.values(narrative.impact).flat().filter(Boolean) : [];
+    if (impactLines.length) {
+      cards.push({ label: { en: "Impact", jp: "結果" }, bodyHtml: listHtml(impactLines) });
+    }
+  } else if (record.summary) {
+    // Experiments, ventures and tools carry no narrative — the evidence record
+    // itself is already a short pitch: a bilingual summary and what was mine.
+    cards.push({ label: { en: "Overview", jp: "概要" }, bodyHtml: paraHtml(record.summary) });
+    if (record.contribution?.mine?.length) {
+      cards.push({ label: { en: "My part", jp: "担当" }, bodyHtml: listHtml(record.contribution.mine) });
+    }
+  }
+  return cards;
+}
+
+const cards = item ? buildCards(item) : [];
+
+const kickerHtml = item
+  ? [
+      categoryLabel(item) ? t(categoryLabel(item)) : "",
+      item.organization ? esc(item.organization) : "",
+      item.role ? esc(item.role) : "",
+      periodLabel(item.period) ? esc(periodLabel(item.period)) : "",
+    ].filter(Boolean).join(" · ")
+  : "";
+---
+{cards.length > 0 && (
+  <section class="cs-strip" aria-label="In short">
+    {kickerHtml && <p class="cs-strip-kicker" set:html={kickerHtml} />}
+    <div class={`cs-strip-grid cs-strip-grid--${cards.length}`}>
+      {cards.map((card) => (
+        <div class="cs-strip-card">
+          <p class="cs-strip-label" set:html={t(card.label)} />
+          <Fragment set:html={card.bodyHtml} />
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .cs-strip {
+    max-width: var(--col);
+    margin: 0 auto;
+    padding: 16px var(--gutter) 0;
+    font-family: var(--pr-ff);
+    font-weight: var(--fw);
+  }
+  html.lang-jp .cs-strip { font-family: var(--pr-ff-jp); }
+
+  .cs-strip-kicker {
+    margin: 0 0 12px;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--pr-ink-2);
+  }
+
+  .cs-strip-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .cs-strip-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  .cs-strip-card {
+    background: var(--pr-card);
+    border-radius: var(--r);
+    padding: 16px;
+  }
+
+  .cs-strip-label {
+    margin: 0 0 8px;
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--pr-ink-2);
+  }
+
+  .cs-strip-text,
+  .cs-strip-list {
+    margin: 0;
+    font-size: clamp(18px, 1.6vw, 22px);
+    line-height: 1.35;
+    font-weight: 400;
+    color: var(--pr-ink);
+  }
+  .cs-strip-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 8px;
+  }
+  .cs-strip-list li { padding-left: 1em; position: relative; }
+  .cs-strip-list li::before { content: "—"; position: absolute; left: 0; color: var(--pr-ink-2); }
+
+  @media (max-width: 760px) {
+    .cs-strip-grid,
+    .cs-strip-grid--3 { grid-template-columns: 1fr; }
+  }
+</style>

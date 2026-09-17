@@ -9,7 +9,14 @@
 // isolated pass to build the route manifest, and a module-scope binding
 // referenced only from inside that function comes back "is not defined" —
 // props are the documented way around it.
-import FragmentPage from "../../components/FragmentPage.astro";
+//
+// This page renders <Site> itself instead of going through FragmentPage — the
+// Challenge/Solution strip (ProjectStrip) has to sit between the shell and the
+// hand-built body, and FragmentPage has no slot for that. The props mapping
+// below is copied verbatim from FragmentPage.astro; keep the two in sync.
+import Site from "../../layouts/Site.astro";
+import ProjectStrip from "../../components/project/ProjectStrip.astro";
+import { evidenceForCaseStudy } from "../../lib/site.mjs";
 
 export async function getStaticPaths() {
   const htmlFiles = import.meta.glob("../../case-studies/*.html", { query: "?raw", import: "default", eager: true });
@@ -32,5 +39,30 @@ export async function getStaticPaths() {
 
 const { slug } = Astro.params;
 const { body, css, meta } = Astro.props;
+const current = `/projects/${slug}.html`;
+const item = evidenceForCaseStudy(slug);
+
+// Same canonical fallback FragmentPage uses: most hand-built pages never had
+// their own <link rel="canonical">, so it's computed from `current` rather
+// than Astro.url.pathname (unreliable this deep). Pages that DID carry one
+// (none under projects/ today, but the shape is shared with FragmentPage)
+// keep it verbatim.
+const canonical = meta.canonical ?? `https://takaoumehara.com${current}`;
 ---
-<FragmentPage meta={meta} body={body} css={css} current={`/projects/${slug}.html`} />
+<Site
+  title={meta.title}
+  description={meta.description}
+  canonical={canonical}
+  ogImage={meta.ogImage}
+  ogType={meta.ogType}
+  theme={meta.theme}
+  htmlClass={meta.htmlClass}
+  bodyClass={meta.bodyClass}
+  current={current}
+  stylesheets={meta.stylesheets}
+  style={css}
+  fonts={meta.fonts}
+>
+  <ProjectStrip item={item} />
+  <Fragment set:html={body} />
+</Site>

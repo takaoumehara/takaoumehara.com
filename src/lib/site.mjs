@@ -80,6 +80,17 @@ export function destination(item) {
   return null;
 }
 
+/** The evidence record whose links.caseStudy is "projects/<slug>.html", or null. Case-study page slugs and
+ *  record slugs usually match (but not always — e.g. "festival-design" is the record "festival-reinvention"),
+ *  so this always resolves through links.caseStudy rather than assuming they're the same string. */
+export function evidenceForCaseStudy(slug) {
+  const target = `projects/${slug}.html`;
+  for (const item of getLibrary().evidence.values()) {
+    if (item.links?.caseStudy === target) return item;
+  }
+  return null;
+}
+
 /** Two site paths name the same page: "/about", "/about.html", "/about/" and "/about/index.html" agree. */
 export const samePage = (a, b) => normalizePath(a) === normalizePath(b);
 export function normalizePath(path) {
