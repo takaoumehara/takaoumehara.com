@@ -70,13 +70,21 @@
       <div>
         <dt>25</dt>
         <dd>
-          <span class="t-en">Unique hand-illustrated roles with custom calibrated scales and offsets</span>
-          <span class="t-jp">1枚ずつ位置・スケール・色彩を調律した25種の独自役職</span>
+          <strong class="fact-label">
+            <span class="t-en">Illustrated Roles</span>
+            <span class="t-jp">描き下ろし役職数</span>
+          </strong>
+          <span class="t-en">Unique roles with custom calibrated scales, translations, and color offsets</span>
+          <span class="t-jp">1枚ずつ位置・スケール・色彩を調律した全 25 種の独自役職カード</span>
         </dd>
       </div>
       <div>
         <dt>2-Layer</dt>
         <dd>
+          <strong class="fact-label">
+            <span class="t-en">Dual-Layer Canvas</span>
+            <span class="t-jp">多層分離構造</span>
+          </strong>
           <span class="t-en">Hybrid architecture separating transparent characters from atmospheric backgrounds</span>
           <span class="t-jp">キャラ透過層と細密背景を分離合成する多層レイヤー構造</span>
         </dd>
@@ -84,14 +92,22 @@
       <div>
         <dt>0.01x</dt>
         <dd>
+          <strong class="fact-label">
+            <span class="t-en">Sub-Pixel Precision</span>
+            <span class="t-jp">精密調律エディタ</span>
+          </strong>
           <span class="t-en">Sub-pixel precision enabled by a bespoke browser-based Position Editor</span>
-          <span class="t-jp">専用GUIエディタによる0.01倍・数ピクセル単位の精密調律</span>
+          <span class="t-jp">専用 GUI エディタによる 0.01 倍・数ピクセル単位の精密調律</span>
         </dd>
       </div>
       <div>
         <dt>100%</dt>
         <dd>
-          <span class="t-en">Nocturnal role privacy — long-press reveal on personal handsets</span>
+          <strong class="fact-label">
+            <span class="t-en">Handset Privacy</span>
+            <span class="t-jp">手元の役職秘匿性</span>
+          </strong>
+          <span class="t-en">Nocturnal role privacy — tactile long-press reveal on personal handsets</span>
           <span class="t-jp">長押し開示による手元端末での完全な役職秘匿性保証</span>
         </dd>
       </div>
@@ -308,19 +324,19 @@
       <span class="chapter-tag">The Pantheon · 04</span>
       <h2 class="chapter-title">
         <span class="t-en">The Full Roster: All 25 Character Roles</span>
-        <span class="t-jp">全25役職カードギャラリー（市民・人狼・第三陣営）</span>
+        <span class="t-jp">全 25 役職カードギャラリー（市民・人狼・第三陣営）</span>
       </h2>
       <p class="chapter-lead">
         <span class="t-en">Filter through the 25 illustrated roles across the Citizen Team, Werewolf Team, and Neutral Third Parties. Click any thumbnail below to instantly load and examine the role in the interactive 3D viewer above.</span>
-        <span class="t-jp">村を守る市民陣営、夜の闇に潜む人狼陣営、独自の狂気と勝利条件を持つ第三陣営。以下のサムネイルをクリックすると、上部のインタラクティブ3Dビューアに瞬時にセットされます。</span>
+        <span class="t-jp">村を守る市民陣営、夜の闇に潜む人狼陣営、独自の狂気と勝利条件を持つ第三陣営。以下のサムネイルをクリックすると、上部のインタラクティブ 3D ビューアに瞬時にセットされます。</span>
       </p>
 
       <!-- Camp Filter Bar -->
       <div class="gallery-filter-bar">
-        <button class="gallery-camp-btn active" data-camp="all">ALL ROLES (全25役職)</button>
-        <button class="gallery-camp-btn" data-camp="citizen">CITIZEN (市民陣営)</button>
-        <button class="gallery-camp-btn" data-camp="werewolf">WEREWOLF (人狼陣営)</button>
-        <button class="gallery-camp-btn" data-camp="neutral">NEUTRAL / THIRD (第三陣営)</button>
+        <button class="gallery-camp-btn active" data-camp="all">ALL (全 25 役職)</button>
+        <button class="gallery-camp-btn" data-camp="citizen">CITIZEN (市民陣営 · 14)</button>
+        <button class="gallery-camp-btn" data-camp="werewolf">WEREWOLF (人狼陣営 · 7)</button>
+        <button class="gallery-camp-btn" data-camp="neutral">NEUTRAL (第三陣営 · 4)</button>
       </div>
 
       <!-- Grid of 25 Cards -->
@@ -694,6 +710,10 @@
       // Camp Icon
       const campIconFile = role.camp === 'fox' || role.camp === 'neutral' ? 'neutral.png' : `${role.camp}.png`;
       liveCampIcon.src = `../assets/werewolf/icons/camp/${campIconFile}`;
+
+      if (typeof updatePantheonActive === 'function') {
+        updatePantheonActive();
+      }
     }
 
     // Event Handlers for Deck
@@ -810,8 +830,21 @@
       });
     });
 
-    // ── Build Full Roster Pantheon Grid ──
+    // ── Build Full Roster Pantheon Grid (Compact Matrix) ──
     const pantheonGrid = document.getElementById('pantheon-grid');
+
+    function updatePantheonActive() {
+      if (!pantheonGrid) return;
+      const items = pantheonGrid.querySelectorAll('.thumb-card-item');
+      items.forEach(item => {
+        if (parseInt(item.dataset.index, 10) === currentIndex) {
+          item.classList.add('is-selected');
+        } else {
+          item.classList.remove('is-selected');
+        }
+      });
+    }
+
     function renderPantheon(campFilter) {
       pantheonGrid.innerHTML = '';
       ROLES.forEach((role, idx) => {
@@ -819,7 +852,12 @@
 
         const item = document.createElement('div');
         item.className = 'thumb-card-item';
-        item.title = `${role.jp} (${role.en}) - Click to inspect`;
+        item.dataset.camp = role.camp;
+        item.dataset.index = idx;
+        if (idx === currentIndex) {
+          item.classList.add('is-selected');
+        }
+        item.title = `${role.jp} (${role.en}) · ${role.camp.toUpperCase()} - Click to load into 3D stage`;
 
         const bg = document.createElement('div');
         bg.className = 'thumb-bg';
@@ -831,12 +869,30 @@
         const pos = POSITIONS[role.id] || { scale: 1, x: 0, y: 0 };
         char.style.transform = `translate3d(${pos.x}%, ${pos.y}%, 0) scale(${pos.scale})`;
 
+        // Corner Camp Badge
+        const campIconFile = role.camp === 'fox' || role.camp === 'neutral' ? 'neutral.png' : `${role.camp}.png`;
+        const badge = document.createElement('div');
+        badge.className = 'thumb-camp-badge';
+        const badgeImg = document.createElement('img');
+        badgeImg.src = `../assets/werewolf/icons/camp/${campIconFile}`;
+        badgeImg.alt = role.camp;
+        badge.appendChild(badgeImg);
+
+        // Compact Two-tier Name Label
         const label = document.createElement('div');
         label.className = 'thumb-label';
-        label.textContent = `${role.jp} / ${role.en}`;
+        const jpSpan = document.createElement('span');
+        jpSpan.className = 'thumb-name-jp';
+        jpSpan.textContent = role.jp;
+        const enSpan = document.createElement('span');
+        enSpan.className = 'thumb-name-en';
+        enSpan.textContent = role.en;
+        label.appendChild(jpSpan);
+        label.appendChild(enSpan);
 
         item.appendChild(bg);
         item.appendChild(char);
+        item.appendChild(badge);
         item.appendChild(label);
 
         item.addEventListener('click', () => {
