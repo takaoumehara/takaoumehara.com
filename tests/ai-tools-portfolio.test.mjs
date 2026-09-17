@@ -128,22 +128,25 @@ test('each page marks itself current in the sidebar, and only itself', () => {
   assert.equal((sidebar(koji, 'koji').match(/class="side-item"[^>]*aria-current="page"/g) ?? []).length, 1, 'koji: one current row');
 });
 
-// ── Homepage: generated from the default Lens ──
+// ── The canonical lens: generated from the default Lens, at /lens/default/ ──
 
-// The homepage is no longer hand-built. It is rendered from src/lenses/default.json
-// over the evidence library in src/data (see docs/adaptive-portfolio-architecture.md),
-// so these tests check the composition, not the markup of any one card.
-test('homepage is rendered from the default lens and leads with the hero, then Selected proof', () => {
-  const html = read('index.html');
-  assert.match(html, /<html lang="en" data-lens="default">/);
+// `/` is now the PORTO ROCHA image grid (src/pages/index.astro). The
+// whole-story page — hero, then Selected proof, then every other section —
+// is still rendered from src/lenses/default.json over the evidence library in
+// src/data (see docs/adaptive-portfolio-architecture.md), just at
+// /lens/default/ (src/pages/lens/[slug]/index.astro) instead of `/`. These
+// tests check the composition, not the markup of any one card.
+test('the default lens is rendered from src/lenses/default.json and leads with the hero, then Selected proof', () => {
+  const html = read('lens/default/index.html');
+  assert.match(html, /<html lang="en"[^>]* data-lens="default">/);
   const hero = html.indexOf('class="hero"');
   const proof = html.indexOf('id="proof"');
   assert.ok(hero >= 0 && proof > hero, 'the hero must come first, then Selected proof');
   assert.match(html, /I like the beginning of things\./, 'the canonical positioning must open the page');
 });
 
-test('homepage Selected proof spans experiment, enterprise and venture evidence', () => {
-  const html = read('index.html');
+test('the default lens\' Selected proof spans experiment, enterprise and venture evidence', () => {
+  const html = read('lens/default/index.html');
   const section = html.match(/<section\b[^>]*\bid\s*=\s*["']proof["'][^>]*>([\s\S]*?)<\/section>/i)?.[0] ?? '';
   assert.ok(section, 'homepage needs a Selected proof section');
   const cards = [...section.matchAll(openWithClass('article', 'proof-card'))].length;

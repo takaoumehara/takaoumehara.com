@@ -1,0 +1,47 @@
+---
+// One piece of work in a PORTO ROCHA-style image grid: a 3:2 thumbnail, the
+// project name, and a one-line description underneath — used by the home
+// page, every category page and /all/ (src/components/grid/WorkGrid.astro
+// renders one of these per item).
+//
+// Classes kept from the old .cat-card system on purpose: docs/superforge.md's
+// keyboard pin and several tests (tests/category-pages.test.mjs,
+// tests/ai-tools-portfolio.test.mjs, tests/a11y.spec.mjs) read `.cat-card`,
+// `.cat-card-media`, `.cat-card-cta`, `data-href` and `tabindex="0"` — this
+// card carries all of them alongside the new `.grid-card` / `.grid-media`
+// names the grid stylesheet is written against.
+import { t, tb, mediaFill } from "../../lib/html.mjs";
+import { cardName } from "../../lib/labels.mjs";
+import { destination } from "../../lib/site.mjs";
+
+interface Props {
+  item: any;
+  category?: string; // space-separated category slug(s) this card belongs to
+  tags?: string;      // space-separated archive filter tags (only /all/ passes this)
+}
+const { item, category, tags } = Astro.props;
+const to = destination(item);
+---
+<article
+  class="grid-card cat-card"
+  id={item.slug}
+  data-href={to ? to.url : undefined}
+  data-external={to?.external ? "true" : undefined}
+  data-category={category}
+  data-tags={tags}
+  tabindex={to ? "0" : undefined}
+>
+  <div class="grid-media cat-card-media" set:html={mediaFill(item)} />
+  <h3 class="cat-card-title" set:html={cardName(item)} />
+  <p class="cat-card-desc" set:html={tb(item.cardLine ?? item.summary)} />
+  {to && (
+    <a
+      class="cat-card-cta"
+      href={to.url}
+      target={to.external ? "_blank" : undefined}
+      rel={to.external ? "noopener" : undefined}
+    >
+      <span class="sr-only" set:html={t(to.label)} />
+    </a>
+  )}
+</article>

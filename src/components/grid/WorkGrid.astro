@@ -1,0 +1,17 @@
+---
+// The PORTO ROCHA image grid: 3 columns at desktop, 2 at <=1100px, 1 at
+// <=640px (src/styles/grid.css, imported once here so every page that uses
+// this component gets the grid rules exactly once). Used by the home page,
+// every category page and /all/.
+import "../../styles/grid.css";
+import GridCard from "./GridCard.astro";
+
+interface GridEntry { item: any; category?: string; tags?: string }
+interface Props { entries: GridEntry[] }
+const { entries } = Astro.props;
+---
+<div class="work-grid">
+  {entries.map(({ item, category, tags }) => (
+    <GridCard item={item} category={category} tags={tags} />
+  ))}
+</div>

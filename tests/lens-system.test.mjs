@@ -131,11 +131,13 @@ test("numeric tokens compare the way a reader reads them", () => {
 
 // ── One project, many narratives ────────────────────────────────────────────
 
-// Every published lens is a page in the build: the default one at /, the
-// others at /lens/<slug>/. Drafts are validated above but never built.
-const builtPath = (lens) => (lens.slug === "default" ? "index.html" : `lens/${lens.slug}/index.html`);
+// Every published lens is a page in the build, at /lens/<slug>/ — including
+// the default one, which is also the canonical whole-story page and used to
+// sit at `/` before `/` became the PORTO ROCHA image grid
+// (src/pages/index.astro). Drafts are validated above but never built.
+const builtPath = (lens) => `lens/${lens.slug}/index.html`;
 const pages = new Map(lenses.filter((l) => l.status === "published").map((l) => [builtPath(l), read(builtPath(l))]));
-const home = pages.get("index.html");
+const home = pages.get("lens/default/index.html");
 const creative = pages.get("lens/creative/index.html");
 const aiProduct = pages.get("lens/ai-product/index.html");
 
