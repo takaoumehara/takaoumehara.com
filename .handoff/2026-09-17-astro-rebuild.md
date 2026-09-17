@@ -58,3 +58,23 @@ Q3 Ink & Paper のまま。覆すなら `Sidebar.astro` と `shell.css`。
 - `projects/werewolf-card-{gallery,viewer,position-editor}.html` は nav/footer を持たない単体ツール → `public/projects/` にそのまま置く（`../assets/werewolf/...` 参照はそのまま通る）。`src/lib/load.mjs` の `sourceExists` が `public/projects/` も見るようにした。
 - `assets/werewolf/**` → `public/assets/werewolf/**`。生成物（`interactive.html` `work/index.html` `assets/studio/library.json`）は取り込まない（ビルドが作る）。
 - `src/styles/site.css` の「衝突」は git が `interactive.html` との改名と誤認したもの。HEAD 側をそのまま採用。
+
+## 第 2 段: 見た目を PORTO ROCHA に寄せた（同日、本人「見た目を original に近づけて」）
+
+トークン・サイドバー・遷移は `docs/superforge.md` の pin（「見た目は PORTO ROCHA」「サイドバー」「ページ遷移は同一文書内」「トップページ」「ケーススタディの冒頭」）が正。実装の場所:
+
+| 何 | どこ |
+|---|---|
+| トークン（明・暗） | `src/styles/tokens.css`（`--pr-*` が正、旧名は別名） |
+| サイドバー | `src/components/Sidebar.astro` + `src/styles/shell.css` |
+| 同一文書内の遷移・テーマ・言語・時計 | `src/layouts/Site.astro`（`<ClientRouter />`、inline の prefs script）+ `src/scripts/site.js` |
+| トップのグリッド／カテゴリ／all | `src/components/grid/{WorkGrid,GridCard}.astro` + `src/styles/grid.css`、`src/lib/site.mjs` の `gridEntries()` |
+| default lens | `/lens/default/`（`src/pages/lens/[slug]/index.astro` が default も出す） |
+| ケーススタディ冒頭のカード列 | `src/components/project/ProjectStrip.astro`（`src/pages/projects/[slug].astro` が直接 `<Site>` を描く） |
+
+分担: シェルは Fable 5.1（このセッション）、グリッドと冒頭カードは Sonnet 5 のサブエージェント 2 体（worktree で並行、branch merge で合流）。
+
+## 未検証（第 2 段）
+
+- Vercel 上での動作は commit ごとに Ready を確認しているが、Preview の中身（同一文書内の遷移が Vercel の CDN 経由でも同じに動くか）はこの環境から開けない。本人が開いて、左のリストが消えないこと・時計が止まらないことを見る。
+- ダークモードでの手書きページ 33 本（`theme: light` のもの）は KOJI FIZZ しか目視していない。`design-system.css` のトークンで描かれている部分は反転するが、色を直書きした箇所（例: 白背景の画像）は暗いまま残る。気になるページがあれば `theme: "light"` を lock にする案（`data-theme-lock="light"`）が最短。

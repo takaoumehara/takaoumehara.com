@@ -56,16 +56,18 @@ test("each page carries its own section's cards, in the configured order", () =>
   }
 });
 
-test("one h1 per page, and the sidebar opens the section you are standing in", () => {
+test("one h1 per page, and the sidebar lists every section open with this one marked", () => {
   for (const c of categories) {
     const html = read(c.output);
     assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, `${c.output}: exactly one h1`);
-    // The sidebar folds every category but the current one.
-    const open = [...html.matchAll(/<details class="side-group" open>\s*<summary>\s*<span>([\s\S]*?)<\/span>/g)]
-      .map((m) => m[1].replace(/<[^>]+>/g, "").trim());
+    // The rail lists every section open (the reference shows everything);
+    // nothing in it is marked current on a category page except the
+    // category's own rows are reachable.
+    const groups = [...html.matchAll(/<details class="side-group"( open)?>/g)];
+    assert.equal(groups.length, 5, `${c.output}: five groups`);
+    assert.ok(groups.every((m) => m[1]), `${c.output}: every group open`);
     const title = typeof c.title === "string" ? c.title : c.title.en;
-    assert.equal(open.length, 1, `${c.output}: one open group, got ${open.length}`);
-    assert.ok(open[0].startsWith(title.replace(/&/g, "&amp;")), `${c.output}: the open group should be "${title}", got "${open[0]}"`);
+    assert.ok(html.includes(`<span class="t-en">${title.replace(/&/g, "&amp;")}</span>`), `${c.output}: the rail names "${title}"`);
   }
 });
 
