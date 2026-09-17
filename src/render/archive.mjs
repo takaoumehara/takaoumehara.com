@@ -45,7 +45,7 @@ const AI_TOOL_SLUGS = new Set([
 
 const INTERACTIVE_SLUGS = new Set([
   "resona", "kao-game", "rakugaki-jam", "typespace", "koe-baku",
-  "emoji-blast", "marubatsu", "werewolf", "kanji-puzzle",
+  "emoji-blast", "marubatsu", "werewolf",
 ]);
 
 const BRAND_SLUGS = new Set([
@@ -103,8 +103,10 @@ const FILTERS = [
 ];
 
 export function renderWorkArchive({ lib, css, ctx }) {
-  // Ordered selection of all evidence items
-  const items = [...lib.evidence.values()];
+  // Ordered selection of evidence items (excluding items hidden from archive)
+  const items = [...lib.evidence.values()].filter(
+    (item) => !item.hideInArchive && item.slug !== "kanji-puzzle"
+  );
   const counts = {};
   for (const f of FILTERS) {
     counts[f.id] = items.filter((item) => getFilterTags(item).includes(f.id)).length;
