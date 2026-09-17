@@ -183,6 +183,8 @@ export interface EvidenceBase {
     external?: string;
   };
   visibility: "public" | "lens-only" | "private";
+  /** If true, hidden from the public /work archive view. */
+  hideInArchive?: boolean;
   /** Free-form maintenance notes. Never rendered. */
   _notes?: string[];
 }

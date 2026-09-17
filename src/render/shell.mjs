@@ -9,13 +9,12 @@ import { esc, href, plain } from "./html.mjs";
 const CANONICAL_NAV = [
   {
     label: "Work",
-    path: "work.html",
+    path: "work/index.html",
     sub: [
-      { path: "work/index.html", label: "All Work" },
-      { path: "work.html", label: "Product &amp; Experience Design" },
+      { path: "interactive.html", label: "Interactive &amp; Playable" },
       { path: "ai-products.html", label: "AI Products &amp; Systems" },
       { path: "ai-tools.html", label: "AI Tools" },
-      { path: "interactive.html", label: "Interactive &amp; Playable" },
+      { path: "work.html", label: "Product &amp; Experience Design" },
       { path: "brand.html", label: "Brand &amp; Creative" },
     ],
   },
@@ -80,7 +79,7 @@ export function nav(ctx, activePath) {
   if (normActive === "intentfirst.html") normActive = "ai-products.html";
   const items = CANONICAL_NAV.map((item) => {
     const isSubActive = item.sub?.some((s) => s.path === normActive);
-    const isParentActive = item.path === normActive || isSubActive || (normActive === "work/index.html" && item.path === "work.html");
+    const isParentActive = item.path === normActive || isSubActive;
     const tierbreak = item.isTierbreak ? ` is-tierbreak` : "";
     const subClass = item.sub ? ` has-sub` : "";
     const target = item.external ? ` target="_blank" rel="noopener"` : "";

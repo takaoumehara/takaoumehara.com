@@ -12,9 +12,10 @@ test("Work archive (/work/index.html) is generated from lib.evidence with 6 cano
   assert.ok(existsSync(join(ROOT, "work/index.html")), "work/index.html must exist");
   const html = read("work/index.html");
 
-  // All 46 evidence items must be present
+  // All public archive items must be present (kanji-puzzle hidden)
   const cards = [...html.matchAll(/<article class="cat-card"/g)];
-  assert.equal(cards.length, lib.evidence.size, "all evidence items must be rendered");
+  assert.equal(cards.length, lib.evidence.size - 1, "all archive evidence items must be rendered (kanji-puzzle hidden)");
+  assert.ok(!html.includes("Kanji Puzzle"), "Kanji Puzzle must be hidden from work archive");
 
   // Filter tabs must exist
   const expectedFilters = ["all", "product", "ai-products", "ai-tools", "interactive", "brand"];
