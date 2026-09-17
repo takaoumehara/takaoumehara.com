@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Fire TV Remote — Amazon Shopping</title>
+<style>
+  :root {
+    --bg: oklch(0.17 0.012 250); --panel: oklch(0.22 0.014 250);
+    --ink: oklch(0.95 0.005 240); --dim: oklch(0.72 0.012 240);
+    --teal: #37C6D0; --blue: #35C2F2; --yellow: #FFD814; --green: #2ECB70;
+    --util: oklch(0.26 0.015 250);
+  }
+  * {
+    box-sizing: border-box; margin: 0; padding: 0;
+    -webkit-user-select: none !important;
+    user-select: none !important;
+    -webkit-touch-callout: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+  }
+  input {
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+  }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Hanken Grotesk', -apple-system, 'Segoe UI', sans-serif;
+    background: linear-gradient(170deg, oklch(0.20 0.016 250), var(--bg) 55%);
+    color: var(--ink); user-select: none; touch-action: manipulation;
+    display: flex; flex-direction: column; align-items: center;
+    padding: max(env(safe-area-inset-top), 10px) 16px max(env(safe-area-inset-bottom), 14px);
+    height: 100svh; overflow: hidden;
+  }
+  .wrap { width: 100%; max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 12px; }
+
+  /* ---- top bar: status (left) + mode toggle (right) ---- */
+  .topbar { display: flex; align-items: center; gap: 10px; flex: none; }
+  .status { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700; color: var(--dim); min-width: 0; }
+  .status #statusTxt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .status .dot { width: 8px; height: 8px; border-radius: 50%; background: #e2574c; transition: background .3s, box-shadow .3s; flex: none; }
+  .status.on { color: var(--green); }
+  .status.on .dot { background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .modes { margin-left: auto; display: flex; gap: 3px; background: oklch(1 0 0 / .06); border-radius: 999px; padding: 3px; flex: none; }
+  .modetab { font: inherit; font-size: 12.5px; font-weight: 800; color: var(--dim); background: transparent; border: none; border-radius: 999px; padding: 7px 15px; transition: all .18s; }
+  .modetab.active { background: var(--ink); color: #10151b; }
+
+  /* ---- Join card ---- */
+  .join { flex: 1; display: flex; flex-direction: column; justify-content: center; width: 100%; }
+  .join .card { background: var(--panel); border-radius: 16px; padding: 26px 22px; text-align: center; }
+  .join h1 { font-size: 19px; margin-bottom: 6px; }
+  .join .sub { font-size: 13.5px; color: var(--dim); line-height: 1.5; margin-bottom: 16px; }
+  .join input {
+    width: 100%; font: inherit; font-size: 24px; font-weight: 800; letter-spacing: .35em; text-align: center;
+    text-transform: uppercase; color: var(--ink); background: oklch(0 0 0 / .3);
+    border: 2px solid oklch(1 0 0 / .16); border-radius: 12px; padding: 12px; outline: none;
+  }
+  .join input:focus { border-color: var(--teal); }
+  .join button { margin-top: 14px; width: 100%; font: inherit; font-weight: 800; font-size: 16px; padding: 14px; border: none; border-radius: 999px; background: var(--yellow); color: #16130a; }
+  .join .err { color: #ff7b6e; font-size: 13px; margin-top: 10px; min-height: 1em; }
+
+  /* ---- Remote ---- */
+  .remote { display: none; flex-direction: column; flex: 1; min-height: 0; gap: 12px; }
+  .remote.on { display: flex; }
+
+  .pad-area { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; position: relative; }
+
+  /* D-pad (fixed, centered - A: 3D-Tilt) */
+  .dpad {
+    position: relative;
+    width: min(78vw, 310px);
+    aspect-ratio: 1;
+    perspective: 500px;
+    display: none;
+  }
+  .ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 42%, oklch(0.3 0.015 250), oklch(0.24 0.014 250) 68%);
+    box-shadow: inset 0 1px 0 oklch(1 0 0/.12), 0 8px 24px rgba(0,0,0,.4);
+    transition: transform 0.15s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.15s;
+    transform-style: preserve-3d;
+  }
+  .dpad::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--blue) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.2s, transform 0.2s;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .dpad.tilt-up .ring    { transform: rotateX(16deg); }
+  .dpad.tilt-down .ring  { transform: rotateX(-16deg); }
+  .dpad.tilt-left .ring  { transform: rotateY(-16deg); }
+  .dpad.tilt-right .ring { transform: rotateY(16deg); }
+  .dpad.tilt-select .ring { transform: scale(0.96) translateZ(-10px); }
+
+  .dpad.tilt-up::before    { opacity: 0.6; transform: translateY(-10px); background: radial-gradient(circle, var(--blue) 0%, transparent 70%); }
+  .dpad.tilt-down::before  { opacity: 0.6; transform: translateY(10px); background: radial-gradient(circle, var(--yellow) 0%, transparent 70%); }
+  .dpad.tilt-left::before  { opacity: 0.6; transform: translateX(-10px); background: radial-gradient(circle, var(--teal) 0%, transparent 70%); }
+  .dpad.tilt-right::before { opacity: 0.6; transform: translateX(10px); background: radial-gradient(circle, var(--green) 0%, transparent 70%); }
+
+  .dir { position: absolute; width: 33%; height: 33%; border: none; background: transparent; color: var(--dim); display: flex; align-items: center; justify-content: center; }
+  .dir svg { width: 26px; height: 26px; pointer-events: none; }
+  .dir:active { color: #fff; }
+  .dir.up { top: 2%; left: 33.5%; } .dir.down { bottom: 2%; left: 33.5%; }
+  .dir.left { left: 2%; top: 33.5%; } .dir.right { right: 2%; top: 33.5%; }
+  .ok {
+    position: absolute; inset: 31%; border-radius: 50%; border: none;
+    background: radial-gradient(circle at 42% 34%, oklch(0.34 0.016 250), oklch(0.25 0.015 250) 75%);
+    box-shadow: inset 0 1px 0 oklch(1 0 0/.14), 0 4px 12px rgba(0,0,0,.4);
+    color: var(--ink); font: inherit; font-weight: 800; font-size: 14px; letter-spacing: .08em;
+  }
+  .ok:active { transform: scale(0.97); }
+
+  /* Trackpad — the hero, fills all available space */
+  .trackpad {
+    display: none; flex: 1; width: 100%; border-radius: 24px; position: relative;
+    align-self: stretch;
+    background: radial-gradient(circle at 50% 45%, oklch(0.27 0.015 250), oklch(0.205 0.013 250) 72%);
+    box-shadow: inset 0 1px 0 oklch(1 0 0/.1);
+    border: 1px solid oklch(1 0 0/.06);
+    touch-action: none; overflow: hidden;
+    align-items: center; justify-content: center; text-align: center;
+  }
+  .trackpad.touching { background: radial-gradient(circle at var(--px,50%) var(--py,45%), oklch(0.33 0.025 250), oklch(0.22 0.015 250) 70%); }
+  .trackpad .cross { position: absolute; inset: 0; pointer-events: none; opacity: .1;
+    background:
+      linear-gradient(to right, transparent 49.5%, var(--ink) 49.7%, var(--ink) 50.3%, transparent 50.5%),
+      linear-gradient(to bottom, transparent 49.5%, var(--ink) 49.7%, var(--ink) 50.3%, transparent 50.5%); }
+  .tp-inner {
+    pointer-events: none; color: var(--dim); padding: 0 18px; transition: opacity 0.22s ease, transform 0.22s ease;
+    user-select: none; -webkit-user-select: none; -webkit-user-drag: none;
+  }
+  .trackpad.touching .tp-inner { opacity: 0; transform: scale(0.95); }
+  .tp-inner .glyph { font-size: 34px; opacity: .5; -webkit-user-drag: none; }
+  .tp-inner .t1 { font-size: 15px; font-weight: 800; color: var(--ink); margin-top: 6px; user-select: none; -webkit-user-select: none; }
+  .tp-inner .t2 { font-size: 12.5px; margin-top: 5px; line-height: 1.55; user-select: none; -webkit-user-select: none; }
+  .tp-inner .t2 b { color: var(--ink); }
+  .tp-flash { position: absolute; font-size: 46px; font-weight: 900; color: var(--teal); opacity: 0; pointer-events: none;
+    left: 50%; top: 50%; transform: translate(-50%,-50%) scale(.6); }
+  .tp-flash.go { animation: tpflash .32s ease-out; }
+  @keyframes tpflash { 0% { opacity: .9; transform: translate(-50%,-50%) scale(.7);} 100% { opacity: 0; transform: translate(-50%,-50%) scale(1.5);} }
+
+  /* Joystick (Floating - B: Joystick) */
+  .joystick-container {
+    display: none;
+    width: 100%;
+    height: 100%;
+    align-self: stretch;
+    position: relative;
+    touch-action: none;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    background: radial-gradient(circle at 50% 45%, oklch(0.24 0.015 250), oklch(0.18 0.012 250) 75%);
+    border: 1px solid oklch(1 0 0/.04);
+    overflow: hidden;
+  }
+  .js-base {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 4px 16px rgba(0,0,0,0.4);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+  }
+  .js-stick {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, oklch(0.35 0.015 250), oklch(0.24 0.014 250) 70%);
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.55), inset 0 1.5px 0 rgba(255,255,255,0.25);
+  }
+  .js-label {
+    color: var(--dim);
+    font-size: 14.5px;
+    font-weight: 700;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    letter-spacing: 0.03em;
+    transition: opacity 0.18s ease;
+  }
+  .joystick-container.touching .js-label {
+    opacity: 0;
+  }
+
+  /* Mode selection visibility states */
+  .remote.mode-dpad .dpad { display: flex; }
+  .remote.mode-dpad .joystick-container { display: none; }
+  .remote.mode-dpad .trackpad { display: none; }
+
+  .remote.mode-joystick .dpad { display: none; }
+  .remote.mode-joystick .joystick-container { display: flex; }
+  .remote.mode-joystick .trackpad { display: none; }
+  .remote.mode-joystick .pad-area { flex: 12; margin: 4px 0; align-items: stretch; }
+
+  .remote.mode-trackpad .dpad { display: none; }
+  .remote.mode-trackpad .joystick-container { display: none; }
+  .remote.mode-trackpad .trackpad { display: flex; }
+  .remote.mode-trackpad .pad-area { flex: 12; margin: 4px 0; align-items: stretch; }
+
+  /* ---- search bar (hidden unless searching) ---- */
+  .searchbar { display: none; gap: 8px; flex: none; align-items: center; }
+  .remote.searching .searchbar { display: flex; }
+  .remote.searching .pad-area, .remote.searching .utils { display: none; }
+  .searchbar input {
+    flex: 1; font: inherit; font-size: 16px; color: var(--ink);
+    background: oklch(1 0 0 / .08); border: 1.5px solid oklch(1 0 0 / .14);
+    border-radius: 999px; padding: 13px 18px; outline: none;
+  }
+  .searchbar input:focus { border-color: var(--teal); }
+  .searchbar .go { border: none; border-radius: 999px; padding: 0 22px; height: 48px; background: var(--yellow); color: #16130a; font: inherit; font-weight: 800; }
+  .searchbar .cancel { border: none; background: oklch(1 0 0/.08); color: var(--ink); width: 48px; height: 48px; border-radius: 50%; font-size: 18px; }
+
+  /* ---- utility row ---- */
+  .utils { display: flex; gap: 12px; justify-content: center; flex: none; }
+  .util {
+    width: 56px; height: 56px; border-radius: 50%; border: none;
+    background: var(--util); color: var(--ink);
+    display: flex; align-items: center; justify-content: center; position: relative;
+    box-shadow: inset 0 1px 0 oklch(1 0 0/.08);
+    transition: transform .12s, background .2s, box-shadow .2s;
+  }
+  .util svg { width: 22px; height: 22px; pointer-events: none; }
+  .util:active { transform: scale(.92); background: oklch(0.3 0.02 250); }
+  .util.mic { background: linear-gradient(135deg, var(--blue), #2364d2); color: #fff; touch-action: none; }
+  .util.mic.live { background: linear-gradient(135deg, #58d4ff, #2d7bff); box-shadow: 0 0 0 3px oklch(1 0 0/.2), inset 0 1px 0 oklch(1 0 0/.2); }
+  .util .cbadge { position: absolute; top: -2px; right: -2px; min-width: 19px; height: 19px; border-radius: 999px; background: var(--yellow); color: #111; font-size: 11px; font-weight: 800; display: none; align-items: center; justify-content: center; padding: 0 4px; }
+  .miclabel { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  .voice-select-wrap { margin-left: 8px; display: flex; align-items: center; }
+  .voice-select {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 6px;
+    outline: none;
+    -webkit-user-select: auto !important;
+    user-select: auto !important;
+  }
+
+  .toastr { position: fixed; bottom: calc(env(safe-area-inset-bottom) + 12px); left: 50%; transform: translateX(-50%) translateY(80px); background: oklch(0.25 0.02 250 / .97); border: 1px solid oklch(1 0 0/.15); color: var(--ink); font-size: 13.5px; font-weight: 600; padding: 10px 18px; border-radius: 999px; transition: transform .3s cubic-bezier(.17,.84,.28,1); max-width: 88vw; text-align: center; z-index: 50; }
+  .toastr.show { transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tp-flash.go { animation: none; opacity: 0; }
+    .util, .dir, .ok, .toastr, .modetab { transition: none; }
+    .util:active, .dir:active, .ok:active { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="topbar">
+    <div class="status" id="status"><span class="dot"></span><span id="statusTxt">Connecting…</span></div>
+    <div class="voice-select-wrap" id="voiceSelectWrap" style="display:none;">
+      <select id="voiceSel" class="voice-select">
+        <option value="Kore">👩 Kore</option>
+        <option value="Puck">👦 Puck</option>
+        <option value="Fenrir">🧔 Fenrir</option>
+        <option value="Aoede">👩 Aoede</option>
+      </select>
+    </div>
+    <div class="modes">
+      <button class="modetab" data-mode="dpad">D-pad</button>
+      <button class="modetab" data-mode="joystick">Joystick</button>
+      <button class="modetab active" data-mode="trackpad">Trackpad</button>
+    </div>
+  </header>
+
+  <!-- Join -->
+  <div class="join" id="join">
+    <div class="card">
+      <h1>Pair with your Fire TV</h1>
+      <p class="sub">Enter the 6-character code shown on the TV (or scan the QR, which fills it in).</p>
+      <input id="codeIn" maxlength="6" autocomplete="one-time-code" inputmode="latin" placeholder="••••••">
+      <button id="joinBtn">Connect</button>
+      <div class="err" id="joinErr"></div>
+    </div>
+  </div>
+
+  <!-- Remote -->
+  <div class="remote mode-trackpad" id="remote">
+    <div class="pad-area">
+      <!-- D-pad (3D-Tilt) -->
+      <div class="dpad" id="dpad">
+        <div class="ring"></div>
+        <button class="dir up" data-k="up"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 14 6-6 6 6"/></svg></button>
+        <button class="dir down" data-k="down"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m6 10 6 6 6-6"/></svg></button>
+        <button class="dir left" data-k="left"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M14 6l-6 6 6 6"/></svg></button>
+        <button class="dir right" data-k="right"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m10 6 6 6-6 6"/></svg></button>
+        <button class="ok" data-k="select">OK</button>
+      </div>
+
+      <!-- Joystick (Floating) -->
+      <div class="joystick-container" id="joystickContainer">
+        <div class="js-base" id="jsBase">
+          <div class="js-stick" id="jsStick"></div>
+        </div>
+        <div class="js-label" draggable="false">Touch & slide anywhere</div>
+      </div>
+
+      <!-- Trackpad -->
+      <div class="trackpad" id="trackpad">
+        <div class="cross"></div>
+        <div class="tp-inner" draggable="false">
+          <div class="glyph" draggable="false">✥</div>
+          <div class="t1" draggable="false">Swipe anywhere to move</div>
+          <div class="t2" draggable="false">↑ ↓ ← →  navigate &nbsp;·&nbsp; <b>tap = OK</b><br>Eyes on the TV — no need to look down</div>
+        </div>
+        <div class="tp-flash" id="tpFlash"></div>
+      </div>
+    </div>
+
+    <form class="searchbar" id="searchForm">
+      <input id="searchIn" placeholder="Ask a shopping question" autocomplete="off">
+      <button type="submit" class="go">Go</button>
+      <button type="button" class="cancel" id="searchCancel" aria-label="Close search">✕</button>
+    </form>
+
+    <div class="utils">
+      <button class="util" data-k="back" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><path d="M11 6 5 12l6 6M5 12h14"/></svg></button>
+      <button class="util" data-k="home" aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="m4 11 8-7 8 7v9a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 20z"/></svg></button>
+      <button class="util" id="searchToggle" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></button>
+      <button class="util mic" id="micBtn" aria-label="Hold to talk to Alexa for Shopping"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg><span class="miclabel" id="micLabel"></span></button>
+      <button class="util" id="cartBtn" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h2l2.4 12.2a1.4 1.4 0 0 0 1.4 1.1h8.9a1.4 1.4 0 0 0 1.4-1.1L21 8H6"/><circle cx="10" cy="21" r="1.4" fill="currentColor"/><circle cx="17.5" cy="21" r="1.4" fill="currentColor"/></svg><span class="cbadge" id="cbadge"></span></button>
+    </div>
+  </div>
+</div>
+
+<div class="toastr" id="toastr"></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script src="firebase-config.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const params = new URLSearchParams(location.search);
+  let db = null, auth = null, uid = null;
+  let room = null;       // { roomId, code }
+  let ctxRef = null;     // rooms/{id}/state/context
+  let inputRef = null;   // rooms/{id}/state/input/{uid}
+  let playerRef = null;  // rooms/{id}/players/{uid}
+  let hbTimer = null;
+  let bc = null;         // BroadcastChannel fallback
+  const cfg = window.FIREBASE_CONFIG || {};
+  const fbReady = !!(window.firebase && cfg.apiKey && !String(cfg.apiKey).startsWith('YOUR_'));
+  const deviceName = /iPhone/.test(navigator.userAgent) ? 'iPhone'
+    : /iPad/.test(navigator.userAgent) ? 'iPad'
+    : /Android/.test(navigator.userAgent) ? 'Android phone' : 'Phone';
+
+  let audioCtx = null;
+  function playBeep(freq = 1500, duration = 0.02, isDouble = true) {
+    try {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      
+      const now = audioCtx.currentTime;
+      // 1st beep
+      const osc1 = audioCtx.createOscillator();
+      const gain1 = audioCtx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(freq, now);
+      gain1.gain.setValueAtTime(0.015, now);
+      gain1.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+      osc1.connect(gain1);
+      gain1.connect(audioCtx.destination);
+      osc1.start(now);
+      osc1.stop(now + duration);
+
+      // 2nd beep (for "pi-pit" double tone)
+      if (isDouble) {
+        const osc2 = audioCtx.createOscillator();
+        const gain2 = audioCtx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(freq * 1.15, now + 0.035);
+        gain2.gain.setValueAtTime(0.012, now + 0.035);
+        gain2.gain.exponentialRampToValueAtTime(0.0001, now + 0.035 + duration);
+        osc2.connect(gain2);
+        gain2.connect(audioCtx.destination);
+        osc2.start(now + 0.035);
+        osc2.stop(now + 0.035 + duration);
+      }
+    } catch (e) {}
+  }
+  const buzz = (ms, beepFreq = 1500, beepDuration = 0.02, isDouble = true) => {
+    try { navigator.vibrate && navigator.vibrate(ms); } catch (e) {}
+    // playBeep(beepFreq, beepDuration, isDouble);
+  };
+  let toastT;
+  function toastr(msg) {
+    const el = $('#toastr'); el.textContent = msg; el.classList.add('show');
+    clearTimeout(toastT); toastT = setTimeout(() => el.classList.remove('show'), 2400);
+  }
+  function setConnected(on, label) {
+    $('#status').classList.toggle('on', on);
+    $('#statusTxt').textContent = on ? (label || 'Connected') : 'Not connected';
+    $('#join').style.display = on ? 'none' : '';
+    $('#remote').classList.toggle('on', on);
+    $('#voiceSelectWrap').style.display = on ? 'block' : 'none';
+  }
+
+  /* ---------------- transport (Firebase Realtime DB) ---------------- */
+  async function initFirebase() {
+    if (db) return;
+    firebase.initializeApp(cfg);
+    db = firebase.database();
+    auth = firebase.auth();
+    
+    return new Promise((resolve) => {
+      let resolved = false;
+      auth.onAuthStateChanged((user) => {
+        if (user && !resolved) {
+          resolved = true;
+          uid = user.uid;
+          resolve();
+        }
+      });
+      auth.signInAnonymously();
+    });
+  }
+
+  async function join(code) {
+    $('#joinErr').textContent = '';
+    if (!fbReady) return tryLocal();
+    try {
+      await initFirebase();
+      const snap = await db.ref(`pairingCodes/${code}`).get();
+      const meta = snap.val();
+      if (!meta || (meta.expiresAt && Date.now() > meta.expiresAt)) throw new Error('invalid_code');
+      const roomId = meta.roomId;
+
+      // capacity: conflict-safe transaction on joinState (server-enforced by RTDB)
+      const res = await db.ref(`rooms/${roomId}/joinState`).transaction(js => {
+        js = js || { count: 0, members: {} };
+        if (js.members && js.members[uid]) return js;            // idempotent rejoin
+        if ((js.count || 0) >= (meta.maxPlayers || 8)) return;   // full → abort
+        js.members = js.members || {};
+        js.members[uid] = true;
+        js.count = (js.count || 0) + 1;
+        return js;
+      });
+      if (!res.committed) throw new Error('room_full');
+
+      room = { roomId, code };
+      await db.ref(`roomMembers/${roomId}/${uid}`).set(true);
+      playerRef = db.ref(`rooms/${roomId}/players/${uid}`);
+      const now = Date.now();
+      await playerRef.set({ id: uid, name: deviceName, role: 'participant', connected: true, joinedAt: now, lastSeenAt: now });
+      playerRef.onDisconnect().update({ connected: false, lastSeenAt: firebase.database.ServerValue.TIMESTAMP });
+      inputRef = db.ref(`rooms/${roomId}/state/input/${uid}`);
+      subscribe(roomId);
+
+      setConnected(true, 'Connected');
+      buzz(30); toastr('🎉 You are the remote now');
+      clearInterval(hbTimer);
+      hbTimer = setInterval(() => playerRef.update({ lastSeenAt: Date.now() }), 20000);
+    } catch (e) {
+      console.error(e);
+      const msg = String(e.message);
+      $('#joinErr').textContent = msg === 'invalid_code' ? "That code doesn't match a TV. Check the screen and try again."
+        : msg === 'room_full' ? 'Too many remotes connected.' : `Couldn't reach the TV. Try again. (${e.code || e.message || e})`;
+    }
+  }
+
+  function tryLocal() {
+    try {
+      bc = new BroadcastChannel('amztv-remote');
+      bc.onmessage = ev => { if (ev.data && ev.data.type === 'context') onContext(ev.data); };
+      setConnected(true, 'Local demo');
+      bc.postMessage({ type: 'join', name: deviceName + ' (local tab)' });
+      toastr('Local mode (Firebase not configured): controlling a TV tab on this device');
+    } catch (e) {}
+  }
+
+  function subscribe(roomId) {
+    if (ctxRef) ctxRef.off();
+    ctxRef = db.ref(`rooms/${roomId}/state/context`);
+    ctxRef.on('value', s => { const v = s.val(); if (v) onContext(v); });
+  }
+
+  /* TV went away (reload/restart) — return to the join screen for the new code */
+  function lostConnection() {
+    if (!room) return;
+    room = null;
+    clearInterval(hbTimer); hbTimer = null;
+    if (ctxRef) { try { ctxRef.off(); } catch (e) {} ctxRef = null; }
+    setConnected(false);
+    $('#joinErr').textContent = 'The TV restarted. Enter the new code shown on screen.';
+    $('#codeIn').value = '';
+    buzz([20, 60, 20]);
+  }
+
+  function onContext(msg) {
+    if (msg.type !== 'context') return;
+    const names = { home: 'Home', results: 'Results', deals: 'Deals', pdp: 'Product', cart: 'Cart', checkout: 'Checkout', confirm: 'Ordered ✓', orders: 'Orders', search: 'Search' };
+    const st = $('#statusTxt');
+    if (st && msg.screen) st.textContent = names[msg.screen] || msg.screen;
+    const cb = $('#cbadge');
+    if (cb) { cb.style.display = msg.cart ? 'flex' : 'none'; cb.textContent = msg.cart || ''; }
+  }
+
+  async function sendEvent(event) {
+    if (bc) { bc.postMessage(event); return; }
+    if (!inputRef) return;
+    try {
+      await inputRef.set({ ...event, ts: Date.now() });   // ts guarantees repeated identical inputs still deliver
+    } catch (e) { toastr('Connection lost — check your network'); }
+  }
+  window.addEventListener('pagehide', () => {
+    if (playerRef) { try { playerRef.update({ connected: false }); } catch (e) {} }
+  });
+
+  /* ---------------- controls ---------------- */
+  document.querySelectorAll('[data-k]').forEach(b => {
+    b.addEventListener('click', () => { buzz(12); sendEvent({ type: 'key', key: b.dataset.k }); });
+  });
+  // 3D-Tilt visual effect and repeat logic on D-pad
+  const dpadEl = $('#dpad');
+  document.querySelectorAll('.dir, .ok').forEach(b => {
+    let t;
+    const key = b.dataset.k;
+    const rep = () => { sendEvent({ type: 'key', key }); buzz(8); t = setTimeout(rep, 160); };
+    
+    b.addEventListener('pointerdown', () => {
+      dpadEl.className = 'dpad tilt-' + key;
+      if (b.classList.contains('dir')) {
+        t = setTimeout(rep, 420);
+      }
+      buzz(12);
+    });
+    
+    ['pointerup', 'pointerleave', 'pointercancel'].forEach(evName => {
+      b.addEventListener(evName, () => {
+        dpadEl.className = 'dpad';
+        clearTimeout(t);
+      });
+    });
+  });
+  $('#cartBtn').addEventListener('click', () => { buzz(12); sendEvent({ type: 'voice', transcript: 'open my cart' }); });
+
+  /* ---------------- mode toggle: D-pad ↔ Joystick ↔ Trackpad ---------------- */
+  const $$ = s => [...document.querySelectorAll(s)];
+  function setMode(m) {
+    const r = $('#remote');
+    r.classList.remove('mode-dpad', 'mode-joystick', 'mode-trackpad');
+    r.classList.add('mode-' + m);
+    $$('.modetab').forEach(t => t.classList.toggle('active', t.dataset.mode === m));
+    try { localStorage.setItem('amztv.remoteMode', m); } catch (e) {}
+  }
+  $$('.modetab').forEach(t => t.addEventListener('click', () => { buzz(10); setMode(t.dataset.mode); }));
+  try { const saved = localStorage.getItem('amztv.remoteMode'); if (saved) setMode(saved); } catch (e) {}
+
+  /* ---------------- joystick: floating analog-like stick ---------------- */
+  const jsContainer = $('#joystickContainer');
+  const jsBase = $('#jsBase');
+  const jsStick = $('#jsStick');
+  let jsActive = false;
+  let jsStartX = 0, jsStartY = 0;
+  let jsStartTime = 0;
+  let jsMaxDistMoved = 0;
+  let jsRepeatTimer = null;
+  const JS_MAX_DIST = 55;
+  const JS_THRESHOLD = 26;
+  let jsLastDir = null;
+
+  function startJsRepeat(dir) {
+    stopJsRepeat();
+    sendEvent({ type: 'key', key: dir });
+    buzz(8, 1300, 0.015, false);
+    jsRepeatTimer = setInterval(() => {
+      sendEvent({ type: 'key', key: dir });
+      buzz(8, 1300, 0.015, false);
+    }, 180);
+  }
+
+  function stopJsRepeat() {
+    if (jsRepeatTimer) {
+      clearInterval(jsRepeatTimer);
+      jsRepeatTimer = null;
+    }
+  }
+
+  jsContainer.addEventListener('pointerdown', e => {
+    jsActive = true;
+    jsStartTime = Date.now();
+    jsMaxDistMoved = 0;
+    jsContainer.classList.add('touching');
+    try { jsContainer.setPointerCapture(e.pointerId); } catch (err) {}
+    
+    const rect = jsContainer.getBoundingClientRect();
+    jsStartX = e.clientX - rect.left;
+    jsStartY = e.clientY - rect.top;
+
+    jsBase.style.left = jsStartX + 'px';
+    jsBase.style.top = jsStartY + 'px';
+    jsBase.style.display = 'flex';
+    jsStick.style.transform = 'translate(0px, 0px)';
+    jsLastDir = null;
+    buzz(16);
+  });
+
+  jsContainer.addEventListener('pointermove', e => {
+    if (!jsActive) return;
+    const rect = jsContainer.getBoundingClientRect();
+    const curX = e.clientX - rect.left;
+    const curY = e.clientY - rect.top;
+
+    let dx = curX - jsStartX;
+    let dy = curY - jsStartY;
+    const dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist > jsMaxDistMoved) {
+      jsMaxDistMoved = dist;
+    }
+
+    if (dist > JS_MAX_DIST) {
+      dx = (dx / dist) * JS_MAX_DIST;
+      dy = (dy / dist) * JS_MAX_DIST;
+    }
+
+    jsStick.style.transform = `translate(${dx}px, ${dy}px)`;
+
+    if (dist > JS_THRESHOLD) {
+      let dir = null;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        dir = dx > 0 ? 'right' : 'left';
+      } else {
+        dir = dy > 0 ? 'down' : 'up';
+      }
+
+      if (dir !== jsLastDir) {
+        jsLastDir = dir;
+        startJsRepeat(dir);
+      }
+    } else {
+      if (jsLastDir !== null) {
+        jsLastDir = null;
+        stopJsRepeat();
+      }
+    }
+  });
+
+  ['pointerup', 'pointercancel'].forEach(evName => {
+    jsContainer.addEventListener(evName, () => {
+      if (!jsActive) return;
+      
+      stopJsRepeat();
+      jsContainer.classList.remove('touching');
+
+      // Tap to OK: less than 250ms duration, and moved less than 10px
+      const duration = Date.now() - jsStartTime;
+      if (duration < 250 && jsMaxDistMoved < 10) {
+        sendEvent({ type: 'key', key: 'select' });
+        buzz(18);
+      }
+
+      jsActive = false;
+      jsBase.style.display = 'none';
+      jsStick.style.transform = 'translate(0px, 0px)';
+      jsLastDir = null;
+    });
+  });
+
+  /* ---------------- trackpad: swipe to navigate, tap to select ---------------- */
+  const tp = $('#trackpad'), tpFlash = $('#tpFlash');
+  const STEP = 46, TAP = 12;
+  let tpStart = null, tpAnchor = null, tpMoved = false, tpPointer = null;
+  function flash(arrow) {
+    tpFlash.textContent = arrow;
+    tpFlash.classList.remove('go'); void tpFlash.offsetWidth; tpFlash.classList.add('go');
+  }
+  const ARROW = { up: '↑', down: '↓', left: '←', right: '→' };
+  tp.addEventListener('pointerdown', e => {
+    tpPointer = e.pointerId;
+    try { tp.setPointerCapture(e.pointerId); } catch (err) {}
+    tpStart = { x: e.clientX, y: e.clientY };
+    tpAnchor = { x: e.clientX, y: e.clientY };
+    tpMoved = false;
+    tp.classList.add('touching');
+  });
+  tp.addEventListener('pointermove', e => {
+    if (!tpStart || e.pointerId !== tpPointer) return;
+    const rect = tp.getBoundingClientRect();
+    tp.style.setProperty('--px', ((e.clientX - rect.left) / rect.width * 100) + '%');
+    tp.style.setProperty('--py', ((e.clientY - rect.top) / rect.height * 100) + '%');
+    const dx = e.clientX - tpAnchor.x, dy = e.clientY - tpAnchor.y;
+    if (Math.max(Math.abs(dx), Math.abs(dy)) >= STEP) {
+      const horiz = Math.abs(dx) > Math.abs(dy);
+      const key = horiz ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up');
+      sendEvent({ type: 'key', key });
+      flash(ARROW[key]); buzz(9);
+      tpMoved = true;
+      tpAnchor = { x: e.clientX, y: e.clientY };
+    }
+  });
+  function tpEnd(e) {
+    if (!tpStart) return;
+    const dx = e.clientX - tpStart.x, dy = e.clientY - tpStart.y;
+    if (!tpMoved && Math.hypot(dx, dy) < TAP) {
+      sendEvent({ type: 'key', key: 'select' });
+      flash('OK'); buzz(16);
+    }
+    tpStart = null; tpPointer = null;
+    tp.classList.remove('touching');
+  }
+  tp.addEventListener('pointerup', tpEnd);
+  tp.addEventListener('pointercancel', tpEnd);
+
+  /* ---------------- mic ---------------- */
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const phoneMicOK = !!SR && window.isSecureContext;
+  let rec = null, recActive = false;
+  const micBtn = $('#micBtn'), micLabel = $('#micLabel');
+  function micStartTV() {
+    sendEvent({ type: 'key', key: 'mic' });
+    micBtn.classList.add('live');
+    toastr(SR ? 'Phone mic unavailable here → TV is listening' : 'Mic unavailable here → TV is listening');
+    buzz(20);
+    setTimeout(() => micBtn.classList.remove('live'), 4500);
+  }
+  function micStart(e) {
+    if (e) { try { e.preventDefault(); } catch (err) {} }
+    if (!phoneMicOK) return micStartTV();
+    if (recActive) return;
+    recActive = true;
+    micBtn.classList.add('live');
+    toastr('Listening… release to send');
+    buzz(20);
+    rec = new SR(); rec.lang = 'en-US'; rec.interimResults = true;
+    let finalT = '', interimT = '';
+    rec.onresult = e => {
+      interimT = '';
+      for (const r of e.results) (r.isFinal ? finalT += r[0].transcript : interimT += r[0].transcript);
+    };
+    rec.onend = () => {
+      const said = (finalT || interimT).trim();
+      micBtn.classList.remove('live');
+      recActive = false;
+      if (said) {
+        sendEvent({ type: 'voice', transcript: said });
+        toastr('→ Alexa: “' + said + '”');
+        buzz([15, 40, 15]);
+      }
+    };
+    rec.onerror = ev => {
+      micBtn.classList.remove('live'); recActive = false;
+      if (ev.error === 'not-allowed' || ev.error === 'service-not-allowed') micStartTV();
+    };
+    try { rec.start(); } catch (e) { recActive = false; micStartTV(); }
+  }
+  function micStop(e) {
+    if (e) { try { e.preventDefault(); } catch (err) {} }
+    if (rec && recActive) { try { rec.stop(); } catch (e) {} }
+  }
+  micBtn.addEventListener('pointerdown', micStart);
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(e => micBtn.addEventListener(e, micStop));
+  micBtn.addEventListener('contextmenu', e => e.preventDefault());
+
+  /* ---------------- search (icon → expand input) ---------------- */
+  $('#searchToggle').addEventListener('click', () => {
+    $('#remote').classList.add('searching');
+    setTimeout(() => $('#searchIn').focus(), 60);
+    buzz(10);
+  });
+  $('#searchCancel').addEventListener('click', () => {
+    $('#remote').classList.remove('searching');
+    $('#searchIn').value = '';
+  });
+  $('#searchForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = $('#searchIn').value.trim();
+    if (!v) return;
+    sendEvent({ type: 'text', value: v });
+    toastr('Searching “' + v + '” on TV');
+    $('#searchIn').value = '';
+    $('#remote').classList.remove('searching');
+    buzz(15);
+  });
+
+  $('#voiceSel').addEventListener('change', e => {
+    sendEvent({ type: 'voice-change', voice: e.target.value });
+    buzz(12);
+  });
+
+  /* ---------------- boot ---------------- */
+  const codeParam = (params.get('code') || '').toUpperCase();
+  const isLocalForced = params.get('local') === '1';
+  if (isLocalForced) {
+    tryLocal();
+  } else {
+    $('#codeIn').value = codeParam;
+    $('#joinBtn').addEventListener('click', () => join($('#codeIn').value.trim().toUpperCase()));
+    $('#codeIn').addEventListener('keydown', e => { if (e.key === 'Enter') join($('#codeIn').value.trim().toUpperCase()); });
+    if (codeParam) join(codeParam);
+    else if (!location.protocol.startsWith('http')) tryLocal();
+  }
+})();
+</script>
+</body>
+</html>

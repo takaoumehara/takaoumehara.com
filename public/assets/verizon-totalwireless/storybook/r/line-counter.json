@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "line-counter",
+  "title": "Line Counter",
+  "description": "+/- counter for selecting number of phone lines on the plan selection page.",
+  "files": [
+    {
+      "path": "components/ui/line-counter.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * Total Wireless Line Counter Component\n *\n * The +/- counter for selecting number of phone lines.\n * Prominent in the plan selection page.\n *\n * Usage:\n * <LineCounter value={1} min={1} max={5} onChange={setLines} />\n */\n\ninterface LineCounterProps extends Omit<React.HTMLAttributes<HTMLDivElement>, \"onChange\"> {\n  value: number\n  min?: number\n  max?: number\n  onChange?: (value: number) => void\n}\n\nfunction LineCounter({\n  className,\n  value,\n  min = 1,\n  max = 5,\n  onChange,\n  ...props\n}: LineCounterProps) {\n  return (\n    <div\n      data-slot=\"line-counter\"\n      className={cn(\n        \"inline-flex h-11 items-center gap-2 rounded-full border border-tw-gray-300 bg-white px-1 shadow-[0_1px_2px_rgba(16,24,40,0.05)]\",\n        className\n      )}\n      {...props}\n    >\n      <button\n        type=\"button\"\n        onClick={() => onChange?.(Math.max(min, value - 1))}\n        disabled={value <= min}\n        className={cn(\n          \"flex size-8 items-center justify-center rounded-full border border-transparent transition-all cursor-pointer\",\n          value <= min\n            ? \"text-tw-gray-400\"\n            : \"text-tw-navy-900 hover:bg-[var(--tw-button-hover-muted)] active:bg-tw-gray-100\"\n        )}\n        aria-label=\"Decrease lines\"\n      >\n        <svg className=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" strokeWidth={2.5} stroke=\"currentColor\">\n          <path strokeLinecap=\"round\" strokeLinejoin=\"round\" d=\"M5 12h14\" />\n        </svg>\n      </button>\n\n      <span className=\"min-w-8 text-center text-base font-bold leading-6 text-tw-navy-900\">\n        {value}\n      </span>\n\n      <button\n        type=\"button\"\n        onClick={() => onChange?.(Math.min(max, value + 1))}\n        disabled={value >= max}\n        className={cn(\n          \"flex size-8 items-center justify-center rounded-full border border-transparent transition-all cursor-pointer\",\n          value >= max\n            ? \"text-tw-gray-400\"\n            : \"text-tw-navy-900 hover:bg-[var(--tw-button-hover-muted)] active:bg-tw-gray-100\"\n        )}\n        aria-label=\"Increase lines\"\n      >\n        <svg className=\"h-4 w-4\" fill=\"none\" viewBox=\"0 0 24 24\" strokeWidth={2.5} stroke=\"currentColor\">\n          <path strokeLinecap=\"round\" strokeLinejoin=\"round\" d=\"M12 4.5v15m7.5-7.5h-15\" />\n        </svg>\n      </button>\n    </div>\n  )\n}\n\nexport { LineCounter }\nexport type { LineCounterProps }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

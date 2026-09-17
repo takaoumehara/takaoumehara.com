@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Plan Comparison Table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── Step Indicator ── */
+        .step-bar {
+            display: flex;
+            gap: 6px;
+            padding: 8px 16px 4px;
+            flex-shrink: 0;
+        }
+        .step-pill {
+            font-size: 11px;
+            font-weight: 500;
+            padding: 4px 10px;
+            border-radius: 100px;
+            color: #6b7280;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+        .step-pill.active {
+            background: #7C3AED;
+            color: #fff;
+            border-color: #7C3AED;
+            font-weight: 600;
+        }
+        .step-pill.done {
+            background: #F5F3FF;
+            color: #8B5CF6;
+            border-color: #DDD6FE;
+        }
+
+        /* ── Header ── */
+        .page-header {
+            padding: 8px 16px 6px;
+            flex-shrink: 0;
+        }
+        .page-header h1 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 2px;
+        }
+        .page-header p {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.4;
+        }
+
+        /* ── Table Container ── */
+        .table-wrap {
+            flex: 1;
+            min-height: 0;
+            overflow: auto;
+            margin: 0 12px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        /* Hide scrollbar but keep scrollable */
+        .table-wrap::-webkit-scrollbar { height: 0; width: 0; }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            min-width: 900px;
+            width: 100%;
+        }
+
+        /* ── Table Head ── */
+        thead th {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: #f9fafb;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 10px;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 10px 14px;
+            text-align: left;
+            white-space: nowrap;
+        }
+        thead th:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 30;
+            background: #f9fafb;
+        }
+
+        /* ── Table Body ── */
+        tbody td {
+            padding: 12px 14px;
+            font-size: 13px;
+            color: #4b5563;
+            line-height: 1.5;
+            vertical-align: top;
+            border-bottom: 1px solid #f3f4f6;
+            white-space: nowrap;
+        }
+
+        /* Sticky first column */
+        tbody td:first-child {
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            background: #fff;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+            min-width: 120px;
+        }
+
+        /* Wrapping columns */
+        td:nth-child(n+6), th:nth-child(n+6) {
+            white-space: normal;
+            min-width: 160px;
+        }
+        td:nth-child(2), th:nth-child(2) { min-width: 150px; }
+        td:nth-child(3), th:nth-child(3) { min-width: 90px; }
+        td:nth-child(4), th:nth-child(4) { min-width: 130px; }
+        td:nth-child(5), th:nth-child(5) { min-width: 140px; }
+
+        .cell-multiline {
+            white-space: normal;
+            line-height: 1.45;
+        }
+
+        .text-muted {
+            color: #9ca3af;
+            font-size: 11px;
+        }
+
+        /* ── Row States ── */
+        tr.row-default td { background: #fff; }
+        tr.row-default td:first-child { background: #fff; }
+
+        tr.row-selected td {
+            background: #F5F3FF;
+            border-bottom-color: #DDD6FE;
+        }
+        tr.row-selected td:first-child {
+            background: #F5F3FF;
+            box-shadow: 2px 0 8px rgba(124,58,237,0.1);
+        }
+
+        /* ── Plan Name & Price (first column) ── */
+        .plan-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1f2937;
+            letter-spacing: 0.02em;
+        }
+        tr.row-selected .plan-name {
+            color: #7C3AED;
+        }
+        .plan-price {
+            margin-top: 2px;
+            display: flex;
+            align-items: baseline;
+            gap: 1px;
+        }
+        .plan-price .amount {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1f2937;
+            line-height: 1.1;
+        }
+        tr.row-selected .plan-price .amount {
+            color: #7C3AED;
+        }
+        .plan-price .suffix {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6b7280;
+        }
+
+        /* ── Select Button ── */
+        .select-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 8px;
+            padding: 7px 16px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            min-height: 32px;
+            min-width: 80px;
+            transition: all 0.15s ease;
+            letter-spacing: 0.02em;
+        }
+        .select-btn.primary {
+            background: #7C3AED;
+            color: #fff;
+        }
+        .select-btn.primary:hover {
+            background: #6D28D9;
+        }
+        .select-btn.selected {
+            background: #fff;
+            color: #7C3AED;
+            border: 1.5px solid #7C3AED;
+        }
+        .select-btn:active {
+            transform: scale(0.96);
+            opacity: 0.85;
+            transition: transform 80ms ease;
+        }
+
+        /* ── Savings Bar (sticky bottom) ── */
+        .savings-bar {
+            flex-shrink: 0;
+            display: flex;
+            margin: 8px 12px 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        }
+        .savings-left {
+            flex: 1;
+            background: #C4B5FD;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .savings-left .label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #3B0764;
+            opacity: 0.8;
+        }
+        .savings-left .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #3B0764;
+            line-height: 1.2;
+        }
+        .savings-right {
+            flex: 1;
+            background: #7C3AED;
+            padding: 10px 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .savings-right .label {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: rgba(255,255,255,0.7);
+        }
+        .savings-right .value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        /* ── Icon in header ── */
+        .col-icon {
+            margin-right: 3px;
+            font-size: 11px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Status bar spacer (safe-area aware) -->
+    <div style="height:max(12px, env(safe-area-inset-top, 54px)); flex-shrink:0;"></div>
+
+    <!-- Step Indicator -->
+    <nav class="step-bar" aria-label="Checkout progress">
+        <span class="step-pill done" aria-current="false">Select Lines</span>
+        <span class="step-pill active" aria-current="step">Choose Plan</span>
+        <span class="step-pill" aria-current="false">Pick Device</span>
+        <span class="step-pill" aria-current="false">Review &amp; Pay</span>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Choose Plan</h1>
+        <p>Your selected plan will be applied to all your lines.</p>
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Plan &amp; Price</th>
+                    <th><span class="col-icon" aria-hidden="true">📊</span> Data</th>
+                    <th><span class="col-icon" aria-hidden="true">📱</span> Hotspot</th>
+                    <th><span class="col-icon" aria-hidden="true">📞</span> Call</th>
+                    <th><span class="col-icon" aria-hidden="true">💬</span> Text</th>
+                    <th><span class="col-icon" aria-hidden="true">✈️</span> Roaming</th>
+                    <th><span class="col-icon" aria-hidden="true">⭐</span> Perks</th>
+                    <th><span class="col-icon" aria-hidden="true">🏆</span> Rewards</th>
+                    <th><span class="col-icon" aria-hidden="true">💰</span> Save Money</th>
+                </tr>
+            </thead>
+            <tbody id="plan-table-body"></tbody>
+        </table>
+    </div>
+
+    <!-- Savings & Due Today Bar -->
+    <div class="savings-bar" id="savings-bar">
+        <div class="savings-left">
+            <span class="label">Savings</span>
+            <span class="value" id="savings-value">$5.00</span>
+        </div>
+        <div class="savings-right">
+            <span class="label">Due today</span>
+            <span class="value" id="due-value">$55.00</span>
+        </div>
+    </div>
+
+    <script>
+        const plansData = [
+            {
+                id: 'base5g',
+                name: 'BASE 5G',
+                priceNum: 40,
+                priceSavings: 5,
+                features: {
+                    data: 'Unlimited data',
+                    hotspot: '15GB',
+                    call: '85+ destinations',
+                    text: '200+ destinations',
+                    roaming: 'Canada &amp; Mexico',
+                    perks: '\u2014',
+                    rewards: 'Get $200 on phone w/ Total Rewards<br><span class="text-muted">(After 12 monthly plan payments.)</span>',
+                    saveMoney: 'Get your fourth line at no additional cost<br>Additional line for $30<br>Save $5/mo with Autopay'
+                },
+                selected: false
+            },
+            {
+                id: 'total5g',
+                name: 'TOTAL 5G',
+                priceNum: 55,
+                priceSavings: 5,
+                features: {
+                    data: '10x faster unlimited data<br><span class="text-muted">that never slows you down</span>',
+                    hotspot: '15GB',
+                    call: '85+ destinations',
+                    text: '200+ destinations',
+                    roaming: 'Canada &amp; Mexico<br>+ Roaming in 15+ countries',
+                    perks: 'Disney+ Premium<br><span class="text-muted">on us for 6 months</span>',
+                    rewards: 'Get $200 on phone w/ Total Rewards<br><span class="text-muted">(After 12 monthly plan payments.)</span>',
+                    saveMoney: 'Get your fourth line at no additional cost<br>Additional line for $30<br>Save $5/mo with Autopay'
+                },
+                selected: true
+            },
+            {
+                id: 'total5gplus',
+                name: 'TOTAL 5G+',
+                priceNum: 65,
+                priceSavings: 5,
+                features: {
+                    data: '10x faster unlimited data<br><span class="text-muted">that never slows you down</span>',
+                    hotspot: 'Unlimited',
+                    call: '85+ destinations',
+                    text: '200+ destinations',
+                    roaming: 'Canada &amp; Mexico<br>+ Roaming in 15+ countries<br><span class="text-muted">+$10 long distance credit to 120+ destinations</span>',
+                    perks: 'Disney+ Premium<br><span class="text-muted">Included</span>',
+                    rewards: 'Get $200 on phone w/ Total Rewards<br><span class="text-muted">(After 12 monthly plan payments.)</span>',
+                    saveMoney: 'Get your fourth line at no additional cost<br>Additional line for $30<br>Save $5/mo with Autopay'
+                },
+                selected: false
+            }
+        ];
+
+        function renderTable() {
+            const scrollLeft = document.querySelector('.table-wrap').scrollLeft;
+            const tableBody = document.getElementById('plan-table-body');
+            tableBody.innerHTML = '';
+
+            plansData.forEach(plan => {
+                const row = document.createElement('tr');
+                row.className = plan.selected ? 'row-selected' : 'row-default';
+
+                const btnClass = plan.selected ? 'select-btn selected' : 'select-btn primary';
+                const btnText = plan.selected ? 'Selected' : 'Select';
+                const checkIcon = plan.selected ? '<svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-right:4px;"><path d="M2 6.5L4.5 9L10 3" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '';
+
+                row.innerHTML = `
+                    <td>
+                        <div class="plan-name">${plan.name}</div>
+                        <div class="plan-price">
+                            <span class="amount">$${plan.priceNum}</span>
+                            <span class="suffix">/mo</span>
+                        </div>
+                        <button data-plan-id="${plan.id}" class="${btnClass}" aria-label="Select ${plan.name} plan" aria-pressed="${plan.selected}">
+                            ${checkIcon}${btnText}
+                        </button>
+                    </td>
+                    <td class="cell-multiline">${plan.features.data}</td>
+                    <td>${plan.features.hotspot}</td>
+                    <td>${plan.features.call}</td>
+                    <td>${plan.features.text}</td>
+                    <td class="cell-multiline">${plan.features.roaming}</td>
+                    <td class="cell-multiline">${plan.features.perks}</td>
+                    <td class="cell-multiline">${plan.features.rewards}</td>
+                    <td class="cell-multiline">${plan.features.saveMoney}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Restore scroll position
+            document.querySelector('.table-wrap').scrollLeft = scrollLeft;
+
+            // Re-bind buttons
+            document.querySelectorAll('.select-btn').forEach(btn => {
+                btn.addEventListener('click', handleSelect);
+            });
+
+            // Update savings bar
+            updateSavingsBar();
+        }
+
+        function handleSelect(e) {
+            const id = e.currentTarget.dataset.planId;
+            plansData.forEach(p => p.selected = (p.id === id));
+            renderTable();
+        }
+
+        function updateSavingsBar() {
+            const selected = plansData.find(p => p.selected);
+            if (!selected) return;
+            document.getElementById('savings-value').textContent = `$${selected.priceSavings.toFixed(2)}`;
+            document.getElementById('due-value').textContent = `$${selected.priceNum.toFixed(2)}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', renderTable);
+    </script>
+
+</body>
+</html>

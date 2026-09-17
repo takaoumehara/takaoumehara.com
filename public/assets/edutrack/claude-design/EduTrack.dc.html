@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&amp;family=EB+Garamond:ital,wght@0,400;1,400;1,500&amp;display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;padding:0;background:#d6d3ca;overflow:hidden;}
+a{color:#4da4e0;text-decoration:none;} a:hover{color:#2f88c9;}
+@keyframes etPop{from{opacity:0;transform:scale(.94) translateY(8px);}to{opacity:1;transform:scale(1) translateY(0);}}
+@keyframes etDrop{0%{transform:scale(1.28) translateY(-12px);opacity:0;}55%{transform:scale(.97) translateY(2px);opacity:1;}100%{transform:scale(1) translateY(0);}}
+@keyframes etCheck{0%{transform:scale(.3);}65%{transform:scale(1.3);}100%{transform:scale(1);}}
+::-webkit-scrollbar{width:0;height:0;}
+*{scrollbar-width:none;}
+@keyframes etFade{from{opacity:0;}to{opacity:1;}}
+textarea::placeholder,input::placeholder{color:#a5a29a;}
+</style>
+</helmet>
+<div style="position:fixed;inset:0;background:#d6d3ca;padding:16px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;user-select:none;-webkit-user-select:none;">
+  <div style="position:relative;width:100%;height:100%;background:#e9e7df;border:5px solid #f6f5f1;box-shadow:0 3px 18px rgba(0,0,0,.18);display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;">
+
+    <div style="display:flex;align-items:baseline;gap:16px;padding:20px 34px 12px;border-bottom:2px solid #cfccc3;margin:0 14px;flex:none;">
+      <div data-ob="tabs" style="display:flex;align-items:baseline;gap:14px;font-family:'Oswald',sans-serif;font-weight:600;font-size:42px;letter-spacing:2px;line-height:1;">
+        <span onClick="{{goPlan}}" style="cursor:pointer;color:{{planColor}};">PLAN</span>
+        <span style="color:#c6c3ba;font-weight:400;">|</span>
+        <span onClick="{{goDo}}" style="cursor:pointer;color:{{doColor}};">DO</span>
+        <span style="color:#c6c3ba;font-weight:400;">|</span>
+        <span onClick="{{goReview}}" style="cursor:pointer;color:{{reviewColor}};">REVIEW</span>
+      </div>
+      <div style="flex:1;"></div>
+      <div style="display:flex;align-items:baseline;gap:28px;font-family:'Oswald',sans-serif;font-weight:600;font-size:22px;letter-spacing:1.5px;">
+        <span onClick="{{toggleCalendar}}" style="cursor:pointer;color:{{calColor}};white-space:nowrap;">CALENDAR <span style="font-weight:400;">{{calChev}}</span></span>
+        <span onClick="{{toggleUnits}}" style="cursor:pointer;color:{{unitsColor}};white-space:nowrap;">ALL UNITS <span style="font-weight:400;">›</span></span>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:7px 34px 0;margin:0 14px;flex:none;">
+      <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11.5px;letter-spacing:1.8px;color:#8f8d86;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{identityLabel}}</div>
+      <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:#8f8d86;white-space:nowrap;">School Year 2026–27 · Marking Period 1 · {{weekLabel}} · <span onClick="{{obReplay}}" style="cursor:pointer;color:{{accent}};">Replay tour</span></div>
+    </div>
+
+    <sc-if value="{{showBoard}}" hint-placeholder-val="{{true}}">
+      <div data-screen-label="PLAN board" style="flex:1;display:flex;flex-direction:column;min-height:0;position:relative;">
+
+        <div style="flex:1;min-height:0;overflow:hidden auto;padding:16px 220px 12px 40px;display:flex;flex-direction:column;gap:16px;">
+          <div style="display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;">
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;letter-spacing:2px;color:#3d3b36;">{{unitTitle}}</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:#8f8d86;">{{unitSummary}}</div>
+          </div>
+          <div data-ob="pool" style="display:flex;gap:14px;flex-wrap:wrap;">
+            <sc-for list="{{poolLessons}}" as="pl" hint-placeholder-count="8">
+              <div onPointerDown="{{pl.onDown}}" style="width:96px;background:#fff;padding:7px 7px 3px;box-shadow:0 2px 7px rgba(0,0,0,.2);cursor:grab;touch-action:none;box-sizing:border-box;transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-4px);box-shadow:0 10px 22px rgba(0,0,0,.26);" style-active="transform:scale(.95);">
+                <div style="width:100%;aspect-ratio:1;background:{{pl.fill}};transition:background .3s ease;display:flex;align-items:flex-end;justify-content:flex-end;padding:5px;box-sizing:border-box;"><span style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.5px;color:rgba(255,255,255,.85);">{{pl.code}}</span></div>
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:10px;letter-spacing:.4px;color:{{pl.labelColor}};text-align:center;padding:4px 0 3px;line-height:1.2;text-transform:uppercase;min-height:24px;">{{pl.label}}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div data-ob="vitamins" style="display:flex;gap:14px;flex-wrap:wrap;margin-left:min(456px,34%);">
+            <sc-for list="{{poolVitamins}}" as="pv" hint-placeholder-count="4">
+              <div onPointerDown="{{pv.onDown}}" style="width:96px;background:#fff;padding:7px 7px 3px;box-shadow:0 2px 7px rgba(0,0,0,.2);cursor:grab;touch-action:none;box-sizing:border-box;transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-4px);box-shadow:0 10px 22px rgba(0,0,0,.26);" style-active="transform:scale(.95);">
+                <div style="width:100%;aspect-ratio:1;background:{{pv.fill}};transition:background .3s ease;display:flex;align-items:flex-end;justify-content:flex-end;padding:5px;box-sizing:border-box;"><span style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:.5px;color:rgba(255,255,255,.85);">{{pv.code}}</span></div>
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:10px;letter-spacing:.4px;color:{{pv.labelColor}};text-align:center;padding:4px 0 3px;line-height:1.2;text-transform:uppercase;min-height:24px;">{{pv.label}}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div data-ob="palette" style="position:absolute;top:14px;right:22px;width:158px;height:fit-content;background:#c9c7bf;padding:12px 0 12px;display:flex;flex-direction:column;gap:11px;align-items:center;box-sizing:border-box;">
+          <div onPointerDown="{{onNewLesson}}" style="width:82px;background:#fff;padding:7px 7px 3px;box-shadow:7px 7px 0 rgba(138,136,128,.6),0 2px 6px rgba(0,0,0,.2);cursor:grab;touch-action:none;box-sizing:border-box;transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-3px);box-shadow:9px 9px 0 rgba(138,136,128,.6),0 6px 14px rgba(0,0,0,.24);" style-active="transform:scale(.95);">
+            <div style="width:100%;aspect-ratio:1;background:#6f4e2f;"></div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#8f8d86;text-align:center;padding:4px 0 2px;">LESSON</div>
+          </div>
+          <div onPointerDown="{{onNewVitamin}}" style="width:82px;background:#fff;padding:7px 7px 3px;box-shadow:7px 7px 0 rgba(138,136,128,.6),0 2px 6px rgba(0,0,0,.2);cursor:grab;touch-action:none;box-sizing:border-box;transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-3px);box-shadow:9px 9px 0 rgba(138,136,128,.6),0 6px 14px rgba(0,0,0,.24);" style-active="transform:scale(.95);">
+            <div style="width:100%;aspect-ratio:1;background:#8cba52;"></div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#8f8d86;text-align:center;padding:4px 0 2px;">VITAMIN</div>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;justify-content:center;">
+            <div onPointerDown="{{onNewStart}}" style="background:#e8871e;color:#fff;clip-path:polygon(0 0,80% 0,100% 50%,80% 100%,0 100%);padding:4px 16px 5px 7px;cursor:grab;touch-action:none;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.25));transition:transform .15s ease;" style-hover="transform:scale(1.08);" style-active="transform:scale(.95);">
+              <div style="font-family:'Oswald',sans-serif;font-size:6.5px;letter-spacing:.4px;">ASSIGNMENT</div>
+              <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:1px;line-height:1;">START</div>
+            </div>
+            <div onPointerDown="{{onNewDue}}" style="background:#e8871e;color:#fff;clip-path:polygon(20% 0,100% 0,100% 100%,20% 100%,0 50%);padding:4px 7px 5px 16px;cursor:grab;touch-action:none;text-align:right;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.25));transition:transform .15s ease;" style-hover="transform:scale(1.08);" style-active="transform:scale(.95);">
+              <div style="font-family:'Oswald',sans-serif;font-size:6.5px;letter-spacing:.4px;">ASSIGNMENT</div>
+              <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;line-height:1;">D U E</div>
+            </div>
+          </div>
+        </div>
+
+        <div data-ob="timeline" style="flex:none;position:relative;padding:0 214px 14px 190px;">
+          <div onClick="{{onPrevWin}}" style="position:absolute;left:18px;bottom:52px;font-size:30px;color:#6b6963;cursor:pointer;line-height:1;">❮</div>
+          <div onClick="{{onNextWin}}" style="position:absolute;right:18px;bottom:52px;font-size:30px;color:#6b6963;cursor:pointer;line-height:1;">❯</div>
+
+          <div style="position:relative;height:142px;">
+            <sc-for list="{{tlDays}}" as="day" hint-placeholder-count="8">
+              <div data-day="{{day.idx}}" style="position:absolute;top:0;bottom:0;left:{{day.left}};width:12.5%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;padding:4px 6px;box-sizing:border-box;background:{{day.bg}};outline:{{day.outline}};outline-offset:-3px;transition:background .15s;">
+                <sc-if value="{{day.over}}" hint-placeholder-val="{{false}}">
+                  <div style="position:absolute;top:3px;left:50%;transform:translateX(-50%);font-family:'Oswald',sans-serif;font-weight:500;font-size:9px;letter-spacing:.8px;color:#fff;background:#e8871e;padding:1px 7px;white-space:nowrap;animation:etFade .3s ease;">{{day.overLabel}}</div>
+                </sc-if>
+                <sc-for list="{{day.cards}}" as="pc" hint-placeholder-count="0">
+                  <div onPointerDown="{{pc.onDown}}" style="position:relative;width:86%;max-width:88px;background:#fff;padding:6px 6px 2px;box-shadow:0 2px 6px rgba(0,0,0,.22);cursor:grab;touch-action:none;animation:etDrop .32s cubic-bezier(.22,1,.36,1);box-sizing:border-box;transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.28);" style-active="transform:scale(.95);">
+                    <div style="width:100%;aspect-ratio:1;background:{{pc.fill}};display:flex;align-items:flex-end;justify-content:flex-end;padding:4px;box-sizing:border-box;"><span style="font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.4px;color:rgba(255,255,255,.85);">{{pc.code}}</span></div>
+                    <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:9px;letter-spacing:.3px;color:#8f8d86;text-align:center;padding:3px 0 2px;line-height:1.15;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">{{pc.label}}</div>
+                    <sc-if value="{{pc.showStart}}" hint-placeholder-val="{{false}}">
+                      <div onPointerDown="{{day.onStartFlag}}" style="position:absolute;top:-17px;left:-13px;z-index:3;background:#e8871e;color:#fff;clip-path:polygon(0 0,82% 0,100% 50%,82% 100%,0 100%);padding:2px 15px 3px 6px;cursor:pointer;">
+                        <div style="font-family:'Oswald',sans-serif;font-size:6.5px;letter-spacing:.4px;">ASSIGNMENT</div>
+                        <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;line-height:1;">START</div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{pc.showDue}}" hint-placeholder-val="{{false}}">
+                      <div onPointerDown="{{day.onDueFlag}}" style="position:absolute;top:-17px;right:-13px;z-index:3;background:#e8871e;color:#fff;clip-path:polygon(18% 0,100% 0,100% 100%,18% 100%,0 50%);padding:2px 6px 3px 15px;cursor:pointer;text-align:right;">
+                        <div style="font-family:'Oswald',sans-serif;font-size:6.5px;letter-spacing:.4px;">ASSIGNMENT</div>
+                        <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;line-height:1;">D U E</div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+                <sc-if value="{{day.soloFlags}}" hint-placeholder-val="{{false}}">
+                  <div style="display:flex;gap:4px;">
+                    <sc-if value="{{day.startFlagOnly}}" hint-placeholder-val="{{false}}">
+                      <div onPointerDown="{{day.onStartFlag}}" style="background:#e8871e;color:#fff;clip-path:polygon(0 0,82% 0,100% 50%,82% 100%,0 100%);padding:2px 15px 3px 6px;cursor:pointer;">
+                        <div style="font-family:'Oswald',sans-serif;font-size:6.5px;letter-spacing:.4px;">ASSIGNMENT</div>
+                        <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;line-height:1;">START</div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{day.dueFlagOnly}}" hint-placeholder-val="{{false}}">
+                      <div onPointerDown="{{day.onDueFlag}}" style="background:#e8871e;color:#fff;clip-path:polygon(18% 0,100% 0,100% 100%,18% 100%,0 50%);padding:2px 6px 3px 15px;cursor:pointer;text-align:right;">
+                        <div style="font-family:'Oswald',sans-serif;font-size:6.5px;letter-spacing:.4px;">ASSIGNMENT</div>
+                        <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;line-height:1;">D U E</div>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="position:relative;height:28px;">
+            <sc-for list="{{tlSegs}}" as="seg" hint-placeholder-count="2">
+              <div style="position:absolute;left:{{seg.left}};width:{{seg.width}};top:0;bottom:0;background:{{seg.color}};display:flex;align-items:center;padding:0 10px;box-sizing:border-box;overflow:hidden;">
+                <span style="font-family:'Oswald',sans-serif;font-weight:500;font-size:15px;letter-spacing:1.5px;color:#f2f1ec;white-space:nowrap;">{{seg.name}}</span>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="height:5px;background:#1c1b19;margin:0 -188px 0 -34px;"></div>
+
+          <div style="position:relative;height:56px;">
+            <div style="position:absolute;left:-150px;top:12px;font-family:'EB Garamond',serif;font-style:italic;font-size:26px;color:#2f2d29;">{{tlMonth}}</div>
+            <sc-for list="{{tlDays}}" as="day" hint-placeholder-count="8">
+              <div style="position:absolute;left:{{day.left}};width:12.5%;text-align:center;padding-top:5px;">
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:9px;letter-spacing:1.5px;color:#a5a29a;">{{day.dowI}}</div>
+                <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:25px;color:{{day.numColor}};line-height:1.1;">{{day.num}}</div>
+                <div style="width:5px;height:5px;border-radius:50%;background:{{day.dotBg}};margin:2px auto 0;"></div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{showCalendar}}" hint-placeholder-val="{{false}}">
+      <div data-screen-label="PLAN calendar" style="flex:1;min-height:0;overflow:auto;padding:14px 60px 20px 170px;display:flex;flex-direction:column;gap:6px;">
+        <div style="flex:none;display:flex;flex-direction:column;gap:10px;margin:0 0 10px -128px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;">
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:2px;color:#3d3b36;">{{calHeading}}</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:#8f8d86;">{{calWeeksLabel}}</div>
+          </div>
+          <div style="display:flex;gap:3px;">
+            <sc-for list="{{yearMonths}}" as="ym" hint-placeholder-count="10">
+              <div style="flex:1;text-align:center;padding:5px 2px 4px;background:{{ym.bg}};overflow:hidden;">
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1px;color:{{ym.color}};">{{ym.name}}</div>
+                <div style="font-family:'Oswald',sans-serif;font-size:7.5px;letter-spacing:.3px;color:{{ym.color}};opacity:.72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ym.sub}}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <sc-for list="{{calRows}}" as="row" hint-placeholder-count="3">
+          <div style="flex:none;">
+            <div style="position:relative;height:104px;">
+              <sc-for list="{{row.days}}" as="day">
+                <div data-day="{{day.idx}}" style="position:absolute;top:0;bottom:0;left:{{day.left}};width:12.5%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:2px;padding:3px 5px;box-sizing:border-box;background:{{day.bg}};outline:{{day.outline}};outline-offset:-2px;transition:background .15s;">
+                  <sc-for list="{{day.cards}}" as="pc" hint-placeholder-count="0">
+                    <div onPointerDown="{{pc.onDown}}" style="position:relative;width:78%;max-width:64px;background:#fff;padding:4px 4px 1px;box-shadow:0 2px 5px rgba(0,0,0,.2);cursor:grab;touch-action:none;box-sizing:border-box;animation:etDrop .32s cubic-bezier(.22,1,.36,1);transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.26);">
+                      <div style="width:100%;aspect-ratio:1;background:{{pc.fill}};display:flex;align-items:flex-end;justify-content:flex-end;padding:4px;box-sizing:border-box;"><span style="font-family:'Oswald',sans-serif;font-size:8px;letter-spacing:.4px;color:rgba(255,255,255,.85);">{{pc.code}}</span></div>
+                      <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:8.5px;letter-spacing:.2px;color:#8f8d86;text-align:center;padding:2px 0 1px;line-height:1.15;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;">{{pc.label}}</div>
+                      <sc-if value="{{pc.showStart}}" hint-placeholder-val="{{false}}">
+                        <div onPointerDown="{{day.onStartFlag}}" style="position:absolute;top:-14px;left:-10px;z-index:3;background:#e8871e;color:#fff;clip-path:polygon(0 0,82% 0,100% 50%,82% 100%,0 100%);padding:2px 12px 2px 5px;cursor:pointer;">
+                          <div style="font-family:'Oswald',sans-serif;font-size:5.5px;letter-spacing:.3px;">ASSIGNMENT</div>
+                          <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:10px;letter-spacing:.8px;line-height:1;">START</div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{pc.showDue}}" hint-placeholder-val="{{false}}">
+                        <div onPointerDown="{{day.onDueFlag}}" style="position:absolute;top:-14px;right:-10px;z-index:3;background:#e8871e;color:#fff;clip-path:polygon(18% 0,100% 0,100% 100%,18% 100%,0 50%);padding:2px 5px 2px 12px;cursor:pointer;text-align:right;">
+                          <div style="font-family:'Oswald',sans-serif;font-size:5.5px;letter-spacing:.3px;">ASSIGNMENT</div>
+                          <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:10px;letter-spacing:1px;line-height:1;">D U E</div>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+            <div style="position:relative;height:24px;">
+              <sc-for list="{{row.segs}}" as="seg">
+                <div style="position:absolute;left:{{seg.left}};width:{{seg.width}};top:0;bottom:0;background:{{seg.color}};display:flex;align-items:center;padding:0 9px;box-sizing:border-box;overflow:hidden;">
+                  <span style="font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:1.2px;color:#f2f1ec;white-space:nowrap;">{{seg.name}}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="height:4px;background:#1c1b19;margin:0 -26px;"></div>
+            <div style="position:relative;height:36px;">
+              <div style="position:absolute;left:-128px;top:0;">
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:9px;letter-spacing:1.2px;color:#a5a29a;">{{row.week}}</div>
+                <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:20px;color:#2f2d29;line-height:1.1;">{{row.month}}</div>
+              </div>
+              <sc-for list="{{row.days}}" as="day">
+                <div style="position:absolute;left:{{day.left}};width:12.5%;text-align:center;font-family:'EB Garamond',serif;font-style:italic;font-size:21px;color:{{day.numColor}};padding-top:5px;">{{day.num}}</div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{showDo}}" hint-placeholder-val="{{false}}">
+      <div data-screen-label="DO — teaching day" style="flex:1;display:flex;gap:32px;padding:22px 36px 26px;min-height:0;animation:etFade .2s ease;">
+        <div style="flex:1.5;display:flex;flex-direction:column;min-height:0;">
+          <div style="display:flex;align-items:center;gap:16px;flex:none;">
+            <div onClick="{{doPrev}}" style="font-size:22px;color:#6b6963;cursor:pointer;">❮</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:32px;color:#2f2d29;">{{doDateLabel}}</div>
+            <sc-if value="{{doIsToday}}" hint-placeholder-val="{{false}}">
+              <span style="font-family:'Oswald',sans-serif;font-weight:600;font-size:12px;letter-spacing:1.5px;color:#fff;background:{{accent}};padding:3px 10px;">TODAY</span>
+            </sc-if>
+            <div onClick="{{doNext}}" style="font-size:22px;color:#6b6963;cursor:pointer;">❯</div>
+          </div>
+          <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:14px;letter-spacing:2px;color:#8f8d86;margin-top:6px;flex:none;">{{doBlockLabel}}</div>
+          <div style="flex:1;overflow:auto;margin-top:16px;display:flex;flex-direction:column;gap:10px;padding-right:6px;">
+            <sc-for list="{{doAgenda}}" as="ag" hint-placeholder-count="3">
+              <div style="background:#f2f0e9;border:1px solid #dcd9cf;flex:none;">
+                <div onClick="{{ag.onExpand}}" style="display:flex;align-items:center;gap:16px;padding:12px 16px;cursor:pointer;">
+                  <div style="width:96px;flex:none;font-family:'Oswald',sans-serif;font-weight:500;font-size:16px;color:#6b6963;line-height:1.3;">{{ag.time}}</div>
+                  <div style="flex:none;background:#fff;padding:4px;box-shadow:0 1px 4px rgba(0,0,0,.18);"><div style="width:40px;height:40px;background:{{ag.fill}};"></div></div>
+                  <div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0;">
+                    <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:17px;letter-spacing:.5px;color:#3d3b36;text-transform:uppercase;">{{ag.title}}</div>
+                    <div style="font-size:12.5px;color:#7c7a72;line-height:1.4;">{{ag.desc}}</div>
+                    <div style="display:flex;gap:10px;align-items:center;">
+                      <sc-if value="{{ag.showStd}}" hint-placeholder-val="{{false}}">
+                        <span style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:1px;color:#fff;background:#8f8d86;padding:2px 8px;">{{ag.std}}</span>
+                      </sc-if>
+                      <span style="font-size:11.5px;color:#9a9890;">{{ag.durLabel}}</span>
+                      <span style="font-family:'Oswald',sans-serif;font-size:10px;letter-spacing:1px;color:#a5a29a;">{{ag.expandHint}}</span>
+                    </div>
+                  </div>
+                  <div onClick="{{ag.onDone}}" style="flex:none;width:36px;height:36px;border-radius:50%;border:2.5px solid {{ag.doneBorder}};background:{{ag.doneBg}};color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;transition:all .2s ease;" style-hover="transform:scale(1.1);" style-active="transform:scale(.85);"><span style="animation:{{ag.checkAnim}};">{{ag.check}}</span></div>
+                </div>
+                <sc-if value="{{ag.expanded}}" hint-placeholder-val="{{false}}">
+                  <div style="border-top:1px solid #dcd9cf;padding:14px 16px 16px 128px;display:flex;flex-direction:column;gap:12px;animation:etFade .2s ease;">
+                    <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:16px;color:#5a5850;line-height:1.4;">{{ag.tp}}</div>
+                    <div style="display:flex;flex-direction:column;gap:7px;">
+                      <sc-for list="{{ag.phases}}" as="ph" hint-placeholder-count="4">
+                        <div style="display:flex;gap:14px;align-items:baseline;">
+                          <div style="width:52px;flex:none;font-family:'Oswald',sans-serif;font-weight:500;font-size:12px;color:#a5a29a;text-align:right;">{{ph.min}} MIN</div>
+                          <div style="flex:none;font-family:'Oswald',sans-serif;font-weight:500;font-size:12.5px;letter-spacing:1px;color:#3d3b36;">{{ph.name}}</div>
+                          <div style="font-size:12px;color:#8f8d86;">{{ph.note}}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+            <sc-if value="{{doEmpty}}" hint-placeholder-val="{{false}}">
+              <div style="padding:44px 20px;text-align:center;color:#9a9890;">
+                <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:22px;">Nothing planned for this day yet.</div>
+                <div onClick="{{goPlanBoard}}" style="margin-top:16px;display:inline-block;font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;letter-spacing:1.5px;border:2px solid {{accent}};color:{{accent}};padding:7px 20px;cursor:pointer;">GO TO PLAN</div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        <div style="width:320px;flex:none;display:flex;flex-direction:column;gap:20px;min-height:0;overflow:auto;padding-right:4px;">
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;letter-spacing:2px;color:#6b6963;border-bottom:2px solid #cfccc3;padding-bottom:6px;">MATERIALS TO PREP</div>
+            <div style="display:flex;flex-direction:column;margin-top:8px;">
+              <sc-for list="{{doMaterials}}" as="mm" hint-placeholder-count="4">
+                <div onClick="{{mm.onToggle}}" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:5px 0;">
+                  <div style="flex:none;width:17px;height:17px;border:2px solid #8f8d86;background:{{mm.bg}};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;">{{mm.check}}</div>
+                  <div style="font-size:13px;color:{{mm.color}};text-decoration:{{mm.deco}};">{{mm.t}}</div>
+                </div>
+              </sc-for>
+              <sc-if value="{{doNoMaterials}}" hint-placeholder-val="{{false}}">
+                <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:#9a9890;padding:6px 0;">No prep needed.</div>
+              </sc-if>
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;letter-spacing:2px;color:#6b6963;border-bottom:2px solid #cfccc3;padding-bottom:6px;">STANDARDS TODAY</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;">
+              <sc-for list="{{doStandards}}" as="ds" hint-placeholder-count="2">
+                <span style="font-family:'Oswald',sans-serif;font-size:12px;letter-spacing:.8px;color:#3d3b36;border:1.5px solid #b9b5aa;padding:3px 10px;">{{ds.label}}</span>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;letter-spacing:2px;color:#6b6963;border-bottom:2px solid #cfccc3;padding-bottom:6px;">CONFER &amp; CAPTURE</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:13.5px;color:#9a9890;margin-top:6px;">Tap a reader to log a conference note</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;">
+              <sc-for list="{{doRoster}}" as="rs" hint-placeholder-count="8">
+                <div onClick="{{rs.onTap}}" style="font-size:12px;border:1.5px solid #b9b5aa;padding:3px 10px;cursor:pointer;color:#3d3b36;background:#fff;transition:all .15s ease;" style-hover="border-color:#8cba52;transform:translateY(-1px);" style-active="transform:scale(.94);">{{rs.name}}</div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:10px;">
+              <sc-for list="{{doCaptures}}" as="cp" hint-placeholder-count="0">
+                <div style="background:#fff;border:1px solid #dcd9cf;padding:8px 10px;display:flex;flex-direction:column;gap:4px;animation:etDrop .3s cubic-bezier(.22,1,.36,1);">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                    <span style="font-family:'Oswald',sans-serif;font-weight:500;font-size:12px;letter-spacing:1px;color:#6b6963;">{{cp.student}}</span>
+                    <span onClick="{{cp.onRemove}}" style="cursor:pointer;color:#b9b5aa;font-size:15px;line-height:1;">×</span>
+                  </div>
+                  <input value="{{cp.text}}" onChange="{{cp.onText}}" placeholder="What did you notice? Next step…" style="border:none;border-bottom:1px solid #eceae3;background:transparent;font-size:12.5px;padding:3px 0;outline:none;font-family:inherit;color:#3d3b36;">
+                </div>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;flex:1;min-height:120px;">
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:15px;letter-spacing:2px;color:#6b6963;border-bottom:2px solid #cfccc3;padding-bottom:6px;">QUICK NOTE</div>
+            <textarea value="{{doNote}}" onChange="{{onDoNote}}" placeholder="How did it go? What to adjust tomorrow…" style="flex:1;margin-top:10px;background:#fff;border:1px solid #dcd9cf;padding:10px;font-family:inherit;font-size:13px;color:#3d3b36;resize:none;outline:none;box-sizing:border-box;"></textarea>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{showReview}}" hint-placeholder-val="{{false}}">
+      <div data-screen-label="REVIEW — competency tracking" style="flex:1;display:flex;gap:36px;padding:22px 36px 26px;min-height:0;animation:etFade .2s ease;">
+        <div style="flex:1.6;display:flex;flex-direction:column;min-height:0;">
+          <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:22px;letter-spacing:2px;color:#3d3b36;flex:none;">STANDARDS COVERAGE</div>
+          <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:17px;color:#7c7a72;margin-top:2px;flex:none;">{{revSubtitle}}</div>
+          <div style="flex:1;overflow:auto;margin-top:14px;padding-right:8px;">
+            <sc-for list="{{revRows}}" as="r" hint-placeholder-count="6">
+              <div style="display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid #dcd9cf;">
+                <div style="width:60px;flex:none;font-family:'Oswald',sans-serif;font-weight:600;font-size:18px;color:#3d3b36;">{{r.code}}</div>
+                <div style="flex:1;font-size:12.5px;color:#7c7a72;line-height:1.35;">{{r.name}}</div>
+                <div style="display:flex;gap:4px;flex:none;">
+                  <sc-for list="{{r.blocks}}" as="b">
+                    <div style="width:16px;height:16px;background:{{b.bg}};border:1.5px solid #b9b5aa;box-sizing:border-box;"></div>
+                  </sc-for>
+                </div>
+                <div style="width:56px;flex:none;text-align:right;font-family:'Oswald',sans-serif;font-size:13px;color:#8f8d86;">{{r.countLabel}}</div>
+              </div>
+            </sc-for>
+            <div style="display:flex;gap:18px;margin-top:14px;align-items:center;">
+              <div style="display:flex;gap:6px;align-items:center;"><div style="width:13px;height:13px;background:#6f4e2f;"></div><span style="font-size:11.5px;color:#8f8d86;">taught</span></div>
+              <div style="display:flex;gap:6px;align-items:center;"><div style="width:13px;height:13px;background:#d9cfc0;"></div><span style="font-size:11.5px;color:#8f8d86;">planned</span></div>
+              <div style="display:flex;gap:6px;align-items:center;"><div style="width:13px;height:13px;border:1.5px solid #b9b5aa;box-sizing:border-box;"></div><span style="font-size:11.5px;color:#8f8d86;">not yet</span></div>
+            </div>
+          </div>
+        </div>
+        <div style="flex:1;display:flex;flex-direction:column;min-height:0;">
+          <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:22px;letter-spacing:2px;color:#3d3b36;flex:none;">LESSON LOG</div>
+          <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:17px;color:#7c7a72;margin-top:2px;flex:none;">Reflect on what you've taught</div>
+          <div style="flex:1;overflow:auto;margin-top:14px;display:flex;flex-direction:column;gap:10px;padding-right:6px;">
+            <sc-for list="{{revLog}}" as="lg" hint-placeholder-count="3">
+              <div style="background:#f2f0e9;border:1px solid #dcd9cf;padding:12px 14px;display:flex;flex-direction:column;gap:8px;">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <span style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;color:#8f8d86;">{{lg.date}}</span>
+                  <span style="font-family:'Oswald',sans-serif;font-size:10.5px;letter-spacing:.8px;color:#8f8d86;">{{lg.std}}</span>
+                </div>
+                <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;letter-spacing:.5px;color:#3d3b36;text-transform:uppercase;">{{lg.title}}</div>
+                <div style="display:flex;gap:8px;">
+                  <div onClick="{{lg.onWell}}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1px;padding:3px 10px;cursor:pointer;border:1.5px solid {{lg.wellBorder}};background:{{lg.wellBg}};color:{{lg.wellColor}};transition:all .15s;">WENT WELL</div>
+                  <div onClick="{{lg.onReteach}}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1px;padding:3px 10px;cursor:pointer;border:1.5px solid {{lg.reBorder}};background:{{lg.reBg}};color:{{lg.reColor}};transition:all .15s;">RETEACH</div>
+                </div>
+                <input value="{{lg.note}}" onChange="{{lg.onNote}}" placeholder="Reflection…" style="border:none;border-bottom:1px solid #cfccc3;background:transparent;font-size:12.5px;padding:4px 0;outline:none;font-family:inherit;color:#3d3b36;">
+              </div>
+            </sc-for>
+            <sc-if value="{{revEmpty}}" hint-placeholder-val="{{false}}">
+              <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:18px;color:#9a9890;padding:20px 0;">Nothing taught yet — check back after your first lesson.</div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{unitsOpen}}" hint-placeholder-val="{{false}}">
+      <div onClick="{{toggleUnits}}" style="position:fixed;inset:0;z-index:30;"></div>
+      <div style="position:absolute;top:78px;right:20px;z-index:31;width:320px;background:#fff;box-shadow:0 14px 36px rgba(0,0,0,.3);padding:18px 20px;animation:etPop .16s ease;">
+        <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:16px;letter-spacing:2px;color:#3d3b36;border-bottom:2px solid #cfccc3;padding-bottom:8px;">GRADE 5 ELA · 2026–27</div>
+        <div style="display:flex;flex-direction:column;margin-top:6px;">
+          <sc-for list="{{unitList}}" as="u" hint-placeholder-count="6">
+            <div style="display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #eceae3;">
+              <div style="flex:none;width:5px;align-self:stretch;background:{{u.bar}};"></div>
+              <div style="flex:1;">
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:14px;letter-spacing:1px;color:#3d3b36;text-transform:uppercase;">{{u.name}}</div>
+                <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:14px;color:#8f8d86;">{{u.range}}</div>
+              </div>
+              <div style="font-family:'Oswald',sans-serif;font-size:11px;letter-spacing:.5px;color:#8f8d86;text-align:right;">{{u.status}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{popOpen}}" hint-placeholder-val="{{false}}">
+      <div onClick="{{closePopover}}" style="position:fixed;inset:0;z-index:40;background:rgba(40,38,32,.1);animation:etFade .2s ease;"></div>
+      <div style="position:fixed;left:{{popX}};top:{{popY}};z-index:41;width:290px;background:#fff;padding:10px 10px 0;box-shadow:0 16px 44px rgba(0,0,0,.38);animation:etPop .16s ease;box-sizing:border-box;">
+        <div style="background:{{popFill}};color:#f6f2ea;padding:16px 16px 14px;display:flex;flex-direction:column;gap:11px;min-height:280px;box-sizing:border-box;">
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.8px;">MATERIALS</div>
+            <div style="display:flex;flex-direction:column;gap:2px;margin-top:4px;">
+              <sc-for list="{{popMaterials}}" as="m" hint-placeholder-count="2">
+                <div style="font-size:12.5px;line-height:1.45;opacity:.92;">— {{m}}</div>
+              </sc-for>
+            </div>
+          </div>
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.8px;">DURATION</div>
+            <div style="font-size:12.5px;margin-top:3px;opacity:.92;">{{popDur}}</div>
+          </div>
+          <div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.8px;">DESCRIPTION</div>
+            <div style="font-size:12.5px;line-height:1.5;margin-top:3px;opacity:.92;">{{popDesc}}</div>
+          </div>
+          <div><span style="font-family:'Oswald',sans-serif;font-size:11.5px;letter-spacing:1px;border:1.5px solid rgba(246,242,234,.7);padding:3px 10px;display:inline-block;">{{popStd}}</span></div>
+          <div style="flex:1;"></div>
+          <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:15px;border-top:1px solid rgba(246,242,234,.3);padding-top:9px;">Notes from others</div>
+          <sc-for list="{{popNotes}}" as="n" hint-placeholder-count="1">
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:14px;line-height:1.4;opacity:.88;">"{{n.text}}" <span style="opacity:.72;">— {{n.who}}</span></div>
+          </sc-for>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4px;">
+          <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:20px;letter-spacing:1px;color:#6b6963;text-transform:uppercase;line-height:1.1;">{{popTitle}}</div>
+          <sc-if value="{{popRemovable}}" hint-placeholder-val="{{false}}">
+            <div onClick="{{popRemove}}" style="flex:none;font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1px;color:#e8871e;border:1.5px solid #e8871e;padding:3px 10px;cursor:pointer;">REMOVE</div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{obModal}}" hint-placeholder-val="{{false}}">
+      <div style="position:fixed;inset:0;z-index:60;background:rgba(40,38,32,.52);animation:etFade .25s ease;"></div>
+      <div style="position:fixed;inset:0;z-index:61;display:flex;align-items:center;justify-content:center;padding:24px;">
+        <div style="width:470px;max-width:94vw;max-height:92vh;overflow:auto;background:#f6f5f1;box-shadow:0 24px 60px rgba(0,0,0,.42);padding:32px 36px 24px;animation:etPop .28s cubic-bezier(.22,1,.36,1);box-sizing:border-box;">
+
+          <sc-if value="{{obS0}}" hint-placeholder-val="{{false}}">
+            <div style="display:flex;gap:8px;">
+              <div style="width:32px;height:32px;background:#6f4e2f;"></div>
+              <div style="width:32px;height:32px;background:#8cba52;"></div>
+              <div style="width:32px;height:32px;background:#e8871e;"></div>
+            </div>
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:32px;letter-spacing:2px;color:#3d3b36;margin-top:16px;">WELCOME TO EDUTRACK</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:19px;color:#7c7a72;margin-top:4px;">Plan it. Teach it. Grow from it.</div>
+            <div style="font-size:13.5px;color:#7c7a72;line-height:1.6;margin-top:14px;">Your whole year of lessons, one drag away. Let's set up your classroom — it takes about a minute.</div>
+          </sc-if>
+
+          <sc-if value="{{obS1}}" hint-placeholder-val="{{false}}">
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:24px;letter-spacing:2px;color:#3d3b36;">ABOUT YOUR CLASSROOM</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:16px;color:#8f8d86;margin-top:3px;">This personalizes your planner — change it anytime.</div>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:20px;">
+              <div>
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;color:#8f8d86;margin-bottom:5px;">YOUR NAME</div>
+                <input value="{{obName}}" onChange="{{onObName}}" style="width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #dcd9cf;padding:9px 11px;font-family:inherit;font-size:14px;color:#3d3b36;outline:none;" style-focus="border-color:{{accent}};">
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="flex:1;">
+                  <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;color:#8f8d86;margin-bottom:5px;">SCHOOL</div>
+                  <input value="{{obSchool}}" onChange="{{onObSchool}}" style="width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #dcd9cf;padding:9px 11px;font-family:inherit;font-size:14px;color:#3d3b36;outline:none;" style-focus="border-color:{{accent}};">
+                </div>
+                <div style="width:90px;flex:none;">
+                  <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;color:#8f8d86;margin-bottom:5px;">ROOM</div>
+                  <input value="{{obRoom}}" onChange="{{onObRoom}}" style="width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #dcd9cf;padding:9px 11px;font-family:inherit;font-size:14px;color:#3d3b36;outline:none;" style-focus="border-color:{{accent}};">
+                </div>
+              </div>
+              <div>
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;color:#8f8d86;margin-bottom:5px;">GRADE</div>
+                <div style="display:flex;gap:6px;">
+                  <sc-for list="{{obGrades}}" as="gc" hint-placeholder-count="4">
+                    <div onClick="{{gc.onTap}}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:14px;padding:6px 15px;cursor:pointer;border:1.5px solid {{gc.border}};background:{{gc.bg}};color:{{gc.color}};transition:all .15s ease;" style-active="transform:scale(.94);">{{gc.label}}</div>
+                  </sc-for>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:1.5px;color:#8f8d86;margin-bottom:5px;">SUBJECT</div>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                  <sc-for list="{{obSubjects}}" as="sc" hint-placeholder-count="4">
+                    <div onClick="{{sc.onTap}}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:12px;letter-spacing:.8px;padding:6px 13px;cursor:pointer;border:1.5px solid {{sc.border}};background:{{sc.bg}};color:{{sc.color}};transition:all .15s ease;" style-active="transform:scale(.94);">{{sc.label}}</div>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{obS2}}" hint-placeholder-val="{{false}}">
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:24px;letter-spacing:2px;color:#3d3b36;">LOAD YOUR CURRICULUM</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:16px;color:#8f8d86;margin-top:3px;">Start from a proven map, or build your own from scratch.</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px;">
+              <sc-for list="{{obCurric}}" as="co" hint-placeholder-count="3">
+                <div onClick="{{co.onTap}}" style="border:2px solid {{co.border}};background:#fff;padding:12px 14px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:12px;opacity:{{co.op}};transition:all .15s ease;">
+                  <div>
+                    <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:14px;letter-spacing:1px;color:#3d3b36;">{{co.title}}</div>
+                    <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:13.5px;color:#8f8d86;margin-top:2px;">{{co.sub}}</div>
+                  </div>
+                  <div style="flex:none;width:18px;height:18px;border-radius:50%;border:2px solid {{co.border}};background:{{co.dot}};transition:all .15s ease;"></div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{obS8}}" hint-placeholder-val="{{false}}">
+            <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:32px;letter-spacing:2px;color:#3d3b36;">YOU'RE READY</div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:18px;color:#7c7a72;margin-top:4px;">{{obReadyName}}, your first unit is loaded.</div>
+            <div style="display:flex;flex-direction:column;gap:11px;margin-top:20px;">
+              <div style="display:flex;gap:11px;align-items:center;">
+                <div style="flex:none;width:17px;height:17px;background:#6f4e2f;"></div>
+                <div style="font-size:13.5px;color:#5a5850;">8 ready-to-teach lessons — Unit 1 · Character Study</div>
+              </div>
+              <div style="display:flex;gap:11px;align-items:center;">
+                <div style="flex:none;width:17px;height:17px;background:#8cba52;"></div>
+                <div style="font-size:13.5px;color:#5a5850;">4 vitamins to keep the week joyful</div>
+              </div>
+              <div style="display:flex;gap:11px;align-items:center;">
+                <div style="flex:none;width:17px;height:17px;background:#e8871e;"></div>
+                <div style="font-size:13.5px;color:#5a5850;">Assignment flags &amp; NY standards tracking, built in</div>
+              </div>
+            </div>
+            <div style="font-family:'EB Garamond',serif;font-style:italic;font-size:14px;color:#9a9890;margin-top:16px;">Replay the tour anytime from the header.</div>
+          </sc-if>
+
+          <div style="display:flex;align-items:center;gap:5px;margin-top:26px;">
+            <sc-for list="{{obDots}}" as="dt" hint-placeholder-count="5">
+              <div style="width:8px;height:8px;border-radius:50%;background:{{dt.bg}};transition:background .2s;"></div>
+            </sc-for>
+            <div style="flex:1;"></div>
+            <sc-if value="{{obShowBack}}" hint-placeholder-val="{{false}}">
+              <div onClick="{{obBack}}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:13px;letter-spacing:1.5px;color:#9a9890;cursor:pointer;padding:9px 14px;">BACK</div>
+            </sc-if>
+            <div onClick="{{obNext}}" style="background:{{accent}};color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:14px;letter-spacing:1.5px;padding:10px 24px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease;" style-hover="transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.25);" style-active="transform:scale(.96);">{{obNextLabel}}</div>
+          </div>
+          <div onClick="{{obSkip}}" style="margin-top:12px;text-align:center;font-family:'EB Garamond',serif;font-style:italic;font-size:14px;color:#9a9890;cursor:pointer;">{{obSkipLabel}}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{obTour}}" hint-placeholder-val="{{false}}">
+      <div style="position:fixed;left:{{obSpotX}};top:{{obSpotY}};width:{{obSpotW}};height:{{obSpotH}};z-index:60;pointer-events:none;box-shadow:0 0 0 9999px rgba(40,38,32,.45);outline:3px solid {{accent}};outline-offset:4px;transition:all .4s cubic-bezier(.22,1,.36,1);"></div>
+      <div style="position:fixed;left:{{obTipX}};top:{{obTipY}};z-index:61;width:320px;background:#f6f5f1;box-shadow:0 18px 48px rgba(0,0,0,.42);padding:20px 22px 14px;transition:all .4s cubic-bezier(.22,1,.36,1);box-sizing:border-box;">
+        <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:11px;letter-spacing:2px;color:{{accent}};">{{obStepLabel}}</div>
+        <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:20px;letter-spacing:1px;color:#3d3b36;margin-top:4px;">{{obTitle}}</div>
+        <div style="font-size:13px;color:#7c7a72;line-height:1.55;margin-top:8px;">{{obText}}</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:16px;">
+          <div onClick="{{obSkip}}" style="font-family:'EB Garamond',serif;font-style:italic;font-size:13.5px;color:#9a9890;cursor:pointer;">Skip tour</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{obBack}}" style="font-family:'Oswald',sans-serif;font-weight:500;font-size:12px;letter-spacing:1.5px;color:#9a9890;cursor:pointer;padding:8px 10px;">BACK</div>
+          <div onClick="{{obNext}}" style="background:{{accent}};color:#fff;font-family:'Oswald',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;padding:8px 18px;cursor:pointer;transition:transform .15s ease;" style-hover="transform:translateY(-2px);" style-active="transform:scale(.96);">{{obNextLabel}}</div>
+        </div>
+      </div>
+    </sc-if>
+
+    <div ref="{{ghostRef}}" style="display:{{ghostDisplay}};position:fixed;left:0;top:0;z-index:99;pointer-events:none;will-change:transform;">
+      <div style="width:88px;background:#fff;padding:6px 6px 3px;box-shadow:0 12px 28px rgba(0,0,0,.38);transform:rotate(-3deg);animation:etPop .15s ease;">
+        <div style="width:100%;aspect-ratio:1;background:{{ghostFill}};"></div>
+        <div style="font-family:'Oswald',sans-serif;font-weight:500;font-size:9px;letter-spacing:.3px;color:#8f8d86;text-align:center;padding:3px 0 2px;line-height:1.15;text-transform:uppercase;">{{ghostLabel}}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showStandards&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Display&quot;},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4da4e0&quot;,&quot;options&quot;:[&quot;#4da4e0&quot;,&quot;#e8871e&quot;,&quot;#7a9e4f&quot;,&quot;#8b6fc9&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Display&quot;},&quot;standardTarget&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:4,&quot;min&quot;:2,&quot;max&quot;:8,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Review&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.ghostRef = React.createRef();
+
+    this.LESSONS = [
+      { id: 'A', type: 'lesson', short: 'Narrator POV', title: "Who's Telling This Story?", dur: 45, tp: "Readers notice who is telling the story, because the narrator decides what we get to see.", std: '5R6', stdName: 'Point of View', materials: ['"Because of Winn-Dixie" ch. 4', 'POV anchor chart', 'Sticky notes'], desc: 'Readers name the narrator and notice how point of view shapes what we know — and don\'t know — about characters.', notes: [{ who: 'Ms. Alvarez · Rm 214', text: 'The turn-and-talk on first vs. third person ran long — worth it.' }] },
+      { id: 'B', type: 'lesson', short: 'Traits vs. Feelings', title: 'Traits vs. Feelings', dur: 45, tp: "Readers separate how a character feels right now from who they are over time.", std: '5R1', stdName: 'Inference & Evidence', materials: ['"The Tiger Rising" excerpt', 'Trait word bank', 'T-chart organizer'], desc: 'Readers separate what a character feels in a moment from who they are over time, citing lines that prove it.', notes: [{ who: 'Mr. Okafor · Rm 118', text: 'The word bank saved my striving readers. Print extras.' }] },
+      { id: 'C', type: 'lesson', short: 'Inferring Dialogue', title: 'Reading Between the Lines', dur: 45, tp: "Readers listen to what characters say — and what they leave unsaid — to figure out what they really mean.", std: '5R1', stdName: 'Inference & Evidence', materials: ['Dialogue excerpt set', 'Two-column inference notes'], desc: 'Readers infer what characters really mean from what they say — and what they leave unsaid.', notes: [{ who: 'Ms. Chen · Rm 209', text: 'Model with the sarcasm example first; it clicks fast.' }] },
+      { id: 'D', type: 'lesson', short: 'Motivation Map', title: 'What Drives a Character?', dur: 45, tp: "Readers track what a character wants and what stands in the way — that tension reveals character.", std: '5R3', stdName: 'Compare Characters & Events', materials: ['Motivation map organizer', 'Chart paper & markers'], desc: 'Readers track what a character wants, what stands in the way, and what that reveals about them.', notes: [{ who: 'Ms. Alvarez · Rm 214', text: 'Pairs finished faster than I expected — have an extension ready.' }] },
+      { id: 'E', type: 'lesson', short: 'Theme & Change', title: 'Theme Through Change', dur: 45, tp: "Readers use how a character changes from beginning to end to grow ideas about theme.", std: '5R2', stdName: 'Theme & Summary', materials: ['Character change timeline', '"Winn-Dixie" ch. 15'], desc: 'Readers notice how a character changes from beginning to end and use that arc to name a theme.', notes: [{ who: 'Mr. Okafor · Rm 118', text: 'My class needed two days for this one.' }] },
+      { id: 'F', type: 'lesson', short: 'Compare Characters', title: 'Side by Side', dur: 45, tp: "Readers put two characters side by side and let the differences teach them.", std: '5R3', stdName: 'Compare Characters & Events', materials: ['Venn organizer', 'Character trait cards'], desc: 'Readers compare two characters\' responses to the same event, drawing on specific details in the text.', notes: [{ who: 'Ms. Chen · Rm 209', text: 'Opal vs. Gloria Dump worked better than Opal vs. the preacher.' }] },
+      { id: 'G', type: 'lesson', short: 'Evidence Paragraph', title: 'Defend Your Claim', dur: 50, tp: "Writers make a claim about a character and prove it with exact lines from the text.", std: '5W1', stdName: 'Opinion Writing', materials: ['Paragraph frames', 'Evidence sentence starters'], desc: 'Writers state a claim about a character and back it with two pieces of quoted evidence.', notes: [{ who: 'Ms. Alvarez · Rm 214', text: 'Collect these — great baseline for the unit writing task.' }] },
+      { id: 'H', type: 'lesson', short: 'Book Club', title: 'Grand Conversation', dur: 50, tp: "Book clubs grow ideas bigger than any one reader by building on each other's talk.", std: '5SL1', stdName: 'Collaborative Discussion', materials: ['Discussion norms card', 'Talk-moves bookmarks'], desc: 'Book clubs hold a student-led discussion, building on one another\'s ideas with text evidence.', notes: [{ who: 'Mr. Okafor · Rm 118', text: 'Fishbowl one group first if clubs are new to your class.' }] }
+    ];
+    this.VITAMINS = [
+      { id: 'V1', type: 'vitamin', short: 'Word Collector', title: 'Word Collector', dur: 10, tp: "Word lovers collect words the way beachcombers collect shells.", std: '5L4', stdName: 'Vocabulary Acquisition', materials: ['Collector journals', 'Sticky flags'], desc: 'A quick, joyful hunt: students capture one delicious word from independent reading and trade it with a partner.', notes: [{ who: 'Ms. Chen · Rm 209', text: 'My kids beg for this one. Friday favorite.' }] },
+      { id: 'V2', type: 'vitamin', short: 'Poem in Pocket', title: 'Poem in Your Pocket', dur: 10, tp: "Poets hide pictures inside words; readers find them.", std: '5L5', stdName: 'Figurative Language', materials: ['Poem slips (one per student)'], desc: 'A shared read of a short poem; students hunt for one image or metaphor worth keeping in their pocket.', notes: [{ who: 'Ms. Alvarez · Rm 214', text: 'Naomi Shihab Nye slips got the best reactions.' }] },
+      { id: 'V3', type: 'vitamin', short: "Reader's Theater", title: "Reader's Theater Rehearsal", dur: 15, tp: "Fluent readers make the page sound like talk.", std: '5RF4', stdName: 'Fluency', materials: ['Script sets (groups of 4)'], desc: 'Groups rehearse a short script with expression — fluency practice that feels like play, not drill.', notes: [{ who: 'Mr. Okafor · Rm 118', text: 'Assign roles before the block starts or you lose 5 minutes.' }] },
+      { id: 'V4', type: 'vitamin', short: 'Sentence Surgery', title: 'Sentence Surgery', dur: 10, tp: "Editors read like surgeons — every mark matters.", std: '5L2', stdName: 'Conventions', materials: ['Broken sentence strips', 'Surgeon gloves (optional, beloved)'], desc: 'Teams operate on a mangled sentence — punctuation, capitals, commas — and defend their fixes.', notes: [{ who: 'Ms. Chen · Rm 209', text: 'The gloves are silly and 100% worth it.' }] }
+    ];
+    this.STANDARDS = [
+      { code: '5R1', name: 'Quote accurately and draw inferences from a text' },
+      { code: '5R2', name: 'Determine theme; summarize a text' },
+      { code: '5R3', name: 'Compare characters, settings & events using details' },
+      { code: '5R6', name: 'Describe how point of view influences events' },
+      { code: '5W1', name: 'Write opinion pieces supported by reasons & evidence' },
+      { code: '5SL1', name: 'Engage in collaborative discussions, building on ideas' },
+      { code: '5L4', name: 'Determine word meanings using context & word parts' },
+      { code: '5L5', name: 'Interpret figurative language, incl. similes & metaphors' },
+      { code: '5RF4', name: 'Read with accuracy & fluency to support comprehension' },
+      { code: '5L2', name: 'Command of conventions: punctuation & spelling' }
+    ];
+    this.UNITS = [
+      { id: 'u1', name: 'CHARACTER STUDY', range: 'Sep 1 – Sep 11', anchor: 'Because of Winn-Dixie' },
+      { id: 'u2', name: 'NONFICTION RESEARCH', range: 'Sep 14 – Sep 25', anchor: 'The Great Fire' },
+      { id: 'u3', name: 'PERSONAL NARRATIVE', range: 'Sep 28 – Oct 9', anchor: 'Mentor memoir set' },
+      { id: 'u4', name: 'POETRY & FIGURATIVE LANGUAGE', range: 'Oct 13 – Oct 30' },
+      { id: 'u5', name: 'RESEARCH CLUBS: INFO WRITING', range: 'Nov 2 – Dec 4' },
+      { id: 'u6', name: 'ARGUMENT & DEBATE', range: 'Dec 7 – Jan 15' }
+    ];
+    this.DOWS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    this.ROSTER = ['Amara B.', 'DeShawn W.', 'Sofia R.', 'Mateo G.', 'Lena K.', 'Jayden P.', 'Priya S.', 'Noah T.'];
+    this.YEAR_ARC = [
+      ['SEP', 'Character · Nonfiction'], ['OCT', 'Narrative · Poetry'], ['NOV', 'Research Clubs'],
+      ['DEC', 'Argument & Debate'], ['JAN', 'Argument & Debate'], ['FEB', 'Literary Essay'],
+      ['MAR', 'Fantasy Book Clubs'], ['APR', 'Info Books'], ['MAY', 'Memoir'], ['JUN', 'Reflect & Celebrate']
+    ];
+
+    this.DAYS = [];
+    const dt = new Date(2026, 8, 1);
+    while (this.DAYS.length < 24) {
+      const dow = dt.getDay();
+      if (dow > 0 && dow < 6) {
+        const m = dt.getMonth(), d = dt.getDate();
+        let unit = 'u3';
+        if (m === 8 && d <= 11) unit = 'u1';
+        else if (m === 8 && d <= 25) unit = 'u2';
+        this.DAYS.push({ num: d, month: m === 8 ? 'September' : 'October', dow: this.DOWS[dow], unit });
+      }
+      dt.setDate(dt.getDate() + 1);
+    }
+    this.TODAY = this.DAYS.findIndex(d => d.month === 'September' && d.num === 9);
+
+    const seed = {
+      placed: [
+        { uid: 'p1', cardId: 'B', day: 0 }, { uid: 'p2', cardId: 'D', day: 1 },
+        { uid: 'p3', cardId: 'F', day: 2 }, { uid: 'p4', cardId: 'V3', day: 3 },
+        { uid: 'p5', cardId: 'H', day: 4 }, { uid: 'p6', cardId: 'A', day: 5 },
+        { uid: 'p7', cardId: 'C', day: 6 }, { uid: 'p8', cardId: 'V1', day: 6 },
+        { uid: 'p9', cardId: 'E', day: 7 }, { uid: 'p10', cardId: 'G', day: 8 }
+      ],
+      flags: { 0: { start: true }, 4: { due: true } },
+      done: { p1: true, p2: true, p3: true, p4: true, p5: true, p6: true },
+      ratings: { p1: 'well', p2: 'well', p3: 'reteach', p4: 'well' },
+      logNotes: { p3: 'Venn got crowded — try a T-chart next time.' },
+      dayNotes: { 5: 'POV chart stays up all unit. Kids referenced it during ind. reading.' },
+      mats: {}, customCards: [],
+      captures: { 5: [{ id: 'cp1', student: 'DeShawn W.', text: 'Mixed up trait vs. feeling — revisit T-chart Monday.' }] },
+      profile: { name: 'Ms. Rivera', school: 'P.S. 130 Brooklyn', room: '214', grade: '5', subject: 'ELA' },
+      currChoice: 'nyc'
+    };
+    this.OB_TOUR = {
+      3: { sel: '[data-ob="pool"]', title: 'YOUR LESSON SHELF', text: 'Every unit comes loaded with ready-to-teach lessons, aligned to NY Next Gen standards. Tap any card to see materials, timing, and notes from teachers who taught it before you.' },
+      4: { sel: '[data-ob="vitamins"]', title: 'VITAMINS', text: 'Quick 10–15 minute boosters — vocabulary games, fluency play, sentence surgery. Sprinkle them between lessons to keep the week joyful.' },
+      5: { sel: '[data-ob="palette"]', title: 'BUILD YOUR OWN', text: 'Drag a blank LESSON or VITAMIN onto the timeline to create your own. Drop START and DUE flags on days to track assignments.' },
+      6: { sel: '[data-ob="timeline"]', title: 'PLAN YOUR WEEKS', text: 'Drag cards onto school days. The colored bar shows your units; arrows page through the year. An orange warning appears when a day runs past your 105-minute ELA block.' },
+      7: { sel: '[data-ob="tabs"]', title: 'PLAN · DO · REVIEW', text: 'When it\'s time to teach, DO turns your plan into a run-of-show with full lesson plans and conference notes. REVIEW tracks standards coverage and your reflections.' }
+    };
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem('edutrack5-v1')); } catch (e) { }
+    this.state = Object.assign({
+      view: 'plan', calendarOpen: false, unitsOpen: false, viewStart: 0,
+      doDay: this.TODAY, popover: null, drag: null, dragOverDay: null, expanded: {}
+    }, seed, saved || {});
+    if (!this.state.captures) this.state.captures = seed.captures;
+    if (!this.state.profile) this.state.profile = seed.profile;
+    if (!this.state.currChoice) this.state.currChoice = 'nyc';
+    this.state.obStep = (saved && saved.obDone) ? null : 0;
+    this.state.obRect = null;
+  }
+
+  componentDidMount() {
+    this._mv = (e) => this.onMove(e);
+    this._up = (e) => this.onUp(e);
+    window.addEventListener('pointermove', this._mv);
+    window.addEventListener('pointerup', this._up);
+    this._rz = () => { this.forceUpdate(); };
+    window.addEventListener('resize', this._rz);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('pointermove', this._mv);
+    window.removeEventListener('pointerup', this._up);
+    window.removeEventListener('resize', this._rz);
+  }
+  componentDidUpdate() {
+    const s = this.state;
+    if (this.OB_TOUR[s.obStep]) {
+      const r = this.obRectFor(s.obStep);
+      if (r && (!s.obRect || s.obRect.x !== r.x || s.obRect.y !== r.y || s.obRect.w !== r.w || s.obRect.h !== r.h)) {
+        this.setState({ obRect: r });
+      }
+    }
+    try {
+      localStorage.setItem('edutrack5-v1', JSON.stringify({
+        placed: s.placed, flags: s.flags, done: s.done, ratings: s.ratings,
+        logNotes: s.logNotes, dayNotes: s.dayNotes, mats: s.mats, customCards: s.customCards, captures: s.captures,
+        profile: s.profile, currChoice: s.currChoice, obDone: s.obStep === null
+      }));
+    } catch (e) { }
+  }
+
+  obRectFor(step) {
+    const tour = this.OB_TOUR[step];
+    if (!tour) return null;
+    const el = document.querySelector(tour.sel);
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return r.width > 0 ? { x: r.left, y: r.top, w: r.width, h: r.height } : null;
+  }
+
+  allCards() { return this.LESSONS.concat(this.VITAMINS, this.state.customCards); }
+  cardById(id) { return this.allCards().find(c => c.id === id); }
+  fillOf(c) { return c.type === 'vitamin' ? '#8cba52' : '#6f4e2f'; }
+  phasesFor(c) {
+    if (c.type === 'vitamin') return [
+      { min: '2', name: 'LAUNCH', note: 'Set up the routine & partners' },
+      { min: '' + Math.max(4, c.dur - 4), name: 'PLAY', note: 'Everyone in — teacher circulates' },
+      { min: '2', name: 'SHARE', note: 'One favorite from the room' }
+    ];
+    return [
+      { min: '3', name: 'CONNECT', note: "Link to yesterday's thinking" },
+      { min: '8', name: 'TEACH', note: 'Model with the anchor text' },
+      { min: '5', name: 'ENGAGE', note: 'Partners try it with a shared excerpt' },
+      { min: '2', name: 'LINK', note: 'Send off to independent reading' },
+      { min: '' + Math.max(10, c.dur - 25), name: 'INDEPENDENT & CONFER', note: 'Students read & jot; teacher confers' },
+      { min: '7', name: 'SHARE', note: "Spotlight two readers' jots" }
+    ];
+  }
+
+  onDown(e, payload) {
+    if (e.button !== undefined && e.button !== 0) return;
+    e.preventDefault();
+    payload.rect = e.currentTarget.getBoundingClientRect();
+    this._pending = { x: e.clientX, y: e.clientY, payload };
+  }
+  onMove(e) {
+    const p = this._pending;
+    if (p && !this.state.drag) {
+      if (Math.abs(e.clientX - p.x) + Math.abs(e.clientY - p.y) > 8) {
+        this.setState({ drag: p.payload, popover: null });
+      }
+    }
+    if (this.state.drag || (p && this.state.drag)) { }
+    if (this.state.drag) {
+      const g = this.ghostRef.current;
+      if (g) g.style.transform = 'translate(' + (e.clientX - 48) + 'px,' + (e.clientY - 40) + 'px)';
+      const el = document.elementFromPoint(e.clientX, e.clientY);
+      const dd = el && el.closest ? el.closest('[data-day]') : null;
+      const day = dd ? parseInt(dd.getAttribute('data-day'), 10) : null;
+      if (day !== this.state.dragOverDay) this.setState({ dragOverDay: day });
+    }
+  }
+  onUp(e) {
+    const pend = this._pending; this._pending = null;
+    const drag = this.state.drag;
+    if (drag) {
+      const d = this.state.dragOverDay;
+      this.setState(s => {
+        const st = { drag: null, dragOverDay: null };
+        if (drag.kind === 'pool' && d != null) {
+          st.placed = s.placed.concat([{ uid: 'u' + Date.now(), cardId: drag.cardId, day: d }]);
+        } else if (drag.kind === 'placed') {
+          if (d != null) st.placed = s.placed.map(p2 => p2.uid === drag.uid ? Object.assign({}, p2, { day: d }) : p2);
+          else st.placed = s.placed.filter(p2 => p2.uid !== drag.uid);
+        } else if ((drag.kind === 'new-lesson' || drag.kind === 'new-vitamin') && d != null) {
+          const isV = drag.kind === 'new-vitamin';
+          const nid = 'c' + Date.now();
+          const card = { id: nid, type: isV ? 'vitamin' : 'lesson', short: isV ? 'New Vitamin' : 'New Lesson', title: isV ? 'Untitled Vitamin' : 'Untitled Lesson', dur: isV ? 10 : 45, std: '—', stdName: '', materials: ['Add materials…'], desc: 'A fresh card — open it to fill in the details.', notes: [] };
+          st.customCards = s.customCards.concat([card]);
+          st.placed = s.placed.concat([{ uid: 'u' + Date.now(), cardId: nid, day: d }]);
+        } else if (drag.kind === 'flag-start' && d != null) {
+          st.flags = Object.assign({}, s.flags); st.flags[d] = Object.assign({}, st.flags[d], { start: true });
+        } else if (drag.kind === 'flag-due' && d != null) {
+          st.flags = Object.assign({}, s.flags); st.flags[d] = Object.assign({}, st.flags[d], { due: true });
+        }
+        return st;
+      });
+    } else if (pend && pend.payload.tap) {
+      this.openPopover(pend.payload);
+    }
+  }
+
+  openPopover(payload) {
+    const card = this.cardById(payload.cardId);
+    if (!card) return;
+    const r = payload.rect;
+    const W = window.innerWidth, H = window.innerHeight;
+    let x = r.right + 14; if (x + 300 > W) x = r.left - 304; if (x < 8) x = Math.min(W - 300, Math.max(8, r.left));
+    let y = Math.max(10, Math.min(r.top - 60, H - 420));
+    this.setState({ popover: { cardId: card.id, uid: payload.uid || null, x, y } });
+  }
+  removeFlag(e, day, key) {
+    e.stopPropagation(); e.preventDefault();
+    this.setState(s => {
+      const flags = Object.assign({}, s.flags);
+      flags[day] = Object.assign({}, flags[day]); delete flags[day][key];
+      return { flags };
+    });
+  }
+
+  buildDayObjs(start, count, accent) {
+    const showStd2 = this.props.showStandards ?? true;
+    const out = [];
+    for (let i = 0; i < count; i++) {
+      const gi = start + i;
+      const D = this.DAYS[gi];
+      if (!D) break;
+      const fl = this.state.flags[gi] || {};
+      const entries = this.state.placed.filter(p => p.day === gi);
+      const cards = entries.map((en, ci) => {
+        const c = this.cardById(en.cardId);
+        return {
+          fill: this.fillOf(c), label: c.short,
+          code: showStd2 && c.std && c.std !== '—' ? c.std : '',
+          showStart: !!fl.start && ci === 0, showDue: !!fl.due && ci === 0,
+          onDown: (e) => this.onDown(e, { kind: 'placed', uid: en.uid, cardId: en.cardId, tap: true, title: c.short, fill: this.fillOf(c) })
+        };
+      });
+      const total = entries.reduce((a, en) => a + ((this.cardById(en.cardId) || { dur: 0 }).dur), 0);
+      const isToday = gi === this.TODAY;
+      const isOver = this.state.dragOverDay === gi;
+      out.push({
+        idx: gi, num: D.num, left: (i * 12.5) + '%',
+        bg: isOver ? 'rgba(77,164,224,.14)' : 'transparent',
+        outline: isOver ? '2px dashed ' + accent : 'none',
+        dowI: D.dow.charAt(0), numColor: isToday ? accent : '#2f2d29',
+        dotBg: isToday ? accent : 'transparent',
+        over: total > 105, overLabel: total + ' MIN',
+        cards,
+        soloFlags: cards.length === 0 && (fl.start || fl.due),
+        startFlagOnly: cards.length === 0 && !!fl.start,
+        dueFlagOnly: cards.length === 0 && !!fl.due,
+        onStartFlag: (e) => this.removeFlag(e, gi, 'start'),
+        onDueFlag: (e) => this.removeFlag(e, gi, 'due')
+      });
+    }
+    return out;
+  }
+  buildSegs(start, count, accent) {
+    const days = this.DAYS.slice(start, start + count);
+    if (!days.length) return [];
+    const tally = {};
+    days.forEach(d => { tally[d.unit] = (tally[d.unit] || 0) + 1; });
+    const active = Object.keys(tally).sort((a, b) => tally[b] - tally[a])[0];
+    const segs = [];
+    let i = 0;
+    while (i < days.length) {
+      let j = i;
+      while (j < days.length && days[j].unit === days[i].unit) j++;
+      const unit = this.UNITS.find(u => u.id === days[i].unit);
+      const cont = start + i > 0 && this.DAYS[start + i - 1].unit === days[i].unit;
+      segs.push({
+        name: cont ? '(' + unit.name + ')' : unit.name,
+        left: (i * 12.5) + '%', width: ((j - i) * 12.5) + '%',
+        color: days[i].unit === active ? accent : '#8f8d88'
+      });
+      i = j;
+    }
+    return segs;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const accent = this.props.accent ?? '#4da4e0';
+    const showStd = this.props.showStandards ?? true;
+    const target = this.props.standardTarget ?? 4;
+    const gray = '#9c9a94', dark = '#3d3b36';
+
+    const placedIds = {};
+    s.placed.forEach(p => { placedIds[p.cardId] = true; });
+    const poolCard = (c) => {
+      const dim = placedIds[c.id];
+      return {
+        fill: dim ? (c.type === 'vitamin' ? '#cfe0b4' : '#c9bcab') : this.fillOf(c),
+        labelColor: dim ? '#b9b5aa' : '#8f8d86',
+        label: c.short,
+        code: showStd && c.std && c.std !== '—' ? c.std : '',
+        onDown: (e) => this.onDown(e, { kind: 'pool', cardId: c.id, tap: true, title: c.short, fill: this.fillOf(c) })
+      };
+    };
+
+    const vs = s.viewStart;
+    const tlDays = this.buildDayObjs(vs, 8, accent);
+    const tlSegs = this.buildSegs(vs, 8, accent);
+    const tlMonth = (this.DAYS[vs] || {}).month || '';
+
+    const calRows = [0, 8, 16].map(st => ({
+      days: this.buildDayObjs(st, 8, accent),
+      segs: this.buildSegs(st, 8, accent),
+      month: (this.DAYS[st] || {}).month || '',
+      week: 'WEEK ' + (Math.floor(st / 5) + 1) + '–' + (Math.floor((st + 7) / 5) + 1)
+    }));
+
+    // context
+    const visArr = this.DAYS.slice(vs, vs + 8);
+    const tallyU = {}; visArr.forEach(d2 => { tallyU[d2.unit] = (tallyU[d2.unit] || 0) + 1; });
+    const actUid = Object.keys(tallyU).sort((a, b) => tallyU[b] - tallyU[a])[0];
+    const actUnit = this.UNITS.find(u => u.id === actUid) || this.UNITS[0];
+    const unitLessonIds = {};
+    s.placed.forEach(p => {
+      if ((this.DAYS[p.day] || {}).unit === actUid) {
+        const c2 = this.cardById(p.cardId);
+        if (c2 && c2.type === 'lesson') unitLessonIds[c2.id] = true;
+      }
+    });
+    const yearMonths = this.YEAR_ARC.map(([name, sub]) => {
+      const cur = name === 'SEP';
+      return { name, sub, bg: cur ? accent : '#dedbd2', color: cur ? '#fff' : '#8f8d86' };
+    });
+
+    // DO
+    const dd = s.doDay;
+    const D = this.DAYS[dd] || this.DAYS[0];
+    const dayEntries = s.placed.filter(p => p.day === dd);
+    const ordered = dayEntries.map(en => ({ en, c: this.cardById(en.cardId) }))
+      .sort((a, b) => (a.c.type === 'vitamin' ? 1 : 0) - (b.c.type === 'vitamin' ? 1 : 0));
+    let t = 9 * 60;
+    const fmt = (m) => { const h = Math.floor(m / 60); return h + ':' + ('' + (m % 60)).padStart(2, '0'); };
+    const doAgenda = ordered.map(({ en, c }) => {
+      const t0 = t, t1 = t + c.dur; t = t1 + 5;
+      const isDone = !!s.done[en.uid];
+      const isExp = !!s.expanded[en.uid];
+      return {
+        expanded: isExp,
+        expandHint: isExp ? 'CLOSE ⌄' : 'LESSON PLAN ›',
+        tp: '“' + (c.tp || c.desc) + '”',
+        phases: this.phasesFor(c),
+        onExpand: () => this.setState(st => { const expanded = Object.assign({}, st.expanded); if (expanded[en.uid]) delete expanded[en.uid]; else expanded[en.uid] = true; return { expanded }; }),
+        time: fmt(t0) + ' – ' + fmt(t1), fill: this.fillOf(c), title: c.title, desc: c.desc,
+        showStd: showStd && c.std !== '—', std: c.std + ' · ' + c.stdName, durLabel: c.dur + ' min',
+        doneBorder: isDone ? '#8cba52' : '#b9b5aa', doneBg: isDone ? '#8cba52' : 'transparent',
+        check: isDone ? '✓' : '',
+        checkAnim: isDone ? 'etCheck .32s cubic-bezier(.34,1.56,.64,1)' : 'none',
+        onDone: (e) => { e.stopPropagation(); this.setState(st => { const done = Object.assign({}, st.done); if (done[en.uid]) delete done[en.uid]; else done[en.uid] = true; return { done }; }); }
+      };
+    });
+    const matSet = [];
+    ordered.forEach(({ c }) => c.materials.forEach(m => { if (!matSet.includes(m)) matSet.push(m); }));
+    const doMaterials = matSet.map(m => {
+      const key = dd + '|' + m, on = !!s.mats[key];
+      return {
+        t: m, bg: on ? '#8cba52' : 'transparent', check: on ? '✓' : '',
+        color: on ? '#9a9890' : dark, deco: on ? 'line-through' : 'none',
+        onToggle: () => this.setState(st => { const mats = Object.assign({}, st.mats); if (mats[key]) delete mats[key]; else mats[key] = true; return { mats }; })
+      };
+    });
+    const stdSet = [];
+    ordered.forEach(({ c }) => { if (c.std !== '—' && !stdSet.some(x => x.label.startsWith(c.std))) stdSet.push({ label: c.std + ' — ' + c.stdName }); });
+
+    // REVIEW
+    const counts = {};
+    s.placed.forEach(p => {
+      const c = this.cardById(p.cardId);
+      if (!c || c.std === '—') return;
+      const taught = p.day < this.TODAY || s.done[p.uid];
+      counts[c.std] = counts[c.std] || { taught: 0, planned: 0 };
+      counts[c.std][taught ? 'taught' : 'planned']++;
+    });
+    const revRows = this.STANDARDS.map(st => {
+      const c = counts[st.code] || { taught: 0, planned: 0 };
+      const blocks = [];
+      for (let i = 0; i < target; i++) {
+        blocks.push({ bg: i < c.taught ? '#6f4e2f' : (i < c.taught + c.planned ? '#d9cfc0' : 'transparent') });
+      }
+      return { code: st.code, name: st.name, blocks, countLabel: c.taught + ' of ' + target };
+    });
+    const revLog = s.placed.filter(p => p.day <= this.TODAY).sort((a, b) => b.day - a.day).map(p => {
+      const c = this.cardById(p.cardId); const D2 = this.DAYS[p.day];
+      const r = s.ratings[p.uid];
+      return {
+        date: D2.dow + ', ' + D2.month + ' ' + D2.num,
+        std: showStd && c.std !== '—' ? c.std : '',
+        title: c.title, note: s.logNotes[p.uid] || '',
+        wellBorder: r === 'well' ? '#8cba52' : '#b9b5aa', wellBg: r === 'well' ? '#8cba52' : 'transparent', wellColor: r === 'well' ? '#fff' : '#8f8d86',
+        reBorder: r === 'reteach' ? '#e8871e' : '#b9b5aa', reBg: r === 'reteach' ? '#e8871e' : 'transparent', reColor: r === 'reteach' ? '#fff' : '#8f8d86',
+        onWell: () => this.setState(st => { const ratings = Object.assign({}, st.ratings); ratings[p.uid] = ratings[p.uid] === 'well' ? null : 'well'; return { ratings }; }),
+        onReteach: () => this.setState(st => { const ratings = Object.assign({}, st.ratings); ratings[p.uid] = ratings[p.uid] === 'reteach' ? null : 'reteach'; return { ratings }; }),
+        onNote: (e) => { const v = e.target.value; this.setState(st => ({ logNotes: Object.assign({}, st.logNotes, { [p.uid]: v }) })); }
+      };
+    });
+
+    const unitList = this.UNITS.map(u => {
+      const n = s.placed.filter(p => (this.DAYS[p.day] || {}).unit === u.id).length;
+      const current = u.id === (this.DAYS[this.TODAY] || {}).unit;
+      return { name: u.name, range: u.range, bar: current ? accent : '#dcd9cf', status: n ? n + ' PLANNED' : 'NOT PLANNED' };
+    });
+
+    const pop = s.popover;
+    const popCard = pop ? this.cardById(pop.cardId) : null;
+
+    // onboarding
+    const ob = s.obStep;
+    const pf = s.profile || {};
+    const obModal = ob === 0 || ob === 1 || ob === 2 || ob === 8;
+    const obTourOn = ob != null && ob >= 3 && ob <= 7;
+    const tourDef = this.OB_TOUR[ob] || {};
+    const setProfile = (k) => (e) => {
+      const v = e.target.value;
+      this.setState(st => ({ profile: Object.assign({}, st.profile, { [k]: v }) }));
+    };
+    const chip = (label, key, val) => ({
+      label,
+      border: pf[key] === val ? accent : '#dcd9cf',
+      bg: pf[key] === val ? accent : '#fff',
+      color: pf[key] === val ? '#fff' : '#6b6963',
+      onTap: () => this.setState(st => ({ profile: Object.assign({}, st.profile, { [key]: val }) }))
+    });
+    const curricOpt = (id, title, sub, disabled) => ({
+      title, sub, op: disabled ? .45 : 1,
+      border: s.currChoice === id ? accent : '#dcd9cf',
+      dot: s.currChoice === id ? accent : 'transparent',
+      onTap: disabled ? (() => { }) : (() => this.setState({ currChoice: id }))
+    });
+    const dotIdx = ob == null ? 4 : (ob < 3 ? ob : (ob < 8 ? 3 : 4));
+    let spot = s.obRect || { x: -20, y: -20, w: 0, h: 0 };
+    const W2 = window.innerWidth, H2 = window.innerHeight;
+    let tipX = W2 / 2 - 160, tipY = H2 / 2 - 120;
+    if (s.obRect) {
+      if (spot.x > W2 - 380 && spot.w < 260) { tipX = spot.x - 340; tipY = Math.max(12, Math.min(spot.y, H2 - 250)); }
+      else {
+        tipX = Math.max(12, Math.min(spot.x + spot.w / 2 - 160, W2 - 332));
+        tipY = spot.y + spot.h + 16;
+        if (tipY > H2 - 240) tipY = Math.max(12, spot.y - 246);
+      }
+    }
+    const obNext = () => {
+      if (ob === 8 || ob == null) { this.setState({ obStep: null }); return; }
+      const nxt = ob + 1;
+      const patch = { obStep: nxt, obRect: this.obRectFor(nxt) };
+      if (nxt === 3) { patch.view = 'plan'; patch.calendarOpen = false; patch.unitsOpen = false; }
+      this.setState(patch);
+    };
+
+    const plan = s.view === 'plan';
+    return {
+      // header
+      goPlan: () => this.setState({ view: 'plan' }),
+      goDo: () => this.setState({ view: 'do', popover: null }),
+      goReview: () => this.setState({ view: 'review', popover: null }),
+      goPlanBoard: () => this.setState({ view: 'plan', calendarOpen: false }),
+      planColor: plan ? accent : gray, doColor: s.view === 'do' ? accent : gray, reviewColor: s.view === 'review' ? accent : gray,
+      toggleCalendar: () => this.setState(st => ({ view: 'plan', calendarOpen: !(st.view === 'plan' && st.calendarOpen) })),
+      calColor: plan && s.calendarOpen ? accent : dark, calChev: plan && s.calendarOpen ? '⌄' : '›',
+      toggleUnits: () => this.setState(st => ({ unitsOpen: !st.unitsOpen })),
+      unitsColor: s.unitsOpen ? accent : dark,
+      unitsOpen: s.unitsOpen, unitList,
+      accent,
+      // plan
+      showBoard: plan && !s.calendarOpen,
+      showCalendar: plan && s.calendarOpen,
+      showDo: s.view === 'do',
+      showReview: s.view === 'review',
+      poolLessons: this.LESSONS.map(poolCard),
+      poolVitamins: this.VITAMINS.map(poolCard),
+      onNewLesson: (e) => this.onDown(e, { kind: 'new-lesson', title: 'New Lesson', fill: '#6f4e2f' }),
+      onNewVitamin: (e) => this.onDown(e, { kind: 'new-vitamin', title: 'New Vitamin', fill: '#8cba52' }),
+      onNewStart: (e) => this.onDown(e, { kind: 'flag-start', title: 'Assignment Start', fill: '#e8871e' }),
+      onNewDue: (e) => this.onDown(e, { kind: 'flag-due', title: 'Assignment Due', fill: '#e8871e' }),
+      onPrevWin: () => this.setState(st => ({ viewStart: Math.max(0, st.viewStart - 8) })),
+      onNextWin: () => this.setState(st => ({ viewStart: Math.min(this.DAYS.length - 8, st.viewStart + 8) })),
+      tlDays, tlSegs, tlMonth, calRows,
+      weekLabel: 'Week ' + (Math.floor(this.TODAY / 5) + 1) + ' of 38',
+      unitTitle: 'UNIT ' + (this.UNITS.indexOf(actUnit) + 1) + ' · ' + actUnit.name,
+      unitSummary: actUnit.range + ' · ' + Object.keys(unitLessonIds).length + ' of 8 lessons planned' + (actUnit.anchor ? ' · Anchor text: ' + actUnit.anchor : ''),
+      calHeading: 'SEPTEMBER – OCTOBER 2026 · MARKING PERIOD 1',
+      calWeeksLabel: 'Weeks 1–5 of 38 · 180 instructional days',
+      yearMonths,
+      // do
+      doPrev: () => this.setState(st => ({ doDay: Math.max(0, st.doDay - 1) })),
+      doNext: () => this.setState(st => ({ doDay: Math.min(this.DAYS.length - 1, st.doDay + 1) })),
+      doDateLabel: D.dow + ', ' + D.month + ' ' + D.num,
+      doIsToday: dd === this.TODAY,
+      doBlockLabel: 'ELA BLOCK · 9:00 – ' + (doAgenda.length ? fmt(t - 5) : '10:45') + ' · ' + ((this.UNITS.find(u => u.id === D.unit) || {}).name || '') + (doAgenda.length ? ' · ' + ordered.reduce((a, o) => a + o.c.dur, 0) + ' MIN' : ''),
+      doAgenda, doEmpty: doAgenda.length === 0,
+      doMaterials, doNoMaterials: doMaterials.length === 0 && doAgenda.length > 0,
+      doStandards: stdSet,
+      doNote: s.dayNotes[dd] || '',
+      doRoster: this.ROSTER.map(name => ({
+        name,
+        onTap: () => this.setState(st => {
+          const captures = Object.assign({}, st.captures);
+          captures[dd] = (captures[dd] || []).concat([{ id: 'cp' + Date.now() + Math.random().toString(36).slice(2, 5), student: name, text: '' }]);
+          return { captures };
+        })
+      })),
+      doCaptures: (s.captures[dd] || []).map(cp => ({
+        student: cp.student, text: cp.text,
+        onText: (e) => {
+          const v = e.target.value;
+          this.setState(st => {
+            const captures = Object.assign({}, st.captures);
+            captures[dd] = (captures[dd] || []).map(x => x.id === cp.id ? Object.assign({}, x, { text: v }) : x);
+            return { captures };
+          });
+        },
+        onRemove: () => this.setState(st => {
+          const captures = Object.assign({}, st.captures);
+          captures[dd] = (captures[dd] || []).filter(x => x.id !== cp.id);
+          return { captures };
+        })
+      })),
+      onDoNote: (e) => { const v = e.target.value; this.setState(st => ({ dayNotes: Object.assign({}, st.dayNotes, { [dd]: v }) })); },
+      // review
+      revSubtitle: 'NY Next Generation ELA Standards · Grade 5 · through ' + this.DAYS[this.TODAY].month + ' ' + this.DAYS[this.TODAY].num,
+      revRows, revLog, revEmpty: revLog.length === 0,
+      // popover
+      popOpen: !!pop,
+      popX: pop ? pop.x + 'px' : '0px', popY: pop ? pop.y + 'px' : '0px',
+      popFill: popCard ? this.fillOf(popCard) : '#6f4e2f',
+      popTitle: popCard ? popCard.title : '',
+      popMaterials: popCard ? popCard.materials : [],
+      popDur: popCard ? popCard.dur + ' minutes' : '',
+      popDesc: popCard ? popCard.desc : '',
+      popStd: popCard ? (popCard.std === '—' ? 'No standard yet' : popCard.std + ' — ' + popCard.stdName) : '',
+      popNotes: popCard ? popCard.notes : [],
+      popRemovable: !!(pop && pop.uid),
+      popRemove: () => this.setState(st => ({ placed: st.placed.filter(p => p.uid !== st.popover.uid), popover: null })),
+      closePopover: () => this.setState({ popover: null }),
+      // onboarding
+      identityLabel: ((pf.name || 'Ms. Rivera') + ' · Grade ' + (pf.grade || '5') + ' ' + (pf.subject || 'ELA') + ' · Room ' + (pf.room || '214') + ' · ' + (pf.school || 'P.S. 130 Brooklyn')).toUpperCase(),
+      obReplay: () => this.setState({ obStep: 3, view: 'plan', calendarOpen: false, unitsOpen: false, popover: null, obRect: this.obRectFor(3) }),
+      obModal,
+      obTour: obTourOn,
+      obS0: ob === 0, obS1: ob === 1, obS2: ob === 2, obS8: ob === 8,
+      obName: pf.name || '', onObName: setProfile('name'),
+      obSchool: pf.school || '', onObSchool: setProfile('school'),
+      obRoom: pf.room || '', onObRoom: setProfile('room'),
+      obGrades: ['3', '4', '5', '6'].map(g => chip(g, 'grade', g)),
+      obSubjects: ['ELA', 'MATH', 'SCIENCE', 'SOCIAL STUDIES'].map(sj => chip(sj, 'subject', sj)),
+      obCurric: [
+        curricOpt('nyc', 'NY GRADE 5 ELA · UNITS OF STUDY', 'Recommended · 6 units · 48 lessons · Next Gen aligned', false),
+        curricOpt('blank', 'START WITH A BLANK YEAR', 'Build every unit and lesson yourself', false),
+        curricOpt('import', 'IMPORT FROM GOOGLE DRIVE', 'Coming soon', true)
+      ],
+      obReadyName: pf.name || 'Teacher',
+      obDots: [0, 1, 2, 3, 4].map(i => ({ bg: i === dotIdx ? accent : '#cfccc3' })),
+      obShowBack: ob != null && ob > 0,
+      obNext,
+      obBack: () => { const prv = Math.max(0, (ob || 1) - 1); this.setState({ obStep: prv, obRect: this.obRectFor(prv) }); },
+      obSkip: () => this.setState({ obStep: null }),
+      obNextLabel: ob === 0 ? "LET'S GO" : ob === 1 ? 'CONTINUE' : ob === 2 ? 'LOAD & CONTINUE' : ob === 7 ? 'FINISH TOUR' : ob === 8 ? 'START PLANNING' : 'NEXT',
+      obSkipLabel: obModal ? 'Skip — explore on my own' : 'Skip tour',
+      obStepLabel: obTourOn ? 'STEP ' + (ob - 2) + ' OF 5' : '',
+      obTitle: tourDef.title || '', obText: tourDef.text || '',
+      obSpotX: spot.x + 'px', obSpotY: spot.y + 'px', obSpotW: spot.w + 'px', obSpotH: spot.h + 'px',
+      obTipX: tipX + 'px', obTipY: tipY + 'px',
+      // ghost
+      ghostRef: this.ghostRef,
+      ghostDisplay: s.drag ? 'block' : 'none',
+      ghostFill: s.drag ? s.drag.fill : '#6f4e2f',
+      ghostLabel: s.drag ? s.drag.title : ''
+    };
+  }
+}
+</script>
+</body>
+</html>

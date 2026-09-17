@@ -1,0 +1,13 @@
+---
+// The canonical site: the default lens (src/lenses/default.json), rendered
+// through the same components every other lens uses. Sections are ported in
+// src/components/lens/LensPage.astro; until then the hero stands alone.
+import Site from "../layouts/Site.astro";
+import Hero from "../components/lens/Hero.astro";
+import { getLibrary, defaultLens } from "../lib/site.mjs";
+const lib = getLibrary();
+const lens = defaultLens();
+---
+<Site title={lens.seo.title} description={lens.seo.description} canonical="https://takaoumehara.com/" lensSlug="default">
+  <Hero lens={lens} lib={lib} />
+</Site>

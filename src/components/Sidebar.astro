@@ -1,0 +1,109 @@
+---
+// The left column: who this is, the pages about the person, and every piece of
+// work grouped by category (src/categories/*.json). The group the current page
+// belongs to opens; the others fold. Rows carry the record's thumbnail (or its
+// CSS art) and its one-line cardLine, so the list reads like the site's cards.
+import { getLibrary, orderedCategories, destination, samePage } from "../lib/site.mjs";
+import { t, plain, url, esc } from "../lib/html.mjs";
+
+interface Props { current?: string }
+const { current = Astro.url.pathname } = Astro.props;
+
+const lib = getLibrary();
+const profile = lib.profile;
+const categories = orderedCategories();
+
+const PAGES = [
+  { href: "/now.html", label: "Now", match: ["/now.html", "/now/"] },
+  { href: "/publications.html", label: "Writing" },
+  { href: "/workshop.html", label: "Workshops", match: ["/workshop.html", "/breakbias.html"] },
+  { href: "/about.html", label: "About" },
+  { href: "/contact.html", label: "Work with me", match: ["/contact.html", "/work-with-me.html"] },
+  { href: profile.studio.url, label: "Studio ↗", external: true },
+];
+
+const isCurrent = (page) => (page.match ?? [page.href]).some((p) => samePage(p, current));
+
+const groups = categories.map((category) => {
+  const items = category.groups.flatMap((g) => g.items).map((id) => lib.evidence.get(id)).filter(Boolean)
+    .map((item) => {
+      const to = destination(item);
+      const here = to && !to.external && samePage(to.url, current);
+      return { item, to, here };
+    });
+  const onCategoryPage = samePage(`/${category.output}`, current);
+  return { category, items, open: onCategoryPage || items.some((i) => i.here) };
+});
+
+const name = (item) => (item.jpTitle && item.jpTitle !== (item.shortTitle ?? item.title))
+  ? t({ en: item.shortTitle ?? item.title, jp: item.jpTitle })
+  : esc(item.shortTitle ?? item.title);
+
+const thumb = (item) => {
+  const image = item.assets?.thumb ?? item.assets?.hero;
+  if (image) return `<img src="${esc(url(image))}" alt="" loading="lazy" width="44" height="44">`;
+  return `<span class="side-art" aria-hidden="true">${esc(item.assets?.artLabel ?? item.shortTitle ?? item.title)}</span>`;
+};
+---
+<aside class="side" id="side">
+  <div class="side-top">
+    <a class="side-brand" href="/">
+      <b>{profile.name}</b>
+      <small>creativity is everywhere</small>
+    </a>
+    <button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">Menu</button>
+  </div>
+
+  <div class="side-panel" id="side-panel">
+    <div class="side-row">
+      <a class="side-all" href="/work/" aria-current={samePage("/work/", current) ? "page" : undefined}>
+        <span class="t-en">All work</span><span class="t-jp">すべての仕事</span>
+      </a>
+      <div class="lang-switch" id="lang-switch">
+        <button class="lang-btn is-active" data-lang="en" type="button">EN</button>
+        <span class="lang-sep">|</span>
+        <button class="lang-btn" data-lang="jp" type="button">JP</button>
+      </div>
+    </div>
+
+    <a class="side-card" href="/about.html">
+      <p class="side-label"><span class="t-en">About</span><span class="t-jp">自己紹介</span></p>
+      <p set:html={t(profile.positioning[1])} />
+      <span class="side-more"><span class="t-en">More →</span><span class="t-jp">くわしく →</span></span>
+    </a>
+
+    <nav class="side-pages" aria-label="Pages">
+      {PAGES.map((page) => (
+        <a href={page.href} aria-current={isCurrent(page) ? "page" : undefined} target={page.external ? "_blank" : undefined} rel={page.external ? "noopener" : undefined}>{page.label}</a>
+      ))}
+    </nav>
+
+    <nav class="side-work" aria-label="Work by category">
+      {groups.map(({ category, items, open }) => (
+        <details class="side-group" open={open}>
+          <summary>
+            <span set:html={t(category.title)} />
+            <span class="side-count">{items.length}</span>
+          </summary>
+          <ul>
+            {items.map(({ item, to, here }) => (
+              <li>
+                <a class="side-item" href={to ? to.url : `/${category.output}#${item.slug}`}
+                   aria-current={here ? "page" : undefined}
+                   target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>
+                  <span class="side-thumb" set:html={thumb(item)} />
+                  <span class="side-text">
+                    <span class="side-name" set:html={name(item)} />
+                    <span class="side-line" set:html={t(item.cardLine ?? item.summary)} />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))}
+    </nav>
+
+    <p class="side-foot"><span set:html={t(profile.location)} /> · <a href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a></p>
+  </div>
+</aside>

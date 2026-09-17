@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="styles.css">
+<style>
+html,body{margin:0;padding:0;overflow:hidden;}
+body{background:#d6d3ca;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:#4da4e0;text-decoration:none;} a:hover{color:#2f88c9;}
+*{box-sizing:border-box;}
+::selection{background:#4da4e0;color:#fff;}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-thumb{background:#b3afa4;}
+::-webkit-scrollbar-track{background:transparent;}
+textarea::placeholder,input::placeholder{color:#a5a29a;}
+</style>
+</helmet>
+<div style="position:fixed;inset:0;display:flex;background:var(--paper-desk);">
+
+  <!-- ============ SIDEBAR ============ -->
+  <div style="width:216px;flex:none;background:var(--paper-frame);border-right:2px solid var(--line);display:flex;flex-direction:column;overflow:hidden auto;padding:26px 0 30px;">
+    <div style="padding:0 22px;">
+      <div style="display:flex;gap:5px;">
+        <div style="width:14px;height:14px;background:var(--lesson);"></div>
+        <div style="width:14px;height:14px;background:var(--vitamin);"></div>
+        <div style="width:14px;height:14px;background:var(--flag);"></div>
+        <div style="width:14px;height:14px;background:var(--accent);"></div>
+      </div>
+      <div style="font-family:var(--font-display);font-weight:700;font-size:24px;letter-spacing:1.5px;color:var(--ink-strong);margin-top:12px;line-height:1;">EDUTRACK</div>
+      <div style="font-family:var(--font-editorial);font-style:italic;font-size:14px;color:var(--ink-faint);margin-top:3px;">Design System · Storybook</div>
+    </div>
+    <div style="height:2px;background:var(--line);margin:18px 22px 8px;"></div>
+    <sc-for list="{{navItems}}" as="nv" hint-placeholder-count="20">
+      <sc-if value="{{nv.isHead}}" hint-placeholder-val="{{false}}">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:10.5px;letter-spacing:2px;color:var(--ink-ghost);padding:16px 22px 5px;">{{nv.label}}</div>
+      </sc-if>
+      <sc-if value="{{nv.isItem}}" hint-placeholder-val="{{true}}">
+        <div onClick="{{nv.onGo}}" style="font-family:var(--font-display);font-weight:500;font-size:13px;letter-spacing:.8px;color:var(--ink-muted);padding:5px 22px;cursor:pointer;transition:color .15s,background .15s;" style-hover="color:var(--accent);background:rgba(77,164,224,.07);">{{nv.label}}</div>
+      </sc-if>
+    </sc-for>
+  </div>
+
+  <!-- ============ CONTENT ============ -->
+  <div id="sbScroll" style="flex:1;overflow:hidden auto;min-width:0;">
+    <div style="max-width:1040px;padding:0 48px 90px;">
+
+      <!-- OVERVIEW -->
+      <div id="overview" style="padding-top:52px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:3px;color:var(--accent);">EDUTRACK DESIGN SYSTEM</div>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:46px;letter-spacing:1.5px;color:var(--ink-strong);line-height:1;margin-top:10px;">A PLANBOOK,<br>NOT A DASHBOARD.</div>
+        <div style="font-family:var(--font-editorial);font-style:italic;font-size:20px;color:var(--ink-muted);margin-top:12px;max-width:640px;line-height:1.45;">Lessons are physical index cards. Surfaces are warm paper. Shadows say how far off the desk something is. Everything square, everything calm.</div>
+        <div style="display:flex;gap:2px;margin-top:28px;background:var(--line-soft);border:1px solid var(--line-soft);max-width:880px;">
+          <div style="flex:1;background:var(--paper-frame);padding:16px 18px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1.5px;color:var(--ink);">PAPER PHYSICS</div>
+            <div style="font-size:12.5px;color:var(--text-body);line-height:1.55;margin-top:6px;">Cards lift on hover, compress under press, squash when they land. Motion follows the metaphor, never decorates.</div>
+          </div>
+          <div style="flex:1;background:var(--paper-frame);padding:16px 18px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1.5px;color:var(--ink);">COLOR MEANS</div>
+            <div style="font-size:12.5px;color:var(--text-body);line-height:1.55;margin-top:6px;">Brown teaches, green delights, orange demands, blue points at today. Never decorative color.</div>
+          </div>
+          <div style="flex:1;background:var(--paper-frame);padding:16px 18px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1.5px;color:var(--ink);">TWO VOICES</div>
+            <div style="font-size:12.5px;color:var(--text-body);line-height:1.55;margin-top:6px;">Oswald UPPERCASE for structure; EB Garamond italic for the warm human aside. Always paired.</div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:var(--ink-faint);margin-top:18px;">Tokens live in <span style="font-family:monospace;font-size:12px;">tokens/*.css</span> · components in <span style="font-family:monospace;font-size:12px;">components/{atoms,molecules,organisms}/</span> · every block below has copyable React source.</div>
+      </div>
+
+      <!-- ============ FOUNDATIONS: COLOR ============ -->
+      <div id="f-color" style="padding-top:64px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:3px;color:var(--accent);">FOUNDATIONS</div>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:32px;letter-spacing:1.5px;color:var(--ink-strong);margin-top:8px;">COLOR</div>
+        <div style="display:flex;align-items:baseline;gap:14px;margin-top:4px;">
+          <div style="font-family:var(--font-editorial);font-style:italic;font-size:16px;color:var(--ink-muted);">Warm paper neutrals + four functional colors. Every hue means something.</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{copyTokColors}}" style="flex:none;font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblTokColors}}</div>
+        </div>
+        <div style="margin-top:18px;background:var(--paper-frame);border:1px solid var(--line-soft);padding:20px;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:2px;color:var(--ink-ghost);">FUNCTIONAL</div>
+          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <sc-for list="{{colorFunctional}}" as="c" hint-placeholder-count="4">
+              <div onClick="{{c.onCopy}}" style="width:112px;cursor:pointer;" style-hover="opacity:.85;">
+                <div style="height:54px;background:{{c.bg}};border:1px solid rgba(0,0,0,.08);"></div>
+                <div style="font-family:var(--font-display);font-weight:500;font-size:10.5px;letter-spacing:1px;color:var(--ink);margin-top:5px;">{{c.label}}</div>
+                <div style="font-family:monospace;font-size:10px;color:var(--ink-faint);">{{c.token}}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:2px;color:var(--ink-ghost);margin-top:18px;">PAPER</div>
+          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <sc-for list="{{colorPaper}}" as="c" hint-placeholder-count="7">
+              <div onClick="{{c.onCopy}}" style="width:112px;cursor:pointer;" style-hover="opacity:.85;">
+                <div style="height:38px;background:{{c.bg}};border:1px solid rgba(0,0,0,.10);"></div>
+                <div style="font-family:var(--font-display);font-weight:500;font-size:10.5px;letter-spacing:1px;color:var(--ink);margin-top:5px;">{{c.label}}</div>
+                <div style="font-family:monospace;font-size:10px;color:var(--ink-faint);">{{c.token}}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:2px;color:var(--ink-ghost);margin-top:18px;">INK &amp; LINES</div>
+          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <sc-for list="{{colorInk}}" as="c" hint-placeholder-count="8">
+              <div onClick="{{c.onCopy}}" style="width:82px;cursor:pointer;" style-hover="opacity:.85;">
+                <div style="height:30px;background:{{c.bg}};border:1px solid rgba(0,0,0,.08);"></div>
+                <div style="font-family:monospace;font-size:9.5px;color:var(--ink-faint);margin-top:4px;">{{c.token}}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div style="font-family:var(--font-editorial);font-style:italic;font-size:13px;color:var(--ink-ghost);margin-top:14px;">Click any swatch to copy its var() — {{copyFeedback}}</div>
+        </div>
+      </div>
+
+      <!-- ============ FOUNDATIONS: TYPE ============ -->
+      <div id="f-type" style="padding-top:64px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:32px;letter-spacing:1.5px;color:var(--ink-strong);">TYPOGRAPHY</div>
+        <div style="display:flex;align-items:baseline;gap:14px;margin-top:4px;">
+          <div style="font-family:var(--font-editorial);font-style:italic;font-size:16px;color:var(--ink-muted);">Three voices: structure, warmth, and quiet.</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{copyTokType}}" style="flex:none;font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblTokType}}</div>
+        </div>
+        <div style="margin-top:18px;background:var(--paper-frame);border:1px solid var(--line-soft);padding:24px 24px 20px;display:flex;flex-direction:column;gap:20px;">
+          <div style="display:flex;gap:20px;align-items:baseline;flex-wrap:wrap;">
+            <div style="width:150px;flex:none;font-family:monospace;font-size:10.5px;color:var(--ink-ghost);">--font-display<br>Oswald 600 · trk 2px</div>
+            <div style="font-family:var(--font-display);font-weight:600;font-size:42px;letter-spacing:2px;color:var(--ink-strong);line-height:1;">PLAN | DO | REVIEW</div>
+          </div>
+          <div style="display:flex;gap:20px;align-items:baseline;flex-wrap:wrap;">
+            <div style="width:150px;flex:none;font-family:monospace;font-size:10.5px;color:var(--ink-ghost);">--font-editorial<br>EB Garamond · italic</div>
+            <div style="font-family:var(--font-editorial);font-style:italic;font-size:26px;color:var(--ink-strong);">September — reflect on what you've taught</div>
+          </div>
+          <div style="display:flex;gap:20px;align-items:baseline;flex-wrap:wrap;">
+            <div style="width:150px;flex:none;font-family:monospace;font-size:10.5px;color:var(--ink-ghost);">--font-body<br>Helvetica · 12.5–14.5</div>
+            <div style="font-size:14.5px;color:var(--text-body);line-height:1.6;max-width:560px;">Readers separate what a character feels in a moment from who they are over time, citing lines that prove it.</div>
+          </div>
+          <div style="border-top:1px solid var(--line-soft);padding-top:14px;display:flex;gap:26px;flex-wrap:wrap;align-items:baseline;">
+            <span style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:2px;color:var(--ink-faint);">FIELD LABEL 11/2</span>
+            <span style="font-family:var(--font-display);font-weight:600;font-size:14px;letter-spacing:1.5px;color:var(--ink);">BUTTON 14/1.5</span>
+            <span style="font-family:var(--font-display);font-weight:500;font-size:12px;letter-spacing:1px;color:var(--ink-muted);">TAG 12/1</span>
+            <span style="font-family:var(--font-display);font-weight:500;font-size:9px;letter-spacing:.8px;color:var(--ink-ghost);">CARD CAPTION 9/.8</span>
+            <span style="font-family:var(--font-editorial);font-style:italic;font-size:15px;color:var(--ink-faint);">metadata aside 15px</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ FOUNDATIONS: SPACING & ELEVATION ============ -->
+      <div id="f-space" style="padding-top:64px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:32px;letter-spacing:1.5px;color:var(--ink-strong);">SPACING, RULES &amp; ELEVATION</div>
+        <div style="display:flex;align-items:baseline;gap:14px;margin-top:4px;">
+          <div style="font-family:var(--font-editorial);font-style:italic;font-size:16px;color:var(--ink-muted);">Square corners everywhere; shadows are physics.</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{copyTokElev}}" style="flex:none;font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblTokElev}}</div>
+        </div>
+        <div style="margin-top:18px;background:var(--paper-frame);border:1px solid var(--line-soft);padding:24px;display:flex;gap:40px;flex-wrap:wrap;">
+          <div style="flex:1 1 300px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:2px;color:var(--ink-ghost);">SPACING SCALE</div>
+            <div style="display:flex;gap:7px;align-items:flex-end;margin-top:12px;">
+              <sc-for list="{{spaceScale}}" as="sp" hint-placeholder-count="10">
+                <div>
+                  <div style="width:{{sp.px}};height:{{sp.px}};background:var(--paper-tray);border:1px solid var(--line-strong);"></div>
+                  <div style="font-size:9px;color:var(--ink-faint);margin-top:3px;text-align:center;">{{sp.n}}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:2px;color:var(--ink-ghost);margin-top:22px;">RULES</div>
+            <div style="height:5px;background:var(--ink-black);margin-top:12px;"></div>
+            <div style="font-size:10px;color:var(--ink-faint);margin-top:4px;">the timeline bar · 5px · --rule-strong</div>
+            <div style="height:2px;background:var(--line);margin-top:12px;"></div>
+            <div style="font-size:10px;color:var(--ink-faint);margin-top:4px;">section rule · 2px · --rule</div>
+            <div style="height:1px;background:var(--line-soft);margin-top:12px;"></div>
+            <div style="font-size:10px;color:var(--ink-faint);margin-top:4px;">row hairline · 1px · --rule-soft</div>
+          </div>
+          <div style="flex:1 1 340px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:2px;color:var(--ink-ghost);">ELEVATION — HOW FAR OFF THE DESK?</div>
+            <div style="display:flex;gap:26px;margin-top:16px;flex-wrap:wrap;">
+              <sc-for list="{{elevDemos}}" as="el" hint-placeholder-count="5">
+                <div style="text-align:center;">
+                  <div style="width:64px;height:64px;background:var(--paper-card);box-shadow:{{el.shadow}};transform:{{el.tf}};margin:0 auto;"></div>
+                  <div style="font-family:var(--font-display);font-weight:500;font-size:9px;letter-spacing:1px;color:var(--ink-faint);margin-top:14px;">{{el.label}}</div>
+                  <div style="font-family:monospace;font-size:9px;color:var(--ink-ghost);">{{el.token}}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ MOTION ============ -->
+      <div id="motion" style="padding-top:64px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:3px;color:var(--accent);">INTERACTION &amp; MOTION</div>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:32px;letter-spacing:1.5px;color:var(--ink-strong);margin-top:8px;">PAPER PHYSICS</div>
+        <div style="display:flex;align-items:baseline;gap:14px;margin-top:4px;">
+          <div style="font-family:var(--font-editorial);font-style:italic;font-size:16px;color:var(--ink-muted);">Two easings, five keyframes, nothing over 400ms.</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{copyTokMotion}}" style="flex:none;font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblTokMotion}}</div>
+        </div>
+
+        <div style="display:flex;gap:2px;margin-top:18px;background:var(--line-soft);border:1px solid var(--line-soft);">
+          <div style="flex:1;background:var(--paper-frame);padding:14px 16px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:1.5px;color:var(--ink);">HOUSE EASING</div>
+            <div style="font-family:monospace;font-size:11px;color:var(--ink-muted);margin-top:5px;">cubic-bezier(.22,1,.36,1)</div>
+            <div style="font-size:12px;color:var(--text-body);line-height:1.5;margin-top:5px;">Everything spatial. Decisive settle, no wobble.</div>
+          </div>
+          <div style="flex:1;background:var(--paper-frame);padding:14px 16px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:1.5px;color:var(--ink);">REWARD EASING</div>
+            <div style="font-family:monospace;font-size:11px;color:var(--ink-muted);margin-top:5px;">cubic-bezier(.34,1.56,.64,1)</div>
+            <div style="font-size:12px;color:var(--text-body);line-height:1.5;margin-top:5px;">Overshoot. ONLY for celebration moments.</div>
+          </div>
+          <div style="flex:1;background:var(--paper-frame);padding:14px 16px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:1.5px;color:var(--ink);">DURATIONS</div>
+            <div style="font-size:12px;color:var(--text-body);line-height:1.6;margin-top:5px;">press 150 · hover 180 · fade 250 · drop &amp; check 320 · spotlight 400</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:14px;margin-top:16px;">
+          <sc-for list="{{motionDemos}}" as="md" hint-placeholder-count="6">
+            <div style="background:var(--paper-frame);border:1px solid var(--line-soft);padding:14px 14px 12px;">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                <div style="font-family:var(--font-display);font-weight:600;font-size:12.5px;letter-spacing:1px;color:var(--ink);">{{md.title}}</div>
+                <div onClick="{{md.onReplay}}" style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:1px;color:var(--accent);cursor:pointer;user-select:none;" style-active="transform:scale(.92);">↻ REPLAY</div>
+              </div>
+              <div style="height:104px;background:var(--paper-sheet);margin-top:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                <sc-if value="{{md.isPop}}" hint-placeholder-val="{{false}}"><div data-motion="pop" style="width:76px;height:58px;background:var(--paper-card);box-shadow:var(--shadow-pop);animation:et-pop .25s var(--ease-settle) both;"></div></sc-if>
+                <sc-if value="{{md.isDrop}}" hint-placeholder-val="{{false}}"><div data-motion="drop" style="animation:et-drop .32s var(--ease-settle) both;"><div style="width:54px;background:var(--paper-card);padding:5px 5px 2px;box-shadow:var(--shadow-card);"><div style="width:100%;aspect-ratio:1;background:var(--lesson);"></div><div style="font-family:var(--font-display);font-size:7px;letter-spacing:.4px;color:var(--ink-faint);text-align:center;padding:2px 0;">LESSON</div></div></div></sc-if>
+                <sc-if value="{{md.isCheck}}" hint-placeholder-val="{{false}}"><div style="width:44px;height:44px;border-radius:50%;background:var(--vitamin);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;"><span data-motion="check" style="animation:et-check .32s var(--ease-reward) both;">✓</span></div></sc-if>
+                <sc-if value="{{md.isFade}}" hint-placeholder-val="{{false}}"><div data-motion="fade" style="animation:et-fade .25s ease both;font-family:var(--font-editorial);font-style:italic;font-size:17px;color:var(--ink-muted);">Views crossfade — never slide.</div></sc-if>
+                <sc-if value="{{md.isFlag}}" hint-placeholder-val="{{false}}"><div data-motion="flag" style="animation:et-fade .3s ease both;font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:.8px;color:#fff;background:var(--flag);padding:2px 10px;">118 MIN</div></sc-if>
+                <sc-if value="{{md.isRise}}" hint-placeholder-val="{{false}}"><div data-motion="rise" style="animation:et-rise .8s var(--ease-settle) both;font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:2px;color:var(--ink-strong);">SECTION ENTERS</div></sc-if>
+              </div>
+              <div style="font-size:11.5px;color:var(--ink-faint);line-height:1.5;margin-top:9px;min-height:34px;">{{md.desc}}</div>
+              <div style="font-family:monospace;font-size:9.5px;color:var(--ink-ghost);margin-top:4px;">{{md.code}}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- micro-interactions: live -->
+        <div style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:2px;color:var(--ink-muted);margin-top:30px;border-bottom:2px solid var(--line);padding-bottom:6px;">MICRO-INTERACTIONS — TRY THEM</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(224px,1fr));gap:14px;margin-top:14px;">
+          <div style="background:var(--paper-frame);border:1px solid var(--line-soft);padding:14px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12.5px;letter-spacing:1px;color:var(--ink);">HOVER — PAPER LIFTS</div>
+            <div style="height:118px;background:var(--paper-sheet);margin-top:10px;display:flex;align-items:center;justify-content:center;">
+              <div style="width:64px;background:var(--paper-card);padding:6px 6px 2px;box-shadow:var(--shadow-card);cursor:grab;transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-4px);box-shadow:var(--shadow-raise);" style-active="transform:scale(.95);">
+                <div style="width:100%;aspect-ratio:1;background:var(--lesson);"></div>
+                <div style="font-family:var(--font-display);font-size:7.5px;letter-spacing:.4px;color:var(--ink-faint);text-align:center;padding:3px 0;">HOVER ME</div>
+              </div>
+            </div>
+            <div style="font-size:11.5px;color:var(--ink-faint);line-height:1.5;margin-top:9px;">−4px lift + deeper shadow at 180ms. Press compresses to .95.</div>
+          </div>
+          <div style="background:var(--paper-frame);border:1px solid var(--line-soft);padding:14px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12.5px;letter-spacing:1px;color:var(--ink);">DRAG — GHOST &amp; TARGET</div>
+            <div style="height:118px;background:var(--paper-sheet);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:22px;">
+              <div style="width:58px;background:var(--paper-card);padding:5px 5px 2px;box-shadow:var(--shadow-drag);transform:rotate(-3deg);">
+                <div style="width:100%;aspect-ratio:1;background:var(--vitamin);"></div>
+                <div style="font-family:var(--font-display);font-size:7px;letter-spacing:.4px;color:var(--ink-faint);text-align:center;padding:2px 0;">GHOST</div>
+              </div>
+              <div style="width:70px;height:92px;background:rgba(77,164,224,.14);outline:2px dashed var(--accent);outline-offset:-3px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;">
+                <span style="font-family:var(--font-display);font-size:8px;letter-spacing:1px;color:var(--accent);">TARGET</span>
+              </div>
+            </div>
+            <div style="font-size:11.5px;color:var(--ink-faint);line-height:1.5;margin-top:9px;">Ghost tilts −3° at drag shadow; targets get dashed accent + tint. 8px threshold separates tap from drag.</div>
+          </div>
+          <div style="background:var(--paper-frame);border:1px solid var(--line-soft);padding:14px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12.5px;letter-spacing:1px;color:var(--ink);">SPOTLIGHT — GLIDES</div>
+            <div style="height:118px;background:var(--ink-strong);margin-top:10px;position:relative;overflow:hidden;">
+              <div style="position:absolute;left:{{spotLeft}};top:32px;width:74px;height:52px;background:var(--paper-sheet);outline:3px solid var(--accent);outline-offset:3px;box-shadow:0 0 0 999px rgba(40,38,32,.45);transition:left .4s var(--ease-settle);"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:9px;">
+              <div style="font-size:11.5px;color:var(--ink-faint);line-height:1.5;">Tour spotlight travels at 400ms settle.</div>
+              <div onClick="{{toggleSpot}}" style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:1px;color:var(--accent);cursor:pointer;user-select:none;" style-active="transform:scale(.92);">MOVE →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ============ ATOMS ============ -->
+      <div id="a-button" style="padding-top:70px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:3px;color:var(--accent);">ATOMS</div>
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:8px;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">BUTTON</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--lesson);padding:2px 8px;">ATOM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/atoms/Button.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewButton}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyButton}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblButton}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">One solid button per view. Hover lifts −2px with shadow; press compresses to .96. Flag orange is reserved for assignment and warning actions.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:26px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+          <div style="background:var(--accent);color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;letter-spacing:1.5px;padding:10px 24px;cursor:pointer;transition:transform .18s var(--ease-settle),box-shadow .18s var(--ease-settle);" style-hover="transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.25);" style-active="transform:scale(.96);">START PLANNING</div>
+          <div style="background:var(--flag);color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;letter-spacing:1.5px;padding:10px 24px;cursor:pointer;transition:transform .18s var(--ease-settle),box-shadow .18s var(--ease-settle);" style-hover="transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,.25);" style-active="transform:scale(.96);">LOAD &amp; CONTINUE</div>
+          <div style="border:2px solid var(--accent);color:var(--accent);font-family:var(--font-display);font-weight:600;font-size:14px;letter-spacing:1.5px;padding:8px 22px;cursor:pointer;transition:transform .18s var(--ease-settle);" style-hover="transform:translateY(-2px);" style-active="transform:scale(.96);">GO TO PLAN</div>
+          <div style="color:var(--ink-faint);font-family:var(--font-display);font-weight:600;font-size:14px;letter-spacing:1.5px;padding:10px 14px;cursor:pointer;" style-active="transform:scale(.96);">BACK</div>
+          <div style="background:var(--accent);color:#fff;font-family:var(--font-display);font-weight:600;font-size:14px;letter-spacing:1.5px;padding:10px 24px;opacity:.45;">DISABLED</div>
+          <div style="background:var(--accent);color:#fff;font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:1.5px;padding:7px 16px;cursor:pointer;" style-active="transform:scale(.96);">SM</div>
+          <div style="background:var(--accent);color:#fff;font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:1.5px;padding:13px 30px;cursor:pointer;" style-active="transform:scale(.96);">LARGE →</div>
+        </div>
+        <div style="font-family:monospace;font-size:11px;color:var(--ink-ghost);margin-top:8px;">variant: solid | flag | outline | ghost · size: sm | md | lg · disabled</div>
+      </div>
+
+      <div id="a-tag" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">TAG &amp; CHIP</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--lesson);padding:2px 8px;">ATOM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/atoms/Tag.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewTag}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyTag}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblTag}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">Outline for standards metadata, solid for tags on colored rows, chip for selectable options — try the grade picker.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:26px;display:flex;gap:26px;align-items:center;flex-wrap:wrap;">
+          <span style="font-family:var(--font-display);font-weight:500;font-size:12px;letter-spacing:.8px;color:var(--ink);border:1.5px solid var(--line-strong);padding:3px 10px;">5R1 — INFERENCE &amp; EVIDENCE</span>
+          <span style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:#fff;background:var(--ink-faint);padding:2px 8px;">5R6 · POINT OF VIEW</span>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <span style="font-family:var(--font-editorial);font-style:italic;font-size:13px;color:var(--ink-ghost);margin-right:4px;">grade:</span>
+            <sc-for list="{{chipOpts}}" as="ch" hint-placeholder-count="4">
+              <div onClick="{{ch.onTap}}" style="font-family:var(--font-display);font-weight:500;font-size:14px;padding:6px 15px;cursor:pointer;border:1.5px solid {{ch.border}};background:{{ch.bg}};color:{{ch.color}};transition:all .15s ease;user-select:none;" style-active="transform:scale(.94);">{{ch.label}}</div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div id="a-checkbox" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">CHECKBOX</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--lesson);padding:2px 8px;">ATOM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/atoms/Checkbox.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewCheckbox}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyCheckbox}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblCheckbox}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">Green fill, popping mark. With <span style="font-family:monospace;font-size:12px;">strike</span>, checking crosses the label out — the materials-to-prep pattern. Click them.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:22px 26px;display:flex;flex-direction:column;max-width:420px;">
+          <div onClick="{{cbA.onToggle}}" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:5px 0;user-select:none;">
+            <div style="flex:none;width:17px;height:17px;border:2px solid var(--ink-faint);background:{{cbA.bg}};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;"><span style="animation:{{cbA.anim}};">{{cbA.check}}</span></div>
+            <div style="font-size:13px;color:{{cbA.color}};text-decoration:{{cbA.deco}};">POV anchor chart</div>
+          </div>
+          <div onClick="{{cbB.onToggle}}" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:5px 0;user-select:none;">
+            <div style="flex:none;width:17px;height:17px;border:2px solid var(--ink-faint);background:{{cbB.bg}};color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;"><span style="animation:{{cbB.anim}};">{{cbB.check}}</span></div>
+            <div style="font-size:13px;color:{{cbB.color}};text-decoration:{{cbB.deco}};">"Because of Winn-Dixie" ch. 4</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="a-textfield" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">TEXTFIELD</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--lesson);padding:2px 8px;">ATOM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/atoms/TextField.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewTextField}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyTextField}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblTextField}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">Boxed for deliberate form entry, underline for quick in-context jotting. Focus turns the border accent — the only focus treatment in the system.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:26px;display:flex;gap:36px;flex-wrap:wrap;">
+          <div style="width:260px;">
+            <div style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1.5px;color:var(--ink-faint);margin-bottom:5px;">YOUR NAME</div>
+            <input value="{{tfName}}" onChange="{{onTfName}}" style="width:100%;box-sizing:border-box;background:var(--paper-card);border:1.5px solid var(--line-soft);padding:9px 11px;font-family:inherit;font-size:14px;color:var(--ink);outline:none;" style-focus="border-color:var(--accent);">
+          </div>
+          <div style="width:260px;align-self:flex-end;">
+            <input value="{{tfNote}}" onChange="{{onTfNote}}" placeholder="Reflection…" style="width:100%;box-sizing:border-box;border:none;border-bottom:1px solid var(--line);background:transparent;font-size:12.5px;padding:4px 0;outline:none;font-family:inherit;color:var(--ink);" style-focus="border-color:var(--accent);">
+            <div style="font-family:var(--font-editorial);font-style:italic;font-size:12px;color:var(--ink-ghost);margin-top:6px;">underline variant — for jotting mid-lesson</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="a-sectionlabel" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">SECTIONLABEL</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--lesson);padding:2px 8px;">ATOM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/atoms/SectionLabel.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewSectionLabel}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copySectionLabel}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblSectionLabel}}</div>
+        </div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:26px;display:flex;flex-direction:column;gap:22px;max-width:460px;">
+          <div style="border-bottom:2px solid var(--line);padding-bottom:6px;font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:2px;color:var(--ink-muted);">MATERIALS TO PREP</div>
+          <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;border-bottom:2px solid var(--line);padding-bottom:6px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:2px;color:var(--ink-muted);">STANDARDS COVERAGE</div>
+            <div style="font-family:var(--font-editorial);font-style:italic;font-size:14px;color:var(--ink-ghost);">through Sep 9</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="a-flag" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">ASSIGNMENTFLAG</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--lesson);padding:2px 8px;">ATOM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/atoms/AssignmentFlag.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewAssignmentFlag}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyAssignmentFlag}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblAssignmentFlag}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">Clip-path arrows: START points into the work, DUE points back at the deadline. Hover grows 1.08; they read as printed stickers on the planbook.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:30px 26px;display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+          <div style="background:var(--flag);color:#fff;clip-path:polygon(0 0,80% 0,100% 50%,80% 100%,0 100%);padding:4px 16px 5px 7px;cursor:pointer;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.25));transition:transform .15s ease;" style-hover="transform:scale(1.08);" style-active="transform:scale(.95);">
+            <div style="font-family:var(--font-display);font-size:6.5px;letter-spacing:.4px;">ASSIGNMENT</div>
+            <div style="font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1px;line-height:1;">START</div>
+          </div>
+          <div style="background:var(--flag);color:#fff;clip-path:polygon(20% 0,100% 0,100% 100%,20% 100%,0 50%);padding:4px 7px 5px 16px;cursor:pointer;text-align:right;filter:drop-shadow(2px 3px 2px rgba(0,0,0,.25));transition:transform .15s ease;" style-hover="transform:scale(1.08);" style-active="transform:scale(.95);">
+            <div style="font-family:var(--font-display);font-size:6.5px;letter-spacing:.4px;">ASSIGNMENT</div>
+            <div style="font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1.5px;line-height:1;">D U E</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="a-donecheck" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">DONECHECK</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--lesson);padding:2px 8px;">ATOM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/atoms/DoneCheck.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewDoneCheck}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyDoneCheck}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblDoneCheck}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">The "taught it" circle — the system's reward moment. Tap it: the mark overshoots to 1.3× then settles (the only use of the reward easing).</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:28px 26px;display:flex;gap:26px;align-items:center;">
+          <div onClick="{{dc1.onToggle}}" style="width:36px;height:36px;border-radius:50%;border:2.5px solid {{dc1.border}};background:{{dc1.bg}};color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;transition:all .2s ease;user-select:none;" style-hover="transform:scale(1.1);" style-active="transform:scale(.85);"><span style="animation:{{dc1.anim}};">{{dc1.check}}</span></div>
+          <div style="font-family:var(--font-editorial);font-style:italic;font-size:15px;color:var(--ink-faint);">← tap to mark the lesson taught</div>
+        </div>
+      </div>
+      <!-- MORE-ATOMS2 -->
+      <!-- ============ MOLECULES ============ -->
+      <div id="m-lessoncard" style="padding-top:70px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:3px;color:var(--accent);">MOLECULES</div>
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:8px;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">LESSONCARD</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--vitamin);padding:2px 8px;">MOLECULE</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/molecules/LessonCard.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewLessonCard}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyLessonCard}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblLessonCard}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">The system's core object: a physical index card. Brown = lesson, green = vitamin; the standards code lives in the square, a Polaroid caption below. Hover to pick it half-up.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:26px;display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;">
+          <div style="width:96px;background:var(--paper-card);padding:7px 7px 3px;box-shadow:var(--shadow-card);cursor:grab;transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-4px);box-shadow:var(--shadow-raise);" style-active="transform:scale(.95);">
+            <div style="width:100%;aspect-ratio:1;background:var(--lesson);display:flex;align-items:flex-end;justify-content:flex-end;padding:5px;box-sizing:border-box;"><span style="font-family:var(--font-display);font-size:10px;letter-spacing:.5px;color:rgba(255,255,255,.85);">5R1</span></div>
+            <div style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.4px;color:var(--ink-faint);text-align:center;padding:4px 0 3px;line-height:1.2;text-transform:uppercase;min-height:24px;">Traits vs. Feelings</div>
+          </div>
+          <div style="width:96px;background:var(--paper-card);padding:7px 7px 3px;box-shadow:var(--shadow-card);cursor:grab;transition:transform .18s ease,box-shadow .18s ease;" style-hover="transform:translateY(-4px);box-shadow:var(--shadow-raise);" style-active="transform:scale(.95);">
+            <div style="width:100%;aspect-ratio:1;background:var(--vitamin);display:flex;align-items:flex-end;justify-content:flex-end;padding:5px;box-sizing:border-box;"><span style="font-family:var(--font-display);font-size:10px;letter-spacing:.5px;color:rgba(255,255,255,.85);">5L4</span></div>
+            <div style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.4px;color:var(--ink-faint);text-align:center;padding:4px 0 3px;line-height:1.2;text-transform:uppercase;min-height:24px;">Word Collector</div>
+          </div>
+          <div style="width:96px;background:var(--paper-card);padding:7px 7px 3px;box-shadow:var(--shadow-card);">
+            <div style="width:100%;aspect-ratio:1;background:var(--lesson-dim);"></div>
+            <div style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.4px;color:var(--line-strong);text-align:center;padding:4px 0 3px;line-height:1.2;text-transform:uppercase;min-height:24px;">Placed (dimmed)</div>
+          </div>
+          <div style="width:64px;background:var(--paper-card);padding:4px 4px 1px;box-shadow:var(--shadow-card);">
+            <div style="width:100%;aspect-ratio:1;background:var(--lesson);display:flex;align-items:flex-end;justify-content:flex-end;padding:4px;box-sizing:border-box;"><span style="font-family:var(--font-display);font-size:8px;color:rgba(255,255,255,.85);">5R6</span></div>
+            <div style="font-family:var(--font-display);font-weight:500;font-size:8.5px;color:var(--ink-faint);text-align:center;padding:2px 0 1px;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">SM SIZE</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;align-items:center;">
+            <div data-motion="carddrop" style="animation:et-drop .32s var(--ease-settle) both;">
+              <div style="width:96px;background:var(--paper-card);padding:7px 7px 3px;box-shadow:var(--shadow-card);">
+                <div style="width:100%;aspect-ratio:1;background:var(--vitamin);display:flex;align-items:flex-end;justify-content:flex-end;padding:5px;box-sizing:border-box;"><span style="font-family:var(--font-display);font-size:10px;letter-spacing:.5px;color:rgba(255,255,255,.85);">5L2</span></div>
+                <div style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:.4px;color:var(--ink-faint);text-align:center;padding:4px 0 3px;line-height:1.2;text-transform:uppercase;min-height:24px;">Drop-in</div>
+              </div>
+            </div>
+            <div onClick="{{replayCardDrop}}" style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:1px;color:var(--accent);cursor:pointer;user-select:none;" style-active="transform:scale(.92);">↻ REPLAY DROP</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="m-rating" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">RATINGTOGGLE</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--vitamin);padding:2px 8px;">MOLECULE</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/molecules/RatingToggle.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewRatingToggle}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyRatingToggle}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblRatingToggle}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">One-tap lesson verdict. Tap the active option again to clear it — reflection with zero friction.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:26px;display:flex;gap:8px;align-items:center;">
+          <div onClick="{{rateWell.onTap}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;padding:3px 10px;cursor:pointer;border:1.5px solid {{rateWell.border}};background:{{rateWell.bg}};color:{{rateWell.color}};transition:all .15s;user-select:none;">WENT WELL</div>
+          <div onClick="{{rateRe.onTap}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;padding:3px 10px;cursor:pointer;border:1.5px solid {{rateRe.border}};background:{{rateRe.bg}};color:{{rateRe.color}};transition:all .15s;user-select:none;">RETEACH</div>
+        </div>
+      </div>
+
+      <div id="m-coverage" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">COVERAGEROW</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--vitamin);padding:2px 8px;">MOLECULE</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/molecules/CoverageRow.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewCoverageRow}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyCoverageRow}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblCoverageRow}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">Brown = taught, tan = planned, empty = not yet — computed from the plan, never hand-entered.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:16px 26px;max-width:640px;">
+          <sc-for list="{{covRows}}" as="cr" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid var(--line-soft);">
+              <div style="width:60px;flex:none;font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--ink);">{{cr.code}}</div>
+              <div style="flex:1;font-size:12.5px;color:var(--ink-muted);line-height:1.35;">{{cr.name}}</div>
+              <div style="display:flex;gap:4px;flex:none;">
+                <sc-for list="{{cr.blocks}}" as="b"><div style="width:16px;height:16px;background:{{b.bg}};border:1.5px solid var(--line-strong);box-sizing:border-box;"></div></sc-for>
+              </div>
+              <div style="width:56px;flex:none;text-align:right;font-family:var(--font-display);font-size:13px;color:var(--ink-faint);">{{cr.count}}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div id="m-capture" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">CAPTURENOTE</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--vitamin);padding:2px 8px;">MOLECULE</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/molecules/CaptureNote.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewCaptureNote}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyCaptureNote}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblCaptureNote}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">Tap a roster name to spawn a note — it drops in with the landing animation. Formative assessment captured mid-lesson, one line at a time.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:22px 26px;max-width:420px;">
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <sc-for list="{{capRoster}}" as="rs" hint-placeholder-count="4">
+              <div onClick="{{rs.onTap}}" style="font-size:12px;border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;color:var(--ink);background:var(--paper-card);transition:all .15s ease;user-select:none;" style-hover="border-color:var(--vitamin);transform:translateY(-1px);" style-active="transform:scale(.94);">{{rs.name}}</div>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px;">
+            <sc-for list="{{capNotes}}" as="cp" hint-placeholder-count="1">
+              <div style="background:var(--paper-card);border:1px solid var(--line-soft);padding:8px 10px;display:flex;flex-direction:column;gap:4px;animation:et-drop .3s var(--ease-settle);">
+                <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                  <span style="font-family:var(--font-display);font-weight:500;font-size:12px;letter-spacing:1px;color:var(--ink-muted);">{{cp.student}}</span>
+                  <span onClick="{{cp.onRemove}}" style="cursor:pointer;color:var(--line-strong);font-size:15px;line-height:1;">×</span>
+                </div>
+                <input value="{{cp.text}}" onChange="{{cp.onText}}" placeholder="What did you notice? Next step…" style="border:none;border-bottom:1px solid var(--line-faint);background:transparent;font-size:12.5px;padding:3px 0;outline:none;font-family:inherit;color:var(--ink);">
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div id="m-agenda" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">AGENDAITEM</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--vitamin);padding:2px 8px;">MOLECULE</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/molecules/AgendaItem.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewAgendaItem}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyAgendaItem}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblAgendaItem}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">One row of the teaching day. Click the row to expand the phased lesson plan; tap the circle to mark it taught.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:22px;max-width:760px;">
+          <div style="background:var(--paper-inset);border:1px solid var(--line-soft);">
+            <div onClick="{{agToggleExp}}" style="display:flex;align-items:center;gap:16px;padding:12px 16px;cursor:pointer;">
+              <div style="width:96px;flex:none;font-family:var(--font-display);font-weight:500;font-size:16px;color:var(--ink-muted);line-height:1.3;">9:00 – 9:45</div>
+              <div style="flex:none;background:var(--paper-card);padding:4px;box-shadow:0 1px 4px rgba(0,0,0,.18);"><div style="width:40px;height:40px;background:var(--lesson);"></div></div>
+              <div style="flex:1;display:flex;flex-direction:column;gap:4px;min-width:0;">
+                <div style="font-family:var(--font-display);font-weight:600;font-size:17px;letter-spacing:.5px;color:var(--ink);text-transform:uppercase;">Traits vs. Feelings</div>
+                <div style="font-size:12.5px;color:var(--ink-muted);line-height:1.4;">Readers separate what a character feels in a moment from who they are over time.</div>
+                <div style="display:flex;gap:10px;align-items:center;">
+                  <span style="font-family:var(--font-display);font-size:11px;letter-spacing:1px;color:#fff;background:var(--ink-faint);padding:2px 8px;">5R1 · INFERENCE &amp; EVIDENCE</span>
+                  <span style="font-size:11.5px;color:var(--ink-ghost);">45 min</span>
+                  <span style="font-family:var(--font-display);font-size:10px;letter-spacing:1px;color:var(--ink-ghost);">{{agHint}}</span>
+                </div>
+              </div>
+              <div onClick="{{agDoneObj.onToggle}}" style="flex:none;width:36px;height:36px;border-radius:50%;border:2.5px solid {{agDoneObj.border}};background:{{agDoneObj.bg}};color:#fff;display:flex;align-items:center;justify-content:center;font-size:17px;cursor:pointer;transition:all .2s ease;user-select:none;" style-hover="transform:scale(1.1);" style-active="transform:scale(.85);"><span style="animation:{{agDoneObj.anim}};">{{agDoneObj.check}}</span></div>
+            </div>
+            <sc-if value="{{agOpen}}" hint-placeholder-val="{{false}}">
+              <div style="border-top:1px solid var(--line-soft);padding:14px 16px 16px 128px;display:flex;flex-direction:column;gap:12px;animation:et-fade .2s ease;">
+                <div style="font-family:var(--font-editorial);font-style:italic;font-size:16px;color:var(--text-body);line-height:1.4;">“Readers separate how a character feels right now from who they are over time.”</div>
+                <div style="display:flex;flex-direction:column;gap:7px;">
+                  <sc-for list="{{agPhases}}" as="ph" hint-placeholder-count="4">
+                    <div style="display:flex;gap:14px;align-items:baseline;">
+                      <div style="width:52px;flex:none;font-family:var(--font-display);font-weight:500;font-size:12px;color:var(--ink-ghost);text-align:right;">{{ph.min}} MIN</div>
+                      <div style="flex:none;font-family:var(--font-display);font-weight:500;font-size:12.5px;letter-spacing:1px;color:var(--ink);">{{ph.name}}</div>
+                      <div style="font-size:12px;color:var(--ink-faint);">{{ph.note}}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+      <!-- MORE-MOLECULES2 -->
+      <!-- ============ ORGANISMS ============ -->
+      <div id="o-header" style="padding-top:70px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:3px;color:var(--accent);">ORGANISMS</div>
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-top:8px;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">APPHEADER</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--flag);padding:2px 8px;">ORGANISM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/organisms/AppHeader.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewAppHeader}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyAppHeader}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblAppHeader}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">The app name IS the navigation. Active mode is accent; the rest recede to gray. Click the tabs.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:10px 0 16px;overflow:hidden;">
+          <div style="transform:scale(.82);transform-origin:top left;width:122%;">
+            <div style="display:flex;align-items:baseline;gap:16px;padding:20px 34px 12px;border-bottom:2px solid var(--line);margin:0 14px;">
+              <div style="display:flex;align-items:baseline;gap:14px;font-family:var(--font-display);font-weight:600;font-size:42px;letter-spacing:2px;line-height:1;">
+                <span onClick="{{hdrGoPlan}}" style="cursor:pointer;color:{{hdrPlanC}};user-select:none;">PLAN</span>
+                <span style="color:#c6c3ba;font-weight:400;">|</span>
+                <span onClick="{{hdrGoDo}}" style="cursor:pointer;color:{{hdrDoC}};user-select:none;">DO</span>
+                <span style="color:#c6c3ba;font-weight:400;">|</span>
+                <span onClick="{{hdrGoReview}}" style="cursor:pointer;color:{{hdrRevC}};user-select:none;">REVIEW</span>
+              </div>
+              <div style="flex:1;"></div>
+              <div style="display:flex;align-items:baseline;gap:28px;font-family:var(--font-display);font-weight:600;font-size:22px;letter-spacing:1.5px;">
+                <span style="color:var(--ink);white-space:nowrap;">CALENDAR <span style="font-weight:400;">›</span></span>
+                <span style="color:var(--ink);white-space:nowrap;">ALL UNITS <span style="font-weight:400;">›</span></span>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;padding:7px 34px 0;margin:0 14px;">
+              <div style="font-family:var(--font-display);font-weight:500;font-size:11.5px;letter-spacing:1.8px;color:var(--ink-faint);">MS. RIVERA · GRADE 5 ELA · ROOM 214 · P.S. 130 BROOKLYN</div>
+              <div style="font-family:var(--font-editorial);font-style:italic;font-size:15px;color:var(--ink-faint);">School Year 2026–27 · Marking Period 1 · Week 2 of 38</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="o-popover" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">LESSONPOPOVER</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--flag);padding:2px 8px;">ORGANISM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/organisms/LessonPopover.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewLessonPopover}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyLessonPopover}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblLessonPopover}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">Tap a card and it flips over: the lesson's color becomes the "photo" area holding materials, timing and peer notes; the title is the Polaroid caption below. Enters with et-pop.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:30px;display:flex;justify-content:center;">
+          <div style="width:290px;background:var(--paper-card);padding:10px 10px 0;box-shadow:var(--shadow-pop);">
+            <div style="background:var(--lesson);color:var(--on-color);padding:16px 16px 14px;display:flex;flex-direction:column;gap:11px;min-height:250px;box-sizing:border-box;">
+              <div>
+                <div style="font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1.8px;">MATERIALS</div>
+                <div style="display:flex;flex-direction:column;gap:2px;margin-top:4px;">
+                  <div style="font-size:12.5px;line-height:1.45;opacity:.92;">— "The Tiger Rising" excerpt</div>
+                  <div style="font-size:12.5px;line-height:1.45;opacity:.92;">— Trait word bank</div>
+                  <div style="font-size:12.5px;line-height:1.45;opacity:.92;">— T-chart organizer</div>
+                </div>
+              </div>
+              <div>
+                <div style="font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1.8px;">DURATION</div>
+                <div style="font-size:12.5px;margin-top:3px;opacity:.92;">45 minutes</div>
+              </div>
+              <div><span style="font-family:var(--font-display);font-size:11.5px;letter-spacing:1px;border:1.5px solid rgba(246,242,234,.7);padding:3px 10px;display:inline-block;">5R1 — INFERENCE &amp; EVIDENCE</span></div>
+              <div style="flex:1;"></div>
+              <div style="font-family:var(--font-editorial);font-style:italic;font-size:15px;border-top:1px solid rgba(246,242,234,.3);padding-top:9px;">Notes from others</div>
+              <div style="font-family:var(--font-editorial);font-style:italic;font-size:14px;line-height:1.4;opacity:.88;">"The word bank saved my striving readers. Print extras." <span style="opacity:.72;">— Mr. Okafor · Rm 118</span></div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 4px;">
+              <div style="font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:1px;color:var(--ink-muted);text-transform:uppercase;line-height:1.1;">Traits vs. Feelings</div>
+              <div style="flex:none;font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--flag);border:1.5px solid var(--flag);padding:3px 10px;cursor:pointer;">REMOVE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="o-tour" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">TOURTIP + SPOTLIGHT</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--flag);padding:2px 8px;">ORGANISM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/organisms/TourTip.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewTourTip}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyTourTip}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblTourTip}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">Onboarding pair: TourSpotlight dims everything but the target; TourTip explains it. Both glide between steps at 400ms settle — see the Motion section's live spotlight demo.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:30px;display:flex;justify-content:center;">
+          <div style="width:320px;background:var(--paper-frame);box-shadow:0 18px 48px rgba(0,0,0,.42);padding:20px 22px 14px;box-sizing:border-box;">
+            <div style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:2px;color:var(--accent);">STEP 1 OF 5</div>
+            <div style="font-family:var(--font-display);font-weight:600;font-size:20px;letter-spacing:1px;color:var(--ink);margin-top:4px;">YOUR LESSON SHELF</div>
+            <div style="font-size:13px;color:var(--ink-muted);line-height:1.55;margin-top:8px;">Every unit comes loaded with ready-to-teach lessons, aligned to NY Next Gen standards. Tap any card to see materials, timing, and notes from teachers who taught it before you.</div>
+            <div style="display:flex;align-items:center;gap:10px;margin-top:16px;">
+              <div style="font-family:var(--font-editorial);font-style:italic;font-size:13.5px;color:var(--ink-ghost);cursor:pointer;">Skip tour</div>
+              <div style="flex:1;"></div>
+              <div style="font-family:var(--font-display);font-weight:500;font-size:12px;letter-spacing:1.5px;color:var(--ink-ghost);cursor:pointer;padding:8px 10px;">BACK</div>
+              <div style="background:var(--accent);color:#fff;font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1.5px;padding:8px 18px;cursor:pointer;" style-hover="transform:translateY(-2px);" style-active="transform:scale(.96);">NEXT</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="o-mobilebar" style="padding-top:56px;">
+        <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:24px;letter-spacing:1px;color:var(--ink-strong);">MOBILETABBAR</div>
+          <div style="font-family:var(--font-display);font-weight:500;font-size:9.5px;letter-spacing:1.5px;color:#fff;background:var(--flag);padding:2px 8px;">ORGANISM</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">components/organisms/MobileTabBar.jsx</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{viewMobileTabBar}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--ink-muted);border:1.5px solid var(--line-strong);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">VIEW CODE</div>
+          <div onClick="{{copyMobileTabBar}}" style="font-family:var(--font-display);font-weight:500;font-size:11px;letter-spacing:1px;color:var(--accent);border:1.5px solid var(--accent);padding:3px 10px;cursor:pointer;" style-active="transform:scale(.95);">{{copyLblMobileTabBar}}</div>
+        </div>
+        <div style="font-size:13px;color:var(--text-body);margin-top:6px;max-width:640px;">On phones the masthead collapses to this bar. Square glyph + Oswald label, 3px accent indicator, ≥44px targets, safe-area aware. Tap the tabs.</div>
+        <div style="margin-top:14px;background:var(--paper-sheet);border:1px solid var(--line-soft);padding:30px;display:flex;justify-content:center;">
+          <div style="width:340px;display:flex;background:var(--paper-frame);border-top:2px solid var(--line);height:58px;box-shadow:var(--shadow-card);">
+            <sc-for list="{{mTabs}}" as="mt" hint-placeholder-count="3">
+              <div onClick="{{mt.onTap}}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;user-select:none;position:relative;min-height:44px;">
+                <div style="position:absolute;top:-2px;left:22%;right:22%;height:3px;background:{{mt.ind}};transition:background .15s ease;"></div>
+                <div style="width:12px;height:12px;background:{{mt.glyphBg}};border:2px solid {{mt.glyphBorder}};box-sizing:border-box;transition:all .15s ease;"></div>
+                <div style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:1.5px;color:{{mt.color}};transition:color .15s ease;">{{mt.label}}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      <!-- MORE-ORGANISMS2 -->
+      <!-- ============ MOBILE ============ -->
+      <div id="mobile" style="padding-top:70px;">
+        <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:3px;color:var(--accent);">MOBILE SYSTEM</div>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:32px;letter-spacing:1.5px;color:var(--ink-strong);margin-top:8px;">A COMPANION IN THE POCKET</div>
+        <div style="font-family:var(--font-editorial);font-style:italic;font-size:16px;color:var(--ink-muted);margin-top:4px;">Optimized for DO — the teaching day — first. Try both screens.</div>
+        <div style="display:flex;gap:2px;margin-top:16px;background:var(--line-soft);border:1px solid var(--line-soft);max-width:920px;">
+          <div style="flex:1;background:var(--paper-frame);padding:13px 15px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:1.5px;color:var(--ink);">TAP, DON'T DRAG</div>
+            <div style="font-size:12px;color:var(--text-body);line-height:1.5;margin-top:5px;">Drag-and-drop becomes tap-to-assign: tap a card, then tap a day. Long-press = peek.</div>
+          </div>
+          <div style="flex:1;background:var(--paper-frame);padding:13px 15px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:1.5px;color:var(--ink);">44PX TARGETS</div>
+            <div style="font-size:12px;color:var(--text-body);line-height:1.5;margin-top:5px;">Every control ≥ 44px (--tap-min). Body type grows to 15px for thumb-distance reading.</div>
+          </div>
+          <div style="flex:1;background:var(--paper-frame);padding:13px 15px;">
+            <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:1.5px;color:var(--ink);">SHEET IS THE SCREEN</div>
+            <div style="font-size:12px;color:var(--text-body);line-height:1.5;margin-top:5px;">Desk + frame chrome disappears; the timeline turns vertical; the tab bar moves to the thumb.</div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:44px;margin-top:26px;flex-wrap:wrap;align-items:flex-start;">
+          <div>
+            <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="" hint-size="390px,760px">
+              <div style="display:flex;flex-direction:column;height:100%;background:var(--paper-sheet);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+                <div style="padding:14px 16px 10px;border-bottom:2px solid var(--line);">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                    <div style="font-family:var(--font-display);font-weight:600;font-size:26px;letter-spacing:1.5px;color:var(--accent);">PLAN</div>
+                    <div style="font-family:var(--font-editorial);font-style:italic;font-size:13px;color:var(--ink-faint);">Week 2 of 38</div>
+                  </div>
+                  <div style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:1.5px;color:var(--ink-faint);margin-top:2px;">UNIT 1 · CHARACTER STUDY</div>
+                </div>
+                <div style="padding:12px 16px 8px;">
+                  <div style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:1.5px;color:var(--ink-ghost);">LESSON SHELF — {{mHint}}</div>
+                  <div style="display:flex;gap:10px;margin-top:8px;">
+                    <div onClick="{{mc1.onTap}}" style="width:72px;background:var(--paper-card);padding:5px 5px 2px;box-shadow:var(--shadow-card);cursor:pointer;user-select:none;outline:{{mc1.outline}};outline-offset:2px;transition:outline-color .15s;" style-active="transform:scale(.94);">
+                      <div style="width:100%;aspect-ratio:1;background:var(--lesson);display:flex;align-items:flex-end;justify-content:flex-end;padding:4px;box-sizing:border-box;"><span style="font-family:var(--font-display);font-size:8px;color:rgba(255,255,255,.85);">5R6</span></div>
+                      <div style="font-family:var(--font-display);font-weight:500;font-size:8px;letter-spacing:.3px;color:var(--ink-faint);text-align:center;padding:3px 0 2px;text-transform:uppercase;white-space:nowrap;overflow:hidden;">Narrator POV</div>
+                    </div>
+                    <div onClick="{{mc2.onTap}}" style="width:72px;background:var(--paper-card);padding:5px 5px 2px;box-shadow:var(--shadow-card);cursor:pointer;user-select:none;outline:{{mc2.outline}};outline-offset:2px;transition:outline-color .15s;" style-active="transform:scale(.94);">
+                      <div style="width:100%;aspect-ratio:1;background:var(--lesson);display:flex;align-items:flex-end;justify-content:flex-end;padding:4px;box-sizing:border-box;"><span style="font-family:var(--font-display);font-size:8px;color:rgba(255,255,255,.85);">5R2</span></div>
+                      <div style="font-family:var(--font-display);font-weight:500;font-size:8px;letter-spacing:.3px;color:var(--ink-faint);text-align:center;padding:3px 0 2px;text-transform:uppercase;white-space:nowrap;overflow:hidden;">Theme &amp; Change</div>
+                    </div>
+                    <div onClick="{{mc3.onTap}}" style="width:72px;background:var(--paper-card);padding:5px 5px 2px;box-shadow:var(--shadow-card);cursor:pointer;user-select:none;outline:{{mc3.outline}};outline-offset:2px;transition:outline-color .15s;" style-active="transform:scale(.94);">
+                      <div style="width:100%;aspect-ratio:1;background:var(--vitamin);display:flex;align-items:flex-end;justify-content:flex-end;padding:4px;box-sizing:border-box;"><span style="font-family:var(--font-display);font-size:8px;color:rgba(255,255,255,.85);">5L4</span></div>
+                      <div style="font-family:var(--font-display);font-weight:500;font-size:8px;letter-spacing:.3px;color:var(--ink-faint);text-align:center;padding:3px 0 2px;text-transform:uppercase;white-space:nowrap;overflow:hidden;">Word Collector</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="flex:1;overflow:auto;padding:6px 16px 12px;display:flex;flex-direction:column;gap:8px;">
+                  <sc-for list="{{mDays}}" as="dy" hint-placeholder-count="3">
+                    <div onClick="{{dy.onTap}}" style="display:flex;gap:12px;align-items:center;background:{{dy.bg}};border:1.5px {{dy.borderStyle}} {{dy.borderColor}};padding:10px 12px;min-height:56px;cursor:pointer;user-select:none;transition:all .15s ease;">
+                      <div style="width:44px;flex:none;text-align:center;">
+                        <div style="font-family:var(--font-display);font-weight:500;font-size:9px;letter-spacing:1.5px;color:var(--ink-ghost);">{{dy.dow}}</div>
+                        <div style="font-family:var(--font-editorial);font-style:italic;font-size:22px;color:{{dy.numColor}};line-height:1.1;">{{dy.num}}</div>
+                      </div>
+                      <div style="flex:1;display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                        <sc-for list="{{dy.cards}}" as="dc" hint-placeholder-count="0">
+                          <div style="display:flex;gap:6px;align-items:center;background:var(--paper-card);box-shadow:var(--shadow-card);padding:4px 8px 4px 4px;animation:et-drop .3s var(--ease-settle);">
+                            <div style="width:16px;height:16px;background:{{dc.fill}};"></div>
+                            <span style="font-family:var(--font-display);font-weight:500;font-size:9px;letter-spacing:.5px;color:var(--ink-faint);text-transform:uppercase;">{{dc.label}}</span>
+                          </div>
+                        </sc-for>
+                        <sc-if value="{{dy.empty}}" hint-placeholder-val="{{true}}">
+                          <span style="font-family:var(--font-editorial);font-style:italic;font-size:13px;color:var(--ink-ghost);">{{dy.emptyLabel}}</span>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </sc-for>
+                  <div style="font-family:var(--font-editorial);font-style:italic;font-size:12.5px;color:var(--ink-ghost);text-align:center;margin-top:4px;">Drag becomes tap-to-assign on touch.</div>
+                </div>
+                <div style="flex:none;display:flex;background:var(--paper-frame);border-top:2px solid var(--line);height:56px;">
+                  <sc-for list="{{mTabsA}}" as="mt" hint-placeholder-count="3">
+                    <div onClick="{{mt.onTap}}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;user-select:none;position:relative;">
+                      <div style="position:absolute;top:-2px;left:22%;right:22%;height:3px;background:{{mt.ind}};"></div>
+                      <div style="width:11px;height:11px;background:{{mt.glyphBg}};border:2px solid {{mt.glyphBorder}};box-sizing:border-box;"></div>
+                      <div style="font-family:var(--font-display);font-weight:600;font-size:10px;letter-spacing:1.5px;color:{{mt.color}};">{{mt.label}}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </x-import>
+            <div style="font-family:var(--font-editorial);font-style:italic;font-size:14px;color:var(--ink-faint);text-align:center;margin-top:10px;">PLAN — tap a card, then tap a day</div>
+          </div>
+
+          <div>
+            <x-import component-from-global-scope="IOSDevice" from="./ios-frame.jsx" title="" hint-size="390px,760px">
+              <div style="display:flex;flex-direction:column;height:100%;background:var(--paper-sheet);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+                <div style="padding:14px 16px 10px;border-bottom:2px solid var(--line);">
+                  <div style="display:flex;align-items:baseline;justify-content:space-between;">
+                    <div style="font-family:var(--font-display);font-weight:600;font-size:26px;letter-spacing:1.5px;color:var(--accent);">DO</div>
+                    <span style="font-family:var(--font-display);font-weight:600;font-size:10px;letter-spacing:1.5px;color:#fff;background:var(--accent);padding:2px 8px;">TODAY</span>
+                  </div>
+                  <div style="font-family:var(--font-editorial);font-style:italic;font-size:17px;color:var(--ink-strong);margin-top:2px;">Wednesday, September 9</div>
+                  <div style="font-family:var(--font-display);font-weight:500;font-size:10px;letter-spacing:1.5px;color:var(--ink-faint);margin-top:2px;">ELA BLOCK · 9:00 – 10:45 · 95 MIN</div>
+                </div>
+                <div style="flex:1;overflow:auto;padding:12px 16px;display:flex;flex-direction:column;gap:10px;">
+                  <sc-for list="{{mAgenda}}" as="ma" hint-placeholder-count="2">
+                    <div style="background:var(--paper-inset);border:1px solid var(--line-soft);padding:12px;display:flex;gap:12px;align-items:center;min-height:60px;">
+                      <div style="flex:none;background:var(--paper-card);padding:3px;box-shadow:0 1px 4px rgba(0,0,0,.18);"><div style="width:34px;height:34px;background:{{ma.fill}};"></div></div>
+                      <div style="flex:1;min-width:0;">
+                        <div style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:.5px;color:var(--ink);text-transform:uppercase;">{{ma.title}}</div>
+                        <div style="font-family:var(--font-display);font-weight:500;font-size:11px;color:var(--ink-ghost);margin-top:2px;">{{ma.time}} · {{ma.std}}</div>
+                      </div>
+                      <div onClick="{{ma.onDone}}" style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;">
+                        <div style="width:34px;height:34px;border-radius:50%;border:2.5px solid {{ma.border}};background:{{ma.bg}};color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s ease;"><span style="animation:{{ma.anim}};">{{ma.check}}</span></div>
+                      </div>
+                    </div>
+                  </sc-for>
+                  <div style="margin-top:6px;">
+                    <div style="font-family:var(--font-display);font-weight:600;font-size:12px;letter-spacing:1.5px;color:var(--ink-muted);border-bottom:2px solid var(--line);padding-bottom:5px;">MATERIALS TO PREP</div>
+                    <div onClick="{{mcbA.onToggle}}" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:8px 0;min-height:44px;box-sizing:border-box;user-select:none;">
+                      <div style="flex:none;width:18px;height:18px;border:2px solid var(--ink-faint);background:{{mcbA.bg}};color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;"><span style="animation:{{mcbA.anim}};">{{mcbA.check}}</span></div>
+                      <div style="font-size:15px;color:{{mcbA.color}};text-decoration:{{mcbA.deco}};">Character change timeline</div>
+                    </div>
+                    <div onClick="{{mcbB.onToggle}}" style="display:flex;gap:10px;align-items:center;cursor:pointer;padding:8px 0;min-height:44px;box-sizing:border-box;user-select:none;">
+                      <div style="flex:none;width:18px;height:18px;border:2px solid var(--ink-faint);background:{{mcbB.bg}};color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;"><span style="animation:{{mcbB.anim}};">{{mcbB.check}}</span></div>
+                      <div style="font-size:15px;color:{{mcbB.color}};text-decoration:{{mcbB.deco}};">"Winn-Dixie" ch. 15</div>
+                    </div>
+                  </div>
+                </div>
+                <div style="flex:none;display:flex;background:var(--paper-frame);border-top:2px solid var(--line);height:56px;">
+                  <sc-for list="{{mTabsB}}" as="mt" hint-placeholder-count="3">
+                    <div onClick="{{mt.onTap}}" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;user-select:none;position:relative;">
+                      <div style="position:absolute;top:-2px;left:22%;right:22%;height:3px;background:{{mt.ind}};"></div>
+                      <div style="width:11px;height:11px;background:{{mt.glyphBg}};border:2px solid {{mt.glyphBorder}};box-sizing:border-box;"></div>
+                      <div style="font-family:var(--font-display);font-weight:600;font-size:10px;letter-spacing:1.5px;color:{{mt.color}};">{{mt.label}}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+            </x-import>
+            <div style="font-family:var(--font-editorial);font-style:italic;font-size:14px;color:var(--ink-faint);text-align:center;margin-top:10px;">DO — the teaching day, thumb-reachable</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============ CODE MODAL ============ -->
+  <sc-if value="{{codeOpen}}" hint-placeholder-val="{{false}}">
+    <div onClick="{{closeCode}}" style="position:fixed;inset:0;z-index:90;background:rgba(40,38,32,.45);animation:et-fade .2s ease;"></div>
+    <div style="position:fixed;inset:0;z-index:91;display:flex;align-items:center;justify-content:center;padding:30px;pointer-events:none;">
+      <div style="width:760px;max-width:94vw;max-height:86vh;background:var(--paper-frame);box-shadow:var(--shadow-modal);display:flex;flex-direction:column;animation:et-pop .22s var(--ease-settle);pointer-events:auto;">
+        <div style="display:flex;align-items:center;gap:14px;padding:14px 18px;border-bottom:2px solid var(--line);">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:16px;letter-spacing:1px;color:var(--ink);">{{codeName}}</div>
+          <div style="font-family:monospace;font-size:11px;color:var(--ink-faint);">{{codePath}}</div>
+          <div style="flex:1;"></div>
+          <div onClick="{{copyFromModal}}" style="font-family:var(--font-display);font-weight:600;font-size:11px;letter-spacing:1px;color:#fff;background:var(--accent);padding:5px 14px;cursor:pointer;" style-active="transform:scale(.95);">{{copyModalLbl}}</div>
+          <div onClick="{{closeCode}}" style="font-size:19px;color:var(--ink-faint);cursor:pointer;line-height:1;padding:2px 6px;">×</div>
+        </div>
+        <pre style="flex:1;overflow:auto;margin:0;background:var(--ink-black);color:#e8e6df;font-family:'SF Mono',Menlo,Consolas,monospace;font-size:11.5px;line-height:1.55;padding:18px 20px;white-space:pre;">{{codeText}}</pre>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#4da4e0&quot;,&quot;options&quot;:[&quot;#4da4e0&quot;,&quot;#e8871e&quot;,&quot;#7a9e4f&quot;,&quot;#8b6fc9&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Theme&quot;},&quot;reducedMotion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Motion&quot;}}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      copied: null, copyFeedback: 'nothing copied yet.',
+      codeView: null, codeCopied: false,
+      spotAlt: false,
+      // demo state
+      cbA: true, cbB: false, chip: '5', rating: 'well',
+      tfName: 'Ms. Rivera', tfNote: '',
+      done1: false, agDone: true, agExp: false,
+      capNotes: [{ id: 'c1', student: 'DeShawn W.', text: 'Mixed up trait vs. feeling — revisit T-chart Monday.' }],
+      hdrTab: 'plan', mTab: 'do', mSel: null,
+      mAssigned: { 1: [{ fill: 'var(--lesson)', label: 'Traits vs. Feelings' }] },
+      mDone: { 0: true }, mcbA: true, mcbB: false,
+    };
+    this.FILES = {
+      TokColors: 'tokens/colors.css', TokType: 'tokens/typography.css',
+      TokElev: 'tokens/elevation.css', TokMotion: 'tokens/motion.css',
+      Button: 'components/atoms/Button.jsx', Tag: 'components/atoms/Tag.jsx',
+      Checkbox: 'components/atoms/Checkbox.jsx', TextField: 'components/atoms/TextField.jsx',
+      SectionLabel: 'components/atoms/SectionLabel.jsx', AssignmentFlag: 'components/atoms/AssignmentFlag.jsx',
+      DoneCheck: 'components/atoms/DoneCheck.jsx',
+      LessonCard: 'components/molecules/LessonCard.jsx', RatingToggle: 'components/molecules/RatingToggle.jsx',
+      CoverageRow: 'components/molecules/CoverageRow.jsx', CaptureNote: 'components/molecules/CaptureNote.jsx',
+      AgendaItem: 'components/molecules/AgendaItem.jsx',
+      AppHeader: 'components/organisms/AppHeader.jsx', LessonPopover: 'components/organisms/LessonPopover.jsx',
+      TourTip: 'components/organisms/TourTip.jsx', MobileTabBar: 'components/organisms/MobileTabBar.jsx',
+    };
+  }
+
+  componentDidMount() { this.applyProps(); }
+  componentDidUpdate() { this.applyProps(); }
+  applyProps() {
+    const root = document.documentElement;
+    if (this.props.accent) root.style.setProperty('--accent', this.props.accent);
+    const rm = this.props.reducedMotion === true;
+    ['--dur-instant', '--dur-fast', '--dur-base', '--dur-drop', '--dur-move'].forEach(v =>
+      rm ? root.style.setProperty(v, '0ms') : root.style.removeProperty(v));
+  }
+
+  copyText(text, done) {
+    const finish = () => { done && done(); };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(finish).catch(() => this.copyFallback(text, finish));
+    } else this.copyFallback(text, finish);
+  }
+  copyFallback(text, finish) {
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); document.body.removeChild(ta);
+    } catch (e) { }
+    finish();
+  }
+  fetchFile(key, cb) {
+    fetch(this.FILES[key]).then(r => r.text()).then(cb)
+      .catch(() => cb('// Could not load ' + this.FILES[key] + ' — open the file directly in the project.'));
+  }
+  copyFileKey(key) {
+    this.fetchFile(key, (text) => {
+      this.copyText(text, () => {
+        this.setState({ copied: key });
+        clearTimeout(this._ct); this._ct = setTimeout(() => this.setState({ copied: null }), 1800);
+      });
+    });
+  }
+  openCode(key, name) {
+    this.setState({ codeView: { key, name, text: 'Loading…' }, codeCopied: false });
+    this.fetchFile(key, (text) => {
+      this.setState(s => s.codeView && s.codeView.key === key
+        ? { codeView: { key, name, text } } : {});
+    });
+  }
+  copyTokenVar(token) {
+    this.copyText('var(' + token + ')', () => {
+      this.setState({ copyFeedback: 'copied var(' + token + ')' });
+    });
+  }
+  replay(kind) {
+    const el = document.querySelector('[data-motion="' + kind + '"]');
+    if (!el) return;
+    const anim = el.style.animation;
+    el.style.animation = 'none';
+    void el.offsetWidth;
+    el.style.animation = anim || '';
+  }
+  goTo(id) {
+    const c = document.getElementById('sbScroll');
+    const el = document.getElementById(id);
+    if (c && el) c.scrollTop = c.scrollTop + el.getBoundingClientRect().top - c.getBoundingClientRect().top - 14;
+  }
+
+  renderVals() {
+    const s = this.state;
+    const vals = {};
+
+    // ---- copy/view wiring for every file ----
+    Object.keys(this.FILES).forEach(key => {
+      vals['copy' + key] = () => this.copyFileKey(key);
+      vals['copyLbl' + key] = s.copied === key ? 'COPIED ✓' : (key.startsWith('Tok') ? 'COPY CSS' : 'COPY REACT');
+      vals['view' + key] = () => this.openCode(key, key);
+    });
+
+    // ---- nav ----
+    const NAV = [
+      ['overview', 'Overview'],
+      ['head', 'FOUNDATIONS'], ['f-color', 'Color'], ['f-type', 'Typography'], ['f-space', 'Spacing & Elevation'],
+      ['head', 'MOTION'], ['motion', 'Paper Physics'],
+      ['head', 'ATOMS'], ['a-button', 'Button'], ['a-tag', 'Tag & Chip'], ['a-checkbox', 'Checkbox'], ['a-textfield', 'TextField'], ['a-sectionlabel', 'SectionLabel'], ['a-flag', 'AssignmentFlag'], ['a-donecheck', 'DoneCheck'],
+      ['head', 'MOLECULES'], ['m-lessoncard', 'LessonCard'], ['m-rating', 'RatingToggle'], ['m-coverage', 'CoverageRow'], ['m-capture', 'CaptureNote'], ['m-agenda', 'AgendaItem'],
+      ['head', 'ORGANISMS'], ['o-header', 'AppHeader'], ['o-popover', 'LessonPopover'], ['o-tour', 'TourTip'], ['o-mobilebar', 'MobileTabBar'],
+      ['head', 'MOBILE'], ['mobile', 'Mobile Patterns'],
+    ];
+    vals.navItems = NAV.map(([id, label]) => id === 'head'
+      ? { isHead: true, isItem: false, label }
+      : { isHead: false, isItem: true, label, onGo: () => this.goTo(id) });
+
+    // ---- color swatches ----
+    const mk = (arr) => arr.map(([token, label]) => ({
+      token, label, bg: 'var(' + token + ')', onCopy: () => this.copyTokenVar(token),
+    }));
+    vals.colorFunctional = mk([['--lesson', 'LESSON'], ['--vitamin', 'VITAMIN'], ['--flag', 'ASSIGNMENT'], ['--accent', 'ACCENT'], ['--lesson-dim', 'LESSON DIM'], ['--vitamin-dim', 'VITAMIN DIM'], ['--planned', 'PLANNED']]);
+    vals.colorPaper = mk([['--paper-card', 'CARD'], ['--paper-frame', 'FRAME'], ['--paper-inset', 'INSET'], ['--paper-sheet', 'SHEET'], ['--paper-band', 'BAND'], ['--paper-desk', 'DESK'], ['--paper-tray', 'TRAY']]);
+    vals.colorInk = mk([['--ink-black', ''], ['--ink-strong', ''], ['--ink', ''], ['--ink-muted', ''], ['--ink-faint', ''], ['--ink-ghost', ''], ['--line-strong', ''], ['--line', ''], ['--line-soft', ''], ['--line-faint', '']]);
+    vals.copyFeedback = s.copyFeedback;
+
+    vals.spaceScale = [4, 6, 8, 10, 12, 16, 20, 24, 32, 44].map(n => ({ n, px: n + 'px' }));
+    vals.elevDemos = [
+      { label: 'RESTING', token: '--shadow-card', shadow: 'var(--shadow-card)', tf: 'none' },
+      { label: 'HOVER', token: '--shadow-raise', shadow: 'var(--shadow-raise)', tf: 'translateY(-4px)' },
+      { label: 'DRAGGING', token: '--shadow-drag', shadow: 'var(--shadow-drag)', tf: 'rotate(-3deg)' },
+      { label: 'POPOVER', token: '--shadow-pop', shadow: 'var(--shadow-pop)', tf: 'none' },
+      { label: 'TRAY (HARD)', token: '--shadow-stack', shadow: 'var(--shadow-stack)', tf: 'none' },
+    ];
+
+    // ---- motion demos ----
+    const MD = [
+      ['pop', 'ET-POP', 'Panels, popovers and modals enter: scale .94 + 8px rise.', 'et-pop 250ms settle'],
+      ['drop', 'ET-DROP', 'A card lands: falls from above, squashes to .97, settles.', 'et-drop 320ms settle'],
+      ['check', 'ET-CHECK', 'The reward: mark overshoots to 1.3 then settles. Reward easing only.', 'et-check 320ms reward'],
+      ['fade', 'ET-FADE', 'View changes crossfade at 200–250ms. Screens never slide.', 'et-fade 250ms ease'],
+      ['flag', 'OVERLOAD BADGE', 'A day past the 105-min block grows an orange minute count.', 'et-fade 300ms ease'],
+      ['rise', 'ET-RISE', 'Page sections and mobile sheets enter with an 18px rise.', 'et-rise 800ms settle'],
+    ];
+    vals.motionDemos = MD.map(([k, title, desc, code]) => ({
+      title, desc, code,
+      isPop: k === 'pop', isDrop: k === 'drop', isCheck: k === 'check',
+      isFade: k === 'fade', isFlag: k === 'flag', isRise: k === 'rise',
+      onReplay: () => this.replay(k),
+    }));
+    vals.spotLeft = s.spotAlt ? '64%' : '7%';
+    vals.toggleSpot = () => this.setState(st => ({ spotAlt: !st.spotAlt }));
+
+    // ---- code modal ----
+    vals.codeOpen = !!s.codeView;
+    vals.codeName = s.codeView ? s.codeView.name : '';
+    vals.codePath = s.codeView ? this.FILES[s.codeView.key] : '';
+    vals.codeText = s.codeView ? s.codeView.text : '';
+    vals.closeCode = () => this.setState({ codeView: null });
+    vals.copyModalLbl = s.codeCopied ? 'COPIED ✓' : 'COPY';
+    vals.copyFromModal = () => {
+      if (!s.codeView) return;
+      this.copyText(s.codeView.text, () => this.setState({ codeCopied: true }));
+    };
+
+    // ================= DEMO STATE =================
+    const checkboxVal = (key) => ({
+      bg: s[key] ? 'var(--vitamin)' : 'transparent',
+      check: s[key] ? '✓' : '',
+      anim: s[key] ? 'et-check .32s var(--ease-reward)' : 'none',
+      color: s[key] ? 'var(--ink-ghost)' : 'var(--ink)',
+      deco: s[key] ? 'line-through' : 'none',
+      onToggle: () => this.setState(st => ({ [key]: !st[key] })),
+    });
+    vals.cbA = checkboxVal('cbA');
+    vals.cbB = checkboxVal('cbB');
+    vals.mcbA = checkboxVal('mcbA');
+    vals.mcbB = checkboxVal('mcbB');
+
+    vals.chipOpts = ['3', '4', '5', '6'].map(g => ({
+      label: g,
+      border: s.chip === g ? 'var(--accent)' : 'var(--line-soft)',
+      bg: s.chip === g ? 'var(--accent)' : 'var(--paper-card)',
+      color: s.chip === g ? '#fff' : 'var(--ink-muted)',
+      onTap: () => this.setState({ chip: g }),
+    }));
+
+    vals.tfName = s.tfName;
+    vals.onTfName = (e) => this.setState({ tfName: e.target.value });
+    vals.tfNote = s.tfNote;
+    vals.onTfNote = (e) => this.setState({ tfNote: e.target.value });
+
+    const doneVal = (key) => ({
+      border: s[key] ? 'var(--vitamin)' : 'var(--line-strong)',
+      bg: s[key] ? 'var(--vitamin)' : 'transparent',
+      check: s[key] ? '✓' : '',
+      anim: s[key] ? 'et-check .32s var(--ease-reward)' : 'none',
+      onToggle: (e) => { if (e && e.stopPropagation) e.stopPropagation(); this.setState(st => ({ [key]: !st[key] })); },
+    });
+    vals.dc1 = doneVal('done1');
+    vals.agDoneObj = doneVal('agDone');
+
+    vals.replayCardDrop = () => this.replay('carddrop');
+
+    vals.rateWell = {
+      border: s.rating === 'well' ? 'var(--vitamin)' : 'var(--line-strong)',
+      bg: s.rating === 'well' ? 'var(--vitamin)' : 'transparent',
+      color: s.rating === 'well' ? '#fff' : 'var(--ink-faint)',
+      onTap: () => this.setState(st => ({ rating: st.rating === 'well' ? null : 'well' })),
+    };
+    vals.rateRe = {
+      border: s.rating === 'reteach' ? 'var(--flag)' : 'var(--line-strong)',
+      bg: s.rating === 'reteach' ? 'var(--flag)' : 'transparent',
+      color: s.rating === 'reteach' ? '#fff' : 'var(--ink-faint)',
+      onTap: () => this.setState(st => ({ rating: st.rating === 'reteach' ? null : 'reteach' })),
+    };
+
+    vals.covRows = [
+      { code: '5R1', name: 'Quote accurately and draw inferences from a text', t: 2, p: 1 },
+      { code: '5R2', name: 'Determine theme; summarize a text', t: 1, p: 0 },
+      { code: '5W1', name: 'Write opinion pieces supported by reasons & evidence', t: 0, p: 1 },
+    ].map(r => ({
+      code: r.code, name: r.name, count: r.t + ' of 4',
+      blocks: [0, 1, 2, 3].map(i => ({
+        bg: i < r.t ? 'var(--lesson)' : i < r.t + r.p ? 'var(--planned)' : 'transparent',
+      })),
+    }));
+
+    vals.capRoster = ['Amara B.', 'DeShawn W.', 'Sofia R.', 'Mateo G.'].map(name => ({
+      name,
+      onTap: () => this.setState(st => ({
+        capNotes: st.capNotes.concat([{ id: 'c' + Date.now(), student: name, text: '' }]),
+      })),
+    }));
+    vals.capNotes = s.capNotes.map(cp => ({
+      student: cp.student, text: cp.text,
+      onText: (e) => {
+        const v = e.target.value;
+        this.setState(st => ({ capNotes: st.capNotes.map(x => x.id === cp.id ? Object.assign({}, x, { text: v }) : x) }));
+      },
+      onRemove: () => this.setState(st => ({ capNotes: st.capNotes.filter(x => x.id !== cp.id) })),
+    }));
+
+    vals.agOpen = s.agExp;
+    vals.agHint = s.agExp ? 'CLOSE ⌄' : 'LESSON PLAN ›';
+    vals.agToggleExp = () => this.setState(st => ({ agExp: !st.agExp }));
+    vals.agPhases = [
+      { min: '3', name: 'CONNECT', note: "Link to yesterday's thinking" },
+      { min: '8', name: 'TEACH', note: 'Model with the anchor text' },
+      { min: '5', name: 'ENGAGE', note: 'Partners try it with a shared excerpt' },
+      { min: '20', name: 'INDEPENDENT & CONFER', note: 'Students read & jot; teacher confers' },
+      { min: '7', name: 'SHARE', note: "Spotlight two readers' jots" },
+    ];
+
+    vals.hdrGoPlan = () => this.setState({ hdrTab: 'plan' });
+    vals.hdrGoDo = () => this.setState({ hdrTab: 'do' });
+    vals.hdrGoReview = () => this.setState({ hdrTab: 'review' });
+    vals.hdrPlanC = s.hdrTab === 'plan' ? 'var(--accent)' : '#9c9a94';
+    vals.hdrDoC = s.hdrTab === 'do' ? 'var(--accent)' : '#9c9a94';
+    vals.hdrRevC = s.hdrTab === 'review' ? 'var(--accent)' : '#9c9a94';
+
+    const tabBar = () => ['plan', 'do', 'review'].map(t => {
+      const on = s.mTab === t;
+      return {
+        label: t.toUpperCase(),
+        ind: on ? 'var(--accent)' : 'transparent',
+        glyphBg: on ? 'var(--accent)' : 'transparent',
+        glyphBorder: on ? 'var(--accent)' : 'var(--ink-ghost)',
+        color: on ? 'var(--accent)' : 'var(--ink-faint)',
+        onTap: () => this.setState({ mTab: t }),
+      };
+    });
+    vals.mTabs = tabBar();
+    vals.mTabsA = tabBar();
+    vals.mTabsB = tabBar();
+
+    // ---- mobile PLAN: tap-to-assign ----
+    const SHELF = {
+      1: { fill: 'var(--lesson)', label: 'Narrator POV' },
+      2: { fill: 'var(--lesson)', label: 'Theme & Change' },
+      3: { fill: 'var(--vitamin)', label: 'Word Collector' },
+    };
+    [1, 2, 3].forEach(i => {
+      vals['mc' + i] = {
+        outline: s.mSel === i ? '2.5px solid var(--accent)' : '2.5px solid transparent',
+        onTap: () => this.setState(st => ({ mSel: st.mSel === i ? null : i })),
+      };
+    });
+    vals.mHint = s.mSel ? 'NOW TAP A DAY' : 'TAP A CARD';
+    const DAYS = [{ dow: 'MON', num: 7 }, { dow: 'TUE', num: 8 }, { dow: 'WED', num: 9, today: true }];
+    vals.mDays = DAYS.map((d, idx) => {
+      const cards = s.mAssigned[idx] || [];
+      const armed = s.mSel != null;
+      return {
+        dow: d.dow, num: d.num,
+        numColor: d.today ? 'var(--accent)' : 'var(--ink-strong)',
+        bg: armed ? 'rgba(77,164,224,.10)' : 'var(--paper-inset)',
+        borderStyle: armed ? 'dashed' : 'solid',
+        borderColor: armed ? 'var(--accent)' : 'var(--line-soft)',
+        cards,
+        empty: cards.length === 0,
+        emptyLabel: armed ? 'tap to place here' : 'nothing planned',
+        onTap: () => {
+          if (s.mSel == null) return;
+          const card = SHELF[s.mSel];
+          this.setState(st => {
+            const mAssigned = Object.assign({}, st.mAssigned);
+            mAssigned[idx] = (mAssigned[idx] || []).concat([card]);
+            return { mAssigned, mSel: null };
+          });
+        },
+      };
+    });
+
+    // ---- mobile DO ----
+    const MAG = [
+      { title: 'Reading Between the Lines', time: '9:00 – 9:45', std: '5R1', fill: 'var(--lesson)' },
+      { title: 'Word Collector', time: '9:50 – 10:00', std: '5L4', fill: 'var(--vitamin)' },
+    ];
+    vals.mAgenda = MAG.map((a, i) => {
+      const on = !!s.mDone[i];
+      return {
+        title: a.title, time: a.time, std: a.std, fill: a.fill,
+        border: on ? 'var(--vitamin)' : 'var(--line-strong)',
+        bg: on ? 'var(--vitamin)' : 'transparent',
+        check: on ? '✓' : '',
+        anim: on ? 'et-check .32s var(--ease-reward)' : 'none',
+        onDone: () => this.setState(st => {
+          const mDone = Object.assign({}, st.mDone);
+          if (mDone[i]) delete mDone[i]; else mDone[i] = true;
+          return { mDone };
+        }),
+      };
+    });
+
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

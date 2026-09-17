@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "savings-bar",
+  "title": "Savings Bar",
+  "description": "Dual-tone teal bar showing savings amount and due-today price. Key visual element of the shopping flow.",
+  "files": [
+    {
+      "path": "components/ui/savings-bar.tsx",
+      "content": "import { cn } from \"@/lib/utils\"\n\n/**\n * Total Wireless Savings Bar Component\n *\n * The dual-tone teal bar that displays savings amount and due today price.\n * This is a KEY visual element of the Total Wireless shopping flow.\n *\n * Usage:\n * <SavingsBar\n *   savings={{ label: \"You save\", value: \"$120/yr\" }}\n *   dueToday={{ label: \"Due today\", value: \"$55.00\" }}\n * />\n */\n\ninterface SavingsBarSection {\n  label: string\n  value: string\n}\n\ninterface SavingsBarProps extends React.HTMLAttributes<HTMLDivElement> {\n  savings: SavingsBarSection\n  dueToday: SavingsBarSection\n}\n\nfunction SavingsBar({\n  className,\n  savings,\n  dueToday,\n  ...props\n}: SavingsBarProps) {\n  return (\n    <div\n      data-slot=\"savings-bar\"\n      className={cn(\n        \"flex rounded-xl overflow-hidden font-sans\",\n        className\n      )}\n      {...props}\n    >\n      {/* Left: Savings (lighter teal) */}\n      <div className=\"flex-1 bg-tw-teal-50 px-4 py-3 text-center text-tw-navy-900\">\n        <div className=\"text-[11px] font-medium uppercase tracking-wide opacity-80\">\n          {savings.label}\n        </div>\n        <div className=\"text-xl font-bold tracking-tight\">{savings.value}</div>\n      </div>\n\n      {/* Right: Due Today (darker teal) */}\n      <div className=\"flex-1 bg-tw-teal-400 px-4 py-3 text-center text-tw-navy-900\">\n        <div className=\"text-[11px] font-medium uppercase tracking-wide opacity-80\">\n          {dueToday.label}\n        </div>\n        <div className=\"text-xl font-bold tracking-tight\">\n          {dueToday.value}\n        </div>\n      </div>\n    </div>\n  )\n}\n\nexport { SavingsBar }\nexport type { SavingsBarProps, SavingsBarSection }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

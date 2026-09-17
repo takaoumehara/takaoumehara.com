@@ -1,0 +1,63 @@
+/* ============================================================
+   EduTrack color tokens
+   Warm paper neutrals + four functional colors.
+   Every color in the product traces back to one of these.
+   ============================================================ */
+:root {
+  /* --- Paper (surfaces, light → dark) --- */
+  --paper-frame:   #f6f5f1;  /* outer frame, modal sheets */
+  --paper-inset:   #f2f0e9;  /* agenda rows, inset panels */
+  --paper-sheet:   #e9e7df;  /* main app canvas */
+  --paper-band:    #e6e2d8;  /* tinted section bands */
+  --paper-desk:    #d6d3ca;  /* page background ("the desk") */
+  --paper-tray:    #c9c7bf;  /* card palette / tray */
+  --paper-card:    #ffffff;  /* physical lesson cards */
+
+  /* --- Ink (text, dark → light) --- */
+  --ink-black:     #1c1b19;  /* timeline bar, footer, max contrast */
+  --ink-strong:    #2f2d29;  /* display headlines, dates */
+  --ink:           #3d3b36;  /* titles, primary text */
+  --ink-soft:      #5a5850;  /* long-form body */
+  --ink-muted:     #6b6963;  /* secondary text, arrows */
+  --ink-faint:     #8f8d86;  /* labels, metadata */
+  --ink-ghost:     #a5a29a;  /* placeholders, disabled text */
+
+  /* --- Lines & borders (strong → faint) --- */
+  --line-strong:   #b9b5aa;  /* tag borders, coverage blocks */
+  --line:          #cfccc3;  /* section rules */
+  --line-soft:     #dcd9cf;  /* card borders, inputs */
+  --line-faint:    #eceae3;  /* row separators */
+
+  /* --- Functional colors --- */
+  --lesson:        #6f4e2f;  /* brown — core teaching cards */
+  --lesson-dim:    #c9bcab;  /* lesson, already placed/spent */
+  --vitamin:       #8cba52;  /* green — boosters, success, done */
+  --vitamin-dim:   #cfe0b4;  /* vitamin, already placed/spent */
+  --flag:          #e8871e;  /* orange — assignments, warnings, reteach */
+  --accent:        #4da4e0;  /* blue — active state, today, links */
+  --accent-hover:  #2f88c9;
+  --planned:       #d9cfc0;  /* coverage block: planned but not taught */
+
+  /* --- Text on color --- */
+  --on-color:      #f6f2ea;  /* text on lesson/vitamin/flag fills */
+  --on-dark:       #f2f1ec;  /* text on ink-black */
+
+  /* --- Accent alternates (user-selectable) --- */
+  --accent-alt-orange: #e8871e;
+  --accent-alt-green:  #7a9e4f;
+  --accent-alt-purple: #8b6fc9;
+
+  /* --- Semantic aliases --- */
+  --surface-page:     var(--paper-desk);
+  --surface-app:      var(--paper-sheet);
+  --surface-card:     var(--paper-card);
+  --surface-overlay:  rgba(40, 38, 32, .52);
+  --text-heading:     var(--ink-strong);
+  --text-body:        var(--ink-soft);
+  --text-label:       var(--ink-faint);
+  --text-placeholder: var(--ink-ghost);
+  --text-link:        var(--accent);
+  --state-success:    var(--vitamin);
+  --state-warning:    var(--flag);
+  --state-active:     var(--accent);
+}

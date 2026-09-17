@@ -1,0 +1,286 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ═══════════════════════════════════════════════════════════════
+   Total Wireless Design System — Tailwind v4 Theme
+   Extracted from Figma:
+   DO-_-Plan-Listing-Page-Documentation / node 1:201
+   ═══════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  /* ─── Font ─── */
+  --font-sans: var(--font-galano), "Galano Grotesque", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono, "SFMono-Regular", Consolas, "Liberation Mono", monospace);
+  --font-heading: var(--font-galano), "Galano Grotesque", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* ─── Brand Colors: Navy / Blue ─── */
+  --color-tw-navy-50: #F5F6FF;
+  --color-tw-navy-100: #E6E8F5;
+  --color-tw-navy-200: #C2C6E2;
+  --color-tw-navy-300: #8D95C6;
+  --color-tw-navy-400: #5764A8;
+  --color-tw-navy-500: #26358B;
+  --color-tw-navy-600: #1A2770;
+  --color-tw-navy-700: #101951;
+  --color-tw-navy-800: #070B3F;
+  --color-tw-navy-900: #000330;
+
+  /* Backward-compatible aliases for the earlier extraction. */
+  --color-tw-purple-50: var(--color-tw-navy-50);
+  --color-tw-purple-100: var(--color-tw-navy-100);
+  --color-tw-purple-200: var(--color-tw-navy-200);
+  --color-tw-purple-300: var(--color-tw-navy-300);
+  --color-tw-purple-400: var(--color-tw-navy-400);
+  --color-tw-purple-500: var(--color-tw-navy-500);
+  --color-tw-purple-600: var(--color-tw-navy-600);
+  --color-tw-purple-700: var(--color-tw-navy-700);
+  --color-tw-purple-800: var(--color-tw-navy-800);
+  --color-tw-purple-900: var(--color-tw-navy-900);
+
+  /* ─── Accent Colors: Teal ─── */
+  --color-tw-teal-50: #E6FCF4;
+  --color-tw-teal-100: #C0F3EA;
+  --color-tw-teal-200: #80E7DC;
+  --color-tw-teal-300: #4DD9CB;
+  --color-tw-teal-400: #00C8B7;
+  --color-tw-teal-500: #00A99B;
+  --color-tw-teal-600: #007D73;
+  --color-tw-teal-700: #005C55;
+  --color-tw-teal-900: #003C38;
+
+  /* ─── Action / Error Reds ─── */
+  --color-tw-red-50: #FFCDD2;
+  --color-tw-red-100: #F8D7DA;
+  --color-tw-red-500: #FFCDD2;
+  --color-tw-red-600: #EE0000;
+  --color-tw-red-700: #BD0000;
+  --color-tw-red-900: #880D1E;
+
+  /* ─── Neutral Grays ─── */
+  --color-tw-gray-50: #FFFFFF;
+  --color-tw-gray-100: #F2F2F2;
+  --color-tw-gray-200: #DDDAD4;
+  --color-tw-gray-300: #DADADA;
+  --color-tw-gray-400: #AAA8A3;
+  --color-tw-gray-500: #666666;
+  --color-tw-gray-600: #525252;
+  --color-tw-gray-700: #333333;
+  --color-tw-gray-800: #1A1C35;
+  --color-tw-gray-900: #000000;
+  --color-tw-gray-950: #000000;
+
+  /* ─── shadcn semantic color mapping ─── */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* ─── Chart colors (teal + purple palette) ─── */
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* ─── Sidebar ─── */
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+
+  /* ─── Semantic status colors ─── */
+  --color-success: #007D73;
+  --color-success-light: #E6FCF4;
+  --color-warning: #F59E0B;
+  --color-warning-light: #FFF1C2;
+  --color-error: #EE0000;
+  --color-error-light: #FFCDD2;
+
+  /* ─── Radius (from Total Wireless tokens) ─── */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
+  --radius-3xl: 24px;
+  --radius-4xl: 28px;
+  --radius-full: 9999px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Light Theme — Total Wireless Brand
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  /* ─── Surface ─── */
+  --background: #F2F2F2;
+  --foreground: #000330;
+  --card: #FFFFFF;
+  --card-foreground: #000330;
+  --popover: #FFFFFF;
+  --popover-foreground: #000330;
+
+  /* ─── Primary = Brand Navy ─── */
+  --primary: #000330;
+  --primary-foreground: #FFFFFF;
+
+  /* ─── Secondary = Light Navy ─── */
+  --secondary: #E6E8F5;
+  --secondary-foreground: #000330;
+
+  /* ─── Muted ─── */
+  --muted: #F2F2F2;
+  --muted-foreground: #666666;
+
+  /* ─── Accent = Teal ─── */
+  --accent: #00C8B7;
+  --accent-foreground: #000330;
+
+  /* ─── Destructive ─── */
+  --destructive: #EE0000;
+
+  /* ─── Borders & Input ─── */
+  --border: #DDDAD4;
+  --input: #DADADA;
+  --ring: #000330;
+
+  /* ─── Charts ─── */
+  --chart-1: #000330;
+  --chart-2: #00C8B7;
+  --chart-3: #26358B;
+  --chart-4: #EE0000;
+  --chart-5: #572C8E;
+
+  /* ─── Sidebar ─── */
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #000330;
+  --sidebar-primary: #000330;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #E6E8F5;
+  --sidebar-accent-foreground: #000330;
+  --sidebar-border: #DDDAD4;
+  --sidebar-ring: #000330;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Dark Theme
+   ═══════════════════════════════════════════════════════════════ */
+.dark {
+  --background: #000330;
+  --foreground: #FFFFFF;
+  --card: #070B3F;
+  --card-foreground: #FFFFFF;
+  --popover: #070B3F;
+  --popover-foreground: #FFFFFF;
+
+  --primary: #FFFFFF;
+  --primary-foreground: #000330;
+
+  --secondary: #101951;
+  --secondary-foreground: #FFFFFF;
+
+  --muted: #101951;
+  --muted-foreground: #C2C2C2;
+
+  --accent: #00C8B7;
+  --accent-foreground: #000330;
+
+  --destructive: #E53935;
+
+  --border: rgba(255, 255, 255, 0.1);
+  --input: rgba(255, 255, 255, 0.15);
+  --ring: #00C8B7;
+
+  --chart-1: #FFFFFF;
+  --chart-2: #00C8B7;
+  --chart-3: #26358B;
+  --chart-4: #E53935;
+  --chart-5: #D9C1F7;
+
+  --sidebar: #070B3F;
+  --sidebar-foreground: #FFFFFF;
+  --sidebar-primary: #FFFFFF;
+  --sidebar-primary-foreground: #000330;
+  --sidebar-accent: #101951;
+  --sidebar-accent-foreground: #FFFFFF;
+  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-ring: #00C8B7;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   Total Wireless Custom Utility Tokens
+   (Available as CSS variables throughout the app)
+   ═══════════════════════════════════════════════════════════════ */
+:root {
+  /* ─── Shadows (from TW design tokens) ─── */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-card-hover: 0 8px 16px rgba(0, 0, 0, 0.10);
+  --shadow-cart-panel: -4px 0 16px rgba(0, 0, 0, 0.06);
+  --shadow-bottom-sheet: 0 -8px 24px rgba(0, 0, 0, 0.12);
+
+  /* ─── Transitions ─── */
+  --tw-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --tw-transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --tw-transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --tw-transition-spring: 400ms cubic-bezier(0.22, 0.84, 0.22, 1);
+
+  /* ─── Z-Index Scale ─── */
+  --tw-z-dropdown: 10;
+  --tw-z-sticky: 20;
+  --tw-z-header: 30;
+  --tw-z-overlay: 40;
+  --tw-z-modal: 50;
+  --tw-z-toast: 60;
+
+  /* ─── Plan Card Surfaces ─── */
+  --bg-card-plan: #FFFFFF;
+  --bg-card-plan-gradient: linear-gradient(145deg, #FFFFFF 0%, #F2F2F2 100%);
+  --bg-header-banner: #000330;
+  --bg-all-plans-include: #E6FCF4;
+  --bg-overlay: rgba(0, 0, 0, 0.60);
+
+  /* ─── VDS Shape Tokens observed on totalwireless.com/m/plans ─── */
+  --tw-radius-control: 8px;
+  --tw-radius-form: 10px;
+  --tw-radius-tile-small: 8px;
+  --tw-radius-tile: 12px;
+  --tw-radius-hero: 20px;
+  --tw-radius-tile-hero: 24px;
+  --tw-radius-modal: 32px;
+  --tw-radius-pill: 9999px;
+  --tw-button-height: 48px;
+  --tw-button-hover-muted: rgba(170, 168, 163, 0.12);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-galano), "Galano Grotesque", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  html {
+    @apply font-sans;
+  }
+}

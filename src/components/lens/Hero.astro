@@ -1,0 +1,22 @@
+---
+import { t, tb, url, esc } from "../../lib/html.mjs";
+interface Props { lens: any; lib: any }
+const { lens, lib } = Astro.props;
+const tagline = lens.identity?.tagline ?? lib.profile.tagline;
+const primary = lens.hero.cta?.primary ?? lens.cta.primary;
+const secondary = lens.hero.cta?.secondary ?? lens.cta.secondary;
+const idLine = lens.hero.eyebrow
+  ? `<b>${esc(lib.profile.name)}</b> <span class="hero-id-sep">·</span> ${t(lib.profile.location)}`
+  : `<b>${esc(lib.profile.name)}</b> <span class="hero-id-sep">·</span> ${t(tagline)} <span class="hero-id-sep">·</span> ${t(lib.profile.location)}`;
+---
+<section class="hero" id="top">
+  <p class="hero-id" set:html={idLine} />
+  {lens.hero.eyebrow && <p class="hero-eyebrow" set:html={t(lens.hero.eyebrow)} />}
+  <h1 class="hero-line" set:html={t(lens.hero.title)} />
+  <p class="hero-sub" set:html={tb(lens.hero.body)} />
+  {lens.hero.note && <p class="hero-note" set:html={tb(lens.hero.note)} />}
+  <div class="hero-cta">
+    <a href={url(primary.href)} class="btn-primary" set:html={t(primary.label)} />
+    {secondary && <a href={url(secondary.href)} class="hero-alt" set:html={t(secondary.label)} />}
+  </div>
+</section>

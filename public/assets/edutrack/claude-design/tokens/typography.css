@@ -1,0 +1,46 @@
+/* ============================================================
+   EduTrack typography tokens
+   Three voices:
+   1. Oswald        — condensed structural voice: headlines, labels,
+                      nav. Always uppercase, always tracked.
+   2. EB Garamond   — italic editorial voice: dates, subtitles,
+                      teaching points, encouragement.
+   3. Helvetica Neue — neutral body voice: descriptions, notes.
+   ============================================================ */
+:root {
+  --font-display:   'Oswald', 'Arial Narrow', sans-serif;
+  --font-editorial: 'EB Garamond', Georgia, serif;
+  --font-body:      'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+  /* --- Display scale (Oswald, weight 600, uppercase) --- */
+  --display-xl: 42px;   /* app nav / hero: tracking 2px */
+  --display-lg: 32px;   /* modal titles: tracking 2px */
+  --display-md: 22px;   /* section titles: tracking 2px */
+  --display-sm: 17px;   /* card/agenda titles: tracking .5px */
+
+  /* --- Label scale (Oswald, weight 500-600, uppercase) --- */
+  --label-lg: 14px;     /* buttons: tracking 1.5px */
+  --label-md: 12px;     /* tags, chips: tracking 1px */
+  --label-sm: 11px;     /* field labels, metadata: tracking 1.5-2px */
+  --label-xs: 9px;      /* card captions, day-of-week: tracking .8px */
+
+  /* --- Editorial scale (EB Garamond, italic) --- */
+  --editorial-lg: 26px; /* month names, day numerals */
+  --editorial-md: 18px; /* subtitles, empty states */
+  --editorial-sm: 15px; /* metadata line, peer notes */
+
+  /* --- Body scale (Helvetica) --- */
+  --body-md: 14.5px;    /* standard body, line-height 1.6 */
+  --body-sm: 12.5px;    /* dense UI text, line-height 1.45 */
+
+  /* --- Tracking --- */
+  --track-tight: .5px;
+  --track:       1px;
+  --track-wide:  2px;
+  --track-xwide: 3px;
+
+  /* --- Mobile overrides (≤480px viewports) --- */
+  --m-display-xl: 30px;
+  --m-display-md: 19px;
+  --m-body-md:    15px;  /* body grows slightly for thumb-distance reading */
+}
