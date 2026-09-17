@@ -122,7 +122,7 @@ Rendered on the page as "What you asked for · what I did". Levels are computed 
 | Experience working with international teams and localization; Japanese language ability is a plus for our APAC merchants. | **direct** | "Researched Japanese ennichi festival games and set design criteria (learnable by watching, 1–2 minute rounds, kindergarten to high school)" | `festival-reinvention` |
 
 Lines not in the ledger:
-- "We're looking for someone who meets the minimum requirements to be considered for the role. If you m…" — names no capability the lexicon knows
+- "We're looking for someone who meets the minimum requirements to be considered for the role. If you m…" — prose or a lead-in, not an enumerated ask
 - "5+ years of product design experience shipping software used by businesses and consumers." — screening criterion (years, degree, portfolio) — answered in the résumé
 - "A portfolio that demonstrates strong interaction design, systems thinking and visual craft." — screening criterion (years, degree, portfolio) — answered in the résumé
 

@@ -351,7 +351,7 @@ test("the audit asks the recruiter's questions of every record that cannot answe
 // contribution.mine line and a level the record supports. The level is a rule;
 // a lens may lower it, never raise it.
 
-import { buildFit, ledgerLines, lineMatch, contentTokens } from "../src/analyze/fit.mjs";
+import { buildFit, ledgerLines, lineMatch, contentTokens, isEnumeratedAsk } from "../src/analyze/fit.mjs";
 import { fitCeiling } from "../src/validate.mjs";
 
 test("the ledger takes the requirement lines and sets screening lines (years, degree) aside", () => {
@@ -361,6 +361,33 @@ test("the ledger takes the requirement lines and sets screening lines (years, de
   assert.ok(rows.every((r) => r.capabilities.length >= 1));
   assert.ok(skipped.some((s) => /5\+ years/.test(s.text) && /screening/.test(s.why)), "the years line is a screening criterion, not a ledger row");
   assert.ok(!rows.some((r) => /5\+ years/.test(r.ask)));
+});
+
+// An ask the capability taxonomy cannot name is still an ask. The taxonomy lists what
+// this person can do, so it must not grow a "3D rigging" entry just to have a row —
+// but dropping the line would silently answer a question the company did put in writing.
+test("a listed skill the taxonomy cannot name stays on the page as 'not on record'; prose does not", () => {
+  const posting = [
+    "Requirements", "", "Relevant experience should include one or more of the following:", "",
+    "3D Character design / Rigging", "Unity 3D / Level Design", "UI / UX Design",
+  ].join("\n");
+  const { analysis } = pitch(`${stripe}\n\n${posting}`, "Stripe");
+  const { rows, skipped } = ledgerLines(analysis, lexicon);
+  const unanswered = skipped.filter((s) => /nothing in the record/.test(s.why)).map((s) => s.text);
+  assert.ok(unanswered.includes("3D Character design / Rigging"), unanswered.join(" | "));
+  assert.ok(unanswered.includes("Unity 3D / Level Design"));
+  assert.ok(unanswered.every(isEnumeratedAsk), "only list-shaped asks reach the page");
+  assert.ok(!unanswered.some((t) => /one or more of the following/.test(t)), "a lead-in is not an ask");
+  assert.ok(!unanswered.some((t) => /We're looking for someone/.test(t)), "boilerplate prose is not an ask");
+  assert.ok(rows.some((r) => /UI \/ UX Design/.test(r.ask)), "a line the taxonomy does name is still a full row");
+});
+
+test("isEnumeratedAsk separates a listed skill from framing prose", () => {
+  assert.ok(isEnumeratedAsk("3D Modeling / Animation"));
+  assert.ok(isEnumeratedAsk("モーショングラフィックス"), "Japanese has no spaces; the length cap carries it");
+  assert.ok(!isEnumeratedAsk("Relevant experience should include one or more of the following:"));
+  assert.ok(!isEnumeratedAsk("We're looking for someone who meets the minimum requirements to be considered for the role."));
+  assert.ok(!isEnumeratedAsk(""));
 });
 
 test("a requirement is answered with what was actually done, quoted verbatim, from the right record", () => {

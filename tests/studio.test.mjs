@@ -211,6 +211,7 @@ test("the library JSON the Studio loads hydrates into the same evidence the buil
   assert.equal(hydrated.evidence.size, lib.evidence.size);
   assert.ok(hydrated.lexicon?.capabilities, "the lexicon travels with the library");
   assert.ok(hydrated.lensSlugs.includes("default"));
+  assert.ok(!hydrated.lensSlugs.some((s) => lenses.find((l) => l.slug === s)?.status !== "published"), "only published lenses are listed");
   for (const [slug, item] of lib.evidence) {
     const { _notes, ...rest } = item;
     assert.deepEqual(hydrated.evidence.get(slug), rest, `${slug} survives the round trip (without _notes)`);
@@ -219,4 +220,15 @@ test("the library JSON the Studio loads hydrates into the same evidence the buil
   assert.ok(!/^src\s*$/m.test(vercelignore), "src/ must be deployed: the Studio imports it as ES modules");
   assert.match(vercelignore, /src\/pitches\/\*/);
   assert.ok(existsSync(join(ROOT, "vercel.json")));
+});
+
+// scripts/generate-pitch.mjs writes a draft lens every time you look at a posting.
+// If that changed a committed build artefact, the documented "draft it, read it,
+// then decide" loop would leave the repository failing its own tests.
+test("a local draft lens does not make the committed library JSON stale", () => {
+  const committed = readFileSync(join(ROOT, "assets", "studio", "library.json"), "utf8");
+  const draft = { ...lenses.find((l) => l.slug === "default"), slug: "a-local-draft", status: "draft" };
+  const pages = renderAll({ lib, lenses: [...lenses, draft] });
+  assert.equal(pages.get("assets/studio/library.json"), committed);
+  assert.ok(!pages.has("lens/a-local-draft/index.html"), "and it builds no page until it is published");
 });

@@ -73,7 +73,9 @@ export function renderAll({ lib = loadLibrary(), lenses = loadLenses(), categori
 
   // The evidence library as one JSON, for the Studio (studio/) and the public demo.
   // Generated and committed like every other page, so the deterministic-publishing test covers it.
-  pages.set("assets/studio/library.json", JSON.stringify(serializeLibrary(lib, { lexicon: loadLexicon(), lensSlugs: lenses.map((l) => l.slug) })) + "\n");
+  // Published lenses only: a draft is not on the site, and listing drafts here would make
+  // this committed file go stale the moment anyone runs generate-pitch locally.
+  pages.set("assets/studio/library.json", JSON.stringify(serializeLibrary(lib, { lexicon: loadLexicon(), lensSlugs: lenses.filter((l) => l.status === "published").map((l) => l.slug) })) + "\n");
 
   // Dedicated Japanese Edition at /ja (ja/index.html)
   const defaultLens = lenses.find((l) => l.slug === "default");

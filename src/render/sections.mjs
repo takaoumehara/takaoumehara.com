@@ -328,6 +328,14 @@ export function fitSection({ section, lens, lib, ctx }) {
       </li>`;
   }).join("\n");
   const named = (fit.requirements ?? []).map((r) => `<li class="fit-req${r.foundIn?.length ? "" : " is-empty"}"><b>${esc(r.name)}</b> <span class="fit-sep">·</span> ${r.foundIn?.length ? r.foundIn.map(where).join(", ") : `<span class="t-en">not on record</span><span class="t-jp">記録に無い</span>`}</li>`).join("");
+  // Asks the capability taxonomy cannot name — 3D rigging, Unity, illustration. The honest
+  // answer is no, and "no" belongs on the page: dropping the line would quietly answer a
+  // question the company actually asked.
+  const unanswered = (fit.skipped ?? []).filter((sk) => /nothing in the record/.test(sk.why));
+  const unansweredList = unanswered.length ? `<ul class="fit-reqs fit-unanswered">
+      <li class="fit-req-head"><span class="t-en">Also asked, and not on record — I would rather show the line than drop it:</span><span class="t-jp">求人票にあって、記録に無いもの。行ごと消さずに出す:</span></li>
+${unanswered.map((sk) => `      <li class="fit-req is-empty"><b>${esc(sk.text)}</b> <span class="fit-sep">·</span> <span class="t-en">not on record</span><span class="t-jp">記録に無い</span></li>`).join("\n")}
+    </ul>` : "";
   const src = fit.source ?? {};
   const seen = src.seenAt ? ` <span class="t-en">Posting seen ${esc(src.seenAt)}.</span><span class="t-jp">求人票は ${esc(src.seenAt)} 時点。</span>` : "";
   const screened = (fit.skipped ?? []).filter((sk) => /screening/.test(sk.why)).length;
@@ -342,6 +350,7 @@ ${sectionHead(section.title ?? { en: "What you asked for · what I did", jp: "�
 ${rows}
     </ol>
     ${named ? `<ul class="fit-reqs">${named}</ul>` : ""}
+    ${unansweredList}
     <p class="fit-foot"><span class="t-en">Levels: Direct = strong evidence and a verbatim line of what I did · Partial = related strong work, or moderate work with a line · Adjacent = moderate or neighbouring work · Not on record = nothing to cite.</span><span class="t-jp">度合い: 直接 = 強い証拠と、自分がしたことの逐語 · 部分的 = 近い強い仕事、または中程度の仕事と逐語 · 周辺 = 中程度か隣接 · 記録に無い = 引用できるものが無い。</span>${seen}${screenNote}</p>
   </section>`;
 }

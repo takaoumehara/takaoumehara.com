@@ -112,6 +112,18 @@ export function answerLine(ask, capIds, { lib, lexicon, pickIds = new Set(), max
   return [first, ...(second && max > 1 ? [second] : [])].map(({ id, line }) => (line ? { id, line } : { id }));
 }
 
+/**
+ * Does this line read as one item in a list of skills, rather than prose?
+ * "3D Character design / Rigging" is an ask with an honest answer; "We're looking for
+ * someone who meets the minimum requirements…" is framing, and putting it on the page
+ * as "not on record" would be absurd. A trailing colon marks a lead-in, a trailing
+ * full stop marks a sentence; the length caps hold for Japanese, which has no spaces.
+ */
+export const isEnumeratedAsk = (text) => {
+  const t = String(text).trim();
+  return t.length > 0 && t.length <= 60 && t.split(/\s+/).length <= 8 && !/[.。:：]\s*$/.test(t);
+};
+
 /** Requirement lines worth a row: those that name a capability. Screening lines (years, degree) are set aside. */
 export function ledgerLines(analysis, lexicon, { max = 12 } = {}) {
   const screen = lexicon.requirements.items.filter((r) => r.screen).flatMap((r) => r.patterns);
@@ -123,7 +135,14 @@ export function ledgerLines(analysis, lexicon, { max = 12 } = {}) {
     // years" with a quoted deed, and a level on it would misread the ask.
     const isScreen = screen.some((p) => phraseRegex(p, { isPattern: true }).test(line.text));
     if (isScreen) { skipped.push({ text: line.text, why: "screening criterion (years, degree, portfolio) — answered in the résumé" }); continue; }
-    if (!capabilities.length) { skipped.push({ text: line.text, why: "names no capability the lexicon knows" }); continue; }
+    if (!capabilities.length) {
+      // A listed skill the taxonomy cannot name is still something the company asked for,
+      // and the honest answer — no — belongs on the page. The taxonomy must not grow a
+      // "3D rigging" entry just to have a row: it lists what this person can do, not what
+      // postings enquire about. Prose and lead-ins are not asks and stay off the page.
+      skipped.push({ text: line.text, why: isEnumeratedAsk(line.text) ? "nothing in the record answers this line" : "prose or a lead-in, not an enumerated ask" });
+      continue;
+    }
     rows.push({ ask: line.text, section: line.section, capabilities });
   }
   return { rows: rows.slice(0, max), skipped: [...skipped, ...rows.slice(max).map((r) => ({ text: r.ask, why: "beyond the first 12 rows" }))] };
