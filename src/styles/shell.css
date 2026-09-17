@@ -1,121 +1,134 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   The shell: a fixed left sidebar (the work, by category) and the page on the
-   right. The sidebar's tokens are its own (--side-*) so it reads the same on
-   every page, including the hand-built ones whose design-system.css redefines
-   :root. Reference: docs/sidebar-layout-proposal.md.
+   The shell: a fixed left rail (the person, then every piece of work by
+   category) and the page on the right. Proportions and rhythm follow PORTO
+   ROCHA (docs/design/porto-rocha/DESIGN.md): a ~25% rail, grey card rows with
+   a 64px tile, 14px names and 13px grey one-liners, 8px between rows, no
+   shadows. The rail is persisted across navigations (Site.astro), so its
+   scroll position, folds and clock survive a click.
    ═══════════════════════════════════════════════════════════════════════════ */
-:root {
-  --side-w: clamp(280px, 24vw, 360px);
-  --side-bg: #f3f2ee;
-  --side-ink: #0b0b0b;
-  --side-mid: #4a4a44;
-  --side-dim: #66665f;          /* 5.6:1 on --side-bg */
-  --side-line: rgba(11, 11, 11, 0.12);
-  --side-surface: #ffffff;
-  --side-hover: rgba(11, 11, 11, 0.045);
-  --side-ff: "Outfit", ui-sans-serif, system-ui, -apple-system, sans-serif;
-}
-
 .shell { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; align-items: start; }
 .main { min-width: 0; }
 
 .side {
   position: sticky; top: 0; height: 100vh; overflow-y: auto; overscroll-behavior: contain;
-  background: var(--side-bg); color: var(--side-ink); font-family: var(--side-ff);
-  border-right: 1px solid var(--side-line);
-  padding: 18px 14px 28px;
-  font-size: 13.5px; line-height: 1.45;
+  background: var(--pr-canvas); color: var(--pr-ink); font-family: var(--pr-ff); font-weight: var(--fw);
+  border-right: 1px solid var(--pr-line);
+  padding: var(--sp-3) var(--sp-3) var(--sp-5);
+  font-size: var(--text-body); line-height: var(--leading-body);
   scrollbar-width: thin;
   view-transition-name: side;
 }
 .side a { color: inherit; text-decoration: none; }
 .side *, .side *::before, .side *::after { box-sizing: border-box; }
+.side button { font: inherit; color: inherit; }
+html.lang-jp .side { font-family: var(--pr-ff-jp); }
 
-/* Top row: brand, and on phones the menu button */
-.side-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 4px 6px 14px; }
-.side-brand { display: flex; flex-direction: column; gap: 3px; line-height: 1.1; }
-.side-brand b { font-size: 15px; font-weight: 700; letter-spacing: -0.02em; color: var(--side-ink); }
-.side-brand small { font-size: 11px; letter-spacing: 0.04em; color: var(--side-dim); text-transform: lowercase; }
-.side-toggle { display: none; }
+/* A grey block: the About card and every project row */
+.side-about, .side-item { background: var(--pr-card); border-radius: var(--r); }
 
-/* Language switch, in the sidebar instead of floating at the right edge */
-.side .lang-switch { padding: 0; }
-.side .lang-btn { color: var(--side-dim); }
-.side .lang-btn.is-active { color: var(--side-ink); }
-.side .lang-sep { color: var(--side-line); }
-
-.side-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 0 6px 12px; }
+/* ── Controls: Show all projects · theme switch · language ─────────────── */
+.side-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
 .side-all {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 7px 12px; border: 1px solid var(--side-line); border-radius: 9999px; background: var(--side-surface);
-  transition: background 140ms ease, border-color 140ms ease;
-}
-.side-all:hover, .side-all[aria-current="page"] { background: var(--side-ink); color: var(--side-bg); border-color: var(--side-ink); }
-
-/* The About card */
-.side-card { display: block; background: var(--side-surface); border: 1px solid var(--side-line); border-radius: 12px; padding: 12px 14px; margin: 0 0 10px; }
-.side-card .side-label { font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--side-dim); margin-bottom: 6px; font-weight: 600; }
-.side-card p { color: var(--side-mid); font-size: 13px; line-height: 1.5; }
-.side-card .side-more { display: inline-block; margin-top: 8px; font-size: 12px; color: var(--side-ink); border-bottom: 1px solid var(--side-line); }
-a.side-card:hover { border-color: var(--side-mid); }
-
-/* Page links */
-.side-pages { display: flex; flex-wrap: wrap; gap: 2px 0; padding: 4px 4px 14px; }
-.side-pages a { font-size: 12.5px; font-weight: 500; color: var(--side-mid); padding: 5px 8px; border-radius: 6px; }
-.side-pages a:hover { color: var(--side-ink); background: var(--side-hover); }
-.side-pages a[aria-current="page"] { color: var(--side-ink); font-weight: 600; background: var(--side-hover); }
-
-/* The work, by category */
-.side-work { display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--side-line); padding-top: 12px; }
-.side-group { border: 1px solid var(--side-line); border-radius: 12px; background: var(--side-surface); overflow: hidden; }
-.side-group > summary {
-  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 10px;
-  padding: 10px 12px; font-size: 12.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--side-ink);
-  min-height: 40px;
-}
-.side-group > summary::-webkit-details-marker { display: none; }
-.side-group > summary:hover { background: var(--side-hover); }
-.side-group > summary:focus-visible { outline: 2px solid var(--side-ink); outline-offset: -2px; }
-.side-count { font-size: 11px; font-weight: 500; color: var(--side-dim); font-variant-numeric: tabular-nums; }
-.side-count::after { content: "＋"; margin-left: 8px; color: var(--side-dim); }
-.side-group[open] .side-count::after { content: "－"; }
-.side-group ul { list-style: none; margin: 0; padding: 0 6px 6px; }
-.side-item {
-  display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 10px; align-items: center;
-  padding: 6px; border-radius: 9px; min-height: 44px;
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--sp-3);
+  border-radius: var(--r-pill); background: var(--pr-card); font-size: var(--text-body);
   transition: background 140ms ease;
 }
-.side-item:hover { background: var(--side-hover); }
-.side-item[aria-current="page"] { background: var(--side-ink); color: var(--side-bg); }
-.side-item[aria-current="page"] .side-line { color: rgba(243, 242, 238, 0.72); }
-.side-thumb { width: 44px; aspect-ratio: 1; border-radius: 7px; overflow: hidden; background: var(--side-hover); display: grid; place-items: center; }
+.side-all:hover { background: var(--pr-card-2); }
+.side-all[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.side-ctl { display: flex; align-items: center; gap: var(--sp-1); }
+
+.side-theme {
+  appearance: none; cursor: pointer; position: relative; width: 51px; height: 31px; padding: 0; border: 0;
+  border-radius: var(--r-pill); background: var(--pr-card-2); transition: background 160ms ease;
+}
+.side-theme::after {
+  content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%;
+  background: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 160ms ease;
+}
+.side-theme[aria-checked="true"] { background: var(--pr-blue); }
+.side-theme[aria-checked="true"]::after { transform: translateX(20px); }
+.side-theme:disabled { cursor: default; opacity: 0.55; }
+.side-theme:focus-visible, .side-lang:focus-visible, .side-all:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+
+.side-lang {
+  appearance: none; cursor: pointer; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
+  background: var(--pr-card); font-size: var(--text-sm); letter-spacing: 0.02em; transition: background 140ms ease;
+}
+.side-lang:hover { background: var(--pr-card-2); }
+html[data-lang-fixed] .side-lang { display: none; }
+
+/* ── Wordmark and the clock ─────────────────────────────────────────────── */
+.side-head { text-align: center; padding: 56px 0 48px; }
+.side-wordmark {
+  display: inline-block; font-family: var(--pr-ff-display); font-size: var(--text-display); line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display); text-transform: uppercase;
+}
+.side-clock { margin: 44px 0 0; font-size: var(--text-lg); line-height: var(--leading-lg); color: var(--pr-ink); font-variant-numeric: tabular-nums; }
+.side-clock span { display: block; }
+
+/* ── About ──────────────────────────────────────────────────────────────── */
+.side-about { padding: var(--sp-3); margin-bottom: var(--sp-1); }
+.side-about .side-label { display: inline-block; font-size: var(--text-body); color: var(--pr-ink); }
+.side-about .side-label:hover { text-decoration: underline; text-underline-offset: 3px; }
+.side-about p { margin: 4px 0 0; font-size: var(--text-body); line-height: var(--leading-body); color: var(--pr-ink-2); }
+.side-pages { display: flex; flex-wrap: wrap; gap: 4px var(--sp-2); margin-top: var(--sp-2); }
+.side-pages a { font-size: var(--text-body); color: var(--pr-blue); }
+.side-pages a:hover, .side-pages a[aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── The work, by category ──────────────────────────────────────────────── */
+.side-work { display: flex; flex-direction: column; }
+.side-group > summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-3) var(--sp-1); font-size: var(--text-sm); color: var(--pr-ink-2); min-height: 40px;
+}
+.side-group > summary::-webkit-details-marker { display: none; }
+.side-group > summary:hover { color: var(--pr-ink); }
+.side-group > summary:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: -2px; border-radius: var(--r); }
+.side-count { font-variant-numeric: tabular-nums; }
+.side-count::after { content: "−"; display: inline-block; width: 1em; text-align: right; margin-left: var(--sp-1); }
+.side-group:not([open]) .side-count::after { content: "+"; }
+.side-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); }
+.side-item {
+  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--sp-2); align-items: center;
+  padding: var(--sp-2) var(--sp-3); min-height: 88px;
+  transition: background 140ms ease;
+}
+.side-item:hover { background: var(--pr-card-2); }
+.side-item[aria-current="page"] { background: var(--pr-card-2); }
+.side-item[aria-current="page"] .side-name { color: var(--pr-blue); }
+.side-thumb { width: 64px; aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--pr-canvas); display: grid; place-items: center; }
 .side-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.side-thumb .side-art { font-size: 9px; font-weight: 700; letter-spacing: 0.04em; text-align: center; line-height: 1.1; padding: 3px; color: var(--side-mid); text-transform: uppercase; }
-.side-text { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
-.side-name { font-size: 13px; font-weight: 600; letter-spacing: -0.01em; }
-.side-line { font-size: 11.5px; line-height: 1.35; color: var(--side-dim); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-html.lang-jp .side-name, html.lang-jp .side-line { font-family: "Outfit", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif; }
+.side-thumb .side-art { font-size: 9px; letter-spacing: 0.04em; text-align: center; line-height: 1.1; padding: 4px; color: var(--pr-ink-2); text-transform: uppercase; }
+.side-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.side-name { font-size: var(--text-body); line-height: 1.25; color: var(--pr-ink); }
+.side-line { font-size: var(--text-sm); line-height: 1.3; color: var(--pr-ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-.side-foot { margin-top: 16px; padding: 10px 6px 0; font-size: 11px; color: var(--side-dim); border-top: 1px solid var(--side-line); }
-.side-foot a { color: var(--side-mid); text-decoration: underline; text-underline-offset: 2px; }
+.side-foot { margin: var(--sp-4) 0 0; padding: var(--sp-3) 0 0; font-size: var(--text-sm); color: var(--pr-ink-2); border-top: 1px solid var(--pr-line); }
+.side-foot a { color: var(--pr-blue); }
+.side-foot a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
-/* Cross-document view transitions: the sidebar stays put, the page cross-fades. */
+/* The rail is its own view-transition group and never animates. */
 ::view-transition-group(side), ::view-transition-old(side), ::view-transition-new(side) { animation: none; }
 
-/* Phones and narrow tablets: a top bar, with the panel behind a button */
+/* ── Phones and narrow tablets: a top bar, the rail behind a button ──────── */
+.side-top { display: none; }
 @media (max-width: 900px) {
   .shell { display: block; }
-  .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-right: 0; border-bottom: 1px solid var(--side-line); padding: 10px 14px; }
+  .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-right: 0; border-bottom: 1px solid var(--pr-line); padding: var(--sp-2) var(--sp-3); }
   .side.is-open { overflow-y: auto; }
-  .side-top { padding: 4px 2px 6px; align-items: center; }
+  .side-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 40px; }
+  .side-top .side-wordmark { font-size: var(--text-lg); }
   .side-toggle {
-    display: inline-flex; align-items: center; gap: 8px; appearance: none; cursor: pointer;
-    background: var(--side-surface); border: 1px solid var(--side-line); border-radius: 9999px;
-    color: var(--side-ink); font: inherit; font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 8px 14px; min-height: 40px;
+    display: inline-flex; align-items: center; appearance: none; cursor: pointer; border: 0;
+    background: var(--pr-card); border-radius: var(--r-pill); font-size: var(--text-body); padding: 0 var(--sp-3); min-height: 40px;
   }
-  .side-toggle[aria-expanded="true"] { background: var(--side-ink); color: var(--side-bg); border-color: var(--side-ink); }
-  .side-panel { display: none; padding-top: 6px; }
+  .side-toggle[aria-expanded="true"] { background: var(--pr-ink); color: var(--pr-canvas); }
+  .side-panel { display: none; padding-top: var(--sp-3); }
   .side.is-open .side-panel { display: block; }
+  .side-head { padding: var(--sp-5) 0; }
+  .side-head .side-wordmark { display: none; }
+  .side-clock { margin-top: 0; }
+  .side-item { min-height: 72px; }
+  .side-item .side-thumb { width: 48px; }
+  .side-item { grid-template-columns: 48px minmax(0, 1fr); }
 }

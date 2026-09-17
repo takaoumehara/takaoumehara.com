@@ -1,0 +1,78 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   Tokens. One monochrome system with one blue, after PORTO ROCHA
+   (docs/design/porto-rocha/DESIGN.md): black ink, grey for secondary text,
+   white canvas, light-grey cards separated by fill and whitespace rather
+   than shadows, 8px radius, a single 400 weight, SF Pro on Apple devices and
+   Inter everywhere else. The dark theme is the same system with the values
+   turned over; a page switches with html[data-theme="dark"].
+
+   The old names (--bg, --ink, --ink-mid, --ink-dim, --line, --border,
+   --surface, --ff, --serif, --r-*) stay as aliases so every component keeps
+   reading its colours from the same place.
+   ═══════════════════════════════════════════════════════════════════════════ */
+:root {
+  /* PORTO ROCHA palette */
+  --pr-ink: #000000;          /* Ink Black — text, emphasis borders */
+  --pr-ink-2: #6b6b6b;        /* Ash Gray, darkened from #808080 to 5.3:1 on white (WCAG AA for 13–14px) */
+  --pr-canvas: #ffffff;       /* Paper White — page, sidebar */
+  --pr-card: #f4f4f4;         /* card fill (the reference's grey blocks) */
+  --pr-card-2: #e9e9e9;       /* hover / current */
+  --pr-line: #e2e2e2;         /* hairline */
+  --pr-line-2: #808080;       /* emphasis hairline (Ash Gray as drawn) */
+  --pr-blue: #007aff;         /* System Blue — links and active states only */
+
+  /* Type — SF Pro where it exists, Inter otherwise; one weight */
+  --pr-ff: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --pr-ff-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --pr-ff-jp: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+  /* The hand-built pages' design-system.css redefines --ff on :root; the rail
+     reads the --pr-* names, which nothing else defines. */
+  --ff: var(--pr-ff);
+  --ff-display: var(--pr-ff-display);
+  --ff-jp: var(--pr-ff-jp);
+  --serif: var(--pr-ff-display);
+  --fw: 400;
+
+  --text-xs: 12px;
+  --text-sm: 13px;
+  --text-body: 14px;   --leading-body: 1.4;
+  --text-md: 16px;
+  --text-lg: 18px;     --leading-lg: 1.35;
+  --text-display: 23px; --leading-display: 1.17; --tracking-display: 0.02em;
+
+  /* Spacing (8px unit) and shape */
+  --sp-1: 8px; --sp-2: 12px; --sp-3: 16px; --sp-4: 20px; --sp-5: 24px; --sp-6: 32px;
+  --r: 8px;
+  --r-sm: 8px;
+  --r-card: 8px;
+  --r-pill: 9999px;
+
+  /* Aliases the components were written against */
+  --bg: var(--pr-canvas);
+  --ink: var(--pr-ink);
+  --ink-mid: #3d3d3d;
+  --ink-dim: var(--pr-ink-2);
+  --line: var(--pr-line);
+  --border: var(--pr-line);
+  --surface: var(--pr-card);
+  --a1: rgba(0, 0, 0, 0.05); --a2: rgba(0, 0, 0, 0.08); --a3: rgba(0, 0, 0, 0.04); --a4: rgba(0, 0, 0, 0.06);
+
+  /* Layout */
+  --col: 1200px;
+  --gutter: clamp(16px, 2.5vw, 32px);
+  --side-w: clamp(320px, 25vw, 420px);
+}
+
+html[data-theme="dark"] {
+  --pr-ink: #ffffff;
+  --pr-ink-2: #a3a3a3;        /* 8.5:1 on #000 */
+  --pr-canvas: #000000;
+  --pr-card: #161616;
+  --pr-card-2: #232323;
+  --pr-line: #262626;
+  --pr-line-2: #6b6b6b;
+  --pr-blue: #0a84ff;
+  --ink-mid: #d4d4d4;
+  --a1: rgba(255, 255, 255, 0.06); --a2: rgba(255, 255, 255, 0.1); --a3: rgba(255, 255, 255, 0.05); --a4: rgba(255, 255, 255, 0.08);
+  color-scheme: dark;
+}

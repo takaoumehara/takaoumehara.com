@@ -47,60 +47,20 @@
   font-display: swap;
 }
 
-:root {
-  /* Ink & Paper system — directly inspired by creativityiseverywhere.com */
-  --bg: #f3f2ee;                       /* Warm paper ground */
-  --ink: #0b0b0b;                      /* Rich deep ink */
-  --ink-mid: #4a4a44;                  /* Balanced secondary body */
-  --ink-dim: #66665f;                  /* Paper-mute for registers & counters (5.6:1 AAA) */
-  --line: rgba(11, 11, 11, 0.12);      /* Structural hair line */
-  --border: rgba(11, 11, 11, 0.16);    /* Card borders */
-  --surface: #ffffff;                  /* Crisp white card surface */
-  
-  /* Unified to Outfit */
-  --ff: "Outfit", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  --ff-jp: "Outfit", "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
-  --serif: "Outfit", ui-sans-serif, system-ui, -apple-system, sans-serif;
-  
-  --col: 1200px;
-  --gutter: clamp(20px, 3vw, 36px);
-  
-  /* Corner radii */
-  --r-sm: 8px;
-  --r-card: clamp(14px, 1.8vw, 22px);
-  --r-pill: 9999px;
-  
-  /* Quiet textural wash — muted mono accents */
-  --a1: rgba(11, 11, 11, 0.05);
-  --a2: rgba(11, 11, 11, 0.08);
-  --a3: rgba(11, 11, 11, 0.04);
-  --a4: rgba(11, 11, 11, 0.06);
-}
+/* Tokens live in src/styles/tokens.css (imported before this file by Site.astro). */
 
-/* A hand-built page that declares itself dark (data-theme="dark": the eight
-   Interactive case studies) keeps design-system.css's dark ink. This sheet is
-   bundled after the page's own, so without this block the paper tokens above
-   would win the :root tie and the page's hard-coded white text would sit on
-   paper. Mirrors design-system.css :root. */
-html[data-theme="dark"] {
-  --bg: #0b0b0b;
-  --ink: #ffffff;
-  --ink-mid: rgba(255, 255, 255, 0.76);
-  --ink-dim: rgba(255, 255, 255, 0.52);
-  --line: rgba(255, 255, 255, 0.12);
-  --border: rgba(255, 255, 255, 0.16);
-  --surface: #141416;
-}
+/* html[data-theme="dark"] is defined in tokens.css and applies to every page. */
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
   font-family: var(--ff);
+  font-size: var(--text-body);
+  font-weight: var(--fw);
   background: var(--bg);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
-  line-height: 1.55;
-  letter-spacing: -0.01em;
+  line-height: var(--leading-body);
   overflow-x: hidden;
   position: relative;
 }
@@ -113,16 +73,6 @@ a { color: inherit; }
   color: var(--bg);
 }
 
-/* Subtle Grain — The poster's tactile paper surface (from creativityiseverywhere.com) */
-body::after {
-  content: '';
-  position: fixed; inset: 0;
-  pointer-events: none;
-  z-index: 999;
-  opacity: 0.055;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 220px 220px;
-}
 
 /* ── Language toggle convention ─────────────────────────────────────────── */
 .t-jp { display: none; }
