@@ -347,22 +347,21 @@ html[data-theme="dark"], .theme-dark {
   }
 }
 
-/* ── 7. LANGUAGE SWITCH ────────────────────────────────────────────────── */
+/* ── 7. LANGUAGE SWITCH ──────────────────────────────────────────────────
+   Astro migration: this used to float as its own fixed vertical tab at the
+   viewport's right edge. The extracted page bodies no longer carry a
+   .lang-switch element (the sidebar owns the switch now, see Sidebar.astro),
+   but Sidebar.astro reuses the SAME class name on its own inline switch —
+   and every hand-built page still loads this stylesheet. Left as `position:
+   fixed`, this rule would rip the sidebar's switch out of the sidebar and
+   pin it, rotated (writing-mode: vertical-rl), over the page content. The
+   positioning/chrome that assumed a floating tab is dropped; layout for the
+   inline version comes from src/styles/site.css (.lang-switch) and
+   src/styles/shell.css (.side .lang-switch), which are not touched here. */
 .lang-switch {
-  position: fixed;
-  right: 0;
-  bottom: 80px;
-  z-index: 100;
   display: flex;
   align-items: center;
   gap: 5px;
-  padding: 16px 9px;
-  background: var(--nav-bg);
-  border: 1px solid var(--border);
-  border-right: none;
-  border-radius: 8px 0 0 8px;
-  writing-mode: vertical-rl;
-  backdrop-filter: blur(8px);
 }
 .lang-btn {
   padding: 0;
