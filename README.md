@@ -2,33 +2,43 @@
 
 Personal site of Takao Umehara. **One Takao. One evidence base. Different lenses.**
 
-The homepage and every `/lens/<slug>` page are generated from a structured career
-evidence library. A Lens is a configuration that selects, orders and frames that
-evidence for one audience — it cannot add facts. Architecture and rationale:
-`docs/adaptive-portfolio-architecture.md`.
+Built with [Astro](https://astro.build). The homepage, every `/lens/<slug>` page, the
+category pages and the work archive are rendered from a structured career evidence
+library. A Lens is a configuration that selects, orders and frames that evidence for
+one audience — it cannot add facts. Architecture and rationale:
+`docs/adaptive-portfolio-architecture.md` (the data model, the lenses, the pitch engine)
+and `docs/astro-architecture.md` (how the site is built).
 
 ```
 src/data/            the Career Evidence Library (projects, ventures, experiments, tools, roles, theses, taxonomy)
 src/lenses/          one JSON per lens — default.json → /, <slug>.json → /lens/<slug>
-src/render/          components: (data, ctx) => HTML string. lens.css is inlined at build time
-src/validate.mjs     schema checks + Claim Guard + NotMine Guard (build fails on any violation)
-src/build.mjs        deterministic publishing: writes index.html and lens/<slug>/index.html
-src/schema.d.ts      the types, for editor completion and as documentation
-src/analyze/         Phase 2: job-description analysis → evidence matching → lens draft (no model calls)
-scripts/             generate-pitch.mjs (JD → lens draft + report), audit-evidence.mjs (record gaps)
-studio/              the Studio: the engine and the renderer running in the browser, publish through api/
-api/                 Vercel Functions: GitHub sign-in (owner only), fetch a posting, publish a lens as a commit
+src/categories/      the five sections of the work, one JSON each → /interactive.html, /ai-products.html …
+src/layouts/         Site.astro — the shell: the sidebar (the work by category), the page, the footer
+src/components/      Astro components: lens sections, category cards, the archive, /now
+src/case-studies/    the 42 case-study bodies (HTML fragments; MDX is the next step), one per /projects/<slug>.html
+src/fragments/       the bodies of the hand-built pages (about, contact, publications, workshop …)
+src/pages/           routes. Static except /lens/preview and /api/* (Vercel functions)
+src/styles/          site.css (the design), shell.css (the sidebar)
+src/lib/             site.mjs (data for the pages, validated once per build), html.mjs, labels.mjs, load.mjs
+src/validate.mjs     schema checks + Claim Guard + NotMine Guard (the build fails on any violation)
+src/analyze/         the Adaptive Pitch Engine: job description → evidence matching → lens draft (no model calls)
+src/studio/          the Studio (/studio/) and the public demo (/try/), running the engine in the browser
+src/server/          the API behind the Studio: GitHub sign-in, fetch a posting, publish a lens as a commit
+scripts/             generate-pitch.mjs (JD → lens draft + report), audit-evidence.mjs, extract-page.mjs
+public/              static files: assets/, favicon.svg
+tests/               node:test over the built site (.vercel/output/static) + Playwright/axe in a real browser
 ```
 
 ## Editing
 
-1. Edit or add evidence in `src/data/**/*.json`, or a lens in `src/lenses/*.json`.
-2. `npm run generate` (or `node src/build.mjs`). Generated files are committed — the diff is what gets published.
-3. `npm test`.
+1. Edit or add evidence in `src/data/**/*.json`, a lens in `src/lenses/*.json`, a category in `src/categories/*.json`.
+2. `npm run dev` and open `http://localhost:4321/`. Every guard runs on every page load; a violation is an error overlay.
+3. `npm test` builds the site and runs the tests over the output. Commit the source; Vercel builds the pages.
 
 To add a lens for one opportunity: copy `src/lenses/creative.json` to `src/lenses/<slug>.json`,
-change the hero, the `items` and the CTA, keep `"noindex": true`, build, commit. The page is
-`https://takaoumehara.com/lens/<slug>`.
+change the hero, the `items` and the CTA, keep `"noindex": true`, set `"status": "published"`.
+The page is `https://takaoumehara.com/lens/<slug>`. A `"draft"` lens is validated but not built;
+the dev server renders it at `/lens/<slug>/` so it can be read before it is published.
 
 ## A lens from a job description
 
@@ -42,37 +52,20 @@ It reads the posting into the capability taxonomy (no model, no API key — a le
 `src/analyze/lexicon.json`), scores every record, picks 3–5 pieces of proof, and writes
 `src/lenses/<slug>.json` as a **draft** plus `src/pitches/<slug>/report.md`: what matched,
 what did not, and which record fields a hiring manager will ask about that are still empty.
-A page the engine cannot read (JavaScript-rendered, login) is refused with a paste workaround.
 
-Then: read the report, rewrite the hero in your own words, `npm run preview` (renders drafts
-to `lens/_preview/<slug>/`, git-ignored), set `"status": "published"`, `npm run generate`,
-`npm test`, commit. Every sentence you write is checked by the Claim Guard and NotMine Guard.
-
-**In the browser:** `/studio/` runs the same engine on the same modules (no build step, no
-dependencies): paste a posting, see the proof, the Fit Ledger and the rendered page, adjust what a
-person may adjust, and publish. Publishing signs the owner in with GitHub (`api/auth/*`) and commits
-the lens and the built page in one commit (`api/publish.mjs`). Setup and the environment variables
-it needs: `docs/adaptive-portfolio-architecture.md` §16.7. Without the API (a local
-`python3 -m http.server`), the Studio still works up to "Download JSON".
+**In the browser:** `/studio/` runs the same engine on the same modules: paste a posting, see
+the proof, the Fit Ledger and the rendered page (rendered by `/lens/preview`, the same components
+that build the site), adjust what a person may adjust, and publish. Publishing signs the owner in
+with GitHub (`/api/auth/*`) and commits the lens JSON (`/api/publish`); Vercel builds the page.
+Setup and the environment variables: `docs/adaptive-portfolio-architecture.md` §16.7.
 
 `npm run audit` writes `docs/evidence-gaps.md`: for each record, the questions a recruiter
-asks that the record cannot answer yet (how much was yours, team size, dates, outcome).
-Answer them in `src/data/**` — or record `outcome.status: "unknown"` honestly.
-Design notes: `docs/adaptive-portfolio-architecture.md` §16.
-
-Everything else (`about.html`, `work.html`, `projects/*.html`, …) is still hand-built HTML and is
-linked from the evidence as case-study detail. `index-console.html` is the previous hand-built homepage.
-
-## Local preview
-
-```bash
-python3 -m http.server 4173
-```
-
-Open `http://127.0.0.1:4173/`.
+asks that the record cannot answer yet. Answer them in `src/data/**` — or record
+`outcome.status: "unknown"` honestly.
 
 ## Verification
 
 ```bash
-npm test
+npm test            # astro build + node --test tests/*.test.mjs
+npm run test:e2e    # Playwright: axe at WCAG 2.2 AA, keyboard, language switch, the Studio
 ```

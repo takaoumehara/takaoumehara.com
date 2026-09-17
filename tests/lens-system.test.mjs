@@ -5,21 +5,20 @@
 //   A/B  a project is entered once and appears in several lenses, differently
 //   C    no lens can invent experience (validator + claim guard + notMine guard)
 //   E    the root page still tells the whole story
-//   —    the committed HTML is exactly what the build produces (deterministic publishing)
+//   —    the pages the build writes are the pages these guarantees are read from
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
-import { loadLibrary, loadLenses, ROOT } from "../src/lib/load.mjs";
+import { loadLibrary, loadLenses, sourceExists, ROOT } from "../src/lib/load.mjs";
 import { validateAll, validateLens, numericTokens } from "../src/validate.mjs";
-import { renderAll, outputPath } from "../src/build.mjs";
+import { read, exists, resolveUrl, text } from "./_dist.mjs";
 
 const lib = loadLibrary();
 const lenses = loadLenses();
 const byslug = (slug) => lenses.find((l) => l.slug === slug);
 const clone = (value) => JSON.parse(JSON.stringify(value));
-const assetExists = (path) => existsSync(join(ROOT, path));
-const text = (html) => html.replace(/<style>[\s\S]*?<\/style>/g, "").replace(/<script>[\s\S]*?<\/script>/g, "");
+const assetExists = sourceExists;
 const escapeHtml = (value) => value
   .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
   .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
@@ -132,15 +131,17 @@ test("numeric tokens compare the way a reader reads them", () => {
 
 // ── One project, many narratives ────────────────────────────────────────────
 
-const pages = renderAll({ lib, lenses });
+// Every published lens is a page in the build: the default one at /, the
+// others at /lens/<slug>/. Drafts are validated above but never built.
+const builtPath = (lens) => (lens.slug === "default" ? "index.html" : `lens/${lens.slug}/index.html`);
+const pages = new Map(lenses.filter((l) => l.status === "published").map((l) => [builtPath(l), read(builtPath(l))]));
 const home = pages.get("index.html");
 const creative = pages.get("lens/creative/index.html");
 const aiProduct = pages.get("lens/ai-product/index.html");
 
-test("the three MVP routes render", () => {
+test("the three MVP routes are built, and no draft is", () => {
   assert.ok(home && creative && aiProduct);
-  assert.equal(outputPath(byslug("default")), "index.html");
-  assert.equal(outputPath(byslug("creative")), "lens/creative/index.html");
+  for (const lens of lenses) assert.equal(exists(builtPath(lens)), lens.status === "published", `${lens.slug}: ${lens.status}`);
 });
 
 test("changing only the lens config changes hero, order, framing, sections and CTA", () => {
@@ -181,7 +182,7 @@ test("lens pages are noindex, hidden from the main nav, and carry the one-line l
   for (const html of [creative, aiProduct]) {
     assert.match(html, /<meta name="robots" content="noindex, nofollow">/);
     assert.match(html, /Same experience\. Different lens\./);
-    assert.ok(!/<ul class="nav-links"[\s\S]*?lens\//.test(html), "lens pages must not be in the nav");
+    assert.ok(!/<aside class="side"[\s\S]*?href="\/lens\//.test(html), "lens pages must not be in the sidebar");
   }
   assert.ok(!/noindex/.test(home));
   assert.ok(!/Same experience\. Different lens\./.test(home));
@@ -207,27 +208,15 @@ test("every card can show what Takao did and what the team did", () => {
   }
 });
 
-test("lens pages resolve every site-relative link and asset from their own depth", () => {
+test("lens pages resolve every site link and asset to something in the build", () => {
   for (const [path, html] of pages) {
-    const depth = path.split("/").length - 1;
     for (const match of text(html).matchAll(/(?:href|src)="([^"]+)"/g)) {
       const url = match[1];
-      if (/^(?:https?:|mailto:|tel:|#)/.test(url)) continue;
-      const relative = url.split("#")[0];
-      if (!relative) continue;
-      const target = join(ROOT, path.split("/").slice(0, depth).join("/"), relative);
-      assert.ok(existsSync(target), `${path}: "${url}" does not resolve`);
+      if (/^(?:https?:|mailto:|tel:|#|data:)/.test(url)) continue;
+      const target = resolveUrl(path, url);
+      if (!target) continue;
+      assert.ok(exists(target), `${path}: "${url}" does not resolve`);
     }
-  }
-});
-
-// ── Deterministic publishing ────────────────────────────────────────────────
-
-test("the committed pages are exactly what the build produces (run: node src/build.mjs)", () => {
-  for (const [path, html] of pages) {
-    const file = join(ROOT, path);
-    assert.ok(existsSync(file), `${path} is not committed — run node src/build.mjs`);
-    assert.equal(readFileSync(file, "utf8"), html, `${path} is stale — run node src/build.mjs`);
   }
 });
 
@@ -381,9 +370,10 @@ test("nothing can out-specify the language switch", () => {
   // reappeared in assets/index-grid.css, where `.idx-meta-col span { display:
   // flex }` out-specified `.t-jp { display: none }` and printed both languages.
   const sheets = [
-    join(ROOT, "src", "render", "lens.css"),
-    join(ROOT, "assets", "index-grid.css"),
-    join(ROOT, "assets", "deck-quiet.css"),
+    join(ROOT, "src", "styles", "site.css"),
+    join(ROOT, "src", "styles", "shell.css"),
+    join(ROOT, "public", "assets", "index-grid.css"),
+    join(ROOT, "public", "assets", "deck-quiet.css"),
   ].filter((file) => existsSync(file));
   const offenders = [];
   for (const file of sheets) {
@@ -421,12 +411,12 @@ test("a preview ships both encodings, and never replaces the still", () => {
 
 test("no card clip autoplays, every one is hidden from assistive tech, and each offers both encodings", () => {
   // A grid of cards that all start playing on load is a bandwidth bill and a
-  // motion hazard. They play on hover or focus, from src/render/shell.mjs.
-  // Draft lenses (Phase 2 pitch drafts) are validated but not written, so only published ones have a page.
-  const pages = [outputPath(byslug("default")), ...lenses.filter((l) => l.slug !== "default" && l.status === "published").map(outputPath), join(ROOT, "interactive.html")];
+  // motion hazard. They play on hover or focus, from src/scripts/site.js.
+  // Draft lenses (Phase 2 pitch drafts) are validated but not built, so only published ones have a page.
+  const pages = [...lenses.filter((l) => l.status === "published").map(builtPath), "interactive.html"];
   let seen = 0;
   for (const page of pages) {
-    const html = readFileSync(page, "utf8");
+    const html = read(page);
     for (const tag of html.matchAll(/<video[^>]*class="card-clip"[^>]*>([\s\S]*?)<\/video>/g)) {
       seen += 1;
       const [attrs, inner] = [tag[0].slice(0, tag[0].indexOf(">")), tag[1]];
@@ -443,7 +433,7 @@ test("no card clip autoplays, every one is hidden from assistive tech, and each 
 });
 
 test("reduced motion turns the clips off rather than merely slowing them", () => {
-  for (const file of [join(ROOT, "src", "render", "lens.css")]) {
+  for (const file of [join(ROOT, "src", "styles", "site.css")]) {
     const css = readFileSync(file, "utf8");
     const block = css.slice(css.indexOf("@media (prefers-reduced-motion: reduce)"));
     assert.ok(/\.card-clip\s*\{[^}]*display:\s*none/.test(block), `${file}: .card-clip must be display:none under reduced motion`);

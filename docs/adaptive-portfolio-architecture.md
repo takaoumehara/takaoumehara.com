@@ -2,7 +2,10 @@
 
 > Written by: superforge (architecture) · Last updated: 2026-09-16
 > 原則: **One Takao. One evidence base. Different lenses.**
-> 実装は `src/` 以下。生成物は `index.html` と `lens/<slug>/index.html`。
+> 実装は `src/` 以下。
+> **2026-09-17 追記**: サイトは Astro でビルドする（`docs/astro-architecture.md`）。§0 の
+> 「フレームワークを入れない」「生成物を commit する」は本人の決定で覆った。データ設計（§3〜）、
+> Lens（§4〜）、Claim Guard（§6）、求人票エンジン（§16）はそのまま有効。
 
 ---
 

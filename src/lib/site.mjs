@@ -5,9 +5,7 @@
 //
 // validateAll() runs once per build. An invalid record, an invented number or a
 // notMine phrase in a lens aborts the build, exactly as src/build.mjs used to.
-import { existsSync } from "node:fs";
-import { resolve } from "node:path";
-import { assembleLibrary } from "./load.mjs";
+import { assembleLibrary, sourceExists } from "./load.mjs";
 import { validateAll } from "../validate.mjs";
 import lexicon from "../analyze/lexicon.json";
 
@@ -27,23 +25,8 @@ const byFile = (map) => Object.entries(map)
   .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
   .map(([path, data]) => ({ ...data, _file: path.split("/").pop() }));
 
-/**
- * A site-relative path the data points at exists. Build time only, from the
- * project root (the prerender step runs from a bundle, so no import.meta.url):
- *   assets/…            → public/assets/…
- *   projects/<slug>.html → src/case-studies/<slug>.html (a fragment) or the
- *                          hand-built projects/<slug>.html until it is extracted
- *   <page>.html          → src/fragments/<page>.html or src/pages/<page>.astro
- */
-export function assetExists(path) {
-  const root = process.cwd();
-  const at = (...p) => existsSync(resolve(root, ...p));
-  const m = /^projects\/([a-z0-9-]+)\.html$/.exec(path);
-  if (m) return at("src", "case-studies", `${m[1]}.html`) || at("src", "pages", "projects", `${m[1]}.astro`) || at("src", "pages", "projects", `${m[1]}.mdx`) || at(path);
-  const p = /^([a-z0-9-]+)\.html$/.exec(path);
-  if (p) return at("src", "fragments", `${p[1]}.html`) || at("src", "pages", `${p[1]}.astro`) || at(path);
-  return at("public", path) || at(path);
-}
+/** Build time only: the prerender step runs from a bundle, so the check is by the project root (cwd). */
+export const assetExists = (path) => sourceExists(path, process.cwd());
 
 let cache = null;
 /**

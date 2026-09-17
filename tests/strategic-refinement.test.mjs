@@ -1,15 +1,13 @@
 // Tests for the Final Strategic Refinement of takaoumehara.com
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
-import { loadLibrary, ROOT } from "../src/lib/load.mjs";
+import { loadLibrary } from "../src/lib/load.mjs";
+import { read, exists } from "./_dist.mjs";
 
-const read = (path) => readFileSync(join(ROOT, path), "utf8");
 const lib = loadLibrary();
 
-test("Work archive (/work/index.html) is generated from lib.evidence with 6 canonical discipline filter tabs", () => {
-  assert.ok(existsSync(join(ROOT, "work/index.html")), "work/index.html must exist");
+test("Work archive (/work/index.html) is rendered from lib.evidence with 6 canonical discipline filter tabs", () => {
+  assert.ok(exists("work/index.html"), "work/index.html must exist");
   const html = read("work/index.html");
 
   // All public archive items must be present (kanji-puzzle hidden)
@@ -27,8 +25,8 @@ test("Work archive (/work/index.html) is generated from lib.evidence with 6 cano
   assert.match(html, /<link rel="canonical" href="https:\/\/takaoumehara\.com\/work">/);
 });
 
-test("Japanese edition (/ja/index.html) is generated with native Japanese hero and root class", () => {
-  assert.ok(existsSync(join(ROOT, "ja/index.html")), "ja/index.html must exist");
+test("Japanese edition (/ja/index.html) is built with native Japanese hero and root class", () => {
+  assert.ok(exists("ja/index.html"), "ja/index.html must exist");
   const html = read("ja/index.html");
 
   // Root must declare Japanese
@@ -114,11 +112,9 @@ test("workshop.html and publications.html are warm paper light mode and not dark
 
   assert.match(ws, /--bg:\s*#f3f2ee/);
   assert.ok(!ws.includes("--bg: #0c0d0e"));
-  assert.match(ws, /color:\s*#4a4a44/); // nav-sub text contrast
 
   assert.match(pub, /--bg:\s*#f3f2ee/);
   assert.ok(!pub.includes("--bg: #0c0d0e"));
-  assert.match(pub, /color:\s*#4a4a44/); // nav-sub text contrast
 });
 
 test("Resona emphasis is Creative technology and never Web animation", () => {
@@ -133,15 +129,13 @@ test("Resona emphasis is Creative technology and never Web animation", () => {
   assert.ok(!jaIndex.includes("ウェブアニメーション · 公開中"));
 });
 
-test("contact.html and work-with-me.html share site standard gutter and nav tokens", () => {
+test("contact.html and work-with-me.html share the site's column and gutter", () => {
   const contact = read("contact.html");
   const workWithMe = read("work-with-me.html");
 
   for (const html of [contact, workWithMe]) {
     assert.match(html, /--gutter:\s*clamp\(20px,\s*3vw,\s*36px\)/);
     assert.match(html, /--col:\s*1200px/);
-    assert.match(html, /gap:\s*28px/);
-    assert.match(html, /\.nav-item\s*>\s*a\.is-active::after/);
   }
 });
 
@@ -158,5 +152,3 @@ test("Homepage ventures section synchronizes live status and content from now.js
   const index = read("index.html");
   assert.match(index, /Moime\.app<\/h3><span class="pill pill--status"><span class="t-en">Building<\/span>/);
 });
-
-

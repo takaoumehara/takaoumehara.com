@@ -1,16 +1,15 @@
 import assert from 'node:assert/strict';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import test from 'node:test';
-
-const root = new URL('..', import.meta.url).pathname;
-const read = (file) => readFileSync(join(root, file), 'utf8');
+import { ROOT } from '../src/lib/load.mjs';
+import { read } from './_dist.mjs';
 
 test('About hero includes an accessible, responsive portrait', () => {
   const html = read('about.html');
 
   assert.equal(
-    existsSync(join(root, 'assets/about/TakaoUmehara_passport.png')),
+    existsSync(join(ROOT, 'public/assets/about/TakaoUmehara_passport.png')),
     true,
     'the supplied portrait should be included as a local site asset',
   );

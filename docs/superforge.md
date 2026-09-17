@@ -1,6 +1,6 @@
 # superforge — project settings
 
-> Written by: superforge · Last updated: 2026-09-16
+> Written by: superforge · Last updated: 2026-09-17
 
 ## Language
 会話: 日本語
@@ -23,9 +23,10 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
     - 「インタラクティブ」だけでは、ボタンを押すことも該当してしまう。傘の名前に加えて
       **定義文をページ本文に書いている**（入力が声・手・線・その場の全端末であること）。
       名前だけで誤解を消そうとせず、名前＋1文で消す方針。
-- **Adaptive portfolio**（2026-09-11）: `index.html` と `lens/*/index.html` は生成物。
-  手で編集せず `src/data` / `src/lenses` を直して `node src/build.mjs`。
-  設計は `docs/adaptive-portfolio-architecture.md`。
+- **Adaptive portfolio**（2026-09-11、2026-09-17 更新）: ページはすべて Astro が
+  `src/data` / `src/lenses` / `src/categories` から描画する。**生成 HTML は commit しない**
+  （Vercel がビルドする）。手で HTML を書かない。データ設計は
+  `docs/adaptive-portfolio-architecture.md`、サイトの作りは `docs/astro-architecture.md`。
   - 「Agentic UX」は **能力タクソノミーと thesis のラベルとしては使用可**（本人のブリーフに明記）。
     カテゴリ名としては引き続き `AI Products`。
   - 旧ホームページは `index-console.html` として保存。
@@ -35,7 +36,14 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   - 能力の **label は英語のまま**（0→1 / UX / AI は用語として通用する）。**note は必ず日本語**。
   - カタカナ音写（ベンチャービルディング／エグゼクティブアドバイザリー／ソリューション 等）は
     テストで禁止。`docs/japanese-voice.md` §3.2 の右側を使う。
-- **レイアウト**（2026-09-11）: 本文の列は **1200px** 一択（`--col`）。左右は `clamp(20px, 3vw, 32px)`。
+- **Astro + サイドバー**（2026-09-17、本人決定「Astro で完全に作り直しちゃって」）:
+  左に固定サイドバー（カテゴリ別の作品一覧、現在地のカテゴリだけ展開）、右にページ本文。
+  `src/layouts/Site.astro` が唯一のシェル。参照は PORTO ROCHA、判断は
+  `docs/sidebar-layout-proposal.md`（Q1 (a) / Q2 (a) / Q3 (a) を既定値で採用）。
+  ケーススタディの本文は `src/case-studies/<slug>.html` の断片（中身は旧ページのまま）。
+  MDX への書き換えは 1 件ずつ、次の PR から。
+- **レイアウト**（2026-09-11、2026-09-17 読み替え）: 本文の列は **1200px** 一択（`--col`）
+  — ただしサイドバーの右カラムの中での最大幅。左右は `clamp(20px, 3vw, 32px)`。
   グリッドは 2 種類だけ — **説明文つきカード = 3 列 / 名前と 1 行のタイル = 4 列**。
   サムネイルは **3:2**（先頭の大カードのみ 16:8.5）。列数は個別指定ではなくこの規則で決める。
   - 追記（2026-09-12）: `size: "feature"` = **全幅 1 枚・21:9**。1 ページに 1 枚までの
@@ -71,4 +79,4 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   生成器は事実文を書かない。"Direct" は上位 5 能力のうち 2 つ以上に strong があるときだけ。
   記録の空欄は `scripts/audit-evidence.mjs` → `docs/evidence-gaps.md`。**無い数字は無いまま**
   （`outcome.status: "unknown"`）。設計は `docs/adaptive-portfolio-architecture.md` §16。
-  draft は build されない。見るなら `node src/build.mjs --preview`（`lens/_preview/` は git 管理外）。
+  draft は build されない。見るなら `npm run dev` → `/lens/<slug>/`。

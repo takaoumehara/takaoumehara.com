@@ -13,9 +13,10 @@ import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { createServer } from "node:http";
 import { execFileSync } from "node:child_process";
-import { loadLibrary, loadLenses, ROOT } from "../src/lib/load.mjs";
+import { loadLibrary, loadLenses, sourceExists, ROOT } from "../src/lib/load.mjs";
 import { validateLens, validateLibrary, validateAll } from "../src/validate.mjs";
-import { renderAll } from "../src/build.mjs";
+import { roleFlag } from "../src/lib/labels.mjs";
+import { read, exists } from "./_dist.mjs";
 import { analyzeJob, extractJobText, htmlToText, readJobText, guessCompany, slugify, sectionize } from "../src/analyze/jd.mjs";
 import { loadLexicon } from "../src/analyze/intake.node.mjs";
 import { scoreEvidence, selectProof, classify, capabilityCoverage, chooseMetrics } from "../src/analyze/match.mjs";
@@ -247,12 +248,9 @@ test("every reader-facing string in the draft carries Japanese, spaced the way t
 test("the lens note names the company and its focus; the standard note still renders for the other lenses", () => {
   const { lens } = pitch(stripe, "Stripe");
   assert.match(lens.lensNote.en, /Stripe's focus on .*Same experience\. Different lens\./);
-  lens.status = "published";
-  lens.slug = "zz-test";
-  const pages = renderAll({ lib, lenses: [...loadLenses(), lens] });
-  const html = pages.get("lens/zz-test/index.html");
-  assert.match(html, /Stripe&#39;s focus on/);
-  assert.match(pages.get("lens/creative/index.html"), /most relevant to this opportunity\. Same experience\. Different lens\./);
+  // How the note renders on a drafted lens is checked in tests/lens-preview.spec.mjs
+  // through /lens/preview; the standard note is on every built lens page.
+  assert.match(read("lens/creative/index.html"), /most relevant to this opportunity\. Same experience\. Different lens\./);
 });
 
 test("the CLI writes the lens, the analysis and the report, and refuses to overwrite without --force", () => {
@@ -282,32 +280,25 @@ test("the committed Stripe draft is what the generator produces from the committ
   } finally { rmSync(dir, { recursive: true, force: true }); }
 });
 
-test("a draft lens is validated by the build but not written; --preview renders it under lens/_preview", () => {
+test("a draft lens is validated by the build but not built", () => {
   const lenses = loadLenses();
   assert.ok(lenses.some((l) => l.slug === "stripe" && l.status === "draft"));
-  assert.deepEqual(validateAll(lib, lenses, { assetExists: (p) => existsSync(join(ROOT, p)) }), []);
-  const pages = renderAll({ lib, lenses });
-  assert.ok(!pages.has("lens/stripe/index.html"));
-  const preview = renderAll({ lib, lenses, preview: true });
-  assert.ok(preview.has("lens/_preview/stripe/index.html"));
-  assert.match(preview.get("lens/_preview/stripe/index.html"), /data-lens="stripe"/);
-  assert.match(readFileSync(join(ROOT, ".gitignore"), "utf8"), /lens\/_preview/);
+  assert.deepEqual(validateAll(lib, lenses, { assetExists: sourceExists }), []);
+  assert.ok(!exists("lens/stripe/index.html"), "a draft must not be built");
+  // The dev server renders drafts at /lens/<slug>/ so they can be read before publishing (README).
 });
 
 // ── The honesty fields ──────────────────────────────────────────────────────
 
 test("contribution.level renders as a role flag on proof cards, and only from the record", () => {
-  const pages = renderAll({ lib, lenses: loadLenses() });
-  const home = pages.get("index.html");
+  const home = read("index.html");
   assert.match(home, /card-flag--role"><span class="t-en">Solo<\/span>/, "Resona is recorded as solo work");
-  const creative = pages.get("lens/creative/index.html");
+  const creative = read("lens/creative/index.html");
   assert.match(creative, /card-flag--role"><span class="t-en">Led<\/span>/, "KOJI FIZZ is recorded as led");
-  const lens = clone(loadLenses().find((l) => l.slug === "creative"));
   const item = clone(lib.evidence.get("koji-fizz"));
   item.contribution.teamSize = 6;
-  const lib2 = { ...lib, evidence: new Map([...lib.evidence, ["koji-fizz", item]]) };
-  const html = renderAll({ lib: lib2, lenses: [lens] }).get("lens/creative/index.html");
-  assert.match(html, /Led · team of 6/);
+  assert.match(roleFlag(item), /Led · team of 6/);
+  assert.equal(roleFlag({ contribution: {} }), "", "no level on the record, no flag on the card");
 });
 
 test("the validator rejects a soft level, a fractional team, a solo team of five, and a measured outcome with no metric", () => {
@@ -422,18 +413,15 @@ test("the ceiling is a rule: strong + verbatim line = direct; strong without a l
   assert.ok(validateLens(withNumbers, lib).some((e) => /fit\.rows\[0\]: note.*Claim Guard/.test(e)));
 });
 
-test("the ledger renders: a row per requirement, the quote, the level bar, an empty row stays visible, and cards get anchors", () => {
+test("the ledger the engine drafts has a direct row with a verbatim quote, and a screening line set aside", () => {
+  // How the ledger renders (a row per requirement, the quote, the level bar, an
+  // empty row that stays visible, anchors to the cards) is checked in the
+  // browser: tests/lens-preview.spec.mjs posts this lens to /lens/preview.
   const { lens } = pitch(`${stripe}\n\nMinimum requirements\n- Experience producing short films with a crew.`, "Stripe");
-  lens.status = "published"; lens.slug = "zz-fit"; lens.fit.source.seenAt = "2026-09-16";
-  const html = renderAll({ lib, lenses: [...loadLenses(), lens] }).get("lens/zz-fit/index.html");
-  assert.match(html, /<section class="band fit" id="fit">/);
-  assert.equal((html.match(/<li class="fit-row is-/g) ?? []).length, lens.fit.rows.length);
-  assert.match(html, /class="fit-row is-direct"/);
-  assert.match(html, /<q>Built the design system in three layers/);
-  assert.match(html, /href="#card-credit-card-portal"/, "a quoted record on the page is linked to its card");
-  assert.match(html, /<article class="proof-card[^>]*id="card-verizon-ai-workflow"/);
-  assert.match(html, /screening line/, "the footer says where the years line went");
-  assert.match(html, /Posting seen 2026-09-16|Posting seen \d{4}-\d{2}-\d{2}/);
+  assert.ok(lens.fit.rows.some((r) => r.level === "direct"));
+  assert.ok(lens.fit.rows.some((r) => r.evidence?.some((e) => /^Built the design system in three layers/.test(e.line ?? ""))));
+  assert.ok((lens.fit.skipped ?? []).some((sk) => /screening/.test(sk.why)), "the years line is set aside as screening");
+  assert.deepEqual(validateLens(lens, lib), []);
 });
 
 test("matching is deterministic and reads stems, not exact words", () => {
