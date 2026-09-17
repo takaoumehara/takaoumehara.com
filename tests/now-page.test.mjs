@@ -5,9 +5,10 @@ import { join } from "node:path";
 import { ROOT } from "../src/lib/load.mjs";
 import { read, exists } from "./_dist.mjs";
 
-test("/now page is built at both now/index.html and root alias now.html", () => {
+test("/now page is built at now/index.html, and the old now.html address redirects to it", () => {
   assert.ok(exists("now/index.html"), "now/index.html must exist");
-  assert.ok(exists("now.html"), "now.html alias must exist");
+  const vercel = JSON.parse(readFileSync(join(ROOT, "vercel.json"), "utf8"));
+  assert.ok(vercel.redirects.some((r) => r.source === "/now.html" && r.destination === "/now/"), "vercel.json must redirect now.html");
 
   const html = read("now/index.html");
   assert.match(html, /<h1 class="now-title">/, "must have now-title h1");
@@ -26,10 +27,8 @@ test("/now cards display Why it exists and What's next", () => {
 });
 
 test("/now marks Now as the current page in the sidebar", () => {
-  for (const page of ["now/index.html", "now.html"]) {
-    const html = read(page);
-    assert.match(html, /<a href="\/now\.html" aria-current="page">Now<\/a>/, `${page}: the Now link must be aria-current`);
-  }
+  const html = read("now/index.html");
+  assert.match(html, /<a href="\/now\/" aria-current="page">Now<\/a>/, "the Now link must be aria-current");
 });
 
 test("work-with-me.html exists and features Good Fit guidelines and Studio bridge", () => {

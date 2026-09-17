@@ -639,7 +639,8 @@ html.lang-jp .now-title {
 }
 .pill--now-status {
   background: color-mix(in srgb, var(--status-color, #4a4a44) 12%, transparent);
-  color: var(--status-color, #4a4a44);
+  /* The hue stays, the text darkens toward ink so every status clears 4.5:1 on paper (WCAG 1.4.3). */
+  color: color-mix(in srgb, var(--status-color, #4a4a44) 55%, #0b0b0b);
   border: 1px solid color-mix(in srgb, var(--status-color, #4a4a44) 30%, transparent);
   font-weight: 600;
   font-size: 11px;

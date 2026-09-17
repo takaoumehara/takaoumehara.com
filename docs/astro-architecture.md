@@ -13,7 +13,7 @@
 |---|---|
 | バージョン | **Astro 7.3**（8.0 は MDX / Vercel アダプタが未対応。peer が `^7`） |
 | 出力 | `output: 'static'` + `@astrojs/vercel`。ほぼ全ページは静的。**オンデマンド描画は 2 種だけ** — `/lens/preview`（Studio と /try のプレビュー）と `/api/*` |
-| URL | **全部そのまま。** `build.format: 'file'` で `about.astro → about.html`、`projects/[slug].astro → projects/<slug>.html`。`/lens/<slug>/`・`/work/`・`/now/` も同じ場所 |
+| URL | **ほぼそのまま。** `build.format: 'preserve'`（Vercel アダプタが `directory` に上書きするので、アダプタの後で戻す）で `about.astro → about.html`、`projects/[slug].astro → projects/<slug>.html`、`lens/[slug]/index.astro → lens/<slug>/index.html`。**例外 2 つ**: Astro は `work.html` と `work/` を同じ経路とみなすので、Work Archive は `/work/` → **`/all/`** に移動（`vercel.json` で 301）。同じ理由で `now.html` は廃止し `/now/` に 301 |
 | 生成 HTML の commit | **やめる。** commit するのはソース。公開 HTML は Vercel がビルドする。「PR の diff = 公開 HTML」の役割は Vercel の Preview デプロイが担う |
 | データ | `src/data`・`src/lenses`・`src/categories` は**無変更**。`validate.mjs`（Claim Guard）・`analyze/`（求人票エンジン）も無変更 |
 | 旧レンダラー `src/render/*.mjs`・`src/build.mjs` | `.astro` コンポーネントに移植して**削除** |
@@ -42,7 +42,7 @@ src/
   pages/
     index.astro  ja/index.astro  lens/[slug]/index.astro  lens/preview.astro (prerender=false, POST)
     interactive.astro ai-products.astro ai-tools.astro work.astro brand.astro   ← src/categories/*.json
-    work/index.astro  now.astro  now/index.astro
+    all/index.astro（Work Archive、旧 /work/）  now/index.astro
     projects/[slug].astro     ← src/case-studies
     about.astro contact.astro publications.astro workshop.astro breakbias.astro intentfirst.astro work-with-me.astro 404.astro
     studio/index.astro try/index.astro       クライアントスクリプトは src/studio/*.mjs
@@ -55,7 +55,7 @@ tests/                       dist（.vercel/output/static）を検査
 ## 2. サイドバー（Layout）
 
 - `<aside class="side">` は `position: sticky; top: 0; height: 100vh; overflow: auto`。幅 `clamp(280px, 24vw, 360px)`。
-- 中身: 名前 + 一行（`/`）・「All work」（`/work/`）・言語スイッチ・About カード・ページ nav（Now / Writing / Workshops / About / Work with me / Studio ↗）・**カテゴリ別の作品一覧**（`<details>` × 5、現在地のカテゴリだけ `open`、項目 = サムネ + 名前 + `cardLine`）。
+- 中身: 名前 + 一行（`/`）・「All work」（`/all/`）・言語スイッチ・About カード・ページ nav（Now / Writing / Workshops / About / Work with me / Studio ↗）・**カテゴリ別の作品一覧**（`<details>` × 5、現在地のカテゴリだけ `open`、項目 = サムネ + 名前 + `cardLine`）。
 - 右カラム `<div class="main">` はページ本文。旧 `--col: 1200px` は右カラム内の最大幅として残る。
 - 900px 以下: サイドバーは上部バー（名前 + Menu）になり、一覧はボタンで開く。
 - サイドバーのトークンは `--side-*` で独立させる。手書きページは `design-system.css` が `:root` を上書きする（ダーク既定）ので、共通トークンに乗ると崩れる。

@@ -109,7 +109,19 @@ function readMeta(html) {
 
   const styleBlocks = headStyleBlocks(head);
   const kept = styleBlocks.filter((b) => !isNavTierBlock(b));
-  const css = kept.join("\n\n").trim() + "\n";
+  let css = kept.join("\n\n").trim() + "\n";
+  // Nearly every hand-built page also carried its OWN copy of the floating
+  // "EN/JP lang switch" rule (position: fixed; bottom: 80px; …) inside a head
+  // <style> block, in addition to design-system.css's. That rule is dropped
+  // there (see public/assets/design-system.css) because the sidebar reuses
+  // the same .lang-switch class for its own, inline switch — a per-page
+  // copy would win the cascade (it loads after the shared stylesheets) and
+  // reintroduce the exact bug: the sidebar's switch getting ripped out and
+  // pinned to the bottom-right corner of the viewport. No .lang-switch
+  // element survives extraction (extractBody() drops it from the body), so
+  // the rule has nothing left to style — safe to drop here too.
+  const langSwitchRuleRemoved = /\.lang-switch\s*\{[^}]*\}/.test(css);
+  css = css.replace(/\.lang-switch\s*\{[^}]*\}\n?/g, "");
 
   return {
     meta: {
@@ -123,6 +135,7 @@ function readMeta(html) {
     css,
     styleBlockCount: styleBlocks.length,
     navTierSkipped: styleBlocks.length - kept.length,
+    langSwitchRuleRemoved,
   };
 }
 
@@ -183,7 +196,7 @@ function writeSet(outDir, slug, { body, css, meta }) {
 
 function processFile(srcPath, outDir, slug) {
   const html = readFileSync(srcPath, "utf8");
-  const { meta, css, styleBlockCount, navTierSkipped } = readMeta(html);
+  const { meta, css, styleBlockCount, navTierSkipped, langSwitchRuleRemoved } = readMeta(html);
   const extracted = extractBody(html);
   if (!extracted) {
     console.log(`SKIP  ${slug} — no <nav>/<footer> (handled separately, see report)`);
@@ -196,7 +209,8 @@ function processFile(srcPath, outDir, slug) {
     `OK    ${slug.padEnd(28)} body=${String(lines).padStart(4)}L  ` +
     `styles=${styleBlockCount}${navTierSkipped ? `(-${navTierSkipped} nav-tier)` : ""}  ` +
     `scripts kept=${scriptsKept} dropped=${scriptsDropped}` +
-    (langSwitchDropped ? "  lang-switch:removed" : "")
+    (langSwitchDropped ? "  body-lang-switch:removed" : "") +
+    (langSwitchRuleRemoved ? "  css-lang-switch-rule:removed" : "")
   );
 }
 

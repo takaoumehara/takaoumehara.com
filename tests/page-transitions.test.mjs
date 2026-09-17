@@ -31,7 +31,7 @@ test("every project page is built and opts into view transitions through the sit
 });
 
 test("the listing pages carry the site stylesheet too", () => {
-  for (const path of ["index.html", "ja/index.html", "lens/creative/index.html", "interactive.html", "work/index.html", "now/index.html"]) {
+  for (const path of ["index.html", "ja/index.html", "lens/creative/index.html", "interactive.html", "all/index.html", "now/index.html"]) {
     assert.match(head(read(path)), /<link rel="stylesheet" href="\/_astro\/[^"]+\.css">/, `${path}: no site stylesheet in head`);
   }
 });

@@ -1,7 +1,42 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "astro",
+  "buildCommand": "npm run build",
+  "redirects": [
+    {
+      "source": "/work/",
+      "destination": "/all/",
+      "permanent": true
+    },
+    {
+      "source": "/work/index.html",
+      "destination": "/all/",
+      "permanent": true
+    },
+    {
+      "source": "/now.html",
+      "destination": "/now/",
+      "permanent": true
+    }
+  ],
   "headers": [
-    { "source": "/studio/(.*)", "headers": [{ "key": "X-Robots-Tag", "value": "noindex, nofollow" }] },
-    { "source": "/api/(.*)", "headers": [{ "key": "Cache-Control", "value": "no-store" }] }
+    {
+      "source": "/studio/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    }
   ]
 }

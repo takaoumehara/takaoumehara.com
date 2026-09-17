@@ -23,7 +23,7 @@ for (const f of FILTERS) {
   <header class="cat-head">
     <h1 class="cat-title"><span class="t-en">Work Archive</span><span class="t-jp">制作・開発アーカイブ</span></h1>
     <p class="cat-lede"><span class="t-en">20+ years of 0→1 products, AI systems, interactive experiences, brand identities, and learning platforms.</span><span class="t-jp is-block">0→1 のプロダクト、AI システム、インタラクティブ体験、ブランド、学びの基盤まで。</span></p>
-    <div class="archive-filters" role="tablist" aria-label="Filter work by discipline">
+    <div class="archive-filters" role="group" aria-label="Filter work by discipline">
       {FILTERS.map((f, i) => (
         <button type="button" class={`filter-btn${i === 0 ? " is-active" : ""}`} data-filter={f.id}>
           <span set:html={t(f.label)} />

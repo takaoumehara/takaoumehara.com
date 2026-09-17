@@ -6,9 +6,9 @@ import { read, exists } from "./_dist.mjs";
 
 const lib = loadLibrary();
 
-test("Work archive (/work/index.html) is rendered from lib.evidence with 6 canonical discipline filter tabs", () => {
-  assert.ok(exists("work/index.html"), "work/index.html must exist");
-  const html = read("work/index.html");
+test("Work archive (/all/index.html) is rendered from lib.evidence with 6 canonical discipline filter tabs", () => {
+  assert.ok(exists("all/index.html"), "all/index.html must exist");
+  const html = read("all/index.html");
 
   // All public archive items must be present (kanji-puzzle hidden)
   const cards = [...html.matchAll(/<article class="cat-card"/g)];
@@ -21,8 +21,8 @@ test("Work archive (/work/index.html) is rendered from lib.evidence with 6 canon
     assert.match(html, new RegExp(`data-filter="${f}"`), `Filter tab ${f} must exist`);
   }
 
-  // Canonical tag must point to /work
-  assert.match(html, /<link rel="canonical" href="https:\/\/takaoumehara\.com\/work">/);
+  // Canonical tag must point to /all
+  assert.match(html, /<link rel="canonical" href="https:\/\/takaoumehara\.com\/all">/);
 });
 
 test("Japanese edition (/ja/index.html) is built with native Japanese hero and root class", () => {

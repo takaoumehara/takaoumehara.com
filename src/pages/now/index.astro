@@ -1,7 +1,7 @@
 ---
-// Same content as src/pages/now.astro, served at /now/ — the old build
-// produced both now.html and now/index.html for this page; Astro's
-// build.format: 'file' needs two source files to keep doing that.
+// The Lab Bench at /now/: active ventures, prototypes and tools in motion.
+// The old build also wrote now.html; that address now redirects here
+// (vercel.json) — Astro treats now.html and now/ as one route.
 import Site from "../../layouts/Site.astro";
 import NowPage from "../../components/now/NowPage.astro";
 import { getLibrary } from "../../lib/site.mjs";
@@ -18,7 +18,7 @@ const seo = {
   title={seo.title}
   description={seo.description}
   canonical="https://takaoumehara.com/now"
-  current="/now.html"
+  current="/now/"
 >
   <NowPage nowData={nowData} />
 </Site>

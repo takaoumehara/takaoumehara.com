@@ -17,7 +17,7 @@ src/layouts/         Site.astro — the shell: the sidebar (the work by category
 src/components/      Astro components: lens sections, category cards, the archive, /now
 src/case-studies/    the 42 case-study bodies (HTML fragments; MDX is the next step), one per /projects/<slug>.html
 src/fragments/       the bodies of the hand-built pages (about, contact, publications, workshop …)
-src/pages/           routes. Static except /lens/preview and /api/* (Vercel functions)
+src/pages/           routes (about.astro → /about.html, projects/[slug].astro → /projects/<slug>.html, all/index.astro → /all/). Static except /lens/preview and /api/*
 src/styles/          site.css (the design), shell.css (the sidebar)
 src/lib/             site.mjs (data for the pages, validated once per build), html.mjs, labels.mjs, load.mjs
 src/validate.mjs     schema checks + Claim Guard + NotMine Guard (the build fails on any violation)

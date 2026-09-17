@@ -42,6 +42,10 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   `docs/sidebar-layout-proposal.md`（Q1 (a) / Q2 (a) / Q3 (a) を既定値で採用）。
   ケーススタディの本文は `src/case-studies/<slug>.html` の断片（中身は旧ページのまま）。
   MDX への書き換えは 1 件ずつ、次の PR から。
+  - **URL は原則そのまま。例外 2 つ**: Work Archive は `/work/` → **`/all/`**、`now.html` は廃止して
+    `/now/` へ（どちらも `vercel.json` で 301）。Astro が `work.html` と `work/` を同じ経路とみなすため。
+  - `vercel.json` の `framework: "astro"` / `buildCommand` は Vercel の画面設定より優先される。消さない。
+  - テストはビルド出力（`.vercel/output/static`）を読む。`npm test` がビルドしてから走る。
 - **レイアウト**（2026-09-11、2026-09-17 読み替え）: 本文の列は **1200px** 一択（`--col`）
   — ただしサイドバーの右カラムの中での最大幅。左右は `clamp(20px, 3vw, 32px)`。
   グリッドは 2 種類だけ — **説明文つきカード = 3 列 / 名前と 1 行のタイル = 4 列**。

@@ -159,7 +159,9 @@ test("changing only the lens config changes hero, order, framing, sections and C
   const en = (value) => (typeof value === "string" ? value : value.en);
   assert.ok(home.includes(escapeHtml(en(festival.angles.business)).slice(0, 60)));
   assert.ok(creative.includes(escapeHtml(en(festival.angles.creative)).slice(0, 60)));
-  assert.ok(!aiProduct.includes("festival-design.html"), "the ai-product lens omits the festival entirely");
+  // The sidebar lists every piece of work on every page; what the lens itself says is the right column.
+  const column = (html) => html.slice(html.indexOf('<div class="main"'));
+  assert.ok(!column(aiProduct).includes("festival-design.html"), "the ai-product lens omits the festival entirely");
   // sections toggled
   assert.ok(home.includes('id="ventures"') && !creative.includes('id="ventures"'));
   assert.ok(home.includes('id="experiments"') && !aiProduct.includes('id="experiments"'));

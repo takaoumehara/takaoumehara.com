@@ -184,7 +184,7 @@ test("the Studio is noindex, off the nav, and every module it imports is browser
   const studioPage = readFileSync(join(ROOT, "src", "pages", "studio", "index.astro"), "utf8");
   assert.match(studioPage, /<meta name="robots" content="noindex, nofollow">/);
   assert.match(studioPage, /studio\.mjs/);
-  assert.ok(!/studio/.test(readFileSync(join(ROOT, "src", "render", "shell.mjs"), "utf8")), "the Studio is not in the site nav");
+  assert.ok(!/\/studio/.test(readFileSync(join(ROOT, "src", "components", "Sidebar.astro"), "utf8")), "the Studio is not in the sidebar");
 
   const seen = new Set();
   const walk = (file) => {

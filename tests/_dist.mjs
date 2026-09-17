@@ -3,7 +3,7 @@
 //
 // The Vercel adapter writes the static pages to .vercel/output/static, at the
 // same paths the site serves them: index.html, about.html, projects/<slug>.html,
-// lens/<slug>/index.html, work/index.html, ja/index.html.
+// lens/<slug>/index.html, all/index.html, ja/index.html.
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT } from "../src/lib/load.mjs";
