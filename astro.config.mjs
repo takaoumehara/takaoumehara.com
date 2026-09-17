@@ -17,7 +17,7 @@ export default defineConfig({
   output: "static",
   adapter: vercel(),
   integrations: [mdx()],
-  build: { format: "file" },
+  build: { format: "preserve" },
   trailingSlash: "ignore",
   devToolbar: { enabled: false },
 });
