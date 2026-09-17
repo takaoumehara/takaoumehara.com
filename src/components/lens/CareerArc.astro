@@ -8,18 +8,24 @@ import SectionHead from "./SectionHead.astro";
 interface Props { section: any; lens: any; lib: any }
 const { section, lens, lib } = Astro.props;
 
+// Astro's frontmatter compiler cannot parse a template literal nested inside
+// another one's ${...}, so every conditional fragment below is its own const,
+// computed before the enclosing template interpolates it as a plain variable.
 const emphasised = new Set(lens.chapters ?? []);
 const cells = lib.chapters.map((chapter: any) => {
   const roles = (chapter.roles ?? []).map((id: string) => lib.roles.find((r: any) => r.id === id)).filter(Boolean);
   const roleRows = roles.map((r: any) => {
-    const period = r.period ? `<span class="arc-period">${esc(r.period.start)}${r.period.end ? `–${esc(r.period.end)}` : ""}</span>` : "";
+    const endYear = r.period?.end ? `–${esc(r.period.end)}` : "";
+    const period = r.period ? `<span class="arc-period">${esc(r.period.start)}${endYear}</span>` : "";
     return `<li><b>${esc(r.organization)}</b> <span class="arc-title">${esc(r.title)}</span>${period}</li>`;
   }).join("");
   const cls = emphasised.size ? (emphasised.has(chapter.id) ? " is-emphasised" : " is-quiet") : "";
+  const periodSuffix = chapter.period ? ` <span class="arc-period">${esc(chapter.period)}</span>` : "";
+  const roleList = roleRows ? `<ul class="arc-roles">${roleRows}</ul>` : "";
   return `      <li class="arc-cell${cls}">
-        <h3 class="arc-label">${t(chapter.label)}${chapter.period ? ` <span class="arc-period">${esc(chapter.period)}</span>` : ""}</h3>
+        <h3 class="arc-label">${t(chapter.label)}${periodSuffix}</h3>
         <p class="arc-summary">${tb(chapter.summary)}</p>
-        ${roleRows ? `<ul class="arc-roles">${roleRows}</ul>` : ""}
+        ${roleList}
       </li>`;
 }).join("\n");
 

@@ -20,15 +20,23 @@ const cards = section.items.map((id: string) => {
   const nextText = nowItem?.next ?? v.question;
   const link = nowItem?.links?.live ?? nowItem?.links?.caseStudy ?? nowItem?.links?.repo ?? nowItem?.links?.external ?? v.links?.external ?? v.links?.caseStudy;
 
+  const venturesRow = ([label, value]: [any, any]) => `<div class="venture-row"><dt>${t(label)}</dt><dd>${tb(value)}</dd></div>`;
   const rows = [
     [{ en: "Why", jp: "なぜ" }, whyText],
     [{ en: "What", jp: "何をつくったか" }, whatText],
     [{ en: "Next", jp: "次に確かめたいこと" }, nextText],
-  ].map(([label, value]) => `<div class="venture-row"><dt>${t(label)}</dt><dd>${tb(value)}</dd></div>`).join("");
+  ].map(venturesRow).join("");
+  const isExternal = /^https?:/.test(link ?? "");
+  const linkLabel = isExternal
+    ? `<span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span>`
+    : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`;
+  const linkHtml = link
+    ? `<a class="card-link" href="${esc(url(link))}"${isExternal ? ' target="_blank" rel="noopener"' : ""}>${linkLabel}</a>`
+    : "";
   return `      <article class="venture-card">
         <div class="venture-head"><h3 class="card-title">${displayTitle(v)}</h3>${status(itemStatus)}</div>
         <dl class="venture-rows">${rows}</dl>
-        ${link ? `<a class="card-link" href="${esc(url(link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${/^https?:/.test(link) ? `<span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span>` : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`}</a>` : ""}
+        ${linkHtml}
       </article>`;
 }).filter(Boolean).join("\n");
 
