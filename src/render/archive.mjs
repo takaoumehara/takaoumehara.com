@@ -95,10 +95,10 @@ function archiveCard(item, ctx) {
 
 const FILTERS = [
   { id: "all", label: { en: "All", jp: "すべて" } },
-  { id: "product", label: { en: "Product Design", jp: "プロダクト" } },
+  { id: "interactive", label: { en: "Interactive & Playable", jp: "インタラクティブ" } },
   { id: "ai-products", label: { en: "AI Products", jp: "AI プロダクト" } },
   { id: "ai-tools", label: { en: "AI Tools", jp: "AI ツール" } },
-  { id: "interactive", label: { en: "Interactive & Playable", jp: "インタラクティブ" } },
+  { id: "product", label: { en: "Product Design", jp: "プロダクト" } },
   { id: "brand", label: { en: "Brand & Creative", jp: "ブランド" } },
 ];
 

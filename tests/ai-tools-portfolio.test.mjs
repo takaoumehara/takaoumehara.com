@@ -87,12 +87,11 @@ function navDestinations(html, page) {
 // pages about the person.
 test('every nav item carries the same weight — only the current page is marked', () => {
   const expected = [
-    [ 'work.html', 'Work' ],
-    [ 'work/index.html', 'All Work' ],
-    [ 'work.html', 'Product &amp; Experience Design' ],
+    [ 'work/index.html', 'Work' ],
+    [ 'interactive.html', 'Interactive &amp; Playable' ],
     [ 'ai-products.html', 'AI Products &amp; Systems' ],
     [ 'ai-tools.html', 'AI Tools' ],
-    [ 'interactive.html', 'Interactive &amp; Playable' ],
+    [ 'work.html', 'Product &amp; Experience Design' ],
     [ 'brand.html', 'Brand &amp; Creative' ],
     [ 'now.html', 'Now' ],
     [ 'publications.html', 'Writing' ],
