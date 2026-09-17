@@ -1,0 +1,8 @@
+---
+const live = true;
+const item = { links: { live: "https://x", caseStudy: "y.html" } };
+const esc = (s) => s;
+const url = (s) => s;
+const target = live ? ` data-href="${esc(item.links.live)}" data-external="true"` : item.links?.caseStudy ? ` data-href="${esc(url(item.links.caseStudy))}"` : "";
+---
+<div>{target}</div>

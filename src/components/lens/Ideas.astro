@@ -11,8 +11,12 @@ const { section, lib } = Astro.props;
 const items = lib.ideas ?? [];
 const cards = items.map((idea: any) => {
   const link = idea.links?.external ?? idea.links?.caseStudy;
+  const linkIsExternal = /^https?:/.test(link ?? "");
+  const linkLabel = linkIsExternal
+    ? `<span class="t-en">Explore ↗</span><span class="t-jp">詳細 ↗</span>`
+    : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`;
   const linkHtml = link
-    ? `<a class="card-link" href="${esc(url(link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${/^https?:/.test(link) ? `<span class="t-en">Explore ↗</span><span class="t-jp">詳細 ↗</span>` : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`}</a>`
+    ? `<a class="card-link" href="${esc(url(link))}"${linkIsExternal ? ' target="_blank" rel="noopener"' : ""}>${linkLabel}</a>`
     : "";
   const coverHtml = idea.assets?.cover
     ? `<div class="idea-cover"><img src="${esc(url(idea.assets.cover))}" alt="${esc(idea.title)}" loading="lazy" /></div>`

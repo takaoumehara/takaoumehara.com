@@ -17,6 +17,10 @@ const FIT_LABEL: Record<string, { en: string; jp: string }> = {
 };
 const FIT_WIDTH: Record<string, number> = { direct: 100, partial: 60, adjacent: 30, none: 0 };
 
+// Astro's frontmatter compiler cannot parse a template literal nested inside
+// another one's ${...}, so every conditional fragment below is its own const
+// or named helper, computed before the enclosing template interpolates it as
+// a plain variable.
 const fit = lens.fit;
 let html = "";
 if (fit?.rows?.length) {
@@ -30,29 +34,41 @@ if (fit?.rows?.length) {
     const link = item.links?.caseStudy ?? item.links?.live ?? item.links?.external;
     return link ? `<a class="fit-where" href="${esc(url(link))}"${/^https?:/.test(link) ? ' target="_blank" rel="noopener"' : ""}>${name}</a>` : `<span class="fit-where">${name}</span>`;
   };
-  const rows = fit.rows.map((row: any) => {
+  const evidenceLine = (ref: any) => ref.line
+    ? `<p class="fit-evidence"><q>${esc(ref.line)}</q> <span class="fit-sep">·</span> ${where(ref.id)}</p>`
+    : `<p class="fit-evidence"><span class="t-en">Related work:</span><span class="t-jp">近い仕事:</span> ${where(ref.id)}</p>`;
+  const emptyAnswer = `<p class="fit-evidence is-empty"><span class="t-en">Nothing on record answers this line. I would rather say so than stretch.</span><span class="t-jp">この行に答えられる記録は無い。無理に伸ばすより、無いと書く。</span></p>`;
+  const fitRow = (row: any) => {
     const label = FIT_LABEL[row.level] ?? FIT_LABEL.none;
-    const evidence = (row.evidence ?? []).map((ref: any) => ref.line
-      ? `<p class="fit-evidence"><q>${esc(ref.line)}</q> <span class="fit-sep">·</span> ${where(ref.id)}</p>`
-      : `<p class="fit-evidence"><span class="t-en">Related work:</span><span class="t-jp">近い仕事:</span> ${where(ref.id)}</p>`).join("");
+    const evidence = (row.evidence ?? []).map(evidenceLine).join("");
+    const answerHtml = evidence || emptyAnswer;
     const note = row.note ? `<p class="fit-note">${tb(row.note)}</p>` : "";
     return `      <li class="fit-row is-${esc(row.level)}">
         <p class="fit-ask">${esc(row.ask)}</p>
         <div class="fit-level" aria-label="${esc(label.en)}"><span class="fit-bar"><i style="width:${FIT_WIDTH[row.level] ?? 0}%"></i></span><span class="fit-label">${t(label)}</span></div>
-        <div class="fit-answer">${evidence || `<p class="fit-evidence is-empty"><span class="t-en">Nothing on record answers this line. I would rather say so than stretch.</span><span class="t-jp">この行に答えられる記録は無い。無理に伸ばすより、無いと書く。</span></p>`}</div>
+        <div class="fit-answer">${answerHtml}</div>
         ${note}
       </li>`;
-  }).join("\n");
-  const named = (fit.requirements ?? []).map((r: any) => `<li class="fit-req${r.foundIn?.length ? "" : " is-empty"}"><b>${esc(r.name)}</b> <span class="fit-sep">·</span> ${r.foundIn?.length ? r.foundIn.map(where).join(", ") : `<span class="t-en">not on record</span><span class="t-jp">記録に無い</span>`}</li>`).join("");
+  };
+  const rows = fit.rows.map(fitRow).join("\n");
+  const notOnRecord = `<span class="t-en">not on record</span><span class="t-jp">記録に無い</span>`;
+  const reqItem = (r: any) => {
+    const foundHtml = r.foundIn?.length ? r.foundIn.map(where).join(", ") : notOnRecord;
+    return `<li class="fit-req${r.foundIn?.length ? "" : " is-empty"}"><b>${esc(r.name)}</b> <span class="fit-sep">·</span> ${foundHtml}</li>`;
+  };
+  const named = (fit.requirements ?? []).map(reqItem).join("");
+  const namedHtml = named ? `<ul class="fit-reqs">${named}</ul>` : "";
   const src = fit.source ?? {};
   const seen = src.seenAt ? ` <span class="t-en">Posting seen ${esc(src.seenAt)}.</span><span class="t-jp">求人票は ${esc(src.seenAt)} 時点。</span>` : "";
   const screened = (fit.skipped ?? []).filter((sk: any) => /screening/.test(sk.why)).length;
-  const screenNote = screened ? ` <span class="t-en">${screened} screening line${screened > 1 ? "s" : ""} (years, degree, portfolio) ${screened > 1 ? "are" : "is"} answered in the résumé, not here.</span><span class="t-jp">年数・学位・ポートフォリオなどの ${screened} 行は、ここではなく履歴書で答える。</span>` : "";
+  const screenedPluralEn = screened > 1 ? "s" : "";
+  const screenedVerbEn = screened > 1 ? "are" : "is";
+  const screenNote = screened ? ` <span class="t-en">${screened} screening line${screenedPluralEn} (years, degree, portfolio) ${screenedVerbEn} answered in the résumé, not here.</span><span class="t-jp">年数・学位・ポートフォリオなどの ${screened} 行は、ここではなく履歴書で答える。</span>` : "";
 
   html = `    <ol class="fit-rows">
 ${rows}
     </ol>
-    ${named ? `<ul class="fit-reqs">${named}</ul>` : ""}
+    ${namedHtml}
     <p class="fit-foot"><span class="t-en">Levels: Direct = strong evidence and a verbatim line of what I did · Partial = related strong work, or moderate work with a line · Adjacent = moderate or neighbouring work · Not on record = nothing to cite.</span><span class="t-jp">度合い: 直接 = 強い証拠と、自分がしたことの逐語 · 部分的 = 近い強い仕事、または中程度の仕事と逐語 · 周辺 = 中程度か隣接 · 記録に無い = 引用できるものが無い。</span>${seen}${screenNote}</p>`;
 }
 
