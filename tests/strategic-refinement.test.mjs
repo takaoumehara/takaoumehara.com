@@ -10,8 +10,10 @@ test("Work archive (/all/index.html) is rendered from lib.evidence with 6 canoni
   assert.ok(exists("all/index.html"), "all/index.html must exist");
   const html = read("all/index.html");
 
-  // All public archive items must be present (kanji-puzzle hidden)
-  const cards = [...html.matchAll(/<article class="cat-card"/g)];
+  // All public archive items must be present (kanji-puzzle hidden). The grid
+  // card (src/components/grid/GridCard.astro) carries `grid-card` alongside
+  // the legacy `cat-card` class this test reads off.
+  const cards = [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]*"/g)];
   assert.equal(cards.length, lib.evidence.size - 1, "all archive evidence items must be rendered (kanji-puzzle hidden)");
   assert.ok(!html.includes("Kanji Puzzle"), "Kanji Puzzle must be hidden from work archive");
 
@@ -25,20 +27,26 @@ test("Work archive (/all/index.html) is rendered from lib.evidence with 6 canoni
   assert.match(html, /<link rel="canonical" href="https:\/\/takaoumehara\.com\/all">/);
 });
 
-test("Japanese edition (/ja/index.html) is built with native Japanese hero and root class", () => {
+test("Japanese edition (/ja/index.html) declares Japanese and its own canonical; the canonical hero copy lives on the default lens it points into", () => {
   assert.ok(exists("ja/index.html"), "ja/index.html must exist");
   const html = read("ja/index.html");
 
   // Root must declare Japanese
   assert.match(html, /<html lang="ja" class="lang-jp"/);
 
-  // Exact Japanese hero copy required by strategic positioning
-  assert.match(html, /何かが始まるときが、いちばんおもしろい。/);
-  assert.match(html, /曖昧なアイデアを、実際に触れる体験や、動く AI プロトタイプ、0→1 のプロダクトにする。/);
-  assert.match(html, /まだ答えが見えていないところから入り、デザイン、テクノロジー、AI、プロダクト、ビジネスをつなぎながら/);
-
   // Canonical tag
   assert.match(html, /<link rel="canonical" href="https:\/\/takaoumehara\.com\/ja">/);
+
+  // The whole-story page (hero, proof, every section) is now the default
+  // lens, built at lens/default/index.html (src/pages/lens/[slug]/index.astro)
+  // rather than at `/`, which is now the PORTO ROCHA image grid. t()/tb()
+  // render both language spans into every page regardless of <html lang>, so
+  // the exact Japanese hero copy required by strategic positioning is there
+  // even though this one build's own <html> reads lang="en".
+  const lens = read("lens/default/index.html");
+  assert.match(lens, /何かが始まるときが、いちばんおもしろい。/);
+  assert.match(lens, /曖昧なアイデアを、実際に触れる体験や、動く AI プロトタイプ、0→1 のプロダクトにする。/);
+  assert.match(lens, /まだ答えが見えていないところから入り、デザイン、テクノロジー、AI、プロダクト、ビジネスをつなぎながら/);
 });
 
 test("Contact page features 4 personal entry points and studio bridge without duplicate service catalog", () => {
@@ -118,15 +126,13 @@ test("workshop.html and publications.html are warm paper light mode and not dark
 });
 
 test("Resona emphasis is Creative technology and never Web animation", () => {
-  const index = read("index.html");
-  const jaIndex = read("ja/index.html");
-
-  assert.match(index, /Creative technology · Live now/);
-  assert.ok(!index.includes("Web animation · Live now"));
-
-  assert.match(jaIndex, /Creative technology · Live now/);
-  assert.match(jaIndex, /クリエイティブテクノロジー · 公開中/);
-  assert.ok(!jaIndex.includes("ウェブアニメーション · 公開中"));
+  // Proof-card emphasis is lens content — the default lens, built at
+  // lens/default/index.html. t() renders both language spans in one build.
+  const lens = read("lens/default/index.html");
+  assert.match(lens, /Creative technology · Live now/);
+  assert.match(lens, /クリエイティブテクノロジー · 公開中/);
+  assert.ok(!lens.includes("Web animation · Live now"));
+  assert.ok(!lens.includes("ウェブアニメーション · 公開中"));
 });
 
 test("contact.html and work-with-me.html share the site's column and gutter", () => {
@@ -139,16 +145,23 @@ test("contact.html and work-with-me.html share the site's column and gutter", ()
   }
 });
 
-test("Homepage H1 headline leads with concrete high-business-value executive capability statement", () => {
+test("Homepage headline leads with concrete high-business-value executive capability statement", () => {
   const index = read("index.html");
   const jaIndex = read("ja/index.html");
 
-  assert.match(index, /<h1 class="hero-line"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
-  assert.match(jaIndex, /<h1 class="hero-line"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
+  // The image grid (src/pages/index.astro) leads with profile.positioning[1].
+  assert.match(index, /class="grid-headline"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
+  assert.match(jaIndex, /class="grid-headline"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
   assert.match(jaIndex, /曖昧なアイデアを、実際に触れる体験や、動く AI プロトタイプ、0→1 のプロダクトにする。/);
+
+  // The canonical lens (lens/default/index.html) still leads with the same
+  // statement as its <h1>.
+  const lens = read("lens/default/index.html");
+  assert.match(lens, /<h1 class="hero-line"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
 });
 
 test("Homepage ventures section synchronizes live status and content from now.json", () => {
-  const index = read("index.html");
-  assert.match(index, /Moime\.app<\/h3><span class="pill pill--status"><span class="t-en">Building<\/span>/);
+  // Ventures is a lens section, built at lens/default/index.html.
+  const lens = read("lens/default/index.html");
+  assert.match(lens, /Moime\.app<\/h3><span class="pill pill--status"><span class="t-en">Building<\/span>/);
 });

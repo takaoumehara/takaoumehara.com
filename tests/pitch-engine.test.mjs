@@ -291,7 +291,9 @@ test("a draft lens is validated by the build but not built", () => {
 // ── The honesty fields ──────────────────────────────────────────────────────
 
 test("contribution.level renders as a role flag on proof cards, and only from the record", () => {
-  const home = read("index.html");
+  // Proof cards are lens content — the default lens, built at lens/default/index.html
+  // (`/` is now the PORTO ROCHA image grid, src/pages/index.astro).
+  const home = read("lens/default/index.html");
   assert.match(home, /card-flag--role"><span class="t-en">Solo<\/span>/, "Resona is recorded as solo work");
   const creative = read("lens/creative/index.html");
   assert.match(creative, /card-flag--role"><span class="t-en">Led<\/span>/, "KOJI FIZZ is recorded as led");

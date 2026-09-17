@@ -2,8 +2,9 @@
 // Unified Work Archive (/work): every evidence project, filterable by
 // discipline. Pulls directly from lib.evidence without duplicating project
 // data — src/lib/archive.mjs carries the slug → tag lists so a test can
-// import getFilterTags without loading this component.
-import CategoryCard from "../category/CategoryCard.astro";
+// import getFilterTags without loading this component. Cards render through
+// the shared PORTO ROCHA grid (src/components/grid/WorkGrid.astro).
+import WorkGrid from "../grid/WorkGrid.astro";
 import { t } from "../../lib/html.mjs";
 import { getFilterTags, FILTERS } from "../../lib/archive.mjs";
 
@@ -18,12 +19,13 @@ const counts = {};
 for (const f of FILTERS) {
   counts[f.id] = items.filter((item) => getFilterTags(item).includes(f.id)).length;
 }
+const entries = items.map((item) => ({ item, tags: getFilterTags(item).join(" ") }));
 ---
 <main class="cat-page" data-category="work-archive">
   <header class="cat-head">
     <h1 class="cat-title"><span class="t-en">Work Archive</span><span class="t-jp">制作・開発アーカイブ</span></h1>
     <p class="cat-lede"><span class="t-en">20+ years of 0→1 products, AI systems, interactive experiences, brand identities, and learning platforms.</span><span class="t-jp is-block">0→1 のプロダクト、AI システム、インタラクティブ体験、ブランド、学びの基盤まで。</span></p>
-    <div class="archive-filters" role="group" aria-label="Filter work by discipline">
+    <div class="grid-filters" role="group" aria-label="Filter work by discipline">
       {FILTERS.map((f, i) => (
         <button type="button" class={`filter-btn${i === 0 ? " is-active" : ""}`} data-filter={f.id}>
           <span set:html={t(f.label)} />
@@ -34,9 +36,7 @@ for (const f of FILTERS) {
     <p class="cat-count"><span id="archive-count">{items.length}</span><span class="t-en"> projects</span><span class="t-jp"> 件</span></p>
   </header>
 
-  <div class="cat-grid">
-    {items.map((item) => <CategoryCard item={item} tags={getFilterTags(item).join(" ")} />)}
-  </div>
+  <WorkGrid entries={entries} />
 </main>
 
 <script>

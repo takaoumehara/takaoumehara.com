@@ -15,7 +15,10 @@ import { read, exists } from "./_dist.mjs";
 
 const lib = loadLibrary();
 const categories = loadCategories();
-const cards = (html) => [...html.matchAll(/<article class="cat-card"[\s\S]*?<\/article>/g)].map((m) => m[0]);
+// The grid card (src/components/grid/GridCard.astro) carries both
+// `grid-card` and the legacy `cat-card` class every test here reads off —
+// tolerate either order and any other class alongside them.
+const cards = (html) => [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]*"[\s\S]*?<\/article>/g)].map((m) => m[0]);
 
 test("all five sections of the work are built, none by hand", () => {
   assert.deepEqual(
@@ -66,18 +69,21 @@ test("one h1 per page, and the sidebar opens the section you are standing in", (
   }
 });
 
-test("two columns, one card shape, one thumbnail ratio", () => {
-  // Three columns puts a card at 279px, where Japanese wraps every 13
-  // characters — the reason the old category pages were hard to read.
-  const css = readFileSync(join(ROOT, "src", "styles", "site.css"), "utf8");
-  assert.match(css, /\.cat-grid \{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+test("three columns at desktop, two at <=1100px, one at <=640px; one card shape, one thumbnail ratio", () => {
+  // The PORTO ROCHA grid (docs/design/porto-rocha/DESIGN.md): the same
+  // src/components/grid/WorkGrid.astro every category page, /all/ and the
+  // home page share, styled once in src/styles/grid.css.
+  const css = readFileSync(join(ROOT, "src", "styles", "grid.css"), "utf8");
+  assert.match(css, /\.work-grid \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 1100px\) \{\s*\.work-grid \{[^}]*grid-template-columns: repeat\(2, minmax\(0, 1fr\)\)/);
+  assert.match(css, /@media \(max-width: 640px\) \{\s*\.work-grid \{[^}]*grid-template-columns: 1fr/);
   assert.match(css, /\.cat-card-media \{[^}]*aspect-ratio: 3 \/ 2/);
   for (const c of categories) {
     const html = read(c.output);
     assert.equal(/class="work-card"/.test(html), false, `${c.output}: the old card system must be gone`);
     assert.equal(/class="idx-tile"/.test(html), false, `${c.output}: the old index system must be gone`);
     for (const card of cards(html)) {
-      assert.match(card, /<div class="cat-card-media">/, `${c.output}: every card leads with its media box`);
+      assert.match(card, /<div class="[^"]*\bcat-card-media\b[^"]*">/, `${c.output}: every card leads with its media box`);
       assert.ok(/<img /.test(card) || /class="card-art /.test(card),
         `${c.output}: a media box must hold an image or the CSS artwork standing in for one`);
     }

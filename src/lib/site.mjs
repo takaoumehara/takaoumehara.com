@@ -62,6 +62,27 @@ export const orderedCategories = () => {
   return CATEGORY_ORDER.map((slug) => cats.find((c) => c.slug === slug)).filter(Boolean);
 };
 
+/**
+ * Every public item across every category's groups, in category order,
+ * deduplicated — the home page's image grid (src/components/grid/WorkGrid.astro).
+ * An item that sits in more than one category (verizon-ai-workflow: ai-products
+ * and work) keeps every category slug on `category`, space-separated, so the
+ * home page's filter pills can find it under either one.
+ */
+export function gridEntries() {
+  const lib = getLibrary();
+  const byId = new Map();
+  for (const cat of orderedCategories()) {
+    for (const id of cat.groups.flatMap((g) => g.items)) {
+      const item = lib.evidence.get(id);
+      if (!item) continue;
+      if (!byId.has(id)) byId.set(id, { item, categories: new Set() });
+      byId.get(id).categories.add(cat.slug);
+    }
+  }
+  return [...byId.values()].map(({ item, categories }) => ({ item, category: [...categories].join(" ") }));
+}
+
 const CTA = {
   live: { en: "Try it ↗", jp: "触ってみる ↗" },
   caseStudy: { en: "Case study →", jp: "ケーススタディ →" },

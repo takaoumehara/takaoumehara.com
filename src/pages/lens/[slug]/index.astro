@@ -1,15 +1,16 @@
 ---
-// One page per published, non-default lens: /lens/<slug>/. Every route is
-// pre-rendered at build time — Claim Guard failures already aborted the build
-// in src/lib/site.mjs before getStaticPaths ever runs.
+// One page per published lens, including the default one: /lens/<slug>/. The
+// default lens is the canonical, whole-story page — it used to render at `/`,
+// which is now the PORTO ROCHA image grid (src/pages/index.astro) — so it
+// still needs a route to build from, and this is it: /lens/default/.
+// Every route is pre-rendered at build time — Claim Guard failures already
+// aborted the build in src/lib/site.mjs before getStaticPaths ever runs.
 import Site from "../../../layouts/Site.astro";
 import LensPage from "../../../components/lens/LensPage.astro";
 import { getLibrary, publishedLenses } from "../../../lib/site.mjs";
 
 export function getStaticPaths() {
-  return publishedLenses()
-    .filter((lens) => lens.slug !== "default")
-    .map((lens) => ({ params: { slug: lens.slug }, props: { lens } }));
+  return publishedLenses().map((lens) => ({ params: { slug: lens.slug }, props: { lens } }));
 }
 
 interface Props { lens: any }
