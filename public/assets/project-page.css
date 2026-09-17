@@ -3391,14 +3391,19 @@ html[data-theme="light"] .wds-hero h1 em {
   line-height: 1.45;
 }
 
-/* ── Cinematic Full-Bleed Video Section (Before & After) ── */
+/* ── Cinematic Full-Bleed Video Section (Before & After) ──
+   Astro migration: unlike .hero-fullbleed above, this one lives inside
+   .deck/.project-body, which is centered and padded (max-width: var(--col);
+   padding: 0 var(--gutter)) — so bleeding to the true viewport edge would
+   both overshoot that container AND, now that the page sits in the shell's
+   right column, cut under the sidebar. .main (the column) has no fixed
+   width to calc against without a container query, so instead this breaks
+   out only as far as .deck/.project-body's own padding — edge-to-edge of
+   the column's content block, same as it always was on narrower viewports. */
 .wds-video {
-  width: 100vw !important;
-  position: relative !important;
-  left: 50% !important;
-  right: 50% !important;
-  margin-left: -50vw !important;
-  margin-right: -50vw !important;
+  width: calc(100% + 2 * var(--gutter)) !important;
+  margin-left: calc(-1 * var(--gutter)) !important;
+  margin-right: calc(-1 * var(--gutter)) !important;
   background: #000000 !important;
   color: #ffffff !important;
   padding: clamp(64px, 8vw, 112px) var(--gutter) !important;
