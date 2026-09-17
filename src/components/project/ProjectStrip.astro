@@ -95,7 +95,10 @@ const kickerHtml = item
   </section>
 )}
 
-<style>
+<style is:global>
+  /* Global on purpose: the card bodies are printed with set:html, so a scoped
+     sheet (data-astro-cid) would never reach the <p>/<ul> inside them. Every
+     selector carries the cs-strip- prefix, which nothing else uses. */
   .cs-strip {
     max-width: var(--col);
     margin: 0 auto;
@@ -122,7 +125,7 @@ const kickerHtml = item
   .cs-strip-card {
     background: var(--pr-card);
     border-radius: var(--r);
-    padding: 16px;
+    padding: 20px 20px 24px;
   }
 
   .cs-strip-label {
