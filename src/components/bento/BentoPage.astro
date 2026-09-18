@@ -1,15 +1,18 @@
 ---
-// A case study drawn as one bento, top to bottom:
+// A page drawn as one bento, top to bottom:
 //
 //   1. the hero — the biggest thing on the page, full bleed, moving if the
 //      work moves;
 //   2. the title beside the facts of the engagement;
-//   3. The challenge / The solution / Impact, from src/data (ProjectStrip);
+//   3. The challenge / The solution / Impact, from src/data (ProjectStrip) —
+//      only on a case study; the pages about the person have no evidence record;
 //   4. the work itself, in rows of cells that each fill the twelve columns.
 //
-// The layout is src/bento/<slug>.json. Nothing here invents copy: every line
-// is either a field of the evidence record or a sentence lifted from the
-// hand-built page this one replaces.
+// The layout is src/bento/<slug>.json for a case study, or
+// src/bento/pages/<name>.json for a page about the person. A page of prose
+// opens on a sentence instead of a picture (hero.kind: "statement"). Nothing
+// here invents copy: every line is either a field of the evidence record or a
+// sentence lifted from the hand-built page this one replaces.
 import "../../styles/bento.css";
 import BentoCell from "./BentoCell.astro";
 import ProjectStrip from "../project/ProjectStrip.astro";
@@ -20,13 +23,17 @@ interface Props { layout: any; item: any }
 const { layout, item } = Astro.props;
 
 const hero = layout.hero;
-const heroH = hero.h ?? 7;
+const heroKind = hero.kind ?? "media";
+const heroH = hero.h ?? (heroKind === "statement" ? 4 : 7);
 const heroStyle = ["--w:12", `--h:${heroH}`, hero.focus ? `--focus:${hero.focus}` : ""].filter(Boolean).join(";");
 
-const title = layout.title;
-const meta = title.meta ?? [];
+// A case study carries a title band under the hero (the name, then the facts of
+// the engagement). A page of prose opens on its sentence — the statement hero
+// is the <h1> — so it has no title band at all.
+const title = layout.title ?? null;
+const meta = title?.meta ?? [];
 const titleW = meta.length ? 8 : 12;
-const titleH = title.h ?? 4;
+const titleH = title?.h ?? 4;
 
 const rows = bentoRows(layout);
 // A section's name is printed once, on the first row that belongs to it.
@@ -40,9 +47,14 @@ const bands = rows.map(({ section, row }) => {
 <div class="bento-doc">
   <div class="bento-wrap">
     <div class="bento">
-      <div class="bento-cell" data-kind={hero.kind ?? "media"} data-w="12" data-h={heroH}
+      <div class="bento-cell" data-kind={heroKind} data-w="12" data-h={heroH} data-tone={hero.tone}
            data-fit={hero.fit === "contain" ? "contain" : undefined} style={heroStyle} data-vt-hero>
-        {(hero.kind ?? "media") === "video" ? (
+        {heroKind === "statement" ? (
+          <div class="bento-body">
+            {hero.kicker && <p class="bento-kicker" set:html={t(hero.kicker)} />}
+            <h1 class="bento-statement" set:html={tb(hero.text)} />
+          </div>
+        ) : heroKind === "video" ? (
           <figure class="bento-media">
             <video poster={hero.poster ? url(hero.poster) : undefined} controls muted loop playsinline
                    autoplay={hero.autoplay !== false} preload="metadata" aria-label={hero.alt ?? undefined}>
@@ -60,6 +72,7 @@ const bands = rows.map(({ section, row }) => {
     </div>
   </div>
 
+  {title && (
   <div class="bento-wrap">
     <div class="bento">
       <div class="bento-cell" data-kind="text" data-w={titleW} data-h={titleH} style={`--w:${titleW};--h:${titleH}`}>
@@ -93,8 +106,9 @@ const bands = rows.map(({ section, row }) => {
       )}
     </div>
   </div>
+  )}
 
-  <ProjectStrip item={item} />
+  {item && <ProjectStrip item={item} />}
 
   {bands.map(({ label, row }) => (
     <div class="bento-wrap">

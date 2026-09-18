@@ -3,8 +3,12 @@
 // `w` (columns out of 12) and `h` (rows) come from the row the cell sits in —
 // src/styles/bento.css turns that pair into a w : h ratio at every width.
 //
+// A cell may also carry `filter`: the group it belongs to, printed as
+// data-filter so a "filters" cell further up the page can hide it (/now/).
+//
 // Kinds: media (a picture), video, text, figure (a number), statement (one
-// large sentence), links, spacer. Everything a cell says is either copied from
+// large sentence), links, filters (a row of buttons that narrow the cells
+// below), spacer. Everything a cell says is either copied from
 // the case study it replaces or comes from src/data — nothing is written here.
 import { t, tb, url } from "../../lib/html.mjs";
 
@@ -26,6 +30,7 @@ const body = Array.isArray(cell.body) ? cell.body : cell.body ? [cell.body] : []
   data-tone={tone}
   data-fit={fit === "contain" ? "contain" : undefined}
   data-paper={cell.paper ? "true" : undefined}
+  data-filter={cell.filter}
   style={style}
 >
   {kind === "media" && (
@@ -96,6 +101,15 @@ const body = Array.isArray(cell.body) ? cell.body : cell.body ? [cell.body] : []
     <div class="bento-body">
       <p class="bento-statement" set:html={tb(cell.text)} />
     </div>
+  )}
+
+  {kind === "filters" && (
+    <nav class="bento-body bento-filters" aria-label={cell.title ?? "Filter"}>
+      {(cell.filters ?? []).map((filter, n) => (
+        <button type="button" class="bento-filter" data-filter={filter.key} aria-pressed={n === 0 ? "true" : "false"}
+                set:html={t(filter.label)} />
+      ))}
+    </nav>
   )}
 
   {kind === "links" && (

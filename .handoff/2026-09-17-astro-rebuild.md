@@ -167,13 +167,58 @@ Q3 Ink & Paper のまま。覆すなら `Sidebar.astro` と `shell.css`。
 「チップの合計＝総数」「`/all/` の分野合計＝総数」「`/` を指すのはロゴだけ」を見る。
 `tests/a11y.spec.mjs` に「クリックすると現在行が視界に入って反転する」「チップがキーボードで効く」を追加。
 
+## 第 5 段（2026-09-18）— 人のページ 5 枚を同じ型に乗せる
+
+指摘の 8 点目:「About / Now / Writing / Workshops / Work with me、なんかこれそれぞれフォーマットが
+違いますよね……全部フォーマット一つの本を作って流し込む、と理解してるんですけど違いますか?」
+
+**答え: まだやっていなかった、が正解。** 7 枚とも `FragmentPage.astro` の素通しで、旧サイトの手書き HTML と
+ページ固有 CSS を丸ごと抱えていた。`--col` が 1200 / 1140 / 1120、本文開始の上余白が 48〜110px、
+H1 のウェイトが 700 / 800（サイトは 400 一択）。`about.css` と `contact.css` は Outfit の `@font-face` を
+design-system.css と二重に宣言していた。
+
+### 見た目より重かったバグ
+
+`public/assets/design-system.css` は `html[data-theme="light"]`（0-1-1）で `--bg` / `--ink` を定義するが、
+`html[data-theme="dark"]` では **`--nav-*` しか定義していない**。fragment 側は `:root`（0-1-0）に
+`--bg: #f3f2ee` を書く。だから明モードでは design-system が勝ち（各ページの紙色は死んでいた）、
+暗モードでは暗いブロックが無いので fragment の明るい `:root` が源順で勝つ。つまり
+**About / Writing / Workshops / Work with me はダークモードのスイッチを無視していた。**
+ページ固有 CSS と design-system.css を外したので、これは副作用として消えた。
+
+| 何 | どこ |
+|---|---|
+| 人のページの通り道（`stylesheets` 無し・`fonts` 上書き無し） | `src/components/BentoDoc.astro` |
+| 散文のページ用の `kind: "statement"` ヒーロー（それが `<h1>`）、`title` 帯を任意に | `src/lib/bento.mjs`、`src/components/bento/BentoPage.astro` |
+| 人のページのレイアウト（別 glob なので slug 衝突しない） | `src/bento/pages/{about,publications,workshop,contact}.json` |
+| `/work-with-me.html` は contact と同じレイアウト＋`/try/` の 1 行だけ | `src/pages/work-with-me.astro` |
+| `/now/` は `src/data/now.json` から行を切り出す（3 枚ずつ） | `src/pages/now/index.astro`（`NowPage.astro` は削除） |
+| 絞り込みバー＝`kind: "filters"` のセル。隠れたセルはグリッドから抜け、`row dense` が詰め直す | `BentoCell.astro`、`bento.css` の `.bento-filters` |
+| 全幅セルの中だけ本文を 68ch に | `src/styles/bento.css` |
+
+削除: `src/fragments/{about,publications,workshop,contact,work-with-me}.{html,css,json}` 15 本、
+`src/components/now/NowPage.astro`、`site.css` の `.now-*` 220 行。
+
+### 移すときに踏んだこと
+
+- **`t()` / `tb()` は EN / JP の両側を `esc()` に通す。** レイアウト JSON に `<em>` / `<strong>` を
+  書くと画面にそのまま出る。手書きページの強調タグは落とした（言葉はそのまま）。
+- **セルの幅は {3, 4, 6, 12} だけ。** 1100px 以下でグリッドが 6 列に落ちるので 5 / 7 / 8 は軌道からはみ出す。
+- 全幅（w12）のリード行は `h: 1` でちょうど。`h: 2` だと本文の倍の高さの空白になる。
+
+テスト: `npm test` 155/155、`npm run test:e2e` 68 passed / 2 skipped。
+新規 `tests/bento-pages.test.mjs`（12 列・幅の集合・statement ヒーローが唯一の `<h1>`・
+design-system.css を読まない・`:root` / `@font-face` / `--col` を持たない・inline HTML が無い・
+fragment が残っていない）。`tests/a11y.spec.mjs` に「5 枚とも暗くなる」と
+「5 枚とも `<h1>` の位置・字詰め・ウェイトが同じ」を追加。
+`tests/strategic-refinement.test.mjs` の「紙色を `:root` に持て」という検査は**目的と逆**だったので、
+「ページ固有の `:root` を持たない」に置き換えた。
+
 ### 残り
 
-- **PR-B: 人のページ 5 枚をベントーに乗せる。** 計画は `/root/.claude/plans/indexed-yawning-rose.md`（このセッション限り）。
-  要点: 7 枚とも `FragmentPage` の素通しで旧 CSS を抱えている（`--col` が 1200/1140/1120、本文開始が 48〜110px、
-  H1 が 700/800）。**About / Writing / Workshops / Work with me / BreakBias はダークモードを無視する**
-  （`design-system.css` に `[data-theme="dark"]` の `--bg`/`--ink` が無い）。contact ≒ work-with-me、
-  breakbias ⊂ workshop なので 7 → 4 枚に畳める。ベントーを開くには `src/lib/bento.mjs` の hero 必須を
-  `kind: "statement"` でも通す・`BentoPage` の `ProjectStrip` を任意にする・`src/bento/pages/` を別 glob にする。
+- ⚠️ **`breakbias.html` はダークモードを無視したまま。** 人のページではないので PR-B では触っていない
+  （方法論のページ。`intentfirst.html` は design-system のトークンに乗っているので正しく反転する）。
+- ページの統合はしていない。本人が「型を揃える／ページ数も減らす」で**前者**を選んだため
+  （参考: contact ≒ work-with-me、breakbias ⊂ workshop なので、やるなら 7 → 4 枚にできる）。
 - ベントー本文の日本語化（規模は第 3 段の節に記載）。
 - 残り 39 本のケーススタディのベントー化。

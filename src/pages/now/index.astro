@@ -1,24 +1,188 @@
 ---
-// The Lab Bench at /now/: active ventures, prototypes and tools in motion.
-// The old build also wrote now.html; that address now redirects here
-// (vercel.json) — Astro treats now.html and now/ as one route.
-import Site from "../../layouts/Site.astro";
-import NowPage from "../../components/now/NowPage.astro";
+// The Lab Bench at /now/: active ventures, prototypes and tools in motion, on
+// the same bento as every other page about the person. The old build wrote
+// now.html; that address redirects here (vercel.json).
+//
+// This page is the one that builds its layout instead of reading it from
+// src/bento/pages/: the cards ARE src/data/now.json, so the rows are cut from
+// the data at build time. Everything else — the statement opening, the cells,
+// the section headings — is the shared template.
+import BentoDoc from "../../components/BentoDoc.astro";
 import { getLibrary } from "../../lib/site.mjs";
 
-const lib = getLibrary();
-const nowData = lib.now;
+const now = getLibrary().now;
+const items = now.items ?? [];
 
-const seo = {
-  title: "Now — Takao Umehara",
-  description: "Active ventures, running prototypes, and open-source tools currently on Takao Umehara's desk.",
+const STATUS = {
+  building: { en: "Building", jp: "開発中" },
+  prototype: { en: "Prototype", jp: "試作中" },
+  validating: { en: "Validating", jp: "検証中" },
+  live: { en: "Live", jp: "公開中" },
+  exploring: { en: "Exploring", jp: "構想中" },
+};
+const CATEGORY = {
+  "ai-product": { en: "0→1 Product", jp: "0→1 プロダクト" },
+  "ai-tool": { en: "AI Tool", jp: "AI ツール" },
+  thesis: { en: "Thesis & Architecture", jp: "設計論・アーキテクチャ" },
+  "developer-tool": { en: "Developer Tool", jp: "開発ツール" },
+  interactive: { en: "Interactive Experiment", jp: "インタラクティブ実験" },
+};
+// The bar narrows the set to one of these; "all" puts every cell back.
+const FILTERS = [
+  { key: "ai-product", label: { en: "0→1 Products & Ventures", jp: "0→1 プロダクト & 事業" } },
+  { key: "interactive", label: { en: "Interactive", jp: "インタラクティブ" } },
+  { key: "developer-tool", label: { en: "Developer Tools", jp: "開発ツール" } },
+];
+
+const pair = (a, b) => ({ en: `${a.en} · ${b.en}`, jp: `${a.jp} · ${b.jp}` });
+const fallback = (key) => ({ en: key, jp: key });
+
+/** The one link a card carries, in the order the old page looked for it. */
+function cta(links = {}) {
+  if (links.live) return { href: links.live, label: { en: "Try live ↗", jp: "触ってみる ↗" } };
+  if (links.repo) return { href: links.repo, label: { en: "GitHub repo ↗", jp: "ソースコード ↗" } };
+  if (links.caseStudy) return { href: links.caseStudy, label: { en: "Read case study →", jp: "詳細を読む →" } };
+  if (links.external) return { href: links.external, label: { en: "Open project ↗", jp: "プロジェクトを開く ↗" } };
+  return null;
+}
+
+function cell(item, w) {
+  const link = cta(item.links);
+  const list = [
+    { en: `Why it exists · ${item.why.en}`, jp: `なぜ作るのか · ${item.why.jp}` },
+    { en: `What's next · ${item.next.en}`, jp: `次の一歩 · ${item.next.jp}` },
+  ];
+  if (item.stack?.length) list.push(item.stack.join(" · "));
+  return {
+    kind: "text",
+    w,
+    filter: item.category,
+    label: pair(CATEGORY[item.category] ?? fallback(item.category), STATUS[item.status] ?? fallback(item.status)),
+    heading: item.title,
+    body: [item.oneLine],
+    list,
+    links: link ? [link] : undefined,
+  };
+}
+
+// Three to a row. A row must fill twelve columns exactly (src/lib/bento.mjs),
+// so a last row of one or two is one w12 or two w6 rather than a short row.
+const WIDTHS = { 1: [12], 2: [6, 6], 3: [4, 4, 4] };
+const rows = [];
+for (let i = 0; i < items.length; i += 3) {
+  const group = items.slice(i, i + 3);
+  const widths = WIDTHS[group.length];
+  rows.push({ h: 4, cells: group.map((item, n) => cell(item, widths[n])) });
+}
+
+const layout = {
+  seo: {
+    title: "Now — Takao Umehara",
+    description: "Active ventures, running prototypes, and open-source tools currently on Takao Umehara's desk.",
+    canonical: "https://takaoumehara.com/now",
+  },
+  hero: {
+    kind: "statement",
+    h: 4,
+    kicker: {
+      en: `Live Lab Bench · Updated ${now.updatedAt}`,
+      jp: `現在の作業台 · ${now.updatedAt} 更新`,
+    },
+    text: { en: "What I’m Working On", jp: "いま、つくっているもの" },
+  },
+  sections: [
+    {
+      rows: [
+        { h: 1, cells: [{ kind: "text", w: 12, body: [now.lede] }] },
+        {
+          h: 1,
+          cells: [
+            {
+              kind: "filters",
+              w: 12,
+              title: "Filter current work",
+              filters: [
+                { key: "all", label: { en: `All (${items.length})`, jp: `すべて (${items.length})` } },
+                ...FILTERS,
+              ],
+            },
+          ],
+        },
+      ],
+    },
+    { rows },
+    {
+      label: {
+        en: "Have a question or want to build something together?",
+        jp: "プロトタイプを一緒に試したい、あるいはまだ名前のないアイデアの相談",
+      },
+      rows: [
+        {
+          h: 2,
+          cells: [
+            {
+              kind: "text",
+              w: 12,
+              tone: "ink",
+              body: [
+                {
+                  en: "I collaborate with founders, leadership teams, and engineers who want to test ideas by building them.",
+                  jp: "「まずは動くものを作って確かめたい」チームや創業者と、0→1 の検証をご一緒しています。",
+                },
+              ],
+              links: [{ href: "contact.html", label: { en: "Work with me →", jp: "相談してみる →" } }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 ---
-<Site
-  title={seo.title}
-  description={seo.description}
-  canonical="https://takaoumehara.com/now"
-  current="/now/"
->
-  <NowPage nowData={nowData} />
-</Site>
+<BentoDoc layout={layout} current="/now/" />
+
+<script>
+  // Narrowing the bench. The old page also answered #ventures / #experiments /
+  // #tools in the address, so those aliases stay.
+  const ALIASES = {
+    ventures: "ai-product",
+    "ai-product": "ai-product",
+    experiments: "interactive",
+    interactive: "interactive",
+    tools: "developer-tool",
+    "developer-tool": "developer-tool",
+  };
+
+  function bindNowFilters() {
+    const bar = document.querySelector(".bento-filters");
+    if (!bar) return;
+    const buttons = [...bar.querySelectorAll(".bento-filter")];
+    const cells = [...document.querySelectorAll(".bento-cell[data-filter]")];
+    if (!buttons.length || !cells.length) return;
+
+    const apply = (name) => {
+      const filter = ALIASES[name] || name;
+      for (const button of buttons) {
+        button.setAttribute("aria-pressed", String(button.dataset.filter === filter));
+      }
+      for (const cell of cells) {
+        cell.classList.toggle("is-hidden", filter !== "all" && cell.dataset.filter !== filter);
+      }
+      try {
+        if (filter === "all") {
+          if (location.hash) history.replaceState(null, "", location.pathname);
+        } else {
+          history.replaceState(null, "", "#" + name);
+        }
+      } catch {}
+    };
+
+    for (const button of buttons) button.addEventListener("click", () => apply(button.dataset.filter));
+
+    const hash = location.hash.replace("#", "").toLowerCase();
+    if (hash && (ALIASES[hash] || hash === "all")) apply(hash);
+  }
+
+  bindNowFilters();
+  document.addEventListener("astro:page-load", bindNowFilters);
+</script>

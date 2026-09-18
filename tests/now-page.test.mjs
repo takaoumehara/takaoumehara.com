@@ -11,8 +11,10 @@ test("/now page is built at now/index.html, and the old now.html address redirec
   assert.match(read("work/index.html"), /http-equiv="refresh" content="0; url=\/all\/"/, "the old archive address must redirect to /all/");
 
   const html = read("now/index.html");
-  assert.match(html, /<h1 class="now-title">/, "must have now-title h1");
-  assert.match(html, /class="now-pulse-dot"/, "must have live pulsing lab bench indicator");
+  // The bench opens on the same statement hero as every other page about the
+  // person (src/components/bento/BentoPage.astro) — it is the page's one <h1>.
+  assert.match(html, /<h1 class="bento-statement"><span class="t-en">What I’m Working On<\/span>/, "must open on the statement hero");
+  assert.match(html, /Live Lab Bench · Updated/, "must say when the bench was last updated");
   assert.match(html, /Moime\.app/, "must feature Moime");
   assert.match(html, /MyBrainSpec/, "must feature MyBrainSpec");
   assert.match(html, /Intent First/, "must feature Intent First");
@@ -22,8 +24,23 @@ test("/now page is built at now/index.html, and the old now.html address redirec
 test("/now cards display Why it exists and What's next", () => {
   const html = read("now/index.html");
   assert.match(html, /Why it exists/, "must have Why it exists section");
-  assert.match(html, /What's next/, "must have What's next section");
-  assert.match(html, /pill--now-status/, "cards must have status badges");
+  assert.match(html, /What&#39;s next/, "must have What's next section");
+  // Status rides in the cell's label, next to what kind of thing it is.
+  assert.match(html, /0→1 Product · Building/, "cards must say where they are");
+});
+
+test("/now can be narrowed, and every card declares which group it is in", () => {
+  const html = read("now/index.html");
+  // The bar is a cell of the grid, so it lands under the lede rather than
+  // floating above it (src/pages/now/index.astro).
+  assert.match(html, /<nav class="bento-body bento-filters"[^>]*aria-label="Filter current work">/);
+  for (const key of ["all", "ai-product", "interactive", "developer-tool"]) {
+    assert.match(html, new RegExp(`<button type="button" class="bento-filter" data-filter="${key}"`), `the bar must offer ${key}`);
+  }
+  // A card carries its group, which is how the bar hides it.
+  for (const group of ["ai-product", "ai-tool", "thesis", "developer-tool", "interactive"]) {
+    assert.match(html, new RegExp(`data-filter="${group}"`), `a card must be in ${group}`);
+  }
 });
 
 test("/now marks Now as the current page in the sidebar", () => {

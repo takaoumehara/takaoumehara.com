@@ -36,13 +36,17 @@ src/
   components/
     Sidebar.astro            カテゴリ別の作品一覧（src/categories）・About カード・ページ nav・言語スイッチ
     bento/                   BentoPage / BentoCell — src/bento/*.json を描く
+    BentoDoc.astro           人のページの通り道。src/bento/pages/*.json を BentoPage に渡すだけ。
+                             `stylesheets` も `fonts` 上書きも持たない（下の「人のページ」を参照）
     landing/                 Landing / LandingGrid — サイドバーなしのトップ（chrome={false}）
     lens/                    Hero / Proof / Exploring / Experiments / Ventures / Ideas / Tools / CareerArc / Capabilities / Fit / Studio / Contact / LensPage
     category/                CategoryPage / Card
     archive/ now/            Work Archive / Living Lab Bench
   bento/<slug>.json          ベントーで描くケーススタディのレイアウト（`docs/bento-layout.md`）。このファイルがある slug は case-studies/ を持たない
+  bento/pages/<name>.json    人のページ（about / publications / workshop / contact）のレイアウト。slug 空間が分かれているので
+                             ケーススタディと名前が衝突しない（`src/lib/bento.mjs` は別の glob で読む）
   case-studies/<slug>.html   まだ手書きのケーススタディ本文（nav〜footer の間）。<slug>.css = 旧 head の <style>。<slug>.json = title / description / og / 追加 CSS
-  fragments/<name>.html      一般ページ（about など）の本文。同じ 3 点セット
+  fragments/<name>.html      まだ手書きの一般ページ（404 / breakbias / intentfirst）の本文。同じ 3 点セット
   pages/
     index.astro  ja/index.astro  lens/[slug]/index.astro  lens/preview.astro (prerender=false, POST)
     interactive.astro ai-products.astro ai-tools.astro work.astro brand.astro   ← src/categories/*.json
@@ -132,6 +136,29 @@ tests/                       dist（.vercel/output/static）を検査
     `.bento-caption span` で英語と日本語が同時に出た。`> span` にする。
   - `.sr-only` は `grid.css` にしかなかった。ベントーのページは読まないので `bento.css` にも置いてある。
   - `<iframe>` は `title` が無いと axe が落とす。`src/lib/bento.mjs` がビルド時に検査する。
+  - **レイアウトの文字列は「言葉」であって markup ではない。** `t()` / `tb()`（`src/lib/html.mjs`）は
+    EN / JP の両側を `esc()` に通すので、JSON に `<em>` を書くと画面にそのまま `<em>` と出る。
+    手書きページから移すときは強調タグを落とす。`tests/bento-pages.test.mjs` が見張っている。
+  - セルの幅は **{3, 4, 6, 12} だけ**。1100px 以下でグリッドは 6 列に落ちるので、8 のような span は軌道からはみ出す。
+
+- **人のページ 5 枚（about / now / publications / workshop / contact ＝ work-with-me）**（2026-09-18）:
+  7 枚とも `FragmentPage.astro` の素通しで、**ページ固有 CSS を丸ごと**抱えていた。ラッパーも `max-width` も
+  型の階段も無いので、ビューポートのどこから本文が始まるかも文字サイズも 5 枚ばらばらだった。
+  さらに実害のあるバグが 1 つ隠れていた:
+  - `public/assets/design-system.css` は `html[data-theme="light"]`（詳細度 0-1-1）で `--bg` / `--ink` を定義し、
+    `html[data-theme="dark"]` では **`--nav-*` しか定義していない**。
+  - 一方 fragment の CSS は `:root`（0-1-0）に `--bg: #f3f2ee` を書く。
+  - 結果、明モードでは design-system が勝ち（各ページが指定した紙色は死んでいた）、暗モードでは
+    暗いブロックが無いので fragment の**明るい `:root` が源順で勝つ** → **About / Writing / Workshops /
+    Work with me はダークモードのスイッチを無視していた**。
+  5 枚を `BentoDoc.astro` 経由（`stylesheets` 無し・`fonts` 上書き無し）にしたので design-system.css が外れ、
+  不揃いとこのバグが同時に消えた。`tests/a11y.spec.mjs` が「5 枚とも暗くなる」と「5 枚とも `<h1>` の位置・
+  字詰め・ウェイトが同じ」を測っている。
+  ⚠️ `breakbias.html` は**人のページではない**ので触っていない。**ダークモードを無視したまま残っている。**
+  - `/now/` だけはレイアウトを JSON で持たない。カードが `src/data/now.json` そのものなので、
+    ビルド時に行を切り出す（3 枚ずつ、端数は w12 か w6×2）。絞り込みのバーは `kind: "filters"` の
+    **セル**で、リードの下・グリッドの上に自然に落ちる。隠れたセルはグリッドから抜けるだけで、
+    `grid-auto-flow: row dense` が残りを詰め直すので穴にならない。
 
 - **Astro のフロントマターは、テンプレートリテラルの `${…}` の中に別のテンプレートリテラルを
   入れると解析できない**（`` `<dl>${rows.map((r) => `<div>${r}</div>`).join("")}</dl>` `` の形）。

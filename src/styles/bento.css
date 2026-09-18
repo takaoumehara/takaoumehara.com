@@ -193,6 +193,11 @@ html.lang-jp .bento-h { font-family: var(--pr-ff-jp); }
   color: var(--pr-ink);
 }
 .bento-p + .bento-p { margin-top: 0.7em; }
+/* A full-bleed cell is as wide as the window. Its picture should be; its
+   sentences should not. 68ch is the measure .section-lede already uses
+   (src/styles/site.css), so prose reads the same width wherever it sits. */
+.bento-cell[data-w="12"] .bento-p,
+.bento-cell[data-w="12"] .bento-list { max-width: 68ch; }
 .bento-cell[data-tone="ink"] .bento-p { color: rgba(255, 255, 255, 0.86); }
 .bento-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: clamp(14px, 1.05cqw, 17px); line-height: 1.45; }
 .bento-list li { position: relative; padding-left: 1.1em; }
@@ -208,6 +213,7 @@ html.lang-jp .bento-h { font-family: var(--pr-ff-jp); }
 .bento-cell[data-tone="ink"] .bento-figure dd { color: rgba(255, 255, 255, 0.72); }
 
 /* A cell that is one large sentence. */
+h1.bento-statement { max-width: 22ch; }
 .bento-statement {
   margin: 0; flex: 1 1 auto; display: flex; align-items: center;
   font-family: var(--pr-ff-display); font-weight: 400;
@@ -287,3 +293,19 @@ html.lang-jp .bento-statement { font-family: var(--pr-ff-jp); }
   /* A picture keeps its ratio; a cell of words is as tall as its words. */
   .bento-cell[data-kind="media"] { aspect-ratio: var(--w) / var(--h); }
 }
+
+/* ── A filter bar between the opening and the grid ──────────────────────────
+   /now/ is the one page whose cells are a set you can narrow. The bar is a
+   cell of its own, and a hidden cell simply leaves the grid —
+   grid-auto-flow: row dense repacks the rest, so narrowing never leaves a
+   hole. The pills are the same shape as .bento-links a. */
+.bento-filters { flex-flow: row wrap; align-items: center; gap: 8px; }
+.bento-filter {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--sp-3);
+  border: 0; border-radius: var(--r-pill);
+  background: var(--pr-canvas); color: var(--pr-ink);
+  font-family: inherit; font-size: var(--text-body); line-height: 1; cursor: pointer;
+}
+.bento-filter[aria-pressed="true"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.bento-filter:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 3px; }
+.bento-cell.is-hidden { display: none; }

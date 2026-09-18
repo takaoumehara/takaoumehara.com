@@ -86,3 +86,22 @@ test("a converted study no longer keeps a hand-built body around", () => {
     );
   }
 });
+
+test("a case study's slug and a page's name never name the same page", () => {
+  // The pages about the person live in src/bento/pages/ so their names cannot
+  // collide with a slug ("about" is a plausible name for either), and the two
+  // are read through separate globs (src/lib/bento.mjs). This check is what
+  // keeps that true as either set grows.
+  const pagesDir = join(BENTO_DIR, "pages");
+  const pages = existsSync(pagesDir)
+    ? readdirSync(pagesDir).filter((n) => n.endsWith(".json")).map((n) => n.replace(/\.json$/, ""))
+    : [];
+  for (const name of pages) {
+    assert.equal(slugs.includes(name), false, `${name}: a case study and a page of its own both claim this name`);
+    assert.equal(
+      existsSync(join(ROOT, "src", "fragments", `${name}.html`)),
+      false,
+      `${name}: two sources for one page — delete src/fragments/${name}.* when you convert it`,
+    );
+  }
+});

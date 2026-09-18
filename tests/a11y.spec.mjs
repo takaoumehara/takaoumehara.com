@@ -21,7 +21,10 @@ const PAGES = [
   ["/all/", "Work Archive"],
   ["/now/", "Now"],
   ["/about.html", "About"],
-  ["/contact.html", "Contact"],
+  ["/publications.html", "Writing"],
+  ["/workshop.html", "Workshops"],
+  ["/contact.html", "Work with me"],
+  ["/work-with-me.html", "Work with me, at its other address"],
   ["/projects/koji-fizz.html", "a case study (KOJI FIZZ)"],
   ["/projects/werewolf.html", "a dark case study (Werewolf)"],
   ["/projects/value-frontier.html", "a bento case study (Value Frontier)"],
@@ -40,6 +43,49 @@ for (const [path, name] of PAGES) {
     expect(readable, `${path}\n    ${readable.join("\n    ")}`).toEqual([]);
   });
 }
+
+const PERSON_PAGES = ["/about.html", "/now/", "/publications.html", "/workshop.html", "/contact.html", "/work-with-me.html"];
+
+test("the dark-mode switch reaches every page about the person", async ({ page }) => {
+  // It did not. Each of these was a hand-built page that set --bg on :root,
+  // which design-system.css's html[data-theme="light"] block beat in light mode
+  // and which beat the dark block (it only patches --nav-*) in dark mode — so
+  // About, Writing, Workshops and Work with me stayed on paper whatever the
+  // switch said. They are bento now, on one set of tokens.
+  for (const path of PERSON_PAGES) {
+    await page.goto(path, { waitUntil: "load" });
+    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
+    const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    expect(bg, `${path} ignored the dark-mode switch`).toBe("rgb(0, 0, 0)");
+  }
+});
+
+test("every page about the person opens at the same place, in the same type", async ({ page }) => {
+  // The complaint this answers: "なんかこれそれぞれフォーマットが違いますよね".
+  const shape = [];
+  for (const path of PERSON_PAGES) {
+    await page.goto(path, { waitUntil: "load" });
+    await page.evaluate(() => document.fonts.ready);
+    shape.push([
+      path,
+      await page.evaluate(() => {
+        const h1 = document.querySelector("h1");
+        const box = h1.getBoundingClientRect();
+        const style = getComputedStyle(h1);
+        return {
+          top: Math.round(document.querySelector(".bento-doc > .bento-wrap").getBoundingClientRect().top),
+          left: Math.round(box.left),
+          size: style.fontSize,
+          weight: style.fontWeight,
+        };
+      }),
+    ]);
+  }
+  const first = JSON.stringify(shape[0][1]);
+  for (const [path, box] of shape) {
+    expect(JSON.stringify(box), `${path} starts somewhere else than ${shape[0][0]}`).toBe(first);
+  }
+});
 
 test("the Japanese switch changes the document language, not only the visible text", async ({ page }) => {
   // Half this site is Japanese behind a toggle. If <html lang> stays "en", a

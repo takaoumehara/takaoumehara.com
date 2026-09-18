@@ -74,7 +74,7 @@ test("Workshops page is centered around Break Bias with 4 use cases and studio r
   const html = read("workshop.html");
 
   // H1
-  assert.match(html, /<h1 class="hero-title">[\s\S]*?Break Bias[\s\S]*?<\/h1>/);
+  assert.match(html, /<h1 class="bento-statement">[\s\S]*?Break Bias[\s\S]*?<\/h1>/);
 
   // Four use cases
   assert.match(html, /For New Ventures/);
@@ -114,15 +114,22 @@ test("Interactive category page visible title is Interactive & Playable", () => 
   assert.match(html, /Interactive &amp; Playable/);
 });
 
-test("workshop.html and publications.html are warm paper light mode and not dark mode", () => {
-  const ws = read("workshop.html");
-  const pub = read("publications.html");
-
-  assert.match(ws, /--bg:\s*#f3f2ee/);
-  assert.ok(!ws.includes("--bg: #0c0d0e"));
-
-  assert.match(pub, /--bg:\s*#f3f2ee/);
-  assert.ok(!pub.includes("--bg: #0c0d0e"));
+test("no page about the person carries a stylesheet or a :root of its own", () => {
+  // This check used to demand a paper colour of each page's own :root. That was
+  // exactly the bug: each hand-built page set --bg on :root (0-1-0), which
+  // design-system.css's html[data-theme="light"] (0-1-1) beat in light mode and
+  // which beat the dark block in dark mode — so four of these pages ignored the
+  // theme switch entirely. The pages are bento now (src/components/BentoDoc.astro):
+  // no page CSS, no design-system.css, one set of tokens, so the switch works.
+  for (const page of ["about.html", "publications.html", "workshop.html", "contact.html", "work-with-me.html", "now/index.html"]) {
+    const html = read(page);
+    assert.ok(!html.includes("design-system.css"), `${page} must not load design-system.css`);
+    assert.ok(!/--bg:\s*#/.test(html), `${page} must not redefine --bg`);
+    assert.ok(!/:root\s*\{/.test(html), `${page} must not carry a :root of its own`);
+    assert.ok(!/@font-face/.test(html), `${page} must not declare its own fonts`);
+    assert.ok(!/--col:/.test(html), `${page} must not set its own column width`);
+    assert.match(html, /<div class="bento-doc">/, `${page} must be drawn as a bento`);
+  }
 });
 
 test("Resona emphasis is Creative technology and never Web animation", () => {
@@ -135,14 +142,22 @@ test("Resona emphasis is Creative technology and never Web animation", () => {
   assert.ok(!lens.includes("ウェブアニメーション · 公開中"));
 });
 
-test("contact.html and work-with-me.html share the site's column and gutter", () => {
+test("contact.html and work-with-me.html are the same page, at two addresses", () => {
+  // The two hand-built fragments were byte-identical apart from one link and
+  // their <title>; they share one layout now (src/pages/work-with-me.astro).
   const contact = read("contact.html");
   const workWithMe = read("work-with-me.html");
 
-  for (const html of [contact, workWithMe]) {
-    assert.match(html, /--gutter:\s*clamp\(20px,\s*3vw,\s*36px\)/);
-    assert.match(html, /--col:\s*1200px/);
-  }
+  const body = (html) => html.slice(html.indexOf('<div class="bento-doc">'));
+  const extra = /Hiring\? Paste your posting and see my work arranged for it →/;
+
+  assert.match(workWithMe, extra, "work-with-me keeps its line for people hiring");
+  assert.ok(!extra.test(contact), "contact does not carry that line");
+  assert.equal(
+    body(contact),
+    body(workWithMe).replace(/<a href="\/try\/"[^>]*>(?:(?!<\/a>).)*<\/a>/s, ""),
+    "the two pages are otherwise the same bento",
+  );
 });
 
 test("Homepage headline leads with concrete high-business-value executive capability statement", () => {
