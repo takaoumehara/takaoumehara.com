@@ -28,7 +28,12 @@ test("/now cards display Why it exists and What's next", () => {
 
 test("/now marks Now as the current page in the sidebar", () => {
   const html = read("now/index.html");
-  assert.match(html, /<a href="\/now\/"[^>]*aria-current="page"[^>]*><span class="t-en">Now<\/span>/, "the Now link must be aria-current");
+  // Now is a card row in the rail's "The person" group, like every other link.
+  assert.match(
+    html,
+    /<a class="side-item side-item--page" href="\/now\/"[^>]*aria-current="page"/,
+    "the Now row must be aria-current",
+  );
 });
 
 test("work-with-me.html exists and features Good Fit guidelines and Studio bridge", () => {

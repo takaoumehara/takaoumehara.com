@@ -94,7 +94,29 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
     a11y の pin「4.5:1 未満の文字色を使わない」を優先。`#007aff` そのものは文字を持たない塗り（トグルのトラック）にだけ使う（`--pr-blue-fill`）。
   - **ダークモード**あり（サイドバーのスイッチ、`localStorage "tu-theme"`、`html[data-theme]`）。
     `theme: "dark"` のケーススタディ（Interactive の 8 本）は `data-theme-lock` で常に暗く、スイッチは無効表示。
-- **サイドバー**（2026-09-17 改訂）: 幅 `clamp(320px, 25vw, 420px)`。上から
+- **レールの現在地と全体像**（2026-09-18、本人「とにかく見失わないような設計が欲しい」）:
+  - **ロゴは左上**。`Takao Umehara` ＋小さく `梅原タカオ`（`profile.jpName`）。ブロック全体が `/` への 1 つのリンク。
+    中央揃えの大きなワードマークは廃止。Creativity Is Everywhere はスタジオの別サイトなのでロゴに入れない。
+  - **`Show all projects` はチップ列の `All work` に**。その隣に 5 カテゴリのチップ（件数付き）。
+    押すとレール内をその `<details>` までスクロールして開く。常設なので毎回・キーボードでも効く。
+  - **初回訪問だけ 5 群を 90ms ずらして開く**（`localStorage "tu-rail-seen"`、件数はカウントアップ）。
+    `prefers-reduced-motion` では最初から全開。**演出に opacity を使わない** — 半透明の行の上の文字を
+    axe が contrast 違反として拾う（実際に断続的に落ちた）。動かすのは `transform` だけ。
+  - **現在地は反転**（`--pr-ink` の塗り＋`--pr-canvas` の文字）。青い文字は 45 行の中で見つからない。
+  - **現在行へ必ずスクロールする**。これは見た目ではなく実装のバグだった: 追従処理が `bindSidebar()` の中で
+    初回 1 回しか走らず、さらに `astro:after-swap` が**遷移前の位置を復元して**打ち消していた。
+    今は `revealCurrent()` を `astro:page-load` から毎回呼び、位置の復元は**現在行が変わらないときだけ**行う。
+    Web フォントが後から届いてレールの高さが 1.5 倍になるので、`document.fonts.ready` でもう一度測り直す。
+  - **人のページはカード行**。レール最上部の `The person` 群に About / Now / Writing / Workshops /
+    Work with me / Studio ↗ を、作品行と同じ `.side-item` 形で（写真の代わりに 1 文字のグリフ）。
+    「ラベルがリンク」の About カードは廃止 — クリッカブルだと気づかれなかった。
+- **カテゴリは 1 作品 1 か所**（2026-09-18）: `verizon-ai-workflow` が `ai-products` と `work` の両方にあり、
+  レールに同じカードが 2 回出て、件数がどこも合っていなかった。**本籍は `ai-products`**（レコードの
+  `chapter` が `ai-ventures`）。`src/validate.mjs` の `validateAll` がカテゴリ横断の重複でビルドを落とす。
+  `/all/` のフィルタは `src/lib/archive.mjs` の手写し slug 一覧をやめ、**`src/categories/*.json` から導出**する
+  （手写しのせいで `/all/` の AI Products が 6、レールが 5 だった。差は `breakbias` — どのカテゴリにも
+  入っていなかったので `ai-products.json` に入れた）。`tests/rail-wayfinding.test.mjs` が件数の一致を見る。
+- **サイドバー**（2026-09-17 改訂、2026-09-18 に上書き — 上の pin が正）: 幅 `clamp(320px, 25vw, 420px)`。上から
   「Show all projects」ピル（→ `/all/`）＋ダークモードのトグル＋言語ボタン（JP/EN を交互に）、
   ワードマーク（大文字・23px）＋ニューヨーク時刻の時計、About カード（`positioning[1]` と
   Now / Writing / Workshops / Work with me / Studio のリンク行）、カテゴリごとの作品行

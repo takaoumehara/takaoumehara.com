@@ -104,12 +104,100 @@ function bindSidebar() {
       toggle.setAttribute("aria-expanded", String(open));
     });
   }
-  // The first paint: bring the current row into view without scrolling the page.
+  // The chips: jump to a category's rows, opening the fold if it is closed.
+  side.addEventListener("click", (event) => {
+    const chip = event.target.closest(".side-chip[data-jump]");
+    if (!chip) return;
+    const group = side.querySelector(`.side-group[data-group="${chip.dataset.jump}"]`);
+    if (!group) return;
+    group.open = true;
+    scrollRailTo(side, group, group.offsetTop === 0 ? "center" : "top");
+  });
+}
+
+/** How the rail scrolls: instantly for a reader who asked for no motion. */
+const railBehavior = () => (window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth");
+
+function scrollRailTo(side, el, place) {
+  const top = el.getBoundingClientRect().top - side.getBoundingClientRect().top + side.scrollTop;
+  const target = place === "center" ? top - side.clientHeight / 2 + el.offsetHeight / 2 : top - 12;
+  side.scrollTo({ top: Math.max(0, target), behavior: railBehavior() });
+}
+
+/**
+ * Put the row you are on where you can see it — on the first paint and after
+ * every client-side navigation.
+ *
+ * This used to run once, from bindSidebar(), while astro:after-swap restored
+ * the rail's previous scroll position. The two fought each other and the
+ * previous position won, so after a click the rail sat wherever it had been
+ * and the current row was often far off screen. Now the restore only applies
+ * when the current row has not moved (see below), and this runs every time.
+ */
+function revealCurrent() {
+  const side = document.getElementById("side");
+  if (!side || !window.matchMedia("(min-width: 901px)").matches) return;
   const current = side.querySelector('.side-item[aria-current="page"]');
-  if (current && window.matchMedia("(min-width: 901px)").matches) {
-    const top = current.getBoundingClientRect().top - side.getBoundingClientRect().top + side.scrollTop;
-    side.scrollTop = Math.max(0, top - side.clientHeight / 2);
-  }
+  if (!current) return;
+  current.closest("details")?.setAttribute("open", "");
+  // Already comfortably in view: leave it alone rather than jog the rail.
+  const box = current.getBoundingClientRect();
+  const rail = side.getBoundingClientRect();
+  if (box.top >= rail.top + 8 && box.bottom <= rail.bottom - 8) return;
+  scrollRailTo(side, current, "center");
+  settleThenReveal();
+}
+
+// The web fonts land after the first paint and re-wrap 45 rows of names and
+// one-liners — the rail grew by half its height in testing, which moved the
+// row we had just scrolled to. Measure again once the fonts are in.
+let settling = false;
+function settleThenReveal() {
+  if (settling || !document.fonts || document.fonts.status === "loaded") return;
+  settling = true;
+  document.fonts.ready.then(() => {
+    settling = false;
+    requestAnimationFrame(revealCurrent);
+  });
+}
+
+/**
+ * The first visit only: open the five categories one after another, so the
+ * size of the work registers without anyone having to unfold it by hand.
+ * After that the rail is simply open. A reader who asked for no motion gets
+ * the open rail with no stagger.
+ */
+function revealRailOnce() {
+  const side = document.getElementById("side");
+  if (!side || store.get("tu-rail-seen")) return;
+  store.set("tu-rail-seen", "1");
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  const groups = [...side.querySelectorAll(".side-group[data-group]:not([data-group='person'])")];
+  if (!groups.length) return;
+  groups.forEach((group) => { group.open = false; });
+  groups.forEach((group, i) => {
+    setTimeout(() => {
+      group.open = true;
+      group.classList.add("is-revealing");
+      countUp(group.querySelector(".side-count[data-count]"));
+      setTimeout(() => group.classList.remove("is-revealing"), 400);
+      if (i === groups.length - 1) revealCurrent();
+    }, 90 + i * 90);
+  });
+}
+
+/** A count climbing to its real number. Nothing is invented — it ends on data-count. */
+function countUp(el) {
+  if (!el) return;
+  const end = Number(el.dataset.count);
+  if (!Number.isFinite(end) || end <= 0) return;
+  let n = 0;
+  const step = () => {
+    n += Math.max(1, Math.round(end / 8));
+    el.textContent = String(Math.min(n, end));
+    if (n < end) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
 }
 function closePhoneMenu() {
   const side = document.getElementById("side");
@@ -202,8 +290,10 @@ function onPageLoad() {
   applyTheme();
   bindControls();
   bindSidebar();
+  revealRailOnce();
   cutBentoGrids();
   markCurrent();
+  revealCurrent();
   closePhoneMenu();
   startClock();
   bindCards();
@@ -217,8 +307,24 @@ function onPageLoad() {
 }
 document.addEventListener("astro:page-load", onPageLoad);
 
-// The rail is persisted, but moving it into the new document resets its
-// scroll position; carry it across the swap.
+// The rail is persisted, but moving it into the new document resets its scroll
+// position, so it is carried across the swap — EXCEPT when the page you landed
+// on is a different row. Then restoring the old position would put the rail
+// back where you came from and hide where you now are; revealCurrent() takes
+// over instead (onPageLoad, which runs after the swap).
 let sideScroll = 0;
-document.addEventListener("astro:before-swap", () => { sideScroll = document.getElementById("side")?.scrollTop ?? 0; });
-document.addEventListener("astro:after-swap", () => { const side = document.getElementById("side"); if (side) side.scrollTop = sideScroll; });
+let sideCurrent = null;
+const currentHref = () => document.querySelector('#side .side-item[aria-current="page"]')?.getAttribute("href") ?? null;
+document.addEventListener("astro:before-swap", () => {
+  const side = document.getElementById("side");
+  sideScroll = side?.scrollTop ?? 0;
+  sideCurrent = currentHref();
+});
+document.addEventListener("astro:after-swap", () => {
+  const side = document.getElementById("side");
+  if (!side) return;
+  // markCurrent() has not run yet at this point, so compare against the path.
+  const here = normalize(location.pathname);
+  const stillHere = sideCurrent !== null && normalize(sideCurrent) === here;
+  if (stillHere) side.scrollTop = sideScroll;
+});

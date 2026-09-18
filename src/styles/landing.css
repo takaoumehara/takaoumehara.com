@@ -16,6 +16,8 @@ html.lang-jp .landing { font-family: var(--pr-ff-jp); }
   display: grid;
   gap: clamp(16px, 2.4vw, 36px);
 }
+/* The title belongs to the name, not to the claim below it. */
+.landing-name + .landing-role { margin-top: clamp(-28px, -1.8vw, -10px); }
 
 /* Theme and language, out of the way at the top right. */
 .landing-ctl {
@@ -31,6 +33,16 @@ html.lang-jp .landing { font-family: var(--pr-ff-jp); }
   letter-spacing: -0.015em;
   text-transform: uppercase;
 }
+/* The job title, between the name and the claim. profile.tagline — the same
+   string the About page's kicker carries, so the two pages agree. */
+.landing-role {
+  margin: 0;
+  font-size: clamp(14px, 1.3vw, 20px);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: var(--pr-ink-2);
+}
+
 .landing-line {
   margin: 0;
   max-width: 22ch;

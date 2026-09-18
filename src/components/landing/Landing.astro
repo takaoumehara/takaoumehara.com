@@ -29,6 +29,7 @@ const WAYS = [
       <button class="side-lang" id="lang-cycle" type="button" aria-label="Switch to Japanese">JP</button>
     </div>
     <p class="landing-name">{profile.name}</p>
+    <p class="landing-role" set:html={t(profile.tagline)} />
     <h1 class="landing-line" set:html={tb(profile.positioning[1])} />
     <nav class="landing-ways" aria-label="Enter the site">
       {WAYS.map((way) => (

@@ -130,3 +130,50 @@ Q3 Ink & Paper のまま。覆すなら `Sidebar.astro` と `shell.css`。
 - 画像の切り取りはまだ `object-fit` 任せ。`fit: "contain"` / `focus` で個別に逃がしてあるが、
   本当に作り直したほうがいい素材（ELA Quests のスクリーンショット群）は残っている。
 - Vercel 上での見え方は未確認（この環境から Preview を開けない）。本人が見る。
+
+## 第 4 段: 迷子をなくす（2026-09-18、本人が Preview を触っての 8 点）
+
+本人の指摘のうち **3 つは見た目ではなく実装のバグ**だった。
+
+| 何 | どこ |
+|---|---|
+| ロゴブロック（`Takao Umehara` ＋ 梅原タカオ、全体が `/` へ） | `src/components/Sidebar.astro` の `.side-logo`、`profile.jpName` を追加 |
+| カテゴリチップ列（`All work 45` ＋ 5 カテゴリ、押すとその群へ） | `Sidebar.astro` の `.side-chips`、ジャンプは `site.js` の `bindSidebar()` の委譲リスナー |
+| 初回だけ 5 群を 90ms ずらして開く | `site.js` の `revealRailOnce()`、`localStorage "tu-rail-seen"` |
+| 現在行の反転 | `shell.css` の `.side-item[aria-current="page"]` |
+| 現在行への追従 | `site.js` の `revealCurrent()` / `scrollRailTo()` / `settleThenReveal()` |
+| 人のページをカード行に | `Sidebar.astro` の `PAGES` ＋ `.side-item--page` / `.side-thumb--glyph` |
+| 名前の下の肩書き | `Landing.astro` の `.landing-role`（`profile.tagline`。新しい文章ではない） |
+| カテゴリ重複と件数 | `src/categories/{work,ai-products}.json`、`src/lib/archive.mjs`（導出に変更）、`src/validate.mjs` |
+| ELA Quests の Contraption live link | `src/bento/ela-quests.json` |
+
+### 直したバグ（次に触る人へ）
+
+1. **追従とスクロール復元が打ち消し合っていた。** 追従は `bindSidebar()` の中で初回 1 回だけ走り、
+   `astro:after-swap` が遷移前の位置を復元していた。今は `revealCurrent()` を `astro:page-load` から
+   毎回呼び、復元は**現在行が変わらないときだけ**。
+2. **Web フォントが後から届いてレールが 1.5 倍に伸びる**（3579 → 5387px）。最初のスクロール先が
+   ずれるので `document.fonts.ready` で測り直す（`settleThenReveal()`）。
+3. **出現アニメの `opacity` が axe の contrast 違反を起こす。** 半透明の行に乗った文字を拾う。
+   断続的に 3〜7 本落ちていた原因がこれ。`transform` だけで動かす。
+4. **`verizon-ai-workflow` が 2 カテゴリにいた** → レール 45 行／44 プロジェクト、`/all/` の分野合計が
+   総数＋1。本籍は `ai-products`（`chapter: ai-ventures`）。`validateAll` が横断重複で落とすようにした。
+5. **`/all/` のフィルタが手写しの slug 一覧だった** → カテゴリ JSON を直しても追従せず、
+   AI Products が `/all/` 6・レール 5。`src/categories/*.json` から導出に変更。差だった `breakbias` は
+   どのカテゴリにも入っていなかったので `ai-products.json` に入れた。
+
+テスト: `npm test` 144/144、`npm run test:e2e` 58/58。
+新規 `tests/rail-wayfinding.test.mjs` が「1 作品 1 カテゴリ」「レールに同じカードが 2 回出ない」
+「チップの合計＝総数」「`/all/` の分野合計＝総数」「`/` を指すのはロゴだけ」を見る。
+`tests/a11y.spec.mjs` に「クリックすると現在行が視界に入って反転する」「チップがキーボードで効く」を追加。
+
+### 残り
+
+- **PR-B: 人のページ 5 枚をベントーに乗せる。** 計画は `/root/.claude/plans/indexed-yawning-rose.md`（このセッション限り）。
+  要点: 7 枚とも `FragmentPage` の素通しで旧 CSS を抱えている（`--col` が 1200/1140/1120、本文開始が 48〜110px、
+  H1 が 700/800）。**About / Writing / Workshops / Work with me / BreakBias はダークモードを無視する**
+  （`design-system.css` に `[data-theme="dark"]` の `--bg`/`--ink` が無い）。contact ≒ work-with-me、
+  breakbias ⊂ workshop なので 7 → 4 枚に畳める。ベントーを開くには `src/lib/bento.mjs` の hero 必須を
+  `kind: "statement"` でも通す・`BentoPage` の `ProjectStrip` を任意にする・`src/bento/pages/` を別 glob にする。
+- ベントー本文の日本語化（規模は第 3 段の節に記載）。
+- 残り 39 本のケーススタディのベントー化。

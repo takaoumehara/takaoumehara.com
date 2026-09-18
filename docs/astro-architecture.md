@@ -111,6 +111,16 @@ tests/                       dist（.vercel/output/static）を検査
 - **手書きページの末尾 `<script>` は、ページ固有の IIFE と共通ボイラープレート（言語切替・モバイル nav）が 1 つの `<script>` に融合していることがある**（werewolf.html のカードデッキ）。`scripts/extract-page.mjs` はトップレベルの `})();` で分割し、ボイラープレート部分だけ捨てる。main 側で手書きページが更新されたら、そのファイルを `projects/` に置いて抽出し直す（ROOT_PAGES を空にしたコピーで 1 件だけ回せる）。
 - 抽出し直した本文に `data-vt-hero` が無いと `tests/page-transitions.test.mjs` が落ちる。ヒーローの media 要素に付け直す。
 
+- **レールの落とし穴**（2026-09-18）:
+  - 現在行への追従と `astro:after-swap` のスクロール位置復元は**互いを打ち消す**。復元は
+    「現在行が変わっていないとき」だけにする。変わったときは `revealCurrent()` に任せる。
+  - Web フォントは初回描画の後に届き、45 行の名前と 1 行説明を折り返し直す。テストでは
+    レールの `scrollHeight` が 3579 → 5387 に伸びた。スクロール先は `document.fonts.ready` で測り直す。
+  - `scrollIntoView()` は**使えない**。スクロール可能な祖先を全部動かすのでページごと動く。
+    レールの中だけを動かすには `side.scrollTo()` に手で計算した位置を渡す。
+  - 出現アニメーションに `opacity` を使わない。半透明の行に乗った文字を axe が contrast 違反として拾う。
+    `transform` だけで動かす。
+
 - **ベントーの落とし穴**（2026-09-17、`docs/bento-layout.md` の実装メモ）:
   - `grid-auto-rows: minmax(len, auto)` の軌道は**確定していない**ので、セルの子の `height: 100%` は解決しない
     （動画がセルを埋めず、キャプションだけ下に残る、が実際に起きた）。**写真と動画はセルに対して

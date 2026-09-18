@@ -71,9 +71,10 @@ test("every card that opens something can be reached and opened from the keyboar
 test("the sidebar lists every section of the work open, marks the current row, and opens on a phone from a button", async ({ page }, testInfo) => {
   await page.goto("/projects/koji-fizz.html", { waitUntil: "load" });
   const side = page.locator("#side");
+  // Six folds: the person, then the five categories.
   const groups = side.locator("details.side-group");
-  await expect(groups).toHaveCount(5);
-  await expect(side.locator("details.side-group[open]")).toHaveCount(5);
+  await expect(groups).toHaveCount(6);
+  await expect(side.locator("details.side-group[open]")).toHaveCount(6);
   await expect(side.locator('.side-item[aria-current="page"]')).toHaveCount(1);
   if (testInfo.project.name === "phone") {
     const panel = page.locator("#side-panel");
@@ -90,6 +91,57 @@ test("the sidebar lists every section of the work open, marks the current row, a
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, "horizontal overflow").toBeLessThanOrEqual(0);
   }
+});
+
+test("clicking a card brings the rail in, turns its row over, and scrolls to it", async ({ page }, testInfo) => {
+  // The whole point of the rail: never lose where you are. This used to fail
+  // twice over — the row was a blue word, and astro:after-swap restored the
+  // rail's OLD scroll position, so the new row was usually off screen.
+  test.skip(testInfo.project.name === "phone", "the rail is a fold-out menu on a phone");
+  await page.goto("/", { waitUntil: "load" });
+  await expect(page.locator("#side")).toHaveCount(0);
+
+  await page.locator('#work-bento [data-href="/projects/koji-fizz.html"]').first().click();
+  await page.waitForURL("**/koji-fizz.html");
+  const current = page.locator('#side .side-item[aria-current="page"]');
+  await expect(current).toHaveCount(1);
+  await expect(current).toBeInViewport();
+
+  // Turned over, not tinted: the row's fill is the ink colour.
+  const inverted = await current.evaluate((el) => {
+    const row = getComputedStyle(el).backgroundColor;
+    const rail = getComputedStyle(document.getElementById("side")).backgroundColor;
+    return row !== rail && row !== "rgba(0, 0, 0, 0)";
+  });
+  expect(inverted, "the current row must read as inverted").toBe(true);
+
+  // Somewhere else entirely in the list, and it follows.
+  await page.locator('#side .side-item[href="/projects/resona.html"], #side .side-item[href="/projects/xq.html"]').first().click();
+  await page.waitForTimeout(1500);
+  await expect(page.locator('#side .side-item[aria-current="page"]')).toHaveCount(1);
+  await expect(page.locator('#side .side-item[aria-current="page"]')).toBeInViewport();
+});
+
+test("the chips say how much work there is, and jump to it from the keyboard", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "phone", "the rail is a fold-out menu on a phone");
+  await page.goto("/about.html", { waitUntil: "load" });
+  const chips = page.locator("#side-chips .side-chip");
+  await expect(chips).toHaveCount(6); // All work + five categories
+  // On a first visit the five folds open one after another; let the rail reach
+  // its full height before measuring, or the jump has nowhere to go yet.
+  await expect(page.locator("#side details.side-group[open]")).toHaveCount(6);
+  await page.waitForFunction(() => {
+    const side = document.getElementById("side");
+    return side.scrollHeight > side.clientHeight * 3;
+  });
+  const before = await page.evaluate(() => document.getElementById("side").scrollTop);
+  const brand = page.locator('.side-chip[data-jump="brand"]');
+  await brand.focus();
+  await expect(brand).toBeFocused();
+  await brand.press("Enter");
+  await page.waitForTimeout(900);
+  const after = await page.evaluate(() => document.getElementById("side").scrollTop);
+  expect(after, "the chip should move the rail to its group").not.toBe(before);
 });
 
 test("the preview clips do not play for a reader who asked for reduced motion", async ({ browser }) => {

@@ -1,46 +1,44 @@
-// The discipline tags behind the /work archive's filter bar. Ported from
-// src/render/archive.mjs so WorkArchive.astro and a test can both import
-// getFilterTags without duplicating the slug lists.
+// The discipline tags behind the /all archive's filter bar.
 //
-// A project can carry several tags (e.g. an AI product that is also playable);
-// "all" is implicit on every item so the "All" filter never has to special-case it.
-const PRODUCT_SLUGS = new Set([
-  "verizon-ai-workflow", "verizon-totalwireless", "tmobile", "cli-studios",
-  "web3-wallet", "credit-card-portal", "hummingbird", "ux-audit",
-  "ela-quests", "menlomath", "vocab-app", "edutrack", "carnegie",
-]);
+// These used to be five hand-written Sets of slugs — a copy of
+// src/categories/*.json that nothing kept in sync. It drifted: /all/ counted
+// six AI Products while the rail counted five, because `breakbias` was in the
+// copy and in no category file. The tags are now DERIVED from the category
+// files, so a project's discipline is stated in exactly one place.
+//
+// A project can still carry several tags; "all" is implicit on every item so
+// the "All" filter never has to special-case it.
 
-const AI_PRODUCT_SLUGS = new Set([
-  "intentfirst", "mybrainspec", "moime", "verizon-ai-workflow", "amazon-firetv", "breakbias",
-]);
+/** A category slug is the same idea as a filter id, except "work" reads as "product" on this bar. */
+const FILTER_FOR_CATEGORY = {
+  interactive: "interactive",
+  "ai-products": "ai-products",
+  "ai-tools": "ai-tools",
+  work: "product",
+  brand: "brand",
+};
 
-const AI_TOOL_SLUGS = new Set([
-  "superforge", "snap-pair", "interactive-experience-skills", "intuitive-game-design",
-  "cross-model-handoff", "failforward", "multilingual-readme",
-]);
+/**
+ * slug → Set of filter ids, built once from the category files.
+ * Pass the same `categories` array the pages use (src/lib/site.mjs's
+ * getCategories(), or loadCategories() in Node).
+ */
+export function filterIndex(categories) {
+  const index = new Map();
+  for (const category of categories) {
+    const filter = FILTER_FOR_CATEGORY[category.slug];
+    if (!filter) continue;
+    for (const id of (category.groups ?? []).flatMap((g) => g.items ?? [])) {
+      if (!index.has(id)) index.set(id, new Set());
+      index.get(id).add(filter);
+    }
+  }
+  return index;
+}
 
-const INTERACTIVE_SLUGS = new Set([
-  "resona", "kao-game", "rakugaki-jam", "typespace", "koe-baku",
-  "emoji-blast", "marubatsu", "werewolf",
-]);
-
-const BRAND_SLUGS = new Set([
-  "coca-cola", "value-frontier", "odell-education", "konosaki", "dnt",
-  "kitadoko", "festival-reinvention", "xq", "extraordinary", "koji-fizz",
-  "graffitiwear", "skateboard-egift",
-]);
-
-export function getFilterTags(item) {
-  const tags = new Set(["all"]);
-  const slug = item.slug;
-
-  if (PRODUCT_SLUGS.has(slug)) tags.add("product");
-  if (AI_PRODUCT_SLUGS.has(slug)) tags.add("ai-products");
-  if (AI_TOOL_SLUGS.has(slug)) tags.add("ai-tools");
-  if (INTERACTIVE_SLUGS.has(slug)) tags.add("interactive");
-  if (BRAND_SLUGS.has(slug)) tags.add("brand");
-
-  return [...tags];
+/** The filter ids one item answers to. `index` comes from filterIndex(categories). */
+export function getFilterTags(item, index) {
+  return ["all", ...(index.get(item.slug) ?? [])];
 }
 
 export const FILTERS = [
