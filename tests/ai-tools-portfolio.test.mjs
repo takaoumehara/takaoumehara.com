@@ -5,6 +5,9 @@ const mainPages = [
   'index.html', 'work.html', 'brand.html', 'ai-tools.html', 'ai-products.html', 'interactive.html',
   'about.html', 'contact.html', 'breakbias.html', 'intentfirst.html', '404.html',
 ];
+// The landing page deliberately has no rail: it is the name, the sentence and
+// the work, and the rail arrives on the first click (src/pages/index.astro).
+const railPages = mainPages.filter((page) => page !== 'index.html');
 
 const escape = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const classSelector = (name) =>
@@ -60,19 +63,20 @@ function sidebar(html, page) {
   assert.ok(side, `${page}: missing sidebar`);
   return side;
 }
+/** The pages about the person: card rows in the rail's first fold. */
 function pageLinks(html, page) {
-  const nav = sidebar(html, page).match(/<nav class="side-pages"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
-  assert.ok(nav, `${page}: missing the page links`);
+  const group = sidebar(html, page).match(/<details class="side-group side-group--person" data-group="person"[\s\S]*?<\/details>/i)?.[0];
+  assert.ok(group, `${page}: missing the person group`);
   // Labels are bilingual span pairs; the English one is the label.
   const label = (inner) => (inner.match(/<span class="t-en">([\s\S]*?)<\/span>/)?.[1] ?? inner).replace(/<[^>]+>/g, '').trim();
-  return [...nav.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)].map((match) => ({
+  return [...group.matchAll(/<a class="side-item side-item--page"[^>]*>([\s\S]*?)<\/a>/gi)].map((match) => ({
     href: attr(match[0], 'href'), label: label(match[1]), tag: match[0],
   }));
 }
 function workGroups(html, page) {
   const nav = sidebar(html, page).match(/<nav class="side-work"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
   assert.ok(nav, `${page}: missing the work groups`);
-  return [...nav.matchAll(/<details class="side-group"( open)?>\s*<summary>\s*<span>([\s\S]*?)<\/span>/gi)].map((match) => ({
+  return [...nav.matchAll(/<details class="side-group" data-group="[^"]+"( open)?>\s*<summary>\s*<span>([\s\S]*?)<\/span>/gi)].map((match) => ({
     open: Boolean(match[1]), label: match[2].replace(/<[^>]+>/g, '').trim(),
   }));
 }
@@ -85,28 +89,44 @@ function workGroups(html, page) {
 // in it). Only the page you are on is marked — with aria-current, not with a
 // colour someone has to infer.
 test('every page carries the same sidebar: the pages in order, the five sections in order', () => {
+  // The About page is a row like the rest now — its label used to be the
+  // heading of a grey card, which nobody read as a link.
   const expectedPages = [
+    [ '/about.html', 'About' ],
     [ '/now/', 'Now' ],
     [ '/publications.html', 'Writing' ],
     [ '/workshop.html', 'Workshops' ],
     [ '/contact.html', 'Work with me' ],
-    [ 'https://creativityiseverywhere.com', 'Studio ↗' ],
+    [ 'https://creativityiseverywhere.com', 'Studio' ],
   ];
   const expectedGroups = [ 'Interactive &amp; Playable', 'AI Products &amp; Systems', 'AI Tools', 'Product &amp; Experience Design', 'Brand &amp; Creative' ];
-  for (const page of mainPages) {
+  for (const page of railPages) {
     const html = read(page);
     assert.deepEqual(pageLinks(html, page).map(({ href, label }) => [href, label]), expectedPages, `${page}: page links`);
     assert.deepEqual(workGroups(html, page).map((g) => g.label), expectedGroups, `${page}: work groups`);
-    assert.match(sidebar(html, page), /<a class="side-all" href="\/all\/"/, `${page}: the "Show all projects" link`);
-    assert.match(sidebar(html, page), /<a class="side-label" href="\/about\.html"/, `${page}: the About card links to the About page`);
+    // The logo is the way home, at the top left where a logo belongs.
+    assert.match(sidebar(html, page), /<a class="side-logo" href="\/"[^>]*aria-label="Takao Umehara — home"/, `${page}: the logo goes home`);
+    assert.match(sidebar(html, page), /<span class="side-logo-jp">梅原タカオ<\/span>/, `${page}: the logo carries the Japanese name`);
+    // "Show all projects" became the first chip, with the real total on it.
+    assert.match(sidebar(html, page), /<a class="side-chip side-chip--all" href="\/all\/"/, `${page}: the All work chip`);
     assert.match(sidebar(html, page), /<button class="side-theme" id="theme-switch" type="button" role="switch"/, `${page}: the theme switch`);
     assert.match(sidebar(html, page), /<button class="side-lang" id="lang-cycle" type="button"/, `${page}: the language button`);
     assert.match(sidebar(html, page), /<button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">/, `${page}: the phone menu button`);
   }
 });
 
+test('the landing page carries no rail, and offers the way into the one that has it', () => {
+  const html = read('index.html');
+  assert.equal(/<aside[^>]*class="side"/.test(html), false, 'index.html must not carry the rail');
+  assert.match(html, /<a href="\/all\/" class="is-primary"/, 'index.html needs the way through to /all/');
+  // Theme and language still have to be reachable without the rail.
+  assert.match(html, /<button class="side-theme" id="theme-switch" type="button" role="switch"/);
+  assert.match(html, /<button class="side-lang" id="lang-cycle" type="button"/);
+});
+
 test('each page marks itself current in the sidebar, and only itself', () => {
   const currentByPage = {
+    'about.html': '/about.html',
     'now/index.html': '/now/',
     'contact.html': '/contact.html',
   };
@@ -114,13 +134,11 @@ test('each page marks itself current in the sidebar, and only itself', () => {
     const current = pageLinks(read(page), page).filter((item) => attr(item.tag, 'aria-current') === 'page');
     assert.deepEqual(current.map((item) => item.href), [href], `${page}: its own link must be the only aria-current one`);
   }
-  assert.match(sidebar(read('about.html'), 'about'), /<a class="side-label" href="\/about\.html"[^>]*aria-current="page"/, 'about.html: the About card marks itself');
-  assert.equal(pageLinks(read('about.html'), 'about').some((item) => attr(item.tag, 'aria-current') === 'page'), false, 'about.html: no page link is current');
   // Every group is open on every page (the reference lists everything), and
   // a case study marks its own row and nothing else.
   for (const page of ['interactive.html', 'brand.html', 'projects/koji-fizz.html']) {
     const groups = workGroups(read(page), page);
-    assert.equal(groups.length, 5, `${page}: five groups`);
+    assert.equal(groups.length, 5, `${page}: five categories`);
     assert.ok(groups.every((g) => g.open), `${page}: every group open`);
   }
   const koji = read('projects/koji-fizz.html');
@@ -220,7 +238,7 @@ test('no main page carries the stale "Agentic UX" or "AI Tools & Infrastructure"
   for (const page of mainPages) {
     const html = read(page);
     // "Agentic UX" is fine as a capability or thesis label; it must not come back as a category (a sidebar group or section title).
-    const side = sidebar(html, page);
+    const side = page === 'index.html' ? html : sidebar(html, page);
     assert.equal(/>\s*Agentic UX\s*</.test(side), false, `${page}: stale "Agentic UX" sidebar label`);
     assert.equal(/<h2\b[^>]*>\s*(?:<span[^>]*>)?\s*Agentic UX\s*</.test(html), false, `${page}: stale "Agentic UX" section title`);
     assert.equal(/AI Tools\s*&amp;\s*Infrastructure/.test(html), false, `${page}: stale "AI Tools & Infrastructure" label`);

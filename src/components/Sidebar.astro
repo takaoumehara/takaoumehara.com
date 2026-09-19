@@ -1,15 +1,17 @@
 ---
-// The left rail, after PORTO ROCHA: controls (show all projects · theme ·
-// language), the wordmark with a live New York clock, an About card that also
-// carries the pages about the person, then every piece of work grouped by
-// category (src/categories/*.json) as grey rows with a 64px tile.
+// The left rail. Top to bottom: the logo (the one way home), the theme and
+// language controls, the clock, the one-line claim, a row of chips that says
+// how much work there is and jumps to it, then the pages about the person and
+// every piece of work by category — all in one card shape, so nothing has to
+// be guessed at to be clickable.
 //
 // Site.astro persists this element across client-side navigations
 // (transition:persist), so aria-current is computed twice: here for the
 // built HTML and again in src/scripts/site.js after every swap, from the
-// data-match paths each link carries.
-import { getLibrary, orderedCategories, destination, samePage } from "../lib/site.mjs";
-import { t, tb, esc, url } from "../lib/html.mjs";
+// data-match paths each link carries. src/scripts/site.js also owns the
+// chips' jump, the first-visit reveal, and keeping the current row in view.
+import { getLibrary, orderedCategories, destination, outwardLink, samePage } from "../lib/site.mjs";
+import { t, tb, esc, plain, url } from "../lib/html.mjs";
 
 interface Props { current?: string }
 const { current = Astro.url.pathname } = Astro.props;
@@ -18,28 +20,43 @@ const lib = getLibrary();
 const profile = lib.profile;
 const categories = orderedCategories();
 
+// The pages about the person, as rows of the same card. A glyph stands in for
+// a thumbnail — these are pages, not pieces of work, and inventing a picture
+// for each would say less than one letter does.
 const PAGES = [
-  { href: "/now/", label: { en: "Now", jp: "いま" }, match: ["/now/", "/now.html"] },
-  { href: "/publications.html", label: { en: "Writing", jp: "文章" } },
-  { href: "/workshop.html", label: { en: "Workshops", jp: "ワークショップ" }, match: ["/workshop.html", "/breakbias.html"] },
-  { href: "/contact.html", label: { en: "Work with me", jp: "仕事の相談" }, match: ["/contact.html", "/work-with-me.html"] },
-  { href: profile.studio.url, label: "Studio ↗", external: true },
+  { href: "/about.html", glyph: "◍", label: { en: "About", jp: "自己紹介" } },
+  { href: "/now/", glyph: "◉", label: { en: "Now", jp: "いま" }, match: ["/now/", "/now.html"] },
+  { href: "/publications.html", glyph: "¶", label: { en: "Writing", jp: "文章" } },
+  { href: "/workshop.html", glyph: "◳", label: { en: "Workshops", jp: "ワークショップ" }, match: ["/workshop.html", "/breakbias.html"] },
+  { href: "/contact.html", glyph: "✉", label: { en: "Work with me", jp: "仕事の相談" }, match: ["/contact.html", "/work-with-me.html"] },
+  { href: profile.studio.url, glyph: "↗", label: { en: "Studio", jp: "スタジオ" }, external: true },
 ];
 
 const matches = (page) => page.match ?? [page.href];
-const isCurrent = (page) => matches(page).some((p) => samePage(p, current));
+const isCurrent = (page) => !page.external && matches(page).some((p) => samePage(p, current));
 const cur = (hit) => (hit ? "page" : undefined);
 
 const groups = categories.map((category) => {
   const items = category.groups.flatMap((g) => g.items).map((id) => lib.evidence.get(id)).filter(Boolean)
     .map((item) => {
       const to = destination(item);
+      // A piece with nowhere of its own to go falls back to an anchor on its
+      // category page. That anchor is NOT "the page you are standing on": the
+      // hash is stripped when the current row is worked out, so every such row
+      // in a category used to light up at once the moment you opened that
+      // category page — two inverted cards, or more. Only a row with a page of
+      // its own gets data-match.
+      const own = to && !to.external ? to.url : null;
       const href = to ? to.url : `/${category.output}#${item.slug}`;
-      const here = to && !to.external && samePage(to.url, current);
-      return { item, to, href, here };
+      const here = own !== null && samePage(own, current);
+      // The row opens the detail page; the ↗ beside it opens the work itself.
+      // It sits OUTSIDE the row's <a> — a link inside a link is not markup —
+      // so .side-item keeps its selectors, its aria-current and its shape.
+      return { item, to, away: outwardLink(item), own, href, here };
     });
   return { category, items };
 });
+const total = groups.reduce((n, g) => n + g.items.length, 0);
 
 const name = (item) => (item.jpTitle && item.jpTitle !== (item.shortTitle ?? item.title))
   ? t({ en: item.shortTitle ?? item.title, jp: item.jpTitle })
@@ -53,14 +70,17 @@ const thumb = (item) => {
 ---
 <aside class="side" id="side" transition:persist="side">
   <div class="side-top">
-    <a class="side-wordmark" href="/">{profile.name}</a>
+    <a class="side-logo side-logo--bar" href="/" aria-label="Takao Umehara — home">
+      <span class="side-logo-en">{profile.name}</span>
+    </a>
     <button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">Menu</button>
   </div>
 
   <div class="side-panel" id="side-panel">
-    <div class="side-controls">
-      <a class="side-all" href="/all/" data-match="/all/" aria-current={cur(samePage("/all/", current))}>
-        <span class="t-en">Show all projects</span><span class="t-jp">すべてのプロジェクト</span>
+    <div class="side-head">
+      <a class="side-logo" href="/" data-match="/" aria-current={cur(samePage("/", current))} aria-label="Takao Umehara — home">
+        <span class="side-logo-en">{profile.name}</span>
+        <span class="side-logo-jp">{profile.jpName}</span>
       </a>
       <div class="side-ctl">
         <button class="side-theme" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
@@ -68,41 +88,57 @@ const thumb = (item) => {
       </div>
     </div>
 
-    <div class="side-head">
-      <a class="side-wordmark" href="/" data-match="/" aria-current={cur(samePage("/", current))}>{profile.name}</a>
-      <p class="side-clock" id="side-clock" data-zone="America/New_York" data-place-en="New York" data-place-jp="ニューヨーク">
-        <span data-clock-date>&nbsp;</span><span data-clock-time>&nbsp;</span>
-      </p>
-    </div>
+    <p class="side-clock" id="side-clock" data-zone="America/New_York" data-place-en="New York" data-place-jp="ニューヨーク">
+      <span data-clock-date>&nbsp;</span><span data-clock-time>&nbsp;</span>
+    </p>
 
-    <section class="side-about">
-      <a class="side-label" href="/about.html" data-match="/about.html" aria-current={cur(samePage("/about.html", current))}>
-        <span class="t-en">About</span><span class="t-jp">自己紹介</span>
+    <p class="side-lede" set:html={tb(profile.positioning[1])} />
+
+    <nav class="side-chips" id="side-chips" aria-label="How much work there is">
+      <a class="side-chip side-chip--all" href="/all/" data-match="/all/" aria-current={cur(samePage("/all/", current))}>
+        <span class="t-en">All work</span><span class="t-jp">すべて</span>
+        <span class="side-chip-n" data-count={total}>{total}</span>
       </a>
-      <p set:html={tb(profile.positioning[1])} />
-      <nav class="side-pages" aria-label="Pages">
-        {PAGES.map((page) => (
-          <a href={page.href}
-             data-match={page.external ? undefined : matches(page).join(" ")}
-             aria-current={cur(isCurrent(page))}
-             target={page.external ? "_blank" : undefined} rel={page.external ? "noopener" : undefined}
-             set:html={t(page.label)} />
-        ))}
-      </nav>
-    </section>
+      {groups.map(({ category, items }) => (
+        <button class="side-chip" type="button" data-jump={category.slug}>
+          <span set:html={t(category.title)} />
+          <span class="side-chip-n" data-count={items.length}>{items.length}</span>
+        </button>
+      ))}
+    </nav>
 
     <nav class="side-work" aria-label="Work by category">
+      <details class="side-group side-group--person" data-group="person" open>
+        <summary>
+          <span class="t-en">The person</span><span class="t-jp">この人について</span>
+          <span class="side-count">{PAGES.length}</span>
+        </summary>
+        <ul>
+          {PAGES.map((page) => (
+            <li>
+              <a class="side-item side-item--page" href={page.href}
+                 data-match={page.external ? undefined : matches(page).join(" ")}
+                 aria-current={cur(isCurrent(page))}
+                 target={page.external ? "_blank" : undefined} rel={page.external ? "noopener" : undefined}>
+                <span class="side-thumb side-thumb--glyph" aria-hidden="true">{page.glyph}</span>
+                <span class="side-text"><span class="side-name" set:html={t(page.label)} /></span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </details>
+
       {groups.map(({ category, items }) => (
-        <details class="side-group" open>
+        <details class="side-group" data-group={category.slug} open>
           <summary>
             <span set:html={t(category.title)} />
-            <span class="side-count">{items.length}</span>
+            <span class="side-count" data-count={items.length}>{items.length}</span>
           </summary>
           <ul>
-            {items.map(({ item, to, href, here }) => (
-              <li>
+            {items.map(({ item, to, away, own, href, here }) => (
+              <li class={away ? "side-row side-row--live" : "side-row"}>
                 <a class="side-item" href={href}
-                   data-match={to?.external ? undefined : href}
+                   data-match={own ?? undefined}
                    aria-current={cur(here)}
                    target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>
                   <span class="side-thumb" set:html={thumb(item)} />
@@ -111,6 +147,12 @@ const thumb = (item) => {
                     <span class="side-line" set:html={t(item.cardLine ?? item.summary)} />
                   </span>
                 </a>
+                {away && (
+                  <a class="side-live" href={away.url} target="_blank" rel="noopener"
+                     aria-label={`${plain(away.label)} — ${plain(item.shortTitle ?? item.title)}`}>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                )}
               </li>
             ))}
           </ul>

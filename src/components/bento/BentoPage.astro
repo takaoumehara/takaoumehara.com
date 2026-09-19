@@ -1,0 +1,125 @@
+---
+// A page drawn as one bento, top to bottom:
+//
+//   1. the hero — the biggest thing on the page, full bleed, moving if the
+//      work moves;
+//   2. the title beside the facts of the engagement;
+//   3. The challenge / The solution / Impact, from src/data (ProjectStrip) —
+//      only on a case study; the pages about the person have no evidence record;
+//   4. the work itself, in rows of cells that each fill the twelve columns.
+//
+// The layout is src/bento/<slug>.json for a case study, or
+// src/bento/pages/<name>.json for a page about the person. A page of prose
+// opens on a sentence instead of a picture (hero.kind: "statement"). Nothing
+// here invents copy: every line is either a field of the evidence record or a
+// sentence lifted from the hand-built page this one replaces.
+import "../../styles/bento.css";
+import BentoCell from "./BentoCell.astro";
+import ProjectStrip from "../project/ProjectStrip.astro";
+import { t, tb, url } from "../../lib/html.mjs";
+import { bentoRows } from "../../lib/bento.mjs";
+
+interface Props { layout: any; item: any }
+const { layout, item } = Astro.props;
+
+const hero = layout.hero;
+const heroKind = hero.kind ?? "media";
+const heroH = hero.h ?? (heroKind === "statement" ? 4 : 7);
+const heroStyle = ["--w:12", `--h:${heroH}`, hero.focus ? `--focus:${hero.focus}` : ""].filter(Boolean).join(";");
+
+// A case study carries a title band under the hero (the name, then the facts of
+// the engagement). A page of prose opens on its sentence — the statement hero
+// is the <h1> — so it has no title band at all.
+const title = layout.title ?? null;
+const meta = title?.meta ?? [];
+const titleW = meta.length ? 8 : 12;
+const titleH = title?.h ?? 4;
+
+const rows = bentoRows(layout);
+// A section's name is printed once, on the first row that belongs to it.
+let lastSection = null;
+const bands = rows.map(({ section, row }) => {
+  const label = section !== lastSection ? section.label : null;
+  lastSection = section;
+  return { label, row };
+});
+---
+<div class="bento-doc">
+  <div class="bento-wrap">
+    <div class="bento">
+      <div class="bento-cell" data-kind={heroKind} data-w="12" data-h={heroH} data-tone={hero.tone}
+           data-fit={hero.fit === "contain" ? "contain" : undefined} style={heroStyle} data-vt-hero>
+        {heroKind === "statement" ? (
+          <div class="bento-body">
+            {hero.kicker && <p class="bento-kicker" set:html={t(hero.kicker)} />}
+            <h1 class="bento-statement" set:html={tb(hero.text)} />
+          </div>
+        ) : heroKind === "video" ? (
+          <figure class="bento-media">
+            <video poster={hero.poster ? url(hero.poster) : undefined} controls muted loop playsinline
+                   autoplay={hero.autoplay !== false} preload="metadata" aria-label={hero.alt ?? undefined}>
+              {(hero.sources ?? []).map((s) => <source src={url(s.src)} type={s.type} />)}
+            </video>
+            {hero.caption && <figcaption set:html={t(hero.caption)} />}
+          </figure>
+        ) : (
+          <figure class="bento-media">
+            <img src={url(hero.src)} alt={hero.alt ?? ""} fetchpriority="high" decoding="async" />
+            {hero.caption && <figcaption set:html={t(hero.caption)} />}
+          </figure>
+        )}
+      </div>
+    </div>
+  </div>
+
+  {title && (
+  <div class="bento-wrap">
+    <div class="bento">
+      <div class="bento-cell" data-kind="text" data-w={titleW} data-h={titleH} style={`--w:${titleW};--h:${titleH}`}>
+        <div class="bento-body">
+          {title.kicker && <p class="bento-kicker" set:html={t(title.kicker)} />}
+          <h1 class="bento-title" set:html={t(title.h1)} />
+          {title.lede && <p class="bento-lede" set:html={tb(title.lede)} />}
+          {title.links && (
+            <p class="bento-links">
+              {title.links.map((link) => (
+                <a href={url(link.href)} target={/^https?:/.test(link.href) ? "_blank" : undefined}
+                   rel={/^https?:/.test(link.href) ? "noopener" : undefined} set:html={t(link.label)} />
+              ))}
+            </p>
+          )}
+        </div>
+      </div>
+      {meta.length > 0 && (
+        <div class="bento-cell" data-kind="text" data-w="4" data-h={titleH} style={`--w:4;--h:${titleH}`}>
+          <div class="bento-body">
+            <dl class="bento-meta">
+              {meta.map((entry) => (
+                <div>
+                  <dt set:html={t(entry.label)} />
+                  <dd set:html={t(entry.value)} />
+                </div>
+              ))}
+            </dl>
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+  )}
+
+  {item && <ProjectStrip item={item} />}
+
+  {bands.map(({ label, row }) => (
+    <div class="bento-wrap">
+      <div class="bento">
+        {label && (
+          <div class="bento-cell" data-kind="section" data-w="12" data-h="1" style="--w:12;--h:1">
+            <h2 class="bento-section" set:html={t(label)} />
+          </div>
+        )}
+        {row.cells.map((cell) => <BentoCell cell={cell} w={cell.w} h={row.h} />)}
+      </div>
+    </div>
+  ))}
+</div>

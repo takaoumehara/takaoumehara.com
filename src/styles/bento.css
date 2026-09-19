@@ -1,0 +1,311 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   The bento grid — one geometry, used by the landing page and by every
+   case study that carries a src/bento/<slug>.json layout.
+
+   The rules of the system:
+
+   1. It fills the width it is given. No centred 1200px column, no wide
+      margins: the only air is --bento-gap, on the outside and between cells.
+      On a case study that means the whole right column; on the landing page
+      it means the whole window.
+   2. Twelve columns, and a SQUARE base unit for rows. Because the row unit
+      equals the column unit, a cell that spans w columns and h rows always
+      reads as an aspect ratio of w : h — at any window width, in any column
+      count. Every size decision on this site is therefore a ratio, not a
+      pixel height. The unit is computed from the container's own inline size
+      with container query units, which is why .bento always sits inside a
+      .bento-wrap (a container cannot query itself).
+   3. Rows are minmax(unit, auto), so a text cell that needs one more line
+      grows instead of clipping. Cells laid out as a row of equal h grow
+      together.
+   4. Cells declare --w / --h (and data-w / data-h so CSS can address them).
+      A "row" of cells whose widths sum to 12 and whose h all match tiles
+      perfectly; src/scripts/bento.js only ever emits such rows, which is why
+      the shuffled landing grid never leaves a hole.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Text only a screen reader needs (the words on a card's link). Defined here
+   too, because the landing page does not load grid.css. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+.bento-wrap {
+  container-type: inline-size;
+  width: 100%;
+  padding: var(--bento-gap);
+  box-sizing: border-box;
+}
+
+/* A whole case study laid out as one bento: the gap is the only margin, top
+   to bottom, and every band shares the same left and right edge. */
+.bento-doc { padding-top: var(--bento-gap); }
+.bento-doc > .bento-wrap { padding: 0 var(--bento-gap) var(--bento-gap); }
+/* The Challenge / Solution / Impact strip is a band of this bento too, so it
+   gives up the centred 1200px column it uses on the hand-built pages. */
+.bento-doc > .cs-strip { max-width: none; margin: 0; padding: 0 var(--bento-gap) var(--bento-gap); }
+.bento-doc > .cs-strip .cs-strip-grid { gap: var(--bento-gap); }
+.bento-doc > .cs-strip .cs-strip-card { border-radius: var(--r); padding: clamp(18px, 2vw, 32px); }
+
+/* The one <h1>, and the facts beside it. */
+.bento-kicker { margin: 0; font-size: var(--text-body); line-height: var(--leading-body); color: var(--pr-ink-2); }
+.bento-title {
+  margin: 0;
+  font-family: var(--pr-ff-display); font-weight: 400;
+  font-size: clamp(30px, 3.4cqw, 64px); line-height: 1.08; letter-spacing: var(--tracking-display);
+}
+html.lang-jp .bento-title { font-family: var(--pr-ff-jp); }
+.bento-lede { margin: 0; font-size: clamp(16px, 1.3cqw, 21px); line-height: 1.45; color: var(--pr-ink-2); }
+.bento-meta { margin: 0; display: grid; gap: var(--sp-2); }
+.bento-meta > div { display: grid; gap: 2px; }
+.bento-meta dt { font-size: var(--text-sm); color: var(--pr-ink-2); }
+.bento-meta dd { margin: 0; font-size: var(--text-body); line-height: 1.35; }
+
+/* A section name: no card behind it, just the words and the air of one row. */
+.bento-cell[data-kind="section"] { background: none; justify-content: flex-end; align-items: flex-start; }
+.bento-section {
+  margin: 0; padding: 0 2px 4px;
+  font-family: var(--pr-ff-display); font-weight: 400;
+  font-size: clamp(20px, 2cqw, 32px); line-height: 1.15; letter-spacing: var(--tracking-display);
+}
+html.lang-jp .bento-section { font-family: var(--pr-ff-jp); }
+
+.bento {
+  --bento-cols: 12;
+  display: grid;
+  grid-template-columns: repeat(var(--bento-cols), minmax(0, 1fr));
+  grid-auto-flow: row dense;
+  grid-auto-rows: minmax(
+    calc((100cqw - (var(--bento-cols) - 1) * var(--bento-gap)) / var(--bento-cols)),
+    auto
+  );
+  gap: var(--bento-gap);
+}
+
+:root { --bento-gap: 12px; }
+
+/* ── One cell ───────────────────────────────────────────────────────────── */
+.bento-cell {
+  position: relative;
+  min-width: 0;
+  grid-column: span var(--w, 4);
+  grid-row: span var(--h, 3);
+  border-radius: var(--r);
+  overflow: hidden;
+  background: var(--pr-card);
+  color: var(--pr-ink);
+  /* A column so the content stretches to whatever height the row gave the
+     cell. Rows are minmax(unit, auto), so the track is content-sized and a
+     child's `height: 100%` has nothing definite to resolve against — every
+     picture is positioned against the cell instead, and every block of words
+     grows into it with flex. */
+  display: flex;
+  flex-direction: column;
+}
+/* A cell that carries only a picture has no fill of its own to show through. */
+.bento-cell[data-kind="media"] { background: var(--pr-card); }
+.bento-cell[data-tone="ink"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.bento-cell[data-tone="plain"] { background: transparent; }
+
+.bento-cell > img,
+.bento-cell > video,
+.bento-media > img,
+.bento-media > video {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, center);
+}
+/* Artwork that must not be cropped — a logo, a spread, a page of a deck.
+   It sits inside the cell with air around it instead of filling it. */
+.bento-cell[data-fit="contain"] > img,
+.bento-cell[data-fit="contain"] > video,
+.bento-cell[data-fit="contain"] .bento-media > img,
+.bento-cell[data-fit="contain"] .bento-media > video {
+  object-fit: contain;
+  padding: clamp(12px, 2cqw, 32px);
+  box-sizing: border-box;
+}
+.bento-cell[data-fit="contain"][data-paper="true"] { background: #ffffff; }
+/* The site's lettered art plate, when a piece of work has no photograph. */
+.bento-cell > .card-art { flex: 1 1 auto; min-height: 0; height: auto; }
+
+/* A video hosted somewhere else (YouTube). It fills the cell and lets the
+   player letterbox itself on black — the cell is sized for the page's rhythm,
+   near 16:9 but not tied to it. */
+.bento-cell[data-kind="embed"] { background: #000000; }
+.bento-embed { position: absolute; inset: 0; display: block; border: 0; width: 100%; height: 100%; }
+
+/* The figure is a plain box: its picture and its caption are both positioned
+   against the cell, so nothing depends on a percentage height. */
+.bento-media { margin: 0; flex: 1 1 auto; min-height: 0; }
+.bento-media figcaption {
+  position: absolute; inset: auto 0 0 0; z-index: 1;
+  margin: 0; padding: 32px 16px 12px;
+  font-size: var(--text-sm); line-height: 1.35; color: #ffffff;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0));
+}
+/* A video's own controls live along the bottom of the cell, so its caption
+   goes to the top instead of fighting them. */
+.bento-cell[data-kind="video"] .bento-media figcaption {
+  inset: 0 0 auto 0; padding: 12px 16px 36px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.72), rgba(0, 0, 0, 0));
+}
+.bento-cell[data-fit="contain"] .bento-media figcaption {
+  padding: 0 16px 14px; color: var(--pr-ink-2); background: none;
+}
+/* Keep the artwork clear of its own caption. */
+.bento-cell[data-fit="contain"]:has(figcaption) .bento-media > img { padding-bottom: 44px; }
+
+/* ── Text inside a cell ─────────────────────────────────────────────────── */
+.bento-body {
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  padding: clamp(18px, 2cqw, 32px);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.bento-label {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  color: var(--pr-ink-2);
+}
+.bento-cell[data-tone="ink"] .bento-label { color: rgba(255, 255, 255, 0.72); }
+.bento-h {
+  margin: 0;
+  font-family: var(--pr-ff-display);
+  font-weight: 400;
+  font-size: clamp(20px, 2.1cqw, 34px);
+  line-height: 1.18;
+  letter-spacing: var(--tracking-display);
+}
+html.lang-jp .bento-h { font-family: var(--pr-ff-jp); }
+.bento-p {
+  margin: 0;
+  font-size: clamp(14px, 1.05cqw, 17px);
+  line-height: 1.5;
+  color: var(--pr-ink);
+}
+.bento-p + .bento-p { margin-top: 0.7em; }
+/* A full-bleed cell is as wide as the window. Its picture should be; its
+   sentences should not. 68ch is the measure .section-lede already uses
+   (src/styles/site.css), so prose reads the same width wherever it sits. */
+.bento-cell[data-w="12"] .bento-p,
+.bento-cell[data-w="12"] .bento-list { max-width: 68ch; }
+.bento-cell[data-tone="ink"] .bento-p { color: rgba(255, 255, 255, 0.86); }
+.bento-list { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: clamp(14px, 1.05cqw, 17px); line-height: 1.45; }
+.bento-list li { position: relative; padding-left: 1.1em; }
+.bento-list li::before { content: "—"; position: absolute; left: 0; color: var(--pr-ink-2); }
+
+/* A number and what it counts. */
+.bento-figure { display: flex; flex-direction: column; justify-content: center; flex: 1 1 auto; }
+.bento-figure dt {
+  font-family: var(--pr-ff-display); font-weight: 400;
+  font-size: clamp(34px, 5cqw, 84px); line-height: 1; letter-spacing: -0.01em;
+}
+.bento-figure dd { margin: 10px 0 0; font-size: var(--text-body); line-height: 1.35; color: var(--pr-ink-2); }
+.bento-cell[data-tone="ink"] .bento-figure dd { color: rgba(255, 255, 255, 0.72); }
+
+/* A cell that is one large sentence. */
+h1.bento-statement { max-width: 22ch; }
+.bento-statement {
+  margin: 0; flex: 1 1 auto; display: flex; align-items: center;
+  font-family: var(--pr-ff-display); font-weight: 400;
+  font-size: clamp(20px, 2.4cqw, 40px); line-height: 1.2; letter-spacing: var(--tracking-display);
+}
+html.lang-jp .bento-statement { font-family: var(--pr-ff-jp); }
+
+/* Links out of a cell. */
+.bento-links { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; padding-top: var(--sp-2); }
+.bento-links a {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--sp-3);
+  border-radius: var(--r-pill); background: var(--pr-canvas); color: var(--pr-ink);
+  font-size: var(--text-body); text-decoration: none;
+}
+.bento-cell[data-tone="ink"] .bento-links a { background: rgba(255, 255, 255, 0.14); color: #ffffff; }
+.bento-links a:hover { background: var(--pr-card-2); }
+.bento-cell[data-tone="ink"] .bento-links a:hover { background: rgba(255, 255, 255, 0.24); }
+.bento-links a:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+
+/* A cell the whole of which is a link (the landing grid, related work). */
+.bento-cell[data-href] { cursor: pointer; }
+.bento-cell[data-href]:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 3px; }
+.bento-cell .bento-hit { position: absolute; inset: 0; z-index: 2; }
+.bento-cell[data-href] img { transition: transform 700ms cubic-bezier(.2, .7, .2, 1); }
+.bento-cell[data-href]:hover img { transform: scale(1.03); }
+
+/* The name of a piece of work, over its picture. */
+.bento-caption {
+  position: absolute; inset: auto 0 0 0; z-index: 1;
+  margin: 0; padding: 56px 16px 14px;
+  /* Strong enough to carry white text over a bright photograph, not only a
+     dark one — the grid has both. */
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.88) 0%, rgba(0, 0, 0, 0.74) 42%, rgba(0, 0, 0, 0) 100%);
+  color: #ffffff;
+}
+/* Direct children only: a descendant selector that sets `display` would reach
+   the .t-en / .t-jp spans inside and show both languages at once. */
+.bento-caption > b { display: block; font-weight: 400; font-size: clamp(15px, 1.2cqw, 20px); line-height: 1.25; }
+.bento-caption > span {
+  display: block; margin-top: 3px; font-size: var(--text-sm); line-height: 1.35; color: rgba(255, 255, 255, 0.88);
+  /* A small tile gets the first two lines; the whole line is on the card's page. */
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.bento-cell[data-w="3"] .bento-caption > span,
+.bento-cell[data-w="4"] .bento-caption > span { display: -webkit-box; }
+@media (prefers-reduced-motion: reduce) {
+  .bento-cell[data-href] img,
+  .bento-cell[data-href]:hover img { transition: none; transform: none; }
+}
+
+/* Work with no photograph falls back to the site's lettered art plate
+   (.card-art, src/styles/site.css). Inside a bento cell the plate centres its
+   name and leaves room for the caption instead of sitting on top of it. */
+.bento-cell .card-art { align-items: center; justify-content: center; padding: 16px 16px 84px; text-align: center; }
+.bento-cell .card-art-label { font-size: clamp(18px, 2.2cqw, 38px); }
+
+/* ── Fewer, bigger cells as the window narrows ──────────────────────────────
+   The column count halves; every span keeps its number, so every cell keeps
+   its w : h ratio and simply doubles in size. Only the full-bleed cells
+   (w = 12) need their own rule, because 12 no longer fits in the track list. */
+@media (max-width: 1100px) {
+  .bento { --bento-cols: 6; }
+  .bento-cell[data-w="12"] { grid-column: 1 / -1; }
+  .bento-cell[data-w="12"][data-h="3"] { grid-row: span 2; }
+  .bento-cell[data-w="12"][data-h="4"] { grid-row: span 2; }
+  .bento-cell[data-w="12"][data-h="5"] { grid-row: span 3; }
+  .bento-cell[data-w="12"][data-h="6"] { grid-row: span 3; }
+  .bento-cell[data-w="12"][data-h="7"] { grid-row: span 4; }
+}
+
+/* One cell per row on a phone. Rows go back to auto and each cell keeps its
+   ratio through aspect-ratio instead of a row span. */
+@media (max-width: 640px) {
+  :root { --bento-gap: 8px; }
+  .bento { --bento-cols: 1; grid-auto-rows: auto; }
+  .bento-cell { grid-column: 1 / -1; grid-row: auto; }
+  /* A picture keeps its ratio; a cell of words is as tall as its words. */
+  .bento-cell[data-kind="media"] { aspect-ratio: var(--w) / var(--h); }
+}
+
+/* ── A filter bar between the opening and the grid ──────────────────────────
+   /now/ is the one page whose cells are a set you can narrow. The bar is a
+   cell of its own, and a hidden cell simply leaves the grid —
+   grid-auto-flow: row dense repacks the rest, so narrowing never leaves a
+   hole. The pills are the same shape as .bento-links a. */
+.bento-filters { flex-flow: row wrap; align-items: center; gap: 8px; }
+.bento-filter {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--sp-3);
+  border: 0; border-radius: var(--r-pill);
+  background: var(--pr-canvas); color: var(--pr-ink);
+  font-family: inherit; font-size: var(--text-body); line-height: 1; cursor: pointer;
+}
+.bento-filter[aria-pressed="true"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.bento-filter:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 3px; }
+.bento-cell.is-hidden { display: none; }

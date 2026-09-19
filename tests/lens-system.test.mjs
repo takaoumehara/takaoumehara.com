@@ -413,9 +413,15 @@ test("a preview ships both encodings, and never replaces the still", () => {
   }
 });
 
-test("no card clip autoplays, every one is hidden from assistive tech, and each offers both encodings", () => {
-  // A grid of cards that all start playing on load is a bandwidth bill and a
-  // motion hazard. They play on hover or focus, from src/scripts/site.js.
+test("every card clip runs on its own, is hidden from assistive tech, and offers both encodings", () => {
+  // This used to require the opposite — no autoplay, preload="none" — because a
+  // grid that all starts at once is a bandwidth bill. Takao, looking at the
+  // built site: 「すべて同時にローディングされたら 動画が動いているような感じに
+  // してください だから常に動いている様子が分かるような感じに」. Waiting for a
+  // hover meant a page of moving work looked completely still, and on a phone
+  // there is no hover at all. Five clips, 4MB in one codec, and
+  // src/scripts/site.js pauses the ones scrolled out of sight; the motion
+  // hazard is answered by prefers-reduced-motion, which the next test checks.
   // Draft lenses (Phase 2 pitch drafts) are validated but not built, so only published ones have a page.
   const pages = [...lenses.filter((l) => l.status === "published").map(builtPath), "interactive.html"];
   let seen = 0;
@@ -424,8 +430,8 @@ test("no card clip autoplays, every one is hidden from assistive tech, and each 
     for (const tag of html.matchAll(/<video[^>]*class="card-clip"[^>]*>([\s\S]*?)<\/video>/g)) {
       seen += 1;
       const [attrs, inner] = [tag[0].slice(0, tag[0].indexOf(">")), tag[1]];
-      assert.ok(!/\bautoplay\b/.test(attrs), `${page}: a card clip must not autoplay`);
-      assert.ok(/preload="none"/.test(attrs), `${page}: a card clip must not be fetched before it is asked for`);
+      assert.ok(/\bautoplay\b/.test(attrs), `${page}: a card clip must start by itself`);
+      assert.ok(/preload="auto"/.test(attrs), `${page}: a clip that plays on sight must be fetched, not preload="none"`);
       assert.ok(/\bmuted\b/.test(attrs) && /\bloop\b/.test(attrs) && /\bplaysinline\b/.test(attrs), `${page}: card clip attributes`);
       assert.ok(/aria-hidden="true"/.test(attrs), `${page}: the clip is decoration — the still and the copy carry the meaning`);
       assert.ok(!/\bsrc=/.test(attrs), `${page}: use <source> elements, so a browser that cannot decode one falls through to the other`);

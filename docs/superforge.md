@@ -68,10 +68,27 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
 - **Emoji Blast**（2026-09-12、本人）: 旧称 **EmojiDrop** から改名。
   `src/data/experiments/emoji-blast.json`。旧ホームページの保存版 `index-console.html` は
   スナップショットなので旧名のまま。
-- **カードのプレビュー動画**（2026-09-12）: 静止画（`assets.thumb`）が主、
-  `assets.preview` の H.264 MP4 はホバー／フォーカスで重ねて再生するだけ。
-  自動再生しない・`preload="none"`・`aria-hidden`・`prefers-reduced-motion` で無効。
-  素材のマスターは `assets/<slug>/masters/`（`.vercelignore` で配信対象外）。
+- **カードの行き先**（2026-09-19、本人）:「すべてのプロジェクトは、プロジェクトディテールページが必要で、
+  実際に飛ぶウェブサイトがあるなら、そこから実際のウェブサイトにリンクして飛ぶ。同時に、左のカードで、
+  直接実践したウェブサイトに飛べるようなリンクも用意しといてくれるといい」
+  - **カード本体のクリックは必ず詳細ページ。** `destination()`（`src/lib/site.mjs`）は `links.caseStudy` を
+    最優先する。以前は `playable && links.live` が勝っていたので、Resona / Kao Game / Emoji Blast /
+    Marubatsu / Rakugaki Jam / Typespace の 6 本は**詳細ページがあるのにどのカードもそこを指していなかった**。
+  - **実サイトへは 2 経路。** 詳細ページの `ProjectStrip` が `outwardLinks()` から出すピルと、
+    カード右上の **↗**（`.side-live` / `.card-live`）。↗ は `<a>` の入れ子にならないよう
+    レールでは行の `<a>` の**外**（`<li>` の中）に置く。`bindCards()` は `<a>` 内のクリックを既に無視する。
+  - 外向きと見なすのは `live` / `repo` / `external` の 3 種だけ。`caseStudy`・`gallery`・`editor` は自サイト。
+  - **自分のページを持たない作品の行は `data-match` を持たない。** 代替の `#slug` アンカーは
+    ハッシュを落とすと カテゴリページ自身になるので、同じカテゴリの該当行が**全部同時に反転していた**。
+- **カードのプレビュー動画**（2026-09-12、**2026-09-19 改訂**）: 静止画（`assets.thumb`）が主、
+  `assets.preview` の H.264 MP4 / WebM をその上で**常時再生する**。
+  本人（2026-09-19）:「すべて同時にローディングされたら 動画が動いているような感じにしてください
+  だから常に動いている様子が分かるような感じにして」。ホバー待ちだと、動く作品が並んだページが
+  触るまで完全に静止して見え、スマホにはホバー自体が無い。
+  `autoplay` ＋ `preload="auto"`、`muted` / `loop` / `playsinline` / `aria-hidden`。
+  画面外に出たものは `IntersectionObserver` で止める（位置は保持。戻っても頭出しし直さない）。
+  `prefers-reduced-motion` では CSS で隠し、`bindPreviews()` が明示的に `pause()` する
+  （`display: none` でもデコードは続くため）。素材のマスターは `assets/<slug>/masters/`（`.vercelignore` で配信対象外）。
 - **アクセシビリティ**（2026-09-12）: 基準は WCAG 2.2 AA。`npm run test:e2e` が強制する。
   - `--ink-dim` = `#76716a`（4.64:1）が**最も薄い文字色**。これより薄い色を文字に使わない。
   - **不透明度で文字を沈めない。** 静けさはインクの段（`ink → ink-mid → ink-dim`）で表す。
@@ -94,7 +111,29 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
     a11y の pin「4.5:1 未満の文字色を使わない」を優先。`#007aff` そのものは文字を持たない塗り（トグルのトラック）にだけ使う（`--pr-blue-fill`）。
   - **ダークモード**あり（サイドバーのスイッチ、`localStorage "tu-theme"`、`html[data-theme]`）。
     `theme: "dark"` のケーススタディ（Interactive の 8 本）は `data-theme-lock` で常に暗く、スイッチは無効表示。
-- **サイドバー**（2026-09-17 改訂）: 幅 `clamp(320px, 25vw, 420px)`。上から
+- **レールの現在地と全体像**（2026-09-18、本人「とにかく見失わないような設計が欲しい」）:
+  - **ロゴは左上**。`Takao Umehara` ＋小さく `梅原タカオ`（`profile.jpName`）。ブロック全体が `/` への 1 つのリンク。
+    中央揃えの大きなワードマークは廃止。Creativity Is Everywhere はスタジオの別サイトなのでロゴに入れない。
+  - **`Show all projects` はチップ列の `All work` に**。その隣に 5 カテゴリのチップ（件数付き）。
+    押すとレール内をその `<details>` までスクロールして開く。常設なので毎回・キーボードでも効く。
+  - **初回訪問だけ 5 群を 90ms ずらして開く**（`localStorage "tu-rail-seen"`、件数はカウントアップ）。
+    `prefers-reduced-motion` では最初から全開。**演出に opacity を使わない** — 半透明の行の上の文字を
+    axe が contrast 違反として拾う（実際に断続的に落ちた）。動かすのは `transform` だけ。
+  - **現在地は反転**（`--pr-ink` の塗り＋`--pr-canvas` の文字）。青い文字は 45 行の中で見つからない。
+  - **現在行へ必ずスクロールする**。これは見た目ではなく実装のバグだった: 追従処理が `bindSidebar()` の中で
+    初回 1 回しか走らず、さらに `astro:after-swap` が**遷移前の位置を復元して**打ち消していた。
+    今は `revealCurrent()` を `astro:page-load` から毎回呼び、位置の復元は**現在行が変わらないときだけ**行う。
+    Web フォントが後から届いてレールの高さが 1.5 倍になるので、`document.fonts.ready` でもう一度測り直す。
+  - **人のページはカード行**。レール最上部の `The person` 群に About / Now / Writing / Workshops /
+    Work with me / Studio ↗ を、作品行と同じ `.side-item` 形で（写真の代わりに 1 文字のグリフ）。
+    「ラベルがリンク」の About カードは廃止 — クリッカブルだと気づかれなかった。
+- **カテゴリは 1 作品 1 か所**（2026-09-18）: `verizon-ai-workflow` が `ai-products` と `work` の両方にあり、
+  レールに同じカードが 2 回出て、件数がどこも合っていなかった。**本籍は `ai-products`**（レコードの
+  `chapter` が `ai-ventures`）。`src/validate.mjs` の `validateAll` がカテゴリ横断の重複でビルドを落とす。
+  `/all/` のフィルタは `src/lib/archive.mjs` の手写し slug 一覧をやめ、**`src/categories/*.json` から導出**する
+  （手写しのせいで `/all/` の AI Products が 6、レールが 5 だった。差は `breakbias` — どのカテゴリにも
+  入っていなかったので `ai-products.json` に入れた）。`tests/rail-wayfinding.test.mjs` が件数の一致を見る。
+- **サイドバー**（2026-09-17 改訂、2026-09-18 に上書き — 上の pin が正）: 幅 `clamp(320px, 25vw, 420px)`。上から
   「Show all projects」ピル（→ `/all/`）＋ダークモードのトグル＋言語ボタン（JP/EN を交互に）、
   ワードマーク（大文字・23px）＋ニューヨーク時刻の時計、About カード（`positioning[1]` と
   Now / Writing / Workshops / Work with me / Studio のリンク行）、カテゴリごとの作品行
@@ -106,9 +145,29 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   テーマ属性を戻す（ルーターは `<html>` の属性を新ページのもので置き換えるため）。
   カードの `data-href` は `navigate()` 経由。**`window.location` で遷移しない。**
   ケーススタディ本文の inline `<script>` は遷移後も実行される（werewolf のデッキで確認済み）。
-- **トップページ**（2026-09-17）: 画像グリッド **3 列 → 1100px 以下 2 列 → 640px 以下 1 列**。
-  見出しは `positioning[1]`（"I turn ambiguous ideas into …"）。default lens は `/lens/default/` に移動。
-  カテゴリページと `/all/` も同じカード部品。「説明文つき 3 列 / タイル 4 列」の旧規則はこれで置き換え。
+- **トップページ**（2026-09-17 改訂）: **サイドバーなしのランディング**（`Site.astro` の `chrome={false}`）。
+  名前と `positioning[1]`（"I turn ambiguous ideas into …"、ページ唯一の `<h1>`）を大きく、
+  下に全作品のベントー。**並びと大きさは読み込みのたびに変わる**（`src/lib/bentoShapes.mjs` の
+  パターン表を、サーバーは決め打ち・ブラウザは乱数で歩く。表は `define:vars` で渡すので 1 か所）。
+  「2 つのリスト」＝ 左のレールと `/all/` の分野フィルタ。トップにはどちらも無く、
+  **最初のクリックで現れる**（レールは `::view-transition-new(side):only-child` で左から入る）。
+  default lens は `/lens/default/`。カテゴリページと `/all/` は従来の 3 列カードのまま
+  （`src/components/grid/`）— ベントーはトップとベントー化したケーススタディだけ。
+  トップの旧「画像グリッド 3 列」の pin はこれで置き換え。
+- **ベントー**（2026-09-17）: 詳細は `docs/bento-layout.md`。**12 カラム + 正方形の行ユニット**
+  （`cqw` で算出、`.bento` は必ず `.bento-wrap` の中）。セルは `w` 列 × `h` 行 = **w : h の比**。
+  レイアウトは「行」単位で、**1 行の `w` の合計は必ず 12**、高さは行に 1 つ — これをビルドが検査するので穴が空かない。
+  `w` に使う値は **3 / 4 / 6 / 12 だけ**（1100px 以下で 12 → 6 カラムに落ちるため、8 は軌道からはみ出す）。
+  行は `minmax(unit, auto)` なので文字は切れずに伸びる。余白は `--bento-gap` だけで、中央 1200px の列は使わない。
+- **ケーススタディのベントー化**（2026-09-17）: `src/bento/<slug>.json` があればその slug は
+  ベントーで描く（`src/components/bento/BentoPage.astro`）。ヒーロー（大きく・動く作品なら動画）→
+  タイトルと案件の事実 → Challenge / Solution / Impact → 作品の行、の順。
+  ベントーのページは `design-system.css` / `project-page.css` を**読まない**（サイトのトークンだけで描く）。
+  **42 本のうち 3 本だけ**（resona / ela-quests / value-frontier）。残りは手書き本文のまま。
+  1 本変換するたびに `src/case-studies/<slug>.{html,css,json}` を消す（`tests/bento.test.mjs` が二重の出どころを落とす）。
+  文章は置き換え前のページの本人の文と `src/data/` から取る。**レイアウトのために書き足さない。**
+- **スクロールバーは 1 本**（2026-09-17、本人「スクロールバーがブラウザの一番右に出ているだけ」）:
+  レールは自分で縦スクロールするが `scrollbar-width: none` でバーを描かない（`shell.css`）。
 - **ケーススタディの冒頭**（2026-09-17）: 本文の前に `narrative.problem` / `narrative.built` /
   `narrative.impact` から **The challenge / The solution / Impact** のグレーカード列を出す
   （`src/components/project/ProjectStrip.astro`）。データに無いものは出さない。文章は書き足さない。

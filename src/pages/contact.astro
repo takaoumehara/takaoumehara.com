@@ -1,9 +1,8 @@
 ---
-// Hand-built page, extracted by scripts/extract-page.mjs into
-// src/fragments/contact.{html,css,json}. See src/components/FragmentPage.astro.
-import FragmentPage from "../components/FragmentPage.astro";
-import body from "../fragments/contact.html?raw";
-import css from "../fragments/contact.css?raw";
-import meta from "../fragments/contact.json";
+// Work with me, as a bento (src/bento/pages/contact.json). Was
+// src/fragments/contact.{html,css,json} through FragmentPage; that file
+// carried its own :root, its own fonts and its own column width.
+import BentoDoc from "../components/BentoDoc.astro";
+import layout from "../bento/pages/contact.json";
 ---
-<FragmentPage meta={meta} body={body} css={css} current="/contact.html" />
+<BentoDoc layout={layout} current="/contact.html" />

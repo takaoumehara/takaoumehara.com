@@ -401,10 +401,24 @@ export function validateAll(lib, lenses, options = {}, categories = []) {
     errors.push(...validateLens(lens, lib));
   }
   const outputs = new Set();
+  // A piece of work belongs to ONE category. Listing it in two put the same
+  // card in the rail twice and made every count disagree with every other
+  // count (the rail said 45 rows for 44 projects; /all/'s disciplines summed
+  // to one more than its total). validateCategory's own `seen` set is scoped
+  // to a single file, so it cannot catch this — that is why the check is here.
+  const homes = new Map();
   for (const category of categories) {
     if (outputs.has(category.output)) errors.push(`category:${category.slug}: two categories write ${category.output}`);
     outputs.add(category.output);
     errors.push(...validateCategory(category, lib, options));
+    for (const id of (category.groups ?? []).flatMap((g) => g.items ?? [])) {
+      const home = homes.get(id);
+      if (home && home !== category.slug) {
+        errors.push(`category:${category.slug}: "${id}" is already in category "${home}" — a project belongs to one category`);
+      } else {
+        homes.set(id, category.slug);
+      }
+    }
   }
   return errors;
 }

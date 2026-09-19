@@ -13,7 +13,7 @@
 // shows in both languages, same convention as ProofCard's "what I did" list.
 import { t, tb, esc } from "../../lib/html.mjs";
 import { periodLabel } from "../../lib/labels.mjs";
-import { getLibrary, orderedCategories } from "../../lib/site.mjs";
+import { getLibrary, orderedCategories, outwardLinks } from "../../lib/site.mjs";
 
 interface Props { item: any }
 const { item } = Astro.props;
@@ -71,6 +71,12 @@ function buildCards(record) {
 }
 
 const cards = item ? buildCards(item) : [];
+// Where the work itself lives. This is the one component every case study goes
+// through — the 42 hand-built bodies and the bento layouts alike
+// (src/pages/projects/[slug].astro) — so putting the outward links here is what
+// makes "the detail page links to the real site" true of all of them at once,
+// without editing a single page.
+const links = item ? outwardLinks(item) : [];
 
 const kickerHtml = item
   ? [
@@ -81,9 +87,17 @@ const kickerHtml = item
     ].filter(Boolean).join(" · ")
   : "";
 ---
-{cards.length > 0 && (
+{(cards.length > 0 || links.length > 0) && (
   <section class="cs-strip" aria-label="In short">
     {kickerHtml && <p class="cs-strip-kicker" set:html={kickerHtml} />}
+    {links.length > 0 && (
+      <p class="cs-strip-links">
+        {links.map((link) => (
+          <a href={link.url} target="_blank" rel="noopener" set:html={t(link.label)} />
+        ))}
+      </p>
+    )}
+    {cards.length > 0 && (
     <div class={`cs-strip-grid cs-strip-grid--${cards.length}`}>
       {cards.map((card) => (
         <div class="cs-strip-card">
@@ -92,6 +106,7 @@ const kickerHtml = item
         </div>
       ))}
     </div>
+    )}
   </section>
 )}
 
@@ -114,6 +129,28 @@ const kickerHtml = item
     line-height: var(--leading-body);
     color: var(--pr-ink-2);
   }
+
+  /* The outward links, shaped like every other pill on the site
+     (.bento-links a, src/styles/bento.css). */
+  .cs-strip-links {
+    margin: 0 0 16px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cs-strip-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 var(--sp-3);
+    border-radius: var(--r-pill);
+    background: var(--pr-card);
+    color: var(--pr-ink);
+    font-size: var(--text-body);
+    text-decoration: none;
+  }
+  .cs-strip-links a:hover { background: var(--pr-card-2); }
+  .cs-strip-links a:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
 
   .cs-strip-grid {
     display: grid;

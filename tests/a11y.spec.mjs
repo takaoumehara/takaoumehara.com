@@ -21,9 +21,15 @@ const PAGES = [
   ["/all/", "Work Archive"],
   ["/now/", "Now"],
   ["/about.html", "About"],
-  ["/contact.html", "Contact"],
+  ["/publications.html", "Writing"],
+  ["/workshop.html", "Workshops"],
+  ["/contact.html", "Work with me"],
+  ["/work-with-me.html", "Work with me, at its other address"],
   ["/projects/koji-fizz.html", "a case study (KOJI FIZZ)"],
   ["/projects/werewolf.html", "a dark case study (Werewolf)"],
+  ["/projects/value-frontier.html", "a bento case study (Value Frontier)"],
+  ["/projects/ela-quests.html", "a bento case study with video and embeds (ELA Quests)"],
+  ["/projects/resona.html", "a dark bento case study (Resona)"],
 ];
 
 for (const [path, name] of PAGES) {
@@ -38,11 +44,57 @@ for (const [path, name] of PAGES) {
   });
 }
 
-test("the Japanese switch changes the document language, not only the visible text", async ({ page, isMobile }, testInfo) => {
+const PERSON_PAGES = ["/about.html", "/now/", "/publications.html", "/workshop.html", "/contact.html", "/work-with-me.html"];
+
+test("the dark-mode switch reaches every page about the person", async ({ page }) => {
+  // It did not. Each of these was a hand-built page that set --bg on :root,
+  // which design-system.css's html[data-theme="light"] block beat in light mode
+  // and which beat the dark block (it only patches --nav-*) in dark mode — so
+  // About, Writing, Workshops and Work with me stayed on paper whatever the
+  // switch said. They are bento now, on one set of tokens.
+  for (const path of PERSON_PAGES) {
+    await page.goto(path, { waitUntil: "load" });
+    await page.evaluate(() => document.documentElement.setAttribute("data-theme", "dark"));
+    const bg = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
+    expect(bg, `${path} ignored the dark-mode switch`).toBe("rgb(0, 0, 0)");
+  }
+});
+
+test("every page about the person opens at the same place, in the same type", async ({ page }) => {
+  // The complaint this answers: "なんかこれそれぞれフォーマットが違いますよね".
+  const shape = [];
+  for (const path of PERSON_PAGES) {
+    await page.goto(path, { waitUntil: "load" });
+    await page.evaluate(() => document.fonts.ready);
+    shape.push([
+      path,
+      await page.evaluate(() => {
+        const h1 = document.querySelector("h1");
+        const box = h1.getBoundingClientRect();
+        const style = getComputedStyle(h1);
+        return {
+          top: Math.round(document.querySelector(".bento-doc > .bento-wrap").getBoundingClientRect().top),
+          left: Math.round(box.left),
+          size: style.fontSize,
+          weight: style.fontWeight,
+        };
+      }),
+    ]);
+  }
+  const first = JSON.stringify(shape[0][1]);
+  for (const [path, box] of shape) {
+    expect(JSON.stringify(box), `${path} starts somewhere else than ${shape[0][0]}`).toBe(first);
+  }
+});
+
+test("the Japanese switch changes the document language, not only the visible text", async ({ page }) => {
   // Half this site is Japanese behind a toggle. If <html lang> stays "en", a
   // screen reader reads the Japanese with an English voice.
   await page.goto("/", { waitUntil: "load" });
-  if (testInfo.project.name === "phone") await page.getByRole("button", { name: "Menu" }).click();
+  // The landing page has no rail, so no phone menu to open first; every other
+  // page keeps the switch behind it.
+  const menu = page.getByRole("button", { name: "Menu" });
+  if (await menu.count()) await menu.click();
   await page.getByRole("button", { name: "Switch to Japanese" }).click();
   await expect(page.locator("html")).toHaveClass(/lang-jp/);
   await expect(page.locator("html")).toHaveAttribute("lang", "ja");
@@ -65,9 +117,10 @@ test("every card that opens something can be reached and opened from the keyboar
 test("the sidebar lists every section of the work open, marks the current row, and opens on a phone from a button", async ({ page }, testInfo) => {
   await page.goto("/projects/koji-fizz.html", { waitUntil: "load" });
   const side = page.locator("#side");
+  // Six folds: the person, then the five categories.
   const groups = side.locator("details.side-group");
-  await expect(groups).toHaveCount(5);
-  await expect(side.locator("details.side-group[open]")).toHaveCount(5);
+  await expect(groups).toHaveCount(6);
+  await expect(side.locator("details.side-group[open]")).toHaveCount(6);
   await expect(side.locator('.side-item[aria-current="page"]')).toHaveCount(1);
   if (testInfo.project.name === "phone") {
     const panel = page.locator("#side-panel");
@@ -83,6 +136,102 @@ test("the sidebar lists every section of the work open, marks the current row, a
     // Nothing in the right column may run under the sidebar or past the viewport.
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     expect(overflow, "horizontal overflow").toBeLessThanOrEqual(0);
+  }
+});
+
+test("clicking a card brings the rail in, turns its row over, and scrolls to it", async ({ page }, testInfo) => {
+  // The whole point of the rail: never lose where you are. This used to fail
+  // twice over — the row was a blue word, and astro:after-swap restored the
+  // rail's OLD scroll position, so the new row was usually off screen.
+  test.skip(testInfo.project.name === "phone", "the rail is a fold-out menu on a phone");
+  await page.goto("/", { waitUntil: "load" });
+  await expect(page.locator("#side")).toHaveCount(0);
+
+  await page.locator('#work-bento [data-href="/projects/koji-fizz.html"]').first().click();
+  await page.waitForURL("**/koji-fizz.html");
+  const current = page.locator('#side .side-item[aria-current="page"]');
+  await expect(current).toHaveCount(1);
+  await expect(current).toBeInViewport();
+
+  // Turned over, not tinted: the row's fill is the ink colour.
+  const inverted = await current.evaluate((el) => {
+    const row = getComputedStyle(el).backgroundColor;
+    const rail = getComputedStyle(document.getElementById("side")).backgroundColor;
+    return row !== rail && row !== "rgba(0, 0, 0, 0)";
+  });
+  expect(inverted, "the current row must read as inverted").toBe(true);
+
+  // Somewhere else entirely in the list, and it follows.
+  await page.locator('#side .side-item[href="/projects/resona.html"], #side .side-item[href="/projects/xq.html"]').first().click();
+  await page.waitForTimeout(1500);
+  await expect(page.locator('#side .side-item[aria-current="page"]')).toHaveCount(1);
+  await expect(page.locator('#side .side-item[aria-current="page"]')).toBeInViewport();
+});
+
+test("the chips say how much work there is, and jump to it from the keyboard", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name === "phone", "the rail is a fold-out menu on a phone");
+  await page.goto("/about.html", { waitUntil: "load" });
+  const chips = page.locator("#side-chips .side-chip");
+  await expect(chips).toHaveCount(6); // All work + five categories
+  // On a first visit the five folds open one after another; let the rail reach
+  // its full height before measuring, or the jump has nowhere to go yet.
+  await expect(page.locator("#side details.side-group[open]")).toHaveCount(6);
+  await page.waitForFunction(() => {
+    const side = document.getElementById("side");
+    return side.scrollHeight > side.clientHeight * 3;
+  });
+  const before = await page.evaluate(() => document.getElementById("side").scrollTop);
+  const brand = page.locator('.side-chip[data-jump="brand"]');
+  await brand.focus();
+  await expect(brand).toBeFocused();
+  await brand.press("Enter");
+  await page.waitForTimeout(900);
+  const after = await page.evaluate(() => document.getElementById("side").scrollTop);
+  expect(after, "the chip should move the rail to its group").not.toBe(before);
+});
+
+test("the preview clips run without being touched, and the card still opens its page", async ({ page }) => {
+  // 「常に動いている様子が分かるような感じにして」 — no hover, no focus, and on
+  // a phone neither is available. Every clip in view is playing by itself.
+  await page.goto("/interactive.html", { waitUntil: "load" });
+  await page.waitForTimeout(1200);
+  const running = await page.$$eval("video.card-clip", (clips) =>
+    clips.filter((c) => {
+      const box = c.getBoundingClientRect();
+      const inView = box.bottom > -200 && box.top < window.innerHeight + 200;
+      return inView && !c.paused;
+    }).length);
+  expect(running, "a clip in view should be playing on its own").toBeGreaterThan(0);
+});
+
+test("a card opens the piece's own page, and the ↗ beside it opens the running thing", async ({ page, context }, testInfo) => {
+  test.skip(testInfo.project.name === "phone", "the rail is a fold-out menu on a phone");
+  await page.goto("/interactive.html", { waitUntil: "load" });
+
+  // The ↗ goes out, in a new tab, and leaves the page where it was. Whether
+  // the remote site answers is its business, not this test's — what matters is
+  // that a second tab opened and this one did not move.
+  const shortcut = page.locator("#side .side-live").first();
+  expect(await shortcut.getAttribute("href")).toMatch(/^https?:\/\//);
+  expect(await shortcut.getAttribute("target")).toBe("_blank");
+  const [opened] = await Promise.all([context.waitForEvent("page"), shortcut.click()]);
+  await opened.close();
+  await expect(page).toHaveURL(/\/interactive\.html$/);
+
+  // The row itself opens the detail page — Resona is playable, and used to skip it.
+  await page.locator('#side .side-item[href="/projects/resona.html"]').click();
+  await expect(page).toHaveURL(/\/projects\/resona\.html$/);
+  await expect(page.locator(".cs-strip-links a").first()).toHaveAttribute("href", "https://resonamotion.com/");
+});
+
+test("a category page lights up no work row, and never two at once", async ({ page }) => {
+  // A piece with no page of its own falls back to an anchor on its category
+  // page. The hash is stripped when the current row is worked out, so every
+  // such row in a category used to invert together the moment you opened it.
+  for (const path of ["/ai-products.html", "/interactive.html", "/all/", "/projects/resona.html"]) {
+    await page.goto(path, { waitUntil: "load" });
+    const count = await page.locator('#side .side-item[aria-current="page"]').count();
+    expect(count, `${path} marks ${count} rows as the current page`).toBeLessThanOrEqual(1);
   }
 });
 

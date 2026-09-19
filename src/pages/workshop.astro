@@ -1,9 +1,8 @@
 ---
-// Hand-built page, extracted by scripts/extract-page.mjs into
-// src/fragments/workshop.{html,css,json}. See src/components/FragmentPage.astro.
-import FragmentPage from "../components/FragmentPage.astro";
-import body from "../fragments/workshop.html?raw";
-import css from "../fragments/workshop.css?raw";
-import meta from "../fragments/workshop.json";
+// The workshops, as a bento (src/bento/pages/workshop.json). Was
+// src/fragments/workshop.{html,css,json} through FragmentPage; that file
+// carried its own :root, its own fonts and its own column width.
+import BentoDoc from "../components/BentoDoc.astro";
+import layout from "../bento/pages/workshop.json";
 ---
-<FragmentPage meta={meta} body={body} css={css} current="/workshop.html" />
+<BentoDoc layout={layout} current="/workshop.html" />

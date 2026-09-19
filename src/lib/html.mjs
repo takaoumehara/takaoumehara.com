@@ -29,9 +29,15 @@ export const plain = (value) => (value == null ? "" : typeof value === "string" 
 export const url = (path) => (/^(?:https?:|mailto:|tel:|#|\/)/.test(path) ? path : `/${path}`);
 
 /**
- * The inside of a card's media box: the still, plus the muted loop that plays
- * on hover or focus when the record carries one. The <video> is preload="none"
- * and aria-hidden — the still is what the page, and a screen reader, rely on.
+ * The inside of a card's media box: the still, plus the muted loop that runs on
+ * top of it when the record carries one. The loop plays by itself, all the
+ * time — it used to wait for a hover, which meant a page of moving work looked
+ * completely still until you touched it. src/scripts/site.js starts them and
+ * pauses the ones scrolled out of sight; a reader who asked for no motion gets
+ * the still and nothing else (src/styles/site.css).
+ *
+ * The <video> is aria-hidden: the still is what the page, and a screen reader,
+ * rely on.
  */
 export function mediaFill(item) {
   const image = item.assets?.thumb ?? item.assets?.hero;
@@ -47,5 +53,5 @@ export function mediaFill(item) {
   // can decode, and Safari falls through to the MP4.
   const sources = [["webm", "video/webm"], ["mp4", "video/mp4"]]
     .map(([format, type]) => `<source src="${esc(url(clip[format]))}" type="${type}">`).join("");
-  return `${still}<video class="card-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">${sources}</video>`;
+  return `${still}<video class="card-clip" muted loop playsinline autoplay preload="auto" tabindex="-1" aria-hidden="true">${sources}</video>`;
 }

@@ -1,9 +1,8 @@
 ---
-// Hand-built page, extracted by scripts/extract-page.mjs into
-// src/fragments/about.{html,css,json}. See src/components/FragmentPage.astro.
-import FragmentPage from "../components/FragmentPage.astro";
-import body from "../fragments/about.html?raw";
-import css from "../fragments/about.css?raw";
-import meta from "../fragments/about.json";
+// The page about the person, as a bento (src/bento/pages/about.json).
+// Was src/fragments/about.{html,css,json} through FragmentPage; that file
+// carried its own :root, its own fonts and its own column width.
+import BentoDoc from "../components/BentoDoc.astro";
+import layout from "../bento/pages/about.json";
 ---
-<FragmentPage meta={meta} body={body} css={css} current="/about.html" />
+<BentoDoc layout={layout} current="/about.html" />

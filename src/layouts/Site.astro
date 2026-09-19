@@ -29,12 +29,13 @@ interface Props {
   fonts?: string;             // a Google Fonts URL to use instead of the default
   footer?: boolean;           // false hides the site footer (a page that carries its own)
   lensSlug?: string;          // data-lens on <html>, kept for the tests and the Studio
+  chrome?: boolean;           // false drops the left rail — the landing page, which is all work and no navigation until you click
 }
 const {
   title, description = "", canonical, noindex = false, ogImage, ogType = "website",
   lang = "en", theme, htmlClass = "", bodyClass, current, stylesheets = [], style = "",
   fonts = "https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Noto+Sans+JP:wght@400&display=swap",
-  footer = true, lensSlug,
+  footer = true, lensSlug, chrome = true,
 } = Astro.props;
 
 const site = Astro.site ?? new URL("https://takaoumehara.com");
@@ -91,8 +92,8 @@ const themeLock = theme === "dark" ? "dark" : undefined;
   <ClientRouter />
 </head>
 <body class={bodyClass}>
-  <div class="shell">
-    <Sidebar current={current} />
+  <div class={chrome ? "shell" : "shell shell--bare"}>
+    {chrome && <Sidebar current={current} />}
     <div class="main" id="main">
       <slot />
       {footer && <Footer />}

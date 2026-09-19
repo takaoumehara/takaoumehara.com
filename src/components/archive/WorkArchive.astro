@@ -1,12 +1,14 @@
 ---
-// Unified Work Archive (/work): every evidence project, filterable by
+// Unified Work Archive (/all/): every evidence project, filterable by
 // discipline. Pulls directly from lib.evidence without duplicating project
-// data — src/lib/archive.mjs carries the slug → tag lists so a test can
-// import getFilterTags without loading this component. Cards render through
-// the shared PORTO ROCHA grid (src/components/grid/WorkGrid.astro).
+// data; the discipline tags come from src/categories/*.json through
+// src/lib/archive.mjs, so this bar and the rail can never disagree about what
+// a project is. Cards render through the shared PORTO ROCHA grid
+// (src/components/grid/WorkGrid.astro).
 import WorkGrid from "../grid/WorkGrid.astro";
 import { t } from "../../lib/html.mjs";
-import { getFilterTags, FILTERS } from "../../lib/archive.mjs";
+import { filterIndex, getFilterTags, FILTERS } from "../../lib/archive.mjs";
+import { getCategories } from "../../lib/site.mjs";
 
 interface Props { lib: any }
 const { lib } = Astro.props;
@@ -15,11 +17,14 @@ const { lib } = Astro.props;
 const items = [...lib.evidence.values()].filter(
   (item) => !item.hideInArchive && item.slug !== "kanji-puzzle"
 );
+// The discipline of a project is stated once, in src/categories/*.json.
+const tagsOf = ((index) => (item) => getFilterTags(item, index))(filterIndex(getCategories()));
+
 const counts = {};
 for (const f of FILTERS) {
-  counts[f.id] = items.filter((item) => getFilterTags(item).includes(f.id)).length;
+  counts[f.id] = items.filter((item) => tagsOf(item).includes(f.id)).length;
 }
-const entries = items.map((item) => ({ item, tags: getFilterTags(item).join(" ") }));
+const entries = items.map((item) => ({ item, tags: tagsOf(item).join(" ") }));
 ---
 <main class="cat-page" data-category="work-archive">
   <header class="cat-head">
