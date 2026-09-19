@@ -214,8 +214,62 @@ fragment が残っていない）。`tests/a11y.spec.mjs` に「5 枚とも暗�
 `tests/strategic-refinement.test.mjs` の「紙色を `:root` に持て」という検査は**目的と逆**だったので、
 「ページ固有の `:root` を持たない」に置き換えた。
 
+## 第 6 段（2026-09-19）— 詳細ページを必ず経由し、実サイトへは 1 クリックで
+
+本人:「すべてのプロジェクトは、プロジェクトディテールページが必要で、実際に飛ぶウェブサイトがあるなら、
+そこから実際のウェブサイトにリンクして飛ぶ。同時に、左のカードで、直接実践したウェブサイトに飛べる
+ようなリンクも用意しといてくれるといい」
+
+### 直したバグ 2 つ
+
+1. **詳細ページがあるのに誰も辿り着けない作品が 6 本あった。** `destination()` が
+   `item.playable && links.live` を `links.caseStudy` **より優先**していたので、Resona / Kao Game /
+   Emoji Blast / Marubatsu / Rakugaki Jam / Typespace は、レールでもトップでもカテゴリでも
+   カードを押すとデモに直行していた。詳細ページが常に勝つようにした。
+2. **カテゴリページで作品行が複数同時に反転していた**（本人の指摘「これ気持ち悪いことになってます」）。
+   自分のページを持たない作品（moime / MyBrainSpec）の行は `/ai-products.html#<slug>` というアンカーに
+   落ちる。現在地の判定はハッシュを落とすので、そのカテゴリページを開いた瞬間に**該当行が全部
+   現在地になっていた**。`data-match` は**自分のページを持つ行だけ**が持つようにした。
+
+### 入れたもの
+
+| 何 | どこ |
+|---|---|
+| `outwardLinks(item)` / `outwardLink(item)` — 作品そのものが置いてある場所（`live`/`repo`/`external` のみ） | `src/lib/site.mjs`。ラベルは既存の `CTA` を再利用、文言は書き足していない |
+| 詳細ページのリンク行 | `src/components/project/ProjectStrip.astro`。**手書き 42 枚とベントー 3 枚の共通部品**なので、ここ 1 か所で 45 枚全部に付いた。ページは 1 枚も触っていない |
+| カードの ↗ | レール `.side-live`（行の `<a>` の**外**・`<li>` の中。`<a>` の入れ子は不正）、グリッド `.card-live`（`<article>` の中なのでそのまま置ける）。`bindCards()` は元から `<a>` 内のクリックを無視するので JS は足していない |
+| `.card-live` の CSS の置き場 | `src/styles/site.css`。ランディングは `grid.css` を読まない（`.sr-only` と同じ教訓） |
+| moime の live URL | `src/data/ventures/moime.json`。`src/data/now.json` に本人が既に書いていた URL をレコードへ写しただけ |
+
+`src/bento/{ela-quests,resona}.json` の `title.links` から live URL を削除（ProjectStrip が
+レコードから出すので二重になる）。
+
+### プレビュー動画を常時再生に
+
+本人:「すべて同時にローディングされたら 動画が動いているような感じにしてください
+だから常に動いている様子が分かるような感じにして」
+
+ホバー待ちだと、動く作品が並んだページが**触るまで完全に静止して見える**。スマホにはホバーが無い。
+`autoplay` ＋ `preload="auto"`、`bindPreviews()` は `IntersectionObserver` で画面外だけ止める
+（位置は保持するので戻っても頭出しし直さない）。`prefers-reduced-motion` では CSS で隠したうえで
+**明示的に `pause()`** する — `display: none` の `<video>` もデコードは続くため。
+クリップは 5 本・1 コーデックあたり約 4MB。`tests/lens-system.test.mjs` の
+「autoplay してはならない」という検査は**逆向きに書き換えた**。
+
+テスト: `npm test` 165/165、`npm run test:e2e` 73 passed / 3 skipped。
+新規 `tests/project-links.test.mjs`（`links.caseStudy` の行き先が実在する・外向き URL を持つ 23 件の
+詳細ページにピルが出る・playable 6 本のレール行が詳細ページを指す・`<a>` の入れ子が無い・
+Kanji Puzzle がどこにも出ない・クリップが全部 autoplay）。
+`tests/a11y.spec.mjs` に「触らなくてもクリップが動く」「↗ は新しいタブ・行は詳細ページ」
+「カテゴリページで現在地が 2 つ以上にならない」を追加。
+
 ### 残り
 
+- ⚠️ **moime と MyBrainSpec の詳細ページはまだ無い。** ヒーロー画像を本人が用意する、で合意済み
+  （`public/assets/<slug>/hero.png`、横長 1600px 以上）。届いたら `src/bento/<slug>.json` を
+  `docs/bento-layout.md` §1 の型で組み、レコードに `links.caseStudy` を足すだけ。文章は
+  レコードの `summary` / `thesis` / `experiment` / `question` / `contribution.mine` で足りる。
+- **Kanji Puzzle は作らない**（本人「この作品はみせないで」）。カテゴリ未収録・`hideInArchive: true` のまま。
 - ⚠️ **`breakbias.html` はダークモードを無視したまま。** 人のページではないので PR-B では触っていない
   （方法論のページ。`intentfirst.html` は design-system のトークンに乗っているので正しく反転する）。
 - ページの統合はしていない。本人が「型を揃える／ページ数も減らす」で**前者**を選んだため

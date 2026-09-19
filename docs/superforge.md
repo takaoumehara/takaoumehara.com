@@ -68,10 +68,27 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
 - **Emoji Blast**（2026-09-12、本人）: 旧称 **EmojiDrop** から改名。
   `src/data/experiments/emoji-blast.json`。旧ホームページの保存版 `index-console.html` は
   スナップショットなので旧名のまま。
-- **カードのプレビュー動画**（2026-09-12）: 静止画（`assets.thumb`）が主、
-  `assets.preview` の H.264 MP4 はホバー／フォーカスで重ねて再生するだけ。
-  自動再生しない・`preload="none"`・`aria-hidden`・`prefers-reduced-motion` で無効。
-  素材のマスターは `assets/<slug>/masters/`（`.vercelignore` で配信対象外）。
+- **カードの行き先**（2026-09-19、本人）:「すべてのプロジェクトは、プロジェクトディテールページが必要で、
+  実際に飛ぶウェブサイトがあるなら、そこから実際のウェブサイトにリンクして飛ぶ。同時に、左のカードで、
+  直接実践したウェブサイトに飛べるようなリンクも用意しといてくれるといい」
+  - **カード本体のクリックは必ず詳細ページ。** `destination()`（`src/lib/site.mjs`）は `links.caseStudy` を
+    最優先する。以前は `playable && links.live` が勝っていたので、Resona / Kao Game / Emoji Blast /
+    Marubatsu / Rakugaki Jam / Typespace の 6 本は**詳細ページがあるのにどのカードもそこを指していなかった**。
+  - **実サイトへは 2 経路。** 詳細ページの `ProjectStrip` が `outwardLinks()` から出すピルと、
+    カード右上の **↗**（`.side-live` / `.card-live`）。↗ は `<a>` の入れ子にならないよう
+    レールでは行の `<a>` の**外**（`<li>` の中）に置く。`bindCards()` は `<a>` 内のクリックを既に無視する。
+  - 外向きと見なすのは `live` / `repo` / `external` の 3 種だけ。`caseStudy`・`gallery`・`editor` は自サイト。
+  - **自分のページを持たない作品の行は `data-match` を持たない。** 代替の `#slug` アンカーは
+    ハッシュを落とすと カテゴリページ自身になるので、同じカテゴリの該当行が**全部同時に反転していた**。
+- **カードのプレビュー動画**（2026-09-12、**2026-09-19 改訂**）: 静止画（`assets.thumb`）が主、
+  `assets.preview` の H.264 MP4 / WebM をその上で**常時再生する**。
+  本人（2026-09-19）:「すべて同時にローディングされたら 動画が動いているような感じにしてください
+  だから常に動いている様子が分かるような感じにして」。ホバー待ちだと、動く作品が並んだページが
+  触るまで完全に静止して見え、スマホにはホバー自体が無い。
+  `autoplay` ＋ `preload="auto"`、`muted` / `loop` / `playsinline` / `aria-hidden`。
+  画面外に出たものは `IntersectionObserver` で止める（位置は保持。戻っても頭出しし直さない）。
+  `prefers-reduced-motion` では CSS で隠し、`bindPreviews()` が明示的に `pause()` する
+  （`display: none` でもデコードは続くため）。素材のマスターは `assets/<slug>/masters/`（`.vercelignore` で配信対象外）。
 - **アクセシビリティ**（2026-09-12）: 基準は WCAG 2.2 AA。`npm run test:e2e` が強制する。
   - `--ink-dim` = `#76716a`（4.64:1）が**最も薄い文字色**。これより薄い色を文字に使わない。
   - **不透明度で文字を沈めない。** 静けさはインクの段（`ink → ink-mid → ink-dim`）で表す。

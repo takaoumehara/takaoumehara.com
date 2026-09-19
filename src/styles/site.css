@@ -458,3 +458,23 @@ html.lang-jp .cat-title { font-family: var(--ff-jp); font-weight: 400; }
 
 #wipe-curtain { display: none !important; }
 
+
+/* ── The shortcut past the detail page, on an image card ────────────────────
+   Same job as .side-live in the rail (src/styles/shell.css): the card opens the
+   piece's own page, this opens the running thing. It sits above .cat-card-cta /
+   .bento-hit, which cover the whole card, and bindCards() (src/scripts/site.js)
+   already ignores a click that landed inside an <a>. */
+.card-live {
+  position: absolute; top: 10px; right: 10px; z-index: 3;
+  display: grid; place-items: center; width: 36px; height: 36px;
+  border-radius: var(--r-pill);
+  background: rgba(0, 0, 0, 0.55); color: #ffffff;
+  font-size: 15px; line-height: 1; text-decoration: none;
+  backdrop-filter: blur(6px);
+  transition: background 140ms ease;
+}
+.card-live:hover { background: rgba(0, 0, 0, 0.82); }
+.card-live:focus-visible { outline: 2px solid #ffffff; outline-offset: 2px; }
+/* A card with no photograph is a pale lettered plate — a dark pill on it reads
+   the wrong way round, so it takes the ink treatment instead. */
+.grid-card:has(.card-art) .card-live { background: var(--pr-ink); color: var(--pr-canvas); }

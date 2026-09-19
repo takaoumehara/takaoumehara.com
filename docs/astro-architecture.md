@@ -160,6 +160,24 @@ tests/                       dist（.vercel/output/static）を検査
     **セル**で、リードの下・グリッドの上に自然に落ちる。隠れたセルはグリッドから抜けるだけで、
     `grid-auto-flow: row dense` が残りを詰め直すので穴にならない。
 
+
+- **カードの行き先と ↗**（2026-09-19）:
+  - `destination(item)`（`src/lib/site.mjs`）は **`links.caseStudy` を最優先**。カード本体は必ず詳細ページを開く。
+  - `outwardLinks(item)` が「作品そのものが置いてある場所」を返す（`live` / `repo` / `external` の 3 種だけ。
+    `gallery` / `editor` は自サイトのページなので入らない）。ラベルは同ファイルの `CTA` を再利用する。
+  - 詳細ページ側は `ProjectStrip.astro` がこれを出す。**手書きのケーススタディとベントーの両方が通る
+    唯一の共通部品**なので、ここに足すだけで全ページに付く。`cards.length` が 0 でもリンクがあれば帯を出す。
+  - カード側の ↗ は、レールでは行の `<a>` の**外**（`<li>` の中、`position: absolute`）に置く。
+    `<a>` の入れ子は不正。グリッドカードは `<article>` なので中に置ける。
+    `bindCards()`（`src/scripts/site.js`）は `event.target.closest("a, button, …")` で抜けるので、
+    「↗ を押したら実サイト、それ以外はカードの行き先」は追加の JS 無しで成立する。
+  - **`data-match` は自分のページを持つ行だけ。** 代替の `#slug` アンカーに `data-match` を付けると、
+    現在地の判定がハッシュを落とすせいで、そのカテゴリページで該当行が全部反転する（実際に起きた）。
+  - `.card-live` の CSS は `src/styles/site.css`。ランディングは `grid.css` を読まない（`.sr-only` と同じ罠）。
+- **プレビュー動画は常時再生**（2026-09-19）: `autoplay` ＋ `preload="auto"`。
+  `bindPreviews()` は `IntersectionObserver` で**画面外のものだけ止める**（`currentTime` は触らない。
+  スクロールで通り過ぎるたびに頭出しし直さないため）。`prefers-reduced-motion` では CSS で隠したうえで
+  明示的に `pause()` する — **`display: none` の `<video>` もデコードは続く。**
 - **Astro のフロントマターは、テンプレートリテラルの `${…}` の中に別のテンプレートリテラルを
   入れると解析できない**（`` `<dl>${rows.map((r) => `<div>${r}</div>`).join("")}</dl>` `` の形）。
   エラーは `Expected '}'` と出て、行番号は近くの `interface Props` を指すので気づきにくい。

@@ -227,31 +227,47 @@ function bindCards() {
 }
 function bindPreviews() {
   const still = window.matchMedia("(prefers-reduced-motion: reduce)");
-  if (still.matches) return;
+  if (still.matches) {
+    // The markup carries autoplay, so the browser has already started them by
+    // the time this runs. CSS hides them (src/styles/site.css), but a hidden
+    // <video> is still decoding — stop them properly.
+    document.querySelectorAll(".card-clip").forEach((clip) => clip.pause());
+    return;
+  }
+
+  // The clips run by themselves. Waiting for a hover meant a grid full of
+  // moving work sat completely still until you touched it, and on a phone
+  // there is no hover at all — so nobody ever saw that any of it moved.
+  //
+  // A clip that is scrolled out of sight is paused: five loops decoding at
+  // once is fine, five loops decoding where nobody can see them is a battery
+  // for nothing. It resumes exactly where it stopped, so a clip never restarts
+  // from frame one just because the page scrolled past it.
+  const play = (clip) => {
+    if (still.matches) return;
+    const started = clip.play();
+    if (started && started.catch) {
+      // Autoplay can be refused (a power-saving mode, a browser setting). The
+      // still underneath is the page either way, so there is nothing to undo.
+      started.catch(() => clip.classList.remove("is-playing"));
+    }
+    clip.classList.add("is-playing");
+  };
+
+  const watcher = typeof IntersectionObserver === "function"
+    ? new IntersectionObserver((entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) play(entry.target);
+          else entry.target.pause();
+        }
+      }, { rootMargin: "200px" })
+    : null;
+
   document.querySelectorAll(".card-clip").forEach((clip) => {
     if (clip.dataset.bound) return;
     clip.dataset.bound = "1";
-    const card = clip.closest(".proof-card, .exp-card, .cat-card, .grid-card") || clip.parentElement;
-    if (!card) return;
-    let playing = false;
-    const start = () => {
-      if (playing || still.matches) return;
-      playing = true;
-      const started = clip.play();
-      if (started && started.catch) started.catch(() => { playing = false; });
-      clip.classList.add("is-playing");
-    };
-    const stop = () => {
-      if (!playing) return;
-      playing = false;
-      clip.classList.remove("is-playing");
-      clip.pause();
-      clip.currentTime = 0;
-    };
-    card.addEventListener("pointerenter", start);
-    card.addEventListener("pointerleave", stop);
-    card.addEventListener("focusin", start);
-    card.addEventListener("focusout", stop);
+    if (watcher) watcher.observe(clip);
+    else play(clip);
   });
 }
 

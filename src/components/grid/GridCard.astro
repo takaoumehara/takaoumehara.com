@@ -10,9 +10,9 @@
 // `.cat-card-media`, `.cat-card-cta`, `data-href` and `tabindex="0"` — this
 // card carries all of them alongside the new `.grid-card` / `.grid-media`
 // names the grid stylesheet is written against.
-import { t, tb, mediaFill } from "../../lib/html.mjs";
+import { t, tb, plain, mediaFill } from "../../lib/html.mjs";
 import { cardName } from "../../lib/labels.mjs";
-import { destination } from "../../lib/site.mjs";
+import { destination, outwardLink } from "../../lib/site.mjs";
 
 interface Props {
   item: any;
@@ -21,6 +21,10 @@ interface Props {
 }
 const { item, category, tags } = Astro.props;
 const to = destination(item);
+// The card opens the detail page; this is the shortcut past it, to the thing
+// itself. bindCards() (src/scripts/site.js) already skips a click that landed
+// inside an <a>, so the two destinations never fight.
+const away = outwardLink(item);
 ---
 <article
   class="grid-card cat-card"
@@ -42,6 +46,11 @@ const to = destination(item);
       rel={to.external ? "noopener" : undefined}
     >
       <span class="sr-only" set:html={t(to.label)} />
+    </a>
+  )}
+  {away && (
+    <a class="card-live" href={away.url} target="_blank" rel="noopener" aria-label={`${plain(away.label)} — ${plain(item.shortTitle ?? item.title)}`}>
+      <span aria-hidden="true">↗</span>
     </a>
   )}
 </article>

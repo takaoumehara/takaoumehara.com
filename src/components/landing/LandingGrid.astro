@@ -7,9 +7,9 @@
 // which is why the shuffle is never seen happening. src/lib/bentoShapes.mjs
 // owns the pattern table both halves walk.
 import "../../styles/bento.css";
-import { t, mediaFill } from "../../lib/html.mjs";
+import { t, plain, mediaFill } from "../../lib/html.mjs";
 import { cardName } from "../../lib/labels.mjs";
-import { destination } from "../../lib/site.mjs";
+import { destination, outwardLink } from "../../lib/site.mjs";
 import { BENTO_PATTERNS, BENTO_OPENERS, cutBento, steadyPick } from "../../lib/bentoShapes.mjs";
 
 interface Props { entries: { item: any; category?: string }[] }
@@ -21,6 +21,8 @@ const cards = entries.map(({ item, category }, i) => ({
   item,
   category,
   to: destination(item),
+  // The shortcut past the detail page, to the running thing itself.
+  away: outwardLink(item),
   // The same still + hover-clip (or lettered art plate) every grid on the site
   // uses, so one card looks the same wherever it appears.
   media: mediaFill(item),
@@ -29,7 +31,7 @@ const cards = entries.map(({ item, category }, i) => ({
 ---
 <div class="bento-wrap">
   <div class="bento work-bento" id="work-bento">
-    {cards.map(({ item, category, to, media, shape }) => (
+    {cards.map(({ item, category, to, away, media, shape }) => (
       <article
         class="bento-cell grid-card cat-card"
         id={item.slug}
@@ -51,6 +53,12 @@ const cards = entries.map(({ item, category }, i) => ({
           <a class="bento-hit cat-card-cta" href={to.url}
              target={to.external ? "_blank" : undefined} rel={to.external ? "noopener" : undefined}>
             <span class="sr-only" set:html={t(to.label)} />
+          </a>
+        )}
+        {away && (
+          <a class="card-live" href={away.url} target="_blank" rel="noopener"
+             aria-label={`${plain(away.label)} — ${plain(item.shortTitle ?? item.title)}`}>
+            <span aria-hidden="true">↗</span>
           </a>
         )}
       </article>

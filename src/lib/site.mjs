@@ -90,16 +90,39 @@ const CTA = {
   external: { en: "Open ↗", jp: "開く ↗" },
 };
 
-/** The one destination a card (or a sidebar row) opens, and the words on it. Site paths are root-absolute. */
+/** The one destination a card (or a sidebar row) opens, and the words on it. Site paths are root-absolute.
+ *
+ *  The case study always wins. It used to lose to links.live for a `playable`
+ *  record, which meant the six playable pieces (Resona, Kao Game, Emoji Blast,
+ *  Marubatsu, Rakugaki Jam, Typespace) had a detail page nobody could reach —
+ *  every card on the site jumped straight past it to the demo. The demo is now
+ *  one click further on, twice over: outwardLinks() puts it on the detail page
+ *  (ProjectStrip) and on the card itself (the ↗ shortcut). */
 export function destination(item) {
   const l = item.links ?? {};
-  if (item.playable && l.live) return { url: l.live, label: CTA.live, external: true };
   if (l.caseStudy) return { url: `/${l.caseStudy}`, label: CTA.caseStudy, external: false };
-  if (l.live) return { url: l.live, label: CTA.external, external: true };
+  if (l.live) return { url: l.live, label: CTA.live, external: true };
   if (l.external) return { url: l.external, label: CTA.external, external: true };
   if (l.repo) return { url: l.repo, label: CTA.repo, external: true };
   return null;
 }
+
+/** Where the work itself lives, away from this site: the thing you can go and use.
+ *
+ *  Only the three outward kinds — a running site, its source, the place it was
+ *  published. links.gallery and links.editor are pages OF this site (werewolf's
+ *  two companions), so they are not in here; links.caseStudy is this site too. */
+export function outwardLinks(item) {
+  const l = item.links ?? {};
+  return [
+    l.live && { url: l.live, label: CTA.live },
+    l.repo && { url: l.repo, label: CTA.repo },
+    l.external && { url: l.external, label: CTA.external },
+  ].filter(Boolean);
+}
+
+/** The one outward link a card offers as a shortcut, or null. */
+export const outwardLink = (item) => outwardLinks(item)[0] ?? null;
 
 /** The evidence record whose links.caseStudy is "projects/<slug>.html", or null. Case-study page slugs and
  *  record slugs usually match (but not always — e.g. "festival-design" is the record "festival-reinvention"),

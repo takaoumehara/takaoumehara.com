@@ -190,6 +190,51 @@ test("the chips say how much work there is, and jump to it from the keyboard", a
   expect(after, "the chip should move the rail to its group").not.toBe(before);
 });
 
+test("the preview clips run without being touched, and the card still opens its page", async ({ page }) => {
+  // 「常に動いている様子が分かるような感じにして」 — no hover, no focus, and on
+  // a phone neither is available. Every clip in view is playing by itself.
+  await page.goto("/interactive.html", { waitUntil: "load" });
+  await page.waitForTimeout(1200);
+  const running = await page.$$eval("video.card-clip", (clips) =>
+    clips.filter((c) => {
+      const box = c.getBoundingClientRect();
+      const inView = box.bottom > -200 && box.top < window.innerHeight + 200;
+      return inView && !c.paused;
+    }).length);
+  expect(running, "a clip in view should be playing on its own").toBeGreaterThan(0);
+});
+
+test("a card opens the piece's own page, and the ↗ beside it opens the running thing", async ({ page, context }, testInfo) => {
+  test.skip(testInfo.project.name === "phone", "the rail is a fold-out menu on a phone");
+  await page.goto("/interactive.html", { waitUntil: "load" });
+
+  // The ↗ goes out, in a new tab, and leaves the page where it was. Whether
+  // the remote site answers is its business, not this test's — what matters is
+  // that a second tab opened and this one did not move.
+  const shortcut = page.locator("#side .side-live").first();
+  expect(await shortcut.getAttribute("href")).toMatch(/^https?:\/\//);
+  expect(await shortcut.getAttribute("target")).toBe("_blank");
+  const [opened] = await Promise.all([context.waitForEvent("page"), shortcut.click()]);
+  await opened.close();
+  await expect(page).toHaveURL(/\/interactive\.html$/);
+
+  // The row itself opens the detail page — Resona is playable, and used to skip it.
+  await page.locator('#side .side-item[href="/projects/resona.html"]').click();
+  await expect(page).toHaveURL(/\/projects\/resona\.html$/);
+  await expect(page.locator(".cs-strip-links a").first()).toHaveAttribute("href", "https://resonamotion.com/");
+});
+
+test("a category page lights up no work row, and never two at once", async ({ page }) => {
+  // A piece with no page of its own falls back to an anchor on its category
+  // page. The hash is stripped when the current row is worked out, so every
+  // such row in a category used to invert together the moment you opened it.
+  for (const path of ["/ai-products.html", "/interactive.html", "/all/", "/projects/resona.html"]) {
+    await page.goto(path, { waitUntil: "load" });
+    const count = await page.locator('#side .side-item[aria-current="page"]').count();
+    expect(count, `${path} marks ${count} rows as the current page`).toBeLessThanOrEqual(1);
+  }
+});
+
 test("the preview clips do not play for a reader who asked for reduced motion", async ({ browser }) => {
   const context = await browser.newContext({ reducedMotion: "reduce" });
   const page = await context.newPage();

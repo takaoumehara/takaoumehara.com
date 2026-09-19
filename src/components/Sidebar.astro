@@ -10,8 +10,8 @@
 // built HTML and again in src/scripts/site.js after every swap, from the
 // data-match paths each link carries. src/scripts/site.js also owns the
 // chips' jump, the first-visit reveal, and keeping the current row in view.
-import { getLibrary, orderedCategories, destination, samePage } from "../lib/site.mjs";
-import { t, tb, esc, url } from "../lib/html.mjs";
+import { getLibrary, orderedCategories, destination, outwardLink, samePage } from "../lib/site.mjs";
+import { t, tb, esc, plain, url } from "../lib/html.mjs";
 
 interface Props { current?: string }
 const { current = Astro.url.pathname } = Astro.props;
@@ -40,9 +40,19 @@ const groups = categories.map((category) => {
   const items = category.groups.flatMap((g) => g.items).map((id) => lib.evidence.get(id)).filter(Boolean)
     .map((item) => {
       const to = destination(item);
+      // A piece with nowhere of its own to go falls back to an anchor on its
+      // category page. That anchor is NOT "the page you are standing on": the
+      // hash is stripped when the current row is worked out, so every such row
+      // in a category used to light up at once the moment you opened that
+      // category page — two inverted cards, or more. Only a row with a page of
+      // its own gets data-match.
+      const own = to && !to.external ? to.url : null;
       const href = to ? to.url : `/${category.output}#${item.slug}`;
-      const here = to && !to.external && samePage(to.url, current);
-      return { item, to, href, here };
+      const here = own !== null && samePage(own, current);
+      // The row opens the detail page; the ↗ beside it opens the work itself.
+      // It sits OUTSIDE the row's <a> — a link inside a link is not markup —
+      // so .side-item keeps its selectors, its aria-current and its shape.
+      return { item, to, away: outwardLink(item), own, href, here };
     });
   return { category, items };
 });
@@ -125,10 +135,10 @@ const thumb = (item) => {
             <span class="side-count" data-count={items.length}>{items.length}</span>
           </summary>
           <ul>
-            {items.map(({ item, to, href, here }) => (
-              <li>
+            {items.map(({ item, to, away, own, href, here }) => (
+              <li class={away ? "side-row side-row--live" : "side-row"}>
                 <a class="side-item" href={href}
-                   data-match={to?.external ? undefined : href}
+                   data-match={own ?? undefined}
                    aria-current={cur(here)}
                    target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>
                   <span class="side-thumb" set:html={thumb(item)} />
@@ -137,6 +147,12 @@ const thumb = (item) => {
                     <span class="side-line" set:html={t(item.cardLine ?? item.summary)} />
                   </span>
                 </a>
+                {away && (
+                  <a class="side-live" href={away.url} target="_blank" rel="noopener"
+                     aria-label={`${plain(away.label)} — ${plain(item.shortTitle ?? item.title)}`}>
+                    <span aria-hidden="true">↗</span>
+                  </a>
+                )}
               </li>
             ))}
           </ul>
