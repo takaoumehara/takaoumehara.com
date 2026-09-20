@@ -1,0 +1,76 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   The landing page: the name and the sentence, at the size they deserve, and
+   then every piece of work as a bento that is laid out differently on every
+   reload (src/scripts/bento.js).
+
+   No rail here. The rail — and the filter row on /all/ — are what you get on
+   the first click; that is the whole move of this page.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.landing { font-family: var(--pr-ff); font-weight: var(--fw); color: var(--pr-ink); }
+html.lang-jp .landing { font-family: var(--pr-ff-jp); }
+
+.landing-head {
+  position: relative;
+  padding: clamp(24px, 6vh, 72px) var(--bento-gap) clamp(28px, 6vh, 64px);
+  display: grid;
+  gap: clamp(16px, 2.4vw, 36px);
+}
+/* The title belongs to the name, not to the claim below it. */
+.landing-name + .landing-role { margin-top: clamp(-28px, -1.8vw, -10px); }
+
+/* Theme and language, out of the way at the top right. */
+.landing-ctl {
+  position: absolute; top: var(--bento-gap); right: var(--bento-gap);
+  display: flex; align-items: center; gap: var(--sp-1);
+}
+
+.landing-name {
+  margin: 0;
+  font-family: var(--pr-ff-display); font-weight: 400;
+  font-size: clamp(38px, 9.2vw, 168px);
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+}
+/* The job title, between the name and the claim. profile.tagline — the same
+   string the About page's kicker carries, so the two pages agree. */
+.landing-role {
+  margin: 0;
+  font-size: clamp(14px, 1.3vw, 20px);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: var(--pr-ink-2);
+}
+
+.landing-line {
+  margin: 0;
+  max-width: 22ch;
+  font-family: var(--pr-ff-display); font-weight: 400;
+  font-size: clamp(22px, 3.4vw, 58px);
+  line-height: 1.1;
+  letter-spacing: var(--tracking-display);
+}
+html.lang-jp .landing-line { font-family: var(--pr-ff-jp); max-width: 20ch; line-height: 1.35; }
+
+/* The way in: the archive with both lists, and the pages about the person. */
+.landing-ways { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; }
+.landing-ways a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: 0 var(--sp-4);
+  border-radius: var(--r-pill); background: var(--pr-card); color: var(--pr-ink);
+  font-size: var(--text-body); text-decoration: none;
+  transition: background 140ms ease;
+}
+.landing-ways a:hover { background: var(--pr-card-2); }
+.landing-ways a:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+.landing-ways a.is-primary { background: var(--pr-ink); color: var(--pr-canvas); }
+.landing-ways a.is-primary:hover { background: var(--pr-ink); opacity: 0.86; }
+
+/* The work. One reload to the next, the same cards in a different order at
+   different sizes — the grid is re-cut client-side before first paint. */
+.work-bento .bento-cell { background: var(--pr-card); }
+
+@media (max-width: 640px) {
+  .landing-head { padding-top: 56px; }
+  .landing-name { line-height: 0.98; }
+}

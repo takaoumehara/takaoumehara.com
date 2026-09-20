@@ -7,35 +7,64 @@
    scroll position, folds and clock survive a click.
    ═══════════════════════════════════════════════════════════════════════════ */
 .shell { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; align-items: start; }
+/* The landing page has no rail: it is all work, and the rail arrives on the
+   first click (src/pages/index.astro). */
+.shell--bare { grid-template-columns: minmax(0, 1fr); }
 .main { min-width: 0; }
 
 .side {
   position: sticky; top: 0; height: 100vh; overflow-y: auto; overscroll-behavior: contain;
   background: var(--pr-canvas); color: var(--pr-ink); font-family: var(--pr-ff); font-weight: var(--fw);
   border-right: 1px solid var(--pr-line);
-  padding: var(--sp-3) var(--sp-3) var(--sp-5);
+  padding: var(--sp-5) var(--sp-3) var(--sp-5);
   font-size: var(--text-body); line-height: var(--leading-body);
-  scrollbar-width: thin;
   view-transition-name: side;
+  /* The reference shows one scrollbar, at the far right of the window. The rail
+     scrolls on its own but never draws a second one. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.side::-webkit-scrollbar { width: 0; height: 0; display: none; }
 .side a { color: inherit; text-decoration: none; }
 .side *, .side *::before, .side *::after { box-sizing: border-box; }
 .side button { font: inherit; color: inherit; }
 html.lang-jp .side { font-family: var(--pr-ff-jp); }
 
-/* A grey block: the About card and every project row */
-.side-about, .side-item { background: var(--pr-card); border-radius: var(--r); }
+/* A grey block: every row in the rail */
+.side-item { background: var(--pr-card); border-radius: var(--r); }
 
-/* ── Controls: Show all projects · theme switch · language ─────────────── */
-.side-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
-.side-all {
-  display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--sp-3);
-  border-radius: var(--r-pill); background: var(--pr-card); font-size: var(--text-body);
-  transition: background 140ms ease;
+/* ── The logo: the one way back to the top ──────────────────────────────── */
+.side-head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--sp-2); }
+.side-logo { display: block; }
+.side-logo-en {
+  display: block; font-family: var(--pr-ff-display); font-size: var(--text-display);
+  line-height: var(--leading-display); letter-spacing: var(--tracking-display); text-transform: uppercase;
 }
-.side-all:hover { background: var(--pr-card-2); }
-.side-all[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
-.side-ctl { display: flex; align-items: center; gap: var(--sp-1); }
+.side-logo-jp {
+  display: block; margin-top: 2px; font-family: var(--pr-ff-jp);
+  font-size: var(--text-sm); line-height: 1.3; color: var(--pr-ink-2); letter-spacing: 0.06em;
+}
+.side-logo:hover .side-logo-en { text-decoration: underline; text-underline-offset: 4px; }
+.side-logo:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 3px; border-radius: 4px; }
+.side-ctl { display: flex; align-items: center; gap: var(--sp-1); flex: none; }
+
+.side-lede { margin: var(--sp-3) 0 0; font-size: var(--text-body); line-height: var(--leading-body); color: var(--pr-ink-2); }
+
+/* ── Chips: how much work there is, and the way into it ─────────────────── */
+.side-chips { display: flex; flex-wrap: wrap; gap: 4px; margin: var(--sp-3) 0 var(--sp-1); }
+.side-chip {
+  appearance: none; cursor: pointer; border: 0; font: inherit; color: var(--pr-ink);
+  display: inline-flex; align-items: center; gap: 5px; min-height: 28px; padding: 0 9px;
+  border-radius: var(--r-pill); background: var(--pr-card); font-size: var(--text-xs); line-height: 1;
+  text-decoration: none; transition: background 140ms ease, color 140ms ease;
+}
+.side-chip:hover { background: var(--pr-card-2); }
+.side-chip:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+.side-chip[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.side-chip-n { font-variant-numeric: tabular-nums; color: var(--pr-ink-2); }
+.side-chip[aria-current="page"] .side-chip-n { color: inherit; opacity: 0.72; }
+/* The chip whose group the rail is looking at. */
+.side-chip.is-near { background: var(--pr-card-2); }
 
 .side-theme {
   appearance: none; cursor: pointer; position: relative; width: 51px; height: 31px; padding: 0; border: 0;
@@ -48,7 +77,7 @@ html.lang-jp .side { font-family: var(--pr-ff-jp); }
 .side-theme[aria-checked="true"] { background: var(--pr-blue-fill); }
 .side-theme[aria-checked="true"]::after { transform: translateX(20px); }
 .side-theme:disabled { cursor: default; opacity: 0.55; }
-.side-theme:focus-visible, .side-lang:focus-visible, .side-all:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+.side-theme:focus-visible, .side-lang:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
 
 .side-lang {
   appearance: none; cursor: pointer; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
@@ -57,23 +86,8 @@ html.lang-jp .side { font-family: var(--pr-ff-jp); }
 .side-lang:hover { background: var(--pr-card-2); }
 html[data-lang-fixed] .side-lang { display: none; }
 
-/* ── Wordmark and the clock ─────────────────────────────────────────────── */
-.side-head { text-align: center; padding: 56px 0 48px; }
-.side-wordmark {
-  display: inline-block; font-family: var(--pr-ff-display); font-size: var(--text-display); line-height: var(--leading-display);
-  letter-spacing: var(--tracking-display); text-transform: uppercase;
-}
-.side-clock { margin: 44px 0 0; font-size: var(--text-lg); line-height: var(--leading-lg); color: var(--pr-ink); font-variant-numeric: tabular-nums; }
+.side-clock { margin: var(--sp-3) 0 0; font-size: var(--text-body); line-height: 1.35; color: var(--pr-ink-2); font-variant-numeric: tabular-nums; }
 .side-clock > span { display: block; }
-
-/* ── About ──────────────────────────────────────────────────────────────── */
-.side-about { padding: var(--sp-3); margin-bottom: var(--sp-1); }
-.side-about .side-label { display: inline-block; font-size: var(--text-body); color: var(--pr-ink); }
-.side-about .side-label:hover { text-decoration: underline; text-underline-offset: 3px; }
-.side-about p { margin: 4px 0 0; font-size: var(--text-body); line-height: var(--leading-body); color: var(--pr-ink-2); }
-.side-pages { display: flex; flex-wrap: wrap; gap: 4px var(--sp-2); margin-top: var(--sp-2); }
-.side-pages a { font-size: var(--text-body); color: var(--pr-blue); }
-.side-pages a:hover, .side-pages a[aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ── The work, by category ──────────────────────────────────────────────── */
 .side-work { display: flex; flex-direction: column; }
@@ -94,11 +108,46 @@ html[data-lang-fixed] .side-lang { display: none; }
   transition: background 140ms ease;
 }
 .side-item:hover { background: var(--pr-card-2); }
-.side-item[aria-current="page"] { background: var(--pr-card-2); }
-.side-item[aria-current="page"] .side-name { color: var(--pr-blue); }
+/* Where you are. A blue word was too quiet to find in a list this long, so the
+   whole card turns over. src/scripts/site.js keeps it in view. */
+.side-item[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.side-item[aria-current="page"] .side-name { color: var(--pr-canvas); }
+.side-item[aria-current="page"] .side-line { color: rgba(255, 255, 255, 0.72); }
+html[data-theme="dark"] .side-item[aria-current="page"] .side-line { color: rgba(0, 0, 0, 0.66); }
+.side-item[aria-current="page"] .side-thumb--glyph { background: rgba(255, 255, 255, 0.16); color: var(--pr-canvas); }
+html[data-theme="dark"] .side-item[aria-current="page"] .side-thumb--glyph { background: rgba(0, 0, 0, 0.16); }
 .side-thumb { width: 64px; aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--pr-canvas); display: grid; place-items: center; }
 .side-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .side-thumb .side-art { font-size: 9px; letter-spacing: 0.04em; text-align: center; line-height: 1.1; padding: 4px; color: var(--pr-ink-2); text-transform: uppercase; }
+.side-thumb--glyph {
+  display: grid; place-items: center; background: var(--pr-canvas);
+  font-size: 22px; line-height: 1; color: var(--pr-ink-2);
+}
+.side-item--page { min-height: 64px; }
+.side-item--page .side-thumb { width: 44px; }
+.side-item--page { grid-template-columns: 44px minmax(0, 1fr); }
+
+/* ── The shortcut past the detail page ──────────────────────────────────────
+   A row opens the piece's own page; this opens the running thing itself. It is
+   a sibling of .side-item, not a child — a link inside a link is not markup —
+   laid over the row's top-right corner. Always visible: the last time an
+   affordance here was only discoverable on hover, nobody found it. */
+.side-row { position: relative; }
+.side-row--live .side-item { padding-right: 44px; }
+.side-live {
+  position: absolute; top: 6px; right: 6px; z-index: 1;
+  display: grid; place-items: center; width: 32px; height: 32px;
+  border-radius: var(--r-pill);
+  background: var(--pr-canvas); color: var(--pr-ink-2);
+  font-size: 14px; line-height: 1; text-decoration: none;
+  transition: background 140ms ease, color 140ms ease;
+}
+.side-live:hover { background: var(--pr-ink); color: var(--pr-canvas); }
+.side-live:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+/* On the row you are standing on, the card is inverted — the shortcut inverts with it. */
+.side-item[aria-current="page"] + .side-live { background: rgba(255, 255, 255, 0.16); color: var(--pr-canvas); }
+html[data-theme="dark"] .side-item[aria-current="page"] + .side-live { background: rgba(0, 0, 0, 0.16); }
+
 .side-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .side-name { font-size: var(--text-body); line-height: 1.25; color: var(--pr-ink); }
 .side-line { font-size: var(--text-sm); line-height: 1.3; color: var(--pr-ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -106,8 +155,35 @@ html[data-lang-fixed] .side-lang { display: none; }
 .side-foot { margin: var(--sp-4) 0 0; padding: var(--sp-3) 0 0; font-size: var(--text-sm); color: var(--pr-ink-2); border-top: 1px solid var(--pr-line); }
 .side-foot a { color: var(--pr-blue); text-decoration: underline; text-underline-offset: 3px; }
 
-/* The rail is its own view-transition group and never animates. */
+/* ── The first visit: the categories open one after another ──────────────
+   So the size of the work registers once, without anyone having to open five
+   folds by hand. After that the rail is simply open (src/scripts/site.js
+   remembers, in localStorage "tu-rail-seen"). */
+/* Movement only — never opacity. A row fading in is a row whose text sits on a
+   half-transparent background, and axe reads that as a contrast failure (it
+   did, intermittently, depending on when the sweep caught the stagger). The
+   fold opening is the reveal; the slide just gives it a direction. */
+.side-group.is-revealing > ul { animation: side-reveal 260ms cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes side-reveal {
+  from { transform: translateY(-8px); }
+  to { transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .side-group.is-revealing > ul { animation: none; }
+}
+
+/* The rail is its own view-transition group and never animates — it is the one
+   thing on the site that stays still while pages change under it. */
 ::view-transition-group(side), ::view-transition-old(side), ::view-transition-new(side) { animation: none; }
+
+/* Except once: coming off the landing page, where there was no rail a moment
+   ago, it slides in from the left rather than appearing. :only-child is how a
+   view transition says "there is no old image of this element". */
+::view-transition-new(side):only-child { animation: side-enter 320ms cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes side-enter { from { transform: translateX(-100%); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-new(side):only-child { animation-duration: 1ms; }
+}
 
 /* ── Phones and narrow tablets: a top bar, the rail behind a button ──────── */
 .side-top { display: none; }
@@ -116,7 +192,7 @@ html[data-lang-fixed] .side-lang { display: none; }
   .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-right: 0; border-bottom: 1px solid var(--pr-line); padding: var(--sp-2) var(--sp-3); }
   .side.is-open { overflow-y: auto; }
   .side-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 40px; }
-  .side-top .side-wordmark { font-size: var(--text-lg); }
+  .side-top .side-logo-en { font-size: var(--text-lg); }
   .side-toggle {
     display: inline-flex; align-items: center; appearance: none; cursor: pointer; border: 0;
     background: var(--pr-card); border-radius: var(--r-pill); font-size: var(--text-body); padding: 0 var(--sp-3); min-height: 40px;
@@ -124,9 +200,9 @@ html[data-lang-fixed] .side-lang { display: none; }
   .side-toggle[aria-expanded="true"] { background: var(--pr-ink); color: var(--pr-canvas); }
   .side-panel { display: none; padding-top: var(--sp-3); }
   .side.is-open .side-panel { display: block; }
-  .side-head { padding: var(--sp-5) 0; }
-  .side-head .side-wordmark { display: none; }
-  .side-clock { margin-top: 0; }
+  .side-head { padding: var(--sp-3) 0 0; }
+  .side-head .side-logo { display: none; }
+  .side-head { justify-content: flex-end; }
   .side-item { min-height: 72px; }
   .side-item .side-thumb { width: 48px; }
   .side-item { grid-template-columns: 48px minmax(0, 1fr); }

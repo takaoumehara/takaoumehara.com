@@ -35,11 +35,18 @@ src/
   layouts/Site.astro         head・サイドバー・右カラム・フッター・共通スクリプト。全ページがこれを使う
   components/
     Sidebar.astro            カテゴリ別の作品一覧（src/categories）・About カード・ページ nav・言語スイッチ
+    bento/                   BentoPage / BentoCell — src/bento/*.json を描く
+    BentoDoc.astro           人のページの通り道。src/bento/pages/*.json を BentoPage に渡すだけ。
+                             `stylesheets` も `fonts` 上書きも持たない（下の「人のページ」を参照）
+    landing/                 Landing / LandingGrid — サイドバーなしのトップ（chrome={false}）
     lens/                    Hero / Proof / Exploring / Experiments / Ventures / Ideas / Tools / CareerArc / Capabilities / Fit / Studio / Contact / LensPage
     category/                CategoryPage / Card
     archive/ now/            Work Archive / Living Lab Bench
-  case-studies/<slug>.html   ケーススタディ本文（nav〜footer の間）。<slug>.css = 旧 head の <style>。<slug>.json = title / description / og / 追加 CSS
-  fragments/<name>.html      一般ページ（about など）の本文。同じ 3 点セット
+  bento/<slug>.json          ベントーで描くケーススタディのレイアウト（`docs/bento-layout.md`）。このファイルがある slug は case-studies/ を持たない
+  bento/pages/<name>.json    人のページ（about / publications / workshop / contact）のレイアウト。slug 空間が分かれているので
+                             ケーススタディと名前が衝突しない（`src/lib/bento.mjs` は別の glob で読む）
+  case-studies/<slug>.html   まだ手書きのケーススタディ本文（nav〜footer の間）。<slug>.css = 旧 head の <style>。<slug>.json = title / description / og / 追加 CSS
+  fragments/<name>.html      まだ手書きの一般ページ（404 / breakbias / intentfirst）の本文。同じ 3 点セット
   pages/
     index.astro  ja/index.astro  lens/[slug]/index.astro  lens/preview.astro (prerender=false, POST)
     interactive.astro ai-products.astro ai-tools.astro work.astro brand.astro   ← src/categories/*.json
@@ -108,6 +115,69 @@ tests/                       dist（.vercel/output/static）を検査
 - **手書きページの末尾 `<script>` は、ページ固有の IIFE と共通ボイラープレート（言語切替・モバイル nav）が 1 つの `<script>` に融合していることがある**（werewolf.html のカードデッキ）。`scripts/extract-page.mjs` はトップレベルの `})();` で分割し、ボイラープレート部分だけ捨てる。main 側で手書きページが更新されたら、そのファイルを `projects/` に置いて抽出し直す（ROOT_PAGES を空にしたコピーで 1 件だけ回せる）。
 - 抽出し直した本文に `data-vt-hero` が無いと `tests/page-transitions.test.mjs` が落ちる。ヒーローの media 要素に付け直す。
 
+- **レールの落とし穴**（2026-09-18）:
+  - 現在行への追従と `astro:after-swap` のスクロール位置復元は**互いを打ち消す**。復元は
+    「現在行が変わっていないとき」だけにする。変わったときは `revealCurrent()` に任せる。
+  - Web フォントは初回描画の後に届き、45 行の名前と 1 行説明を折り返し直す。テストでは
+    レールの `scrollHeight` が 3579 → 5387 に伸びた。スクロール先は `document.fonts.ready` で測り直す。
+  - `scrollIntoView()` は**使えない**。スクロール可能な祖先を全部動かすのでページごと動く。
+    レールの中だけを動かすには `side.scrollTo()` に手で計算した位置を渡す。
+  - 出現アニメーションに `opacity` を使わない。半透明の行に乗った文字を axe が contrast 違反として拾う。
+    `transform` だけで動かす。
+
+- **ベントーの落とし穴**（2026-09-17、`docs/bento-layout.md` の実装メモ）:
+  - `grid-auto-rows: minmax(len, auto)` の軌道は**確定していない**ので、セルの子の `height: 100%` は解決しない
+    （動画がセルを埋めず、キャプションだけ下に残る、が実際に起きた）。**写真と動画はセルに対して
+    `position: absolute; inset: 0`**、文字のブロックは `.bento-cell { display: flex; flex-direction: column }` の
+    `flex: 1` で伸ばす。
+  - コンテナ問い合わせ単位はそのコンテナ自身では使えない。`.bento-wrap`（`container-type: inline-size`）と
+    `.bento`（`100cqw` を読む）を分けているのはそのため。
+  - `display` を指定する**子孫** `span` セレクタは `.t-en` / `.t-jp` に届く（pin にある通り）。
+    `.bento-caption span` で英語と日本語が同時に出た。`> span` にする。
+  - `.sr-only` は `grid.css` にしかなかった。ベントーのページは読まないので `bento.css` にも置いてある。
+  - `<iframe>` は `title` が無いと axe が落とす。`src/lib/bento.mjs` がビルド時に検査する。
+  - **レイアウトの文字列は「言葉」であって markup ではない。** `t()` / `tb()`（`src/lib/html.mjs`）は
+    EN / JP の両側を `esc()` に通すので、JSON に `<em>` を書くと画面にそのまま `<em>` と出る。
+    手書きページから移すときは強調タグを落とす。`tests/bento-pages.test.mjs` が見張っている。
+  - セルの幅は **{3, 4, 6, 12} だけ**。1100px 以下でグリッドは 6 列に落ちるので、8 のような span は軌道からはみ出す。
+
+- **人のページ 5 枚（about / now / publications / workshop / contact ＝ work-with-me）**（2026-09-18）:
+  7 枚とも `FragmentPage.astro` の素通しで、**ページ固有 CSS を丸ごと**抱えていた。ラッパーも `max-width` も
+  型の階段も無いので、ビューポートのどこから本文が始まるかも文字サイズも 5 枚ばらばらだった。
+  さらに実害のあるバグが 1 つ隠れていた:
+  - `public/assets/design-system.css` は `html[data-theme="light"]`（詳細度 0-1-1）で `--bg` / `--ink` を定義し、
+    `html[data-theme="dark"]` では **`--nav-*` しか定義していない**。
+  - 一方 fragment の CSS は `:root`（0-1-0）に `--bg: #f3f2ee` を書く。
+  - 結果、明モードでは design-system が勝ち（各ページが指定した紙色は死んでいた）、暗モードでは
+    暗いブロックが無いので fragment の**明るい `:root` が源順で勝つ** → **About / Writing / Workshops /
+    Work with me はダークモードのスイッチを無視していた**。
+  5 枚を `BentoDoc.astro` 経由（`stylesheets` 無し・`fonts` 上書き無し）にしたので design-system.css が外れ、
+  不揃いとこのバグが同時に消えた。`tests/a11y.spec.mjs` が「5 枚とも暗くなる」と「5 枚とも `<h1>` の位置・
+  字詰め・ウェイトが同じ」を測っている。
+  ⚠️ `breakbias.html` は**人のページではない**ので触っていない。**ダークモードを無視したまま残っている。**
+  - `/now/` だけはレイアウトを JSON で持たない。カードが `src/data/now.json` そのものなので、
+    ビルド時に行を切り出す（3 枚ずつ、端数は w12 か w6×2）。絞り込みのバーは `kind: "filters"` の
+    **セル**で、リードの下・グリッドの上に自然に落ちる。隠れたセルはグリッドから抜けるだけで、
+    `grid-auto-flow: row dense` が残りを詰め直すので穴にならない。
+
+
+- **カードの行き先と ↗**（2026-09-19）:
+  - `destination(item)`（`src/lib/site.mjs`）は **`links.caseStudy` を最優先**。カード本体は必ず詳細ページを開く。
+  - `outwardLinks(item)` が「作品そのものが置いてある場所」を返す（`live` / `repo` / `external` の 3 種だけ。
+    `gallery` / `editor` は自サイトのページなので入らない）。ラベルは同ファイルの `CTA` を再利用する。
+  - 詳細ページ側は `ProjectStrip.astro` がこれを出す。**手書きのケーススタディとベントーの両方が通る
+    唯一の共通部品**なので、ここに足すだけで全ページに付く。`cards.length` が 0 でもリンクがあれば帯を出す。
+  - カード側の ↗ は、レールでは行の `<a>` の**外**（`<li>` の中、`position: absolute`）に置く。
+    `<a>` の入れ子は不正。グリッドカードは `<article>` なので中に置ける。
+    `bindCards()`（`src/scripts/site.js`）は `event.target.closest("a, button, …")` で抜けるので、
+    「↗ を押したら実サイト、それ以外はカードの行き先」は追加の JS 無しで成立する。
+  - **`data-match` は自分のページを持つ行だけ。** 代替の `#slug` アンカーに `data-match` を付けると、
+    現在地の判定がハッシュを落とすせいで、そのカテゴリページで該当行が全部反転する（実際に起きた）。
+  - `.card-live` の CSS は `src/styles/site.css`。ランディングは `grid.css` を読まない（`.sr-only` と同じ罠）。
+- **プレビュー動画は常時再生**（2026-09-19）: `autoplay` ＋ `preload="auto"`。
+  `bindPreviews()` は `IntersectionObserver` で**画面外のものだけ止める**（`currentTime` は触らない。
+  スクロールで通り過ぎるたびに頭出しし直さないため）。`prefers-reduced-motion` では CSS で隠したうえで
+  明示的に `pause()` する — **`display: none` の `<video>` もデコードは続く。**
 - **Astro のフロントマターは、テンプレートリテラルの `${…}` の中に別のテンプレートリテラルを
   入れると解析できない**（`` `<dl>${rows.map((r) => `<div>${r}</div>`).join("")}</dl>` `` の形）。
   エラーは `Expected '}'` と出て、行番号は近くの `interface Props` を指すので気づきにくい。

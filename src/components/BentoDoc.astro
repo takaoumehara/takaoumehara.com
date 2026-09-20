@@ -1,0 +1,37 @@
+---
+// The one shim every page about the person goes through: a layout from
+// src/bento/pages/<name>.json, drawn by BentoPage, on the site's own tokens.
+//
+// This replaces FragmentPage for these pages, and the difference is the point.
+// FragmentPage is a pass-through: it printed a chunk of hand-built HTML and
+// injected that page's own CSS verbatim. Each of those stylesheets redefined
+// :root, so no two pages started at the same place on the screen (--col was
+// 1200 / 1140 / 1120, the first band's top padding 48 to 110px, h1 weights 700
+// and 800 against the site's one weight) — and because design-system.css
+// defines a light :root and only patches --nav-* under [data-theme="dark"],
+// four of them ignored the dark-mode switch altogether. Nothing here loads
+// design-system.css, overrides a font, or carries a :root, so all of that goes
+// away at once.
+import Site from "../layouts/Site.astro";
+import BentoPage from "./bento/BentoPage.astro";
+
+interface Props {
+  layout: any;
+  current: string;   // this page's own site-relative path, e.g. "/about.html"
+}
+const { layout, current } = Astro.props;
+const seo = layout.seo ?? {};
+// Same reasoning as FragmentPage: Astro.url.pathname is not reliable from
+// inside a shared component, so the canonical is computed from `current`.
+const canonical = seo.canonical ?? `https://takaoumehara.com${current}`;
+---
+<Site
+  title={seo.title}
+  description={seo.description}
+  canonical={canonical}
+  ogImage={seo.ogImage}
+  ogType={seo.ogType}
+  current={current}
+>
+  <BentoPage layout={layout} item={null} />
+</Site>

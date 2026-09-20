@@ -1,0 +1,44 @@
+---
+// The landing page. Two things, in this order: who this is and what he does,
+// at the size that claim deserves; then all of the work, as a bento that is
+// re-cut on every reload.
+//
+// There is no rail and no filter row here on purpose. Those are the two lists
+// — the work by category on the left, the disciplines across the top of /all/
+// — and they are what the first click gets you.
+import "../../styles/landing.css";
+import LandingGrid from "./LandingGrid.astro";
+import { t, tb } from "../../lib/html.mjs";
+
+interface Props { profile: any; entries: any[] }
+const { profile, entries } = Astro.props;
+
+const WAYS = [
+  { href: "/all/", label: { en: "Show all projects", jp: "すべてのプロジェクト" }, primary: true },
+  { href: "/about.html", label: { en: "About", jp: "自己紹介" } },
+  { href: "/now/", label: { en: "Now", jp: "いま" } },
+  { href: "/publications.html", label: { en: "Writing", jp: "文章" } },
+  { href: "/contact.html", label: { en: "Work with me", jp: "仕事の相談" } },
+  { href: profile.studio.url, label: "Studio ↗", external: true },
+];
+---
+<main class="landing" id="landing">
+  <header class="landing-head">
+    <div class="landing-ctl">
+      <button class="side-theme" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
+      <button class="side-lang" id="lang-cycle" type="button" aria-label="Switch to Japanese">JP</button>
+    </div>
+    <p class="landing-name">{profile.name}</p>
+    <p class="landing-role" set:html={t(profile.tagline)} />
+    <h1 class="landing-line" set:html={tb(profile.positioning[1])} />
+    <nav class="landing-ways" aria-label="Enter the site">
+      {WAYS.map((way) => (
+        <a href={way.href} class={way.primary ? "is-primary" : undefined}
+           target={way.external ? "_blank" : undefined} rel={way.external ? "noopener" : undefined}
+           set:html={t(way.label)} />
+      ))}
+    </nav>
+  </header>
+
+  <LandingGrid entries={entries} />
+</main>

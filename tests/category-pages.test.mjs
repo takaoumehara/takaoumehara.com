@@ -63,9 +63,12 @@ test("one h1 per page, and the sidebar lists every section open with this one ma
     // The rail lists every section open (the reference shows everything);
     // nothing in it is marked current on a category page except the
     // category's own rows are reachable.
-    const groups = [...html.matchAll(/<details class="side-group"( open)?>/g)];
-    assert.equal(groups.length, 5, `${c.output}: five groups`);
-    assert.ok(groups.every((m) => m[1]), `${c.output}: every group open`);
+    // Six folds: the person, then the five categories. All open — the rail
+    // shows everything, and src/scripts/site.js only staggers the reveal once.
+    const groups = [...html.matchAll(/<details class="side-group[^"]*" data-group="([^"]+)"( open)?>/g)];
+    assert.equal(groups.length, 6, `${c.output}: the person plus five categories`);
+    assert.ok(groups.every((m) => m[2]), `${c.output}: every group open`);
+    assert.equal(groups[0][1], "person", `${c.output}: the person comes first`);
     const title = typeof c.title === "string" ? c.title : c.title.en;
     assert.ok(html.includes(`<span class="t-en">${title.replace(/&/g, "&amp;")}</span>`), `${c.output}: the rail names "${title}"`);
   }

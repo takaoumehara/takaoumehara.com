@@ -1,0 +1,127 @@
+---
+// One cell of a bento layout, built from a plain object in src/bento/<slug>.json.
+// `w` (columns out of 12) and `h` (rows) come from the row the cell sits in —
+// src/styles/bento.css turns that pair into a w : h ratio at every width.
+//
+// A cell may also carry `filter`: the group it belongs to, printed as
+// data-filter so a "filters" cell further up the page can hide it (/now/).
+//
+// Kinds: media (a picture), video, text, figure (a number), statement (one
+// large sentence), links, filters (a row of buttons that narrow the cells
+// below), spacer. Everything a cell says is either copied from
+// the case study it replaces or comes from src/data — nothing is written here.
+import { t, tb, url } from "../../lib/html.mjs";
+
+interface Props { cell: any; w: number; h: number }
+const { cell, w, h } = Astro.props;
+
+const kind = cell.kind ?? "media";
+const isMediaKind = kind === "media" || kind === "video" || kind === "embed";
+const tone = cell.tone;
+const fit = cell.fit ?? (isMediaKind ? "cover" : undefined);
+const style = [`--w:${w}`, `--h:${h}`, cell.focus ? `--focus:${cell.focus}` : ""].filter(Boolean).join(";");
+const body = Array.isArray(cell.body) ? cell.body : cell.body ? [cell.body] : [];
+---
+<div
+  class="bento-cell"
+  data-kind={kind}
+  data-w={w}
+  data-h={h}
+  data-tone={tone}
+  data-fit={fit === "contain" ? "contain" : undefined}
+  data-paper={cell.paper ? "true" : undefined}
+  data-filter={cell.filter}
+  style={style}
+>
+  {kind === "media" && (
+    <figure class="bento-media">
+      <img src={url(cell.src)} alt={cell.alt ?? ""} loading={cell.eager ? "eager" : "lazy"} decoding="async" />
+      {cell.caption && <figcaption set:html={t(cell.caption)} />}
+    </figure>
+  )}
+
+  {kind === "video" && (
+    <figure class="bento-media">
+      <video
+        poster={cell.poster ? url(cell.poster) : undefined}
+        controls={cell.controls !== false}
+        muted={cell.muted !== false}
+        loop={cell.loop !== false}
+        playsinline
+        preload="none"
+        aria-label={cell.alt ?? undefined}
+      >
+        {(cell.sources ?? []).map((s) => <source src={url(s.src)} type={s.type} />)}
+      </video>
+      {cell.caption && <figcaption set:html={t(cell.caption)} />}
+    </figure>
+  )}
+
+  {kind === "embed" && (
+    <iframe
+      class="bento-embed"
+      src={cell.src}
+      title={cell.title}
+      loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+    />
+  )}
+
+  {kind === "text" && (
+    <div class="bento-body">
+      {cell.label && <p class="bento-label" set:html={t(cell.label)} />}
+      {cell.heading && <h2 class="bento-h" set:html={t(cell.heading)} />}
+      {body.map((p) => <p class="bento-p" set:html={tb(p)} />)}
+      {cell.list && (
+        <ul class="bento-list">{cell.list.map((line) => <li set:html={t(line)} />)}</ul>
+      )}
+      {cell.links && (
+        <p class="bento-links">
+          {cell.links.map((link) => (
+            <a href={url(link.href)} target={/^https?:/.test(link.href) ? "_blank" : undefined}
+               rel={/^https?:/.test(link.href) ? "noopener" : undefined} set:html={t(link.label)} />
+          ))}
+        </p>
+      )}
+    </div>
+  )}
+
+  {kind === "figure" && (
+    <div class="bento-body">
+      <dl class="bento-figure">
+        <dt>{cell.value}</dt>
+        <dd set:html={t(cell.label)} />
+      </dl>
+    </div>
+  )}
+
+  {kind === "statement" && (
+    <div class="bento-body">
+      <p class="bento-statement" set:html={tb(cell.text)} />
+    </div>
+  )}
+
+  {kind === "filters" && (
+    <nav class="bento-body bento-filters" aria-label={cell.title ?? "Filter"}>
+      {(cell.filters ?? []).map((filter, n) => (
+        <button type="button" class="bento-filter" data-filter={filter.key} aria-pressed={n === 0 ? "true" : "false"}
+                set:html={t(filter.label)} />
+      ))}
+    </nav>
+  )}
+
+  {kind === "links" && (
+    <div class="bento-body">
+      {cell.label && <p class="bento-label" set:html={t(cell.label)} />}
+      {cell.heading && <h2 class="bento-h" set:html={t(cell.heading)} />}
+      <p class="bento-links">
+        {(cell.links ?? []).map((link) => (
+          <a href={url(link.href)} target={/^https?:/.test(link.href) ? "_blank" : undefined}
+             rel={/^https?:/.test(link.href) ? "noopener" : undefined} set:html={t(link.label)} />
+        ))}
+      </p>
+    </div>
+  )}
+</div>
