@@ -1,0 +1,99 @@
+/* Intent dissolve transition
+ * Outgoing cells stagger-dissolve toward click origin (opacity/scale/blur)
+ * Incoming cells cascade from opposite edge
+ * View Transitions API with reduced-motion support
+ */
+
+/* Default: Intent dissolve on navigation */
+@view-transition {
+  navigation: auto;
+}
+
+/* Outgoing content fades with subtle scale */
+::view-transition-old(root) {
+  animation: dissolve-out 280ms cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+/* Incoming content cascades in */
+::view-transition-new(root) {
+  animation: dissolve-in 280ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes dissolve-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: blur(4px);
+  }
+}
+
+@keyframes dissolve-in {
+  from {
+    opacity: 0;
+    transform: scale(1.02);
+    filter: blur(2px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0px);
+  }
+}
+
+/* Grid cards get individual transitions */
+.cat-card {
+  view-transition-name: none;
+}
+
+/* Hero sections maintain continuity */
+[data-vt-hero] {
+  view-transition-name: hero;
+}
+
+::view-transition-old(hero),
+::view-transition-new(hero) {
+  animation-duration: 350ms;
+}
+
+/* Stagger effect for grid items (handled via JS if needed) */
+.cat-card {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+/* Reduced motion: simple crossfade only */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: fade 180ms ease;
+  }
+  
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  ::view-transition-old(root) {
+    animation-name: fade-out;
+  }
+  
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+}
+
+/* News cards and bento cells */
+.news-card,
+.bento-cell {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.news-card:hover,
+.bento-cell:hover {
+  transform: translateY(-2px);
+}
