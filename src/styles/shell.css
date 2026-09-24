@@ -15,9 +15,10 @@
   border-right: 1px solid var(--pr-line);
   padding: var(--sp-3) var(--sp-3) var(--sp-5);
   font-size: var(--text-body); line-height: var(--leading-body);
-  scrollbar-width: thin;
+  scrollbar-width: none; /* Hide left rail scrollbar */
   view-transition-name: side;
 }
+.side::-webkit-scrollbar { display: none; /* Hide left rail scrollbar for webkit */ }
 .side a { color: inherit; text-decoration: none; }
 .side *, .side *::before, .side *::after { box-sizing: border-box; }
 .side button { font: inherit; color: inherit; }
@@ -26,8 +27,9 @@ html.lang-jp .side { font-family: var(--pr-ff-jp); }
 /* A grey block: the About card and every project row */
 .side-about, .side-item { background: var(--pr-card); border-radius: var(--r); }
 
-/* ── Controls: Show all projects · theme switch · language ─────────────── */
+/* ── Controls: All work · search · theme · language ─────────────────────── */
 .side-controls { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.side-controls-left { display: flex; align-items: center; gap: var(--sp-1); }
 .side-all {
   display: inline-flex; align-items: center; min-height: 40px; padding: 0 var(--sp-3);
   border-radius: var(--r-pill); background: var(--pr-card); font-size: var(--text-body);
@@ -35,6 +37,13 @@ html.lang-jp .side { font-family: var(--pr-ff-jp); }
 }
 .side-all:hover { background: var(--pr-card-2); }
 .side-all[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.side-search-toggle {
+  appearance: none; cursor: pointer; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
+  background: var(--pr-card); display: flex; align-items: center; justify-content: center;
+  transition: background 140ms ease;
+}
+.side-search-toggle:hover { background: var(--pr-card-2); }
+.side-search-toggle.is-active { background: var(--pr-ink); color: var(--pr-canvas); }
 .side-ctl { display: flex; align-items: center; gap: var(--sp-1); }
 
 .side-theme {
@@ -57,14 +66,31 @@ html.lang-jp .side { font-family: var(--pr-ff-jp); }
 .side-lang:hover { background: var(--pr-card-2); }
 html[data-lang-fixed] .side-lang { display: none; }
 
-/* ── Wordmark and the clock ─────────────────────────────────────────────── */
+/* ── Search ─────────────────────────────────────────────────────────────── */
+.side-search { margin-top: var(--sp-2); animation: slideDown 0.2s ease; }
+.side-search-input {
+  width: 100%; padding: 12px var(--sp-3); font-size: var(--text-body); font-family: inherit;
+  border: 1px solid var(--pr-line); border-radius: var(--r-pill); background: var(--pr-card); color: var(--pr-ink);
+  transition: all 0.2s;
+}
+.side-search-input:focus { outline: none; border-color: var(--pr-blue); background: var(--pr-canvas); }
+.side-search-input::placeholder { color: var(--pr-ink-2); }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Wordmark and dual clocks (Tokyo + NY) ──────────────────────────────── */
 .side-head { text-align: center; padding: 56px 0 48px; }
 .side-wordmark {
   display: inline-block; font-family: var(--pr-ff-display); font-size: var(--text-display); line-height: var(--leading-display);
   letter-spacing: var(--tracking-display); text-transform: uppercase;
 }
-.side-clock { margin: 44px 0 0; font-size: var(--text-lg); line-height: var(--leading-lg); color: var(--pr-ink); font-variant-numeric: tabular-nums; }
-.side-clock > span { display: block; }
+.side-clocks { margin: 32px 0 0; display: flex; flex-direction: column; gap: 12px; font-variant-numeric: tabular-nums; }
+.clock-row { display: flex; align-items: center; justify-content: center; gap: 8px; font-size: var(--text-body); color: var(--pr-ink); }
+.clock-city { font-weight: 500; min-width: 72px; text-align: right; }
+.clock-weather { font-size: 16px; opacity: 0.8; }
+.clock-time { font-weight: 400; min-width: 56px; text-align: left; }
 
 /* ── About ──────────────────────────────────────────────────────────────── */
 .side-about { padding: var(--sp-3); margin-bottom: var(--sp-1); }
@@ -87,7 +113,7 @@ html[data-lang-fixed] .side-lang { display: none; }
 .side-count { font-variant-numeric: tabular-nums; }
 .side-count::after { content: "−"; display: inline-block; width: 1em; text-align: right; margin-left: var(--sp-1); }
 .side-group:not([open]) .side-count::after { content: "+"; }
-.side-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); }
+.side-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); } /* Uniform 8px gutter */
 .side-item {
   display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--sp-2); align-items: center;
   padding: var(--sp-2) var(--sp-3); min-height: 88px;

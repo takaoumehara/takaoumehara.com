@@ -44,25 +44,64 @@ function toggleTheme() {
   applyTheme();
 }
 
-// ── The clock in the rail (New York time, in the page's language) ───────────
+// ── Dual clocks (Tokyo + NY) with weather ──────────────────────────────────
+const weatherCache = { tokyo: null, newyork: null, lastFetch: 0 };
+const weatherIcons = {
+  0: "☀️", 1: "🌤️", 2: "⛅", 3: "☁️", 45: "🌫️", 48: "🌫️",
+  51: "🌧️", 53: "🌧️", 55: "🌧️", 61: "🌧️", 63: "🌧️", 65: "🌧️",
+  71: "🌨️", 73: "🌨️", 75: "🌨️", 95: "⛈️", 96: "⛈️", 99: "⛈️"
+};
+
+async function fetchWeather() {
+  const now = Date.now();
+  if (now - weatherCache.lastFetch < 600000) return; // Cache for 10 minutes
+  weatherCache.lastFetch = now;
+  
+  try {
+    // Tokyo: 35.6762°N, 139.6503°E
+    const tokyoRes = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current_weather=true");
+    const tokyoData = await tokyoRes.json();
+    weatherCache.tokyo = weatherIcons[tokyoData.current_weather?.weathercode] || "☀️";
+    
+    // New York: 40.7128°N, 74.0060°W
+    const nyRes = await fetch("https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true");
+    const nyData = await nyRes.json();
+    weatherCache.newyork = weatherIcons[nyData.current_weather?.weathercode] || "☀️";
+  } catch (e) {
+    // Graceful fallback: keep default icons
+  }
+}
+
 function renderClock() {
-  const el = document.getElementById("side-clock");
-  if (!el) return;
+  const container = document.getElementById("side-clocks");
+  if (!container) return;
   const now = new Date();
-  const zone = el.dataset.zone || "America/New_York";
   const jp = currentLang() === "jp";
   const locale = jp ? "ja-JP" : "en-US";
-  const date = new Intl.DateTimeFormat(locale, { weekday: "long", month: "long", day: "numeric", timeZone: zone }).format(now);
-  const time = new Intl.DateTimeFormat(locale, { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: zone }).format(now);
-  const place = jp ? el.dataset.placeJp : el.dataset.placeEn;
-  el.querySelector("[data-clock-date]").textContent = date;
-  el.querySelector("[data-clock-time]").textContent = `${place}, ${time}`;
+  
+  container.querySelectorAll(".clock-row").forEach(row => {
+    const zone = row.dataset.zone;
+    const city = row.dataset.city;
+    const name = jp ? row.dataset.nameJp : row.dataset.nameEn;
+    const time = new Intl.DateTimeFormat(locale, { 
+      hour: "2-digit", minute: "2-digit", hour12: false, timeZone: zone 
+    }).format(now);
+    
+    row.querySelector(".clock-city").textContent = name;
+    row.querySelector(".clock-time").textContent = time;
+    
+    const weatherIcon = weatherCache[city] || row.querySelector(".clock-weather").textContent;
+    row.querySelector(".clock-weather").textContent = weatherIcon;
+  });
 }
+
 let clockTimer = null;
 function startClock() {
-  if (clockTimer || !document.getElementById("side-clock")) return;
+  if (clockTimer || !document.getElementById("side-clocks")) return;
+  fetchWeather(); // Initial fetch
   renderClock();
   clockTimer = setInterval(renderClock, 1000);
+  setInterval(fetchWeather, 600000); // Refresh weather every 10 minutes
 }
 
 // ── Sidebar: the current page, the phone menu ───────────────────────────────
@@ -93,6 +132,53 @@ function bindSidebar() {
   }
   document.getElementById("theme-switch")?.addEventListener("click", toggleTheme);
   document.getElementById("lang-cycle")?.addEventListener("click", () => setLang(currentLang() === "jp" ? "en" : "jp"));
+  
+  // Search toggle
+  const searchToggle = document.getElementById("side-search-toggle");
+  const searchPanel = document.getElementById("side-search");
+  const searchInput = document.getElementById("side-search-input");
+  if (searchToggle && searchPanel && searchInput) {
+    searchToggle.addEventListener("click", () => {
+      const isHidden = searchPanel.hasAttribute("hidden");
+      if (isHidden) {
+        searchPanel.removeAttribute("hidden");
+        searchToggle.classList.add("is-active");
+        requestAnimationFrame(() => searchInput.focus());
+      } else {
+        searchPanel.setAttribute("hidden", "");
+        searchToggle.classList.remove("is-active");
+        searchInput.value = "";
+        document.querySelectorAll(".side-item").forEach(item => item.style.display = "");
+        document.querySelectorAll(".side-group").forEach(group => group.style.display = "");
+      }
+    });
+    
+    // Smart search: titles, categories, descriptions
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      const items = document.querySelectorAll(".side-item");
+      const groups = document.querySelectorAll(".side-group");
+      
+      if (!query) {
+        items.forEach(item => item.style.display = "");
+        groups.forEach(group => group.style.display = "");
+        return;
+      }
+      
+      items.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        const group = item.closest(".side-group");
+        const groupTitle = group ? group.querySelector("summary").textContent.toLowerCase() : "";
+        item.style.display = (text.includes(query) || groupTitle.includes(query)) ? "" : "none";
+      });
+      
+      groups.forEach(group => {
+        const visibleItems = Array.from(group.querySelectorAll(".side-item"))
+          .filter(item => item.style.display !== "none");
+        group.style.display = visibleItems.length > 0 ? "" : "none";
+      });
+    });
+  }
   // The first paint: bring the current row into view without scrolling the page.
   const current = side.querySelector('.side-item[aria-current="page"]');
   if (current && window.matchMedia("(min-width: 901px)").matches) {

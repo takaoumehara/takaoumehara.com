@@ -54,20 +54,48 @@ const thumb = (item) => {
 
   <div class="side-panel" id="side-panel">
     <div class="side-controls">
-      <a class="side-all" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
-        <span class="t-en">All work</span><span class="t-jp">すべての作品</span>
-      </a>
+      <div class="side-controls-left">
+        <a class="side-all" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
+          <span class="t-en">All work</span><span class="t-jp">すべての作品</span>
+        </a>
+        <button class="side-search-toggle" id="side-search-toggle" type="button" aria-label="Search" title="Search">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="8" cy="8" r="6"/>
+            <path d="M13 13l5 5"/>
+          </svg>
+        </button>
+      </div>
       <div class="side-ctl">
         <button class="side-theme" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
         <button class="side-lang" id="lang-cycle" type="button" aria-label="Switch to Japanese">JP</button>
       </div>
     </div>
+    
+    <div class="side-search" id="side-search" hidden>
+      <input 
+        type="search" 
+        class="side-search-input" 
+        id="side-search-input"
+        placeholder="Search…"
+        data-placeholder-en="Search…"
+        data-placeholder-jp="検索…"
+      />
+    </div>
 
     <div class="side-head">
       <a class="side-wordmark" href="/" data-match="/" aria-current={cur(samePage("/", current))}>{profile.name}</a>
-      <p class="side-clock" id="side-clock" data-zone="America/New_York" data-place-en="New York" data-place-jp="ニューヨーク">
-        <span data-clock-date>&nbsp;</span><span data-clock-time>&nbsp;</span>
-      </p>
+      <div class="side-clocks" id="side-clocks">
+        <div class="clock-row" data-city="tokyo" data-zone="Asia/Tokyo" data-name-en="Tokyo" data-name-jp="東京">
+          <span class="clock-city">Tokyo</span>
+          <span class="clock-weather" data-weather-icon>☀️</span>
+          <span class="clock-time">--:--</span>
+        </div>
+        <div class="clock-row" data-city="newyork" data-zone="America/New_York" data-name-en="New York" data-name-jp="ニューヨーク">
+          <span class="clock-city">New York</span>
+          <span class="clock-weather" data-weather-icon>☀️</span>
+          <span class="clock-time">--:--</span>
+        </div>
+      </div>
     </div>
 
     <section class="side-about">
@@ -76,16 +104,6 @@ const thumb = (item) => {
       </a>
       <p set:html={tb(profile.positioning[1])} />
     </section>
-
-    <div class="side-search">
-      <button class="side-search-btn" id="side-search-btn" type="button">
-        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="8" cy="8" r="6"/>
-          <path d="M13 13l5 5"/>
-        </svg>
-        <span class="t-en">Search</span><span class="t-jp">検索</span>
-      </button>
-    </div>
 
     <nav class="side-work" aria-label="Work by category">
       {groups.map(({ category, items }) => (

@@ -1,0 +1,323 @@
+---
+// Unified Porto Rocha-style project detail template
+// Structure: Large teaser → Title + one-liner + CTA → Challenge|Solution → Body → Role/Year/Stack
+import { t, tb, esc, url } from "../../lib/html.mjs";
+
+interface Props {
+  item: any; // Evidence item
+  body?: string; // Optional HTML body content
+  videoUrl?: string; // Video teaser URL
+  videoAudioRecommended?: boolean; // Show Sound On control
+}
+
+const { item, body, videoUrl, videoAudioRecommended = false } = Astro.props;
+
+const hasChallenge = item.challenge || (item.contribution?.challenges?.length > 0);
+const hasPlayableLink = item.playable && item.links?.live;
+---
+
+<div class="project-detail">
+  <!-- Large teaser: video or hero image -->
+  <div class="project-teaser" data-vt-hero>
+    {videoUrl ? (
+      <div class="project-video-container">
+        <video 
+          class="project-video" 
+          autoplay 
+          muted 
+          loop 
+          playsinline
+          poster={item.assets?.hero ? url(item.assets.hero) : undefined}
+        >
+          <source src={videoUrl} type="video/mp4" />
+        </video>
+        {videoAudioRecommended && (
+          <button class="video-sound-toggle" id="video-sound-toggle" type="button" aria-label="Enable sound">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+              <path class="sound-off" d="M23 9l-6 6M17 9l6 6"/>
+              <path class="sound-on" style="display:none" d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+            <span class="t-en">Sound On</span>
+            <span class="t-jp">音を出す</span>
+          </button>
+        )}
+      </div>
+    ) : item.assets?.hero && (
+      <div class="project-hero-image" style={`background-image: url(${esc(url(item.assets.hero))})`}></div>
+    )}
+  </div>
+
+  <!-- Title + one-liner + optional Play CTA -->
+  <div class="project-header">
+    <h1 class="project-title">{item.title}</h1>
+    <p class="project-tagline" set:html={t(item.summary ?? item.cardLine)} />
+    {hasPlayableLink && (
+      <a href={item.links.live} class="project-play-cta" target="_blank" rel="noopener">
+        <span class="t-en">Play →</span>
+        <span class="t-jp">体験する →</span>
+      </a>
+    )}
+  </div>
+
+  <!-- Challenge | Solution bento (if available) -->
+  {hasChallenge && (
+    <div class="challenge-solution-bento">
+      <div class="bento-cell challenge-cell">
+        <h2 class="bento-label">
+          <span class="t-en">Challenge</span>
+          <span class="t-jp">課題</span>
+        </h2>
+        <p class="bento-text" set:html={t(item.challenge ?? { 
+          en: item.contribution?.challenges?.[0] ?? "Complex design and technical challenges.",
+          jp: "複雑なデザインと技術的課題。"
+        })} />
+      </div>
+      
+      <div class="bento-cell solution-cell">
+        <h2 class="bento-label">
+          <span class="t-en">Solution</span>
+          <span class="t-jp">解決策</span>
+        </h2>
+        <p class="bento-text" set:html={t(item.solution ?? {
+          en: item.contribution?.mine?.[0] ?? "Innovative solution combining design and technology.",
+          jp: item.contribution?.mine?.[0] ?? "デザインとテクノロジーを組み合わせた革新的なソリューション。"
+        })} />
+      </div>
+    </div>
+  )}
+
+  <!-- Body content -->
+  {body && (
+    <div class="project-body-content" set:html={body} />
+  )}
+
+  <!-- Footer metadata: Role / Year / Stack -->
+  <div class="project-footer-meta">
+    {item.role && (
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Role</span>
+          <span class="t-jp">役割</span>
+        </p>
+        <p class="meta-value" set:html={typeof item.role === 'string' ? item.role : t(item.role)} />
+      </div>
+    )}
+    
+    {item.year && (
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Year</span>
+          <span class="t-jp">年</span>
+        </p>
+        <p class="meta-value">{item.year}</p>
+      </div>
+    )}
+    
+    {item.stack && item.stack.length > 0 && (
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Stack</span>
+          <span class="t-jp">技術</span>
+        </p>
+        <p class="meta-value">{item.stack.join(" · ")}</p>
+      </div>
+    )}
+  </div>
+</div>
+
+<style>
+  .project-detail {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+  }
+  
+  .project-teaser {
+    width: calc(100% + 48px);
+    margin: 0 -24px 48px;
+    aspect-ratio: 16/9;
+    background: var(--pr-card);
+    border-radius: 0;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .project-video-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  
+  .project-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  
+  .video-sound-toggle {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border: 0;
+    border-radius: var(--r-pill);
+    font-size: var(--text-body);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(10px);
+  }
+  
+  .video-sound-toggle:hover {
+    background: rgba(0, 0, 0, 0.9);
+    transform: scale(1.05);
+  }
+  
+  .video-sound-toggle.is-on .sound-off { display: none; }
+  .video-sound-toggle.is-on .sound-on { display: block; }
+  
+  .project-hero-image {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .project-header {
+    margin-bottom: 48px;
+  }
+  
+  .project-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--pr-ink);
+    margin-bottom: 16px;
+  }
+  
+  .project-tagline {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--pr-ink-2);
+    margin-bottom: 24px;
+  }
+  
+  .project-play-cta {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    background: var(--pr-ink);
+    color: var(--pr-canvas);
+    border-radius: var(--r-pill);
+    font-size: var(--text-body);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .project-play-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .challenge-solution-bento {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-1); /* Uniform 8px gutter */
+    margin-bottom: 48px;
+  }
+  
+  @media (max-width: 768px) {
+    .challenge-solution-bento {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .bento-cell {
+    background: var(--pr-card);
+    border-radius: var(--r);
+    padding: var(--sp-4);
+  }
+  
+  .bento-label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--pr-blue);
+    margin-bottom: 16px;
+  }
+  
+  .bento-text {
+    font-size: var(--text-md);
+    line-height: 1.65;
+    color: var(--pr-ink);
+  }
+  
+  .project-body-content {
+    margin-bottom: 48px;
+    font-size: var(--text-md);
+    line-height: 1.7;
+    color: var(--pr-ink);
+  }
+  
+  .project-footer-meta {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--pr-line);
+    display: flex;
+    gap: var(--sp-5);
+    flex-wrap: wrap;
+  }
+  
+  .meta-group {
+    flex: 1;
+    min-width: 200px;
+  }
+  
+  .meta-label {
+    font-size: var(--text-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--pr-ink-2);
+    margin-bottom: 8px;
+  }
+  
+  .meta-value {
+    font-size: var(--text-body);
+    line-height: 1.6;
+    color: var(--pr-ink);
+  }
+  
+  @media (max-width: 768px) {
+    .project-detail {
+      padding: 0 16px 48px;
+    }
+    
+    .project-teaser {
+      width: calc(100% + 32px);
+      margin: 0 -16px 32px;
+    }
+  }
+</style>
+
+<script>
+  // Video sound toggle
+  const toggle = document.getElementById("video-sound-toggle");
+  const video = document.querySelector(".project-video");
+  if (toggle && video) {
+    toggle.addEventListener("click", () => {
+      video.muted = !video.muted;
+      toggle.classList.toggle("is-on", !video.muted);
+      toggle.setAttribute("aria-label", video.muted ? "Enable sound" : "Disable sound");
+    });
+  }
+</script>

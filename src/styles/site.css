@@ -64,6 +64,34 @@ body {
   overflow-x: hidden;
   position: relative;
 }
+
+/* Stylish main scrollbar (right edge) */
+::-webkit-scrollbar {
+  width: 12px;
+}
+::-webkit-scrollbar-track {
+  background: var(--pr-canvas);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--pr-card-2);
+  border-radius: 6px;
+  border: 2px solid var(--pr-canvas);
+  transition: background 0.2s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--pr-ink-2);
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb {
+  background: var(--pr-card-2);
+}
+html[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+  background: #3d3d3d;
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pr-card-2) var(--pr-canvas);
+}
 html.lang-jp body { font-family: var(--ff-jp); }
 img { max-width: 100%; display: block; }
 a { color: inherit; }
