@@ -1,200 +1,76 @@
-<!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    Marubatsu 2.0
-    
-  </div>
-
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Playable · Realtime Web</span>
-      <ul class="pj-tags">
-        <li>Game Design</li>
-        <li>Realtime Sync</li>
-        <li>AI Opponent</li>
-        <li>Next.js 16</li>
-      </ul>
-      <h1 class="pj-title">
-        Marubatsu 2.0: Online 4×4 tic-tac-toe
-        
-      </h1>
-      <p class="pj-summary">
-        A four-by-four board where you place two marks per turn and four in a row wins. Invented with my son on a school commute ferry, shipped as a real-time multiplayer arena with an adaptive AI adversary.
-        
+<!-- ── Hero ── -->
+  <section data-vt-hero class="project-hero marubatsu-hero">
+    <div class="project-hero-img" style="background: linear-gradient(135deg, #fff5f0 0%, #ffe8e0 100%);"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <h1 class="project-hero-title">Marubatsu 2.0</h1>
+      <p class="project-hero-tagline">
+        <span class="t-en">4×4 tic-tac-toe you can play across phones — or against a bot.</span>
+        <span class="t-jp">スマホ同士でも、ボット相手でも遊べる4×4まるばつ。</span>
       </p>
-
-      <div class="pj-cta">
-        <a href="http://marubatsu20.creativityiseverywhere.com/" target="_blank" rel="noopener">
-          Play it live ↗
-          
-        </a>
-        <a href="../interactive.html">
-          ← All Interactive Projects
-          
-        </a>
-      </div>
-
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Game Design &amp; Architecture</dd>
-        </div>
-        <div>
-          <dt>Stack</dt>
-          <dd>Next.js 16 · Firebase RTDB · Gemini</dd>
-        </div>
-        <div>
-          <dt>Input</dt>
-          <dd>Touch, QR Pairing, AI Bot</dd>
-        </div>
-        <div>
-          <dt>Year</dt>
-          <dd>2025 – 2026</dd>
-        </div>
-      </dl>
+      <a href="http://marubatsu20.creativityiseverywhere.com/" class="btn-primary" style="margin-top: 24px;">
+        <span class="t-en">Play Marubatsu →</span>
+        <span class="t-jp">まるばつを遊ぶ →</span>
+      </a>
     </div>
-  </header>
+  </section>
 
   <!-- ── Body ── -->
-  <main class="pj-body">
-
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <video autoplay loop muted playsinline controls poster="../assets/marubatsu/Marubatsu20-screenshot.png" width="1920" height="1080">
-        <source src="../assets/marubatsu/Marubatsu20.mov" type="video/mp4">
-        <source src="../assets/marubatsu/preview.webm" type="video/webm">
-      </video>
-      <figcaption>
-        Real-time match synced across desktop and mobile devices
-        
-      </figcaption>
-    </figure>
-
-    <!-- Key Metrics / Numbers -->
-    <dl class="pj-facts">
-      <div>
-        <dt>1</dt>
-        <dd>
-          Core rule changed: 2 marks a turn on a 4×4 grid
-          
-        </dd>
-      </div>
-      <div>
-        <dt>3</dt>
-        <dd>
-          Ways to play: Solo pass, AI opponent, or QR scan
-          
-        </dd>
-      </div>
-      <div>
-        <dt>9</dt>
-        <dd>
-          Localized languages with zero setup required
-          
-        </dd>
-      </div>
-      <div>
-        <dt>&lt;100ms</dt>
-        <dd>
-          Peer board synchronization via Firebase RTDB
-          
-        </dd>
-      </div>
-    </dl>
-
-    <!-- Key Architecture Points -->
-    <div class="pj-points">
-      <div class="pj-point">
-        <span class="pj-point-num">01</span>
-        <h2 class="pj-point-title">
-          The rule is the asset; the app is disposable.
-          
+  <main class="project-body">
+    
+    <!-- Challenge | Solution Bento -->
+    <div class="challenge-solution-bento">
+      <div class="bento-cell challenge-cell">
+        <h2 class="bento-label">
+          <span class="t-en">Challenge</span>
+          <span class="t-jp">課題</span>
         </h2>
-        <p class="pj-point-desc">
-          Tic-tac-toe was solved centuries ago, but placing two marks on a 4×4 grid revives tension instantly. The exact same ten win lines power the local game, the AI search tree, and the room referee.
-          
+        <p class="bento-text">
+          <span class="t-en">Classic grids feel solved; online versions drown in accounts. We needed a familiar game that becomes social in under a minute — QR pair, live presence, optional AI — without feeling like a product demo.</span>
+          <span class="t-jp">定番グリッドは解けきった感じがし、オンライン版はアカウントに沈む。1分以内に社交になる見慣れた遊び — QR ペア、ライブ、任意の AI — を、製品デモっぽくなく出したかった。</span>
         </p>
       </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">02</span>
-        <h2 class="pj-point-title">
-          Instant pairing without accounts.
-          
+      
+      <div class="bento-cell solution-cell">
+        <h2 class="bento-label">
+          <span class="t-en">Solution</span>
+          <span class="t-jp">解決策</span>
         </h2>
-        <p class="pj-point-desc">
-          Creating a room gives a 6-character shortcode and a QR code. The second phone scans and is in. No logins, no downloads, and the server only arbitrates the state.
-          
-        </p>
-      </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">03</span>
-        <h2 class="pj-point-title">
-          Gemini-first adaptive adversary.
-          
-        </h2>
-        <p class="pj-point-desc">
-          The AI opponent uses Gemini to generate playful contextual banter and tactical moves across four difficulty settings, falling back seamlessly to an offline search engine when network drops.
-          
+        <p class="bento-text">
+          <span class="t-en">Marubatsu extends the grid, pairs devices over Firebase, and offers a bot when you're alone. The decisive move was treating presence (who's here) as the feature — the rules stay almost folk.</span>
+          <span class="t-jp">まるばつは盤を広げ、Firebase で端末をペアし、一人ならボットを出す。決定打は「誰がいるか」を機能にすること。ルールはほとんど民話のまま。</span>
         </p>
       </div>
     </div>
 
-    <!-- Scenarios -->
-    <section class="pj-scenarios">
-      <h2>
-        Where it belongs
-        
-      </h2>
-      <ul class="pj-scenarios-list">
-        <li>
-          <strong>Two people with five minutes:</strong>
-          Waiting lounges, trains, cafes — pull out one phone or scan between two, with zero explanation needed.
-          
-        </li>
-        <li>
-          <strong>Shared-board engine pattern:</strong>
-          The lightweight pairing engine built here evolved into Snap Pair, enabling any quiz, voting board, or party game across phones.
-          
-        </li>
-        <li>
-          <strong>Multi-platform responsive web:</strong>
-          Plays equally well on touch screens, trackpads, and desktop browsers with full keyboard accessibility.
-          
-        </li>
-      </ul>
-    </section>
-
-    <!-- Contribution Split -->
-    <div class="pj-contrib">
-      <div>
-        <h3>
-          My Contribution
-          
-        </h3>
-        <ul>
-          <li>Co-invented the 4×4 two-marks game mechanic over hundreds of rounds</li>
-          <li>Designed complete UX/UI, board iconography, and tactile micro-interactions</li>
-          <li>Engineered the Next.js 16 and Firebase RTDB real-time pairing architecture</li>
-          <li>Integrated Gemini AI adversary with offline heuristic fallback</li>
-        </ul>
+    <!-- Footer metadata -->
+    <div class="project-footer-meta">
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Role</span>
+          <span class="t-jp">役割</span>
+        </p>
+        <p class="meta-value">
+          <span class="t-en">Designer & builder</span>
+          <span class="t-jp">デザイナー＆制作</span>
+        </p>
       </div>
-      <div>
-        <h3>
-          Collaborators &amp; Heritage
-          
-        </h3>
-        <ul>
-          <li>Co-designed with Takao's son on the school ferry commute in New York</li>
-          <li>Original rule tested on paper napkins before writing a single line of code</li>
-          <li>Released as open-source web application under Creativity Is Everywhere LLC</li>
-        </ul>
+      
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Year</span>
+          <span class="t-jp">年</span>
+        </p>
+        <p class="meta-value">2025–2026</p>
+      </div>
+      
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Stack</span>
+          <span class="t-jp">技術</span>
+        </p>
+        <p class="meta-value">Next.js 16 · Firebase RTDB · Gemini</p>
       </div>
     </div>
 
   </main>
-
-  <!-- ── Footer Navigation ── -->

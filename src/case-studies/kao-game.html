@@ -1,190 +1,79 @@
-<!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    Kao Game 
-    
-  </div>
-
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Interactive · Computer Vision · Face Tracking</span>
-      <ul class="pj-tags">
-        <li>Face Tracking</li>
-        <li>Touchless UI</li>
-        <li>WebAssembly</li>
-        <li>On-Device ML</li>
-      </ul>
-      <h1 class="pj-title">
-        Kao Game: The face is your game controller
-        
-      </h1>
-      <p class="pj-summary">
-        A browser game played entirely with your face — turning daily facial exercise and rehabilitation into an intuitive, addictive challenge without any physical controller.
-        
+<!-- ── Hero ── -->
+  <section data-vt-hero class="project-hero kao-game-hero">
+    <div class="project-hero-img" style="background: linear-gradient(135deg, #f5f1e8 0%, #e8dcc8 100%);"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <h1 class="project-hero-title">Kao Game</h1>
+      <p class="project-hero-tagline">
+        <span class="t-en">Your face is the controller — short sessions, no hardware.</span>
+        <span class="t-jp">顔がコントローラ。短いセッション、デバイス不要。</span>
       </p>
-
-      <div class="pj-cta">
-        <a href="http://kaogame.creativityiseverywhere.com/" target="_blank" rel="noopener">
-          Play Kao Game ↗
-          
-        </a>
-        <a href="../interactive.html">
-          ← All Interactive Projects
-          
-        </a>
-      </div>
-
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Concept, UX &amp; Prototyping</dd>
-        </div>
-        <div>
-          <dt>Stack</dt>
-          <dd>Face Tracking · Web · WASM</dd>
-        </div>
-        <div>
-          <dt>Input</dt>
-          <dd>Webcam Facial Landmark Tracking</dd>
-        </div>
-        <div>
-          <dt>Status</dt>
-          <dd>In-Progress Study</dd>
-        </div>
-      </dl>
+      <a href="http://kaogame.creativityiseverywhere.com/" class="btn-primary" style="margin-top: 24px;">
+        <span class="t-en">Play Kao Game →</span>
+        <span class="t-jp">Kao Game を遊ぶ →</span>
+      </a>
     </div>
-  </header>
+  </section>
 
   <!-- ── Body ── -->
-  <main class="pj-body">
-
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <img src="../assets/kao-game/hero.svg" alt="Kao Game face tracking mesh" width="1200" height="800">
-      <figcaption>
-        Real-time landmark mesh tracking subtle muscular shifts around the eyes, jaw, and brow
-        
-      </figcaption>
-    </figure>
-
-    <!-- Key Metrics / Numbers -->
-    <dl class="pj-facts">
-      <div>
-        <dt>0</dt>
-        <dd>
-          Physical game controllers required — your facial muscles are the pad
-          
-        </dd>
-      </div>
-      <div>
-        <dt>468</dt>
-        <dd>
-          Geometric landmark points calculated in real-time on-device
-          
-        </dd>
-      </div>
-      <div>
-        <dt>3</dt>
-        <dd>
-          Playable mini-games challenging rhythm, endurance, and symmetry
-          
-        </dd>
-      </div>
-      <div>
-        <dt>100%</dt>
-        <dd>
-          On-device edge inference with zero video frames transmitted over network
-          
-        </dd>
-      </div>
-    </dl>
-
-    <!-- Key Architecture Points -->
-    <div class="pj-points">
-      <div class="pj-point">
-        <span class="pj-point-num">01</span>
-        <h2 class="pj-point-title">
-          Wellness disguised as playful challenge.
-          
+  <main class="project-body">
+    
+    <!-- Challenge | Solution Bento -->
+    <div class="challenge-solution-bento">
+      <div class="bento-cell challenge-cell">
+        <h2 class="bento-label">
+          <span class="t-en">Challenge</span>
+          <span class="t-jp">課題</span>
         </h2>
-        <p class="pj-point-desc">
-          Desk workers stare at screens for eight hours, freezing their facial posture into tense scowls. By gamifying eyebrow lifts, open-mouthed laughter, and head tilts into target-hitting mechanics, the workout happens without feeling like a chore.
-          
+        <p class="bento-text">
+          <span class="t-en">Facial exercise and rehab tools feel clinical; games that use the camera usually feel creepy or finicky. We needed play that reads as joy in thirty seconds, keeps video on-device, and teaches itself without a tutorial wall.</span>
+          <span class="t-jp">顔の運動やリハビリは臨床っぽく、カメラを使うゲームは気味悪さや反応の悪さが先に立つ。30秒で喜びとして読め、映像は端末内に留め、説明書なしで伝わる遊びが必要だった。</span>
         </p>
       </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">02</span>
-        <h2 class="pj-point-title">
-          Privacy-first edge architecture.
-          
+      
+      <div class="bento-cell solution-cell">
+        <h2 class="bento-label">
+          <span class="t-en">Solution</span>
+          <span class="t-jp">解決策</span>
         </h2>
-        <p class="pj-point-desc">
-          Cameras in software trigger privacy fears. Kao Game runs entirely within the client's browser WebAssembly runtime. Video pixels are processed in memory and immediately discarded, extracting only relative vector deltas.
-          
-        </p>
-      </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">03</span>
-        <h2 class="pj-point-title">
-          Adaptive neutral baseline calibration.
-          
-        </h2>
-        <p class="pj-point-desc">
-          Human faces are fundamentally asymmetrical. The system calibrates a 3-second neutral resting baseline upon launch, mapping input deltas relative to each individual's unique resting geometry.
-          
+        <p class="bento-text">
+          <span class="t-en">Kao Game maps mouth, cheeks, and gaze into mini-games that reward clear motion, not precision suffering. Detection stays local; the decisive move was designing rules players can infer from what moves on screen — then cutting anything that needed a sentence.</span>
+          <span class="t-jp">口・頬・視線を、はっきり動いたときに報いるミニゲームへ写す。検出は端末内。決定打は、画面の動きからルールを推測できる設計にし、一文が必要なものを削ること。</span>
         </p>
       </div>
     </div>
 
-    <!-- Scenarios -->
-    <section class="pj-scenarios">
-      <h2>
-        Potential applications
-        
-      </h2>
-      <ul class="pj-scenarios-list">
-        <li>
-          <strong>Remote work fatigue relief:</strong>
-          A 2-minute micro-break to revitalize focus and release tension between long video calls.
-          
-        </li>
-        <li>
-          <strong>Accessible touchless interfaces:</strong>
-          Navigation and selection mechanics for users with limited motor control or hands-busy environments.
-          
-        </li>
-      </ul>
-    </section>
+    <!-- TODO: Replace gradient hero with real capture/still when available -->
+    <!-- PRODUCTION BLOCK: Gradient placeholder only - need real artifact of the work -->
 
-    <!-- Contribution Split -->
-    <div class="pj-contrib">
-      <div>
-        <h3>
-          My Contribution
-          
-        </h3>
-        <ul>
-          <li>Designed the facial interaction game mechanics and scoring curves</li>
-          <li>Engineered in-browser computer vision mesh and landmark tracking</li>
-          <li>Developed calibration pipeline for zero-latency facial input</li>
-        </ul>
+    <!-- Footer metadata -->
+    <div class="project-footer-meta">
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Role</span>
+          <span class="t-jp">役割</span>
+        </p>
+        <p class="meta-value">
+          <span class="t-en">Designer & builder</span>
+          <span class="t-jp">デザイナー＆制作</span>
+        </p>
       </div>
-      <div>
-        <h3>
-          Research Trajectory
-          
-        </h3>
-        <ul>
-          <li>Part of the ongoing "controller-free" physical interaction experiments at Creativity Is Everywhere LLC</li>
-          <li>Exploring human wellness at the seam of play and machine perception</li>
-        </ul>
+      
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Year</span>
+          <span class="t-jp">年</span>
+        </p>
+        <p class="meta-value">2025–2026</p>
+      </div>
+      
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Stack</span>
+          <span class="t-jp">技術</span>
+        </p>
+        <p class="meta-value">Face Tracking · Web</p>
       </div>
     </div>
 
   </main>
-
-  <!-- ── Footer Navigation ── -->

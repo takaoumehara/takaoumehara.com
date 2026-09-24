@@ -1,193 +1,76 @@
-<!-- ── Breadcrumb ── -->
-  <div class="pj-crumb">
-    <a href="../interactive.html">Interactive</a>
-    <span>/</span>
-    Rakugaki Jam
-    
-  </div>
-
-  <!-- ── Hero ── -->
-  <header class="pj-hero">
-    <div class="pj-hero-inner">
-      <span class="pj-kicker">Interactive · Multi-Device Canvas · Realtime</span>
-      <ul class="pj-tags">
-        <li>Multi-screen</li>
-        <li>Snap Pair</li>
-        <li>Firebase RTDB</li>
-        <li>Canvas Vector</li>
-      </ul>
-      <h1 class="pj-title">
-        Rakugaki Jam: Doodle on mobile, fling to the wall
-        
-      </h1>
-      <p class="pj-summary">
-        Draw freely on your phone, then fling your stroke onto a shared projection screen with a flick of your finger. A live, crowd-drawn collaborative visual jam powered by Snap Pair and Firebase Realtime Database.
-        
+<!-- ── Hero ── -->
+  <section data-vt-hero class="project-hero rakugaki-jam-hero">
+    <div class="project-hero-img" style="background: linear-gradient(135deg, #fff8f0 0%, #ffe8d6 100%);"></div>
+    <div class="project-hero-overlay"></div>
+    <div class="project-hero-content">
+      <h1 class="project-hero-title">Rakugaki Jam</h1>
+      <p class="project-hero-tagline">
+        <span class="t-en">Doodle on your phone, fling it onto the wall.</span>
+        <span class="t-jp">スマホで落書きして、壁へ飛ばす。</span>
       </p>
-
-      <div class="pj-cta">
-        <a href="https://rakugakijam.creativityiseverywhere.com/" target="_blank" rel="noopener">
-          Join Rakugaki Jam ↗
-          
-        </a>
-        <a href="../interactive.html">
-          ← All Interactive Projects
-          
-        </a>
-      </div>
-
-      <dl class="pj-meta">
-        <div>
-          <dt>Role</dt>
-          <dd>Concept, UX Design &amp; Architecture</dd>
-        </div>
-        <div>
-          <dt>Stack</dt>
-          <dd>Snap Pair · Firebase RTDB · Canvas</dd>
-        </div>
-        <div>
-          <dt>Input</dt>
-          <dd>Touchscreen Handwriting &amp; Fling</dd>
-        </div>
-        <div>
-          <dt>Year</dt>
-          <dd>2025 – 2026</dd>
-        </div>
-      </dl>
+      <a href="https://rakugakijam.creativityiseverywhere.com/" class="btn-primary" style="margin-top: 24px;">
+        <span class="t-en">Play Rakugaki Jam →</span>
+        <span class="t-jp">Rakugaki Jam を遊ぶ →</span>
+      </a>
     </div>
-  </header>
+  </section>
 
   <!-- ── Body ── -->
-  <main class="pj-body">
-
-    <!-- Hero Media -->
-    <figure class="pj-media" data-vt-hero>
-      <video autoplay loop muted playsinline controls poster="../assets/rakugaki-jam/RakugakiJam-screenshot.png" width="1920" height="1080">
-        <source src="../assets/rakugaki-jam/RakugakiJam.webm" type="video/webm">
-        <source src="../assets/rakugaki-jam/preview.mp4" type="video/mp4">
-      </video>
-      <figcaption>
-        Live multi-device doodle capture synchronized instantaneously to the central wall canvas
-        
-      </figcaption>
-    </figure>
-
-    <!-- Key Metrics / Numbers -->
-    <dl class="pj-facts">
-      <div>
-        <dt>&infin;</dt>
-        <dd>
-          Simultaneous doodlers sharing a single ambient wall surface
-          
-        </dd>
-      </div>
-      <div>
-        <dt>&lt;80ms</dt>
-        <dd>
-          Fling-to-wall arrival latency via Firebase RTDB
-          
-        </dd>
-      </div>
-      <div>
-        <dt>0</dt>
-        <dd>
-          App installations needed — scan QR directly into mobile browser
-          
-        </dd>
-      </div>
-      <div>
-        <dt>100%</dt>
-        <dd>
-          Vector curve smoothing applied to rough finger touches
-          
-        </dd>
-      </div>
-    </dl>
-
-    <!-- Key Architecture Points -->
-    <div class="pj-points">
-      <div class="pj-point">
-        <span class="pj-point-num">01</span>
-        <h2 class="pj-point-title">
-          Personal intimacy meets public spectacle.
-          
+  <main class="project-body">
+    
+    <!-- Challenge | Solution Bento -->
+    <div class="challenge-solution-bento">
+      <div class="bento-cell challenge-cell">
+        <h2 class="bento-label">
+          <span class="t-en">Challenge</span>
+          <span class="t-jp">課題</span>
         </h2>
-        <p class="pj-point-desc">
-          Drawing on a large stage in front of people induces performance anxiety. Drawing privately in the palm of your hand and flicking it up transforms self-conscious hesitation into a joyous, playful toss.
-          
+        <p class="bento-text">
+          <span class="t-en">Shared-screen sketch tools either trap everyone on one device or turn into laggy whiteboards. We wanted the energy of hallway graffiti — private mark-making, public flight — without an app install ceremony.</span>
+          <span class="t-jp">共有画面のスケッチは、一台に押し込むか、遅いホワイトボードになりがち。廊下の落書きのような勢い — 個人で描いて、公の場へ飛ばす — を、インストール儀式なしで欲しかった。</span>
         </p>
       </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">02</span>
-        <h2 class="pj-point-title">
-          Powered by the Snap Pair protocol.
-          
+      
+      <div class="bento-cell solution-cell">
+        <h2 class="bento-label">
+          <span class="t-en">Solution</span>
+          <span class="t-jp">解決策</span>
         </h2>
-        <p class="pj-point-desc">
-          Built on our open-source Snap Pair architecture. The wall acts as the room host; audience members connect via ephemeral room tokens, automatically receiving designated color palettes to maintain visual harmony.
-          
-        </p>
-      </div>
-
-      <div class="pj-point">
-        <span class="pj-point-num">03</span>
-        <h2 class="pj-point-title">
-          Organic kinetic canvas dynamics.
-          
-        </h2>
-        <p class="pj-point-desc">
-          Rather than accumulating clutter like a static whiteboard, thrown doodles gently drift, react to ambient audio amplitude, and slowly dissolve over time to preserve momentum and freshness throughout an event.
-          
+        <p class="bento-text">
+          <span class="t-en">Phone canvases pair into a room display; a fling gesture commits the mark to the wall. Snap-pair keeps setup under a minute. The decisive move was separating *draw* (intimate) from *publish* (theatrical).</span>
+          <span class="t-jp">スマホのキャンバスを部屋の画面にペアし、フリックで壁へ載せる。Snap Pair で準備は1分以内。決定打は「描く（親密）」と「出す（劇場）」を分けること。</span>
         </p>
       </div>
     </div>
 
-    <!-- Scenarios -->
-    <section class="pj-scenarios">
-      <h2>
-        Event &amp; physical installations
-        
-      </h2>
-      <ul class="pj-scenarios-list">
-        <li>
-          <strong>Conferences and keynote venues:</strong>
-          Audience questions or visual reactions submitted as expressive sketches rather than dry text polls.
-          
-        </li>
-        <li>
-          <strong>Live music, club nights &amp; VJ sets:</strong>
-          Crowd participation where the audience visually co-creates the visual backdrop behind the performers.
-          
-        </li>
-      </ul>
-    </section>
-
-    <!-- Contribution Split -->
-    <div class="pj-contrib">
-      <div>
-        <h3>
-          My Contribution
-          
-        </h3>
-        <ul>
-          <li>Conceived the hand-to-wall doodle throw interaction and fling kinetic curve</li>
-          <li>Engineered real-time device sync with Firebase RTDB and custom Snap Pair logic</li>
-          <li>Designed high-performance vector stroke interpolation on HTML5 Canvas</li>
-        </ul>
+    <!-- Footer metadata -->
+    <div class="project-footer-meta">
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Role</span>
+          <span class="t-jp">役割</span>
+        </p>
+        <p class="meta-value">
+          <span class="t-en">Designer & builder</span>
+          <span class="t-jp">デザイナー＆制作</span>
+        </p>
       </div>
-      <div>
-        <h3>
-          Ecosystem
-          
-        </h3>
-        <ul>
-          <li>Demonstrator application for the Snap Pair multi-device pairing framework</li>
-          <li>Deployed across private studio workshops and experimental community gatherings</li>
-        </ul>
+      
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Year</span>
+          <span class="t-jp">年</span>
+        </p>
+        <p class="meta-value">2025–2026</p>
+      </div>
+      
+      <div class="meta-group">
+        <p class="meta-label">
+          <span class="t-en">Stack</span>
+          <span class="t-jp">技術</span>
+        </p>
+        <p class="meta-value">Snap Pair · Firebase RTDB · Canvas</p>
       </div>
     </div>
 
   </main>
-
-  <!-- ── Footer Navigation ── -->
