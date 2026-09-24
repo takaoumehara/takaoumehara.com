@@ -31,27 +31,58 @@ export async function getStaticPaths() {
     }
   }
   
-  // Generate for all evidence items with caseStudy links but no existing HTML
+  // Track which slugs already have paths
   const existingSlugs = new Set(paths.map(p => p.params.slug));
+  
+  // Generate for ALL evidence items, prioritizing those with caseStudy links or in main categories
   for (const [slug, item] of lib.evidence.entries()) {
-    if (item.links?.caseStudy && !existingSlugs.has(slug)) {
-      const caseSlug = item.links.caseStudy.replace(/^projects\//, "").replace(/\.html$/, "");
-      if (!existingSlugs.has(caseSlug)) {
-        paths.push({
-          params: { slug: caseSlug },
-          props: {
-            item,
-            body: null,
-            css: null,
-            meta: {
-              title: `${item.title} — Takao Umehara`,
-              description: typeof item.summary === 'string' ? item.summary : item.summary?.en || "",
-              theme: item.kind === 'experiment' ? 'dark' : 'light',
-            },
-          },
-        });
-      }
+    // Skip if already generated
+    if (existingSlugs.has(slug)) continue;
+    
+    // Check if item has explicit caseStudy link
+    let targetSlug = slug;
+    if (item.links?.caseStudy) {
+      targetSlug = item.links.caseStudy.replace(/^projects\//, "").replace(/\.html$/, "");
     }
+    
+    // Skip if target slug already exists
+    if (existingSlugs.has(targetSlug)) continue;
+    
+    // Generate page for this item
+    existingSlugs.add(targetSlug);
+    
+    // Determine theme and description
+    const theme = item.kind === 'experiment' ? 'dark' : 'light';
+    const description = typeof item.summary === 'string' 
+      ? item.summary 
+      : item.summary?.en || item.cardLine?.en || "";
+    
+    // Extract challenge and solution for bento
+    const challenge = item.challenge || (item.contribution?.challenges?.[0] 
+      ? { en: item.contribution.challenges[0], jp: item.contribution.challenges[0] }
+      : null);
+    
+    const solution = item.solution || (item.contribution?.mine?.[0]
+      ? { en: item.contribution.mine[0], jp: item.contribution.mine[0] }
+      : null);
+    
+    paths.push({
+      params: { slug: targetSlug },
+      props: {
+        item: {
+          ...item,
+          challenge: challenge,
+          solution: solution,
+        },
+        body: null,
+        css: null,
+        meta: {
+          title: `${item.title} — Takao Umehara`,
+          description,
+          theme,
+        },
+      },
+    });
   }
 
   return paths;

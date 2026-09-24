@@ -93,8 +93,12 @@ const CTA = {
 /** The one destination a card (or a sidebar row) opens, and the words on it. Site paths are root-absolute. */
 export function destination(item) {
   const l = item.links ?? {};
-  if (item.playable && l.live) return { url: l.live, label: CTA.live, external: true };
+  // Always prioritize case study / project detail page first
   if (l.caseStudy) return { url: `/${l.caseStudy}`, label: CTA.caseStudy, external: false };
+  // For items without explicit caseStudy link, generate one from slug
+  if (item.slug) return { url: `/projects/${item.slug}.html`, label: CTA.caseStudy, external: false };
+  // Fallback to external links only if no detail page exists
+  if (item.playable && l.live) return { url: l.live, label: CTA.live, external: true };
   if (l.live) return { url: l.live, label: CTA.external, external: true };
   if (l.external) return { url: l.external, label: CTA.external, external: true };
   if (l.repo) return { url: l.repo, label: CTA.repo, external: true };
