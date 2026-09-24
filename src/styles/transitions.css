@@ -1,0 +1,156 @@
+/* Intent dissolve transition — Strengthened for visibility
+ * Outgoing cells stagger-dissolve with pronounced motion
+ * Incoming cells cascade in with clear intent
+ * View Transitions API with reduced-motion support
+ */
+
+/* Default: Intent dissolve on navigation */
+@view-transition {
+  navigation: auto;
+}
+
+/* Outgoing content: more pronounced dissolve */
+::view-transition-old(root) {
+  animation: dissolve-out 350ms cubic-bezier(0.4, 0, 0.6, 1);
+  transform-origin: center;
+}
+
+/* Incoming content: cascading entrance */
+::view-transition-new(root) {
+  animation: dissolve-in 400ms cubic-bezier(0.2, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+@keyframes dissolve-out {
+  0% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.96) translateY(-4px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.92) translateY(-8px);
+    filter: blur(6px);
+  }
+}
+
+@keyframes dissolve-in {
+  0% {
+    opacity: 0;
+    transform: scale(1.04) translateY(12px);
+    filter: blur(4px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.02) translateY(6px);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0px);
+  }
+}
+
+/* Grid cards: stagger effect on hover for preview */
+.cat-card {
+  view-transition-name: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Hero sections maintain continuity with shared element feel */
+[data-vt-hero] {
+  view-transition-name: hero;
+}
+
+::view-transition-old(hero),
+::view-transition-new(hero) {
+  animation-duration: 450ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(hero) {
+  animation-name: hero-out;
+}
+
+::view-transition-new(hero) {
+  animation-name: hero-in;
+}
+
+@keyframes hero-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Reduced motion: simple crossfade only, no transforms */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(hero),
+  ::view-transition-new(hero) {
+    animation-duration: 200ms;
+    animation-timing-function: ease;
+  }
+  
+  ::view-transition-old(root),
+  ::view-transition-old(hero) {
+    animation-name: fade-out;
+  }
+  
+  ::view-transition-new(root),
+  ::view-transition-new(hero) {
+    animation-name: fade-in;
+  }
+  
+  @keyframes fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+  
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  .cat-card:hover {
+    transform: none;
+  }
+}
+
+/* News cards and bento cells */
+.news-card,
+.bento-cell {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.news-card:hover,
+.bento-cell:hover {
+  transform: translateY(-2px);
+}

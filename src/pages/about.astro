@@ -1,9 +1,423 @@
 ---
-// Hand-built page, extracted by scripts/extract-page.mjs into
-// src/fragments/about.{html,css,json}. See src/components/FragmentPage.astro.
-import FragmentPage from "../components/FragmentPage.astro";
-import body from "../fragments/about.html?raw";
-import css from "../fragments/about.css?raw";
-import meta from "../fragments/about.json";
+// The About page: consolidates all person pages into one
+// Sections: #intro #now #writing #workshops #work-with-me #studio
+import Site from "../layouts/Site.astro";
+import { t, tb } from "../lib/html.mjs";
+import { getLibrary } from "../lib/site.mjs";
+
+const lib = getLibrary();
+const profile = lib.profile;
 ---
-<FragmentPage meta={meta} body={body} css={css} current="/about.html" />
+<Site 
+  title="About — Takao Umehara" 
+  description="Design & AI Executive building interactive experiences and the environments teams ship in."
+  canonical="https://takaoumehara.com/about"
+  bodyClass="about-page"
+>
+  <main class="about-content">
+    <!-- Intro -->
+    <section id="intro" class="about-section section-intro">
+      <h1 class="about-h1">
+        <span class="t-en">I do my best work before the answer is obvious.</span>
+        <span class="t-jp">答えがまだ見えないうちに、いちばん良い仕事をする。</span>
+      </h1>
+      <p class="about-subtitle">
+        <span class="t-en">Design & AI Executive — building interactive experiences and the environments teams ship in.</span>
+        <span class="t-jp">Design & AI Executive — インタラクティブ体験と、チームが届ける環境をつくる。</span>
+      </p>
+      
+      <p class="about-bio">
+        <span class="t-en">Based between New York and Japan. Twenty-plus years taking products from 0→1 — not only Figma files, but the AI-ready environments teams actually build and ship in.</span>
+        <span class="t-jp">ニューヨークと日本を拠点に。20年以上、0→1 のプロダクトづくりに携わる。Figma だけではない。チームが実際にビルドし届ける、AI 前提の環境まで設計する。</span>
+      </p>
+      
+      <!-- Stats -->
+      <div class="about-stats">
+        <div class="stat-item">
+          <div class="stat-value">20+</div>
+          <div class="stat-label">
+            <span class="t-en">Years</span>
+            <span class="t-jp">年</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">40+</div>
+          <div class="stat-label">
+            <span class="t-en">Verizon designers supported by AI workflows</span>
+            <span class="t-jp">Verizon — AI ワークフローで支援したデザイナー</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">20</div>
+          <div class="stat-label">
+            <span class="t-en">SOSV founders mentored</span>
+            <span class="t-jp">SOSV — メンタリングした創業者</span>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">11K+</div>
+          <div class="stat-label">
+            <span class="t-en">Extra Ordinary book copies sold</span>
+            <span class="t-jp">Extra Ordinary — 販売部数</span>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <!-- Now -->
+    <section id="now" class="about-section">
+      <h2 class="about-h2">
+        <span class="t-en">Now</span>
+        <span class="t-jp">いま</span>
+      </h2>
+      <ul class="about-list">
+        <li>
+          <span class="t-en">Shipping <strong>Intent First</strong> — thesis and practice for Context Grammar: helping AI read intent, not just prompts.</span>
+          <span class="t-jp"><strong>Intent First</strong> — Context Grammar の主張と実践。AI がプロンプトではなく意図を読むための語彙。</span>
+        </li>
+        <li>
+          <span class="t-en">Building <strong>moime</strong> — phone-first pages that start from finished design.</span>
+          <span class="t-jp"><strong>moime</strong> — 完成したデザインから始まる、スマホ前提のページづくり。</span>
+        </li>
+        <li>
+          <span class="t-en">Releasing interactive works (Typespace, Resona, and late-summer playables).</span>
+          <span class="t-jp">インタラクティブ作品の公開（Typespace、Resona、晩夏のプレイアブル）。</span>
+        </li>
+        <li>
+          <span class="t-en">Teaching / coaching AI skills for design and product teams.</span>
+          <span class="t-jp">デザイン／プロダクトチーム向けの AI スキル指導・コーチング。</span>
+        </li>
+        <li>
+          <span class="t-en">Selective studio and hiring conversations.</span>
+          <span class="t-jp">スタジオ案件および採用の対話（厳選）。</span>
+        </li>
+      </ul>
+    </section>
+    
+    <!-- Writing -->
+    <section id="writing" class="about-section">
+      <h2 class="about-h2">
+        <span class="t-en">Writing</span>
+        <span class="t-jp">文章</span>
+      </h2>
+      <div class="writing-cards">
+        <a href="https://intentfirst.substack.com" target="_blank" rel="noopener" class="writing-card">
+          <h3 class="writing-title">Intent First</h3>
+          <p class="writing-excerpt">
+            <span class="t-en">Why dissolving the last brief is the real first step.</span>
+            <span class="t-jp">前回のブリーフを溶かすことが、本当の第一歩になる理由。</span>
+          </p>
+          <span class="writing-link">
+            <span class="t-en">Read on Substack →</span>
+            <span class="t-jp">Substack で読む →</span>
+          </span>
+        </a>
+        <a href="https://breakbias.medium.com" target="_blank" rel="noopener" class="writing-card">
+          <h3 class="writing-title">Break Bias</h3>
+          <p class="writing-excerpt">
+            <span class="t-en">Notes on seeing past default taste in product and culture.</span>
+            <span class="t-jp">プロダクトと文化のなかの「既定の好み」を見抜くノート。</span>
+          </p>
+          <span class="writing-link">
+            <span class="t-en">Read on Medium →</span>
+            <span class="t-jp">Medium で読む →</span>
+          </span>
+        </a>
+      </div>
+    </section>
+    
+    <!-- Workshops -->
+    <section id="workshops" class="about-section">
+      <h2 class="about-h2">
+        <span class="t-en">Workshops</span>
+        <span class="t-jp">ワークショップ</span>
+      </h2>
+      <p class="about-text">
+        <span class="t-en">Short intensives on interactive craft + AI build environments (not prompt theater).</span>
+        <span class="t-jp">インタラクティブの手仕事と、AI 前提のビルド環境についての短期集中（プロンプト劇ではない）。</span>
+      </p>
+      <p class="about-text">
+        <span class="t-en">Team workshops — from taste judgment to shippable prototypes.</span>
+        <span class="t-jp">チーム向け — 審美判断から、届けられるプロトタイプまで。</span>
+      </p>
+      <p class="about-cta">
+        <a href="#work-with-me" class="about-link">
+          <span class="t-en">Ask about a workshop →</span>
+          <span class="t-jp">ワークショップについて問い合わせる →</span>
+        </a>
+      </p>
+    </section>
+    
+    <!-- Work with me -->
+    <section id="work-with-me" class="about-section">
+      <h2 class="about-h2">
+        <span class="t-en">Work with me</span>
+        <span class="t-jp">仕事の相談</span>
+      </h2>
+      <p class="about-text">
+        <span class="t-en">Hiring and studio. I help teams and founders when the brief is still soft — interactive experiences, AI product surfaces, and the systems around them.</span>
+        <span class="t-jp">採用とスタジオ。ブリーフがまだ柔らかい段階で、チームと創業者を支援する — インタラクティブ体験、AI プロダクトの表層、その周りの仕組みまで。</span>
+      </p>
+      <p class="about-contact">
+        <span class="t-en">Reach: </span>
+        <span class="t-jp">連絡先: </span>
+        <a href="mailto:takaoumehara@gmail.com" class="about-email">takaoumehara@gmail.com</a>
+      </p>
+    </section>
+    
+    <!-- Studio -->
+    <section id="studio" class="about-section">
+      <h2 class="about-h2">Studio</h2>
+      <p class="about-studio-tagline">Creativity is Everywhere.</p>
+      <p class="about-text">
+        <span class="t-en">Studio practice under a simple company sentence: Takao Umehara's independent design & AI studio (LLC) — selective collaborations, not an agency mill.</span>
+        <span class="t-jp">独立した Design & AI スタジオ（LLC）としての一文：選抜したコラボレーション。量産エージェンシーではない。</span>
+      </p>
+      <p class="about-cta">
+        <a href={profile.studio.url} target="_blank" rel="noopener" class="about-link">
+          <span class="t-en">Visit studio site →</span>
+          <span class="t-jp">スタジオサイトへ →</span>
+        </a>
+      </p>
+    </section>
+    
+    <!-- Footer links -->
+    <footer class="about-footer">
+      <a href="/" class="about-footer-link">← <span class="t-en">Home</span><span class="t-jp">ホーム</span></a>
+      <a href="/work" class="about-footer-link"><span class="t-en">All Work</span><span class="t-jp">すべての作品</span> →</a>
+    </footer>
+  </main>
+</Site>
+
+<style>
+  :global(body.about-page .side) {
+    display: none;
+  }
+  
+  .about-content {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+  
+  .about-section {
+    margin-bottom: 80px;
+  }
+  
+  .section-intro {
+    margin-bottom: 120px;
+  }
+  
+  .about-h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  
+  .about-subtitle {
+    font-size: 20px;
+    line-height: 1.5;
+    color: var(--ink-mid);
+    margin-bottom: 32px;
+  }
+  
+  .about-bio {
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--ink);
+    margin-bottom: 48px;
+  }
+  
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 32px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+  }
+  
+  .stat-item {
+    text-align: center;
+  }
+  
+  .stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+  }
+  
+  .stat-label {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-dim);
+  }
+  
+  .about-h2 {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 24px;
+  }
+  
+  .about-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .about-list li {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-left: 24px;
+    position: relative;
+  }
+  
+  .about-list li:before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--ink-dim);
+  }
+  
+  .about-text {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  
+  .writing-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  
+  .writing-card {
+    display: block;
+    padding: 24px;
+    background: var(--surface-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  
+  .writing-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+  
+  .writing-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  
+  .writing-excerpt {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-mid);
+    margin-bottom: 16px;
+  }
+  
+  .writing-link {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+  
+  .about-cta {
+    margin-top: 24px;
+  }
+  
+  .about-link {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  
+  .about-link:hover {
+    opacity: 0.7;
+  }
+  
+  .about-contact {
+    font-size: 16px;
+    line-height: 1.75;
+    color: var(--ink);
+    margin-top: 24px;
+  }
+  
+  .about-email {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .about-email:hover {
+    text-decoration: underline;
+  }
+  
+  .about-studio-tagline {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 16px;
+  }
+  
+  .about-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    margin-top: 80px;
+  }
+  
+  .about-footer-link {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  
+  .about-footer-link:hover {
+    opacity: 0.7;
+  }
+  
+  @media (max-width: 768px) {
+    .about-content {
+      padding: 48px 16px;
+    }
+    
+    .about-h1 {
+      font-size: 32px;
+    }
+    
+    .about-subtitle {
+      font-size: 18px;
+    }
+    
+    .about-stats {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    
+    .writing-cards {
+      grid-template-columns: 1fr;
+    }
+    
+    .about-footer {
+      flex-direction: column;
+      gap: 16px;
+    }
+  }
+</style>

@@ -1,26 +1,115 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "astro",
-  "installCommand": "npm ci",
-  "buildCommand": "npm run build",
-  "headers": [
+  "redirects": [
     {
-      "source": "/studio/(.*)",
-      "headers": [
-        {
-          "key": "X-Robots-Tag",
-          "value": "noindex, nofollow"
-        }
-      ]
+      "source": "/now",
+      "destination": "/about#now",
+      "permanent": true
     },
     {
-      "source": "/api/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-store"
-        }
-      ]
+      "source": "/now/",
+      "destination": "/about#now",
+      "permanent": true
+    },
+    {
+      "source": "/publications",
+      "destination": "/about#writing",
+      "permanent": true
+    },
+    {
+      "source": "/publications.html",
+      "destination": "/about#writing",
+      "permanent": true
+    },
+    {
+      "source": "/workshop",
+      "destination": "/about#workshops",
+      "permanent": true
+    },
+    {
+      "source": "/workshop.html",
+      "destination": "/about#workshops",
+      "permanent": true
+    },
+    {
+      "source": "/work-with-me",
+      "destination": "/about#work-with-me",
+      "permanent": true
+    },
+    {
+      "source": "/work-with-me.html",
+      "destination": "/about#work-with-me",
+      "permanent": true
+    },
+    {
+      "source": "/studio",
+      "destination": "/about#studio",
+      "permanent": true
+    },
+    {
+      "source": "/studio/",
+      "destination": "/about#studio",
+      "permanent": true
+    },
+    {
+      "source": "/contact",
+      "destination": "/about#work-with-me",
+      "permanent": true
+    },
+    {
+      "source": "/contact.html",
+      "destination": "/about#work-with-me",
+      "permanent": true
+    },
+    {
+      "source": "/interactive",
+      "destination": "/work?filter=interactive",
+      "permanent": true
+    },
+    {
+      "source": "/interactive.html",
+      "destination": "/work?filter=interactive",
+      "permanent": true
+    },
+    {
+      "source": "/ai-products",
+      "destination": "/work?filter=ai",
+      "permanent": true
+    },
+    {
+      "source": "/ai-products.html",
+      "destination": "/work?filter=ai",
+      "permanent": true
+    },
+    {
+      "source": "/ai-tools",
+      "destination": "/work?filter=ai",
+      "permanent": true
+    },
+    {
+      "source": "/ai-tools.html",
+      "destination": "/work?filter=ai",
+      "permanent": true
+    },
+    {
+      "source": "/brand",
+      "destination": "/work?filter=design",
+      "permanent": true
+    },
+    {
+      "source": "/brand.html",
+      "destination": "/work?filter=design",
+      "permanent": true
+    },
+    {
+      "source": "/all",
+      "destination": "/work",
+      "permanent": true
+    },
+    {
+      "source": "/all/",
+      "destination": "/work",
+      "permanent": true
     }
   ]
 }

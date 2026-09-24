@@ -18,13 +18,8 @@ const lib = getLibrary();
 const profile = lib.profile;
 const categories = orderedCategories();
 
-const PAGES = [
-  { href: "/now/", label: { en: "Now", jp: "いま" }, match: ["/now/", "/now.html"] },
-  { href: "/publications.html", label: { en: "Writing", jp: "文章" } },
-  { href: "/workshop.html", label: { en: "Workshops", jp: "ワークショップ" }, match: ["/workshop.html", "/breakbias.html"] },
-  { href: "/contact.html", label: { en: "Work with me", jp: "仕事の相談" }, match: ["/contact.html", "/work-with-me.html"] },
-  { href: profile.studio.url, label: "Studio ↗", external: true },
-];
+// Person pages consolidated into /about
+// Work archive is no longer in sidebar per IA redesign
 
 const matches = (page) => page.match ?? [page.href];
 const isCurrent = (page) => matches(page).some((p) => samePage(p, current));
@@ -59,36 +54,55 @@ const thumb = (item) => {
 
   <div class="side-panel" id="side-panel">
     <div class="side-controls">
-      <a class="side-all" href="/all/" data-match="/all/" aria-current={cur(samePage("/all/", current))}>
-        <span class="t-en">Show all projects</span><span class="t-jp">すべてのプロジェクト</span>
-      </a>
+      <div class="side-controls-left">
+        <a class="side-all" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
+          <span class="t-en">All work</span><span class="t-jp">すべての作品</span>
+        </a>
+        <button class="side-search-toggle" id="side-search-toggle" type="button" aria-label="Search" title="Search">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="8" cy="8" r="6"/>
+            <path d="M13 13l5 5"/>
+          </svg>
+        </button>
+      </div>
       <div class="side-ctl">
         <button class="side-theme" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
         <button class="side-lang" id="lang-cycle" type="button" aria-label="Switch to Japanese">JP</button>
       </div>
     </div>
+    
+    <div class="side-search" id="side-search" hidden>
+      <input 
+        type="search" 
+        class="side-search-input" 
+        id="side-search-input"
+        placeholder="Search…"
+        data-placeholder-en="Search…"
+        data-placeholder-jp="検索…"
+      />
+    </div>
 
     <div class="side-head">
       <a class="side-wordmark" href="/" data-match="/" aria-current={cur(samePage("/", current))}>{profile.name}</a>
-      <p class="side-clock" id="side-clock" data-zone="America/New_York" data-place-en="New York" data-place-jp="ニューヨーク">
-        <span data-clock-date>&nbsp;</span><span data-clock-time>&nbsp;</span>
-      </p>
+      <div class="side-clocks" id="side-clocks">
+        <div class="clock-row" data-city="tokyo" data-zone="Asia/Tokyo" data-name-en="Tokyo" data-name-jp="東京">
+          <span class="clock-city">Tokyo</span>
+          <span class="clock-weather" data-weather-icon>☀️</span>
+          <span class="clock-time">--:--</span>
+        </div>
+        <div class="clock-row" data-city="newyork" data-zone="America/New_York" data-name-en="New York" data-name-jp="ニューヨーク">
+          <span class="clock-city">New York</span>
+          <span class="clock-weather" data-weather-icon>☀️</span>
+          <span class="clock-time">--:--</span>
+        </div>
+      </div>
     </div>
 
     <section class="side-about">
-      <a class="side-label" href="/about.html" data-match="/about.html" aria-current={cur(samePage("/about.html", current))}>
-        <span class="t-en">About</span><span class="t-jp">自己紹介</span>
+      <a class="side-label" href="/about" data-match="/about /about.html" aria-current={cur(samePage("/about", current))}>
+        <span class="t-en">About</span><span class="t-jp">について</span>
       </a>
       <p set:html={tb(profile.positioning[1])} />
-      <nav class="side-pages" aria-label="Pages">
-        {PAGES.map((page) => (
-          <a href={page.href}
-             data-match={page.external ? undefined : matches(page).join(" ")}
-             aria-current={cur(isCurrent(page))}
-             target={page.external ? "_blank" : undefined} rel={page.external ? "noopener" : undefined}
-             set:html={t(page.label)} />
-        ))}
-      </nav>
     </section>
 
     <nav class="side-work" aria-label="Work by category">
