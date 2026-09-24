@@ -27,9 +27,10 @@ const hasPlayableLink = item.playable && item.links?.live;
           muted 
           loop 
           playsinline
-          poster={item.assets?.hero ? url(item.assets.hero) : undefined}
+          poster={item.assets?.hero ? url(item.assets.hero) : item.assets?.thumb ? url(item.assets.thumb) : undefined}
         >
-          <source src={videoUrl} type="video/mp4" />
+          {item.assets?.preview?.webm && <source src={url(item.assets.preview.webm)} type="video/webm" />}
+          {item.assets?.preview?.mp4 && <source src={url(item.assets.preview.mp4)} type="video/mp4" />}
         </video>
         {videoAudioRecommended && (
           <button class="video-sound-toggle" id="video-sound-toggle" type="button" aria-label="Enable sound">
@@ -43,8 +44,8 @@ const hasPlayableLink = item.playable && item.links?.live;
           </button>
         )}
       </div>
-    ) : item.assets?.hero && (
-      <div class="project-hero-image" style={`background-image: url(${esc(url(item.assets.hero))})`}></div>
+    ) : (item.assets?.hero || item.assets?.thumb) && (
+      <div class="project-hero-image" style={`background-image: url(${esc(url(item.assets.hero ?? item.assets.thumb))})`}></div>
     )}
   </div>
 
