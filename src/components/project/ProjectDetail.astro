@@ -282,6 +282,10 @@ const meta = [
     color: var(--pr-ink);
     max-width: 62ch;
   }
+  /* Media and fact strips step down from the text by two grid units. */
+  .project-beats :global(.beat-text + .beat-media),
+  .project-beats :global(.beat-text + .beat-facts),
+  .project-beats :global(.beat-media + .beat-facts) { margin-top: calc(var(--gap-grid) * 2); }
   .project-beats :global(.beat-media) {
     display: grid;
     grid-template-columns: repeat(var(--beat-cols, 1), minmax(0, 1fr));
