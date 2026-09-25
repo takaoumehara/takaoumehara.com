@@ -20,11 +20,12 @@
   --pr-line: #e2e2e2;         /* hairline */
   --pr-line-2: #808080;       /* emphasis hairline (Ash Gray as drawn) */
   --pr-blue: #0062cc;         /* System Blue for text, darkened from #007aff (4.0:1) to 5.3:1 on white / 4.9:1 on the card grey */
-  --pr-blue-fill: #007aff;    /* System Blue as drawn, for fills that carry no text (the switch track) */
 
-  /* Type — SF Pro where it exists, Inter otherwise; one weight */
+  /* Type — SF Pro where it exists, Inter otherwise, for running text; Outfit
+     SemiBold for every heading (the display face, loaded in Site.astro). */
   --pr-ff: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --pr-ff-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --pr-ff-display: "Outfit", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --fw-display: 600;
   --pr-ff-jp: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
   /* The hand-built pages' design-system.css redefines --ff on :root; the rail
      reads the --pr-* names, which nothing else defines. */
@@ -58,10 +59,11 @@
   --surface: var(--pr-card);
   --a1: rgba(0, 0, 0, 0.05); --a2: rgba(0, 0, 0, 0.08); --a3: rgba(0, 0, 0, 0.04); --a4: rgba(0, 0, 0, 0.06);
 
-  /* Layout - Porto Rocha proportions: narrower left rail (~18-20% vs 25%) */
+  /* Layout — PORTO ROCHA proportions: a ~22% rail, and the main pane takes
+     every pixel the rail leaves (src/styles/shell.css). */
   --col: 1200px;
   --gutter: clamp(16px, 2.5vw, 32px);
-  --side-w: clamp(280px, 20vw, 340px);
+  --side-w: clamp(300px, 22vw, 380px);
 }
 
 html[data-theme="dark"] {
@@ -73,7 +75,6 @@ html[data-theme="dark"] {
   --pr-line: #262626;
   --pr-line-2: #6b6b6b;
   --pr-blue: #3b9cff;         /* 7.5:1 on black, 6.7:1 on the card grey */
-  --pr-blue-fill: #0a84ff;
   --ink-mid: #d4d4d4;
   --a1: rgba(255, 255, 255, 0.06); --a2: rgba(255, 255, 255, 0.1); --a3: rgba(255, 255, 255, 0.05); --a4: rgba(255, 255, 255, 0.08);
   color-scheme: dark;

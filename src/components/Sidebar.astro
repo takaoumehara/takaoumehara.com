@@ -36,9 +36,10 @@ const groups = categories.map((category) => {
   return { category, items };
 });
 
-const name = (item) => (item.jpTitle && item.jpTitle !== (item.shortTitle ?? item.title))
-  ? t({ en: item.shortTitle ?? item.title, jp: item.jpTitle })
-  : esc(item.shortTitle ?? item.title);
+// A row is named, not described: the Latin short name in both languages.
+// Resona stays "Resona" in the Japanese edition, the way a studio site keeps
+// its project names — the Japanese lives in the one-liner underneath.
+const name = (item) => esc(item.shortTitle ?? item.title);
 
 const thumb = (item) => {
   const image = item.assets?.thumb ?? item.assets?.hero;

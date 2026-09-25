@@ -18,25 +18,29 @@ function setLang(lang) {
   html.lang = lang === "jp" ? "ja" : "en"; // a screen reader needs the language, not only the text
   if (!html.dataset.langFixed) store.set("tu-lang", lang);
   document.querySelectorAll(".lang-btn").forEach((b) => b.classList.toggle("is-active", b.dataset.lang === lang));
-  const cycle = document.getElementById("lang-cycle");
-  if (cycle) {
+  langButtons().forEach((cycle) => {
     cycle.textContent = lang === "jp" ? "EN" : "JP";
     cycle.setAttribute("aria-label", lang === "jp" ? "Switch to English" : "Switch to Japanese");
-  }
+  });
   renderClock();
 }
+
+// The rail carries the canonical pair (#theme-switch / #lang-cycle); a page
+// that hides the rail — /work — carries its own, marked with the data
+// attributes. Both are driven from here so neither copy goes dead.
+const themeButtons = () => document.querySelectorAll("#theme-switch, [data-theme-switch]");
+const langButtons = () => document.querySelectorAll("#lang-cycle, [data-lang-cycle]");
 
 // ── Theme ("tu-theme"; a page with data-theme-lock="dark" stays dark) ───────
 function applyTheme() {
   const pref = store.get("tu-theme") || "light";
   const lock = html.dataset.themeLock;
   html.dataset.theme = lock || pref;
-  const sw = document.getElementById("theme-switch");
-  if (sw) {
+  themeButtons().forEach((sw) => {
     sw.setAttribute("aria-checked", String(html.dataset.theme === "dark"));
     sw.disabled = Boolean(lock);
     sw.title = lock ? "This page is dark by design" : "";
-  }
+  });
 }
 function toggleTheme() {
   const next = (store.get("tu-theme") || "light") === "dark" ? "light" : "dark";
@@ -130,9 +134,6 @@ function bindSidebar() {
       toggle.setAttribute("aria-expanded", String(open));
     });
   }
-  document.getElementById("theme-switch")?.addEventListener("click", toggleTheme);
-  document.getElementById("lang-cycle")?.addEventListener("click", () => setLang(currentLang() === "jp" ? "en" : "jp"));
-  
   // Search toggle
   const searchToggle = document.getElementById("side-search-toggle");
   const searchPanel = document.getElementById("side-search");
@@ -185,6 +186,21 @@ function bindSidebar() {
     const top = current.getBoundingClientRect().top - side.getBoundingClientRect().top + side.scrollTop;
     side.scrollTop = Math.max(0, top - side.clientHeight / 2);
   }
+}
+// The theme and language controls. The rail's pair is persisted and bound
+// once; a page-level copy (/work) is a new element after every swap, so this
+// runs on every page-load and binds whatever is not bound yet.
+function bindControls() {
+  themeButtons().forEach((b) => {
+    if (b.dataset.bound) return;
+    b.dataset.bound = "1";
+    b.addEventListener("click", toggleTheme);
+  });
+  langButtons().forEach((b) => {
+    if (b.dataset.bound) return;
+    b.dataset.bound = "1";
+    b.addEventListener("click", () => setLang(currentLang() === "jp" ? "en" : "jp"));
+  });
 }
 function closePhoneMenu() {
   const side = document.getElementById("side");
@@ -263,6 +279,7 @@ function bindReveal() {
 
 // ── Lifecycle ───────────────────────────────────────────────────────────────
 function onPageLoad() {
+  bindControls();
   setLang(html.dataset.langFixed || store.get("tu-lang") || "en");
   applyTheme();
   bindSidebar();

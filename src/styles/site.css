@@ -116,7 +116,7 @@ html.lang-jp .t-jp.is-block { display: block; }
 /* ── Shared layout ──────────────────────────────────────────────────────── */
 .band { max-width: var(--col); margin: 0 auto; padding: 80px var(--gutter) 92px; border-top: 1px solid var(--line); }
 .section-head { margin-bottom: 40px; }
-.section-title { font-family: var(--serif); font-size: clamp(32px, 4vw, 50px); font-weight: 400; letter-spacing: -0.03em; line-height: 1.02; }
+.section-title { font-family: var(--serif); font-size: clamp(32px, 4vw, 50px); font-weight: var(--fw-display, 600); letter-spacing: -0.03em; line-height: 1.02; }
 html.lang-jp .section-title { font-family: var(--ff-jp); font-weight: 400; letter-spacing: -0.01em; }
 .section-lede { margin-top: 16px; max-width: 68ch; font-size: 16px; line-height: 1.7; color: var(--ink-mid); }
 .section-lede :where(.t-en) { display: block; }
@@ -377,7 +377,7 @@ html.lang-jp .end-line { font-family: var(--ff-jp); font-style: normal; font-wei
 
 /* ── Footer ─────────────────────────────────────────────────────────────── */
 footer { border-top: 1px solid var(--line); }
-.site-footer { max-width: var(--col); margin: 0 auto; padding: 36px var(--gutter); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
+.site-footer { width: 100%; padding: 36px var(--gutter); display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap; }
 .footer-logo { font-size: 14px; font-weight: 400; letter-spacing: -0.02em; }
 .footer-llc { font-size: 11px; color: var(--ink-dim); margin-top: 4px; }
 .footer-llc strong { color: var(--ink-mid); font-weight: 400; }
@@ -431,13 +431,15 @@ footer { border-top: 1px solid var(--line); }
 /* ── Category pages & /all/ ─────────────────────────────────────────────────
    The header above each section's grid (src/components/grid/WorkGrid.astro
    carries the grid itself, and its own stylesheet, src/styles/grid.css). */
-.cat-page { max-width: var(--col); margin: 0 auto; padding: 0 var(--gutter) 120px; }
+/* Like the detail page, a category page is the main pane — it fills whatever
+   the rail leaves. Individual blocks cap their own measure (.cat-lede). */
+.cat-page { width: 100%; padding: 0 var(--gutter) 120px; }
 
 .cat-head { padding: clamp(40px, 5vw, 64px) 0 var(--sp-5); }
 .cat-title {
   font-family: var(--ff-display);
   font-size: var(--text-display);
-  font-weight: 400;
+  font-weight: var(--fw-display, 600);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
   margin: 0 0 var(--sp-2);

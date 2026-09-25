@@ -34,7 +34,9 @@ interface Props {
 const {
   title, description = "", canonical, noindex = false, ogImage, ogType = "website",
   lang = "en", theme, htmlClass = "", bodyClass, current, stylesheets = [], style = "",
-  fonts = "https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Noto+Sans+JP:wght@400&display=swap",
+  // Outfit carries every heading (--pr-ff-display); Inter and Noto Sans JP the
+  // running text. 600 is the heading weight, 400/500 the rest.
+  fonts = "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Inter:wght@400&family=Noto+Sans+JP:wght@400&display=swap",
   footer = true, lensSlug,
 } = Astro.props;
 

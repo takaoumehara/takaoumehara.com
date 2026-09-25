@@ -54,8 +54,8 @@ FILTERS[3].count = designCount;
               <path d="M13 13l5 5"/>
             </svg>
           </button>
-          <button class="side-theme" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
-          <button class="side-lang" id="lang-cycle" type="button" aria-label="Switch to Japanese">JP</button>
+          <button class="side-theme" data-theme-switch="true" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
+          <button class="side-lang" data-lang-cycle="true" type="button" aria-label="Switch to Japanese">JP</button>
         </div>
       </div>
       
@@ -85,18 +85,12 @@ FILTERS[3].count = designCount;
 </Site>
 
 <style>
-  :global(body.work-fullscreen) {
-    --side-width: 0;
-  }
-  
-  :global(body.work-fullscreen .side) {
-    display: none;
-  }
-  
+  /* The rail is dropped and the shell collapses to one column in
+     src/styles/shell.css (body.work-fullscreen), so those rules survive a
+     View Transitions swap. This page then runs the full viewport. */
   .work-page-full {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 24px;
+    width: 100%;
+    padding: 40px var(--gutter);
   }
   
   .work-header {
@@ -216,7 +210,7 @@ FILTERS[3].count = designCount;
   
   @media (max-width: 768px) {
     .work-page-full {
-      padding: 24px 16px;
+      padding: 24px var(--gutter);
     }
     
     .work-filters {

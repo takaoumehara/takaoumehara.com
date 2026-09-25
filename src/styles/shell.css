@@ -1,13 +1,24 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    The shell: a fixed left rail (the person, then every piece of work by
    category) and the page on the right. Proportions and rhythm follow PORTO
-   ROCHA (docs/design/porto-rocha/DESIGN.md): a ~25% rail, grey card rows with
+   ROCHA (docs/design/porto-rocha/DESIGN.md): a ~22% rail, grey card rows with
    a 64px tile, 14px names and 13px grey one-liners, 8px between rows, no
    shadows. The rail is persisted across navigations (Site.astro), so its
    scroll position, folds and clock survive a click.
    ═══════════════════════════════════════════════════════════════════════════ */
 .shell { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; align-items: start; }
-.main { min-width: 0; }
+/* The right column IS the page: the rail takes --side-w, the main pane takes
+   everything that is left, at every width. Nothing here re-centres it inside a
+   narrower measure — a page that wants a readable line length caps its own
+   text (ProjectDetail.astro), never the pane. */
+.main { min-width: 0; width: 100%; }
+
+/* /work (body.work-fullscreen) drops the rail entirely and runs edge to edge.
+   These live here rather than in the page's scoped <style> so they survive the
+   View Transitions swap, when <body>'s class is replaced before the page's own
+   styles are applied. */
+body.work-fullscreen .shell { grid-template-columns: minmax(0, 1fr); }
+body.work-fullscreen .side { display: none; }
 
 .side {
   position: sticky; top: 0; height: 100vh; overflow-y: auto; overscroll-behavior: contain;
@@ -46,18 +57,25 @@ html.lang-jp .side { font-family: var(--pr-ff-jp); }
 .side-search-toggle.is-active { background: var(--pr-ink); color: var(--pr-canvas); }
 .side-ctl { display: flex; align-items: center; gap: var(--sp-1); }
 
+/* Dark/light: the same 40px monochrome disc as search and language, carrying a
+   half-filled circle. No coloured track — the control is the same ink as the
+   rest of the rail, and the glyph's filled half swaps side with the theme. */
 .side-theme {
-  appearance: none; cursor: pointer; position: relative; width: 51px; height: 31px; padding: 0; border: 0;
-  border-radius: var(--r-pill); background: var(--pr-card-2); transition: background 160ms ease;
+  appearance: none; cursor: pointer; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
+  background: var(--pr-card); color: var(--pr-ink);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 140ms ease;
 }
-.side-theme::after {
-  content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%;
-  background: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 160ms ease;
+.side-theme:hover { background: var(--pr-card-2); }
+.side-theme::before {
+  content: ""; box-sizing: border-box; width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+  transition: background 160ms ease;
 }
-.side-theme[aria-checked="true"] { background: var(--pr-blue-fill); }
-.side-theme[aria-checked="true"]::after { transform: translateX(20px); }
+.side-theme[aria-checked="true"]::before { background: linear-gradient(270deg, currentColor 50%, transparent 50%); }
 .side-theme:disabled { cursor: default; opacity: 0.55; }
-.side-theme:focus-visible, .side-lang:focus-visible, .side-all:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+.side-theme:focus-visible, .side-lang:focus-visible, .side-all:focus-visible { outline: 2px solid var(--pr-ink); outline-offset: 2px; }
 
 .side-lang {
   appearance: none; cursor: pointer; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
@@ -120,8 +138,11 @@ html[data-lang-fixed] .side-lang { display: none; }
   transition: background 140ms ease;
 }
 .side-item:hover { background: var(--pr-card-2); }
-.side-item[aria-current="page"] { background: var(--pr-card-2); }
-.side-item[aria-current="page"] .side-name { color: var(--pr-blue); }
+/* The row you are on inverts — ink block, canvas type — the way PORTO ROCHA
+   marks the open project. Not a slightly darker grey, and never a blue name. */
+.side-item[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.side-item[aria-current="page"] .side-name { color: var(--pr-canvas); }
+.side-item[aria-current="page"] .side-line { color: var(--pr-canvas); opacity: 0.7; }
 .side-thumb { width: 64px; aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--pr-canvas); display: grid; place-items: center; }
 .side-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .side-thumb .side-art { font-size: 9px; letter-spacing: 0.04em; text-align: center; line-height: 1.1; padding: 4px; color: var(--pr-ink-2); text-transform: uppercase; }
