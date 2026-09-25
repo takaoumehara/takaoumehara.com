@@ -135,7 +135,6 @@ const meta = [
   }
 
   .project-header {
-    max-width: 760px;
     margin-bottom: 56px;
   }
 
@@ -154,7 +153,14 @@ const meta = [
     letter-spacing: -0.02em;
   }
 
+  .project-title { text-wrap: balance; }
+  :global(html.lang-jp) .project-title,
+  :global(html.lang-jp) .project-oneliner {
+    word-break: auto-phrase;
+  }
+
   .project-oneliner {
+    max-width: 760px;
     font-size: clamp(18px, 2vw, 23px);
     line-height: 1.35;
     color: var(--pr-ink-2);
@@ -267,6 +273,12 @@ const meta = [
     height: auto;
     border-radius: var(--r);
     background: var(--pr-card);
+  }
+  .project-beats :global(.beat-media--frame img),
+  .project-beats :global(.beat-media--frame video) {
+    aspect-ratio: 16 / 10;
+    height: auto;
+    object-fit: contain;
   }
   .project-beats :global(.beat-caption) {
     grid-column: 1 / -1;

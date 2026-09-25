@@ -16,7 +16,7 @@ export function detailName(item) {
 }
 
 export function detailPlay(item) {
-  if (!item.playable || !item.links?.live) return null;
+  if (!(item.detail?.playable ?? item.playable) || !item.links?.live) return null;
   const name = detailName(item);
   const label = item.detail?.play ?? { en: `Play ${name.en}`, jp: `${name.jp ?? name.en} を遊ぶ` };
   return { href: item.links.live, label };
