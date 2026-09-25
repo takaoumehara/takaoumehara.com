@@ -1,9 +1,14 @@
 ---
-// The home page: Porto Rocha–like bento layout with left rail + right stage
-// News cells from Interactive launches (Mar–Sep 2026), filters, and work grid
+// The home page, in the right-hand pane: the hero slideshow of the work
+// (HomeHero), the news bento — basic info, then one article per interactive
+// release (HomeNews, data in src/data/news.mjs) — then the filter pills and
+// the full work grid.
 import Site from "../layouts/Site.astro";
 import WorkGrid from "../components/grid/WorkGrid.astro";
-import { tb, t } from "../lib/html.mjs";
+import HomeHero from "../components/home/HomeHero.astro";
+import HomeNews from "../components/home/HomeNews.astro";
+import { NEWS, SHOWCASE } from "../data/news.mjs";
+import { t } from "../lib/html.mjs";
 import { getLibrary, gridEntries, orderedCategories, defaultLens } from "../lib/site.mjs";
 
 const lib = getLibrary();
@@ -37,41 +42,14 @@ const designCount = (brandCat?.groups.reduce((n, g) => n + g.items.length, 0) ||
                     (workCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0);
 FILTERS[3].count = designCount;
 
-// News cells from content-ia §5 (Interactive launch fiction · Mar–Sep 2026)
-const NEWS = [
-  {
-    date: "2026-03-18",
-    title: { en: "Typespace launches: language as a walkable constellation", jp: "Typespace 公開 — 歩きまわる文字の星座" },
-    lead: { 
-      en: "Typespace is live — a hand-authored 3D typographic world where words hold mass, orbit, and sound. No generative filler: every cluster is composed in Next, r3f, GLSL, and Web Audio. Enter, drift, and read with your body.",
-      jp: "Typespace 公開。言葉が質量・軌道・音を持つ、手作業の三次元タイポ世界。生成の埋め草はなし。Next / r3f / GLSL / Web Audio で組んだ星座を、身体で読んでほしい。"
-    },
-    href: "/projects/typespace.html"
-  },
-  {
-    date: "2026-05-28",
-    title: { en: "Resona: meaning that lands as motion first", jp: "Resona — 意味は、まず動きとして着地する" },
-    lead: {
-      en: "Resona opens to the public — an interactive piece where particle fields and pseudo-haptic cues carry intent before any sentence appears. Sparse controls, physical feedback. Built for moments that should be felt, then understood.",
-      jp: "Resona 一般公開。パーティクルと疑似触覚の合図が、文より先に意図を運ぶ。操作は少なく、フィードバックは身体的。感じてから理解するための作品。"
-    },
-    href: "/projects/resona.html"
-  },
-  {
-    date: "2026-08-21",
-    title: { en: "Late-summer playable: Rakugaki Jam meets Kao Game", jp: "晩夏のプレイアブル — Rakugaki Jam × Kao Game" },
-    lead: {
-      en: "A seasonal interactive drop — sketch energy of Rakugaki Jam crossed with face-play of Kao Game. Short sessions, loud joy, shareable moments. Part of the 2026 interactive launch trail from spring through early fall.",
-      jp: "季節のインタラクティブ投下。Rakugaki Jam のスケッチの勢いと、Kao Game の顔遊びが交差する。短いセッション、大きな喜び、共有したくなる瞬間。2026年春〜初秋のインタラクティブラウンチの一環。"
-    },
-    href: "/"
-  }
-];
 ---
 <Site title={lens.seo.title} description={lens.seo.description} canonical="https://takaoumehara.com/">
   <main class="cat-page grid-home" data-category="home">
-    <header class="cat-head">
-      <p class="grid-headline" set:html={tb(lib.profile.positioning[1])} />
+    <HomeHero lib={lib} order={SHOWCASE} />
+    <HomeNews lib={lib} news={NEWS} />
+
+    <header class="cat-head home-work-head">
+      <h2 class="home-work-label"><span class="t-en">All work</span><span class="t-jp">すべての作品</span></h2>
       <div class="grid-filters" role="group" aria-label="Filter work by discipline">
         {FILTERS.map((f, i) => (
           <button type="button" class={`filter-btn${i === 0 ? " is-active" : ""}`} data-filter={f.id}>
@@ -81,107 +59,21 @@ const NEWS = [
         ))}
       </div>
     </header>
-    
-    <!-- News bento cells -->
-    <section class="news-bento">
-      <h2 class="news-label">
-        <span class="t-en">Recent</span>
-        <span class="t-jp">最近</span>
-      </h2>
-      <div class="news-grid">
-        {NEWS.map((item) => (
-          <a href={item.href} class="news-card">
-            <time class="news-date">{item.date}</time>
-            <h3 class="news-title" set:html={t(item.title)} />
-            <p class="news-lead" set:html={t(item.lead)} />
-          </a>
-        ))}
-      </div>
-    </section>
-    
+
     <WorkGrid entries={entries} />
   </main>
 </Site>
 
-<style>
-  .news-bento {
-    margin-bottom: 64px;
-  }
-  
-  .news-label {
-    font-family: var(--ff-display);
-    font-size: var(--text-body);
-    font-weight: var(--fw-display, 600);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-dim);
-    margin-bottom: 24px;
-  }
-  
-  /* Three equal bento cells on the same gutter as the work grid below, so the
-     two blocks read as one system rather than two grids. */
-  .news-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--gap-grid);
-  }
-
-  /* Separated by fill and whitespace, not a hairline and not a shadow. */
-  .news-card {
-    display: block;
-    padding: clamp(20px, 1.6vw, 32px);
-    background: var(--pr-card);
-    border-radius: var(--r);
-    text-decoration: none;
-    transition: background 180ms ease;
-  }
-
-  .news-card:hover {
-    background: var(--pr-card-2);
-  }
-
-  .news-date {
-    display: block;
-    font-size: var(--text-xs);
-    font-variant-numeric: tabular-nums;
-    color: var(--ink-dim);
-    margin-bottom: 12px;
-  }
-
-  .news-title {
-    font-family: var(--ff-display);
-    font-size: var(--text-md);
-    font-weight: var(--fw-display, 600);
-    line-height: 1.4;
-    color: var(--ink);
-    margin-bottom: 12px;
-  }
-
-  .news-lead {
-    font-size: var(--text-body);
-    line-height: 1.6;
-    color: var(--ink-mid);
-  }
-  
-  @media (max-width: 1100px) {
-    .news-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 640px) {
-    .news-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
 <script>
   // ── Home grid filter bar ──
-  (() => {
-    const btns = document.querySelectorAll(".grid-home .filter-btn");
-    const cards = document.querySelectorAll(".grid-home .cat-card[data-category]");
+  // Re-run after every client-side swap (Astro's ClientRouter), bound once per page.
+  function initFilters() {
+    const btns = document.querySelectorAll<HTMLButtonElement>(".grid-home .filter-btn");
+    const cards = document.querySelectorAll<HTMLElement>(".grid-home .cat-card[data-category]");
     if (!btns.length || !cards.length) return;
+    const bar = btns[0].parentElement!;
+    if (bar.dataset.bound) return;
+    bar.dataset.bound = "1";
     
     // Map simplified filters to original category slugs
     const filterMap = {
@@ -211,5 +103,6 @@ const NEWS = [
     if (hash && filterMap[hash]) {
       applyFilter(hash);
     }
-  })();
+  }
+  document.addEventListener("astro:page-load", initFilters);
 </script>

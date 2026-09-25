@@ -1,0 +1,85 @@
+---
+// The home page's news bento, under the hero: the basic-info card first, then
+// one article per interactive launch (src/data/news.mjs), newest first. Cards
+// sit on --gap-grid, 3 / 2 / 1 columns like the work grid below, separated by
+// fill and whitespace only.
+import "../../styles/home.css";
+import { t, tb, url } from "../../lib/html.mjs";
+import { destination } from "../../lib/site.mjs";
+
+interface Props { lib: any; news: any[] }
+const { lib, news } = Astro.props;
+const profile = lib.profile;
+
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const dateLabel = (iso) => {
+  const [y, m, d] = iso.split("-").map(Number);
+  return { en: `${MONTHS[m - 1]} ${d}, ${y}`, jp: `${y}年${m}月${d}日` };
+};
+
+const articles = [...news]
+  .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+  .map((entry) => {
+    const item = lib.evidence.get(entry.slug);
+    if (!item) return null;
+    const to = destination(item);
+    const image = entry.image ?? item.assets?.thumb ?? item.assets?.hero ?? null;
+    return {
+      ...entry,
+      href: to && !to.external ? to.url : null,
+      image,
+      art: item.assets?.art ?? "card-art--motion",
+      artLabel: item.assets?.artLabel ?? item.title,
+    };
+  })
+  .filter((a) => a && a.href);
+
+const links = [
+  { href: "/about", label: { en: "About", jp: "プロフィール" } },
+  { href: "/contact", label: { en: "Contact", jp: "お問い合わせ" } },
+  profile.contact?.linkedin && { href: profile.contact.linkedin, label: { en: "LinkedIn", jp: "LinkedIn" }, external: true },
+  profile.contact?.github && { href: profile.contact.github, label: { en: "GitHub", jp: "GitHub" }, external: true },
+].filter(Boolean);
+---
+<section class="home-news" aria-labelledby="home-news-title">
+  <h2 class="sr-only" id="home-news-title"><span class="t-en">About Takao and recent releases</span><span class="t-jp">プロフィールと最近の公開作</span></h2>
+  <div class="hn-grid">
+    <article class="hn-card hn-info">
+      <p class="hn-kicker"><span set:html={t(profile.location)} /></p>
+      <h3 class="hn-name">{profile.name}</h3>
+      <p class="hn-tagline" set:html={t(profile.tagline)} />
+      <p class="grid-headline" set:html={tb(profile.positioning[1])} />
+      <ul class="hn-links">
+        {links.map((l) => (
+          <li>
+            <a href={l.href} target={l.external ? "_blank" : undefined} rel={l.external ? "noopener" : undefined}>
+              <span set:html={t(l.label)} /><span aria-hidden="true">{l.external ? "↗" : "→"}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </article>
+
+    {articles.map((a, i) => {
+      const d = dateLabel(a.date);
+      return (
+        <article class="hn-card hn-article" style={`--i: ${i}`}>
+          <p class="hn-meta">
+            <span set:html={t({ en: "Interactive", jp: "インタラクティブ" })} />
+            <span aria-hidden="true"> · </span>
+            <time datetime={a.date} set:html={t(d)} />
+          </p>
+          <h3 class="hn-title">
+            <a class="hn-link" href={a.href} set:html={t(a.title)} />
+          </h3>
+          <p class="hn-lead" set:html={tb(a.lead)} />
+          <div class="hn-thumb">
+            {a.image
+              ? <img src={url(a.image)} alt="" loading="lazy" decoding="async" />
+              : <div class={`card-art ${a.art}`}><span class="card-art-label">{a.artLabel}</span></div>}
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>

@@ -1,0 +1,278 @@
+---
+// The home page's hero: one 16:9 stage (the same box as the detail page's
+// .project-teaser, so the view transition into a project reads as one image)
+// that cycles through the works with real media — the interactive pieces
+// first, then client work with a hero still (SHOWCASE in src/data/news.mjs).
+//
+// Media come from detailTeaser() so the stage shows exactly what the detail
+// page opens on. Only the first still loads with the page; the script below
+// fills in each next slide just before it is shown, and a clip plays only
+// while its slide is the active one.
+import "../../styles/home.css";
+import { t, url } from "../../lib/html.mjs";
+import { detailName, detailTeaser } from "../../lib/detail.mjs";
+import { destination } from "../../lib/site.mjs";
+
+interface Props { lib: any; order: string[] }
+const { lib, order } = Astro.props;
+
+const slides = order
+  .map((slug) => lib.evidence.get(slug))
+  .filter(Boolean)
+  .map((item) => {
+    const teaser = detailTeaser(item);
+    const to = destination(item);
+    if (teaser.kind === "fallback" || !to || to.external) return null;
+    return {
+      slug: item.slug,
+      href: to.url,
+      name: detailName(item).en, // project names stay English
+      line: item.cardLine ?? item.summary,
+      teaser,
+    };
+  })
+  .filter(Boolean);
+
+const count = slides.length;
+const style = (tz) => [
+  tz.fit === "contain" ? "object-fit: contain" : "",
+  tz.position ? `object-position: ${tz.position}` : "",
+  tz.background ? `background: ${tz.background}` : "",
+].filter(Boolean).join("; ") || undefined;
+---
+{count > 0 && (
+<section class="home-hero" aria-roledescription="carousel" aria-label="Selected work" data-count={count}>
+  <div class="hh-stage" data-vt-hero>
+    {slides.map((s, i) => {
+      const still = s.teaser.kind === "video" ? s.teaser.poster : s.teaser.src;
+      return (
+        <div
+          class={`hh-slide${i === 0 ? " is-active" : ""}`}
+          role="group"
+          aria-roledescription="slide"
+          aria-label={`${i + 1} / ${count}: ${s.name}`}
+          data-index={i}
+        >
+          {still && (
+            i === 0
+              ? <img class="hh-media" src={url(still)} alt="" fetchpriority="high" decoding="async" style={style(s.teaser)} />
+              : <img class="hh-media" data-src={url(still)} alt="" decoding="async" style={style(s.teaser)} />
+          )}
+          {s.teaser.kind === "video" && (
+            <video class="hh-media hh-clip" muted loop playsinline preload="none" tabindex="-1" aria-hidden="true">
+              {s.teaser.webm && <source src={url(s.teaser.webm)} type="video/webm" />}
+              {s.teaser.mp4 && <source src={url(s.teaser.mp4)} type="video/mp4" />}
+            </video>
+          )}
+          <a class="hh-link" href={s.href}>
+            <span class="sr-only">{s.name} — <Fragment set:html={t(s.line)} /></span>
+          </a>
+        </div>
+      );
+    })}
+  </div>
+
+  <div class="hh-bar">
+    <div class="hh-captions" aria-hidden="true">
+      {slides.map((s, i) => (
+        <a class={`hh-cap${i === 0 ? " is-active" : ""}`} href={s.href} tabindex="-1" data-index={i}>
+          <span class="hh-cap-name">{s.name}</span>
+          <span class="hh-cap-line" set:html={t(s.line)} />
+        </a>
+      ))}
+    </div>
+
+    <div class="hh-controls">
+      <button type="button" class="hh-btn hh-prev" aria-label="Previous work">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <div class="hh-dots" role="group" aria-label="Choose a work">
+        {slides.map((s, i) => (
+          <button type="button" class={`hh-dot${i === 0 ? " is-active" : ""}`} data-index={i}
+                  aria-label={`Show ${s.name}`} aria-current={i === 0 ? "true" : undefined}>
+            <i></i>
+          </button>
+        ))}
+      </div>
+      <button type="button" class="hh-btn hh-next" aria-label="Next work">
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+      <button type="button" class="hh-btn hh-toggle" aria-label="Pause slideshow" aria-pressed="false">
+        <svg class="hh-ico-pause" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M5.5 3.5v9M10.5 3.5v9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <svg class="hh-ico-play" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M5 3.2v9.6L12.5 8z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </div>
+  <p class="sr-only hh-live" aria-live="polite"></p>
+</section>
+)}
+
+<script>
+  // Vanilla, re-run from astro:page-load (the ClientRouter swaps the page), and
+  // bound once per .home-hero element via data-bound.
+  const DURATION = 5000; // ms per slide — kept in sync with --hh-dur in home.css
+  const FADE = 850;      // ms — the crossfade in home.css
+
+  let current: { destroy: () => void } | null = null;
+
+  function init() {
+    const root = document.querySelector<HTMLElement>(".home-hero");
+    if (!root || root.dataset.bound) return;
+    root.dataset.bound = "1";
+    current?.destroy();
+
+    const slides = [...root.querySelectorAll<HTMLElement>(".hh-slide")];
+    const caps = [...root.querySelectorAll<HTMLElement>(".hh-cap")];
+    const dots = [...root.querySelectorAll<HTMLButtonElement>(".hh-dot")];
+    const toggle = root.querySelector<HTMLButtonElement>(".hh-toggle");
+    const live = root.querySelector<HTMLElement>(".hh-live");
+    const n = slides.length;
+    if (n < 2) { root.classList.add("is-single"); return; }
+
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let index = 0;
+    let stopped = still.matches;     // the visitor paused (or asked for less motion)
+    const holds = new Set<string>(); // hover · focus · hidden tab · off screen
+    let timer = 0;
+    let started = 0;
+    let remaining = DURATION;
+    const leaving = new Map<HTMLElement, number>();
+
+    // Fill a slide's still (and warm its clip) before it is needed.
+    function prime(i: number, eager = false) {
+      const slide = slides[(i + n) % n];
+      const img = slide.querySelector<HTMLImageElement>("img[data-src]");
+      if (img) { img.src = img.dataset.src!; img.removeAttribute("data-src"); }
+      const clip = slide.querySelector<HTMLVideoElement>(".hh-clip");
+      if (clip && eager && !still.matches && clip.preload !== "auto") clip.preload = "auto";
+    }
+
+    function playClip(slide: HTMLElement) {
+      const clip = slide.querySelector<HTMLVideoElement>(".hh-clip");
+      if (!clip || still.matches) return;
+      const show = () => clip.classList.add("is-playing");
+      clip.addEventListener("playing", show, { once: true });
+      const p = clip.play();
+      if (p && p.catch) p.catch(() => {});
+    }
+    function stopClip(slide: HTMLElement) {
+      const clip = slide.querySelector<HTMLVideoElement>(".hh-clip");
+      if (!clip) return;
+      clip.pause();
+      clip.classList.remove("is-playing");
+      try { clip.currentTime = 0; } catch (e) {}
+    }
+
+    const running = () => !stopped && holds.size === 0;
+    function clear() { window.clearTimeout(timer); timer = 0; }
+    function schedule() {
+      clear();
+      root!.classList.toggle("is-paused", !running());
+      root!.classList.toggle("is-auto", !stopped);
+      if (!running()) return;
+      started = performance.now();
+      timer = window.setTimeout(() => go(index + 1, false), remaining);
+    }
+    function hold(reason: string, on: boolean) {
+      if (on === holds.has(reason)) return;
+      if (on) {
+        if (timer) remaining = Math.max(0, remaining - (performance.now() - started));
+        holds.add(reason);
+      } else holds.delete(reason);
+      schedule();
+    }
+
+    function go(next: number, manual: boolean) {
+      next = (next + n) % n;
+      if (next === index) return;
+      const from = slides[index];
+      const to = slides[next];
+      prime(next);
+      // Crossfade: the outgoing slide stays opaque underneath until the new one is in.
+      from.classList.remove("is-active");
+      if (!still.matches) {
+        from.classList.add("is-leaving");
+        window.clearTimeout(leaving.get(from));
+        leaving.set(from, window.setTimeout(() => { from.classList.remove("is-leaving"); stopClip(from); }, FADE + 50));
+      } else stopClip(from);
+      window.clearTimeout(leaving.get(to)); // it may still be fading out from a moment ago
+      to.classList.remove("is-leaving");
+      to.classList.add("is-active");
+      caps[index].classList.remove("is-active");
+      caps[next].classList.add("is-active");
+      dots[index].classList.remove("is-active");
+      dots[index].removeAttribute("aria-current");
+      dots[next].classList.add("is-active");
+      dots[next].setAttribute("aria-current", "true");
+      index = next;
+      playClip(to);
+      prime(index + 1, true);
+      if (manual && live) live.textContent = to.getAttribute("aria-label") || "";
+      remaining = DURATION;
+      schedule();
+    }
+
+    function setStopped(value: boolean) {
+      stopped = value;
+      toggle?.setAttribute("aria-pressed", String(value));
+      toggle?.setAttribute("aria-label", value ? "Play slideshow" : "Pause slideshow");
+      remaining = DURATION;
+      // Restart the active dot's progress line from zero.
+      dots[index].classList.remove("is-active");
+      void dots[index].offsetWidth;
+      dots[index].classList.add("is-active");
+      schedule();
+    }
+
+    root.querySelector(".hh-prev")?.addEventListener("click", () => go(index - 1, true));
+    root.querySelector(".hh-next")?.addEventListener("click", () => go(index + 1, true));
+    dots.forEach((d) => d.addEventListener("click", () => go(Number(d.dataset.index), true)));
+    toggle?.addEventListener("click", () => setStopped(!stopped));
+    root.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") { e.preventDefault(); go(index - 1, true); }
+      else if (e.key === "ArrowRight") { e.preventDefault(); go(index + 1, true); }
+    });
+    root.addEventListener("pointerenter", () => hold("hover", true));
+    root.addEventListener("pointerleave", () => hold("hover", false));
+    root.addEventListener("focusin", () => hold("focus", true));
+    root.addEventListener("focusout", (e) => {
+      if (!root.contains(e.relatedTarget as Node)) hold("focus", false);
+    });
+    const onVisibility = () => hold("hidden", document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    let io: IntersectionObserver | null = null;
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver(([entry]) => {
+        const off = !entry.isIntersecting;
+        hold("offscreen", off);
+        const clip = slides[index].querySelector<HTMLVideoElement>(".hh-clip");
+        if (clip && !still.matches) { if (off) clip.pause(); else playClip(slides[index]); }
+      }, { threshold: 0.15 });
+      io.observe(root);
+    }
+    const onMotion = () => { if (still.matches) setStopped(true); };
+    still.addEventListener?.("change", onMotion);
+
+    current = {
+      destroy() {
+        clear();
+        leaving.forEach((id) => window.clearTimeout(id));
+        document.removeEventListener("visibilitychange", onVisibility);
+        still.removeEventListener?.("change", onMotion);
+        io?.disconnect();
+      },
+    };
+
+    if (still.matches) {
+      toggle?.setAttribute("aria-pressed", "true");
+      toggle?.setAttribute("aria-label", "Play slideshow");
+    }
+    prime(1, true);
+    playClip(slides[0]);
+    if (document.hidden) holds.add("hidden");
+    schedule();
+  }
+
+  document.addEventListener("astro:page-load", init);
+  document.addEventListener("astro:before-swap", () => { current?.destroy(); current = null; });
+</script>
