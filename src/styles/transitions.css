@@ -1,156 +1,189 @@
-/* Intent dissolve transition — Strengthened for visibility
- * Outgoing cells stagger-dissolve with pronounced motion
- * Incoming cells cascade in with clear intent
- * View Transitions API with reduced-motion support
- */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Motion. The site behaves like one of Takao's shared-screen pieces
+   (docs/design/twist-proposal.md): a thumbnail you press is *thrown* into
+   the right pane and grows into the detail teaser (Throw), the teaser is
+   thrown back into the rail when you leave (Return), surfaces sink under the
+   finger and spring back (Feel), the rail echoes the card you are over (Echo),
+   and the first paint arrives rail → news → grid (Entrance).
 
-/* Default: Intent dissolve on navigation */
+   Rules: transform and opacity only, no blur, no shadow; every animation is
+   off under prefers-reduced-motion; the root cross-fade that
+   tests/page-transitions.test.mjs asserts stays in site.css — this file only
+   refines it (same specificity, loaded later by Site.astro).
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 @view-transition {
   navigation: auto;
 }
 
-/* Outgoing content: more pronounced dissolve */
+:root {
+  /* A spring: overshoots once, settles. Used by every press release. */
+  --ease-spring: linear(0, 0.62 12%, 1.05 28%, 0.985 45%, 1.008 62%, 1);
+  --ease-throw: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@supports not (animation-timing-function: linear(0, 1)) {
+  :root { --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1); }
+}
+
+/* ── Root: the pane dissolves (opacity + a short travel, no blur) ─────────── */
 ::view-transition-old(root) {
-  animation: dissolve-out 350ms cubic-bezier(0.4, 0, 0.6, 1);
+  animation: dissolve-out 320ms cubic-bezier(0.4, 0, 0.6, 1);
   transform-origin: center;
 }
-
-/* Incoming content: cascading entrance */
 ::view-transition-new(root) {
-  animation: dissolve-in 400ms cubic-bezier(0.2, 0, 0.2, 1);
+  animation: dissolve-in 400ms var(--ease-throw);
   transform-origin: center;
 }
-
 @keyframes dissolve-out {
-  0% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    filter: blur(0px);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(0.96) translateY(-4px);
-    filter: blur(2px);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.92) translateY(-8px);
-    filter: blur(6px);
-  }
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
 }
-
 @keyframes dissolve-in {
-  0% {
-    opacity: 0;
-    transform: scale(1.04) translateY(12px);
-    filter: blur(4px);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.02) translateY(6px);
-    filter: blur(2px);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    filter: blur(0px);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Grid cards: stagger effect on hover for preview */
-.cat-card {
-  view-transition-name: none;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.cat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-/* Hero sections maintain continuity with shared element feel */
+/* ── Throw / Return: one element named `hero` per document ───────────────────
+   The receiving side is the detail teaser or the home stage ([data-vt-hero]).
+   The sending side is whatever was pressed — a rail row's .side-thumb or a
+   grid card's .grid-media — named at navigation time by src/scripts/site.js,
+   which also silences the other `hero` for that one transition so the names
+   never collide (a collision cancels the whole transition). */
 [data-vt-hero] {
   view-transition-name: hero;
 }
-
+::view-transition-group(hero) {
+  animation-duration: 440ms;
+  animation-timing-function: var(--ease-throw);
+  overflow: clip;
+  border-radius: var(--r);
+}
+/* 1:1 tile → 16:9 teaser: cover, never squash. */
 ::view-transition-old(hero),
 ::view-transition-new(hero) {
-  animation-duration: 450ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  animation-duration: 440ms;
+  animation-timing-function: var(--ease-throw);
+}
+::view-transition-old(hero) { animation-name: hero-fade-out; }
+::view-transition-new(hero) { animation-name: hero-fade-in; }
+@keyframes hero-fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes hero-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+
+/* The rail is its own group and never animates (shell.css). Its old snapshot
+   has a hole where the thrown thumb was, so show only the new one, which has
+   the thumb back in place and the pressed row already inverted. */
+::view-transition-old(side) { display: none; }
+
+/* ── Feel: sink under the pointer, spring back; the image leans toward it ──── */
+.grid-card.cat-card[data-href],
+.side-item,
+.hn-article {
+  transition: transform 380ms var(--ease-spring), background 140ms ease;
+}
+.grid-card.cat-card[data-href]:active,
+.side-item:active,
+.hn-article:active,
+.is-pressed {
+  transform: scale(0.985);
+  transition-duration: 90ms, 140ms;
+  transition-timing-function: ease-out, ease;
+}
+/* The lean: --px/--py in −0.5…0.5 come from the pointer's position over the
+   card (site.js, rAF-throttled, mouse only). The repeated class outranks
+   grid.css's hover zoom whichever stylesheet the bundler emits first. */
+.grid-card.cat-card.cat-card[data-href]:hover .grid-media.cat-card-media img,
+.hn-article.hn-article:hover .hn-thumb img {
+  transform: translate(calc(var(--px, 0) * 5px), calc(var(--py, 0) * 5px)) scale(1.04);
+}
+/* The old lift-and-shadow: gone. Shadows are not in this system. */
+.cat-card { view-transition-name: none; }
+.cat-card:hover { box-shadow: none; }
+
+/* ── Echo: the rail row of the card you are over answers a beat later ─────── */
+.side-item.is-echo:not([aria-current="page"]) { background: var(--pr-card-2); }
+
+/* ── Entrance: first hard load only. site.js sets html[data-navigated] on the
+   first client-side navigation; after that the view transition does the work.
+   No class is needed for the first paint, so nothing can be left invisible if
+   a script fails: `backwards` fill returns every element to its own styles. */
+html:not([data-navigated]) .side-work .side-item,
+html:not([data-navigated]) .work-grid .grid-card {
+  animation: enter 460ms var(--ease-throw) backwards;
+  animation-delay: calc(var(--enter-base, 0ms) + var(--i, 8) * var(--enter-step, 40ms));
+}
+.side-work .side-item { --enter-base: 0ms; --enter-step: 35ms; --i: 8; }
+.side-work li:nth-child(1) .side-item { --i: 0; }
+.side-work li:nth-child(2) .side-item { --i: 1; }
+.side-work li:nth-child(3) .side-item { --i: 2; }
+.side-work li:nth-child(4) .side-item { --i: 3; }
+.side-work li:nth-child(5) .side-item { --i: 4; }
+.side-work li:nth-child(6) .side-item { --i: 5; }
+.side-work li:nth-child(7) .side-item { --i: 6; }
+.side-work li:nth-child(8) .side-item { --i: 7; }
+/* The grid follows the news thumbnails (home.css: 120ms + i × 60ms). */
+.work-grid .grid-card { --enter-base: 320ms; --enter-step: 45ms; --i: 9; }
+.work-grid .grid-card:nth-child(1) { --i: 0; }
+.work-grid .grid-card:nth-child(2) { --i: 1; }
+.work-grid .grid-card:nth-child(3) { --i: 2; }
+.work-grid .grid-card:nth-child(4) { --i: 3; }
+.work-grid .grid-card:nth-child(5) { --i: 4; }
+.work-grid .grid-card:nth-child(6) { --i: 5; }
+.work-grid .grid-card:nth-child(7) { --i: 6; }
+.work-grid .grid-card:nth-child(8) { --i: 7; }
+.work-grid .grid-card:nth-child(9) { --i: 8; }
+@keyframes enter {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: none; }
 }
 
-::view-transition-old(hero) {
-  animation-name: hero-out;
+/* ── Input stamp: what you put in (Handwriting · Voice · Two phones …) ─────
+   The one non-motion signature: Outfit 600, uppercase, ink on canvas, on the
+   thumbnail of every interactive piece and on the hero's caption. */
+.input-stamp {
+  display: inline-block;
+  font-family: var(--pr-ff-display);
+  font-weight: var(--fw-display, 600);
+  font-size: var(--text-xs);
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pr-ink);
+}
+.grid-card .input-stamp {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  padding: 6px 8px;
+  border-radius: 4px;
+  background: var(--pr-canvas);
+  pointer-events: none;
 }
 
-::view-transition-new(hero) {
-  animation-name: hero-in;
-}
-
-@keyframes hero-out {
-  from {
-    opacity: 1;
-    transform: scale(1);
-  }
-  to {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-}
-
-@keyframes hero-in {
-  from {
-    opacity: 0;
-    transform: scale(1.05);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-/* Reduced motion: simple crossfade only, no transforms */
+/* ── Reduced motion: no names, no travel, no entrance ─────────────────────── */
 @media (prefers-reduced-motion: reduce) {
+  [data-vt-hero] { view-transition-name: none; }
   ::view-transition-old(root),
-  ::view-transition-new(root),
-  ::view-transition-old(hero),
-  ::view-transition-new(hero) {
-    animation-duration: 200ms;
-    animation-timing-function: ease;
-  }
-  
-  ::view-transition-old(root),
-  ::view-transition-old(hero) {
+  ::view-transition-new(root) {
+    animation: 200ms ease both;
     animation-name: fade-out;
   }
-  
-  ::view-transition-new(root),
-  ::view-transition-new(hero) {
-    animation-name: fade-in;
-  }
-  
-  @keyframes fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-  
-  @keyframes fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
-  .cat-card:hover {
-    transform: none;
-  }
-}
+  ::view-transition-new(root) { animation-name: fade-in; }
+  @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+  @keyframes fade-in  { from { opacity: 0; } to { opacity: 1; } }
 
-/* News cards and bento cells */
-.news-card,
-.bento-cell {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.news-card:hover,
-.bento-cell:hover {
-  transform: translateY(-2px);
+  .grid-card.cat-card[data-href],
+  .side-item,
+  .hn-article { transition: background 140ms ease; }
+  .grid-card.cat-card[data-href]:active,
+  .side-item:active,
+  .hn-article:active,
+  .is-pressed { transform: none; }
+  .grid-card.cat-card.cat-card[data-href]:hover .grid-media.cat-card-media img,
+  .hn-article.hn-article:hover .hn-thumb img { transform: none; }
+  html:not([data-navigated]) .side-work .side-item,
+  html:not([data-navigated]) .work-grid .grid-card { animation: none; }
 }

@@ -222,7 +222,7 @@ function bindCards() {
     const url = card.dataset.href;
     if (!url) return;
     if (card.dataset.external === "true") window.open(url, "_blank", "noopener");
-    else navigate(url);
+    else navigate(url, { sourceElement: card }); // the throw (below) reads the card back from the event
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && event.target.matches?.("[data-href]")) event.target.click();
@@ -258,6 +258,139 @@ function bindPreviews() {
   });
 }
 
+// ── Feel: sink under the finger, spring back; the image leans to the mouse ──
+// Pointer, not :active alone, so touch gets the same press (iOS only applies
+// :active to elements with a touch listener). Bound once on the document.
+const FEEL = ".grid-card[data-href], .side-item, .hn-article";
+const stillMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let feelBound = false;
+function bindFeel() {
+  if (feelBound) return;
+  feelBound = true;
+  let pressed = null;
+  const release = () => { pressed?.classList.remove("is-pressed"); pressed = null; };
+  document.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0 || stillMotion()) return;
+    const target = event.target.closest?.(FEEL);
+    if (!target) return;
+    release();
+    pressed = target;
+    target.classList.add("is-pressed");
+  }, { passive: true });
+  document.addEventListener("pointerup", release, { passive: true });
+  document.addEventListener("pointercancel", release, { passive: true });
+  document.addEventListener("astro:before-preparation", release);
+
+  // The lean: the pointer's position over the card, −0.5…0.5 on both axes,
+  // one write per frame, read from the rect once per card entry.
+  let raf = 0, leaning = null, rect = null;
+  document.addEventListener("pointermove", (event) => {
+    if (event.pointerType === "touch" || stillMotion()) return;
+    const card = event.target.closest?.(".grid-card[data-href], .hn-article");
+    if (card !== leaning) {
+      leaning?.style.removeProperty("--px"); leaning?.style.removeProperty("--py");
+      leaning = card;
+      rect = card ? card.getBoundingClientRect() : null;
+    }
+    if (!card || !rect) return;
+    const x = event.clientX, y = event.clientY;
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => {
+      card.style.setProperty("--px", ((x - rect.left) / rect.width - 0.5).toFixed(2));
+      card.style.setProperty("--py", ((y - rect.top) / rect.height - 0.5).toFixed(2));
+    });
+  }, { passive: true });
+  document.addEventListener("pointerout", (event) => {
+    if (leaning && !leaning.contains(event.relatedTarget)) {
+      leaning.style.removeProperty("--px"); leaning.style.removeProperty("--py"); leaning = null; rect = null;
+    }
+  }, { passive: true });
+}
+
+// ── Echo: the rail row of the card you are over answers 120ms later ─────────
+// The pane and the rail are two surfaces of one session, the way a phone and
+// the wall are in his shared-screen pieces. Rows are matched by href.
+const ECHO_DELAY = 120;
+let echoBound = false;
+function bindEcho() {
+  if (echoBound) return;
+  echoBound = true;
+  let timer = 0, lit = null;
+  const rowFor = (card) => {
+    const href = card.dataset.href ?? card.querySelector(".hn-link")?.getAttribute("href");
+    return href ? document.querySelector(`#side .side-item[href="${CSS.escape(href)}"]`) : null;
+  };
+  const clear = () => { clearTimeout(timer); lit?.classList.remove("is-echo"); lit = null; };
+  const enter = (event) => {
+    const card = event.target.closest?.(".grid-card[data-href], .hn-article");
+    if (!card || card === lit?.__echoSource) return;
+    clear();
+    const row = rowFor(card);
+    if (!row) return;
+    timer = setTimeout(() => { row.classList.add("is-echo"); row.__echoSource = card; lit = row; }, ECHO_DELAY);
+  };
+  const leave = (event) => {
+    const card = event.target.closest?.(".grid-card[data-href], .hn-article");
+    if (card && !card.contains(event.relatedTarget)) clear();
+  };
+  document.addEventListener("pointerover", enter, { passive: true });
+  document.addEventListener("pointerout", leave, { passive: true });
+  document.addEventListener("focusin", enter);
+  document.addEventListener("focusout", leave);
+  document.addEventListener("astro:before-preparation", clear);
+}
+
+// ── Throw / Return: the pressed thumbnail grows into the teaser ─────────────
+// One `hero` view-transition-name per document at every moment:
+//   before-preparation (old snapshot next): name the pressed row's/card's
+//     thumb `hero`, and silence the page's own [data-vt-hero] for this trip;
+//     leaving a detail page for somewhere else, mark the current rail row as
+//     the return target instead.
+//   after-swap (new snapshot next): the persisted rail still carries the
+//     thumb, so strip its name so it cannot collide with the detail teaser —
+//     or, on a return, silence the new page's [data-vt-hero] and name the row.
+//   finished: remove every inline name.
+// Reduced motion names nothing (transitions.css also drops the hero name), a
+// collapsed rail (phones) has no visible row, so those trips dissolve.
+let thrown = null;   // the element named for this trip
+let returning = false;
+const onScreen = (el) => { if (!el) return false; const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight; };
+document.addEventListener("astro:before-preparation", (event) => {
+  html.dataset.navigated = "1"; // the first-load entrance never runs again
+  thrown = null; returning = false;
+  if (stillMotion()) return;
+  const row = event.sourceElement?.closest?.(".side-item, .grid-card, .hn-article");
+  const from = row?.querySelector(".side-thumb, .grid-media, .hn-thumb");
+  const leaving = document.querySelector("[data-vt-hero]");
+  if (onScreen(from)) {
+    if (leaving) leaving.style.viewTransitionName = "none";
+    from.style.viewTransitionName = "hero";
+    thrown = from;
+  } else if (leaving && !row) {
+    const back = document.querySelector('#side .side-item[aria-current="page"] .side-thumb');
+    if (onScreen(back)) { thrown = back; returning = true; }
+  }
+});
+document.addEventListener("astro:before-swap", (event) => {
+  const done = () => {
+    if (thrown) { thrown.style.removeProperty("view-transition-name"); thrown = null; }
+    document.querySelectorAll("[data-vt-hero]").forEach((el) => el.style.removeProperty("view-transition-name"));
+    returning = false;
+  };
+  event.viewTransition?.finished?.then(done, done);
+});
+document.addEventListener("astro:after-swap", () => {
+  html.dataset.navigated = "1"; // the swap replaced <html>'s attributes; set it again before the new snapshot
+  if (!thrown) return;
+  if (returning) {
+    document.querySelectorAll("[data-vt-hero]").forEach((el) => { el.style.viewTransitionName = "none"; });
+    thrown.style.viewTransitionName = "hero";
+  } else if (thrown.closest("#side")) {
+    thrown.style.removeProperty("view-transition-name");
+  }
+  markCurrent(); // the pressed row inverts inside the new snapshot, not after it
+});
+
 // ── Case-study bodies: reveal on scroll, fade images in ─────────────────────
 function bindReveal() {
   const targets = document.querySelectorAll(".reveal-on-scroll:not(.is-visible)");
@@ -287,6 +420,8 @@ function onPageLoad() {
   closePhoneMenu();
   startClock();
   bindCards();
+  bindFeel();
+  bindEcho();
   bindPreviews();
   bindReveal();
   // The old in-page language buttons some hand-built pages still carry.

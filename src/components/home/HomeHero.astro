@@ -28,6 +28,8 @@ const slides = order
       href: to.url,
       name: detailName(item).en, // project names stay English
       line: item.cardLine ?? item.summary,
+      input: item.kind === "experiment" && item.input ? String(item.input) : null, // the input stamp
+
       teaser,
     };
   })
@@ -76,6 +78,7 @@ const style = (tz) => [
     <div class="hh-captions" aria-hidden="true">
       {slides.map((s, i) => (
         <a class={`hh-cap${i === 0 ? " is-active" : ""}`} href={s.href} tabindex="-1" data-index={i}>
+          {s.input && <span class="input-stamp hh-cap-stamp">{s.input}</span>}
           <span class="hh-cap-name">{s.name}</span>
           <span class="hh-cap-line" set:html={t(s.line)} />
         </a>
