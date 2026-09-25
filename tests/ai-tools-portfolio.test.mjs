@@ -97,7 +97,7 @@ test('every page carries the same sidebar: the pages in order, the five sections
     const html = read(page);
     assert.deepEqual(pageLinks(html, page).map(({ href, label }) => [href, label]), expectedPages, `${page}: page links`);
     assert.deepEqual(workGroups(html, page).map((g) => g.label), expectedGroups, `${page}: work groups`);
-    assert.match(sidebar(html, page), /<a class="side-all" href="\/all\/"/, `${page}: the "Show all projects" link`);
+    assert.match(sidebar(html, page), /<a class="side-all" href="\/work"/, `${page}: the "All work" link`);
     assert.match(sidebar(html, page), /<a class="side-label" href="\/about\.html"/, `${page}: the About card links to the About page`);
     assert.match(sidebar(html, page), /<button class="side-theme" id="theme-switch" type="button" role="switch"/, `${page}: the theme switch`);
     assert.match(sidebar(html, page), /<button class="side-lang" id="lang-cycle" type="button"/, `${page}: the language button`);

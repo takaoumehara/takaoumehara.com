@@ -86,8 +86,8 @@
   ],
   "contribution": {
     "mine": [
-      "16+ one-hour interviews with designers and strategists; transcripts clustered with NotebookLM into a searchable pain map",
-      "Effort × impact × opportunity prioritisation and selection of bets with leadership",
+      "16 one-hour deep-dive interviews with designers and strategists in late 2025, about the working day rather than the deliverables; transcripts clustered with NotebookLM into a searchable pain map",
+      "Categorised the transcripts into 40+ distinct friction points and scored each on severity, business impact, ease of change and AI opportunity; selected the bets with design leadership off the resulting heat map",
       "Designed and built all ten agents: Master Brain (3-layer project knowledge hub), Justin Case (edge-case detector), Sally (CX strategist / heuristic evaluator), the five-agent WDS studio, Clara (UX-writing evaluator), Alex (agent architect)",
       "Authored agents as filesystems of workflow, definition and knowledge files; iterated each 'Gem' version after version",
       "Wired Figma to VS Code via MCP so AI prototypes run on real design-system code",
@@ -138,9 +138,10 @@
       "id": "friction-40",
       "value": "40+",
       "label": {
-        "en": "friction points mapped from 16+ interviews",
+        "en": "friction points mapped from 16 designer interviews",
         "jp": "つまずき 40 件超を地図化"
       },
+      "basis": "16 deep-dive interviews, late 2025; transcripts categorised and ranked on severity, business impact, ease of change and AI opportunity",
       "confidence": "stated"
     },
     {
@@ -175,6 +176,12 @@
   "narrative": {
     "situation": "Gemini became the only AI allowed inside Verizon's enterprise stack, and nobody knew what to do with it.",
     "problem": "Business and Technology scoped every project before design entered the room; with no budget to test, the highest-position opinion won; by handoff, good UX was already out of scope. Project knowledge was fragmented across people and documents.",
+    "failureModes": [
+      "Tribal knowledge trap — business logic, requirements and institutional knowledge fragmented across email and people rather than a repository, producing rework and losing product intelligence when staff left",
+      "Late-phase discovery — technical discovery and SME collaboration arrived after handoff, so edge cases surfaced as emergency rework",
+      "Designing in the dark — no dedicated budget or timeline for user testing, so stakeholder opinion stood in for validated data and no decision could be justified objectively",
+      "Strategic design compression — delivery pressure pushed designers into pixel pushing, spending the time that strategic rigour needed"
+    ],
     "opportunity": "Put AI at the exact moments where the process hurt — inside the workflow everyone already used — rather than rewriting the org.",
     "constraints": [
       "Gemini and NotebookLM only. No custom models, no API access.",
@@ -182,7 +189,8 @@
       "A single designer's remit"
     ],
     "built": [
-      "Master Brain — centralized project knowledge (brand, research, project layers)",
+      "Four steps inserted ahead of handoff, where the old workflow had only sequential handoffs and late validation: an initiative alignment document, edge-case detection, a functional prototype, and synthetic usability testing",
+      "Master Brain — centralized project knowledge (brand, research, project layers), assembled from project documentation, recorded meeting transcripts, strategic direction from design leadership, and outside market and competitor intelligence; reusable brand and research brains compose into the project one",
       "Justin Case — lightweight validation agent for early edge-case detection",
       "Sally — AI-assisted heuristic and CX evaluation",
       "WDS five-agent design studio",
@@ -230,7 +238,8 @@
   "_notes": [
     "The case-study page carries a confidentiality notice: specific metrics, tooling and instructions are generalized. Metrics here are the ones the page states.",
     "Engagement type is not stated on the page; left as 'unstated' rather than guessed.",
-    "The 10× rework figure is an industry rule of thumb quoted on the page, so it is 'unverified' and no Lens can highlight it."
+    "The 10× rework figure is an industry rule of thumb quoted on the page, so it is 'unverified' and no Lens can highlight it.",
+    "The workflow, the four failure modes and the Master Brain inputs are taken from the AI Powered Workflow Training Workshop deck (docs/verizon-work-transformation-slides.md). That deck states no measured time-saved, adoption, quality or revenue KPI, so none has been added here — its outcome claims are qualitative."
   ],
   "cardKind": {
     "en": "Agent fleet · Case study",

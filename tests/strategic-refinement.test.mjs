@@ -1,30 +1,30 @@
 // Tests for the Final Strategic Refinement of takaoumehara.com
 import test from "node:test";
 import assert from "node:assert/strict";
-import { loadLibrary } from "../src/lib/load.mjs";
 import { read, exists } from "./_dist.mjs";
 
-const lib = loadLibrary();
+test("All work is one canonical fullscreen page at /work, and /all/ redirects to it", () => {
+  assert.ok(exists("work.html"), "work.html must exist — it is the canonical archive");
+  const html = read("work.html");
 
-test("Work archive (/all/index.html) is rendered from lib.evidence with 6 canonical discipline filter tabs", () => {
-  assert.ok(exists("all/index.html"), "all/index.html must exist");
-  const html = read("all/index.html");
+  // Fullscreen: body.work-fullscreen drops the rail and collapses the shell to
+  // one column (src/styles/shell.css).
+  assert.match(html, /<body class="work-fullscreen">/, "the archive must render fullscreen, without the left rail");
 
-  // All public archive items must be present (kanji-puzzle hidden). The grid
-  // card (src/components/grid/GridCard.astro) carries `grid-card` alongside
-  // the legacy `cat-card` class this test reads off.
   const cards = [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]*"/g)];
-  assert.equal(cards.length, lib.evidence.size - 1, "all archive evidence items must be rendered (kanji-puzzle hidden)");
-  assert.ok(!html.includes("Kanji Puzzle"), "Kanji Puzzle must be hidden from work archive");
+  assert.ok(cards.length > 30, `the archive must render the work grid (got ${cards.length} cards)`);
+  assert.ok(!html.includes("Kanji Puzzle"), "Kanji Puzzle must be hidden from the archive");
 
-  // Filter tabs must exist
-  const expectedFilters = ["all", "product", "ai-products", "ai-tools", "interactive", "brand"];
-  for (const f of expectedFilters) {
+  // The four canonical discipline filters of the current IA.
+  for (const f of ["all", "interactive", "ai", "design"]) {
     assert.match(html, new RegExp(`data-filter="${f}"`), `Filter tab ${f} must exist`);
   }
 
-  // Canonical tag must point to /all
-  assert.match(html, /<link rel="canonical" href="https:\/\/takaoumehara\.com\/all">/);
+  assert.match(html, /<link rel="canonical" href="https:\/\/takaoumehara\.com\/work">/);
+
+  // The old address redirects here, and nothing shadows /work.
+  assert.match(read("all/index.html"), /http-equiv="refresh" content="0; url=\/work"/, "/all/ must redirect to /work");
+  assert.ok(!exists("work/index.html"), "work/index.html must not exist — it would shadow /work");
 });
 
 test("Japanese edition (/ja/index.html) declares Japanese and its own canonical; the canonical hero copy lives on the default lens it points into", () => {

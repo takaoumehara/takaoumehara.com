@@ -1,0 +1,10 @@
+PORTO ROCHA homepage reference
+
+- Desktop is fixed at 1280x800 (xrandr reports max 1280x800), so a true 1600px window was not possible.
+- 1280 view: left rail is ~382px wide; right content starts ~398px and is ~858px wide. Column separation is ~8px of page background; no visible vertical divider/border line.
+- Grid gaps are visually uniform at ~8px: left-rail cards, hero-to-card spacing, and the two lower content columns.
+- At the 1280 breakpoint, the lower home cards show 2 columns. With Chrome zoomed to 80% (a proxy for a ~1600px CSS viewport), the layout shows 3 lower columns and the nav rail clamps near 400 CSS px; cards reflow/widen, but typography does not grow (CSS type remains fixed; it only looks smaller in the zoomed screenshot).
+
+APPLY TO takaoumehara.com (Takao ask 2026-09-25):
+- Match: uniform ~8px gaps; NO vertical divider; left rail ~300–400px, right takes remainder.
+- DELIBERATE DIFFERENCE: Porto Rocha type stays fixed when viewport widens; Takao wants fluid type/elements (clamp) so widening the browser enlarges type — implement that even though the reference does not.

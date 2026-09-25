@@ -1,7 +1,7 @@
 ---
 // One piece of work in a PORTO ROCHA-style image grid: a 3:2 thumbnail, the
 // project name, and a one-line description underneath — used by the home
-// page, every category page and /all/ (src/components/grid/WorkGrid.astro
+// page, every category page and /work (src/components/grid/WorkGrid.astro
 // renders one of these per item).
 //
 // Classes kept from the old .cat-card system on purpose: docs/superforge.md's
@@ -17,7 +17,7 @@ import { destination } from "../../lib/site.mjs";
 interface Props {
   item: any;
   category?: string; // space-separated category slug(s) this card belongs to
-  tags?: string;      // space-separated archive filter tags (only /all/ passes this)
+  tags?: string;      // space-separated archive filter tags (only the archive passes this)
 }
 const { item, category, tags } = Astro.props;
 const to = destination(item);

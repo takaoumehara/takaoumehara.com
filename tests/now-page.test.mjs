@@ -8,7 +8,8 @@ import { read, exists } from "./_dist.mjs";
 test("/now page is built at now/index.html, and the old now.html address redirects to it", () => {
   assert.ok(exists("now/index.html"), "now/index.html must exist");
   assert.match(read("now.html"), /http-equiv="refresh" content="0; url=\/now\/"/, "now.html must redirect to /now/");
-  assert.match(read("work/index.html"), /http-equiv="refresh" content="0; url=\/all\/"/, "the old archive address must redirect to /all/");
+  // The archive's own redirect (/all/ → /work) is checked in
+  // tests/strategic-refinement.test.mjs, which owns that route.
 
   const html = read("now/index.html");
   assert.match(html, /<h1 class="now-title">/, "must have now-title h1");

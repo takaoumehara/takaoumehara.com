@@ -1,6 +1,12 @@
 ---
-// Unified Work Archive (/work): every evidence project, filterable by
-// discipline. Pulls directly from lib.evidence without duplicating project
+// Unified Work Archive: every evidence project, filterable by discipline.
+//
+// Currently unmounted. "All work" is one canonical page, the fullscreen
+// archive at src/pages/work.astro, which renders the shared grid directly with
+// the four-discipline filter bar; /all/ redirects there (public/all/index.html
+// and vercel.json). This component is kept for the six-tab discipline view.
+//
+// Pulls directly from lib.evidence without duplicating project
 // data — src/lib/archive.mjs carries the slug → tag lists so a test can
 // import getFilterTags without loading this component. Cards render through
 // the shared PORTO ROCHA grid (src/components/grid/WorkGrid.astro).

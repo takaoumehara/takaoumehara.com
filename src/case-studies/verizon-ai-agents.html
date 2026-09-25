@@ -1,5 +1,14 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/verizon-ai-workflow.json, "detail"). -->
+<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/verizon-ai-workflow.json, "detail").
+     The three beats below follow the workshop deck (docs/verizon-work-transformation-slides.md): the ranked friction map, the four failure modes and the agents answering them, and where AI enters the workflow. The deck states no measured time, adoption or quality KPI, so none is claimed here. -->
 <section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Forty friction points, ranked</span>
+    <span class="t-jp is-block">40 のつまずきを、順位づけした</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Innovation started with empathy for the team, not the customer. In late 2025 I ran deep-dive interviews with 16 designers about their actual working day — process, hurdles, the things that quietly cost velocity. The transcripts were categorized into more than 40 distinct friction points, and every one was scored on severity, business impact, ease of change and AI opportunity. Four failure modes came out of the heat map: knowledge scattered across people and email, technical discovery arriving too late to act on, decisions made without data to justify them, and delivery pressure compressing strategy into pixel pushing.</span>
+    <span class="t-jp is-block">はじまりは顧客ではなく、チームへの共感だった。2025 年後半、デザイナー 16 人に一時間ずつ話を聞いた。成果物ではなく、実際の一日について。進め方、詰まるところ、静かに速度を削っているもの。文字起こしを 40 件超のつまずきに分け、深刻さ・事業への影響・変えやすさ・AI で手が届くかの四つで点をつけた。浮かび上がった失敗の型は四つ。知識が人とメールに散る。技術的な発見が、動ける時期を過ぎてから来る。根拠のないまま判断が決まる。納期に押されて、戦略の時間が作業に潰される。</span>
+  </p>
   <figure class="beat-media">
     <img src="/assets/verizon-ai-agents/diagram-01-friction-agent-map.jpeg" alt="Map from each friction point in the workflow to the agent that answers it" loading="lazy">
     <figcaption class="beat-caption">
@@ -9,6 +18,14 @@
   </figure>
 </section>
 <section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Four failure modes, four answers</span>
+    <span class="t-jp is-block">四つの型に、四つの答え</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Each mode got one thing pointed at it, and nothing more. Scattered knowledge got the Master Brain, a centralized hub that synthesizes rather than stores. Late discovery got Justin, an edge-case detector that runs at ideation. Decisions without evidence got Sally, who evaluates against real CX heuristics. Compressed strategy got the five-agent WDS studio, which takes the production work off the critical path. Every agent has exactly one job, which is what let them stay reliable as use spread.</span>
+    <span class="t-jp is-block">型ごとに、置くものをひとつだけ決めた。散った知識には Master Brain。溜め込むのではなく、必要な形にまとめ直す中心の場だ。遅い発見には Justin、企画の段階で走る見落とし検知。根拠のない判断には Sally、実際の CX の評価基準で見る役。潰された戦略の時間には、WDS の 5 体のデザインスタジオ。作業を主要な流れから外に出す。どのエージェントも役目はひとつきりで、それが広まっても動きがぶれなかった理由になった。</span>
+  </p>
   <figure class="beat-media" style="--beat-cols: 7; --beat-cols-sm: 4;">
     <img src="/assets/verizon-ai-agents/agent-justin-portrait.jpg" alt="Justin" loading="lazy">
     <img src="/assets/verizon-ai-agents/agent-sally-portrait.jpg" alt="Sally" loading="lazy">
@@ -22,4 +39,14 @@
       <span class="t-jp">Justin（エッジケース）、Sally（CX ヒューリスティック）、5 体の WDS スタジオ — Mimir、Saga、Freya、Idunn、Eira。</span>
     </figcaption>
   </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">AI enters before the handoff, not after it</span>
+    <span class="t-jp is-block">AI は引き渡しの後ではなく、前に入る</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The old workflow ran in one line: requirements, CX playbook, journey and user stories, exploration, prototyping and stakeholder alignment, finalization, handoff, QA, launch, post-launch data. Validation sat at the end, where it could only confirm. The new one inserts four steps ahead of the handoff — an initiative alignment document, edge-case detection, a functional prototype, and synthetic usability testing — so the questions that used to surface in development surface while the design is still cheap to change. The Master Brain is what makes that possible: it is assembled from project documentation, organizational knowledge from recorded meeting transcripts, strategic direction from design leadership, and outside market and competitor intelligence. Reusable brand and research brains compose into the project-specific one rather than being rebuilt each time.</span>
+    <span class="t-jp is-block">以前の流れは一直線だった。要件、CX プレイブック、ジャーニーとユーザーストーリー、探索、試作と合意、確定、引き渡し、QA、ローンチ、ローンチ後のデータ。検証は最後にあって、確認しかできなかった。新しい流れでは、引き渡しより前に四つを差し込む。初期の合意文書、見落としの検知、動く試作、合成ユーザビリティテスト。開発で出てきていた問いが、まだ設計を安く変えられるうちに出てくる。それを支えるのが Master Brain だ。プロジェクト文書、録画した会議の文字起こしに残る組織の文脈、デザイン経営からの方向、そして外の市場と競合の情報。この四種類から組み上げる。ブランド用と調査用の Brain は使い回し、プロジェクト用の Brain に組み合わせる。毎回ゼロからは作らない。</span>
+  </p>
 </section>
