@@ -22,7 +22,9 @@
    These live here rather than in the page's scoped <style> so they survive the
    View Transitions swap, when <body>'s class is replaced before the page's own
    styles are applied. */
-body.work-fullscreen .shell { grid-template-columns: minmax(0, 1fr); }
+/* About hides the rail the same way (src/pages/about.astro), so it shares the
+   single-column shell; without this the page sat in the rail's own column. */
+body.work-fullscreen .shell, body.about-page .shell { grid-template-columns: minmax(0, 1fr); }
 body.work-fullscreen .side { display: none; }
 
 .side {
