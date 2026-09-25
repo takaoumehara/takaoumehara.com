@@ -31,7 +31,11 @@ body.work-fullscreen .side { display: none; }
   /* No 1px divider between the rail and the pane: the two are separated by the
      grey card fills and the whitespace between them, the way the reference
      does it. A hairline here read as a hard frame around the page. */
-  padding: var(--sp-3) var(--sp-3) var(--sp-5);
+  /* One --pane-pad on every side (a larger bottom so the last row can scroll
+     clear): the first control sits 8px from the top, the cards 8px from the
+     window's left edge, and the right padding is the whole gap between the
+     cards and the page — the pane adds none (ProjectDetail.astro). */
+  padding: var(--pane-pad) var(--pane-pad) var(--sp-5);
   font-size: var(--text-body); line-height: var(--leading-body);
   scrollbar-width: none; /* Hide left rail scrollbar */
   view-transition-name: side;
@@ -181,7 +185,7 @@ html[data-theme="dark"] .side-initials { background: hsl(var(--initials-h, 0) 34
 .side-top { display: none; }
 @media (max-width: 900px) {
   .shell { display: block; }
-  .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-bottom: 1px solid var(--pr-line); padding: var(--sp-2) var(--sp-3); }
+  .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-bottom: 1px solid var(--pr-line); padding: var(--pane-pad); }
   .side.is-open { overflow-y: auto; }
   .side-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 40px; }
   .side-top .side-wordmark { font-size: var(--text-lg); }

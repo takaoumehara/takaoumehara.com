@@ -63,6 +63,12 @@
      wide screen so the rhythm scales with the type. Never a different row and
      column value — that is what broke the grid's rhythm. */
   --gap-grid: clamp(8px, 0.45vw + 2.2px, 12px);
+  /* The one outer gutter (PORTO ROCHA's 8px canvas): the rail's padding on
+     every side, the pane's top and right edge, and the distance between the
+     rail's cards and the page (the rail's right padding IS that gap, so the
+     pane carries no left padding). Same unit as --gap-grid, so the frame and
+     the grids inside it share one rhythm. */
+  --pane-pad: var(--gap-grid);
 
   /* Aliases the components were written against */
   --bg: var(--pr-canvas);
@@ -81,6 +87,7 @@
      not left with two empty margins; the shell pages (home, the grids, the
      detail page) do not use it at all — they fill the pane. */
   --col: clamp(1200px, 90vw, 1800px);
+  /* Legacy hand-built pages only; the shell pages use --pane-pad. */
   --gutter: clamp(16px, 2.2vw, 56px);
   /* The reference's rail measures ~382px at a 1280 viewport (≈28%) and clamps
      near 400 CSS px on a wider screen — docs/design/porto-rocha/MEASURE-2026-09-25.txt.

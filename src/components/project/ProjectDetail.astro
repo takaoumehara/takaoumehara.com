@@ -102,7 +102,15 @@ const meta = [
      line length, below. */
   .project-detail {
     width: 100%;
-    padding: 0 var(--gutter) 96px;
+    /* Top comes from .project-page; left is 0 because the rail's right
+       padding (--pane-pad) is already the one gap between its cards and the
+       teaser; right is the same --pane-pad to the window edge. */
+    padding: 0 var(--pane-pad) 96px 0;
+  }
+  /* Below 900px the rail is a top bar, not a column, so the pane carries its
+     own left edge. */
+  @media (max-width: 900px) {
+    .project-detail { padding-left: var(--pane-pad); }
   }
 
   .project-teaser {

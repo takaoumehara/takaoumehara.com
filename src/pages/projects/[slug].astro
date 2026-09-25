@@ -133,13 +133,14 @@ const beats = body && body.replace(/<!--[\s\S]*?-->/g, "").trim() ? body : null;
 )}
 
 <style>
+  /* The teaser sits one --pane-pad (8px) below the top of the window. */
   .project-page {
-    padding-top: 40px;
+    padding-top: var(--pane-pad);
   }
   
   @media (max-width: 768px) {
     .project-page {
-      padding-top: 24px;
+      padding-top: var(--pane-pad);
     }
   }
 </style>
