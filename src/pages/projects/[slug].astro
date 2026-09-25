@@ -93,33 +93,44 @@ const { item, body, css, meta } = Astro.props;
 const current = `/projects/${slug}.html`;
 const canonical = meta?.canonical ?? `https://takaoumehara.com${current}`;
 
-// Check if item has video preview for teaser
-const videoUrl = item?.assets?.preview?.mp4 || item?.assets?.preview?.webm;
-const videoAudioRecommended = item?.playable && videoUrl;
+// "detail" pages use the shared template and the site's own styles; their HTML
+// is body beats only. A case study not yet moved to the format is a complete
+// hand-built page (its own hero, H1 and meta), so it renders on its own rather
+// than inside the template, which would print everything twice.
+const isDetail = !body || meta?.format === "detail";
+const beats = body && body.replace(/<!--[\s\S]*?-->/g, "").trim() ? body : null;
 ---
-<Site
-  title={meta?.title || `${item?.title} — Takao Umehara`}
-  description={meta?.description || ""}
-  canonical={canonical}
-  ogImage={meta?.ogImage || item?.assets?.hero}
-  ogType={meta?.ogType || "article"}
-  theme={meta?.theme}
-  htmlClass={meta?.htmlClass}
-  bodyClass={meta?.bodyClass}
-  current={current}
-  stylesheets={meta?.stylesheets}
-  style={css}
-  fonts={meta?.fonts}
->
-  <main class="project-page">
-    <ProjectDetail 
-      item={item} 
-      body={body}
-      videoUrl={videoUrl}
-      videoAudioRecommended={videoAudioRecommended}
-    />
-  </main>
-</Site>
+{isDetail ? (
+  <Site
+    title={meta?.title || `${item?.title} — Takao Umehara`}
+    description={meta?.description || ""}
+    canonical={canonical}
+    ogImage={meta?.ogImage || item?.assets?.hero}
+    ogType={meta?.ogType || "article"}
+    current={current}
+  >
+    <main class="project-page">
+      <ProjectDetail item={item} body={beats} />
+    </main>
+  </Site>
+) : (
+  <Site
+    title={meta?.title || `${item?.title} — Takao Umehara`}
+    description={meta?.description || ""}
+    canonical={canonical}
+    ogImage={meta?.ogImage || item?.assets?.hero}
+    ogType={meta?.ogType || "article"}
+    theme={meta?.theme}
+    htmlClass={meta?.htmlClass}
+    bodyClass={meta?.bodyClass}
+    current={current}
+    stylesheets={meta?.stylesheets}
+    style={css}
+    fonts={meta?.fonts}
+  >
+    <div class="project-legacy" set:html={body} />
+  </Site>
+)}
 
 <style>
   .project-page {
