@@ -60,15 +60,6 @@ function sidebar(html, page) {
   assert.ok(side, `${page}: missing sidebar`);
   return side;
 }
-function pageLinks(html, page) {
-  const nav = sidebar(html, page).match(/<nav class="side-pages"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
-  assert.ok(nav, `${page}: missing the page links`);
-  // Labels are bilingual span pairs; the English one is the label.
-  const label = (inner) => (inner.match(/<span class="t-en">([\s\S]*?)<\/span>/)?.[1] ?? inner).replace(/<[^>]+>/g, '').trim();
-  return [...nav.matchAll(/<a\b[^>]*>([\s\S]*?)<\/a>/gi)].map((match) => ({
-    href: attr(match[0], 'href'), label: label(match[1]), tag: match[0],
-  }));
-}
 function workGroups(html, page) {
   const nav = sidebar(html, page).match(/<nav class="side-work"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
   assert.ok(nav, `${page}: missing the work groups`);
@@ -79,43 +70,40 @@ function workGroups(html, page) {
 
 // ── Sidebar consistency ──
 
-// The top nav is gone; the rail carries the same things on every page: the
-// About card (which also holds the pages about the person, in one order) and
-// the five sections of the work (in one order, every group open, every piece
-// in it). Only the page you are on is marked — with aria-current, not with a
-// colour someone has to infer.
-test('every page carries the same sidebar: the pages in order, the five sections in order', () => {
-  const expectedPages = [
-    [ '/now/', 'Now' ],
-    [ '/publications.html', 'Writing' ],
-    [ '/workshop.html', 'Workshops' ],
-    [ '/contact.html', 'Work with me' ],
-    [ 'https://creativityiseverywhere.com', 'Studio ↗' ],
-  ];
+// The old top-of-rail <nav class="side-pages"> (Now / Writing / Workshops /
+// Work with me / Studio, each a standalone page) is gone: those pages'
+// content now lives inside About's own sections (src/pages/about.astro —
+// "consolidates all person pages into one", #now #writing #workshops
+// #work-with-me #studio), so the rail no longer links to them separately.
+// What the rail carries on every page now: the About card (a single link +
+// the positioning line, no sub-list) and the five sections of the work (in
+// one order, every group open, every piece in it). Only the page you are on
+// is marked — with aria-current, not with a colour someone has to infer.
+test('every page carries the same sidebar: the About card (no longer a page list) and the five sections in order', () => {
   const expectedGroups = [ 'Interactive &amp; Playable', 'AI Products &amp; Systems', 'AI Tools', 'Product &amp; Experience Design', 'Brand &amp; Creative' ];
   for (const page of mainPages) {
     const html = read(page);
-    assert.deepEqual(pageLinks(html, page).map(({ href, label }) => [href, label]), expectedPages, `${page}: page links`);
+    const side = sidebar(html, page);
+    // The old per-page-type nav is gone; nothing should resurrect it.
+    assert.equal(/<nav class="side-pages"/.test(side), false, `${page}: the old side-pages nav must not come back`);
     assert.deepEqual(workGroups(html, page).map((g) => g.label), expectedGroups, `${page}: work groups`);
-    assert.match(sidebar(html, page), /<a class="side-all" href="\/work"/, `${page}: the "All work" link`);
-    assert.match(sidebar(html, page), /<a class="side-label" href="\/about\.html"/, `${page}: the About card links to the About page`);
-    assert.match(sidebar(html, page), /<button class="side-theme" id="theme-switch" type="button" role="switch"/, `${page}: the theme switch`);
-    assert.match(sidebar(html, page), /<button class="side-lang" id="lang-cycle" type="button"/, `${page}: the language button`);
-    assert.match(sidebar(html, page), /<button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">/, `${page}: the phone menu button`);
+    assert.match(side, /<a class="side-all" href="\/work"/, `${page}: the "All work" link`);
+    assert.match(side, /<a class="side-label" href="\/about"[^>]*data-match="\/about \/about\.html"/, `${page}: the About card links to the About page`);
+    assert.match(side, /<button class="side-theme" id="theme-switch" type="button" role="switch"/, `${page}: the theme switch`);
+    assert.match(side, /<button class="side-lang" id="lang-cycle" type="button"/, `${page}: the language button`);
+    assert.match(side, /<button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">/, `${page}: the phone menu button`);
   }
 });
 
 test('each page marks itself current in the sidebar, and only itself', () => {
-  const currentByPage = {
-    'now/index.html': '/now/',
-    'contact.html': '/contact.html',
-  };
-  for (const [page, href] of Object.entries(currentByPage)) {
-    const current = pageLinks(read(page), page).filter((item) => attr(item.tag, 'aria-current') === 'page');
-    assert.deepEqual(current.map((item) => item.href), [href], `${page}: its own link must be the only aria-current one`);
+  // Without a page list, the only "current page" markers left in the rail
+  // are the About card, the "All work" link, and a project's own row.
+  assert.match(sidebar(read('about.html'), 'about'), /<a class="side-label" href="\/about"[^>]*aria-current="page"/, 'about.html: the About card marks itself');
+  assert.match(sidebar(read('work.html'), 'work'), /<a class="side-all" href="\/work"[^>]*aria-current="page"/, 'work.html: the "All work" link marks itself');
+  for (const page of ['index.html', 'interactive.html', 'brand.html', 'contact.html']) {
+    const side = sidebar(read(page), page);
+    assert.equal(/<a class="side-label"[^>]*aria-current="page"/.test(side), false, `${page}: the About card must not be current`);
   }
-  assert.match(sidebar(read('about.html'), 'about'), /<a class="side-label" href="\/about\.html"[^>]*aria-current="page"/, 'about.html: the About card marks itself');
-  assert.equal(pageLinks(read('about.html'), 'about').some((item) => attr(item.tag, 'aria-current') === 'page'), false, 'about.html: no page link is current');
   // Every group is open on every page (the reference lists everything), and
   // a case study marks its own row and nothing else.
   for (const page of ['interactive.html', 'brand.html', 'projects/koji-fizz.html']) {
@@ -191,11 +179,26 @@ test('each AI Tools project detail page exists with its GitHub CTA and a link ba
 
 // ── Amazon Fire TV project page ──
 
-test('Amazon Fire TV project page labels itself under AI Products and links AI Tools next', () => {
+// The old per-page breadcrumb ("AI Products"), "Next: AI Tools" bottom nav,
+// and full-bleed .demo-full simulator container belonged to the old,
+// individually hand-built project pages. Detail pages now share one template
+// (src/components/project/ProjectDetail.astro — teaser, Challenge | Solution,
+// no breadcrumb, no prev/next nav, no bespoke simulator chrome), and
+// categorization lives only in the sidebar, shared by every page, once.
+test('Amazon Fire TV project page renders through the shared Challenge/Solution template, with no old breadcrumb/Next-nav chrome, and is grouped under AI Products & Systems in the sidebar', () => {
   const html = read('projects/amazon-firetv.html');
-  assert.match(html, /<a href="\.\.\/ai-products\.html">AI Products<\/a>/, 'breadcrumb must read AI Products');
-  assert.match(html, /Next: AI Tools/, 'bottom nav must point to AI Tools, not the old AI Tools & Infrastructure label');
-  assert.match(html, /class="demo-full/, 'the live simulator must use the full-bleed demo-full container');
+  assert.ok(!html.includes('demo-full'), 'the old full-bleed demo-full simulator container must not remain');
+  assert.equal(/Next:\s*AI Tools/.test(html), false, 'the old bottom-nav "Next: AI Tools" chrome must not remain');
+  assert.equal(/<a href="\.\.\/ai-products\.html">AI Products<\/a>/.test(html), false, 'the old in-page breadcrumb must not remain');
+
+  const article = html.match(/<article class="project-detail"[\s\S]*?<\/article>/)?.[0];
+  assert.ok(article, 'must render through the shared project-detail template');
+  assert.ok(article.includes('project-cs'), 'Challenge | Solution present');
+
+  const side = sidebar(html, 'projects/amazon-firetv.html');
+  const group = side.match(/<details class="side-group"[^>]*>\s*<summary>\s*<span>\s*<span class="t-en">AI Products &amp; Systems<\/span>[\s\S]*?<\/details>/)?.[0];
+  assert.ok(group, 'sidebar must carry the AI Products & Systems group');
+  assert.match(group, /href="\/projects\/amazon-firetv\.html"/, 'Amazon Fire TV must be listed under AI Products & Systems in the sidebar, not labeled in-page');
 });
 
 // ── Cross-cutting integrity checks ──
