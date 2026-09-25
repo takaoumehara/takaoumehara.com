@@ -43,6 +43,14 @@ Vercel ダッシュボードで:
 2. Project → **Settings → Domains** → `www.takaoumehara.com` が **Production** に割り当てられているか（特定 deployment に固定されていないか）。
 3. 古い HTML がまだ出るのに Current が新しい場合のみ、ブラウザのハードリロード（`x-vercel-cache: HIT` でも deployment が変われば無効化されるので CDN 側の残留は稀）。
 
+
+## 追記: Vercel プロジェクトが 2 つある
+
+この PR の Vercel bot コメントによると、同じリポジトリから **2 つの Vercel プロジェクト**（`takaoumehara-com` と `takaoumehara-com-ybtq`）が Preview をビルドしている。
+**「Promote したのに本番が古い」の最有力候補はこれ**: `www.takaoumehara.com` のドメインが片方のプロジェクトにしか割り当てられておらず、Promote をもう片方のプロジェクトで行った可能性がある。
+
+確認手順: Vercel → 両プロジェクトの **Settings → Domains** を見て、`www.takaoumehara.com` / `takaoumehara.com` がどちらに付いているかを確認し、**そのプロジェクト**で Production デプロイの Source コミットを見る。ドメインの無い方のプロジェクトは削除するか、Git 連携を切って混乱を止めるのが安全。
+
 ## 直し方の選択肢
 
 | 方法 | 効果 | 副作用 |
