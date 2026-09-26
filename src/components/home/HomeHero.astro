@@ -108,6 +108,7 @@ const style = (tz) => [
           </button>
         ))}
       </div>
+      <span class="hh-count" aria-hidden="true"><span class="hh-count-n">1</span> / {slides.length}</span>
       <button type="button" class="hh-btn hh-next" aria-label="Next work">
         <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="m6 3 5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
@@ -218,6 +219,8 @@ const style = (tz) => [
       dots[index].removeAttribute("aria-current");
       dots[next].classList.add("is-active");
       dots[next].setAttribute("aria-current", "true");
+      const countN = root.querySelector<HTMLElement>(".hh-count-n");
+      if (countN) countN.textContent = String(next + 1);
       index = next;
       playClip(to);
       prime(index + 1, true);

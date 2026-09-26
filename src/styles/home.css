@@ -152,12 +152,13 @@ html.lang-jp .hh-cap-line { font-family: var(--ff-jp); }
 .hh-toggle[aria-pressed="true"] .hh-ico-pause { display: none; }
 
 .hh-dots { display: flex; align-items: center; }
+.hh-count { display: none; font-family: var(--ff-mono, ui-monospace, monospace); font-size: var(--text-xs); font-variant-numeric: tabular-nums; color: var(--pr-ink-2); }
 .hh-dot {
   display: grid;
   align-items: center;
-  width: 18px;
+  width: 24px; /* WCAG 2.2 §2.5.8: 24px minimum target */
   height: 32px;
-  padding: 0 3px;
+  padding: 0 4px;
   border: 0;
   border-radius: 4px;
   background: transparent;
@@ -205,8 +206,10 @@ html.lang-jp .hh-cap-line { font-family: var(--ff-jp); }
 @media (max-width: 640px) {
   .hh-bar { flex-direction: column; align-items: stretch; }
   .hh-controls { justify-content: space-between; margin: 0 -4px; }
-  .hh-dots { flex: 1; justify-content: center; }
-  .hh-dot { width: 20px; }
+  /* 12 dots at the 24px minimum target do not fit a phone: show a counter;
+     prev / next and swipe still move between works. */
+  .hh-dots { display: none; }
+  .hh-count { display: block; flex: 1; text-align: center; }
 }
 
 /* ── News bento ──────────────────────────────────────────────────────────── */
