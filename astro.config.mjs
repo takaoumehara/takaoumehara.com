@@ -18,7 +18,7 @@
 // asks for `output: "server"`. Its middleware and client runtime are used
 // directly instead, scoped to /admin, so the public pages stay static and
 // carry no Clerk script — and a build without Clerk keys works unchanged.
-import { readdirSync } from "node:fs";
+import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "astro/config";
@@ -79,7 +79,58 @@ function vercelKeepingUrls() {
     await setup(context);
     context.updateConfig({ build: { format: "preserve" } });
   };
+  const done = adapter.hooks["astro:build:done"];
+  adapter.hooks["astro:build:done"] = async (context) => {
+    await done(context);
+    addCleanUrlsAndRedirects(fileURLToPath(new URL("./", import.meta.url)), fileURLToPath(context.dir));
+  };
   return adapter;
+}
+
+/**
+ * The adapter's routing (.vercel/output/config.json) serves files only by
+ * their exact name, so the site's own extensionless links (/work, /about,
+ * /projects/<slug>) fell through to the 404 route in production, and the
+ * redirects in vercel.json are not merged into Build Output API routes.
+ * After the adapter writes its config: vercel.json redirects go in front of
+ * the filesystem, and every built page `x.html` is also served at `/x`.
+ */
+function addCleanUrlsAndRedirects(root, builtDir) {
+  const outDir = join(root, ".vercel/output");
+  const configPath = join(outDir, "config.json");
+  // The adapter copies the pages into .vercel/output/static only after this
+  // hook, so the page list comes from the build directory itself.
+  const staticDir = builtDir;
+  const config = JSON.parse(readFileSync(configPath, "utf8"));
+  const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+  let redirects = [];
+  try {
+    redirects = JSON.parse(readFileSync(join(root, "vercel.json"), "utf8")).redirects ?? [];
+  } catch { /* no vercel.json */ }
+  const redirectRoutes = redirects.map((r) => ({
+    src: `^${escape(r.source)}$`,
+    headers: { Location: r.destination },
+    status: r.permanent === false ? 307 : 308,
+  }));
+
+  const pages = [];
+  const walk = (dir) => {
+    for (const e of readdirSync(dir, { withFileTypes: true })) {
+      const full = join(dir, e.name);
+      if (e.isDirectory()) { if (e.name !== "_astro" && e.name !== "assets") walk(full); }
+      else if (e.name.endsWith(".html") && e.name !== "index.html" && e.name !== "404.html") {
+        pages.push(relative(staticDir, full).split(sep).join("/").slice(0, -".html".length));
+      }
+    }
+  };
+  walk(staticDir);
+  const cleanRoutes = pages.sort().map((p) => ({ src: `^/${escape(p)}/?$`, dest: `/${p}.html` }));
+
+  const fs = config.routes.findIndex((r) => r.handle === "filesystem");
+  config.routes.splice(fs + 1, 0, ...cleanRoutes);
+  config.routes.splice(fs, 0, ...redirectRoutes);
+  writeFileSync(configPath, JSON.stringify(config, null, "\t"));
 }
 
 export default defineConfig({
