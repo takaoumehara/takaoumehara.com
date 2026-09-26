@@ -168,23 +168,23 @@
       ${buyAgainIds.length ? `
       <div class="rail" data-row>
         <div class="rail-head"><h2 class="rail-title">Buy again</h2><span class="rail-hint">Based on your orders</span></div>
-        <div class="rail-track">${buyAgainIds.map(id => cardHTML(product(id))).join('')}</div>
+        <div class="rail-track" tabindex="0">${buyAgainIds.map(id => cardHTML(product(id))).join('')}</div>
       </div>` : ''}
 
       <div class="rail" data-row>
         <div class="rail-head"><h2 class="rail-title">Recommended for you</h2><span class="rail-hint">Protein powder · Because you shop Sports Nutrition</span></div>
-        <div class="rail-track">${recommended.map(p => cardHTML(p)).join('')}</div>
+        <div class="rail-track" tabindex="0">${recommended.map(p => cardHTML(p)).join('')}</div>
       </div>
 
       <div class="rail" data-row>
         <div class="rail-head"><h2 class="rail-title">Today's deals on protein</h2></div>
-        <div class="rail-track">${dealsList.map(p => cardHTML(p, { dealBadge: true })).join('')}</div>
+        <div class="rail-track" tabindex="0">${dealsList.map(p => cardHTML(p, { dealBadge: true })).join('')}</div>
       </div>
 
       ${plant.length ? `
       <div class="rail" data-row>
         <div class="rail-head"><h2 class="rail-title">Plant-based picks</h2></div>
-        <div class="rail-track">${plant.map(p => cardHTML(p)).join('')}</div>
+        <div class="rail-track" tabindex="0">${plant.map(p => cardHTML(p)).join('')}</div>
       </div>` : ''}
     `;
     bindCards(root);
@@ -529,7 +529,7 @@
 
         <div class="rail" data-row style="margin-top:2.6rem">
           <div class="rail-head"><h2 class="rail-title">Customers also viewed</h2></div>
-          <div class="rail-track" style="padding-left:.2rem">${similar.map(x => cardHTML(x)).join('')}</div>
+          <div class="rail-track" tabindex="0" style="padding-left:.2rem">${similar.map(x => cardHTML(x)).join('')}</div>
         </div>
       </div>`;
 
