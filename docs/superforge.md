@@ -1,6 +1,6 @@
 # superforge — project settings
 
-> Written by: superforge · Last updated: 2026-09-17
+> Written by: superforge · Last updated: 2026-09-26
 
 ## Language
 会話: 日本語
@@ -112,3 +112,25 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
 - **ケーススタディの冒頭**（2026-09-17）: 本文の前に `narrative.problem` / `narrative.built` /
   `narrative.impact` から **The challenge / The solution / Impact** のグレーカード列を出す
   （`src/components/project/ProjectStrip.astro`）。データに無いものは出さない。文章は書き足さない。
+- **外枠は 8px 一択**（2026-09-25、本人「portorocha.com と同じ隙間に」）: `--pane-pad`（= `--gap-grid`、1280px で 8px、
+  広い画面で 12px まで）をレールの padding・レール→ペインの間・ティーザーの上・右端すべてに使う。
+  レールは右 padding だけで隙間を作り、ペイン側（`.project-detail` / `.cat-page`）は左 padding 0。`.cat-head` の上 padding も 0。
+  基準ページは **Rakugaki Jam**（`/projects/rakugaki-jam.html`）。Playwright で 1280/1600/1920/390 を測って揃えた。
+- **ランディング**（2026-09-25 改訂、本人「作品を順番にアニメーションで」「右側に基本情報と新しいプロジェクト」）:
+  上から **ヒーロー・スライドショー**（`src/components/home/HomeHero.astro`、16:9、実写・実動画のみ、5 秒クロスフェード、
+  hover / focus / 非表示タブ / 画面外で停止、`prefers-reduced-motion` は手動のみ、`data-vt-hero` はこれ 1 つ）→
+  **ニュース bento**（`HomeNews.astro`、先頭に基本情報カード、続けて Interactive 8 件の日付つき記事＋3:2 サムネ。
+  データは `src/data/news.mjs`、**日付は 2026-03〜09 の仮置き — 本人の実日付待ち**）→ 「All work」＋ 4 つのフィルタ＋グリッド。
+  `/ja/` は同じ構成（`src/pages/ja/index.astro` を `index.astro` と揃えて保つ）。架空の出来事（「晩夏のプレイアブル」等）は書かない。
+- **TWIST — Porto Rocha との差別化**（2026-09-25、`docs/design/twist-proposal.md`、本人「ほとんど変えずにひねりを」）:
+  骨格（二列・グレー塗り・8px・モノクロ）は残し、**サイトが本人の共有画面作品のように振る舞う**一つの性格だけ足す。
+  実装済み: 投げ込み（レール行 / カードのサムネが VT で 16:9 ティーザーへ育つ、戻りは現在行へ縮む。`hero` 名は常に文書内 1 個）、
+  疑似触覚（押下 0.985 → `linear()` バネ戻り、ホバーで画像が 2〜4px 寄る。**影と持ち上げは禁止**）、エコー（カードのホバーで
+  レールの同じ行が 120ms 遅れて反応）、初回ロードだけの登場（レール→ニュース→グリッド）、入力スタンプ（`input` を大文字で
+  グリッドカードとヒーローの字幕に。**レール行には出さない** — 行の高さを変えないため）。root の dissolve から blur を外した。
+  モバイル: 「両方。ホバーは押下に置き換え、モバイル専用で必須のものは作らない」。レールが畳まれる幅ではカードが起点。
+- **About はレール無し**（`body.about-page .side{display:none}`、IA 改訂で決定済み）: その場合 `.shell` は 1 列（`shell.css`）。
+- **本番の整合**（2026-09-25、`docs/prod-alignment-2026-09-25.md`）: Vercel の Production は `main` の自動デプロイに戻るので
+  Promote は恒久策にならない。**同じリポを 2 つの Vercel プロジェクトがビルドしている**（`takaoumehara-com` / `-ybtq`）。
+  恒久策は PR #23 → PR #24 のマージ。
+
