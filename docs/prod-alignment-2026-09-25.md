@@ -62,6 +62,13 @@ PR #24 の Vercel bot コメントで、01:35 UTC に **`takaoumehara-com` プ�
 - 恒久策は変わらない: PR #23 → PR #24 をマージする。
 - この作業環境からは本番を取得できないので、実際に新しいシェルが出ているかは上のチェックリスト（`family=Outfit`、`side-initials`、`hero-agents-network.jpg`）で確認してほしい。
 
+## 追記 2026-09-26（2）: マージ
+
+- PR #23 を `main` にマージ（`89f98cd`）。PR #24 の base を `main` に付け替え、Preview が緑になってからマージする。
+- マージ後は Production = `main` の自動デプロイなので、Promote に頼らず新シェルが固定される。
+- 本番確認は上のチェックリストに加えて: `curl -s https://www.takaoumehara.com/ | grep -c 'All work'`（0 が期待）、
+  `curl -s https://www.takaoumehara.com/ | grep -o 'Selected Works'`（レールのステータス行）、`/admin` が 200 で Clerk のログインを出すこと。
+
 ## 直し方の選択肢
 
 | 方法 | 効果 | 副作用 |

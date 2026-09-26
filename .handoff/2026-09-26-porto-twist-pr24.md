@@ -10,14 +10,16 @@ Passphrase: 「サムネを壁へ投げる — 隙間は 8px」
 Goal: 本人の依頼（2026-09-25）: (1) Rakugaki Jam を完璧にしてテンプレに、隙間は portorocha.com と同じ 8px、
   (2) ランディング = 作品スライドショー + 基本情報 + 日付つきニュース（サムネ付き）、(3) Porto Rocha と確実に違う「ひねり」、
   モバイル方針つき、(4) ハンドオフの続き: 本番整合レポート、Interactive 8 件の厚み、テスト、ビルド、push。
-State: **すべて完了、push 済み。** ブランチ `claude/wizardly-franklin-8srztg` = `326d75b`（10 コミット）、
-  PR #24（draft、base = PR #23 のブランチ）。`npm run build` 成功、`npm run test:unit` 146/146。
-  Vercel Preview: https://takaoumehara-com-git-cla-bc79d8-takaoumehara-gmailcoms-projects.vercel.app
-  本番の直接比較は未実施（作業環境の egress が www.takaoumehara.com / portorocha.com を遮断）。
-Next: **本人が Preview を見て判断する。** 判断待ちの 5 点は PR #24 本文と下の Open questions。
-  本人が OK なら: PR #23 をマージ → PR #24 の base を `main` に付け替えてマージ → 本番確認（`docs/prod-alignment-2026-09-25.md` の手順）。
-  コード側の次: Kao Game の実写素材待ち、クライアント案件の空 Challenge/Solution（ela-quests, cli-studios, konosaki,
-  festival-reinvention, menlomath, koji-fizz の順）、Werewolf の絵の出自の言い回し統一。
+State: **Round 2（2026-09-26）完了。** PR #23 は `main` にマージ済み（`89f98cd`）。PR #24 は base = `main` に付け替え。
+  Round 2 = 詳細ページの全 bento 化、ランディングから All work 撤去、`/work` 自由グリッド、About の bento 統合（レールあり）、
+  システム UI（mono ステータス・起動シーケンス・触感）、`/admin`（Clerk + GitHub 保存）、クライアント 26 件の detail 化。
+  `npm run build` 成功、`npm run test:unit` 148/148、axe（WCAG 2.2 AA、390/1440、主要ページ）0 件。
+  Open questions 1〜6 は回答が無かったので既定のまま。
+Next: PR #24 を `main` へマージ（Vercel Preview が緑になってから）→ 本番確認（`docs/prod-alignment-2026-09-25.md`、この環境からは取得不可）。
+  本人の設定: Vercel `takaoumehara-com` に `PUBLIC_CLERK_PUBLISHABLE_KEY` / `CLERK_SECRET_KEY` / `ADMIN_EMAILS` / `GITHUB_TOKEN` /
+  `GITHUB_REPO` / `GITHUB_BRANCH`（`docs/admin.md`）。未設定なら `/admin` は「未設定」表示で公開ページには影響しない。
+  コード側の次: Kao Game の実写素材、Skateboard eGift / Kanji Puzzle の素材、Geist Mono の実機確認、Clerk ログインと GitHub 保存の実地確認、
+  Playwright e2e のブラウザ版不一致（`chromium_headless_shell-1234` が無い）。
 Read first: `docs/superforge.md`（Pinned、末尾 6 項目が今回の決定）、`docs/design/twist-proposal.md`、
   `docs/prod-alignment-2026-09-25.md`、`src/styles/transitions.css` + `src/scripts/site.js`（投げ込み / 手ざわり / エコー）、
   `src/components/home/HomeHero.astro` + `HomeNews.astro` + `src/data/news.mjs`、`src/lib/detail.mjs`（詳細ページの読み方）。
@@ -56,6 +58,11 @@ Running: プロセス無し（Astro dev はセッション終了で止まる）�
 5. 入力スタンプをレール行にも出すか（現状グリッドとヒーローのみ）。
 6. Verizon AI Workflow のレール一行文「42 designers」は既存記述。根拠がなければ外す。
 
+## Open questions（Round 2 で追加）
+7. 起動の「ばばばば」はペイン全体で約 0.8s（ブリーフの 350ms より長い）。短くするか。
+8. 管理画面の保存は `main` へ直接コミット。PR を作る方式にするか。
+9. Coca-Cola / XQ の年が無い。EduTrack の Play リンクは同一オリジン。
+
 ## Chat Resume Prompt
 ```
 次の作業を再開してください。
@@ -63,8 +70,8 @@ Running: プロセス無し（Astro dev はセッション終了で止まる）�
 Project: takaoumehara.com
 Handoff file: .handoff/2026-09-26-porto-twist-pr24.md
 Goal: Porto Rocha の骨格に 8px の枠と本人の「投げ込み」の性格を足した PR #24 を、本人の判断を受けてマージまで運ぶ
-State: ブランチ claude/wizardly-franklin-8srztg = 326d75b、PR #24 draft（base = PR #23）、build 成功、unit 146/146、Preview Ready
-Next: 本人の Open questions 1〜6 の回答を反映 → PR #23 マージ → PR #24 の base を main に変更してマージ → 本番を docs/prod-alignment-2026-09-25.md の手順で確認
+State: PR #23 マージ済み、PR #24 base = main、build 成功、unit 148/148、axe 0 件
+Next: PR #24 のマージ（未了なら）→ 本番確認 → Open questions 1〜9 の回答を反映
 Read first: docs/superforge.md（末尾 6 項目）、docs/design/twist-proposal.md、docs/prod-alignment-2026-09-25.md、src/styles/transitions.css、src/scripts/site.js、src/data/news.mjs
 
 上記のNextから開始してください。
