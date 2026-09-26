@@ -155,3 +155,15 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
 - **詳細ページの厚み**: クライアント 26 件を detail 形式に（`docs/content-audit-2026-09-26*.md`）。Verizon AI Workflow は
   スライドの本文（`docs/verizon-work-transformation-slides.md`）と PDF から 7 枚のデッキ画像をビートに。**ティーザーは `hero-agents-network.jpg` のまま。**
   旧 HTML は `src/case-studies/_legacy/` に保管（glob されない）。
+
+### Round 3（2026-09-26、本人「左から右に何かでっかくなるのはダサい」「まず四角を書く、タイプが徐々に起きる」）
+- **投げ込み（throw / return）は廃止。** 遷移は `src/scripts/motion.js` の「箱が先」振付: 画面内のセルが縮んで消える（0–50ms ランダム）→
+  新しいページの空の箱が先に敷かれる（0–140ms ランダム）→ 画像がワイプで入る（読み込み中だけ mono の NOW LOADING）→
+  見出しと短い行はランダムな字形から左→右に解読される（JP はカタカナ・漢字）、長文はまとめて浮かぶ。1 遷移 0.6〜0.9 秒、
+  入力があれば即完了、`prefers-reduced-motion` では何もしない。文字は元の文字列に正確に戻し、箱の寸法を保つ（CLS なし）。
+- **本番の URL**: Vercel の Build Output ルートは拡張子なしを配らなかった（`/work` と `/about` が 404）。`astro.config.mjs` が
+  ビルド後に `config.json` へ vercel.json の redirect と `x.html` → `/x` を足す。`tests/routing.test.mjs` が全リンクを検査。
+- **About** は人物情報を 1 枚に（Books = extra•ordinary 2013 / Rockport / 市来久子さんと共著）。肩書きに **Interactive Media Designer** を追加
+  （`src/data/profile.json` と `src/lenses/default.json`）。
+- **Werewolf** はレイヤービューア（`/projects/werewolf-card-viewer.html?embed=1`）を埋め込み、**Fire TV** は実働プロトタイプ
+  （`demo.html`）をティーザーとして埋め込む（`detail.teaser = {embed, title, aspect, aspectSm}`）。
