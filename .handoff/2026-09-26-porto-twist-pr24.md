@@ -28,7 +28,7 @@ Running: プロセス無し（Astro dev はセッション終了で止まる）�
 |---|---|---|---|
 | superforge.md | agreed（会話=日本語 / docs=日本語 / コード=英語可） | 2026-09-26 | — |
 | design/twist-proposal.md | agreed → Phase 2 実装済み | 2026-09-25 | 起点をカードかステージか / 戻り先 / スタンプをレールにも出すか / 影の撤去 / blur の撤去 → 実装で既定を採用、本人未確認 |
-| prod-alignment-2026-09-25.md | report（本番未取得） | 2026-09-25 | どちらの Vercel プロジェクトにドメインが付いているか |
+| prod-alignment-2026-09-25.md | report（本番未取得） | 2026-09-26 | ドメインは `takaoumehara-com` と判明。01:35 UTC に PR #24 を Promote した形跡あり。`-ybtq` の扱い |
 | project-page-format.md | agreed（詳細ページの固定順序） | 2026-09-25 | — |
 | verizon-work-transformation-slides.md | source dump | 2026-09-25 | 数値なし（KPI を書かない） |
 | astro-architecture.md | agreed | 2026-09-17 | — |

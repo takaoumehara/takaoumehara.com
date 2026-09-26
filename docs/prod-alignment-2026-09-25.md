@@ -51,6 +51,17 @@ Vercel ダッシュボードで:
 
 確認手順: Vercel → 両プロジェクトの **Settings → Domains** を見て、`www.takaoumehara.com` / `takaoumehara.com` がどちらに付いているかを確認し、**そのプロジェクト**で Production デプロイの Source コミットを見る。ドメインの無い方のプロジェクトは削除するか、Git 連携を切って混乱を止めるのが安全。
 
+
+## 追記 2026-09-26: ドメインが付いているのは `takaoumehara-com`
+
+PR #24 の Vercel bot コメントで、01:35 UTC に **`takaoumehara-com` プロジェクト**のデプロイ（`CjvtFE8Z…`、このブランチの `c463ba0` から）の URL が `www.takaoumehara.com` と表示された。
+直後の 01:35:25 に同じプロジェクトで新しいビルド（`FaPrB4ZP…`）が始まっている。Preview を Production へ Promote したときの動きと一致する。
+
+- **本番ドメインは `takaoumehara-com` 側。** `takaoumehara-com-ybtq` にはドメインが付いていない。Git 連携を切るか削除して、Preview の二重ビルドを止めてよい。
+- **この Promote も一時的。** Production Branch が `main` のままなら、次に `main` へ push した時点で本番は `main`（`045114d`、PR #23 以前）に戻る。
+- 恒久策は変わらない: PR #23 → PR #24 をマージする。
+- この作業環境からは本番を取得できないので、実際に新しいシェルが出ているかは上のチェックリスト（`family=Outfit`、`side-initials`、`hero-agents-network.jpg`）で確認してほしい。
+
 ## 直し方の選択肢
 
 | 方法 | 効果 | 副作用 |
