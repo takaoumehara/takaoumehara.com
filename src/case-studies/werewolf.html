@@ -1,4 +1,11 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year come from src/data/experiments/werewolf.json. -->
+<!-- Body beats only. Teaser, name, one-liner, Challenge | Solution and Role / Year come from src/data/experiments/werewolf.json.
+     Sources for the character-craft beats (2026-09-26): the hand-built case study in git (748352d:projects/werewolf.html — "Phase 1" layer
+     separation, "Phase 2" Card Position Editor, the Bodyguard / Knights / God notes); the calibrated positions in
+     public/projects/werewolf-card-viewer.html (REFINED_POSITIONS: bodyguard 0.92× / y 3.82, knights 1.42×); the tools themselves in public/projects/.
+     Provenance is open: the record says "hand-illustrated", the old page credits prompt-engineered, generated art. These beats say "made" and
+     describe only the layering, placement and clean-up, which both sources agree on. The old page's per-card notes also describe details the
+     current art no longer shows (a helm on the Bodyguard, the Knights' weapons, the God's blonde hair, blue Counselor / Necromancer backgrounds),
+     so only what the current assets and positions confirm is kept. -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">A sealed hand for each player</span>
@@ -35,6 +42,42 @@
     <figcaption class="beat-caption">
       <span class="t-en">The Ghost Wolf, taken apart: the figure and its background are separate files, composited at runtime.</span>
       <span class="t-jp">狼の亡霊を分解したところ。人物と背景は別のファイルで、表示のときに重ね合わせる。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Take a card apart</span>
+    <span class="t-jp is-block">カードを分解してみる</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">This is the card viewer from the build. Step through all 25 roles, switch the card between Japanese — set vertically, with ruby — and English, and turn the background layer off to leave the figure alone on its transparent plate.</span>
+    <span class="t-jp is-block">制作に使ったカードビューアを、そのまま置いた。25 の役職を順にめくり、日本語（縦書き・ルビ付き）と英語を切り替えられる。背景の層を消すと、透明な版に載った人物だけが残る。</span>
+  </p>
+  <figure class="beat-embed" style="--embed-aspect: 16 / 9; --embed-aspect-sm: 3 / 5;">
+    <iframe src="/projects/werewolf-card-viewer.html?embed=1" title="Werewolf card layer viewer: choose a role, switch the language, and turn the background layer on or off" loading="lazy"></iframe>
+  </figure>
+  <p class="beat-links">
+    <a class="beat-link" href="/projects/werewolf-card-viewer.html"><span class="t-en">Open the layer viewer</span><span class="t-jp">レイヤービューアを開く</span></a>
+    <a class="beat-link" href="/projects/werewolf-card-position-editor.html"><span class="t-en">Open the Position Editor — scale, offset and tint per layer</span><span class="t-jp">Position Editor を開く（層ごとの拡大・位置・色調）</span></a>
+  </p>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Placed by hand, one figure at a time</span>
+    <span class="t-jp is-block">1 体ずつ、手で置く</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">No two figures share an eye line, a shoulder width or a weapon’s reach, so centring them by rule made the eye jump every time a card turned. Each one was placed by hand in the Card Position Editor, in steps of 0.01×: the Bodyguard shrank to 0.92× and dropped 3.82% so his head clears the English title; the three Knights share one card at 1.42×. Cutting the figures out left a cyan fringe along the God’s gold edges, removed pixel by pixel with a colour-range script.</span>
+    <span class="t-jp is-block">目の高さも肩幅も、武器の張り出し方も、1 体ずつ違う。機械的に中央へ置くと、カードをめくるたびに視線が上下に揺れた。そこで全員を Card Position Editor で 0.01 倍刻みに手で置いた。ボディガードは 0.92 倍に縮めて 3.82% 下げ、頭が英語のタイトルに当たらないようにした。騎士団は 3 人を 1 枚に収めるため 1.42 倍。人物を切り抜くと、神様の金色の輪郭に青緑のフチが残った。これは色域で判定するスクリプトで、1 ピクセルずつ取り除いた。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 3; --beat-cols-sm: 3;">
+    <img src="/assets/werewolf/craft/bodyguard-layer.webp" alt="The Bodyguard's figure layer on its own: a lean, bald man in a sleeveless vest holding a round steel shield" loading="lazy" width="480" height="840">
+    <img src="/assets/werewolf/craft/knights-layer.webp" alt="The Knights' figure layer: three armoured knights, one on horseback, with a spear and a round shield" loading="lazy" width="480" height="840">
+    <img src="/assets/werewolf/craft/god-layer.webp" alt="The God's figure layer: a bald woman in gold, seated cross-legged in mid-air" loading="lazy" width="480" height="840">
+    <figcaption class="beat-caption">
+      <span class="t-en">Three figure layers before placement: the Bodyguard (set at 0.92×), the Knights (1.42×) and the God, after the edge clean-up.</span>
+      <span class="t-jp">配置前の人物の層 3 枚。ボディガード（0.92 倍で配置）、騎士団（1.42 倍）、フチを取り除いた後の神様。</span>
     </figcaption>
   </figure>
 </section>

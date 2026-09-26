@@ -97,40 +97,28 @@ const thumb = (item) => {
 ---
 <aside class="side" id="side" transition:persist="side">
   <script is:inline>
-    // First load of the session only: html[data-boot] turns on the boot
-    // sequence (src/styles/transitions.css). Set here, at the top of <body>,
-    // so it is in place before the rail or the pane is painted. Nothing is
-    // hidden without it — every boot animation fills backwards and ends on the
-    // element's own styles — so a failed or missing script leaves the page as
-    // it is. Reduced motion never boots. The pane's cards are numbered in
-    // document order, frame by frame, before each paint (--boot-i); only the
-    // first twelve take part.
+    // Set here, at the top of <body>, before the rail or the pane is painted.
+    //  - html[data-boot], on the first load of the session only, turns on the
+    //    rail's boot sequence (src/styles/transitions.css): every boot
+    //    animation fills backwards and ends on the element's own styles.
+    //  - html[data-mo-intro] ("boot" or "reload"), on every full load, keeps
+    //    the right pane transparent until src/scripts/motion.js has laid its
+    //    boxes down and started filling them in; motion.js removes it. If that
+    //    script never runs, the timeout below shows the pane anyway.
+    // Reduced motion sets neither.
     (function () {
       if (window.__tuBoot) return;
       window.__tuBoot = true;
       var html = document.documentElement;
+      var first = false;
       try {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-        if (sessionStorage.getItem("tu-booted")) return;
-        sessionStorage.setItem("tu-booted", "1");
+        first = !sessionStorage.getItem("tu-booted");
+        if (first) sessionStorage.setItem("tu-booted", "1");
       } catch (e) { return; }
-      html.setAttribute("data-boot", "");
-      var SEL = "#main .bento-cell, #main .work-grid .grid-card, #main .hn-card, #main .home-hero";
-      var n = 0, MAX = 12;
-      function tag() {
-        var list = document.querySelectorAll(SEL);
-        for (var i = 0; i < list.length && n < MAX; i++) {
-          var el = list[i];
-          if (el.hasAttribute("data-boot-i")) continue;
-          var up = el.parentElement && el.parentElement.closest(SEL);
-          if (up) continue; // a card inside a card moves with its parent
-          el.setAttribute("data-boot-i", "");
-          el.style.setProperty("--boot-i", n++);
-        }
-      }
-      function frame() { tag(); if (document.readyState === "loading" && n < MAX) requestAnimationFrame(frame); }
-      requestAnimationFrame(frame);
-      document.addEventListener("DOMContentLoaded", tag, { once: true });
+      if (first) html.setAttribute("data-boot", "");
+      html.setAttribute("data-mo-intro", first ? "boot" : "reload");
+      setTimeout(function () { html.removeAttribute("data-mo-intro"); }, 2500);
     })();
   </script>
   <div class="side-top">

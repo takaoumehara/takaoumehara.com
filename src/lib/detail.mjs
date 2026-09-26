@@ -38,7 +38,7 @@ export function detailClient(item) {
 }
 
 /**
- * The teaser: a muted loop, a still, or — when the record has no real media —
+ * The teaser still: a muted loop, a still, or — when the record has no real media —
  * the typographic fallback (name, client, or client logo) in the same box.
  */
 export function detailTeaser(item) {
@@ -54,6 +54,24 @@ export function detailTeaser(item) {
   return fallback;
 }
 
+/**
+ * A live, same-origin prototype in the teaser box instead of a still:
+ * `detail.teaser = { "embed": "/projects/x/demo.html", "title": "…",
+ * "aspect": "16/9", "aspectSm": "9/16" }`. Only site-absolute paths are
+ * embedded (no other origin, no scheme). `aspectSm` applies at phone width.
+ * The detail page opens on this; the home hero and the admin keep using the
+ * still from detailTeaser(), because a slide never hosts a live page.
+ */
+const ASPECT = /^\d+(?:\.\d+)?\s*\/\s*\d+(?:\.\d+)?$/;
+export function detailEmbed(item) {
+  const d = item.detail?.teaser ?? {};
+  if (typeof d.embed !== "string" || !/^\/(?!\/)[^\s"'<>]+$/.test(d.embed)) return null;
+  const title = typeof d.title === "string" ? d.title : d.title?.en ?? `${detailName(item).en} prototype`;
+  const aspect = ASPECT.test(d.aspect ?? "") ? d.aspect : "16/9";
+  const aspectSm = ASPECT.test(d.aspectSm ?? "") ? d.aspectSm : aspect;
+  return { kind: "embed", src: d.embed, title, aspect, aspectSm };
+}
+
 export function detailFields(item) {
   const challenge = item.detail?.challenge ?? item.challenge;
   const solution = item.detail?.solution ?? item.solution;
@@ -67,6 +85,6 @@ export function detailFields(item) {
     year: detailYear(item),
     client: detailClient(item),
     stack: item.detail?.stack ?? item.stack ?? [],
-    teaser: detailTeaser(item),
+    teaser: detailEmbed(item) ?? detailTeaser(item),
   };
 }

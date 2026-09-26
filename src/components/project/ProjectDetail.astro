@@ -1,6 +1,7 @@
 ---
 // The project detail page, in the locked order:
-//   teaser (muted loop · still · name/logo fallback, always 16:9)
+//   teaser (muted loop · still · name/logo fallback, 16:9 — or a live,
+//           same-origin prototype in an iframe when detail.teaser.embed is set)
 //   → name (H1) + one-liner + Play (the page's only external link)
 //   → Challenge | Solution
 //   → body: 0–3 beats from src/case-studies/<slug>.html
@@ -27,6 +28,11 @@ const { item, body } = Astro.props;
 const d = detailFields(item);
 const teaser = d.teaser;
 const hasAudio = teaser.kind === "video" && item.assets?.preview?.audio === true;
+// An embedded prototype may ask for its own box (a phone-shaped one, or a
+// taller one at phone width) — passed as custom properties the CSS reads.
+const teaserStyle = teaser.kind === "embed"
+  ? `--teaser-aspect: ${teaser.aspect}; --teaser-aspect-sm: ${teaser.aspectSm}`
+  : undefined;
 // The name (an English-only title, by design) and a client's organization
 // name are the two fields most likely to have no `.jp` counterpart. The
 // site's EN/JP toggle hides .t-en with nothing to show in its place, which
@@ -43,7 +49,11 @@ const meta = [
 ---
 <article class="project-detail">
   <div class="project-bento">
-    <div class="project-teaser bento-cell" data-vt-hero>
+    <div class={`project-teaser bento-cell${teaser.kind === "embed" ? " project-teaser--embed" : ""}`} data-vt-hero style={teaserStyle}>
+      {teaser.kind === "embed" && (
+        <iframe class="project-teaser-media project-teaser-frame" src={teaser.src} title={teaser.title}
+                loading="lazy" referrerpolicy="same-origin"></iframe>
+      )}
       {teaser.kind === "video" && (
         <video class="project-teaser-media project-video" autoplay muted loop playsinline preload="metadata"
                poster={teaser.poster ? url(teaser.poster) : undefined} aria-hidden="true">
@@ -176,6 +186,15 @@ const meta = [
     height: 100%;
     object-fit: cover;
     display: block;
+  }
+
+  /* A live prototype: its own aspect (16:9 unless the record says), a
+     taller one at phone width so a phone-shaped remote stays touchable. */
+  .project-teaser--embed { aspect-ratio: var(--teaser-aspect, 16 / 9); }
+  .project-teaser-frame { border: 0; background: #fff; }
+  .project-teaser-frame:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: -2px; }
+  @media (max-width: 768px) {
+    .project-teaser--embed { aspect-ratio: var(--teaser-aspect-sm, var(--teaser-aspect, 16 / 9)); }
   }
 
   .video-sound-toggle {
@@ -358,6 +377,24 @@ const meta = [
     height: auto;
     object-fit: contain;
   }
+  /* A beat can hold a live, same-origin tool (<figure class="beat-embed">
+     with an <iframe>): the same padded column as beat images, its own
+     aspect via --embed-aspect / --embed-aspect-sm, and a plain link under it
+     so the tool is still reachable where frames are blocked. */
+  .project-beats :global(.beat-embed) { margin: 0; }
+  .project-beats :global(.beat-text + .beat-embed) { margin-top: calc(var(--gap-grid) * 2); }
+  .project-beats :global(.beat-embed iframe) {
+    display: block;
+    width: 100%;
+    aspect-ratio: var(--embed-aspect, 16 / 9);
+    border: 0;
+    border-radius: var(--r);
+    background: #0d0f12;
+  }
+  .project-beats :global(.beat-embed iframe:focus-visible) { outline: 2px solid var(--pr-blue); outline-offset: 3px; }
+  .project-beats :global(.beat-links) { display: flex; flex-wrap: wrap; gap: 4px 24px; }
+  .project-beats :global(.beat-links .beat-link) { min-height: 24px; }
+
   .project-beats :global(.beat-caption) {
     grid-column: 1 / -1;
     margin-top: 8px;
@@ -400,6 +437,7 @@ const meta = [
   @media (max-width: 768px) {
     .project-cs { grid-template-columns: 1fr; }
     .project-beats :global(.beat-media) { grid-template-columns: repeat(var(--beat-cols-sm, 1), minmax(0, 1fr)); }
+    .project-beats :global(.beat-embed iframe) { aspect-ratio: var(--embed-aspect-sm, var(--embed-aspect, 16 / 9)); }
   }
 </style>
 

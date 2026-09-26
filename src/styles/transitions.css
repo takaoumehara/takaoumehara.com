@@ -1,18 +1,21 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   Motion. The site behaves like one of Takao's shared-screen pieces
-   (docs/design/twist-proposal.md): a thumbnail you press is *thrown* into
-   the right pane and grows into the detail teaser (Throw), the teaser is
-   thrown back into the rail when you leave (Return), surfaces sink under the
-   finger and spring back (Feel), the rail echoes the card you are over (Echo),
-   the first load of a session boots like a system (Boot: counters roll up,
-   the rail indexes in, the pane's cards come into focus one by one), a page
-   switch travels in the direction you moved down or up the rail (Direction),
-   and the input badge on a detail page blinks once on arrival (Pulse).
+   Motion. The rail and the pane load the same way: blocks first, then what
+   is in them. On the first load of a session the rail boots (counters roll
+   up, rows index in); on every load and every page switch the right pane's
+   cells are laid down as empty boxes, each at its own random moment, then
+   filled — media steps in (a mono "NOW LOADING…" only while an image is not
+   in yet), then the type decodes from random glyphs, left to right
+   (src/scripts/motion.js, WAAPI). Leaving a page, the cells on screen empty
+   and shrink away while the next page is fetched. Surfaces sink under the
+   finger and spring back (Feel), a rail row steps 3px right when pressed
+   (Nudge), the rail echoes the card you are over (Echo), and the input badge
+   on a detail page blinks once on arrival (Pulse).
 
-   Rules: transform, opacity and filter only for anything that moves, no
-   shadow; every animation is off under prefers-reduced-motion; the root cross-fade that
-   tests/page-transitions.test.mjs asserts stays in site.css — this file only
-   refines it (same specificity, loaded later by Site.astro).
+   Rules: transform, opacity and clip-path only for anything that moves, no
+   shadow, no blur; every animation is off under prefers-reduced-motion. The
+   root cross-fade that tests/page-transitions.test.mjs asserts stays in
+   site.css — this file overrides it (same specificity, loaded later by
+   Site.astro), because the cell choreography is the transition now.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 @view-transition {
@@ -22,80 +25,62 @@
 :root {
   /* A spring: overshoots once, settles. Used by every press release. */
   --ease-spring: linear(0, 0.62 12%, 1.05 28%, 0.985 45%, 1.008 62%, 1);
-  --ease-throw: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 @supports not (animation-timing-function: linear(0, 1)) {
   :root { --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1); }
 }
 
-/* ── Root: the pane dissolves (opacity + a short travel, no blur) ─────────── */
-::view-transition-old(root) {
-  animation: dissolve-out 320ms cubic-bezier(0.4, 0, 0.6, 1);
-  transform-origin: center;
-}
-::view-transition-new(root) {
-  animation: dissolve-in 400ms var(--ease-throw);
-  transform-origin: center;
-}
-@keyframes dissolve-out {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-6px); }
-}
-@keyframes dissolve-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Direction: the pane travels the way you moved in the rail ─────────────
-   site.js compares the rail position of the page you are on with the one
-   you are going to (every #side [data-match] link, top to bottom) and sets
-   html[data-nav-dir] for the length of the transition. Going further down
-   the directory, the old pane leaves upward and the new one rises from 8px
-   below; going up, the reverse. Without a direction (a page the rail does
-   not list) the dissolve above runs as before. The hero (Throw) and the rail
-   are their own groups, so they are untouched by this. */
-html[data-nav-dir="down"]::view-transition-old(root) { animation: nav-out-up 200ms cubic-bezier(0.4, 0, 1, 1) both; }
-html[data-nav-dir="down"]::view-transition-new(root) { animation: nav-in-from-below 380ms var(--ease-decel) both; }
-html[data-nav-dir="up"]::view-transition-old(root)   { animation: nav-out-down 200ms cubic-bezier(0.4, 0, 1, 1) both; }
-html[data-nav-dir="up"]::view-transition-new(root)   { animation: nav-in-from-above 380ms var(--ease-decel) both; }
-@keyframes nav-out-up        { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-8px); } }
-@keyframes nav-out-down      { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(8px); } }
-@keyframes nav-in-from-below { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
-@keyframes nav-in-from-above { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
-
-/* ── Throw / Return: one element named `hero` per document ───────────────────
-   The receiving side is the detail teaser or the home stage ([data-vt-hero]).
-   The sending side is whatever was pressed — a rail row's .side-thumb or a
-   grid card's .grid-media — named at navigation time by src/scripts/site.js,
-   which also silences the other `hero` for that one transition so the names
-   never collide (a collision cancels the whole transition). */
-[data-vt-hero] {
-  view-transition-name: hero;
-}
-::view-transition-group(hero) {
-  animation-duration: 440ms;
-  animation-timing-function: var(--ease-throw);
-  overflow: clip;
-  border-radius: var(--r);
-}
-/* 1:1 tile → 16:9 teaser: cover, never squash. */
-::view-transition-old(hero),
-::view-transition-new(hero) {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  animation-duration: 440ms;
-  animation-timing-function: var(--ease-throw);
-}
-::view-transition-old(hero) { animation-name: hero-fade-out; }
-::view-transition-new(hero) { animation-name: hero-fade-in; }
-@keyframes hero-fade-out { from { opacity: 1; } to { opacity: 0; } }
-@keyframes hero-fade-in  { from { opacity: 0; } to { opacity: 1; } }
-
-/* The rail is its own group and never animates (shell.css). Its old snapshot
-   has a hole where the thrown thumb was, so show only the new one, which has
-   the thumb back in place and the pressed row already inverted. */
+/* ── The router's view transition: a plain cut ───────────────────────────
+   Astro's ClientRouter still wraps the swap in a view transition, but none of
+   its layers animate: by the time the snapshot is taken the old cells have
+   already gone (motion.js's OUT), and the new ones start hidden and play in
+   live. The old root snapshot is not shown at all — without an animation it
+   would sit on top of the new page, blended. The rail is its own group and
+   never animates (shell.css); its old snapshot is hidden for the same reason. */
+::view-transition-group(root) { animation: none; }
+::view-transition-old(root) { display: none; }
+::view-transition-new(root) { animation: none; }
 ::view-transition-old(side) { display: none; }
+
+/* ── The pane's choreography (src/scripts/motion.js) ────────────────────────
+   The first paint: Sidebar.astro's inline script sets html[data-mo-intro]
+   before the pane is painted, and motion.js removes it in the same frame it
+   lays the boxes down (a timeout in that script shows the pane after 2.5s if
+   motion.js never runs). A cell below the fold waits (.mo-wait) until it
+   scrolls into view. Neither applies under reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  html[data-mo-intro] #main { opacity: 0; }
+  .mo-wait { opacity: 0 !important; }
+}
+/* The placeholder over media that is not in yet: mono, small, the dots
+   counting up. Decorative (aria-hidden), removed as soon as the image is. */
+.mo-loading {
+  position: absolute;
+  z-index: 5;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  pointer-events: none;
+  font-family: var(--ff-mono);
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 1.2;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pr-ink-2);
+}
+.mo-loading::after {
+  content: "";
+  display: inline-block;
+  width: 3ch;
+  text-align: left;
+  animation: mo-dots 720ms steps(1, end) infinite;
+}
+@keyframes mo-dots {
+  0%   { content: ""; }
+  25%  { content: "."; }
+  50%  { content: ".."; }
+  75%  { content: "..."; }
+}
 
 /* ── Feel: sink under the pointer, spring back; the image leans toward it ──── */
 .grid-card.cat-card[data-href],
@@ -140,8 +125,7 @@ html[data-nav-dir="up"]::view-transition-new(root)   { animation: nav-in-from-ab
 
 /* ── Boot: the first load of a session, ~350ms, and never again ─────────────
    Sidebar.astro's inline script sets html[data-boot] (first load of the tab's
-   session, not under reduced motion) before anything is painted, and numbers
-   the pane's first twelve cards in document order (--boot-i). Nothing here
+   session, not under reduced motion) before anything is painted. Nothing here
    hides an element outside its animation: every animation fills backwards
    only, so when it ends — or if it never starts — each element is on its own
    styles. site.js drops data-boot once the sequence is over, and a
@@ -151,9 +135,8 @@ html[data-nav-dir="up"]::view-transition-new(root)   { animation: nav-in-from-ab
    The real number stays the element's text (screen readers, copy); only a
    drawn copy counts, via a registered integer and a CSS counter.
    Phase 2 (100–280ms): the rail's heads and rows index in top to bottom,
-   15ms apart, 4px of travel. The pane's cards come into focus through an
-   optical lens — from a 4px blur, a hair too large, to crisp — 32ms apart so
-   the sequence reads card by card. */
+   15ms apart, 4px of travel. The pane plays its own box-first sequence
+   alongside (motion.js, above). */
 @property --odo-n {
   syntax: "<integer>";
   inherits: false;
@@ -187,22 +170,10 @@ html[data-nav-dir="up"]::view-transition-new(root)   { animation: nav-in-from-ab
     animation: boot-row 180ms var(--ease-decel) backwards;
     animation-delay: calc(100ms + var(--row-i, 0) * 15ms);
   }
-
-  html[data-boot] [data-boot-i] {
-    animation: boot-lens 360ms var(--ease-decel) backwards;
-    animation-delay: calc(100ms + var(--boot-i, 0) * 32ms);
-  }
 }
 @keyframes boot-row {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: none; }
-}
-/* An optical focus: out of focus and a touch magnified (the lens is not yet
-   racked), then sharp at its true size. Transform, opacity and filter only. */
-@keyframes boot-lens {
-  from { opacity: 0; filter: blur(4px); transform: scale(1.012) translateY(4px); }
-  60%  { opacity: 1; }
-  to   { opacity: 1; filter: blur(0); transform: none; }
 }
 
 /* ── Input stamp: the input a piece takes (BODY · FACE · VOICE · TWO PHONES)
@@ -276,17 +247,9 @@ html[data-nav-dir="up"]::view-transition-new(root)   { animation: nav-in-from-ab
 }
 .mag-field.is-near::after { opacity: 1; }
 
-/* ── Reduced motion: no names, no travel, no entrance ─────────────────────── */
+/* ── Reduced motion: no travel, no entrance, a plain cut ─────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  [data-vt-hero] { view-transition-name: none; }
-  ::view-transition-old(root),
-  ::view-transition-new(root) {
-    animation: 200ms ease both;
-    animation-name: fade-out;
-  }
-  ::view-transition-new(root) { animation-name: fade-in; }
-  @keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
-  @keyframes fade-in  { from { opacity: 0; } to { opacity: 1; } }
+  .mo-loading { display: none; }
 
   .grid-card.cat-card[data-href],
   .side-item,
@@ -298,9 +261,6 @@ html[data-nav-dir="up"]::view-transition-new(root)   { animation: nav-in-from-ab
   .is-pressed { transform: none; }
   .grid-card.cat-card.cat-card[data-href]:hover .grid-media.cat-card-media img,
   .hn-article.hn-article:hover .hn-thumb img { transform: none; }
-  html[data-nav-dir]::view-transition-old(root),
-  html[data-nav-dir]::view-transition-new(root) { animation-name: fade-out; }
-  html[data-nav-dir]::view-transition-new(root) { animation-name: fade-in; }
   .input-stamp.is-pulse { animation: none; }
   .is-magnetic, .mag-arrow { transition: none; transform: none !important; }
   .mag-field::after { display: none; }

@@ -1,37 +1,53 @@
 ---
 // The About page: consolidates every page that used to be about the person —
 // about.html, publications.html, workshop.html, work-with-me.html and
-// contact.html (src/fragments/*, the pre-Astro static site) plus src/data/now.json
-// and src/data/profile.json — into one page, laid out as a bento: every
-// section is one or more cells (.about-cell.bento-cell), each carrying the
-// site's one inner padding (--cell-pad) so every piece of text lines up with
-// the work grid and the detail page. Every fact below is carried over
-// unchanged from those sources (docs/superforge.md: never invent numbers).
+// contact.html (src/fragments/*, the pre-Astro static site) plus src/data/now.json,
+// src/data/profile.json, src/data/roles.json and the new src/data/about.mjs
+// (books, writing platforms, workshop formats, teaching) — into one page,
+// laid out as a bento: every section is one or more cells (.about-cell
+// .bento-cell), each carrying the site's one inner padding (--cell-pad) so
+// every piece of text lines up with the work grid and the detail page. Every
+// fact below is carried over unchanged from those sources (docs/superforge.md:
+// never invent numbers) — see scratchpad/NOTES-A.md for exact source paths
+// and the two discrepancies found (extra•ordinary's year, CIE LLC's founding
+// year) that were left unresolved rather than guessed.
 //
-// Sections: #intro (hero + stats), organizations, #experience, #now,
-// #writing, #workshops, #work-with-me, #studio. vercel.json redirects the
-// old standalone addresses (/now, /publications, /workshop, /work-with-me,
-// /studio, /contact) to these anchors — keep them.
+// Sections: #intro (hero + stats + orgs), #now, #books, #writing,
+// #workshops (talks & workshops), teaching & mentoring, #experience,
+// #studio, #work-with-me. vercel.json redirects the old standalone addresses
+// (/now, /publications, /workshop, /work-with-me, /studio, /contact) to
+// these anchors — keep them.
 //
 // The rail: this page used to hide the left rail (body.about-page .side {
 // display: none }, right below). That local override is removed here per
 // the person's request ("About... show them here in the same bento-box
 // style" — i.e. inside the normal shell, rail included). src/styles/shell.css
-// (agent B's file) also collapses the shell to one column and hides .side
+// (agent M's file) also collapses the shell to one column and hides .side
 // for body.about-page — that rule has to go too, or the rail stays hidden
 // regardless of this file. Flagged in this round's report.
+//
+// Title: profile.tagline (src/data/profile.json) is the site-wide title /
+// positioning source — this round appends "Interactive Media Designer" to
+// it (EN + JP), and this page now reads that value directly via t() instead
+// of duplicating it as a literal string, so it can't drift out of sync.
 import Site from "../layouts/Site.astro";
 import { t, tb } from "../lib/html.mjs";
-import { getLibrary, destination } from "../lib/site.mjs";
+import { getLibrary } from "../lib/site.mjs";
+import {
+  BOOKS,
+  WRITING_PLATFORMS,
+  BREAKBIAS_TOOLS,
+  WORKSHOP_FORMATS,
+  WORKSHOP_CLIENTS,
+  TEACHING,
+} from "../data/about.mjs";
 
 const lib = getLibrary();
 const profile = lib.profile;
-const extraordinary = lib.evidence.get("extraordinary");
-const bookLink = extraordinary ? destination(extraordinary) : null;
 ---
 <Site
   title="About — Takao Umehara"
-  description="Design & AI Executive building interactive experiences and the environments teams ship in."
+  description="Design & AI Executive and Interactive Media Designer — building interactive experiences and the environments teams ship in."
   canonical="https://takaoumehara.com/about"
   bodyClass="about-page"
 >
@@ -42,10 +58,7 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
       <section id="intro" class="about-cell bento-cell cell-hero">
         <div class="about-hero-grid">
           <div class="about-hero-copy">
-            <p class="about-role">
-              <span class="t-en">Design &amp; AI Executive · 0→1 Product &amp; Experience Builder</span>
-              <span class="t-jp">Design &amp; AI Executive · 0→1 Product &amp; Experience Builder</span>
-            </p>
+            <p class="about-role" set:html={t(profile.tagline)} />
             <h1 class="about-h1">
               <span class="t-en">I do my best work before the answer is obvious.</span>
               <span class="t-jp">答えがまだ見えないうちに、いちばん良い仕事をする。</span>
@@ -97,8 +110,8 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
           <div class="stat-item">
             <div class="stat-value">11K+</div>
             <div class="stat-label">
-              <span class="t-en">Extra Ordinary book copies sold</span>
-              <span class="t-jp">Extra Ordinary — 販売部数</span>
+              <span class="t-en">extra•ordinary book copies sold</span>
+              <span class="t-jp">extra•ordinary — 販売部数</span>
             </div>
           </div>
         </div>
@@ -126,6 +139,178 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
           <span class="org-badge">Tiffany &amp; Co. (training)</span>
           <span class="org-badge">Dentsu</span>
         </div>
+      </section>
+
+      <!-- Now -->
+      <section id="now" class="about-cell bento-cell cell-now">
+        <h2 class="about-h2">
+          <span class="t-en">Now</span>
+          <span class="t-jp">いま</span>
+        </h2>
+        <ul class="about-list">
+          <li>
+            <span class="t-en">Shipping <strong>Intent First</strong> — thesis and practice for Context Grammar: helping AI read intent, not just prompts.</span>
+            <span class="t-jp"><strong>Intent First</strong> — Context Grammar の主張と実践。AI がプロンプトではなく意図を読むための語彙。</span>
+          </li>
+          <li>
+            <span class="t-en">Building <strong>moime</strong> — phone-first pages that start from finished design.</span>
+            <span class="t-jp"><strong>moime</strong> — 完成したデザインから始まる、スマホ前提のページづくり。</span>
+          </li>
+          <li>
+            <span class="t-en">Releasing interactive works (Typespace, Resona, and late-summer playables).</span>
+            <span class="t-jp">インタラクティブ作品の公開（Typespace、Resona、晩夏のプレイアブル）。</span>
+          </li>
+          <li>
+            <span class="t-en">Teaching / coaching AI skills for design and product teams.</span>
+            <span class="t-jp">デザイン／プロダクトチーム向けの AI スキル指導・コーチング。</span>
+          </li>
+          <li>
+            <span class="t-en">Selective studio and hiring conversations.</span>
+            <span class="t-jp">スタジオ案件および採用の対話（厳選）。</span>
+          </li>
+        </ul>
+      </section>
+
+      <!-- Books -->
+      <section id="books" class="about-cell bento-cell cell-books">
+        <h2 class="about-h2">
+          <span class="t-en">Books</span>
+          <span class="t-jp">著書</span>
+        </h2>
+        {BOOKS.map((book) => (
+          <div class="book-card">
+            <a href={book.links.caseStudy} class="book-cover">
+              <img src={book.cover} alt={`${book.title.en} — book cover`} loading="lazy" />
+            </a>
+            <div class="book-info">
+              <h3 class="book-title">
+                <span class="t-en">{book.title.en}</span>
+                <span class="t-jp">{book.title.jp}</span>
+              </h3>
+              <p class="book-subtitle" set:html={t(book.subtitle)} />
+              <p class="book-summary" set:html={tb(book.summary)} />
+              <dl class="book-meta">
+                <div class="book-meta-item"><dt><span class="t-en">Year</span><span class="t-jp">刊行年</span></dt><dd>{book.year}</dd></div>
+                <div class="book-meta-item"><dt><span class="t-en">Publisher</span><span class="t-jp">出版社</span></dt><dd>{book.publisher}</dd></div>
+                <div class="book-meta-item"><dt><span class="t-en">Role</span><span class="t-jp">役割</span></dt><dd set:html={t(book.role)} /></div>
+                <div class="book-meta-item"><dt><span class="t-en">Co-author</span><span class="t-jp">共著</span></dt><dd>{book.coAuthor}</dd></div>
+                <div class="book-meta-item"><dt><span class="t-en">Copies sold</span><span class="t-jp">販売部数</span></dt><dd>{book.copies}</dd></div>
+                <div class="book-meta-item"><dt><span class="t-en">Feature</span><span class="t-jp">掲載</span></dt><dd set:html={t(book.feature)} /></div>
+              </dl>
+              <div class="book-actions">
+                <a href={book.links.caseStudy} class="about-link">
+                  <span class="t-en">View case study →</span>
+                  <span class="t-jp">ケーススタディを見る →</span>
+                </a>
+                <a href={book.links.buy} target="_blank" rel="noopener" class="about-link">
+                  <span class="t-en">Buy on Amazon ↗</span>
+                  <span class="t-jp">Amazon で見る ↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </section>
+
+      <!-- Writing -->
+      <section id="writing" class="about-cell bento-cell cell-writing">
+        <h2 class="about-h2">
+          <span class="t-en">Writing</span>
+          <span class="t-jp">文章</span>
+        </h2>
+        <div class="writing-cards">
+          {WRITING_PLATFORMS.map((platform) => (
+            <div class="writing-card">
+              <div class="writing-card-head">
+                <h3 class="writing-title">{platform.name}</h3>
+                <span class="writing-kind" set:html={t(platform.kind)} />
+              </div>
+              <p class="writing-excerpt" set:html={tb(platform.blurb)} />
+              <ul class="writing-article-list">
+                {platform.articles.map((article) => (
+                  <li>
+                    <a href={article.url ?? platform.url} target="_blank" rel="noopener" set:html={t(article.title)} />
+                  </li>
+                ))}
+              </ul>
+              <a href={platform.url} target="_blank" rel="noopener" class="writing-link">
+                <span class="t-en">More on {platform.host} →</span>
+                <span class="t-jp">{platform.host} で読む →</span>
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- Talks & Workshops -->
+      <section id="workshops" class="about-cell bento-cell cell-workshops">
+        <h2 class="about-h2">
+          <span class="t-en">Talks &amp; Workshops</span>
+          <span class="t-jp">講演・ワークショップ</span>
+        </h2>
+        <p class="about-text">
+          <span class="t-en">Short intensives on interactive craft + AI build environments (not prompt theater), built on <strong>Break Bias</strong> — 8 systematic transformation tools developed over 15 years.</span>
+          <span class="t-jp">インタラクティブの手仕事と、AI 前提のビルド環境についての短期集中（プロンプト劇ではない）。15 年以上かけて体系化した <strong>Break Bias</strong> の 8 つの思考ツールが土台。</span>
+        </p>
+        <ul class="about-list about-list--tight">
+          <li><span class="t-en">For new ventures</span><span class="t-jp">新規事業・0→1</span></li>
+          <li><span class="t-en">For product &amp; innovation teams</span><span class="t-jp">プロダクト・イノベーションチーム</span></li>
+          <li><span class="t-en">For creative challenges</span><span class="t-jp">クリエイティブ課題解決</span></li>
+          <li><span class="t-en">For leadership teams</span><span class="t-jp">経営・リーダーシップ層</span></li>
+        </ul>
+        <p class="about-subhead">
+          <span class="t-en">The 8 BreakBias tools</span>
+          <span class="t-jp">BreakBias — 8 つの思考ツール</span>
+        </p>
+        <div class="tool-badges">
+          {BREAKBIAS_TOOLS.map((tool) => <span class="tool-badge">{tool}</span>)}
+        </div>
+        <p class="about-subhead">
+          <span class="t-en">Formats</span>
+          <span class="t-jp">実施形式</span>
+        </p>
+        <ul class="format-list">
+          {WORKSHOP_FORMATS.map((f) => (
+            <li>
+              <span class="format-time" set:html={t(f.time)} />
+              <strong class="format-name" set:html={t(f.name)} />
+              <span class="format-desc" set:html={tb(f.desc)} />
+            </li>
+          ))}
+        </ul>
+        <p class="about-subhead">
+          <span class="t-en">Delivered at</span>
+          <span class="t-jp">実績</span>
+        </p>
+        <div class="org-badges org-badges--tight">
+          {WORKSHOP_CLIENTS.map((c) => <span class="org-badge">{c}</span>)}
+        </div>
+        <p class="about-cta">
+          <a href="#work-with-me" class="about-link">
+            <span class="t-en">Ask about a workshop →</span>
+            <span class="t-jp">ワークショップについて問い合わせる →</span>
+          </a>
+        </p>
+      </section>
+
+      <!-- Teaching & Mentoring -->
+      <section id="teaching" class="about-cell bento-cell cell-teaching">
+        <h2 class="about-h2">
+          <span class="t-en">Teaching &amp; mentoring</span>
+          <span class="t-jp">教えること、学ぶこと</span>
+        </h2>
+        <ul class="teaching-list">
+          {TEACHING.map((item) => (
+            <li class="teaching-item">
+              <span class="teaching-tag" set:html={t(item.tag)} />
+              <p class="teaching-title">
+                <span set:html={t(item.title)} />
+                {item.period && <span class="teaching-period"> ({item.period})</span>}
+              </p>
+              <p class="teaching-desc" set:html={tb(item.desc)} />
+            </li>
+          ))}
+        </ul>
       </section>
 
       <!-- Experience: the career timeline, from the old about.html -->
@@ -208,99 +393,18 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
         </ul>
       </section>
 
-      <!-- Now -->
-      <section id="now" class="about-cell bento-cell cell-now">
-        <h2 class="about-h2">
-          <span class="t-en">Now</span>
-          <span class="t-jp">いま</span>
-        </h2>
-        <ul class="about-list">
-          <li>
-            <span class="t-en">Shipping <strong>Intent First</strong> — thesis and practice for Context Grammar: helping AI read intent, not just prompts.</span>
-            <span class="t-jp"><strong>Intent First</strong> — Context Grammar の主張と実践。AI がプロンプトではなく意図を読むための語彙。</span>
-          </li>
-          <li>
-            <span class="t-en">Building <strong>moime</strong> — phone-first pages that start from finished design.</span>
-            <span class="t-jp"><strong>moime</strong> — 完成したデザインから始まる、スマホ前提のページづくり。</span>
-          </li>
-          <li>
-            <span class="t-en">Releasing interactive works (Typespace, Resona, and late-summer playables).</span>
-            <span class="t-jp">インタラクティブ作品の公開（Typespace、Resona、晩夏のプレイアブル）。</span>
-          </li>
-          <li>
-            <span class="t-en">Teaching / coaching AI skills for design and product teams.</span>
-            <span class="t-jp">デザイン／プロダクトチーム向けの AI スキル指導・コーチング。</span>
-          </li>
-          <li>
-            <span class="t-en">Selective studio and hiring conversations.</span>
-            <span class="t-jp">スタジオ案件および採用の対話（厳選）。</span>
-          </li>
-        </ul>
-      </section>
-
-      <!-- Writing -->
-      <section id="writing" class="about-cell bento-cell cell-writing">
-        <h2 class="about-h2">
-          <span class="t-en">Writing</span>
-          <span class="t-jp">文章</span>
-        </h2>
-        <div class="writing-cards">
-          <a href="https://intentfirst.substack.com" target="_blank" rel="noopener" class="writing-card">
-            <h3 class="writing-title">Intent First</h3>
-            <p class="writing-excerpt">
-              <span class="t-en">Why dissolving the last brief is the real first step.</span>
-              <span class="t-jp">前回のブリーフを溶かすことが、本当の第一歩になる理由。</span>
-            </p>
-            <span class="writing-link">
-              <span class="t-en">Read on Substack →</span>
-              <span class="t-jp">Substack で読む →</span>
-            </span>
-          </a>
-          <a href="https://breakbias.medium.com" target="_blank" rel="noopener" class="writing-card">
-            <h3 class="writing-title">Break Bias</h3>
-            <p class="writing-excerpt">
-              <span class="t-en">Notes on seeing past default taste in product and culture.</span>
-              <span class="t-jp">プロダクトと文化のなかの「既定の好み」を見抜くノート。</span>
-            </p>
-            <span class="writing-link">
-              <span class="t-en">Read on Medium →</span>
-              <span class="t-jp">Medium で読む →</span>
-            </span>
-          </a>
-          {bookLink && (
-            <a href={bookLink.url} class="writing-card">
-              <h3 class="writing-title">extra•ordinary</h3>
-              <p class="writing-excerpt" set:html={tb(extraordinary.summary)} />
-              <span class="writing-link" set:html={t(bookLink.label)} />
-            </a>
-          )}
-        </div>
-      </section>
-
-      <!-- Workshops -->
-      <section id="workshops" class="about-cell bento-cell cell-workshops">
-        <h2 class="about-h2">
-          <span class="t-en">Workshops</span>
-          <span class="t-jp">ワークショップ</span>
-        </h2>
+      <!-- Studio -->
+      <section id="studio" class="about-cell bento-cell cell-studio">
+        <h2 class="about-h2">Studio</h2>
+        <p class="about-studio-tagline">Creativity is Everywhere.</p>
         <p class="about-text">
-          <span class="t-en">Short intensives on interactive craft + AI build environments (not prompt theater).</span>
-          <span class="t-jp">インタラクティブの手仕事と、AI 前提のビルド環境についての短期集中（プロンプト劇ではない）。</span>
+          <span class="t-en">Studio practice under a simple company sentence: Takao Umehara's independent design & AI studio (LLC) — selective collaborations, not an agency mill.</span>
+          <span class="t-jp">独立した Design & AI スタジオ（LLC）としての一文：選抜したコラボレーション。量産エージェンシーではない。</span>
         </p>
-        <p class="about-text">
-          <span class="t-en">Team workshops — from taste judgment to shippable prototypes.</span>
-          <span class="t-jp">チーム向け — 審美判断から、届けられるプロトタイプまで。</span>
-        </p>
-        <ul class="about-list about-list--tight">
-          <li><span class="t-en">For new ventures</span><span class="t-jp">新規事業・0→1</span></li>
-          <li><span class="t-en">For product &amp; innovation teams</span><span class="t-jp">プロダクト・イノベーションチーム</span></li>
-          <li><span class="t-en">For creative challenges</span><span class="t-jp">クリエイティブ課題解決</span></li>
-          <li><span class="t-en">For leadership teams</span><span class="t-jp">経営・リーダーシップ層</span></li>
-        </ul>
         <p class="about-cta">
-          <a href="#work-with-me" class="about-link">
-            <span class="t-en">Ask about a workshop →</span>
-            <span class="t-jp">ワークショップについて問い合わせる →</span>
+          <a href={profile.studio.url} target="_blank" rel="noopener" class="about-link">
+            <span class="t-en">Visit studio site →</span>
+            <span class="t-jp">スタジオサイトへ →</span>
           </a>
         </p>
       </section>
@@ -328,22 +432,6 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
         </p>
       </section>
 
-      <!-- Studio -->
-      <section id="studio" class="about-cell bento-cell cell-studio">
-        <h2 class="about-h2">Studio</h2>
-        <p class="about-studio-tagline">Creativity is Everywhere.</p>
-        <p class="about-text">
-          <span class="t-en">Studio practice under a simple company sentence: Takao Umehara's independent design & AI studio (LLC) — selective collaborations, not an agency mill.</span>
-          <span class="t-jp">独立した Design & AI スタジオ（LLC）としての一文：選抜したコラボレーション。量産エージェンシーではない。</span>
-        </p>
-        <p class="about-cta">
-          <a href={profile.studio.url} target="_blank" rel="noopener" class="about-link">
-            <span class="t-en">Visit studio site →</span>
-            <span class="t-jp">スタジオサイトへ →</span>
-          </a>
-        </p>
-      </section>
-
       <!-- Footer links -->
       <section class="about-cell bento-cell cell-footer">
         <a href="/" class="about-footer-link">← <span class="t-en">Home</span><span class="t-jp">ホーム</span></a>
@@ -360,7 +448,7 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
   }
 
   /* The bento: a 12-column base so a cell can be full width, a half (career /
-     now, workshops / work-with-me) or anything in between. One column below
+     now, workshops / teaching) or anything in between. One column below
      900px — the same width every other stacked page collapses to. */
   .about-bento {
     display: grid;
@@ -379,10 +467,12 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
      way: a cell may be visually invisible and still keep its inner padding. */
   .cell-hero, .cell-footer { background: none; padding-left: 0; padding-right: 0; }
 
-  .cell-experience { grid-column: span 7; }
   .cell-now { grid-column: span 5; }
-  .cell-workshops { grid-column: span 6; }
-  .cell-work-with-me { grid-column: span 6; }
+  .cell-books { grid-column: span 7; }
+  .cell-workshops { grid-column: span 7; }
+  .cell-teaching { grid-column: span 5; }
+  .cell-experience { grid-column: span 7; }
+  .cell-studio { grid-column: span 5; }
 
   .cell-footer {
     display: flex;
@@ -473,6 +563,7 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
     gap: 8px;
     margin-top: 16px;
   }
+  .org-badges--tight { margin-top: 8px; }
   .org-badge {
     font-size: 13px;
     color: var(--ink-mid);
@@ -486,6 +577,15 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
     font-weight: 600;
     color: var(--ink);
     margin: 0 0 20px;
+  }
+
+  .about-subhead {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 24px 0 12px;
   }
 
   .timeline-list {
@@ -541,6 +641,33 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
     margin-bottom: 16px;
   }
 
+  /* Books */
+  .book-card {
+    display: grid;
+    grid-template-columns: minmax(120px, 200px) 1fr;
+    gap: clamp(20px, 3vw, 32px);
+  }
+  .book-cover {
+    display: block;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .book-cover img { width: 100%; display: block; }
+  .book-title { font-size: 22px; font-weight: 700; color: var(--ink); margin: 0 0 6px; }
+  .book-subtitle { font-size: 15px; color: var(--ink-mid); margin: 0 0 14px; }
+  .book-summary { font-size: 15px; line-height: 1.7; color: var(--ink); margin: 0 0 18px; }
+  .book-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px 24px;
+    margin: 0 0 20px;
+  }
+  .book-meta-item dt { font-size: 12px; color: var(--ink-dim); margin: 0 0 2px; }
+  .book-meta-item dd { font-size: 14px; color: var(--ink); margin: 0; font-weight: 500; }
+  .book-actions { display: flex; flex-wrap: wrap; gap: 20px; }
+
+  /* Writing */
   .writing-cards {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -552,19 +679,27 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
     padding: var(--cell-pad, clamp(20px, 3vw, 32px));
     background: var(--pr-card-2);
     border-radius: 12px;
-    text-decoration: none;
-    transition: transform 0.2s;
   }
 
-  .writing-card:hover {
-    transform: translateY(-2px);
+  .writing-card-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 12px;
   }
 
   .writing-title {
     font-size: 18px;
     font-weight: 600;
     color: var(--ink);
-    margin: 0 0 12px;
+    margin: 0;
+  }
+
+  .writing-kind {
+    font-size: 12px;
+    color: var(--ink-dim);
+    white-space: nowrap;
   }
 
   .writing-excerpt {
@@ -574,11 +709,77 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
     margin-bottom: 16px;
   }
 
+  .writing-article-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .writing-article-list a {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .writing-article-list a:hover { text-decoration: underline; }
+
   .writing-link {
     font-size: 14px;
     font-weight: 500;
     color: var(--pr-blue);
+    text-decoration: none;
   }
+  .writing-link:hover { text-decoration: underline; }
+
+  /* Talks & Workshops */
+  .tool-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .tool-badge {
+    font-size: 13px;
+    color: var(--ink-mid);
+    background: var(--pr-card-2);
+    border-radius: var(--r-pill);
+    padding: 6px 14px;
+  }
+
+  .format-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .format-list li { display: flex; flex-direction: column; gap: 2px; }
+  .format-time { font-size: 12px; color: var(--ink-dim); text-transform: uppercase; letter-spacing: 0.03em; }
+  .format-name { font-size: 15px; color: var(--ink); }
+  .format-desc { font-size: 14px; line-height: 1.6; color: var(--ink-dim); }
+
+  /* Teaching */
+  .teaching-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .teaching-tag {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 6px;
+  }
+  .teaching-title { font-size: 15px; font-weight: 600; color: var(--ink); margin: 0 0 4px; }
+  .teaching-period { font-weight: 400; color: var(--ink-dim); }
+  .teaching-desc { font-size: 14px; line-height: 1.6; color: var(--ink-dim); margin: 0; }
 
   .about-cta {
     margin-top: 24px;
@@ -589,11 +790,10 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
     font-weight: 500;
     color: var(--pr-blue);
     text-decoration: none;
-    transition: opacity 0.2s;
   }
 
   .about-link:hover {
-    opacity: 0.7;
+    text-decoration: underline;
   }
 
   .about-contact {
@@ -625,16 +825,21 @@ const bookLink = extraordinary ? destination(extraordinary) : null;
     font-weight: 500;
     color: var(--ink);
     text-decoration: none;
-    transition: opacity 0.2s;
   }
 
   .about-footer-link:hover {
-    opacity: 0.7;
+    text-decoration: underline;
   }
 
   @media (max-width: 900px) {
-    .cell-experience, .cell-now, .cell-workshops, .cell-work-with-me {
+    .cell-now, .cell-books, .cell-workshops, .cell-teaching, .cell-experience, .cell-studio {
       grid-column: span 12;
+    }
+    .book-card {
+      grid-template-columns: 1fr;
+    }
+    .book-cover {
+      max-width: 220px;
     }
   }
 

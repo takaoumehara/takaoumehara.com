@@ -96,6 +96,10 @@
         }
         .lang-btn {
             flex: 1;
+            border: 0;
+            background: none;
+            font-family: inherit;
+            min-height: 28px;
             text-align: center;
             padding: 6px 0;
             font-size: 12px;
@@ -105,8 +109,12 @@
             transition: background 0.2s, color 0.2s;
             color: #94a3b8;
         }
+        .lang-btn:focus-visible, .nav-btn:focus-visible, select:focus-visible {
+            outline: 2px solid #e5b86f;
+            outline-offset: 2px;
+        }
         .lang-btn.active {
-            background: #3b82f6;
+            background: #2563eb;
             color: white;
         }
         
@@ -251,12 +259,52 @@
             letter-spacing: 0.2px;
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
+
+        /* Embedded in the portfolio's Werewolf page (?embed=1): no links out
+           (they would open the site inside its own frame), no page title, and
+           the controls beside the card — or above it at phone width — so the
+           whole viewer fits the frame without scrolling. */
+        html.is-embed {
+            --card-h: min(640px, calc(100vh - 24px));
+            --card-w: calc(var(--card-h) * 9 / 16);
+        }
+        html.is-embed .viewer-nav,
+        html.is-embed #page-title,
+        html.is-embed .control-group--style { display: none !important; }
+        html.is-embed .card-wrapper { flex-shrink: 0; }
+        html.is-embed select { min-width: 0; }
+        html.is-embed body {
+            height: 100vh;
+            min-height: 0;
+            overflow: hidden;
+            padding: 12px;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+        }
+        html.is-embed .controls { margin: 0; max-width: 340px; flex-shrink: 1; }
+        @media (max-width: 559px) {
+            html.is-embed { --card-h: min(640px, calc(100vh - 170px)); }
+            html.is-embed body {
+                flex-direction: column;
+                justify-content: flex-start;
+                gap: 10px;
+                padding: 8px;
+            }
+            html.is-embed .controls { padding: 10px; }
+            html.is-embed .control-group { margin-bottom: 8px; }
+            html.is-embed label { min-width: 72px; }
+        }
     </style>
+    <script>
+        if (new URLSearchParams(location.search).get('embed') === '1') document.documentElement.classList.add('is-embed');
+    </script>
 </head>
 <body>
 
     
-    <div style="display:flex;gap:10px;justify-content:center;margin-bottom:15px;flex-wrap:wrap;">
+    <div class="viewer-nav" style="display:flex;gap:10px;justify-content:center;margin-bottom:15px;flex-wrap:wrap;">
         <a href="werewolf.html" style="color:#e5b86f;text-decoration:none;font-size:12px;font-weight:bold;padding:6px 14px;border:1px solid rgba(229,184,111,0.4);border-radius:6px;background:rgba(229,184,111,0.08);">← WEREWOLF CASE STUDY</a>
         <a href="werewolf-card-gallery.html" style="color:#94a3b8;text-decoration:none;font-size:12px;font-weight:bold;padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(255,255,255,0.05);">🎴 CARD GALLERY</a>
         <a href="werewolf-card-position-editor.html" style="color:#94a3b8;text-decoration:none;font-size:12px;font-weight:bold;padding:6px 14px;border:1px solid rgba(255,255,255,0.15);border-radius:6px;background:rgba(255,255,255,0.05);">🎛 POSITION EDITOR</a>
@@ -266,18 +314,18 @@
     <div class="controls">
         <div class="control-group">
             <button class="nav-btn" id="btn-prev" onclick="prevRole()">← 前へ</button>
-            <select id="role-select" onchange="updateCard()"></select>
+            <select id="role-select" aria-label="Role / 役職" onchange="updateCard()"></select>
             <button class="nav-btn" id="btn-next" onclick="nextRole()">次へ →</button>
         </div>
         <div class="control-group">
             <label id="lbl-lang">言語 (LANG):</label>
-            <div class="lang-switch">
-                <div class="lang-btn active" id="btn-ja" onclick="setLanguage('ja')">日本語</div>
-                <div class="lang-btn" id="btn-en" onclick="setLanguage('en')">ENGLISH</div>
+            <div class="lang-switch" role="group" aria-labelledby="lbl-lang">
+                <button type="button" class="lang-btn active" id="btn-ja" aria-pressed="true" onclick="setLanguage('ja')">日本語</button>
+                <button type="button" class="lang-btn" id="btn-en" aria-pressed="false" onclick="setLanguage('en')">ENGLISH</button>
             </div>
         </div>
-        <div class="control-group">
-            <label id="lbl-style">スタイル (STYLE):</label>
+        <div class="control-group control-group--style">
+            <label id="lbl-style" for="version-select">スタイル (STYLE):</label>
             <select id="version-select" onchange="updateCard()">
                 <option value="refined">Refined</option>
                 <option value="lifelike">Lifelike</option>
@@ -286,9 +334,9 @@
         </div>
         <div class="control-group">
             <label id="lbl-bg">背景 (BG):</label>
-            <div class="lang-switch">
-                <div class="lang-btn active" id="btn-bg-on" onclick="setBackground(true)">ON</div>
-                <div class="lang-btn" id="btn-bg-off" onclick="setBackground(false)">OFF</div>
+            <div class="lang-switch" role="group" aria-labelledby="lbl-bg">
+                <button type="button" class="lang-btn active" id="btn-bg-on" aria-pressed="true" onclick="setBackground(true)">ON</button>
+                <button type="button" class="lang-btn" id="btn-bg-off" aria-pressed="false" onclick="setBackground(false)">OFF</button>
             </div>
         </div>
     </div>
@@ -313,7 +361,7 @@
             <!-- Bottom STICKY Description Band -->
             <div class="card-description-band">
                 <div class="camp-container">
-                    <img class="camp-icon" id="camp-icon" src="" alt="Camp Icon">
+                    <img class="camp-icon" id="camp-icon" src="" alt="">
                     <div class="camp-label" id="camp-label"></div>
                 </div>
                 <div class="description-text" id="role-desc"></div>
@@ -404,6 +452,8 @@
             
             document.getElementById("btn-ja").classList.toggle("active", currentLang === 'ja');
             document.getElementById("btn-en").classList.toggle("active", currentLang === 'en');
+            document.getElementById("btn-ja").setAttribute("aria-pressed", String(currentLang === 'ja'));
+            document.getElementById("btn-en").setAttribute("aria-pressed", String(currentLang === 'en'));
 
             populateRoleDropdown();
         }
@@ -418,6 +468,8 @@
             bgEnabled = enabled;
             document.getElementById("btn-bg-on").classList.toggle("active", bgEnabled);
             document.getElementById("btn-bg-off").classList.toggle("active", !bgEnabled);
+            document.getElementById("btn-bg-on").setAttribute("aria-pressed", String(bgEnabled));
+            document.getElementById("btn-bg-off").setAttribute("aria-pressed", String(!bgEnabled));
             updateCard();
         }
 

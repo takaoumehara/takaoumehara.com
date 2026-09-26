@@ -35,7 +35,7 @@ for (const [slug, record] of PAGES) {
     assert.ok(!/[:：]/.test(h1s[0].replace(/<[^>]+>/g, "")), "no colon tagline in the h1");
 
     const teaser = article.match(/<div class="project-teaser[^"]*"[\s\S]*?<header/)?.[0] ?? "";
-    assert.ok(/<video|<img|hero-fallback/.test(teaser), "teaser is real media or the name/logo fallback");
+    assert.ok(/<video|<img|<iframe|hero-fallback/.test(teaser), "teaser is real media, a live prototype, or the name/logo fallback");
     assert.ok(!/gradient/i.test(teaser), "no gradient teaser");
 
     const beforeTitle = article.slice(0, article.indexOf("<h1"));

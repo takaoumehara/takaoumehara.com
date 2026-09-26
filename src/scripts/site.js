@@ -3,6 +3,7 @@
 // and everything below is re-run from `astro:page-load`, which fires on the
 // first load and after every navigation. No framework, no dependencies.
 import { navigate } from "astro:transitions/client";
+import * as motion from "./motion.js";
 
 const html = document.documentElement;
 const store = {
@@ -163,7 +164,7 @@ function bindCards() {
     const url = card.dataset.href;
     if (!url) return;
     if (card.dataset.external === "true") window.open(url, "_blank", "noopener");
-    else navigate(url, { sourceElement: card }); // the throw (below) reads the card back from the event
+    else navigate(url, { sourceElement: card });
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Enter" && event.target.matches?.("[data-href]")) event.target.click();
@@ -310,87 +311,37 @@ function bindEcho() {
   document.addEventListener("astro:before-preparation", clear);
 }
 
-// ── Throw / Return: the pressed thumbnail grows into the teaser ─────────────
-// One `hero` view-transition-name per document at every moment:
-//   before-preparation (old snapshot next): name the pressed row's/card's
-//     thumb `hero`, and silence the page's own [data-vt-hero] for this trip;
-//     leaving a detail page for somewhere else, mark the current rail row as
-//     the return target instead.
-//   after-swap (new snapshot next): the persisted rail still carries the
-//     thumb, so strip its name so it cannot collide with the detail teaser —
-//     or, on a return, silence the new page's [data-vt-hero] and name the row.
-//   finished: remove every inline name.
-// Reduced motion names nothing (transitions.css also drops the hero name), a
-// collapsed rail (phones) has no visible row, so those trips dissolve.
-let thrown = null;   // the element named for this trip
-let returning = false;
-const onScreen = (el) => { if (!el) return false; const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight; };
-document.addEventListener("astro:before-preparation", (event) => {
-  thrown = null; returning = false;
-  if (stillMotion()) return;
-  const row = event.sourceElement?.closest?.(".side-item, .grid-card, .hn-article");
-  const from = row?.querySelector(".side-thumb, .grid-media, .hn-thumb");
-  const leaving = document.querySelector("[data-vt-hero]");
-  if (onScreen(from)) {
-    if (leaving) leaving.style.viewTransitionName = "none";
-    from.style.viewTransitionName = "hero";
-    thrown = from;
-  } else if (leaving && !row) {
-    const back = document.querySelector('#side .side-item[aria-current="page"] .side-thumb');
-    if (onScreen(back)) { thrown = back; returning = true; }
-  }
-});
-document.addEventListener("astro:before-swap", (event) => {
-  const done = () => {
-    if (thrown) { thrown.style.removeProperty("view-transition-name"); thrown = null; }
-    document.querySelectorAll("[data-vt-hero]").forEach((el) => el.style.removeProperty("view-transition-name"));
-    returning = false;
-  };
-  event.viewTransition?.finished?.then(done, done);
-});
-document.addEventListener("astro:after-swap", () => {
-  if (!thrown) return;
-  if (returning) {
-    document.querySelectorAll("[data-vt-hero]").forEach((el) => { el.style.viewTransitionName = "none"; });
-    thrown.style.viewTransitionName = "hero";
-  } else if (thrown.closest("#side")) {
-    thrown.style.removeProperty("view-transition-name");
-  }
-  markCurrent(); // the pressed row inverts inside the new snapshot, not after it
-});
-
-// ── Direction: the pane travels the way you moved down or up the rail ───────
+// ── Direction and the pane's choreography (src/scripts/motion.js) ─────────
 // Every #side [data-match] link, top to bottom, is one position in the
 // directory (All work, the name, About, then every row). Going to a lower
-// position sets html[data-nav-dir="down"], a higher one "up"; transitions.css
-// keys the root's old/new animation off it. The swap replaces <html>'s
-// attributes, so after-swap sets it again for the new snapshot, and the
-// transition's end removes it. Registered after the Throw handlers on
-// purpose: those read the old current row, and this one then marks the
-// destination current straight away, so the inverted block moves to the
-// pressed row while the page loads instead of flashing over at the swap.
+// position is +1, a higher one −1: the pane's cells leave upward and the new
+// ones settle from 6px below when you move down the rail, and the reverse.
+// The destination row is marked current straight away, so the inverted block
+// moves to the pressed row while the page loads instead of flashing over at
+// the swap. The router's own view transition no longer animates anything
+// (transitions.css): the cell choreography is the transition.
 const railIndex = (path) => {
   const here = normalize(path);
   const links = [...document.querySelectorAll("#side [data-match]")];
   return links.findIndex((link) => link.dataset.match.split(/\s+/).some((m) => normalize(m) === here));
 };
-let navDir = null;
+let navDir = 0;
 document.addEventListener("astro:before-preparation", (event) => {
-  navDir = null;
+  navDir = 0;
   const to = event.to instanceof URL ? event.to : null;
-  if (!to || to.origin !== location.origin) return;
-  const from = railIndex(location.pathname);
-  const dest = railIndex(to.pathname);
-  if (from >= 0 && dest >= 0 && from !== dest) navDir = dest > from ? "down" : "up";
-  if (navDir) html.dataset.navDir = navDir; else delete html.dataset.navDir;
-  if (normalize(to.pathname) !== normalize(location.pathname)) markCurrent(to.pathname);
+  if (to && to.origin === location.origin) {
+    const from = railIndex(location.pathname);
+    const dest = railIndex(to.pathname);
+    if (from >= 0 && dest >= 0 && from !== dest) navDir = dest > from ? 1 : -1;
+    if (normalize(to.pathname) !== normalize(location.pathname)) markCurrent(to.pathname);
+  }
+  motion.onBeforePreparation(event, navDir);
 });
-document.addEventListener("astro:before-swap", (event) => {
-  const clear = () => { navDir = null; delete html.dataset.navDir; };
-  if (event.viewTransition?.finished) event.viewTransition.finished.then(clear, clear);
-  else clear();
+document.addEventListener("astro:after-swap", () => {
+  markCurrent();
+  motion.onAfterSwap(navDir);
+  navDir = 0;
 });
-document.addEventListener("astro:after-swap", () => { if (navDir) html.dataset.navDir = navDir; });
 
 // ── Pulse: the input badge on a detail page flashes once on arrival ─────────
 let firstPageLoad = true;
@@ -398,8 +349,8 @@ function pulseStamp() {
   if (stillMotion() || !/^\/projects\//.test(location.pathname)) return;
   const stamps = [...document.querySelectorAll("#main .input-stamp")].filter((el) => !el.closest(".grid-card"));
   if (!stamps.length) return;
-  // After the boot on a first load; after the new pane has risen on a switch.
-  const wait = html.hasAttribute("data-boot") ? 520 : 240;
+  // Once its cell's type has woken up (motion.js): later on a first load.
+  const wait = html.hasAttribute("data-boot") ? 900 : 700;
   setTimeout(() => stamps.forEach((el) => {
     el.classList.remove("is-pulse");
     void el.offsetWidth; // restart if it is still there from a previous visit
@@ -500,7 +451,7 @@ function bindMagneticPointer() {
 // Sidebar.astro sets html[data-boot]; transitions.css runs the sequence. Drop
 // the attribute when it has finished, so the rolled-up counts are plain text
 // again and nothing can replay.
-const BOOT_ANIMS = new Set(["odo-roll", "boot-row", "boot-lens"]);
+const BOOT_ANIMS = new Set(["odo-roll", "boot-row"]);
 function endBoot() {
   if (!html.hasAttribute("data-boot")) return;
   const end = () => html.removeAttribute("data-boot");
@@ -554,6 +505,8 @@ function onPageLoad() {
   });
 }
 document.addEventListener("astro:page-load", onPageLoad);
+motion.bindMotion();
+motion.intro(); // the first paint: the pane's boxes, then its content
 
 // The rail is persisted, but moving it into the new document resets its
 // scroll position; carry it across the swap.
