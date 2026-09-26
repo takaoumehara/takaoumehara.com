@@ -1,18 +1,36 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    The shell: a fixed left rail (the person, then every piece of work by
    category) and the page on the right. Proportions and rhythm follow PORTO
-   ROCHA (docs/design/porto-rocha/DESIGN.md): a ~25% rail, grey card rows with
-   a 64px tile, 14px names and 13px grey one-liners, 8px between rows, no
-   shadows. The rail is persisted across navigations (Site.astro), so its
-   scroll position, folds and clock survive a click.
+   ROCHA (docs/design/porto-rocha/DESIGN.md and the measurements in
+   docs/design/porto-rocha/MEASURE-2026-09-25.txt): a ~28% rail separated from
+   the pane by whitespace and fill alone — no hairline — grey card rows with a
+   64px tile, 14px names and 13px grey one-liners, one 8px gutter between rows,
+   no shadows. Type and tiles are fluid (src/styles/tokens.css), so a wider
+   browser really does get a bigger rail; that is a deliberate departure from
+   the reference, which keeps type fixed. The rail is persisted across
+   navigations (Site.astro), so its scroll position, folds and clock survive a
+   click.
    ═══════════════════════════════════════════════════════════════════════════ */
 .shell { display: grid; grid-template-columns: var(--side-w) minmax(0, 1fr); min-height: 100vh; align-items: start; }
-.main { min-width: 0; }
+/* The right column IS the page: the rail takes --side-w, the main pane takes
+   everything that is left, at every width. Nothing here re-centres it inside a
+   narrower measure — a page that wants a readable line length caps its own
+   text (ProjectDetail.astro), never the pane. */
+.main { min-width: 0; width: 100%; }
+
+/* /work (body.work-fullscreen) drops the rail entirely and runs edge to edge.
+   These live here rather than in the page's scoped <style> so they survive the
+   View Transitions swap, when <body>'s class is replaced before the page's own
+   styles are applied. */
+body.work-fullscreen .shell { grid-template-columns: minmax(0, 1fr); }
+body.work-fullscreen .side { display: none; }
 
 .side {
   position: sticky; top: 0; height: 100vh; overflow-y: auto; overscroll-behavior: contain;
   background: var(--pr-canvas); color: var(--pr-ink); font-family: var(--pr-ff); font-weight: var(--fw);
-  border-right: 1px solid var(--pr-line);
+  /* No 1px divider between the rail and the pane: the two are separated by the
+     grey card fills and the whitespace between them, the way the reference
+     does it. A hairline here read as a hard frame around the page. */
   padding: var(--sp-3) var(--sp-3) var(--sp-5);
   font-size: var(--text-body); line-height: var(--leading-body);
   scrollbar-width: none; /* Hide left rail scrollbar */
@@ -46,18 +64,25 @@ html.lang-jp .side { font-family: var(--pr-ff-jp); }
 .side-search-toggle.is-active { background: var(--pr-ink); color: var(--pr-canvas); }
 .side-ctl { display: flex; align-items: center; gap: var(--sp-1); }
 
+/* Dark/light: the same 40px monochrome disc as search and language, carrying a
+   half-filled circle. No coloured track — the control is the same ink as the
+   rest of the rail, and the glyph's filled half swaps side with the theme. */
 .side-theme {
-  appearance: none; cursor: pointer; position: relative; width: 51px; height: 31px; padding: 0; border: 0;
-  border-radius: var(--r-pill); background: var(--pr-card-2); transition: background 160ms ease;
+  appearance: none; cursor: pointer; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
+  background: var(--pr-card); color: var(--pr-ink);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 140ms ease;
 }
-.side-theme::after {
-  content: ""; position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%;
-  background: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25); transition: transform 160ms ease;
+.side-theme:hover { background: var(--pr-card-2); }
+.side-theme::before {
+  content: ""; box-sizing: border-box; width: 18px; height: 18px; border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: linear-gradient(90deg, currentColor 50%, transparent 50%);
+  transition: background 160ms ease;
 }
-.side-theme[aria-checked="true"] { background: var(--pr-blue-fill); }
-.side-theme[aria-checked="true"]::after { transform: translateX(20px); }
+.side-theme[aria-checked="true"]::before { background: linear-gradient(270deg, currentColor 50%, transparent 50%); }
 .side-theme:disabled { cursor: default; opacity: 0.55; }
-.side-theme:focus-visible, .side-lang:focus-visible, .side-all:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+.side-theme:focus-visible, .side-lang:focus-visible, .side-all:focus-visible { outline: 2px solid var(--pr-ink); outline-offset: 2px; }
 
 .side-lang {
   appearance: none; cursor: pointer; width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%;
@@ -113,18 +138,35 @@ html[data-lang-fixed] .side-lang { display: none; }
 .side-count { font-variant-numeric: tabular-nums; }
 .side-count::after { content: "−"; display: inline-block; width: 1em; text-align: right; margin-left: var(--sp-1); }
 .side-group:not([open]) .side-count::after { content: "+"; }
-.side-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-1); } /* Uniform 8px gutter */
+.side-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap-grid); } /* The one grid gutter */
 .side-item {
-  display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: var(--sp-2); align-items: center;
-  padding: var(--sp-2) var(--sp-3); min-height: 88px;
+  --side-thumb: clamp(64px, 4.2vw, 84px);
+  display: grid; grid-template-columns: var(--side-thumb) minmax(0, 1fr); gap: var(--sp-2); align-items: center;
+  padding: var(--sp-2) var(--sp-3); min-height: clamp(88px, 6vw, 112px);
   transition: background 140ms ease;
 }
 .side-item:hover { background: var(--pr-card-2); }
-.side-item[aria-current="page"] { background: var(--pr-card-2); }
-.side-item[aria-current="page"] .side-name { color: var(--pr-blue); }
-.side-thumb { width: 64px; aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--pr-canvas); display: grid; place-items: center; }
+/* The row you are on inverts — ink block, canvas type — the way PORTO ROCHA
+   marks the open project. Not a slightly darker grey, and never a blue name. */
+.side-item[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
+.side-item[aria-current="page"] .side-name { color: var(--pr-canvas); }
+.side-item[aria-current="page"] .side-line { color: var(--pr-canvas); opacity: 0.7; }
+.side-thumb { width: var(--side-thumb, 64px); aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--pr-canvas); display: grid; place-items: center; }
 .side-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.side-thumb .side-art { font-size: 9px; letter-spacing: 0.04em; text-align: center; line-height: 1.1; padding: 4px; color: var(--pr-ink-2); text-transform: uppercase; }
+
+/* No image yet? The row carries the project's initials on a coloured square
+   instead of a shrunken wordmark — one letter for a one-word name, two
+   otherwise (src/components/Sidebar.astro computes both the letters and the
+   hue, which is a hash of the slug, so a project keeps the same colour). This
+   stands in until real logos exist. The lightness is fixed low enough that
+   white type clears AA on every hue. */
+.side-initials {
+  width: 100%; height: 100%; display: grid; place-items: center;
+  font-family: var(--pr-ff-display); font-weight: var(--fw-display, 600);
+  font-size: clamp(22px, 1.6vw, 30px); line-height: 1; letter-spacing: 0.01em;
+  background: hsl(var(--initials-h, 0) 38% 30%); color: #ffffff;
+}
+html[data-theme="dark"] .side-initials { background: hsl(var(--initials-h, 0) 34% 34%); }
 .side-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
 .side-name { font-size: var(--text-body); line-height: 1.25; color: var(--pr-ink); }
 .side-line { font-size: var(--text-sm); line-height: 1.3; color: var(--pr-ink-2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
@@ -139,7 +181,7 @@ html[data-lang-fixed] .side-lang { display: none; }
 .side-top { display: none; }
 @media (max-width: 900px) {
   .shell { display: block; }
-  .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-right: 0; border-bottom: 1px solid var(--pr-line); padding: var(--sp-2) var(--sp-3); }
+  .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-bottom: 1px solid var(--pr-line); padding: var(--sp-2) var(--sp-3); }
   .side.is-open { overflow-y: auto; }
   .side-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 40px; }
   .side-top .side-wordmark { font-size: var(--text-lg); }
@@ -153,7 +195,6 @@ html[data-lang-fixed] .side-lang { display: none; }
   .side-head { padding: var(--sp-5) 0; }
   .side-head .side-wordmark { display: none; }
   .side-clock { margin-top: 0; }
-  .side-item { min-height: 72px; }
-  .side-item .side-thumb { width: 48px; }
-  .side-item { grid-template-columns: 48px minmax(0, 1fr); }
+  .side-item { --side-thumb: 48px; min-height: 72px; }
+  .side-initials { font-size: 18px; }
 }

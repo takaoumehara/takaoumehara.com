@@ -19,6 +19,23 @@
 
   <main class="project-body">
 
+    <!-- ═══ Challenge | Solution Bento ═══ -->
+    <div class="challenge-solution-bento reveal-on-scroll" style="margin-bottom: 48px;">
+      <div class="bento-cell challenge-cell">
+        <h2 class="bento-label">Challenge</h2>
+        <p class="bento-text">
+          Amplify's ELA curriculum draws on a master library of thousands of vocabulary words, and curriculum authors needed to assemble and maintain custom word lists from that library for different grades, streams, and lesson plans. Doing this by hand — cross-checking spreadsheets, retyping definitions, catching duplicates — was slow and error-prone. There was no dependable way to see, at a glance, whether a word being added already existed elsewhere in the system, leading to duplicate entries, inconsistent definitions, and wasted time reconciling conflicts after the fact.
+        </p>
+      </div>
+      
+      <div class="bento-cell solution-cell">
+        <h2 class="bento-label">Solution</h2>
+        <p class="bento-text">
+          I designed a dual-pane word list manager: the master "All Words" library on the left, the list being built on the right, both searchable and filterable by stream and grade. Authors could hand-pick words directly from the master list, or bulk-import a CSV — and when an import turned up malformed rows or duplicate entries, the interface surfaced them inline, with side-by-side comparison cards so authors could choose the master entry or the incoming one before anything was committed. Every destructive action, like removing a word from a list, got a confirmation step and an undo path. The result: building a grade-specific, stream-aligned vocabulary list became search, select, and save — no spreadsheet archaeology required.
+        </p>
+      </div>
+    </div>
+
     <div class="project-overview reveal-on-scroll">
       <aside>
         <p class="project-aside-label">Scope</p>
@@ -32,14 +49,14 @@
         </div>
       </aside>
       <div>
-        <h2 class="project-section-title">The Tension</h2>
+        <h2 class="project-section-title">The Admin Tool Context</h2>
         <p class="project-text">
-          Amplify's ELA curriculum draws on a master library of thousands of vocabulary words, and curriculum authors needed to assemble and maintain custom word lists from that library for different grades, streams, and lesson plans. Doing this by hand — cross-checking spreadsheets, retyping definitions, catching duplicates — was slow and error-prone. There was no dependable way to see, at a glance, whether a word being added already existed elsewhere in the system.
+          This wasn't a student-facing learning app — it was an <strong>authoring tool</strong> for Amplify's internal curriculum team. The ELA program contained thousands of vocabulary words across grades 6–8, organized by "streams" (reading units) and lesson plans. Creating a custom word list for a new unit meant pulling from the master library, confirming definitions matched, checking that a word wasn't already assigned elsewhere, and maintaining consistency across parallel streams. Doing this manually in spreadsheets was error-prone, time-consuming, and opaque: authors couldn't see dependencies until after a list was built, and reconciling duplicates meant hours of detective work.
           
         </p>
-        <h2 class="project-section-title" style="margin-top: 40px;">My Approach</h2>
+        <h2 class="project-section-title" style="margin-top: 40px;">Design Strategy: Make Duplication Visible Up Front</h2>
         <p class="project-text">
-          I designed a dual-pane word list manager: the master "All Words" library on the left, the list being built on the right, both searchable and filterable by stream and grade. Authors could hand-pick words directly from the master list, or bulk-import a CSV — and when an import turned up malformed rows or duplicate entries, the interface surfaced them inline, with side-by-side comparison cards so authors could choose the master entry or the incoming one before anything was committed. Every destructive action, like removing a word from a list, got a confirmation step and an undo path.
+          The core design principle was <strong>surface conflicts before commitment</strong>. The dual-pane layout — master library on the left, working list on the right — let authors see what was available and what was selected simultaneously. Bulk CSV import detected duplicates and malformed entries inline, presenting each one as a side-by-side comparison card: "This word exists in Stream A with definition X. Your import has definition Y. Which do you want?" Authors made the call before the data was committed, eliminating hours of post-import cleanup. Searchable, filterable columns and confirm-plus-undo for deletions closed the remaining gaps. The tool didn't replace domain expertise — it made the dependencies visible so expertise could be applied early, not after damage was done.
           
         </p>
         <h2 class="project-section-title" style="margin-top: 40px;">Tools &amp; Methods</h2>

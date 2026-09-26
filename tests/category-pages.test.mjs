@@ -23,7 +23,9 @@ const cards = (html) => [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]
 test("all five sections of the work are built, none by hand", () => {
   assert.deepEqual(
     categories.map((c) => c.output).sort(),
-    ["ai-products.html", "ai-tools.html", "brand.html", "interactive.html", "work.html"],
+    // "work" writes product-design.html, not work.html: /work is the canonical
+    // "All work" archive (src/pages/work.astro).
+    ["ai-products.html", "ai-tools.html", "brand.html", "interactive.html", "product-design.html"],
   );
   for (const c of categories) {
     assert.ok(exists(c.output), `${c.output}: must be built`);
@@ -73,7 +75,7 @@ test("one h1 per page, and the sidebar lists every section open with this one ma
 
 test("three columns at desktop, two at <=1100px, one at <=640px; one card shape, one thumbnail ratio", () => {
   // The PORTO ROCHA grid (docs/design/porto-rocha/DESIGN.md): the same
-  // src/components/grid/WorkGrid.astro every category page, /all/ and the
+  // src/components/grid/WorkGrid.astro every category page, /work and the
   // home page share, styled once in src/styles/grid.css.
   const css = readFileSync(join(ROOT, "src", "styles", "grid.css"), "utf8");
   assert.match(css, /\.work-grid \{[^}]*grid-template-columns: repeat\(3, minmax\(0, 1fr\)\)/);

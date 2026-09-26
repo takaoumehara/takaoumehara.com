@@ -31,27 +31,58 @@ export async function getStaticPaths() {
     }
   }
   
-  // Generate for all evidence items with caseStudy links but no existing HTML
+  // Track which slugs already have paths
   const existingSlugs = new Set(paths.map(p => p.params.slug));
+  
+  // Generate for ALL evidence items, prioritizing those with caseStudy links or in main categories
   for (const [slug, item] of lib.evidence.entries()) {
-    if (item.links?.caseStudy && !existingSlugs.has(slug)) {
-      const caseSlug = item.links.caseStudy.replace(/^projects\//, "").replace(/\.html$/, "");
-      if (!existingSlugs.has(caseSlug)) {
-        paths.push({
-          params: { slug: caseSlug },
-          props: {
-            item,
-            body: null,
-            css: null,
-            meta: {
-              title: `${item.title} — Takao Umehara`,
-              description: typeof item.summary === 'string' ? item.summary : item.summary?.en || "",
-              theme: item.kind === 'experiment' ? 'dark' : 'light',
-            },
-          },
-        });
-      }
+    // Skip if already generated
+    if (existingSlugs.has(slug)) continue;
+    
+    // Check if item has explicit caseStudy link
+    let targetSlug = slug;
+    if (item.links?.caseStudy) {
+      targetSlug = item.links.caseStudy.replace(/^projects\//, "").replace(/\.html$/, "");
     }
+    
+    // Skip if target slug already exists
+    if (existingSlugs.has(targetSlug)) continue;
+    
+    // Generate page for this item
+    existingSlugs.add(targetSlug);
+    
+    // Determine theme and description
+    const theme = item.kind === 'experiment' ? 'dark' : 'light';
+    const description = typeof item.summary === 'string' 
+      ? item.summary 
+      : item.summary?.en || item.cardLine?.en || "";
+    
+    // Extract challenge and solution for bento
+    const challenge = item.challenge || (item.contribution?.challenges?.[0] 
+      ? { en: item.contribution.challenges[0], jp: item.contribution.challenges[0] }
+      : null);
+    
+    const solution = item.solution || (item.contribution?.mine?.[0]
+      ? { en: item.contribution.mine[0], jp: item.contribution.mine[0] }
+      : null);
+    
+    paths.push({
+      params: { slug: targetSlug },
+      props: {
+        item: {
+          ...item,
+          challenge: challenge,
+          solution: solution,
+        },
+        body: null,
+        css: null,
+        meta: {
+          title: `${item.title} — Takao Umehara`,
+          description,
+          theme,
+        },
+      },
+    });
   }
 
   return paths;
@@ -62,33 +93,44 @@ const { item, body, css, meta } = Astro.props;
 const current = `/projects/${slug}.html`;
 const canonical = meta?.canonical ?? `https://takaoumehara.com${current}`;
 
-// Check if item has video preview for teaser
-const videoUrl = item?.assets?.preview?.mp4 || item?.assets?.preview?.webm;
-const videoAudioRecommended = item?.playable && videoUrl;
+// "detail" pages use the shared template and the site's own styles; their HTML
+// is body beats only. A case study not yet moved to the format is a complete
+// hand-built page (its own hero, H1 and meta), so it renders on its own rather
+// than inside the template, which would print everything twice.
+const isDetail = !body || meta?.format === "detail";
+const beats = body && body.replace(/<!--[\s\S]*?-->/g, "").trim() ? body : null;
 ---
-<Site
-  title={meta?.title || `${item?.title} — Takao Umehara`}
-  description={meta?.description || ""}
-  canonical={canonical}
-  ogImage={meta?.ogImage || item?.assets?.hero}
-  ogType={meta?.ogType || "article"}
-  theme={meta?.theme}
-  htmlClass={meta?.htmlClass}
-  bodyClass={meta?.bodyClass}
-  current={current}
-  stylesheets={meta?.stylesheets}
-  style={css}
-  fonts={meta?.fonts}
->
-  <main class="project-page">
-    <ProjectDetail 
-      item={item} 
-      body={body}
-      videoUrl={videoUrl}
-      videoAudioRecommended={videoAudioRecommended}
-    />
-  </main>
-</Site>
+{isDetail ? (
+  <Site
+    title={meta?.title || `${item?.title} — Takao Umehara`}
+    description={meta?.description || ""}
+    canonical={canonical}
+    ogImage={meta?.ogImage || item?.assets?.hero}
+    ogType={meta?.ogType || "article"}
+    current={current}
+  >
+    <main class="project-page">
+      <ProjectDetail item={item} body={beats} />
+    </main>
+  </Site>
+) : (
+  <Site
+    title={meta?.title || `${item?.title} — Takao Umehara`}
+    description={meta?.description || ""}
+    canonical={canonical}
+    ogImage={meta?.ogImage || item?.assets?.hero}
+    ogType={meta?.ogType || "article"}
+    theme={meta?.theme}
+    htmlClass={meta?.htmlClass}
+    bodyClass={meta?.bodyClass}
+    current={current}
+    stylesheets={meta?.stylesheets}
+    style={css}
+    fonts={meta?.fonts}
+  >
+    <div class="project-legacy" set:html={body} />
+  </Site>
+)}
 
 <style>
   .project-page {

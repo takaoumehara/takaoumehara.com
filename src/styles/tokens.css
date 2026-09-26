@@ -20,11 +20,14 @@
   --pr-line: #e2e2e2;         /* hairline */
   --pr-line-2: #808080;       /* emphasis hairline (Ash Gray as drawn) */
   --pr-blue: #0062cc;         /* System Blue for text, darkened from #007aff (4.0:1) to 5.3:1 on white / 4.9:1 on the card grey */
-  --pr-blue-fill: #007aff;    /* System Blue as drawn, for fills that carry no text (the switch track) */
 
-  /* Type — SF Pro where it exists, Inter otherwise; one weight */
-  --pr-ff: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  --pr-ff-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Type — Outfit everywhere for now (running text and display alike), with the
+     Japanese stack directly behind it so CJK glyphs, which Outfit does not
+     carry, fall to a real JP face rather than a per-glyph browser substitution.
+     Headings stay Outfit SemiBold (--fw-display). */
+  --pr-ff: "Outfit", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --pr-ff-display: var(--pr-ff);
+  --fw-display: 600;
   --pr-ff-jp: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
   /* The hand-built pages' design-system.css redefines --ff on :root; the rail
      reads the --pr-* names, which nothing else defines. */
@@ -34,19 +37,32 @@
   --serif: var(--pr-ff-display);
   --fw: 400;
 
-  --text-xs: 12px;
-  --text-sm: 13px;
-  --text-body: 14px;   --leading-body: 1.4;
-  --text-md: 16px;
-  --text-lg: 18px;     --leading-lg: 1.35;
-  --text-display: 23px; --leading-display: 1.17; --tracking-display: 0.02em;
+  /* Fluid type. Every step holds its Porto Rocha value up to a 1280px viewport,
+     then grows linearly to 1.28× of it at 2560px — a wider browser really does
+     get bigger type and bigger UI, which fixed px tokens never did. The
+     intercept/slope pairs are all the same ratio, so the scale keeps its shape
+     at every width: min = S, max = S × 1.28, slope = S × 0.0219vw. */
+  --text-xs: clamp(12px, 0.26vw + 8.65px, 15px);
+  --text-sm: clamp(13px, 0.28vw + 9.4px, 16.5px);
+  --text-body: clamp(14px, 0.31vw + 10.1px, 18px);   --leading-body: 1.4;
+  --text-md: clamp(16px, 0.35vw + 11.5px, 20.5px);
+  --text-lg: clamp(18px, 0.39vw + 13px, 23px);     --leading-lg: 1.35;
+  --text-display: clamp(23px, 0.5vw + 16.6px, 29.5px); --leading-display: 1.17; --tracking-display: 0.02em;
 
   /* Spacing (8px unit) and shape */
   --sp-1: 8px; --sp-2: 12px; --sp-3: 16px; --sp-4: 20px; --sp-5: 24px; --sp-6: 32px;
+
   --r: 8px;
   --r-sm: 8px;
   --r-card: 8px;
   --r-pill: 9999px;
+
+  /* The one gutter every grid uses, on both axes: the bento/work grid, the
+     Challenge | Solution pair, the beat media and fact strips, and the rail's
+     project rows. Porto Rocha's 8px at normal widths, easing to 12px on a very
+     wide screen so the rhythm scales with the type. Never a different row and
+     column value — that is what broke the grid's rhythm. */
+  --gap-grid: clamp(8px, 0.45vw + 2.2px, 12px);
 
   /* Aliases the components were written against */
   --bg: var(--pr-canvas);
@@ -58,10 +74,18 @@
   --surface: var(--pr-card);
   --a1: rgba(0, 0, 0, 0.05); --a2: rgba(0, 0, 0, 0.08); --a3: rgba(0, 0, 0, 0.04); --a4: rgba(0, 0, 0, 0.06);
 
-  /* Layout - Porto Rocha proportions: narrower left rail (~18-20% vs 25%) */
-  --col: 1200px;
-  --gutter: clamp(16px, 2.5vw, 32px);
-  --side-w: clamp(280px, 20vw, 340px);
+  /* Layout — PORTO ROCHA proportions: a ~28% rail, and the main pane takes
+     every pixel the rail leaves (src/styles/shell.css).
+     --col is the readable measure the older hand-built bands still centre
+     themselves in. It is fluid rather than a hard 1200px so a wide browser is
+     not left with two empty margins; the shell pages (home, the grids, the
+     detail page) do not use it at all — they fill the pane. */
+  --col: clamp(1200px, 90vw, 1800px);
+  --gutter: clamp(16px, 2.2vw, 56px);
+  /* The reference's rail measures ~382px at a 1280 viewport (≈28%) and clamps
+     near 400 CSS px on a wider screen — docs/design/porto-rocha/MEASURE-2026-09-25.txt.
+     Past ~1500px the pane takes every further pixel. */
+  --side-w: clamp(300px, 28vw, 420px);
 }
 
 html[data-theme="dark"] {
@@ -73,7 +97,6 @@ html[data-theme="dark"] {
   --pr-line: #262626;
   --pr-line-2: #6b6b6b;
   --pr-blue: #3b9cff;         /* 7.5:1 on black, 6.7:1 on the card grey */
-  --pr-blue-fill: #0a84ff;
   --ink-mid: #d4d4d4;
   --a1: rgba(255, 255, 255, 0.06); --a2: rgba(255, 255, 255, 0.1); --a3: rgba(255, 255, 255, 0.05); --a4: rgba(255, 255, 255, 0.08);
   color-scheme: dark;

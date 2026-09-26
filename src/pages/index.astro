@@ -109,58 +109,67 @@ const NEWS = [
   }
   
   .news-label {
-    font-size: 14px;
-    font-weight: 600;
+    font-family: var(--ff-display);
+    font-size: var(--text-body);
+    font-weight: var(--fw-display, 600);
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.08em;
     color: var(--ink-dim);
     margin-bottom: 24px;
   }
   
+  /* Three equal bento cells on the same gutter as the work grid below, so the
+     two blocks read as one system rather than two grids. */
   .news-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: var(--sp-1); /* Uniform 8px gutter */
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--gap-grid);
   }
-  
+
+  /* Separated by fill and whitespace, not a hairline and not a shadow. */
   .news-card {
     display: block;
-    padding: 24px;
-    background: var(--surface-raised);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    padding: clamp(20px, 1.6vw, 32px);
+    background: var(--pr-card);
+    border-radius: var(--r);
     text-decoration: none;
-    transition: all 0.25s ease;
+    transition: background 180ms ease;
   }
-  
+
   .news-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    background: var(--pr-card-2);
   }
-  
+
   .news-date {
     display: block;
-    font-size: 12px;
-    font-weight: 500;
+    font-size: var(--text-xs);
+    font-variant-numeric: tabular-nums;
     color: var(--ink-dim);
     margin-bottom: 12px;
   }
-  
+
   .news-title {
-    font-size: 16px;
-    font-weight: 600;
+    font-family: var(--ff-display);
+    font-size: var(--text-md);
+    font-weight: var(--fw-display, 600);
     line-height: 1.4;
     color: var(--ink);
     margin-bottom: 12px;
   }
-  
+
   .news-lead {
-    font-size: 14px;
+    font-size: var(--text-body);
     line-height: 1.6;
     color: var(--ink-mid);
   }
   
-  @media (max-width: 768px) {
+  @media (max-width: 1100px) {
+    .news-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
     .news-grid {
       grid-template-columns: 1fr;
     }

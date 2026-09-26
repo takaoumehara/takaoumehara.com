@@ -13,7 +13,7 @@
 |---|---|
 | バージョン | **Astro 7.3**（8.0 は MDX / Vercel アダプタが未対応。peer が `^7`） |
 | 出力 | `output: 'static'` + `@astrojs/vercel`。ほぼ全ページは静的。**オンデマンド描画は 2 種だけ** — `/lens/preview`（Studio と /try のプレビュー）と `/api/*` |
-| URL | **ほぼそのまま。** `build.format: 'preserve'`（Vercel アダプタが `directory` に上書きするので、アダプタの後で戻す）で `about.astro → about.html`、`projects/[slug].astro → projects/<slug>.html`、`lens/[slug]/index.astro → lens/<slug>/index.html`。**例外 2 つ**: Astro は `work.html` と `work/` を同じ経路とみなすので、Work Archive は `/work/` → **`/all/`** に移動（`public/` の静的リダイレクトページで転送）。同じ理由で `now.html` は廃止し `/now/` へ転送 |
+| URL | **ほぼそのまま。** `build.format: 'preserve'`（Vercel アダプタが `directory` に上書きするので、アダプタの後で戻す）で `about.astro → about.html`、`projects/[slug].astro → projects/<slug>.html`、`lens/[slug]/index.astro → lens/<slug>/index.html`。**例外 2 つ**: Astro は `work.html` と `work/` を同じ経路とみなすので、「All work」は `/work`（`src/pages/work.astro`、フルスクリーン 1 カラム）を正とし、`/all/` と `/work/` はそこへ転送（`public/all/index.html` + `vercel.json`）。Product & Experience Design のカテゴリページは衝突を避けて `/product-design.html` に出力。同じ理由で `now.html` は廃止し `/now/` へ転送 |
 | 生成 HTML の commit | **やめる。** commit するのはソース。公開 HTML は Vercel がビルドする。「PR の diff = 公開 HTML」の役割は Vercel の Preview デプロイが担う |
 | データ | `src/data`・`src/lenses`・`src/categories` は**無変更**。`validate.mjs`（Claim Guard）・`analyze/`（求人票エンジン）も無変更 |
 | 旧レンダラー `src/render/*.mjs`・`src/build.mjs` | `.astro` コンポーネントに移植して**削除** |
@@ -56,8 +56,8 @@ tests/                       dist（.vercel/output/static）を検査
 ## 2. サイドバー（Layout）
 
 - `<aside class="side">` は `position: sticky; top: 0; height: 100vh; overflow: auto`。幅 `clamp(280px, 24vw, 360px)`。
-- 中身: 名前 + 一行（`/`）・「All work」（`/all/`）・言語スイッチ・About カード・ページ nav（Now / Writing / Workshops / About / Work with me / Studio ↗）・**カテゴリ別の作品一覧**（`<details>` × 5、現在地のカテゴリだけ `open`、項目 = サムネ + 名前 + `cardLine`）。
-- 右カラム `<div class="main">` はページ本文。旧 `--col: 1200px` は右カラム内の最大幅として残る。
+- 中身: 名前 + 一行（`/`）・「All work」（`/work`）・言語スイッチ・About カード・ページ nav（Now / Writing / Workshops / About / Work with me / Studio ↗）・**カテゴリ別の作品一覧**（`<details>` × 5、現在地のカテゴリだけ `open`、項目 = サムネ + 名前 + `cardLine`）。
+- 右カラム `<div class="main">` はページ本文。ホーム / グリッド / 詳細は右カラム全幅（`--col` を使わない）。`--col` は手書きバンド用の可変の可読幅（`clamp(1200px, 90vw, 1800px)`）として残る。
 - 900px 以下: サイドバーは上部バー（名前 + Menu）になり、一覧はボタンで開く。
 - サイドバーのトークンは `--side-*` で独立させる。手書きページは `design-system.css` が `:root` を上書きする（ダーク既定）ので、共通トークンに乗ると崩れる。逆に `site.css` はページ CSS より後に束ねられるので、`data-theme="dark"` のページ（Interactive の 8 本）には `site.css` 側で `html[data-theme="dark"] { --bg … }` を再宣言して暗いまま出す（無いと紙色の上に白文字が乗る）。
 - Cross-document View Transitions は継続。サイドバーに `view-transition-name: side` を与え、右だけ入れ替わる。

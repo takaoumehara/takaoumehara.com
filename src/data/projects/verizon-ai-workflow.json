@@ -86,8 +86,8 @@
   ],
   "contribution": {
     "mine": [
-      "16+ one-hour interviews with designers and strategists; transcripts clustered with NotebookLM into a searchable pain map",
-      "Effort × impact × opportunity prioritisation and selection of bets with leadership",
+      "16 one-hour deep-dive interviews with designers and strategists in late 2025, about the working day rather than the deliverables; transcripts clustered with NotebookLM into a searchable pain map",
+      "Categorised the transcripts into 40+ distinct friction points and scored each on severity, business impact, ease of change and AI opportunity; selected the bets with design leadership off the resulting heat map",
       "Designed and built all ten agents: Master Brain (3-layer project knowledge hub), Justin Case (edge-case detector), Sally (CX strategist / heuristic evaluator), the five-agent WDS studio, Clara (UX-writing evaluator), Alex (agent architect)",
       "Authored agents as filesystems of workflow, definition and knowledge files; iterated each 'Gem' version after version",
       "Wired Figma to VS Code via MCP so AI prototypes run on real design-system code",
@@ -138,9 +138,10 @@
       "id": "friction-40",
       "value": "40+",
       "label": {
-        "en": "friction points mapped from 16+ interviews",
+        "en": "friction points mapped from 16 designer interviews",
         "jp": "つまずき 40 件超を地図化"
       },
+      "basis": "16 deep-dive interviews, late 2025; transcripts categorised and ranked on severity, business impact, ease of change and AI opportunity",
       "confidence": "stated"
     },
     {
@@ -175,6 +176,12 @@
   "narrative": {
     "situation": "Gemini became the only AI allowed inside Verizon's enterprise stack, and nobody knew what to do with it.",
     "problem": "Business and Technology scoped every project before design entered the room; with no budget to test, the highest-position opinion won; by handoff, good UX was already out of scope. Project knowledge was fragmented across people and documents.",
+    "failureModes": [
+      "Tribal knowledge trap — business logic, requirements and institutional knowledge fragmented across email and people rather than a repository, producing rework and losing product intelligence when staff left",
+      "Late-phase discovery — technical discovery and SME collaboration arrived after handoff, so edge cases surfaced as emergency rework",
+      "Designing in the dark — no dedicated budget or timeline for user testing, so stakeholder opinion stood in for validated data and no decision could be justified objectively",
+      "Strategic design compression — delivery pressure pushed designers into pixel pushing, spending the time that strategic rigour needed"
+    ],
     "opportunity": "Put AI at the exact moments where the process hurt — inside the workflow everyone already used — rather than rewriting the org.",
     "constraints": [
       "Gemini and NotebookLM only. No custom models, no API access.",
@@ -182,7 +189,8 @@
       "A single designer's remit"
     ],
     "built": [
-      "Master Brain — centralized project knowledge (brand, research, project layers)",
+      "Four steps inserted ahead of handoff, where the old workflow had only sequential handoffs and late validation: an initiative alignment document, edge-case detection, a functional prototype, and synthetic usability testing",
+      "Master Brain — centralized project knowledge (brand, research, project layers), assembled from project documentation, recorded meeting transcripts, strategic direction from design leadership, and outside market and competitor intelligence; reusable brand and research brains compose into the project one",
       "Justin Case — lightweight validation agent for early edge-case detection",
       "Sally — AI-assisted heuristic and CX evaluation",
       "WDS five-agent design studio",
@@ -230,7 +238,8 @@
   "_notes": [
     "The case-study page carries a confidentiality notice: specific metrics, tooling and instructions are generalized. Metrics here are the ones the page states.",
     "Engagement type is not stated on the page; left as 'unstated' rather than guessed.",
-    "The 10× rework figure is an industry rule of thumb quoted on the page, so it is 'unverified' and no Lens can highlight it."
+    "The 10× rework figure is an industry rule of thumb quoted on the page, so it is 'unverified' and no Lens can highlight it.",
+    "The workflow, the four failure modes and the Master Brain inputs are taken from the AI Powered Workflow Training Workshop deck (docs/verizon-work-transformation-slides.md). That deck states no measured time-saved, adoption, quality or revenue KPI, so none has been added here — its outcome claims are qualitative."
   ],
   "cardKind": {
     "en": "Agent fleet · Case study",
@@ -239,5 +248,39 @@
   "cardLine": {
     "en": "Ten agents built into the tools 42 designers already used.",
     "jp": "42 人のデザイナーが既に使っている道具の中に、10 のエージェントを入れた。"
+  },
+  "detail": {
+    "name": {
+      "en": "Verizon AI Workflow",
+      "jp": "Verizon AI ワークフロー"
+    },
+    "oneLiner": {
+      "en": "Ten agents built into the tools 42 designers already used.",
+      "jp": "42 人のデザイナーがすでに使っている道具の中に、10 体のエージェントを入れた。"
+    },
+    "challenge": {
+      "en": "Business and Technology scoped every project before design entered the room. With no budget to test, the highest-position opinion won, and by handoff good UX was already out of scope. Project knowledge sat scattered across people, emails and research PDFs nobody had time to read. Gemini and NotebookLM were the only AI allowed.",
+      "jp": "デザインが呼ばれる前に、ビジネスと技術がプロジェクトの範囲を決めていた。検証の予算はなく、いちばん役職の高い人の意見が通る。引き渡しの頃には、良い UX はもう範囲の外だった。知識は人とメールと、誰も読む暇のない調査 PDF に散らばっていた。使える AI は Gemini と NotebookLM だけ。"
+    },
+    "solution": {
+      "en": "I didn't try to rewrite the org. I put AI at the exact moments the process hurt, inside the workflow people already used: 16+ interviews, 40+ friction points, ten single-purpose agents. The decisive move was building each agent as a small filesystem — workflow, definition, knowledge — so it stayed reliable as use spread from 42 designers to 80+ stakeholders across six brands.",
+      "jp": "組織を書き換えようとはしなかった。みんながすでに使っている業務の、痛いところにだけ AI を置いた。16 人以上に話を聞き、40 件超のつまずきを洗い出し、役目をひとつに絞ったエージェントを 10 体つくった。決め手は、各エージェントを「手順・定義・知識」の小さなファイル群として組んだこと。42 人から 6 ブランド 80 人超へ広がっても、動きがぶれなかった。"
+    },
+    "role": {
+      "en": "Lead Product Designer (Agentic UX & AI Systems)",
+      "jp": "リードプロダクトデザイナー（エージェント UX・AI システム）"
+    },
+    "client": {
+      "en": "Verizon Value (6 brands)",
+      "jp": "Verizon Value（6 ブランド）"
+    },
+    "stack": [
+      "Gemini",
+      "NotebookLM",
+      "Figma"
+    ],
+    "teaser": {
+      "image": "assets/verizon-ai-agents/hero-agents-network.jpg"
+    }
   }
 }

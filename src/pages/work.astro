@@ -54,8 +54,8 @@ FILTERS[3].count = designCount;
               <path d="M13 13l5 5"/>
             </svg>
           </button>
-          <button class="side-theme" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
-          <button class="side-lang" id="lang-cycle" type="button" aria-label="Switch to Japanese">JP</button>
+          <button class="side-theme" data-theme-switch="true" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
+          <button class="side-lang" data-lang-cycle="true" type="button" aria-label="Switch to Japanese">JP</button>
         </div>
       </div>
       
@@ -85,34 +85,27 @@ FILTERS[3].count = designCount;
 </Site>
 
 <style>
-  :global(body.work-fullscreen) {
-    --side-width: 0;
-  }
-  
-  :global(body.work-fullscreen .side) {
-    display: none;
-  }
-  
+  /* The rail is dropped and the shell collapses to one column in
+     src/styles/shell.css (body.work-fullscreen), so those rules survive a
+     View Transitions swap. This page then runs the full viewport. */
   .work-page-full {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 40px 24px;
+    width: 100%;
+    padding: clamp(24px, 3vw, 56px) var(--gutter);
   }
-  
+
   .work-header {
     margin-bottom: 40px;
   }
-  
+
   .work-header-top {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 32px;
   }
-  
+
   .work-back {
-    font-size: 16px;
-    font-weight: 500;
+    font-size: var(--text-md);
     color: var(--ink);
     text-decoration: none;
     transition: opacity 0.2s;
@@ -128,10 +121,12 @@ FILTERS[3].count = designCount;
     align-items: center;
   }
   
+  /* The chrome matches the rail's controls: a grey disc, no hairline. */
   .work-search-btn {
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 6px;
+    appearance: none;
+    border: 0;
+    border-radius: 50%;
+    background: var(--pr-card);
     width: 40px;
     height: 40px;
     display: flex;
@@ -139,70 +134,49 @@ FILTERS[3].count = designCount;
     justify-content: center;
     cursor: pointer;
     color: var(--ink);
-    transition: all 0.2s;
+    transition: background 140ms ease;
   }
-  
+
   .work-search-btn:hover {
-    background: var(--surface-raised);
+    background: var(--pr-card-2);
   }
-  
+
   .work-search-panel {
     margin-bottom: 24px;
     animation: slideDown 0.2s ease;
   }
-  
+
   .work-search-input {
     width: 100%;
-    padding: 12px 16px;
-    font-size: 16px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--surface);
+    padding: 12px var(--sp-3);
+    font-size: var(--text-body);
+    border: 1px solid var(--pr-line);
+    border-radius: var(--r-pill);
+    background: var(--pr-card);
     color: var(--ink);
     font-family: inherit;
   }
-  
+
   .work-search-input:focus {
     outline: none;
-    border-color: var(--accent);
+    border-color: var(--pr-blue);
+    background: var(--pr-canvas);
   }
-  
+
+  /* Same gutter as the grid below it (src/styles/grid.css). */
   .work-filters {
     display: flex;
-    gap: 12px;
+    gap: var(--gap-grid);
     flex-wrap: wrap;
   }
-  
+
+  /* Pills, like the home page's — grid.css already styles .filter-btn; these
+     only add the taller hit area this header wants. */
   .filter-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 10px 16px;
-    font-size: 14px;
-    font-weight: 500;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: var(--ink);
+    padding: 10px var(--sp-3);
+    font-size: var(--text-body);
   }
-  
-  .filter-btn:hover {
-    background: var(--surface-raised);
-  }
-  
-  .filter-btn.is-active {
-    background: var(--ink);
-    color: var(--surface);
-    border-color: var(--ink);
-  }
-  
-  .filter-count {
-    opacity: 0.6;
-    font-size: 13px;
-  }
-  
+
   @keyframes slideDown {
     from {
       opacity: 0;
@@ -216,7 +190,7 @@ FILTERS[3].count = designCount;
   
   @media (max-width: 768px) {
     .work-page-full {
-      padding: 24px 16px;
+      padding: 24px var(--gutter);
     }
     
     .work-filters {
@@ -261,9 +235,12 @@ FILTERS[3].count = designCount;
 
     btns.forEach((b) => b.addEventListener("click", () => applyFilter(b.dataset.filter)));
 
-    const hash = window.location.hash.replace("#", "").toLowerCase();
-    if (hash && filterMap[hash]) {
-      applyFilter(hash);
+    // Either form opens a discipline: #design, or ?filter=design, which is what
+    // vercel.json sends the old category addresses to.
+    const params = new URLSearchParams(window.location.search);
+    const requested = (params.get("filter") || window.location.hash.replace("#", "")).toLowerCase();
+    if (requested && filterMap[requested]) {
+      applyFilter(requested);
     }
   })();
   

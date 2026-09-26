@@ -1,5 +1,30 @@
 # プロジェクト詳細ページのフォーマット
 
+## 2026-09-25 更新 — ロック済みの型（以下の旧版より優先）
+
+IA ロック（2026-09-23）と PO ルール（2026-09-25）に合わせた現行の型。実装は
+`src/components/project/ProjectDetail.astro`、値の解決は `src/lib/detail.mjs`。
+
+```
+teaser（16:9）  ← 実物のミュート動画 / 静止画。無ければ ProjectHeroFallback（案件名・クライアント名の大きな文字組、またはロゴ）
+h1              ← 案件名だけ。コロン以下のタグラインは付けない
+one-liner       ← それが「何か」。技術名ではない（EN + JP）
+Play            ← 遊べるものがある時だけ。ページで唯一の外部リンク
+Challenge | Solution ← 状況の摩擦 ｜ 決定打ひとつ（機能の列挙ではない）
+body            ← 0〜3 ビート。文章より画像
+Role / Year / Client（商用時）
+Stack           ← フッターに薄く 1 行
+```
+
+- 値はエビデンス（`src/data/**/<slug>.json`）から取る。上書きは `detail`（`name` / `oneLiner` / `play` / `role` / `client` / `stack` / `teaser`）。
+- この型に移したページは `src/case-studies/<slug>.json` に `"format": "detail"` を置き、HTML はビートだけにする。
+- 禁止: タイトル上のタグ／ピル、「All Interactive」などのカテゴリ巡回、Solution を装った機能リスト、グラデーションだけのヒーロー、placeholder / coming soon。
+- 検査: `tests/detail-format.test.mjs`。
+
+---
+
+> 以下は 2026-09-12 の旧版（タグ・breadcrumb・hero 内 meta は廃止）。
+
 > Written by: superforge-ui · 2026-09-12 · 決定者: 本人
 > 基準ページ: `projects/amazon-firetv.html`（骨格の出発点）
 
