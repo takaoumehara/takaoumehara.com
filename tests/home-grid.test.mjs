@@ -24,7 +24,7 @@ test("the home page opens with the canonical headline", () => {
   const html = read("index.html");
   assert.match(
     html,
-    /class="grid-headline"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/,
+    /class="grid-headline"[^>]*><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/,
   );
 });
 
@@ -50,7 +50,7 @@ test("/work carries the four canonical filters (All, Interactive, AI, Design), e
   assert.ok(filters, "work.html needs the filter row");
   const expectedFilters = ["all", "interactive", "ai", "design"];
   for (const f of expectedFilters) assert.match(filters, new RegExp(`data-filter="${f}"`), `filter row missing ${f}`);
-  const counts = [...filters.matchAll(/class="filter-count">(\d+)</g)].map((m) => Number(m[1]));
+  const counts = [...filters.matchAll(/class="filter-count"[^>]*>(\d+)</g)].map((m) => Number(m[1]));
   assert.equal(counts.length, expectedFilters.length, "one count per pill: All, Interactive, AI, Design");
   assert.ok(counts.every((n) => n > 0), "every filter count must be a real number, not zero");
   assert.equal(counts[0], gridIds.size, `the All count must be ${gridIds.size} (every deduplicated grid item)`);

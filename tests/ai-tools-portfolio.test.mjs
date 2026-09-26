@@ -63,7 +63,7 @@ function sidebar(html, page) {
 function workGroups(html, page) {
   const nav = sidebar(html, page).match(/<nav class="side-work"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
   assert.ok(nav, `${page}: missing the work groups`);
-  return [...nav.matchAll(/<details class="side-group"( open)?>\s*<summary>\s*<span>([\s\S]*?)<\/span>/gi)].map((match) => ({
+  return [...nav.matchAll(/<details class="side-group"( open)?[^>]*>\s*<summary[^>]*>\s*<span[^>]*>([\s\S]*?)<\/span>/gi)].map((match) => ({
     open: Boolean(match[1]), label: match[2].replace(/<[^>]+>/g, '').trim(),
   }));
 }
@@ -196,7 +196,7 @@ test('Amazon Fire TV project page renders through the shared Challenge/Solution 
   assert.ok(article.includes('project-cs'), 'Challenge | Solution present');
 
   const side = sidebar(html, 'projects/amazon-firetv.html');
-  const group = side.match(/<details class="side-group"[^>]*>\s*<summary>\s*<span>\s*<span class="t-en">AI Products &amp; Systems<\/span>[\s\S]*?<\/details>/)?.[0];
+  const group = side.match(/<details class="side-group"[^>]*>\s*<summary[^>]*>\s*<span[^>]*>\s*<span class="t-en">AI Products &amp; Systems<\/span>[\s\S]*?<\/details>/)?.[0];
   assert.ok(group, 'sidebar must carry the AI Products & Systems group');
   assert.match(group, /href="\/projects\/amazon-firetv\.html"/, 'Amazon Fire TV must be listed under AI Products & Systems in the sidebar, not labeled in-page');
 });
