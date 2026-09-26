@@ -21,6 +21,9 @@ interface Props {
 }
 const { item, category, tags } = Astro.props;
 const to = destination(item);
+// The input stamp: what you put into an interactive piece (Handwriting, Voice,
+// Two phones …). English labels, like the capability labels. Experiments only.
+const stamp = item.kind === "experiment" && item.input ? String(item.input) : null;
 ---
 <article
   class="grid-card cat-card"
@@ -32,6 +35,7 @@ const to = destination(item);
   tabindex={to ? "0" : undefined}
 >
   <div class="grid-media cat-card-media" set:html={mediaFill(item)} />
+  {stamp && <span class="input-stamp">{stamp}</span>}
   <h3 class="cat-card-title" set:html={cardName(item)} />
   <p class="cat-card-desc" set:html={tb(item.cardLine ?? item.summary)} />
   {to && (

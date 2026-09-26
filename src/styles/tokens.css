@@ -36,6 +36,12 @@
   --ff-jp: var(--pr-ff-jp);
   --serif: var(--pr-ff-display);
   --fw: 400;
+  /* Metadata, counts, statuses and sensor badges: an ultralight monospace,
+     the "system directory" voice under the display type. Geist Mono is
+     loaded by Site.astro; the rest of the stack is what a machine already has. */
+  --ff-mono: "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --fw-mono: 300;
+  --tracking-mono: 0.02em;
 
   /* Fluid type. Every step holds its Porto Rocha value up to a 1280px viewport,
      then grows linearly to 1.28× of it at 2560px — a wider browser really does
@@ -63,6 +69,23 @@
      wide screen so the rhythm scales with the type. Never a different row and
      column value — that is what broke the grid's rhythm. */
   --gap-grid: clamp(8px, 0.45vw + 2.2px, 12px);
+  /* The one outer gutter (PORTO ROCHA's 8px canvas): the rail's padding on
+     every side, the pane's top and right edge, and the distance between the
+     rail's cards and the page (the rail's right padding IS that gap, so the
+     pane carries no left padding). Same unit as --gap-grid, so the frame and
+     the grids inside it share one rhythm. */
+  --pane-pad: var(--gap-grid);
+  /* The ONE inner padding of every bento cell in the right pane (home, about,
+     /work, the detail page): every text edge in a cell sits this far in, so
+     left edges line up across the whole page. */
+  --cell-pad: clamp(20px, 3vw, 32px);
+
+  /* Motion: the one decelerating curve (arrivals, focus-ins) and the one
+     overshooting spring (a nudge that settles back). */
+  --ease-decel: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-nudge: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* The operational status dot (the rail head's "Available" line). */
+  --pr-live: #1a7f37;
 
   /* Aliases the components were written against */
   --bg: var(--pr-canvas);
@@ -81,6 +104,7 @@
      not left with two empty margins; the shell pages (home, the grids, the
      detail page) do not use it at all — they fill the pane. */
   --col: clamp(1200px, 90vw, 1800px);
+  /* Legacy hand-built pages only; the shell pages use --pane-pad. */
   --gutter: clamp(16px, 2.2vw, 56px);
   /* The reference's rail measures ~382px at a 1280 viewport (≈28%) and clamps
      near 400 CSS px on a wider screen — docs/design/porto-rocha/MEASURE-2026-09-25.txt.
@@ -97,6 +121,7 @@ html[data-theme="dark"] {
   --pr-line: #262626;
   --pr-line-2: #6b6b6b;
   --pr-blue: #3b9cff;         /* 7.5:1 on black, 6.7:1 on the card grey */
+  --pr-live: #3fb950;
   --ink-mid: #d4d4d4;
   --a1: rgba(255, 255, 255, 0.06); --a2: rgba(255, 255, 255, 0.1); --a3: rgba(255, 255, 255, 0.05); --a4: rgba(255, 255, 255, 0.08);
   color-scheme: dark;

@@ -1,8 +1,9 @@
 ---
-// The left rail, after PORTO ROCHA: controls (show all projects · theme ·
-// language), the wordmark with a live New York clock, an About card that also
-// carries the pages about the person, then every piece of work grouped by
-// category (src/categories/*.json) as grey rows with a 64px tile.
+// The left rail, a precision directory of the work: controls (all work ·
+// search · theme · language), the wordmark over a system index (how many
+// works, how many disciplines, the advisory status), an About card, then every
+// piece of work grouped by category (src/categories/*.json) as rows with a
+// 64px tile or a mono tag badge.
 //
 // Site.astro persists this element across client-side navigations
 // (transition:persist), so aria-current is computed twice: here for the
@@ -36,6 +37,26 @@ const groups = categories.map((category) => {
   return { category, items };
 });
 
+// The rail head's system index: how many distinct pieces of work the rail
+// lists (a piece filed under two categories counts once) and in how many
+// disciplines. Both come from the same data as the rows, never hardcoded.
+const workCount = new Set(groups.flatMap(({ items }) => items.map(({ item }) => item.id ?? item.slug))).size;
+const disciplineCount = groups.length;
+
+// First-load boot order (src/styles/transitions.css): every category head and
+// row gets its place in the rail, top to bottom, so the stagger runs down the
+// whole directory rather than restarting in each group. Only the first ones
+// animate; the rest are simply there.
+const BOOT_ROWS = 12;
+let bootIndex = 0;
+const bootGroups = groups.map((g) => ({ ...g, head: bootIndex++, rows: g.items.map(() => bootIndex++) }));
+const rowStyle = (i) => (i < BOOT_ROWS ? `--row-i: ${i}` : undefined);
+
+// A count that rolls up on the first load: the real number is the element's
+// text (what a screen reader reads), and the rolling copy is a decoration
+// drawn over it by CSS from --to.
+const odo = (n) => `<span class="odo" style="--to: ${Number(n) || 0}">${Number(n) || 0}</span>`;
+
 // A row is named, not described: the Latin short name in both languages.
 // Resona stays "Resona" in the Japanese edition, the way a studio site keeps
 // its project names — the Japanese lives in the one-liner underneath.
@@ -65,6 +86,8 @@ const hue = (seed) => {
   return h % 360;
 };
 
+// No image: a tag badge — the initials in mono inside a 1px frame, with the
+// project's deterministic hue kept only as a small tag mark in the corner.
 const thumb = (item) => {
   const image = item.assets?.thumb ?? item.assets?.hero;
   if (image) return `<img src="${esc(url(image))}" alt="" loading="lazy" width="64" height="64">`;
@@ -73,8 +96,46 @@ const thumb = (item) => {
 };
 ---
 <aside class="side" id="side" transition:persist="side">
+  <script is:inline>
+    // First load of the session only: html[data-boot] turns on the boot
+    // sequence (src/styles/transitions.css). Set here, at the top of <body>,
+    // so it is in place before the rail or the pane is painted. Nothing is
+    // hidden without it — every boot animation fills backwards and ends on the
+    // element's own styles — so a failed or missing script leaves the page as
+    // it is. Reduced motion never boots. The pane's cards are numbered in
+    // document order, frame by frame, before each paint (--boot-i); only the
+    // first twelve take part.
+    (function () {
+      if (window.__tuBoot) return;
+      window.__tuBoot = true;
+      var html = document.documentElement;
+      try {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        if (sessionStorage.getItem("tu-booted")) return;
+        sessionStorage.setItem("tu-booted", "1");
+      } catch (e) { return; }
+      html.setAttribute("data-boot", "");
+      var SEL = "#main .bento-cell, #main .work-grid .grid-card, #main .hn-card, #main .home-hero";
+      var n = 0, MAX = 12;
+      function tag() {
+        var list = document.querySelectorAll(SEL);
+        for (var i = 0; i < list.length && n < MAX; i++) {
+          var el = list[i];
+          if (el.hasAttribute("data-boot-i")) continue;
+          var up = el.parentElement && el.parentElement.closest(SEL);
+          if (up) continue; // a card inside a card moves with its parent
+          el.setAttribute("data-boot-i", "");
+          el.style.setProperty("--boot-i", n++);
+        }
+      }
+      function frame() { tag(); if (document.readyState === "loading" && n < MAX) requestAnimationFrame(frame); }
+      requestAnimationFrame(frame);
+      document.addEventListener("DOMContentLoaded", tag, { once: true });
+    })();
+  </script>
   <div class="side-top">
     <a class="side-wordmark" href="/">{profile.name}</a>
+    <span class="side-top-status"><span class="side-dot" aria-hidden="true"></span><span class="t-en">Open for 0→1</span><span class="t-jp">0→1 受付中</span></span>
     <button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">Menu</button>
   </div>
 
@@ -110,18 +171,20 @@ const thumb = (item) => {
 
     <div class="side-head">
       <a class="side-wordmark" href="/" data-match="/" aria-current={cur(samePage("/", current))}>{profile.name}</a>
-      <div class="side-clocks" id="side-clocks">
-        <div class="clock-row" data-city="tokyo" data-zone="Asia/Tokyo" data-name-en="Tokyo" data-name-jp="東京">
-          <span class="clock-city">Tokyo</span>
-          <span class="clock-weather" data-weather-icon>☀️</span>
-          <span class="clock-time">--:--</span>
+      <dl class="side-status">
+        <div class="side-index">
+          <dt class="vh"><span class="t-en">Index</span><span class="t-jp">索引</span></dt>
+          <dd>
+            <span class="t-en"><Fragment set:html={odo(workCount)} /> Selected Works</span><span class="t-jp">厳選 <Fragment set:html={odo(workCount)} /> 作品</span>
+            <span class="side-sep" aria-hidden="true">·</span>
+            <span class="t-en"><Fragment set:html={odo(disciplineCount)} /> Disciplines</span><span class="t-jp"><Fragment set:html={odo(disciplineCount)} /> 領域</span>
+          </dd>
         </div>
-        <div class="clock-row" data-city="newyork" data-zone="America/New_York" data-name-en="New York" data-name-jp="ニューヨーク">
-          <span class="clock-city">New York</span>
-          <span class="clock-weather" data-weather-icon>☀️</span>
-          <span class="clock-time">--:--</span>
+        <div class="side-avail">
+          <dt class="vh"><span class="t-en">Status</span><span class="t-jp">ステータス</span></dt>
+          <dd><span class="side-dot" aria-hidden="true"></span><span class="side-avail-text"><span class="t-en">Available for 0→1 Advisory</span><span class="t-jp">0→1 アドバイザリー受付中</span></span></dd>
         </div>
-      </div>
+      </dl>
     </div>
 
     <section class="side-about">
@@ -132,16 +195,16 @@ const thumb = (item) => {
     </section>
 
     <nav class="side-work" aria-label="Work by category">
-      {groups.map(({ category, items }) => (
+      {bootGroups.map(({ category, items, head, rows }) => (
         <details class="side-group" open>
-          <summary>
-            <span set:html={t(category.title)} />
-            <span class="side-count">{items.length}</span>
+          <summary style={rowStyle(head)} data-boot-row={head < BOOT_ROWS ? "" : undefined}>
+            <span class="side-group-title" set:html={t(category.title)} />
+            <span class="side-count" set:html={odo(items.length)} />
           </summary>
           <ul>
-            {items.map(({ item, to, href, here }) => (
+            {items.map(({ item, to, href, here }, i) => (
               <li>
-                <a class="side-item" href={href}
+                <a class="side-item" href={href} style={rowStyle(rows[i])} data-boot-row={rows[i] < BOOT_ROWS ? "" : undefined}
                    data-match={to?.external ? undefined : href}
                    aria-current={cur(here)}
                    target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>

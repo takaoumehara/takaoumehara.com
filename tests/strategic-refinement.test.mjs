@@ -150,8 +150,8 @@ test("Homepage headline leads with concrete high-business-value executive capabi
   const jaIndex = read("ja/index.html");
 
   // The image grid (src/pages/index.astro) leads with profile.positioning[1].
-  assert.match(index, /class="grid-headline"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
-  assert.match(jaIndex, /class="grid-headline"><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
+  assert.match(index, /class="grid-headline"[^>]*><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
+  assert.match(jaIndex, /class="grid-headline"[^>]*><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
   assert.match(jaIndex, /曖昧なアイデアを、実際に触れる体験や、動く AI プロトタイプ、0→1 のプロダクトにする。/);
 
   // The canonical lens (lens/default/index.html) still leads with the same

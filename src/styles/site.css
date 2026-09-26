@@ -433,9 +433,14 @@ footer { border-top: 1px solid var(--line); }
    carries the grid itself, and its own stylesheet, src/styles/grid.css). */
 /* Like the detail page, a category page is the main pane — it fills whatever
    the rail leaves. Individual blocks cap their own measure (.cat-lede). */
-.cat-page { width: 100%; padding: 0 var(--gutter) 120px; }
+/* Same outer frame as the detail page: --pane-pad on the top and right, and
+   no left padding because the rail's right padding is the gap. */
+.cat-page { width: 100%; padding: var(--pane-pad) var(--pane-pad) 120px 0; }
 
-.cat-head { padding: clamp(40px, 5vw, 64px) 0 var(--sp-5); }
+@media (max-width: 900px) { .cat-page { padding-left: var(--pane-pad); } } /* no rail beside it */
+/* No top padding of its own: .cat-page already puts the headline one
+   --pane-pad below the top, the way the reference's hero sits 8px down. */
+.cat-head { padding: 0 0 var(--sp-5); }
 .cat-title {
   font-family: var(--ff-display);
   font-size: clamp(28px, 3.2vw, 64px);

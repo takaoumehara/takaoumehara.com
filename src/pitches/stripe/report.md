@@ -46,7 +46,7 @@ Domain words in the posting: payments and financial services (×13), commerce an
 - Why: Prototyping (strong, weight 100%); Cross-functional Leadership (strong, weight 94%); UX / CX (strong, weight 86%); AI (strong, weight 63%)
 - Score 7.0622 → after coverage discount 7.0622
 - Framings on record: product, transformation, creative-tech
-- Metrics a lens may show: 10 agents designed and shipped [stated]; 40+ designers using the agents [stated]; 80+ cross-functional stakeholders in the expanded rollout [stated]; 40+ friction points mapped from 16+ interviews [stated]; 6 brands across the Verizon Value portfolio [stated]; 20–40 ranked edge cases per audit [stated]
+- Metrics a lens may show: 10 agents designed and shipped [stated]; 40+ designers using the agents [stated]; 80+ cross-functional stakeholders in the expanded rollout [stated]; 40+ friction points mapped from 16 designer interviews [stated]; 6 brands across the Verizon Value portfolio [stated]; 20–40 ranked edge cases per audit [stated]
 - Never claim: built the model, trained a model, custom model, API access
 - **A hiring manager will ask, and the record cannot answer yet:**
   - contribution.level — solo / led / co-led / contributor / advised. A hiring manager asks this first.

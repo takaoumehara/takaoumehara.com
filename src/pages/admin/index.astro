@@ -1,0 +1,99 @@
+---
+// /admin — the site's admin, rendered on demand. Who sees what is decided on
+// the server (src/middleware.ts → locals.admin), never in the browser:
+//   not configured  → which env vars to set (Clerk is not loaded at all)
+//   signed out      → Clerk's sign-in form
+//   not an admin    → "this account is not allowed" + sign out
+//   admin           → the first section, Hero showcase (_ShowcaseEditor)
+// Setup: docs/admin.md.
+import AdminShell from "./_AdminShell.astro";
+import ShowcaseEditor from "./_ShowcaseEditor.astro";
+import { SECTIONS } from "./_sections";
+import { adminConfig, DEFAULT_ADMIN_EMAILS, type AdminState } from "../api/admin/_auth";
+
+export const prerender = false;
+
+const config = adminConfig();
+const state: AdminState | undefined = Astro.locals.admin;
+const section = SECTIONS[0];
+
+let view: "not-configured" | "error" | "sign-in" | "forbidden" | "editor";
+if (!config.configured || state?.configured === false) view = "not-configured";
+else if (!state) view = "error";
+else if (!state.signedIn) view = "sign-in";
+else if (!state.allowed) view = "forbidden";
+else view = "editor";
+
+if (view === "not-configured") Astro.response.status = 503;
+if (view === "error") Astro.response.status = 500;
+if (view === "forbidden") Astro.response.status = 403;
+
+const ENV_VARS = [
+  { name: "PUBLIC_CLERK_PUBLISHABLE_KEY", en: "Clerk → API keys → Publishable key (pk_live_… / pk_test_…)", jp: "Clerk の API keys にある Publishable key" },
+  { name: "CLERK_SECRET_KEY", en: "Clerk → API keys → Secret key (sk_…). Server only.", jp: "Clerk の Secret key（サーバー専用）" },
+  { name: "ADMIN_EMAILS", en: `Who may sign in, comma-separated. Default: ${DEFAULT_ADMIN_EMAILS}`, jp: `サインインを許可するメールアドレス（カンマ区切り）。既定値: ${DEFAULT_ADMIN_EMAILS}` },
+  { name: "GITHUB_TOKEN", en: "Fine-grained token with Contents: read & write on the repository — needed to save.", jp: "リポジトリの Contents に読み書き権限を持つ Fine-grained token（保存に必要）" },
+  { name: "GITHUB_REPO / GITHUB_BRANCH", en: "Optional. Default takaoumehara/takaoumehara.com and main.", jp: "任意。既定値は takaoumehara/takaoumehara.com と main" },
+];
+const clerk = view !== "not-configured";
+---
+<AdminShell title={view === "editor" ? section.label.en : view === "not-configured" ? "Not configured" : "Sign in"} current={section.id} clerk={clerk} email={state?.email ?? null} signedIn={!!state?.signedIn} showNav={view === "editor"}>
+  {view === "not-configured" && (
+    <section class="ad-center">
+      <h1>Admin is not configured <span class="ad-jp">管理画面はまだ設定されていません</span></h1>
+      <p class="ad-lede">Set these environment variables in the Vercel project <span class="ad-code">takaoumehara-com</span> (Settings → Environment Variables), then redeploy.
+        <span class="ad-jp">Vercel のプロジェクト takaoumehara-com の Settings → Environment Variables に次の値を設定し、再デプロイしてください。</span></p>
+      <div class="ad-card">
+        <h2>Missing now <span class="ad-jp">未設定</span></h2>
+        <p>{config.missing.map((n, i) => <>{i > 0 && ", "}<span class="ad-code">{n}</span></>)}</p>
+        <h2>All variables <span class="ad-jp">すべての変数</span></h2>
+        <ul class="ad-envlist">
+          {ENV_VARS.map((v) => (
+            <li><span class="ad-code">{v.name}</span> — {v.en}<br /><span class="ad-muted">{v.jp}</span></li>
+          ))}
+        </ul>
+        <p class="ad-muted">Step-by-step: <span class="ad-code">docs/admin.md</span> in the repository. <span class="ad-jp">手順はリポジトリの docs/admin.md にあります。</span></p>
+      </div>
+    </section>
+  )}
+
+  {view === "error" && (
+    <section class="ad-center">
+      <h1>Admin could not check your session <span class="ad-jp">セッションを確認できませんでした</span></h1>
+      <p class="ad-lede">The admin middleware did not run for this request. Reload the page; if it persists, check the function logs on Vercel.
+        <span class="ad-jp">再読み込みしてください。続く場合は Vercel の関数ログを確認してください。</span></p>
+    </section>
+  )}
+
+  {view === "sign-in" && (
+    <section class="ad-center">
+      <h1>Sign in <span class="ad-jp">サインイン</span></h1>
+      <p class="ad-lede">Only the site owner's account can open the admin.
+        <span class="ad-jp">管理画面を開けるのは、許可されたアカウントだけです。</span></p>
+      <p class="ad-muted" data-admin-clerk-status role="status">Loading sign-in… <span class="ad-jp">読み込み中…</span></p>
+      <div data-admin-sign-in></div>
+    </section>
+  )}
+
+  {view === "forbidden" && (
+    <section class="ad-center">
+      <h1>This account is not allowed <span class="ad-jp">このアカウントには権限がありません</span></h1>
+      <p class="ad-lede">
+        {state?.reason === "no-verified-email"
+          ? <>The account has no verified primary email address. <span class="ad-jp">プライマリのメールアドレスが確認済みではありません。</span></>
+          : state?.reason === "lookup-failed"
+            ? <>Clerk could not be reached to look up the account. Try again. <span class="ad-jp">Clerk からアカウント情報を取得できませんでした。もう一度お試しください。</span></>
+            : <>Signed in as <strong>{state?.email}</strong>, which is not in ADMIN_EMAILS. <span class="ad-jp">{state?.email} は ADMIN_EMAILS に含まれていません。</span></>}
+      </p>
+      <p class="ad-muted" data-admin-clerk-status role="status">Loading… <span class="ad-jp">読み込み中…</span></p>
+    </section>
+  )}
+
+  {view === "editor" && (
+    <>
+      <h1>{section.label.en} <span class="ad-jp">{section.label.jp}</span></h1>
+      <p class="ad-lede">{section.note.en} <span class="ad-jp">{section.note.jp}</span></p>
+      <ShowcaseEditor />
+    </>
+  )}
+</AdminShell>

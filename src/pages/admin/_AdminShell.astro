@@ -1,0 +1,125 @@
+---
+// The admin's frame: its own <html> (not src/layouts/Site.astro — no site
+// navigation, no view transitions, no analytics), noindex, a nav of sections
+// (_sections.ts) and the signed-in account. Pages under /admin render into
+// the default slot.
+import { SECTIONS } from "./_sections";
+import ClerkBoot from "./_ClerkBoot.astro";
+
+interface Props {
+  title: string;
+  current?: string;
+  /** Load Clerk in the browser (sign-in form, session refresh, sign-out). Only when Clerk is configured. */
+  clerk?: boolean;
+  email?: string | null;
+  signedIn?: boolean;
+  showNav?: boolean;
+}
+const { title, current = "showcase", clerk = false, email = null, signedIn = false, showNav = true } = Astro.props;
+
+Astro.response.headers.set("cache-control", "no-store");
+Astro.response.headers.set("x-robots-tag", "noindex, nofollow");
+Astro.response.headers.set("referrer-policy", "same-origin");
+Astro.response.headers.set("x-frame-options", "DENY");
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>{title} · Admin · takaoumehara.com</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+</head>
+<body class="ad">
+  <header class="ad-top">
+    <a class="ad-brand" href="/">takaoumehara.com</a>
+    <span class="ad-top-title">Admin <span class="ad-jp">管理画面</span></span>
+    <div class="ad-account">
+      {email && <span class="ad-muted ad-email">{email}</span>}
+      {clerk && <button type="button" class="ad-btn ad-btn--quiet" data-admin-signout hidden>Sign out <span class="ad-jp">サインアウト</span></button>}
+    </div>
+  </header>
+  <div class={showNav ? "ad-frame" : "ad-frame ad-frame--solo"}>
+    {showNav && (
+      <nav class="ad-nav" aria-label="Admin sections">
+        <ul>
+          {SECTIONS.map((s) => (
+            <li>
+              <a href={s.href} aria-current={s.id === current ? "page" : undefined}>
+                <span>{s.label.en}</span>
+                <span class="ad-jp">{s.label.jp}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="ad-muted ad-nav-note">More controls can be added here. <span class="ad-jp">ここに管理項目を追加できます。</span></p>
+      </nav>
+    )}
+    <main class="ad-main" id="main">
+      <slot />
+    </main>
+  </div>
+  {clerk && <ClerkBoot />}
+</body>
+</html>
+
+<style is:global>
+  .ad {
+    --ad-ink: #111; --ad-ink-2: #5c5c5c; --ad-bg: #fff; --ad-card: #f4f4f4; --ad-card-2: #e9e9e9;
+    --ad-line: #dcdcdc; --ad-blue: #0062cc; --ad-red: #b3261e; --ad-green: #1e6b34; --ad-r: 8px;
+    margin: 0; background: var(--ad-bg); color: var(--ad-ink);
+    font: 15px/1.45 -apple-system, BlinkMacSystemFont, "Inter", "Hiragino Sans", "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    .ad { --ad-ink: #f2f2f2; --ad-ink-2: #b0b0b0; --ad-bg: #111; --ad-card: #1d1d1d; --ad-card-2: #2a2a2a; --ad-line: #3a3a3a; --ad-blue: #6aa8ff; --ad-red: #ff8a80; --ad-green: #7fd18f; }
+  }
+  .ad *, .ad *::before, .ad *::after { box-sizing: border-box; }
+  .ad a { color: var(--ad-blue); }
+  .ad :focus-visible { outline: 2px solid var(--ad-blue); outline-offset: 2px; }
+  .ad-jp { color: var(--ad-ink-2); font-size: 0.92em; margin-left: 0.4em; }
+  .ad-muted { color: var(--ad-ink-2); }
+  .ad-top { display: flex; align-items: center; gap: 16px; padding: 12px 24px; border-bottom: 1px solid var(--ad-line); flex-wrap: wrap; }
+  .ad-brand { font-weight: 600; color: var(--ad-ink) !important; text-decoration: none; }
+  .ad-top-title { font-weight: 600; }
+  .ad-account { margin-left: auto; display: flex; align-items: center; gap: 12px; }
+  .ad-email { font-size: 13px; }
+  .ad-frame { display: grid; grid-template-columns: 220px minmax(0, 1fr); min-height: calc(100vh - 52px); }
+  .ad-frame--solo { grid-template-columns: minmax(0, 1fr); }
+  .ad-frame--solo .ad-main { padding-top: 40px; }
+  .ad-center h1 .ad-jp { display: block; margin: 4px 0 0; }
+  .ad-nav { border-right: 1px solid var(--ad-line); padding: 20px 12px; }
+  .ad-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+  .ad-nav a { display: block; padding: 8px 12px; border-radius: var(--ad-r); color: var(--ad-ink); text-decoration: none; min-height: 24px; }
+  .ad-nav a .ad-jp { display: block; margin: 0; font-size: 12px; }
+  .ad-nav a:hover { background: var(--ad-card); }
+  .ad-nav a[aria-current="page"] { background: var(--ad-card-2); font-weight: 600; }
+  .ad-nav-note { font-size: 12px; padding: 12px; margin: 0; }
+  .ad-nav-note .ad-jp { display: block; margin: 2px 0 0; }
+  .ad-main { padding: 24px clamp(16px, 3vw, 40px) 64px; min-width: 0; }
+  .ad-main h1 { font-size: 24px; margin: 0 0 4px; font-weight: 600; }
+  .ad-main h1 .ad-jp { font-size: 16px; font-weight: 400; }
+  .ad-lede { margin: 0 0 20px; color: var(--ad-ink-2); max-width: 70ch; }
+  .ad-lede .ad-jp { display: block; margin: 2px 0 0; }
+  .ad-card { background: var(--ad-card); border-radius: var(--ad-r); padding: clamp(16px, 2.4vw, 24px); }
+  .ad-card + .ad-card { margin-top: 16px; }
+  .ad-card h2 { font-size: 16px; margin: 0 0 8px; }
+  .ad-btn { font: inherit; font-size: 14px; min-height: 36px; padding: 6px 14px; border-radius: var(--ad-r); border: 1px solid var(--ad-ink); background: var(--ad-ink); color: var(--ad-bg); cursor: pointer; }
+  .ad-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .ad-btn--quiet { background: transparent; color: var(--ad-ink); border-color: var(--ad-line); }
+  .ad-btn--quiet:hover { background: var(--ad-card); }
+  .ad-btn .ad-jp { color: inherit; opacity: 0.85; }
+  .ad-code { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; background: var(--ad-card-2); padding: 1px 6px; border-radius: 4px; }
+  .ad-envlist { margin: 8px 0 0; padding-left: 20px; }
+  .ad-envlist li { margin: 6px 0; }
+  .ad-center { max-width: 640px; margin: 0 auto; }
+  @media (max-width: 760px) {
+    .ad-frame { grid-template-columns: minmax(0, 1fr); }
+    .ad-frame--solo { grid-template-columns: minmax(0, 1fr); }
+  .ad-frame--solo .ad-main { padding-top: 40px; }
+  .ad-center h1 .ad-jp { display: block; margin: 4px 0 0; }
+  .ad-nav { border-right: 0; border-bottom: 1px solid var(--ad-line); padding: 8px 12px; }
+    .ad-nav ul { grid-auto-flow: column; justify-content: start; }
+    .ad-nav-note { display: none; }
+  }
+</style>

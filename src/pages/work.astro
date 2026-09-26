@@ -1,14 +1,39 @@
 ---
-// The All Work page: fullscreen grid WITHOUT left rail, with filters and search
-// This is the canonical work archive page at /work
+// The All Work page: fullscreen grid WITHOUT left rail, with filters and search.
+// This is the canonical work archive page at /work.
+//
+// The grid itself is a "free" bento, not the fixed 3-column PORTO ROCHA grid
+// (src/components/grid/WorkGrid.astro / src/styles/grid.css) every other
+// page uses: tiles vary in size (a "feature" 2x2, a "wide" 2x1, and the plain
+// 1x1) and pack densely (grid-auto-flow: dense), the way the pre-Astro
+// "Bento: a landing that re-cuts itself" branch (origin/claude/exciting-cerf-xgoyxb,
+// src/lib/bentoShapes.mjs's BENTO_PATTERNS/cutBento) varied tile width per
+// row — ported here as a per-tile size class instead of that row-summed
+// layout, because dense packing (not a fixed 12-column row) is what keeps the
+// grid whole while the filter bar hides and reveals tiles. gridEntries()
+// already orders Interactive first (src/lib/site.mjs's CATEGORY_ORDER), so
+// the deterministic size cycle below opens on an Interactive feature tile
+// without any extra sort.
 import Site from "../layouts/Site.astro";
-import WorkGrid from "../components/grid/WorkGrid.astro";
-import { tb, t } from "../lib/html.mjs";
-import { getLibrary, gridEntries, orderedCategories } from "../lib/site.mjs";
+import { tb, t, mediaFill } from "../lib/html.mjs";
+import { cardName } from "../lib/labels.mjs";
+import { getLibrary, gridEntries, orderedCategories, destination } from "../lib/site.mjs";
 
 const lib = getLibrary();
 const entries = gridEntries();
 const categories = orderedCategories();
+
+// One size per tile, in order, deterministic (so /work and /ja/work — should
+// it ever exist — and every rebuild render identically). "feature" = 2x2,
+// "wide" = 2x1, anything else = 1x1. Cycle opens on "feature", which lands on
+// the first (Interactive) tile.
+const SIZE_CYCLE = ["feature", "normal", "wide", "normal", "normal", "feature", "normal", "wide", "normal", "normal"];
+const sizeFor = (i) => SIZE_CYCLE[i % SIZE_CYCLE.length];
+const tiles = entries.map(({ item, category }, i) => {
+  const to = destination(item);
+  const stamp = item.kind === "experiment" && item.input ? String(item.input) : null;
+  return { item, category, to, stamp, size: sizeFor(i) };
+});
 
 const FILTERS = [
   { id: "all", label: { en: "All", jp: "すべて" }, count: entries.length },
@@ -79,8 +104,36 @@ FILTERS[3].count = designCount;
         ))}
       </div>
     </header>
-    
-    <WorkGrid entries={entries} />
+
+    <div class="work-bento" id="work-bento">
+      {tiles.map(({ item, category, to, stamp, size }) => (
+        <article
+          class={`tile tile--${size} cat-card grid-card bento-cell`}
+          id={item.slug}
+          data-href={to ? to.url : undefined}
+          data-external={to?.external ? "true" : undefined}
+          data-category={category}
+          tabindex={to ? "0" : undefined}
+        >
+          <div class="tile-media" set:html={mediaFill(item)} />
+          {stamp && <span class="input-stamp">{stamp}</span>}
+          <div class="tile-body">
+            <h3 class="cat-card-title tile-title" set:html={cardName(item)} />
+            <p class="cat-card-desc tile-desc" set:html={tb(item.cardLine ?? item.summary)} />
+          </div>
+          {to && (
+            <a
+              class="cat-card-cta"
+              href={to.url}
+              target={to.external ? "_blank" : undefined}
+              rel={to.external ? "noopener" : undefined}
+            >
+              <span class="sr-only" set:html={t(to.label)} />
+            </a>
+          )}
+        </article>
+      ))}
+    </div>
   </main>
 </Site>
 
@@ -177,6 +230,60 @@ FILTERS[3].count = designCount;
     font-size: var(--text-body);
   }
 
+  /* ── The free grid ──────────────────────────────────────────────────────
+     A "fairly free" bento, not the fixed 3-column PORTO ROCHA grid every
+     other page uses: a base tile is 1x1, some are "wide" (2x1) and a few are
+     "feature" (2x2) — src/pages/work.astro's SIZE_CYCLE assigns the class
+     deterministically, opening on Interactive. grid-auto-flow: dense means
+     that hiding tiles (the filter bar, the search box, both toggle
+     .is-hidden → display:none via src/styles/grid.css) never leaves a hole:
+     the remaining tiles re-pack up into it. */
+  .work-bento {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: 220px;
+    gap: var(--gap-grid);
+    grid-auto-flow: dense;
+  }
+  .tile {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: var(--r);
+    background: var(--pr-card);
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  .tile--wide { grid-column: span 2; }
+  .tile--feature { grid-column: span 2; grid-row: span 2; }
+  .tile-media {
+    position: relative;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    background: var(--pr-card-2);
+  }
+  .tile-media img,
+  .tile-media video,
+  .tile-media .card-art {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 700ms cubic-bezier(.2, .7, .2, 1);
+  }
+  .tile[data-href]:hover .tile-media img { transform: scale(1.02); }
+  .tile-body {
+    flex: none;
+    padding: var(--cell-pad, clamp(20px, 3vw, 32px));
+  }
+  /* A "feature" tile's media is the point — the caption sits tighter so the
+     image still reads as the largest thing on the tile. */
+  .tile--feature .tile-body { padding-top: calc(var(--cell-pad, clamp(20px, 3vw, 32px)) * 0.6); }
+  .tile-title { margin: 0 0 2px; }
+  .tile--feature .tile-title { font-size: var(--text-lg); }
+
   @keyframes slideDown {
     from {
       opacity: 0;
@@ -192,14 +299,36 @@ FILTERS[3].count = designCount;
     .work-page-full {
       padding: 24px var(--gutter);
     }
-    
+
     .work-filters {
       gap: 8px;
     }
-    
+
     .filter-btn {
       padding: 8px 12px;
       font-size: 13px;
+    }
+
+    /* Fewer columns, and a feature/wide tile only doubles width, never
+       height — a 2x2 square at 2 columns wide would run the whole first
+       screen. */
+    .work-bento {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-rows: 200px;
+    }
+    .tile--feature { grid-row: span 1; }
+  }
+
+  /* One column, no horizontal scroll: every tile (feature and wide included)
+     is full width, stacked. */
+  @media (max-width: 480px) {
+    .work-bento {
+      grid-template-columns: minmax(0, 1fr);
+      grid-auto-rows: 240px;
+    }
+    .tile--wide,
+    .tile--feature {
+      grid-column: span 1;
     }
   }
 </style>

@@ -27,9 +27,17 @@ test("/now cards display Why it exists and What's next", () => {
   assert.match(html, /pill--now-status/, "cards must have status badges");
 });
 
-test("/now marks Now as the current page in the sidebar", () => {
+// The rail's old page list (which had its own "Now" link) is gone — Now's
+// content lives inside About's #now section now (src/pages/about.astro), and
+// the live route /now (and /now/) permanently redirects to /about#now
+// (vercel.json). now/index.html is kept only as a legacy build target for the
+// bare URL; it renders the same shared sidebar as everything else, which
+// rightly does not claim any entry as "this page" for it.
+test("/now/index.html (a legacy page superseded by the /about#now redirect) does not falsely mark any sidebar entry as current", () => {
   const html = read("now/index.html");
-  assert.match(html, /<a href="\/now\/"[^>]*aria-current="page"[^>]*><span class="t-en">Now<\/span>/, "the Now link must be aria-current");
+  const side = html.match(/<aside[^>]*class="side"[\s\S]*?<\/aside>/i)?.[0];
+  assert.ok(side, "missing sidebar");
+  assert.equal(/aria-current="page"/.test(side), false, "no sidebar entry should claim to be the current page for the superseded /now/ route");
 });
 
 test("work-with-me.html exists and features Good Fit guidelines and Studio bridge", () => {

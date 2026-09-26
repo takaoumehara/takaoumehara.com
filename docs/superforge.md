@@ -1,6 +1,6 @@
 # superforge — project settings
 
-> Written by: superforge · Last updated: 2026-09-17
+> Written by: superforge · Last updated: 2026-09-26
 
 ## Language
 会話: 日本語
@@ -112,3 +112,46 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
 - **ケーススタディの冒頭**（2026-09-17）: 本文の前に `narrative.problem` / `narrative.built` /
   `narrative.impact` から **The challenge / The solution / Impact** のグレーカード列を出す
   （`src/components/project/ProjectStrip.astro`）。データに無いものは出さない。文章は書き足さない。
+- **外枠は 8px 一択**（2026-09-25、本人「portorocha.com と同じ隙間に」）: `--pane-pad`（= `--gap-grid`、1280px で 8px、
+  広い画面で 12px まで）をレールの padding・レール→ペインの間・ティーザーの上・右端すべてに使う。
+  レールは右 padding だけで隙間を作り、ペイン側（`.project-detail` / `.cat-page`）は左 padding 0。`.cat-head` の上 padding も 0。
+  基準ページは **Rakugaki Jam**（`/projects/rakugaki-jam.html`）。Playwright で 1280/1600/1920/390 を測って揃えた。
+- **ランディング**（2026-09-25 改訂、本人「作品を順番にアニメーションで」「右側に基本情報と新しいプロジェクト」）:
+  上から **ヒーロー・スライドショー**（`src/components/home/HomeHero.astro`、16:9、実写・実動画のみ、5 秒クロスフェード、
+  hover / focus / 非表示タブ / 画面外で停止、`prefers-reduced-motion` は手動のみ、`data-vt-hero` はこれ 1 つ）→
+  **ニュース bento**（`HomeNews.astro`、先頭に基本情報カード、続けて Interactive 8 件の日付つき記事＋3:2 サムネ。
+  データは `src/data/news.mjs`、**日付は 2026-03〜09 の仮置き — 本人の実日付待ち**）→ ~~「All work」＋ 4 つのフィルタ＋グリッド~~（2026-09-26 に撤去、全作品は `/work`）。
+  `/ja/` は同じ構成（`src/pages/ja/index.astro` を `index.astro` と揃えて保つ）。架空の出来事（「晩夏のプレイアブル」等）は書かない。
+- **TWIST — Porto Rocha との差別化**（2026-09-25、`docs/design/twist-proposal.md`、本人「ほとんど変えずにひねりを」）:
+  骨格（二列・グレー塗り・8px・モノクロ）は残し、**サイトが本人の共有画面作品のように振る舞う**一つの性格だけ足す。
+  実装済み: 投げ込み（レール行 / カードのサムネが VT で 16:9 ティーザーへ育つ、戻りは現在行へ縮む。`hero` 名は常に文書内 1 個）、
+  疑似触覚（押下 0.985 → `linear()` バネ戻り、ホバーで画像が 2〜4px 寄る。**影と持ち上げは禁止**）、エコー（カードのホバーで
+  レールの同じ行が 120ms 遅れて反応）、初回ロードだけの登場（レール→ニュース→グリッド）、入力スタンプ（`input` を大文字で
+  グリッドカードとヒーローの字幕に。**レール行には出さない** — 行の高さを変えないため）。root の dissolve から blur を外した。
+  モバイル: 「両方。ホバーは押下に置き換え、モバイル専用で必須のものは作らない」。レールが畳まれる幅ではカードが起点。
+- ~~About はレール無し~~ → **2026-09-26 に撤回。About もレールあり、本文は bento セル**（下の Round 2 を参照）。
+- **本番の整合**（2026-09-25、`docs/prod-alignment-2026-09-25.md`）: Vercel の Production は `main` の自動デプロイに戻るので
+  Promote は恒久策にならない。**同じリポを 2 つの Vercel プロジェクトがビルドしている**（`takaoumehara-com` / `-ybtq`）。
+  恒久策は PR #23 → PR #24 のマージ。
+
+
+### Round 2（2026-09-26、本人「全部の情報を弁当ボックスのセルに」ほか）
+- **詳細ページは全部 bento セル。** ティーザー・H1・一行文・Play・Challenge | Solution・ビート・Role/Year/Client・スタックまで
+  すべて `.project-bento` の中のセル（白または透明）に入れ、文字の左端を **`--cell-pad`（`clamp(20px,3vw,32px)`）で完全に揃える**。
+  ティーザーだけ padding 0（`data-vt-hero` はそのまま 1 個）。ビートは `display:contents` でセル列に並ぶ。
+- **ランディング = ヒーロー + ニュース bento だけ。** 下の「All work」は撤去。Interactive を先に並べる。
+- **`/work` = 全画面の自由グリッド。** サイズの周期（feature / normal / wide）で密に詰める。フィルタ＋検索＋`?filter=`。
+- **About はレールあり、人物系ページを bento セルに統合**（#now #writing #workshops #work-with-me #studio、ポートレートは残す）。
+- **システム UI（Principal Creative Technologist 版）**: 時計と天気は撤去。レール上部は mono で
+  「44 Selected Works · 5 Disciplines」「[Available for 0→1 Advisory]」。数は mono、イニシャルはタグ型バッジ、入力バッジはセンサー表示。
+  - 起動: `sessionStorage` で 1 セッション 1 回、カウンターのロールアップ、レール行 15ms 刻み、レンズ blur(4px)→0（`cubic-bezier(0.16,1,0.3,1)`）。
+    カードは「ばばばば」と少しずつ出る（ペイン全体で約 0.8s — 350ms 目標より長い、本人確認待ち）。
+  - 触感: レール押下で `translateX(3px)` 80ms → バネ（`cubic-bezier(0.34,1.56,0.64,1)`）。方向つき遷移 ±8px（`html[data-nav-dir]`）、
+    バッジの反転パルス、ケーススタディリンクの磁石矢印。`prefers-reduced-motion` ですべて止まる。素の JS / CSS だけ。
+- **管理画面 `/admin`**（Clerk、`takaoumehara@gmail.com` だけ）: ヒーローの各スライドの画像と順番を編集し、保存は GitHub に
+  `src/data/showcase.json` をコミット（`docs/admin.md`）。Clerk は `/admin` と `/api/admin/*` だけで動き、公開ページには入れない。
+  セクション定義（`src/pages/admin/_sections.ts`）に足せば他の並びにも広げられる。
+- **ヒーローのドット**: 24px の目標（WCAG 2.2 §2.5.8）。640px 以下は 12 個が入らないので `3 / 12` のカウンターに置き換え（前後ボタンとスワイプは残す）。
+- **詳細ページの厚み**: クライアント 26 件を detail 形式に（`docs/content-audit-2026-09-26*.md`）。Verizon AI Workflow は
+  スライドの本文（`docs/verizon-work-transformation-slides.md`）と PDF から 7 枚のデッキ画像をビートに。**ティーザーは `hero-agents-network.jpg` のまま。**
+  旧 HTML は `src/case-studies/_legacy/` に保管（glob されない）。

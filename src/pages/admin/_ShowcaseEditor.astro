@@ -1,0 +1,401 @@
+---
+// Hero showcase editor. Rendered only for an allowed admin (index.astro).
+// The current list (src/data/showcase.json as this deployment was built),
+// every work that can be a slide and each one's media options are handed to
+// the browser as JSON; the browser edits, previews and posts back to
+// /api/admin/showcase, which validates everything again and commits the file.
+import { getSite, destination } from "../../lib/site.mjs";
+import { detailName } from "../../lib/detail.mjs";
+import { canShowcase, mediaOptions, MAX_SLIDES } from "../../lib/showcase.mjs";
+import showcase from "../../data/showcase.json";
+import files from "virtual:admin-media";
+import { githubConfig } from "../api/admin/_auth";
+
+const { lib } = getSite({ checkAssets: false });
+const loc = (v: any) => (v == null ? { en: "", jp: "" } : typeof v === "string" ? { en: v, jp: "" } : { en: v.en ?? "", jp: v.jp ?? "" });
+const KIND_ORDER: Record<string, number> = { experiment: 0, project: 1, venture: 2, tool: 3 };
+
+const library = [...lib.evidence.values()]
+  .filter((item: any) => {
+    const to = destination(item);
+    return to && !to.external && canShowcase(item, files);
+  })
+  .map((item: any) => ({
+    slug: item.slug,
+    name: detailName(item).en,
+    kind: item.kind ?? "",
+    line: loc(item.cardLine ?? item.summary),
+    input: item.kind === "experiment" && item.input ? String(item.input) : null,
+    options: mediaOptions(item, files),
+  }))
+  .sort((a, b) => (KIND_ORDER[a.kind] ?? 9) - (KIND_ORDER[b.kind] ?? 9) || a.name.localeCompare(b.name));
+
+const gh = githubConfig();
+const data = {
+  slides: showcase.slides,
+  library,
+  maxSlides: MAX_SLIDES,
+  github: { configured: !!gh.token, repo: gh.repo, branch: gh.branch },
+};
+const payload = JSON.stringify(data).replace(/</g, "\\u003c");
+---
+<div class="se" data-showcase-editor>
+  <script type="application/json" id="se-data" set:html={payload}></script>
+
+  <div class="se-grid">
+    <section class="ad-card se-list-card" aria-labelledby="se-list-h">
+      <div class="se-head">
+        <h2 id="se-list-h">Slides <span class="ad-jp">スライド</span> <span class="se-count ad-muted" data-se-count></span></h2>
+        <p class="ad-muted se-hint">Drag a row by its handle, or use ↑ ↓. The first enabled slide opens the home page.
+          <span class="ad-jp">行の左端をドラッグするか、↑↓ ボタンで並べ替えます。有効な先頭のスライドがトップページの最初に表示されます。</span></p>
+      </div>
+      <ol class="se-list" data-se-list aria-describedby="se-list-h"></ol>
+
+      <div class="se-add">
+        <label for="se-add-select">Add a work <span class="ad-jp">作品を追加</span></label>
+        <div class="se-add-row">
+          <select id="se-add-select" data-se-add-select></select>
+          <button type="button" class="ad-btn ad-btn--quiet" data-se-add>Add <span class="ad-jp">追加</span></button>
+        </div>
+      </div>
+    </section>
+
+    <aside class="se-side">
+      <section class="ad-card" aria-labelledby="se-prev-h">
+        <h2 id="se-prev-h">Preview — first slide <span class="ad-jp">プレビュー（最初のスライド）</span></h2>
+        <div class="se-stage" data-se-stage></div>
+        <div class="se-cap" data-se-cap></div>
+      </section>
+
+      <section class="ad-card" aria-labelledby="se-save-h">
+        <h2 id="se-save-h">Save <span class="ad-jp">保存</span></h2>
+        <p class="ad-muted se-savenote" data-se-savenote></p>
+        <div class="se-actions">
+          <button type="button" class="ad-btn" data-se-save>Save &amp; publish <span class="ad-jp">保存して公開</span></button>
+          <button type="button" class="ad-btn ad-btn--quiet" data-se-download>Download showcase.json <span class="ad-jp">ダウンロード</span></button>
+          <button type="button" class="ad-btn ad-btn--quiet" data-se-reset>Discard changes <span class="ad-jp">変更を破棄</span></button>
+        </div>
+        <div class="se-status" data-se-status role="status" aria-live="polite"></div>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<style is:global>
+  .se-grid { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(300px, 1fr); gap: 16px; align-items: start; }
+  .se-side { position: sticky; top: 16px; display: grid; gap: 16px; }
+  .se-side .ad-card + .ad-card { margin-top: 0; }
+  .se-head h2 { display: flex; align-items: baseline; gap: 4px; flex-wrap: wrap; }
+  .se-hint { font-size: 13px; margin: 0 0 12px; }
+  .se-hint .ad-jp { display: block; margin: 2px 0 0; }
+  .se-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+  .se-row { display: grid; grid-template-columns: 28px 30px 112px minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--ad-bg); border: 1px solid var(--ad-line); border-radius: var(--ad-r); padding: 8px; }
+  .se-row.is-off { opacity: 0.6; }
+  .se-row.is-off .se-thumb { filter: grayscale(1); }
+  .se-row.is-dragging { outline: 2px dashed var(--ad-blue); }
+  .se-row.drop-before { box-shadow: 0 -3px 0 0 var(--ad-blue); }
+  .se-row.drop-after { box-shadow: 0 3px 0 0 var(--ad-blue); }
+  .se-handle { cursor: grab; border: 0; background: transparent; color: var(--ad-ink-2); width: 28px; height: 40px; border-radius: 6px; display: grid; place-items: center; }
+  .se-handle:hover { background: var(--ad-card); }
+  .se-pos { font-variant-numeric: tabular-nums; color: var(--ad-ink-2); text-align: right; font-size: 13px; }
+  .se-thumb { width: 112px; aspect-ratio: 16 / 9; border-radius: 6px; background: var(--ad-card-2); object-fit: cover; display: block; }
+  .se-thumbwrap { position: relative; }
+  .se-badge { position: absolute; left: 4px; bottom: 4px; font: 600 10px/1 ui-monospace, Menlo, monospace; background: rgba(0,0,0,.72); color: #fff; padding: 3px 5px; border-radius: 3px; }
+  .se-main { min-width: 0; display: grid; gap: 6px; }
+  .se-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .se-name small { font-weight: 400; color: var(--ad-ink-2); margin-left: 6px; }
+  .se-media { width: 100%; max-width: 100%; min-width: 0; min-height: 32px; font: inherit; font-size: 13px; border: 1px solid var(--ad-line); border-radius: 6px; background: var(--ad-bg); color: var(--ad-ink); padding: 4px 6px; }
+  .se-warn { color: var(--ad-red); font-size: 12px; }
+  .se-ctrls { display: flex; align-items: center; gap: 4px; }
+  .se-ctrls button { min-width: 32px; min-height: 32px; border: 1px solid var(--ad-line); background: var(--ad-bg); color: var(--ad-ink); border-radius: 6px; cursor: pointer; font: inherit; }
+  .se-ctrls button:hover:not(:disabled) { background: var(--ad-card); }
+  .se-ctrls button:disabled { opacity: 0.35; cursor: default; }
+  .se-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; min-height: 32px; padding: 0 6px; cursor: pointer; }
+  .se-toggle input { width: 18px; height: 18px; }
+  .se-add { margin-top: 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
+  .se-add label { font-weight: 600; font-size: 14px; }
+  .se-add-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .se-add-row select { flex: 1; min-width: 0; min-height: 36px; font: inherit; border: 1px solid var(--ad-line); border-radius: 6px; background: var(--ad-bg); color: var(--ad-ink); padding: 4px 8px; }
+  .se-stage { position: relative; aspect-ratio: 16 / 9; border-radius: var(--ad-r); overflow: hidden; background: var(--ad-card-2); }
+  .se-stage img, .se-stage video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .se-stage .se-empty { position: absolute; inset: 0; display: grid; place-items: center; color: var(--ad-ink-2); font-size: 13px; text-align: center; padding: 16px; }
+  .se-cap { margin-top: 10px; display: grid; gap: 4px; }
+  .se-cap .se-stamp { justify-self: start; font: 500 11px/1 ui-monospace, Menlo, monospace; letter-spacing: .06em; border: 1px solid currentColor; border-radius: 3px; padding: 4px 6px; }
+  .se-cap strong { font-size: 17px; }
+  .se-cap span { color: var(--ad-ink-2); font-size: 13px; }
+  .se-savenote { font-size: 13px; margin: 0 0 12px; }
+  .se-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .se-status { margin-top: 12px; font-size: 14px; }
+  .se-status:empty { display: none; }
+  .se-status.is-ok { color: var(--ad-green); }
+  .se-status.is-error { color: var(--ad-red); }
+  .se-status ul { margin: 6px 0 0; padding-left: 18px; }
+  .se-dirty { color: var(--ad-blue); font-weight: 600; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+  @media (max-width: 1100px) { .se-grid { grid-template-columns: minmax(0, 1fr); } .se-side { position: static; } }
+  @media (max-width: 640px) {
+    .se-row { grid-template-columns: 28px 76px minmax(0, 1fr); }
+    .se-pos { display: none; }
+    .se-thumb { width: 76px; }
+    .se-ctrls { grid-column: 1 / -1; justify-content: flex-end; }
+  }
+</style>
+
+<script>
+  import { serializeShowcase } from "../../lib/showcase.mjs";
+
+  type Option = { value: string; label: string; still: string | null; video?: string | null };
+  type Work = { slug: string; name: string; kind: string; line: { en: string; jp: string }; input: string | null; options: Option[] };
+  type Slide = { slug: string; media: string; enabled: boolean };
+  type Data = { slides: Slide[]; library: Work[]; maxSlides: number; github: { configured: boolean; repo: string; branch: string } };
+
+  const root = document.querySelector<HTMLElement>("[data-showcase-editor]");
+  if (root) init(root);
+
+  function init(root: HTMLElement) {
+    const data: Data = JSON.parse(document.getElementById("se-data")!.textContent || "{}");
+    const works = new Map(data.library.map((w) => [w.slug, w]));
+    const clone = (s: Slide[]) => s.map(({ slug, media, enabled }) => ({ slug, media: media || "auto", enabled: enabled !== false }));
+    let saved = clone(data.slides);
+    let slides = clone(data.slides);
+
+    const $ = <T extends Element>(sel: string) => root.querySelector<T>(sel)!;
+    const list = $<HTMLOListElement>("[data-se-list]");
+    const addSelect = $<HTMLSelectElement>("[data-se-add-select]");
+    const addBtn = $<HTMLButtonElement>("[data-se-add]");
+    const stage = $<HTMLElement>("[data-se-stage]");
+    const cap = $<HTMLElement>("[data-se-cap]");
+    const count = $<HTMLElement>("[data-se-count]");
+    const status = $<HTMLElement>("[data-se-status]");
+    const saveBtn = $<HTMLButtonElement>("[data-se-save]");
+    const saveNote = $<HTMLElement>("[data-se-savenote]");
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const el = <K extends keyof HTMLElementTagNameMap>(tag: K, props: Record<string, any> = {}, ...kids: (Node | string | null)[]) => {
+      const node = document.createElement(tag);
+      for (const [k, v] of Object.entries(props)) {
+        if (v == null || v === false) continue;
+        if (k === "class") node.className = v;
+        else if (k === "text") node.textContent = v;
+        else if (k.startsWith("on")) node.addEventListener(k.slice(2), v);
+        else if (k in node && typeof v !== "string") (node as any)[k] = v;
+        else node.setAttribute(k, v === true ? "" : String(v));
+      }
+      for (const kid of kids) if (kid != null) node.append(kid);
+      return node;
+    };
+    const src = (path: string | null | undefined) => (path ? (/^(https?:)?\//.test(path) ? path : "/" + path) : "");
+    const optionOf = (s: Slide) => works.get(s.slug)?.options.find((o) => o.value === s.media) ?? null;
+    const hasMedia = (s: Slide) => { const o = optionOf(s); return !!(o && (o.still || o.video)); };
+    const dirty = () => JSON.stringify(slides) !== JSON.stringify(saved);
+
+    function announce(message: string, kind: "" | "ok" | "error" = "", details: string[] = []) {
+      status.className = "se-status" + (kind ? ` is-${kind}` : "");
+      status.textContent = message;
+      if (details.length) status.append(el("ul", {}, ...details.map((d) => el("li", { text: d }))));
+    }
+
+    function move(from: number, to: number, focusSel?: string) {
+      if (to < 0 || to >= slides.length || from === to) return;
+      const [s] = slides.splice(from, 1);
+      slides.splice(to, 0, s);
+      render();
+      const name = works.get(s.slug)?.name ?? s.slug;
+      announce(`${name}: position ${to + 1} of ${slides.length} / ${to + 1} 番目に移動`);
+      if (focusSel) {
+        const row = list.children[to] as HTMLElement | undefined;
+        const target = row?.querySelector<HTMLButtonElement>(focusSel);
+        (target && !target.disabled ? target : row?.querySelector<HTMLButtonElement>("[data-up],[data-down]"))?.focus();
+      }
+    }
+
+    // Drag and drop — started only from the handle, so selects and checkboxes keep working.
+    let dragFrom = -1;
+    function row(s: Slide, i: number) {
+      const w = works.get(s.slug);
+      const opt = optionOf(s);
+      const name = w?.name ?? s.slug;
+      const li = el("li", { class: "se-row" + (s.enabled ? "" : " is-off"), "data-index": String(i) });
+
+      // Pointer only: keyboard users reorder with the ↑ ↓ buttons, so the handle stays out of the tab order and the accessibility tree.
+      const handle = el("span", { class: "se-handle", title: "Drag to reorder / ドラッグで並べ替え", "aria-hidden": "true" });
+      handle.innerHTML = '<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 3h.01M10 3h.01M6 8h.01M10 8h.01M6 13h.01M10 13h.01" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>';
+      handle.addEventListener("pointerdown", () => { li.draggable = true; });
+      handle.addEventListener("pointerup", () => { li.draggable = false; });
+      li.addEventListener("dragstart", (e) => { dragFrom = i; li.classList.add("is-dragging"); e.dataTransfer?.setData("text/plain", s.slug); if (e.dataTransfer) e.dataTransfer.effectAllowed = "move"; });
+      li.addEventListener("dragend", () => { li.draggable = false; dragFrom = -1; li.classList.remove("is-dragging"); list.querySelectorAll(".drop-before,.drop-after").forEach((n) => n.classList.remove("drop-before", "drop-after")); });
+      li.addEventListener("dragover", (e) => {
+        if (dragFrom < 0) return;
+        e.preventDefault();
+        const r = li.getBoundingClientRect();
+        const after = e.clientY > r.top + r.height / 2;
+        li.classList.toggle("drop-after", after);
+        li.classList.toggle("drop-before", !after);
+      });
+      li.addEventListener("dragleave", () => li.classList.remove("drop-before", "drop-after"));
+      li.addEventListener("drop", (e) => {
+        if (dragFrom < 0) return;
+        e.preventDefault();
+        const after = li.classList.contains("drop-after");
+        let to = i + (after ? 1 : 0);
+        if (dragFrom < to) to -= 1;
+        const from = dragFrom;
+        dragFrom = -1;
+        move(from, to);
+      });
+
+      const still = opt?.still ?? null;
+      const thumb = el("div", { class: "se-thumbwrap" },
+        still ? el("img", { class: "se-thumb", src: src(still), alt: "", loading: "lazy", decoding: "async" }) : el("div", { class: "se-thumb" }),
+        opt?.video ? el("span", { class: "se-badge", text: "VIDEO" }) : null,
+      );
+
+      const select = el("select", { class: "se-media", "aria-label": `Media for ${name} / ${name} の画像` }) as HTMLSelectElement;
+      for (const o of w?.options ?? []) select.append(el("option", { value: o.value, text: o.label }));
+      if (!opt) select.append(el("option", { value: s.media, text: `${s.media} (not available / 使用できません)` }));
+      select.value = s.media;
+      select.addEventListener("change", () => { s.media = select.value; render(); focusRowControl(i, ".se-media"); });
+
+      const warn = !w ? el("span", { class: "se-warn", text: "This work is no longer in the library — remove it. / この作品はライブラリにありません。削除してください。" })
+        : !opt ? el("span", { class: "se-warn", text: "The chosen media no longer exists. / 選択中の画像がありません。" })
+        : !(opt.still || opt.video) ? el("span", { class: "se-warn", text: "No media yet — the home page skips this slide. / 画像がないため、トップページでは表示されません。" }) : null;
+
+      const main = el("div", { class: "se-main" },
+        el("div", { class: "se-name" }, name, el("small", { text: s.slug })),
+        select,
+        warn,
+      );
+
+      const toggle = el("label", { class: "se-toggle" },
+        el("input", { type: "checkbox", checked: s.enabled, onchange: (e: Event) => { s.enabled = (e.target as HTMLInputElement).checked; render(); focusRowControl(i, "input[type=checkbox]"); } }),
+        el("span", { text: "On / 表示" }),
+      );
+      const up = el("button", { type: "button", "data-up": "", "aria-label": `Move ${name} up / 上へ`, disabled: i === 0, onclick: () => move(i, i - 1, "[data-up]"), text: "↑" });
+      const down = el("button", { type: "button", "data-down": "", "aria-label": `Move ${name} down / 下へ`, disabled: i === slides.length - 1, onclick: () => move(i, i + 1, "[data-down]"), text: "↓" });
+      const remove = el("button", { type: "button", "aria-label": `Remove ${name} / 削除`, title: "Remove / 削除", text: "×", onclick: () => {
+        slides.splice(i, 1); render(); announce(`${name} removed / 削除しました`);
+        (list.children[Math.min(i, slides.length - 1)] as HTMLElement | undefined)?.querySelector<HTMLElement>("[data-up],[data-down]")?.focus();
+      } });
+      const ctrls = el("div", { class: "se-ctrls" }, toggle, up, down, remove);
+
+      li.append(handle, el("span", { class: "se-pos", text: String(i + 1) }), thumb, main, ctrls);
+      return li;
+    }
+
+    function focusRowControl(i: number, sel: string) {
+      (list.children[i] as HTMLElement | undefined)?.querySelector<HTMLElement>(sel)?.focus();
+    }
+
+    function renderAdd() {
+      const used = new Set(slides.map((s) => s.slug));
+      addSelect.replaceChildren();
+      const groups = new Map<string, HTMLOptGroupElement>();
+      for (const w of data.library) {
+        if (used.has(w.slug)) continue;
+        const label = w.kind === "experiment" ? "Interactive / インタラクティブ" : w.kind === "project" ? "Client work / クライアントワーク" : w.kind || "Other";
+        if (!groups.has(label)) { const g = el("optgroup", { label }) as HTMLOptGroupElement; groups.set(label, g); addSelect.append(g); }
+        groups.get(label)!.append(el("option", { value: w.slug, text: `${w.name} (${w.slug})` }));
+      }
+      const empty = !addSelect.querySelector("option");
+      if (empty) addSelect.append(el("option", { value: "", text: "Every work is already in the list / すべて追加済み" }));
+      addSelect.disabled = empty;
+      addBtn.disabled = empty || slides.length >= data.maxSlides;
+    }
+
+    function renderPreview() {
+      const first = slides.find((s) => s.enabled && hasMedia(s)); // the home page skips slides without media
+      stage.replaceChildren();
+      cap.replaceChildren();
+      if (!first) { stage.append(el("div", { class: "se-empty", text: "No enabled slide — the home page needs at least one. / 表示中のスライドがありません。" })); return; }
+      const w = works.get(first.slug);
+      const opt = optionOf(first);
+      if (opt?.still) stage.append(el("img", { src: src(opt.still), alt: "" }));
+      if (opt?.video && !reduce.matches) {
+        const v = el("video", { muted: true, loop: true, playsInline: true, autoplay: true, "aria-hidden": "true" }) as HTMLVideoElement;
+        v.muted = true;
+        v.src = src(opt.video);
+        stage.append(v);
+      }
+      if (!opt?.still && !opt?.video) stage.append(el("div", { class: "se-empty", text: "No media / 画像なし" }));
+      if (w?.input) cap.append(el("span", { class: "se-stamp", text: w.input }));
+      cap.append(el("strong", { text: w?.name ?? first.slug }));
+      if (w?.line.en) cap.append(el("span", { text: w.line.en }));
+      if (w?.line.jp) cap.append(el("span", { text: w.line.jp }));
+    }
+
+    function render() {
+      list.replaceChildren(...slides.map(row));
+      const on = slides.filter((s) => s.enabled && hasMedia(s)).length;
+      count.textContent = `— ${on} shown of ${slides.length} / 表示 ${on} ・ 全 ${slides.length}`;
+      renderAdd();
+      renderPreview();
+      saveNote.replaceChildren();
+      if (dirty()) saveNote.append(el("span", { class: "se-dirty", text: "Unsaved changes. / 未保存の変更があります。 " }));
+      saveNote.append(data.github.configured
+        ? `Saving commits src/data/showcase.json to ${data.github.repo} (${data.github.branch}); Vercel then rebuilds the site (about 1–2 min). / 保存すると ${data.github.repo} の ${data.github.branch} にコミットされ、Vercel が再ビルドします（1〜2 分）。`
+        : "GITHUB_TOKEN is not set, so saving cannot commit. Download the file and commit it instead. / GITHUB_TOKEN が未設定のため、保存（コミット）はできません。ダウンロードして手動でコミットしてください。");
+      saveBtn.disabled = on === 0;
+    }
+
+    addBtn.addEventListener("click", () => {
+      const w = works.get(addSelect.value);
+      if (!w) return;
+      const media = (w.options.find((o) => o.value === "auto" && (o.still || o.video)) ?? w.options.find((o) => o.still || o.video))?.value ?? "auto";
+      slides.push({ slug: w.slug, media, enabled: true });
+      render();
+      announce(`${w.name} added at position ${slides.length} / ${slides.length} 番目に追加しました`);
+      focusRowControl(slides.length - 1, ".se-media");
+    });
+
+    function download(text: string) {
+      const blob = new Blob([text], { type: "application/json" });
+      const a = el("a", { href: URL.createObjectURL(blob), download: "showcase.json" }) as HTMLAnchorElement;
+      document.body.append(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    }
+    $<HTMLButtonElement>("[data-se-download]").addEventListener("click", () => download(serializeShowcase({ slides })));
+    $<HTMLButtonElement>("[data-se-reset]").addEventListener("click", () => {
+      if (dirty() && !confirm("Discard your changes? / 変更を破棄しますか？")) return;
+      slides = clone(saved); render(); announce("Changes discarded. / 変更を破棄しました。");
+    });
+
+    saveBtn.addEventListener("click", async () => {
+      saveBtn.disabled = true;
+      announce("Saving… / 保存しています…");
+      try {
+        const clerk = (window as any).Clerk;
+        const token: string | null = clerk?.session ? await clerk.session.getToken() : null;
+        const res = await fetch("/api/admin/showcase", {
+          method: "POST",
+          credentials: "same-origin",
+          headers: { "content-type": "application/json", ...(token ? { authorization: `Bearer ${token}` } : {}) },
+          body: JSON.stringify({ slides }),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (res.ok && body.ok) {
+          saved = clone(slides);
+          render();
+          announce(`Saved: commit ${String(body.sha).slice(0, 7)} on ${body.branch}. Vercel is rebuilding — the home page updates in a minute or two. / 保存しました。1〜2 分でトップページに反映されます。`, "ok");
+          if (body.htmlUrl) status.append(" ", el("a", { href: body.htmlUrl, target: "_blank", rel: "noopener", text: "View commit ↗" }));
+          if (Array.isArray(body.warnings) && body.warnings.length) status.append(el("ul", {}, ...body.warnings.map((w: string) => el("li", { text: w }))));
+        } else if (body.error === "github-not-configured") {
+          announce(body.message, "error");
+          status.append(el("div", {}, el("button", { type: "button", class: "ad-btn ad-btn--quiet", text: "Download the validated showcase.json / 検証済みファイルをダウンロード", onclick: () => download(body.content) })));
+        } else if (res.status === 401) {
+          announce("Your session has expired. Reload the page and sign in again. / セッションが切れました。再読み込みしてサインインしてください。", "error");
+        } else {
+          announce(body.message || `Save failed (${res.status}). / 保存に失敗しました。`, "error", Array.isArray(body.errors) ? body.errors : []);
+        }
+      } catch (error) {
+        announce(`Save failed: ${(error as Error).message} / 保存に失敗しました。`, "error");
+      } finally {
+        render();
+      }
+    });
+
+    window.addEventListener("beforeunload", (e) => { if (dirty()) { e.preventDefault(); e.returnValue = ""; } });
+    render();
+  }
+</script>

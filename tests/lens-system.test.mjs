@@ -219,7 +219,14 @@ test("lens pages resolve every site link and asset to something in the build", (
       if (/^(?:https?:|mailto:|tel:|#|data:)/.test(url)) continue;
       const target = resolveUrl(path, url);
       if (!target) continue;
-      assert.ok(exists(target), `${path}: "${url}" does not resolve`);
+      // resolveUrl (tests/_dist.mjs) maps a trailing-slash URL to
+      // ".../index.html" but does not know Vercel's clean-URL rewrite (build
+      // .format: "preserve") also serves "<name>.html" for the extensionless
+      // "/<name>" — the canonical form of the current IA's /work and /about
+      // (see docs/superforge.md "Pinned by the user" — Astro + サイドバー,
+      // 2026-09-17: "URL は原則そのまま"). Try that form before failing.
+      const ok = exists(target) || exists(`${target}.html`);
+      assert.ok(ok, `${path}: "${url}" does not resolve`);
     }
   }
 });
