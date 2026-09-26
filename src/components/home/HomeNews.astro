@@ -44,7 +44,7 @@ const links = [
 <section class="home-news" aria-labelledby="home-news-title">
   <h2 class="sr-only" id="home-news-title"><span class="t-en">About Takao and recent releases</span><span class="t-jp">プロフィールと最近の公開作</span></h2>
   <div class="hn-grid">
-    <article class="hn-card hn-info">
+    <article class="hn-card hn-info bento-cell">
       <p class="hn-kicker"><span set:html={t(profile.location)} /></p>
       <h3 class="hn-name">{profile.name}</h3>
       <p class="hn-tagline" set:html={t(profile.tagline)} />
@@ -63,7 +63,7 @@ const links = [
     {articles.map((a, i) => {
       const d = dateLabel(a.date);
       return (
-        <article class="hn-card hn-article" style={`--i: ${i}`}>
+        <article class="hn-card hn-article bento-cell" style={`--i: ${i}`}>
           <p class="hn-meta">
             <span set:html={t({ en: "Interactive", jp: "インタラクティブ" })} />
             <span aria-hidden="true"> · </span>
@@ -83,3 +83,14 @@ const links = [
     })}
   </div>
 </section>
+
+<style>
+  /* Every card here is a bento cell (docs/superforge.md's shared bento rule):
+     the same inner padding as every other cell in the right pane, so this
+     card's text lines up with the work grid's and the detail page's. Astro
+     scopes this selector with a data-astro-cid attribute, which outranks the
+     plain .hn-card rule in src/styles/home.css (B's file) without editing it. */
+  .hn-card {
+    padding: var(--cell-pad, clamp(20px, 3vw, 32px));
+  }
+</style>
