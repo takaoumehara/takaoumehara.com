@@ -15,14 +15,22 @@ interface Props {
 
 const { name, client, logo, logoAlt } = Astro.props;
 const label = [plain(name), plain(client)].filter(Boolean).join(" — ");
+
+// Project titles (and most client names) stay English by design — they are
+// never machine-translated — but the site's EN/JP toggle hides .t-en with no
+// matching .t-jp, which would blank this name entirely once someone switches
+// to Japanese. Filling jp with the same English text keeps it on screen in
+// both languages without inventing a translation.
+const loc = (v: Localized | undefined) =>
+  v == null || typeof v === "string" ? v : { ...v, jp: v.jp ?? v.en };
 ---
 <div class="hero-fallback" role="img" aria-label={label}>
   {logo ? (
     <img class="hero-fallback-logo" src={esc(url(logo))} alt={logoAlt ?? plain(client) ?? plain(name)} />
   ) : (
-    <p class="hero-fallback-name" aria-hidden="true" set:html={t(name)} />
+    <p class="hero-fallback-name" aria-hidden="true" set:html={t(loc(name))} />
   )}
-  {client && <p class="hero-fallback-client" aria-hidden="true" set:html={t(client)} />}
+  {client && <p class="hero-fallback-client" aria-hidden="true" set:html={t(loc(client))} />}
 </div>
 
 <style>

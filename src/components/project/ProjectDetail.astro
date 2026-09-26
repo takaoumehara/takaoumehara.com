@@ -6,6 +6,14 @@
 //   → body: 0–3 beats from src/case-studies/<slug>.html
 //   → Role / Year / Client, and the stack in a quiet footer line.
 // Everything but the body comes from the evidence record (src/lib/detail.mjs).
+//
+// Bento rule (Takao, 2026-09-26): every piece of text on this page sits inside
+// a cell, and every cell shares one inner padding (--cell-pad), so every text
+// column's left edge lines up exactly — the H1, the one-liner, Play, the
+// Challenge/Solution copy, each beat and the meta line. Cells stack with
+// --gap-grid, never margins. A cell can be visually invisible (no fill) —
+// it still carries the same padding. The teaser is the one cell whose 16:9
+// media stays flush, with no padding.
 import { t, tb, esc, url } from "../../lib/html.mjs";
 import { detailFields } from "../../lib/detail.mjs";
 import ProjectHeroFallback from "./ProjectHeroFallback.astro";
@@ -19,7 +27,14 @@ const { item, body } = Astro.props;
 const d = detailFields(item);
 const teaser = d.teaser;
 const hasAudio = teaser.kind === "video" && item.assets?.preview?.audio === true;
-const value = (v) => (v == null ? "" : typeof v === "string" ? esc(v) : t(v));
+// The name (an English-only title, by design) and a client's organization
+// name are the two fields most likely to have no `.jp` counterpart. The
+// site's EN/JP toggle hides .t-en with nothing to show in its place, which
+// would blank the H1 and the teaser fallback entirely in Japanese — so every
+// localized value in this component keeps its English text as its own jp
+// fallback rather than going missing.
+const loc = (v) => (v == null || typeof v === "string" ? v : { ...v, jp: v.jp ?? v.en });
+const value = (v) => (v == null ? "" : typeof v === "string" ? esc(v) : t(loc(v)));
 const meta = [
   { label: { en: "Role", jp: "役割" }, value: d.role },
   { label: { en: "Year", jp: "年" }, value: d.year },
@@ -27,79 +42,79 @@ const meta = [
 ].filter((m) => m.value);
 ---
 <article class="project-detail">
-  <div class="project-teaser" data-vt-hero>
-    {teaser.kind === "video" && (
-      <video class="project-teaser-media project-video" autoplay muted loop playsinline preload="metadata"
-             poster={teaser.poster ? url(teaser.poster) : undefined} aria-hidden="true">
-        {teaser.webm && <source src={url(teaser.webm)} type="video/webm" />}
-        {teaser.mp4 && <source src={url(teaser.mp4)} type="video/mp4" />}
-      </video>
+  <div class="project-bento">
+    <div class="project-teaser bento-cell" data-vt-hero>
+      {teaser.kind === "video" && (
+        <video class="project-teaser-media project-video" autoplay muted loop playsinline preload="metadata"
+               poster={teaser.poster ? url(teaser.poster) : undefined} aria-hidden="true">
+          {teaser.webm && <source src={url(teaser.webm)} type="video/webm" />}
+          {teaser.mp4 && <source src={url(teaser.mp4)} type="video/mp4" />}
+        </video>
+      )}
+      {teaser.kind === "image" && (
+        <img class="project-teaser-media" src={url(teaser.src)} alt=""
+             style={[
+               teaser.fit === "contain" ? "object-fit: contain" : "",
+               teaser.position ? `object-position: ${teaser.position}` : "",
+               teaser.background ? `background: ${teaser.background}` : "",
+             ].filter(Boolean).join("; ") || undefined} />
+      )}
+      {teaser.kind === "fallback" && (
+        <ProjectHeroFallback name={loc(teaser.name)} client={loc(teaser.client)} logo={teaser.logo} />
+      )}
+      {hasAudio && (
+        <button class="video-sound-toggle" id="video-sound-toggle" type="button" aria-label="Enable sound">
+          <span class="t-en">Sound on</span><span class="t-jp">音を出す</span>
+        </button>
+      )}
+    </div>
+
+    <header class="project-header bento-cell">
+      <h1 class="project-title" set:html={t(loc(d.name))} />
+      {d.oneLiner && <p class="project-oneliner" set:html={tb(d.oneLiner)} />}
+      {d.play && (
+        <a href={d.play.href} class="project-play" target="_blank" rel="noopener">
+          <span set:html={t(d.play.label)} /><span class="project-play-arrow" aria-hidden="true">↗</span>
+        </a>
+      )}
+    </header>
+
+    {d.challenge && (
+      <section class="project-cs" aria-label="Challenge and solution">
+        <div class="project-cs-cell bento-cell">
+          <h2 class="project-cs-label"><span class="t-en">Challenge</span><span class="t-jp">課題</span></h2>
+          <p class="project-cs-text" set:html={tb(d.challenge)} />
+        </div>
+        <div class="project-cs-cell bento-cell">
+          <h2 class="project-cs-label"><span class="t-en">Solution</span><span class="t-jp">解決</span></h2>
+          <p class="project-cs-text" set:html={tb(d.solution)} />
+        </div>
+      </section>
     )}
-    {teaser.kind === "image" && (
-      <img class="project-teaser-media" src={url(teaser.src)} alt=""
-           style={[
-             teaser.fit === "contain" ? "object-fit: contain" : "",
-             teaser.position ? `object-position: ${teaser.position}` : "",
-             teaser.background ? `background: ${teaser.background}` : "",
-           ].filter(Boolean).join("; ") || undefined} />
-    )}
-    {teaser.kind === "fallback" && (
-      <ProjectHeroFallback name={teaser.name} client={teaser.client} logo={teaser.logo} />
-    )}
-    {hasAudio && (
-      <button class="video-sound-toggle" id="video-sound-toggle" type="button" aria-label="Enable sound">
-        <span class="t-en">Sound on</span><span class="t-jp">音を出す</span>
-      </button>
-    )}
+
+    {body && <div class="project-beats" set:html={body} />}
+
+    <footer class="project-meta bento-cell">
+      {meta.length > 0 && (
+        <dl class="project-meta-list">
+          {meta.map((m) => (
+            <div class="project-meta-item">
+              <dt set:html={t(m.label)} />
+              <dd set:html={value(m.value)} />
+            </div>
+          ))}
+        </dl>
+      )}
+      {d.stack.length > 0 && (
+        <p class="project-stack"><span class="t-en">Stack</span><span class="t-jp">技術</span> — {d.stack.join(" · ")}</p>
+      )}
+    </footer>
   </div>
-
-  <header class="project-header">
-    <h1 class="project-title" set:html={t(d.name)} />
-    {d.oneLiner && <p class="project-oneliner" set:html={tb(d.oneLiner)} />}
-    {d.play && (
-      <a href={d.play.href} class="project-play" target="_blank" rel="noopener">
-        <span set:html={t(d.play.label)} /><span class="project-play-arrow" aria-hidden="true">↗</span>
-      </a>
-    )}
-  </header>
-
-  {d.challenge && (
-    <section class="project-cs" aria-label="Challenge and solution">
-      <div class="project-cs-cell">
-        <h2 class="project-cs-label"><span class="t-en">Challenge</span><span class="t-jp">課題</span></h2>
-        <p class="project-cs-text" set:html={tb(d.challenge)} />
-      </div>
-      <div class="project-cs-cell">
-        <h2 class="project-cs-label"><span class="t-en">Solution</span><span class="t-jp">解決</span></h2>
-        <p class="project-cs-text" set:html={tb(d.solution)} />
-      </div>
-    </section>
-  )}
-
-  {body && <div class="project-beats" set:html={body} />}
-
-  <footer class="project-meta">
-    {meta.length > 0 && (
-      <dl class="project-meta-list">
-        {meta.map((m) => (
-          <div class="project-meta-item">
-            <dt set:html={t(m.label)} />
-            <dd set:html={value(m.value)} />
-          </div>
-        ))}
-      </dl>
-    )}
-    {d.stack.length > 0 && (
-      <p class="project-stack"><span class="t-en">Stack</span><span class="t-jp">技術</span> — {d.stack.join(" · ")}</p>
-    )}
-  </footer>
 </article>
 
 <style>
   /* The detail page fills the main pane at every width — the rail takes
-     --side-w, this takes the rest. The teaser and the Challenge | Solution
-     blocks run the full measure (PORTO ROCHA); only running text caps its own
-     line length, below. */
+     --side-w, this takes the rest. */
   .project-detail {
     width: 100%;
     /* Top comes from .project-page; left is 0 because the rail's right
@@ -113,13 +128,41 @@ const meta = [
     .project-detail { padding-left: var(--pane-pad); }
   }
 
+  /* Every piece of the page is one cell in this column, all separated by the
+     same grid gap the Challenge | Solution pair already used — never a
+     margin. This is what keeps every text column's left edge identical. */
+  .project-bento {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-grid);
+  }
+
+  /* One inner padding for every text-bearing cell. A cell can be visually
+     invisible (no background, below) — it still gets this padding, so its
+     text lines up with the grey Challenge/Solution cells. */
+  .bento-cell {
+    box-sizing: border-box;
+    padding: var(--cell-pad, clamp(20px, 3vw, 32px));
+    border-radius: var(--r);
+  }
+
+  /* The header and the meta footer read calm: same padding, no fill. The
+     site-wide `footer { border-top }` rule (site.css) would otherwise draw a
+     hairline across this cell that no other cell gets — this is a <footer>
+     element only because that is the right landmark role, not a divider. */
+  .project-header,
+  .project-meta {
+    background: transparent;
+    border-top: none;
+  }
+
   .project-teaser {
     position: relative;
     aspect-ratio: 16 / 9;
-    margin-bottom: 48px;
     overflow: hidden;
-    border-radius: var(--r);
     background: var(--pr-card);
+    /* The one cell whose media stays flush — no inner padding. */
+    padding: 0;
   }
 
   .project-teaser-media {
@@ -143,10 +186,6 @@ const meta = [
     font: inherit;
     font-size: var(--text-sm);
     cursor: pointer;
-  }
-
-  .project-header {
-    margin-bottom: 56px;
   }
 
   /* The H1 grows with the pane instead of topping out at 1267px, where the old
@@ -205,12 +244,9 @@ const meta = [
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--gap-grid);
-    margin-bottom: 64px;
   }
 
   .project-cs-cell {
-    padding: clamp(20px, 3vw, 32px);
-    border-radius: var(--r);
     background: var(--pr-card);
   }
 
@@ -232,18 +268,14 @@ const meta = [
     color: var(--pr-ink);
   }
 
-  .project-meta {
-    margin-top: 72px;
-    padding-top: 24px;
-    border-top: 1px solid var(--pr-line);
-  }
-
   .project-meta-list {
     display: flex;
     flex-wrap: wrap;
     gap: 16px 48px;
-    margin: 0 0 32px;
+    margin: 0;
   }
+
+  .project-meta-list + .project-stack { margin-top: 32px; }
 
   .project-meta-item dt {
     font-size: var(--text-xs);
@@ -263,10 +295,24 @@ const meta = [
     font-size: var(--text-xs);
     color: var(--pr-ink-2);
     opacity: 0.8;
+    margin: 0;
   }
 
-  /* Body beats. The body arrives as raw HTML (set:html), so these are global. */
-  .project-beats :global(.beat) { margin-bottom: 56px; }
+  /* The body arrives as raw HTML (set:html) from src/case-studies/<slug>.html,
+     so it never gets this component's scoped attribute — every rule that
+     touches it has to be :global(). display:contents removes this wrapper
+     from the box model so each .beat becomes its own cell in .project-bento,
+     sharing its gap like every other cell, rather than nesting a second gap
+     inside a single flex child. */
+  .project-beats { display: contents; }
+
+  /* One beat = one bento cell: same padding as Challenge/Solution, no fill —
+     beats read as quiet as the header. */
+  .project-beats :global(.beat) {
+    box-sizing: border-box;
+    padding: var(--cell-pad, clamp(20px, 3vw, 32px));
+    border-radius: var(--r);
+  }
   .project-beats :global(.beat-title) {
     font-family: var(--pr-ff-display);
     font-size: clamp(20px, 1.6vw, 34px);
@@ -286,6 +332,9 @@ const meta = [
   .project-beats :global(.beat-text + .beat-media),
   .project-beats :global(.beat-text + .beat-facts),
   .project-beats :global(.beat-media + .beat-facts) { margin-top: calc(var(--gap-grid) * 2); }
+  /* Beat media sits inside the same padded column as the beat's own text —
+     never edge to edge — so an image's left/right edges line up with the
+     title and body copy above it. */
   .project-beats :global(.beat-media) {
     display: grid;
     grid-template-columns: repeat(var(--beat-cols, 1), minmax(0, 1fr));
@@ -346,9 +395,7 @@ const meta = [
   }
 
   @media (max-width: 768px) {
-    .project-teaser { margin-bottom: 32px; }
-    .project-header { margin-bottom: 40px; }
-    .project-cs { grid-template-columns: 1fr; margin-bottom: 48px; }
+    .project-cs { grid-template-columns: 1fr; }
     .project-beats :global(.beat-media) { grid-template-columns: repeat(var(--beat-cols-sm, 1), minmax(0, 1fr)); }
   }
 </style>
@@ -364,5 +411,16 @@ const meta = [
       toggle.setAttribute("aria-label", video.muted ? "Enable sound" : "Mute sound");
     });
   }
-  document.addEventListener("astro:page-load", initTeaser);
+  // Beats arrive as raw HTML (set:html) from src/case-studies/<slug>.html, so
+  // Astro never sees them as template elements — mark each one as a bento
+  // cell here instead, so it is reachable the same way every other cell is
+  // (site.js's boot sequence, any future per-cell behaviour).
+  function markBeatCells() {
+    document.querySelectorAll(".project-beats > .beat").forEach((el) => el.classList.add("bento-cell"));
+  }
+  function init() {
+    initTeaser();
+    markBeatCells();
+  }
+  document.addEventListener("astro:page-load", init);
 </script>
