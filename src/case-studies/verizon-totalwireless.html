@@ -1,11 +1,63 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/verizon-totalwireless.json, "detail"). -->
+<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/verizon-totalwireless.json, "detail").
+     Sources: the hand-built case study this replaced (preserved in src/case-studies/_legacy/verizon-totalwireless.html — the six prototypes, the line-item box, the coded design system, the 12 components), the Figma flow maps in public/assets/verizon-totalwireless/Figma/, and the live-coded prototypes and styleguide that already ship under public/assets/verizon-totalwireless/ (Prototype/*.html, storybook/). Visuals were re-created for the portfolio under confidentiality. -->
 <section class="beat">
-  <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop6.png" alt="Cart with the line shown as its own box: device, plan and monthly cost" loading="lazy">
-    <img src="/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop8.png" alt="Checkout with a per-line order summary and the due-today total" loading="lazy">
+  <h2 class="beat-title">
+    <span class="t-en">Six working prototypes, not six mockups</span>
+    <span class="t-jp is-block">静止画ではなく、動く試作を 6 本</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">A side drawer that becomes a bottom sheet, a price that updates as you add a line, an accordion that reveals discounts only when asked — none of this can be judged in a static frame. So I mapped the one-line and two-line purchase flows in Figma, then live-coded the bets in HTML, CSS and JavaScript: a plan comparison table with sticky columns, a step-by-step React configurator with real-time totals, and cart panels that tried different ways to show a multi-line price. Each one went straight to stakeholders and engineering as a living specification.</span>
+    <span class="t-jp is-block">横から出るパネルが、スマホでは下から出るシートに変わる。回線を足すたびに金額が変わる。割引は、開いたときだけ見える。こうした動きは、止まった画面では判断できない。まず Figma で 1 回線と 2 回線の購入の流れを地図にし、案はコードで書いた。列を固定したプラン比較表、React で組んだ段階式の設定画面、複数回線の金額の見せ方を変えたカートのパネル。どれも関係部署とエンジニアに直接渡し、動く仕様書として使ってもらった。</span>
+  </p>
+  <figure class="beat-media">
+    <img src="/assets/verizon-totalwireless/Figma/ex-plan-first-2lines.jpg" alt="Figma flow map of a new customer buying two lines: plan selection, product listing, product detail and cart for each line, then checkout, account creation and order confirmation" loading="lazy" width="2400" height="1138">
     <figcaption class="beat-caption">
-      <span class="t-en">Each line as its own box, from cart to checkout. Screens re-created for the portfolio under confidentiality.</span>
-      <span class="t-jp">カートから決済まで、回線ごとに一つの箱。画面は守秘のため、ポートフォリオ用に作り直したもの。</span>
+      <span class="t-en">The two-line purchase flow, screen by screen. Every added line repeats plan, phone and cart — which is where the price stopped making sense.</span>
+      <span class="t-jp">2 回線を買う流れを、画面ごとに並べたもの。回線を足すたびにプラン・端末・カートが繰り返され、そこで金額が分からなくなっていた。</span>
     </figcaption>
   </figure>
+  <a class="beat-link" href="/assets/verizon-totalwireless/Prototype/BottomPanel02.html">
+    <span class="t-en">Open the line-item cart prototype</span>
+    <span class="t-jp">回線ごとのカートの試作を開く</span>
+  </a>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">One box per line, from cart to checkout</span>
+    <span class="t-jp is-block">カートから決済まで、回線ごとに一つの箱</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The prototype that worked gave every phone line its own small card — plan, device and monthly cost at a glance — under a persistent “Savings &amp; Due Today” bar. The price stopped being a single number to decode and became a list you could check line by line. The line-item cart, the per-line breakdown, the savings summary and the device-pairing steps went into the shipped shopping flow on desktop and mobile.</span>
+    <span class="t-jp is-block">うまくいった試作では、回線ごとに小さなカードを置いた。プラン、端末、月額がひと目で分かる。その上に「割引と今日の支払額」のバーを出したままにする。金額は読み解く一つの数字ではなく、1 行ずつ確かめられる一覧になった。回線ごとのカート、内訳、割引のまとめ、端末を選ぶ手順は、デスクトップとモバイルの購入の流れに採用された。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop6.png" alt="Cart with each line shown as its own box: device, plan and monthly cost, with the subtotal and AutoPay summary" loading="lazy" width="1600" height="1014">
+    <img src="/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop8.png" alt="Checkout with account, number, shipping and payment steps and the running order summary" loading="lazy" width="1600" height="1014">
+    <figcaption class="beat-caption">
+      <span class="t-en">Cart and checkout in the shipped flow. Screens re-created for the portfolio under confidentiality.</span>
+      <span class="t-jp">採用後のカートと決済。画面は守秘のため、ポートフォリオ用に作り直したもの。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">The brand, rebuilt as code</span>
+    <span class="t-jp is-block">ブランドを、コードとして組み直す</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The brand’s design system lived only in Figma, as white-label components re-skinned per brand, so there was no way to prototype with the real brand in running code. Working from the public product, I rebuilt it: color, type, radius and spacing as tokens, wired into a typed shadcn/ui registry on Next.js with 12 components — PlanCard, SavingsBar, Stepper, LineCounter and the rest — and a browsable styleguide. A new screen assembled from the registry comes out on-brand by construction, whether a person or an AI builds it.</span>
+    <span class="t-jp is-block">このブランドの設計基盤は Figma の中にしかなかった。ブランドごとに色を差し替える共通部品で、コードとしては誰にも渡されていない。だから本物のブランドで動く試作が作れなかった。公開されている画面をもとに、組み直した。色・文字・角丸・余白をトークンにし、Next.js 上の shadcn/ui の部品集に型付きでつないだ。部品は PlanCard、SavingsBar、Stepper、LineCounter など 12 個。見て回れるスタイルガイドも付けた。部品集から組んだ画面は、人が作っても AI が作っても、はじめからブランドどおりになる。</span>
+  </p>
+  <figure class="beat-media beat-media--frame" style="--beat-cols: 2;">
+    <img src="/assets/verizon-totalwireless/design-system/plan-listing-desktop.png" alt="Plan listing page assembled entirely from the coded registry components" loading="lazy" width="1600" height="1014">
+    <img src="/assets/verizon-totalwireless/design-system/figma-plan-card.png" alt="The Figma source of the plan card, with its variants" loading="lazy" width="1600" height="758">
+    <figcaption class="beat-caption">
+      <span class="t-en">A plan listing built only from registry components, and the Figma plan card it traces back to.</span>
+      <span class="t-jp">部品集だけで組んだプラン一覧と、その元になった Figma のプランカード。</span>
+    </figcaption>
+  </figure>
+  <a class="beat-link" href="/assets/verizon-totalwireless/storybook/index.html">
+    <span class="t-en">Open the styleguide</span>
+    <span class="t-jp">スタイルガイドを開く</span>
+  </a>
 </section>

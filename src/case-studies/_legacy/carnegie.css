@@ -1,0 +1,35 @@
+/* Challenge/Solution Bento — Porto Rocha style */
+.challenge-solution-bento {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-1, 8px);
+  margin: 0 auto 48px;
+  max-width: 900px;
+}
+
+@media (max-width: 768px) {
+  .challenge-solution-bento {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bento-cell {
+  background: var(--pr-card, var(--surface, #f8f8f8));
+  border-radius: var(--r, 8px);
+  padding: var(--sp-4, 24px);
+}
+
+.bento-label {
+  font-size: var(--text-sm, 13px);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--pr-blue, #2563eb);
+  margin-bottom: 16px;
+}
+
+.bento-text {
+  font-size: var(--text-md, 15px);
+  line-height: 1.65;
+  color: var(--pr-ink, var(--ink, #1a1a1a));
+}

@@ -1,8 +1,17 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/carnegie.json, "detail"). -->
+<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/carnegie.json, "detail").
+     Sources: the hand-built case study this replaced (preserved in src/case-studies/_legacy/carnegie.html — the vertical vs horizontal concept test, the Plan and Do redesign, the "guided conversation" framing and its prompts, the team roles) and the work images in public/assets/carnegie/. The phase-end acknowledgements are read off PDSA_Interaction_Flow.png. -->
 <section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Test the interaction model before the visuals</span>
+    <span class="t-jp is-block">見た目より先に、操作の型を確かめる</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The PDSA cycle is sequential — Plan, Do, Study, Act, then back to Plan — but that sequence could map onto tabs, a wizard, accordions, or a scroll in either direction. Rather than pick on instinct, I tested two concepts with real users: one that scrolls vertically, one that moves sideways through the phases. Vertical won clearly. It was the least disorienting and felt familiar to educators used to working down a page. Only then did the redesign start.</span>
+    <span class="t-jp is-block">PDSA は順番に進む。計画、実行、評価、改善、そしてまた計画へ。ただ、その順番はタブにも、ウィザードにも、アコーディオンにも、縦横どちらのスクロールにも置き換えられる。勘で選ばず、実際のユーザーで 2 案を比べた。縦にスクロールする案と、横へ段階を送る案。結果ははっきり縦だった。迷いにくく、ページを上から下へ読み進めることに慣れた教育者にとって自然だった。再設計に入ったのは、そのあとだ。</span>
+  </p>
   <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/carnegie/CarnegiePDSA_concept01.png" alt="Concept 1: vertical scrolling" loading="lazy">
-    <img src="/assets/carnegie/CarnegiePDSA_concept2.png" alt="Concept 2: horizontal scrolling" loading="lazy">
+    <img src="/assets/carnegie/CarnegiePDSA_concept01.png" alt="Concept 1: the PDSA phases stacked for vertical scrolling" loading="lazy" width="2474" height="1612">
+    <img src="/assets/carnegie/CarnegiePDSA_concept2.png" alt="Concept 2: the PDSA phases laid out for horizontal scrolling" loading="lazy" width="2474" height="1612">
     <figcaption class="beat-caption">
       <span class="t-en">The two concepts tested with users. Vertical scrolling (left) won.</span>
       <span class="t-jp">ユーザーと検証した 2 案。縦スクロール（左）が選ばれた。</span>
@@ -10,12 +19,39 @@
   </figure>
 </section>
 <section class="beat">
-  <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/carnegie/PDSA_PLAN-1.png" alt="Rebuilt Plan phase with step-by-step guidance" loading="lazy">
-    <img src="/assets/carnegie/PDSA_DO-1.png" alt="Rebuilt Do phase with progress and comments" loading="lazy">
+  <h2 class="beat-title">
+    <span class="t-en">A guided conversation, not a form</span>
+    <span class="t-jp is-block">記入フォームではなく、案内付きの対話</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The Plan and Do phases were broken into short steps, each with a progress indicator so people always knew where they were in the cycle, and plain-language instructions at the top. Attaching documents and commenting happen inline, with no second screen or modal to hunt for. Read top to bottom, the workflow now sounds like a conversation — tell us your goal, describe your approach, attach evidence, reflect on what happened — the same method, supporting reflection instead of demanding compliance.</span>
+    <span class="t-jp is-block">「計画」と「実行」を短い手順に分け、手順ごとに進み具合を示した。いまサイクルのどこにいるのか、いつでも分かる。説明は平易な言葉で、各手順のいちばん上に置いた。資料の添付とコメントはその場ででき、別の画面やダイアログを探す必要はない。上から読むと、流れが会話のように聞こえる。目標を教えてください。やり方を書いてください。根拠を添えてください。何が起きたか振り返ってください。方法は同じまま、道具が「従わせる」側から「振り返りを支える」側に回った。</span>
+  </p>
+  <figure class="beat-media beat-media--frame" style="--beat-cols: 2;">
+    <img src="/assets/carnegie/PDSA_PLAN-1.png" alt="Rebuilt Plan phase with step-by-step guidance and a progress indicator" loading="lazy" width="2360" height="1601">
+    <img src="/assets/carnegie/PDSA_PLAN-2.png" alt="A later step in the rebuilt Plan phase" loading="lazy" width="2360" height="1601">
+    <img src="/assets/carnegie/PDSA_DO-1.png" alt="Rebuilt Do phase with progress, inline attachments and comments" loading="lazy" width="2360" height="2370">
+    <img src="/assets/carnegie/PDSA_DO-2.png" alt="Another step in the rebuilt Do phase" loading="lazy" width="2360" height="2370">
     <figcaption class="beat-caption">
-      <span class="t-en">The rebuilt Plan and Do phases.</span>
-      <span class="t-jp">作り直した「計画」と「実行」。</span>
+      <span class="t-en">The rebuilt Plan (top) and Do (bottom) phases.</span>
+      <span class="t-jp">作り直した「計画」（上）と「実行」（下）。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">The whole cycle, screen by screen</span>
+    <span class="t-jp is-block">サイクル全体を、画面ごとに</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">With the vertical model validated, the interaction flow was mapped across the full cycle, from the first question of a plan to the summary of a finished one. Each phase ends with a short acknowledgement before the next begins, so progress is felt as well as shown. I led the work as Lead Product Designer with a UI designer and a UX designer; the redesign was followed by a 40% increase in platform adoption.</span>
+    <span class="t-jp is-block">縦の型が確かめられたので、サイクル全体の操作の流れを描いた。計画の最初の問いから、終わったサイクルのまとめまで。各段階の終わりには短いねぎらいの画面を挟み、次へ進む。進み具合を、見せるだけでなく実感できるように。リードプロダクトデザイナーとして、UI デザイナー、UX デザイナーと進めた。再設計のあと、プラットフォームの利用率は 40% 伸びた。</span>
+  </p>
+  <figure class="beat-media">
+    <img src="/assets/carnegie/PDSA_Interaction_Flow.png" alt="PDSA interaction flow: four rows of screens connected by arrows, from the first Plan question through Do, Study and Act, with acknowledgement screens between phases" loading="lazy" width="2474" height="1883">
+    <figcaption class="beat-caption">
+      <span class="t-en">The PDSA interaction flow, built on the vertical concept.</span>
+      <span class="t-jp">縦の案にもとづく、PDSA の操作の流れ。</span>
     </figcaption>
   </figure>
 </section>

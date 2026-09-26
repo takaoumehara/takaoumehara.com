@@ -1,21 +1,41 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/credit-card-portal.json, "detail"). -->
+<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/credit-card-portal.json, "detail").
+     Sources: the hand-built case study this replaced (preserved in src/case-studies/_legacy/credit-card-portal.html — the four priority flows, the payment flow change, the three-layer system, the adoption timeline) and the de-branded work images in public/assets/credit-card-portal/ and public/assets/shared/Designsystems.00*.png. Every number below is one the record's metrics or the legacy page state. -->
 <section class="beat">
-  <figure class="beat-media" style="--beat-cols: 3;">
-    <img src="/assets/credit-card-portal/nobrand_Bankcard.013.png" alt="Rebuilt account summary on desktop and phone" loading="lazy">
-    <img src="/assets/credit-card-portal/nobrand_Bankcard.016.png" alt="Rebuilt payments flow" loading="lazy">
-    <img src="/assets/credit-card-portal/nobrand_Bankcard.004.png" alt="Rebuilt account setup confirmation" loading="lazy">
+  <h2 class="beat-title">
+    <span class="t-en">Four flows out of ten, chosen by frequency × pain</span>
+    <span class="t-jp is-block">10 のフローから 4 つ。頻度 × 痛みで選んだ</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The audit mapped ten end-to-end flows; four were rebuilt first because they were used most and hurt most. Setting up online access went from a multi-page form to a short onboarding. Login got simpler credential recovery and clearer error states. The account summary — the highest-traffic screen — pulled balance, recent transactions and quick actions into one view. And making a payment, the top reason people called, went from a five-screen process to three steps.</span>
+    <span class="t-jp is-block">監査では端から端まで 10 のフローを洗い出し、よく使われて、しかも痛い 4 つから作り直した。オンライン利用の登録は、何ページもの入力から短い手順へ。ログインは、パスワードを忘れたときの戻り方とエラーの見せ方をわかりやすく。いちばん見られる口座の概要は、残高、最近の取引、よく使う操作を 1 画面にまとめた。問い合わせの電話の最大の理由だった支払いは、5 画面を 3 ステップにした。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/credit-card-portal/nobrand_Bankcard.004.png" alt="Set up online access: the shortened onboarding on desktop and phone" loading="lazy" width="1920" height="1080">
+    <img src="/assets/credit-card-portal/nobrand_Bankcard.007.png" alt="Login and credential recovery with clearer error states" loading="lazy" width="1920" height="1080">
+    <img src="/assets/credit-card-portal/nobrand_Bankcard.013.png" alt="Account summary with balance, recent transactions and quick actions in one view" loading="lazy" width="1920" height="1080">
+    <img src="/assets/credit-card-portal/nobrand_Bankcard.016.png" alt="The three-step payment flow" loading="lazy" width="1920" height="1080">
     <figcaption class="beat-caption">
-      <span class="t-en">Rebuilt flows. UI de-branded and re-created for the portfolio.</span>
-      <span class="t-jp">作り直したフロー。UI はブランドを外し、ポートフォリオ用に作り直している。</span>
+      <span class="t-en">Setup, login, summary, payment. UI de-branded and re-created for the portfolio.</span>
+      <span class="t-jp">登録、ログイン、概要、支払い。UI はブランドを外し、ポートフォリオ用に作り直している。</span>
     </figcaption>
   </figure>
 </section>
 <section class="beat">
-  <figure class="beat-media">
-    <img src="/assets/credit-card-portal/nobrand_Bankcard.003.png" alt="Flow map for the rebuilt flows" loading="lazy">
+  <h2 class="beat-title">
+    <span class="t-en">The system was the deliverable</span>
+    <span class="t-jp is-block">成果物は、画面ではなく仕組み</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Every feature had been designed on its own, so fixing screens alone would have let the mess grow back. The design system came in three layers: a foundation of color, a seven-level type scale, a 4px spacing base, a 12-column grid and elevation; components for forms, navigation, data display, feedback and actions; and patterns for authentication, transactions, account management, error recovery and onboarding — 125+ components in all, behind 105 high-fidelity screens. The library held up beyond the portal: the mobile app team built its 2022 v2.0 release on it, and from 2023 it set the visual language across the bank’s digital products.</span>
+    <span class="t-jp is-block">機能はそれぞれ別々に設計されてきた。画面だけ直しても、散らかりはまた戻ってくる。だから 3 層のデザインシステムを組んだ。土台は色、7 段の文字サイズ、4px を単位にした余白、12 列のグリッド、影。その上に、入力、ナビゲーション、データ表示、通知、操作の部品。さらに、ログイン、取引、口座管理、エラーからの戻り方、はじめての利用の型。部品は合わせて 125 超、それが 105 枚の精細な画面を支えた。部品集はポータルの外でも通用した。モバイルアプリのチームは、2022 年の v2.0 をこの上に組んだ。2023 年からは、銀行のデジタル製品全体の見た目の基準になった。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 3; --beat-cols-sm: 1;">
+    <img src="/assets/shared/Designsystems.001.png" alt="Design system foundation pages: responsive grid, typography scale and color styles" loading="lazy" width="1920" height="1080">
+    <img src="/assets/shared/Designsystems.002.png" alt="Component states: buttons, inputs, dialogs, alerts and error summaries" loading="lazy" width="1920" height="1080">
+    <img src="/assets/shared/Designsystems.003.png" alt="Patterns across desktop, tablet and mobile: card summary, minimum payment and login" loading="lazy" width="1920" height="1080">
     <figcaption class="beat-caption">
-      <span class="t-en">The four priority flows were chosen by frequency × pain.</span>
-      <span class="t-jp">4 つの優先フローは、頻度 × 痛みの大きさで選んだ。</span>
+      <span class="t-en">Foundation, components, patterns — the three layers of the system.</span>
+      <span class="t-jp">土台、部品、型。システムの 3 層。</span>
     </figcaption>
   </figure>
 </section>
