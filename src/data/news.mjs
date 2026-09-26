@@ -15,7 +15,12 @@
 //   image  optional site-relative still that overrides the record's thumb.
 //
 // SHOWCASE — the hero slideshow order: the interactive pieces first, then the
-// client work that has a real hero still. A slug with no media is skipped.
+// client work that has a real hero still. It is derived from
+// src/data/showcase.json, which /admin edits (order, per-slide media,
+// enabled); the per-slide media choice is read by HomeHero from the same file.
+// A slug with no media is skipped.
+import showcase from "./showcase.json" with { type: "json" };
+import { showcaseOrder } from "../lib/showcase.mjs";
 
 export const NEWS = [
   {
@@ -117,18 +122,4 @@ export const NEWS = [
   },
 ];
 
-export const SHOWCASE = [
-  "werewolf",
-  "koe-baku",
-  "rakugaki-jam",
-  "marubatsu",
-  "emoji-blast",
-  "kao-game",
-  "resona",
-  "typespace",
-  "verizon-ai-workflow",
-  "amazon-firetv",
-  "xq",
-  "coca-cola",
-  "carnegie",
-];
+export const SHOWCASE = showcaseOrder(showcase);

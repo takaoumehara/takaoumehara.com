@@ -1,0 +1,63 @@
+---
+// Clerk in the browser, on /admin only. The same call @clerk/astro's
+// integration would inject into every page (runInjectionScript), made here
+// instead so the public site never loads Clerk. The publishable key comes
+// from the page itself: Clerk's middleware writes it (and the SSR auth state)
+// into <head> of /admin at request time — nothing is baked into the build.
+//
+//   [data-admin-sign-in]  → Clerk's sign-in form is mounted here
+//   [data-admin-signout]  → shown once Clerk is ready; signs out
+// When the session appears or disappears, the page reloads so the server
+// decides again what to show.
+---
+<script>
+  import { runInjectionScript } from "@clerk/astro/internal";
+
+  type ClerkLike = {
+    user?: unknown;
+    session?: { getToken: () => Promise<string | null> } | null;
+    addListener: (fn: (e: { user?: unknown }) => void) => void;
+    mountSignIn: (el: HTMLElement, props?: Record<string, unknown>) => void;
+    signOut: (opts?: Record<string, unknown>) => Promise<void>;
+  };
+
+  async function boot() {
+    const status = document.querySelector<HTMLElement>("[data-admin-clerk-status]");
+    try {
+      await runInjectionScript({});
+    } catch (error) {
+      if (status) status.textContent = "Could not load the sign-in service. Reload the page. / サインインを読み込めませんでした。再読み込みしてください。";
+      console.error(error);
+      return;
+    }
+    const clerk = (window as unknown as { Clerk?: ClerkLike }).Clerk;
+    if (!clerk) return;
+    const signedInAtLoad = !!clerk.user;
+    status?.remove();
+
+    const slot = document.querySelector<HTMLElement>("[data-admin-sign-in]");
+    if (slot && !signedInAtLoad) {
+      clerk.mountSignIn(slot, { routing: "hash", forceRedirectUrl: "/admin", fallbackRedirectUrl: "/admin", withSignUp: false });
+    } else if (slot && signedInAtLoad) {
+      // The server saw no session but the browser has one (it was just refreshed): ask the server again, once.
+      let again = false;
+      try { again = Date.now() - Number(sessionStorage.getItem("admin-recheck") || 0) > 15000; sessionStorage.setItem("admin-recheck", String(Date.now())); } catch { again = false; }
+      if (again) { window.location.replace("/admin"); return; }
+      slot.textContent = "Signed in, but the server could not confirm the session. Sign out and sign in again. / サーバーでセッションを確認できませんでした。サインアウトしてから再度サインインしてください。";
+    }
+
+    document.querySelectorAll<HTMLButtonElement>("[data-admin-signout]").forEach((btn) => {
+      btn.hidden = !clerk.user;
+      btn.addEventListener("click", () => { clerk.signOut({ redirectUrl: "/admin" }); });
+    });
+
+    let reloading = false;
+    clerk.addListener(({ user }) => {
+      if (reloading || !!user === signedInAtLoad) return;
+      reloading = true;
+      window.location.replace("/admin");
+    });
+  }
+
+  boot();
+</script>

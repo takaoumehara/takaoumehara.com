@@ -4,23 +4,34 @@
 // that cycles through the works with real media — the interactive pieces
 // first, then client work with a hero still (SHOWCASE in src/data/news.mjs).
 //
-// Media come from detailTeaser() so the stage shows exactly what the detail
-// page opens on. Only the first still loads with the page; the script below
+// Which works, in which order, and which media each slide uses are set in
+// /admin and stored in src/data/showcase.json. A slide's media is "auto" —
+// detailTeaser(), exactly what the detail page opens on — unless the admin
+// picked the preview loop, the hero or thumb still, or another image of the
+// record (slideMedia() in src/lib/showcase.mjs; a choice the record cannot
+// honour falls back to auto). Disabled slides never reach `order`.
+// Only the first still loads with the page; the script below
 // fills in each next slide just before it is shown, and a clip plays only
 // while its slide is the active one.
 import "../../styles/home.css";
 import { t, url } from "../../lib/html.mjs";
-import { detailName, detailTeaser } from "../../lib/detail.mjs";
-import { destination } from "../../lib/site.mjs";
+import { detailName } from "../../lib/detail.mjs";
+import { assetExists, destination } from "../../lib/site.mjs";
+import { showcaseMediaMap, slideMedia } from "../../lib/showcase.mjs";
+import showcase from "../../data/showcase.json";
 
-interface Props { lib: any; order: string[] }
+// `order` is SHOWCASE (enabled slugs, from showcase.json); an entry may also be
+// { slug, media } to override the stored choice.
+interface Props { lib: any; order: Array<string | { slug: string; media?: string }> }
 const { lib, order } = Astro.props;
+const stored = showcaseMediaMap(showcase);
 
 const slides = order
-  .map((slug) => lib.evidence.get(slug))
-  .filter(Boolean)
-  .map((item) => {
-    const teaser = detailTeaser(item);
+  .map((entry) => (typeof entry === "string" ? { slug: entry, media: stored.get(entry) ?? "auto" } : { media: "auto", ...entry }))
+  .map(({ slug, media }) => ({ item: lib.evidence.get(slug), media }))
+  .filter(({ item }) => Boolean(item))
+  .map(({ item, media }) => {
+    const teaser = slideMedia(item, media, { exists: assetExists });
     const to = destination(item);
     if (teaser.kind === "fallback" || !to || to.external) return null;
     return {
