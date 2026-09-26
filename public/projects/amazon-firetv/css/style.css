@@ -696,7 +696,9 @@ body::after {
 /* Footer hint bar */
 .hintbar {
   position: fixed; left: 3.2rem; bottom: 1.1rem; z-index: 40;
-  display: flex; gap: 1.4rem; color: var(--ink-faint); font-size: .82rem; font-weight: 600;
+  display: flex; gap: 1.4rem; color: var(--ink-dim); font-size: .82rem; font-weight: 600;
+  /* A dark backing so the hints stay legible over a white product card. */
+  padding: .35rem .7rem; border-radius: 10px; background: oklch(0.16 0.01 250 / .9);
 }
 .hintbar .k, .ob-hint .k {
   display: inline-flex; align-items: center; justify-content: center;

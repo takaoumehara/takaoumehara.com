@@ -40,6 +40,9 @@ const Voice = (() => {
   let ttsAudio = null;
   (async () => {
     try {
+      // The local demo (?local=1, as embedded on the portfolio) has no TTS
+      // relay — skip the probe rather than log a 404; browser TTS is used.
+      if (new URLSearchParams(location.search).get('local') === '1') return;
       const r = await fetch('/api/tts/status');
       if (r.ok) { const s = await r.json(); cloudReady = !!s.enabled; }
     } catch (e) { /* file:// or no relay → browser TTS */ }
