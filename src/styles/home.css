@@ -104,7 +104,7 @@
   transition: opacity 520ms cubic-bezier(0.2, 0.7, 0.2, 1) 180ms, transform 620ms cubic-bezier(0.2, 0.7, 0.2, 1) 180ms, visibility 0s;
 }
 /* The input stamp (transitions.css sets the type) sits above the name. */
-.hh-cap-stamp { display: block; margin-bottom: 6px; }
+.hh-cap-stamp { display: inline-flex; margin-bottom: 8px; }
 .hh-cap-name {
   display: block;
   font-family: var(--pr-ff-display);
@@ -233,13 +233,18 @@ html.lang-jp .hh-cap-line { font-family: var(--ff-jp); }
 .hn-article:hover { background: var(--pr-card-2); }
 .hn-article:focus-within { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
 
+/* Metadata (category · date, the location kicker): the mono system voice. */
 .hn-meta, .hn-kicker {
   margin: 0 0 12px;
+  font-family: var(--ff-mono);
+  font-weight: var(--fw-mono);
   font-size: var(--text-xs);
   line-height: 1.3;
+  letter-spacing: var(--tracking-mono);
   font-variant-numeric: tabular-nums;
   color: var(--pr-ink-2);
 }
+html.lang-jp .hn-meta, html.lang-jp .hn-kicker { font-family: var(--ff-mono), var(--ff-jp); }
 .hn-title {
   margin: 0 0 12px;
   font-family: var(--pr-ff-display);
@@ -271,11 +276,8 @@ html.lang-jp .hn-lead { line-height: 1.7; }
 .hn-article:hover .hn-thumb img { transform: scale(1.02); }
 .hn-thumb .card-art-label { font-weight: 400; }
 
-/* The twist: thumbnails rise into place one after another on first paint. */
-@media (prefers-reduced-motion: no-preference) {
-  .hn-thumb { animation: hn-rise 640ms cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(120ms + var(--i, 0) * 60ms); }
-}
-@keyframes hn-rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+/* The first-load entrance of the news cards is the site's one boot sequence
+   (src/styles/transitions.css, html[data-boot]); nothing here animates them. */
 
 /* Basic info: the first cell. */
 .hn-info { justify-content: flex-start; }

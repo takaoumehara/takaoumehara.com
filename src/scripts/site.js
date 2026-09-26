@@ -22,7 +22,6 @@ function setLang(lang) {
     cycle.textContent = lang === "jp" ? "EN" : "JP";
     cycle.setAttribute("aria-label", lang === "jp" ? "Switch to English" : "Switch to Japanese");
   });
-  renderClock();
 }
 
 // The rail carries the canonical pair (#theme-switch / #lang-cycle); a page
@@ -48,74 +47,16 @@ function toggleTheme() {
   applyTheme();
 }
 
-// ── Dual clocks (Tokyo + NY) with weather ──────────────────────────────────
-const weatherCache = { tokyo: null, newyork: null, lastFetch: 0 };
-const weatherIcons = {
-  0: "☀️", 1: "🌤️", 2: "⛅", 3: "☁️", 45: "🌫️", 48: "🌫️",
-  51: "🌧️", 53: "🌧️", 55: "🌧️", 61: "🌧️", 63: "🌧️", 65: "🌧️",
-  71: "🌨️", 73: "🌨️", 75: "🌨️", 95: "⛈️", 96: "⛈️", 99: "⛈️"
-};
-
-async function fetchWeather() {
-  const now = Date.now();
-  if (now - weatherCache.lastFetch < 600000) return; // Cache for 10 minutes
-  weatherCache.lastFetch = now;
-  
-  try {
-    // Tokyo: 35.6762°N, 139.6503°E
-    const tokyoRes = await fetch("https://api.open-meteo.com/v1/forecast?latitude=35.6762&longitude=139.6503&current_weather=true");
-    const tokyoData = await tokyoRes.json();
-    weatherCache.tokyo = weatherIcons[tokyoData.current_weather?.weathercode] || "☀️";
-    
-    // New York: 40.7128°N, 74.0060°W
-    const nyRes = await fetch("https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.0060&current_weather=true");
-    const nyData = await nyRes.json();
-    weatherCache.newyork = weatherIcons[nyData.current_weather?.weathercode] || "☀️";
-  } catch (e) {
-    // Graceful fallback: keep default icons
-  }
-}
-
-function renderClock() {
-  const container = document.getElementById("side-clocks");
-  if (!container) return;
-  const now = new Date();
-  const jp = currentLang() === "jp";
-  const locale = jp ? "ja-JP" : "en-US";
-  
-  container.querySelectorAll(".clock-row").forEach(row => {
-    const zone = row.dataset.zone;
-    const city = row.dataset.city;
-    const name = jp ? row.dataset.nameJp : row.dataset.nameEn;
-    const time = new Intl.DateTimeFormat(locale, { 
-      hour: "2-digit", minute: "2-digit", hour12: false, timeZone: zone 
-    }).format(now);
-    
-    row.querySelector(".clock-city").textContent = name;
-    row.querySelector(".clock-time").textContent = time;
-    
-    const weatherIcon = weatherCache[city] || row.querySelector(".clock-weather").textContent;
-    row.querySelector(".clock-weather").textContent = weatherIcon;
-  });
-}
-
-let clockTimer = null;
-function startClock() {
-  if (clockTimer || !document.getElementById("side-clocks")) return;
-  fetchWeather(); // Initial fetch
-  renderClock();
-  clockTimer = setInterval(renderClock, 1000);
-  setInterval(fetchWeather, 600000); // Refresh weather every 10 minutes
-}
-
 // ── Sidebar: the current page, the phone menu ───────────────────────────────
 const normalize = (path) => {
   let p = path.split(/[?#]/)[0].replace(/\/index\.html$/, "/").replace(/\.html$/, "");
   if (p.length > 1) p = p.replace(/\/$/, "");
   return p || "/";
 };
-function markCurrent() {
-  const here = normalize(location.pathname);
+// `path` lets a navigation mark its destination before the page has loaded
+// (see Direction below); by default it is the page you are on.
+function markCurrent(path = location.pathname) {
+  const here = normalize(path);
   document.querySelectorAll("#side [data-match]").forEach((link) => {
     const hit = link.dataset.match.split(/\s+/).some((m) => normalize(m) === here);
     if (hit) link.setAttribute("aria-current", "page");
@@ -169,7 +110,7 @@ function bindSidebar() {
       items.forEach(item => {
         const text = item.textContent.toLowerCase();
         const group = item.closest(".side-group");
-        const groupTitle = group ? group.querySelector("summary").textContent.toLowerCase() : "";
+        const groupTitle = group ? (group.querySelector(".side-group-title") ?? group.querySelector("summary")).textContent.toLowerCase() : "";
         item.style.display = (text.includes(query) || groupTitle.includes(query)) ? "" : "none";
       });
       
@@ -281,6 +222,35 @@ function bindFeel() {
   document.addEventListener("pointercancel", release, { passive: true });
   document.addEventListener("astro:before-preparation", release);
 
+  // The rail row's nudge: 3px to the right the moment it is pressed, held for
+  // at least 80ms, then released to spring back (transitions.css). A keyboard
+  // activation (a click with no pointer) gets the same 80ms step.
+  const NUDGE_MS = 80;
+  let nudged = null, nudgedAt = 0;
+  const nudge = (row) => { row.classList.add("is-nudged"); };
+  const unnudge = (row, after) => setTimeout(() => row.classList.remove("is-nudged"), Math.max(0, after));
+  document.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0 || stillMotion()) return;
+    const row = event.target.closest?.("#side .side-item");
+    if (!row) return;
+    nudged = row; nudgedAt = performance.now();
+    nudge(row);
+  }, { passive: true });
+  const letGo = () => {
+    if (!nudged) return;
+    unnudge(nudged, NUDGE_MS - (performance.now() - nudgedAt));
+    nudged = null;
+  };
+  document.addEventListener("pointerup", letGo, { passive: true });
+  document.addEventListener("pointercancel", letGo, { passive: true });
+  document.addEventListener("click", (event) => {
+    if (event.detail !== 0 || stillMotion()) return; // keyboard / programmatic only
+    const row = event.target.closest?.("#side .side-item");
+    if (!row) return;
+    nudge(row);
+    unnudge(row, NUDGE_MS);
+  });
+
   // The lean: the pointer's position over the card, −0.5…0.5 on both axes,
   // one write per frame, read from the rect once per card entry.
   let raf = 0, leaning = null, rect = null;
@@ -356,7 +326,6 @@ let thrown = null;   // the element named for this trip
 let returning = false;
 const onScreen = (el) => { if (!el) return false; const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && r.bottom > 0 && r.top < innerHeight; };
 document.addEventListener("astro:before-preparation", (event) => {
-  html.dataset.navigated = "1"; // the first-load entrance never runs again
   thrown = null; returning = false;
   if (stillMotion()) return;
   const row = event.sourceElement?.closest?.(".side-item, .grid-card, .hn-article");
@@ -380,7 +349,6 @@ document.addEventListener("astro:before-swap", (event) => {
   event.viewTransition?.finished?.then(done, done);
 });
 document.addEventListener("astro:after-swap", () => {
-  html.dataset.navigated = "1"; // the swap replaced <html>'s attributes; set it again before the new snapshot
   if (!thrown) return;
   if (returning) {
     document.querySelectorAll("[data-vt-hero]").forEach((el) => { el.style.viewTransitionName = "none"; });
@@ -390,6 +358,158 @@ document.addEventListener("astro:after-swap", () => {
   }
   markCurrent(); // the pressed row inverts inside the new snapshot, not after it
 });
+
+// ── Direction: the pane travels the way you moved down or up the rail ───────
+// Every #side [data-match] link, top to bottom, is one position in the
+// directory (All work, the name, About, then every row). Going to a lower
+// position sets html[data-nav-dir="down"], a higher one "up"; transitions.css
+// keys the root's old/new animation off it. The swap replaces <html>'s
+// attributes, so after-swap sets it again for the new snapshot, and the
+// transition's end removes it. Registered after the Throw handlers on
+// purpose: those read the old current row, and this one then marks the
+// destination current straight away, so the inverted block moves to the
+// pressed row while the page loads instead of flashing over at the swap.
+const railIndex = (path) => {
+  const here = normalize(path);
+  const links = [...document.querySelectorAll("#side [data-match]")];
+  return links.findIndex((link) => link.dataset.match.split(/\s+/).some((m) => normalize(m) === here));
+};
+let navDir = null;
+document.addEventListener("astro:before-preparation", (event) => {
+  navDir = null;
+  const to = event.to instanceof URL ? event.to : null;
+  if (!to || to.origin !== location.origin) return;
+  const from = railIndex(location.pathname);
+  const dest = railIndex(to.pathname);
+  if (from >= 0 && dest >= 0 && from !== dest) navDir = dest > from ? "down" : "up";
+  if (navDir) html.dataset.navDir = navDir; else delete html.dataset.navDir;
+  if (normalize(to.pathname) !== normalize(location.pathname)) markCurrent(to.pathname);
+});
+document.addEventListener("astro:before-swap", (event) => {
+  const clear = () => { navDir = null; delete html.dataset.navDir; };
+  if (event.viewTransition?.finished) event.viewTransition.finished.then(clear, clear);
+  else clear();
+});
+document.addEventListener("astro:after-swap", () => { if (navDir) html.dataset.navDir = navDir; });
+
+// ── Pulse: the input badge on a detail page flashes once on arrival ─────────
+let firstPageLoad = true;
+function pulseStamp() {
+  if (stillMotion() || !/^\/projects\//.test(location.pathname)) return;
+  const stamps = [...document.querySelectorAll("#main .input-stamp")].filter((el) => !el.closest(".grid-card"));
+  if (!stamps.length) return;
+  // After the boot on a first load; after the new pane has risen on a switch.
+  const wait = html.hasAttribute("data-boot") ? 520 : 240;
+  setTimeout(() => stamps.forEach((el) => {
+    el.classList.remove("is-pulse");
+    void el.offsetWidth; // restart if it is still there from a previous visit
+    el.classList.add("is-pulse");
+    el.addEventListener("animationend", () => el.classList.remove("is-pulse"), { once: true });
+  }), wait);
+}
+
+// ── Magnetic links: "Case study →", "Play ↗", the news links ───────────────
+// Any link in the pane that ends in an arrow, plus the named hooks. The
+// arrow glyph becomes its own .mag-arrow (it slides on hover, CSS); within
+// MAG_RADIUS of the mouse the link drifts up to MAG_MAX px toward it, and
+// the card it sits in (.mag-field) lights a faint ring at the cursor.
+// One pointermove listener, one write per frame, mouse only.
+const MAG_HOOKS = ".project-play, .beat-link, .hn-links a, .hn-card a:not(.hn-link)";
+const ARROW = /[→↗]\s*$/;
+const MAG_RADIUS = 56, MAG_MAX = 3;
+let magLinks = [];
+function wrapArrow(link) {
+  // Every text run that ends in an arrow (a bilingual link has one per
+  // language): a glyph that is already its own element is tagged; otherwise
+  // it is split off into a span.
+  const walker = document.createTreeWalker(link, NodeFilter.SHOW_TEXT);
+  const ends = [];
+  for (let node = walker.nextNode(); node; node = walker.nextNode()) if (ARROW.test(node.textContent)) ends.push(node);
+  ends.forEach((node) => {
+    const parent = node.parentElement;
+    if (parent && parent !== link && parent.textContent.trim().length === 1) { parent.classList.add("mag-arrow"); return; }
+    const text = node.textContent.replace(/\s+$/, "");
+    const glyph = document.createElement("span");
+    glyph.className = "mag-arrow";
+    glyph.textContent = text.slice(-1);
+    node.textContent = text.slice(0, -1);
+    node.after(glyph);
+  });
+  return ends.length > 0;
+}
+function bindMagnetic() {
+  magLinks = [];
+  const seen = new Set();
+  document.querySelectorAll(`${MAG_HOOKS}, #main a[href]`).forEach((link) => {
+    if (seen.has(link) || link.closest(".grid-card, .side")) return;
+    seen.add(link);
+    const hooked = link.matches(MAG_HOOKS);
+    const hasArrow = link.querySelector(".mag-arrow") || wrapArrow(link);
+    if (!hooked && !hasArrow) return;
+    link.classList.add("is-magnetic");
+    const field = link.closest(".bento-cell, .hn-card, .project-cs-cell");
+    field?.classList.add("mag-field");
+    magLinks.push({ link, field });
+  });
+}
+let magBound = false;
+function bindMagneticPointer() {
+  if (magBound) return;
+  magBound = true;
+  let raf = 0, x = 0, y = 0, lit = new Set();
+  const frame = () => {
+    raf = 0;
+    const near = new Set();
+    for (const { link, field } of magLinks) {
+      if (!link.isConnected) continue;
+      const r = link.getBoundingClientRect();
+      const dx = x < r.left ? x - r.left : x > r.right ? x - r.right : 0;
+      const dy = y < r.top ? y - r.top : y > r.bottom ? y - r.bottom : 0;
+      if (Math.hypot(dx, dy) <= MAG_RADIUS && r.width) {
+        const cx = x - (r.left + r.width / 2), cy = y - (r.top + r.height / 2);
+        const k = MAG_MAX / Math.max(MAG_RADIUS, Math.hypot(cx, cy));
+        link.style.setProperty("--mx", `${(cx * k).toFixed(2)}px`);
+        link.style.setProperty("--my", `${(cy * k).toFixed(2)}px`);
+      } else if (link.style.getPropertyValue("--mx")) {
+        link.style.removeProperty("--mx"); link.style.removeProperty("--my");
+      }
+      if (field) {
+        const f = field.getBoundingClientRect();
+        if (x >= f.left && x <= f.right && y >= f.top && y <= f.bottom) {
+          field.style.setProperty("--cx", `${Math.round(x - f.left)}px`);
+          field.style.setProperty("--cy", `${Math.round(y - f.top)}px`);
+          near.add(field);
+        }
+      }
+    }
+    lit.forEach((f) => { if (!near.has(f)) f.classList.remove("is-near"); });
+    near.forEach((f) => f.classList.add("is-near"));
+    lit = near;
+  };
+  document.addEventListener("pointermove", (event) => {
+    if (event.pointerType !== "mouse" || stillMotion() || !magLinks.length) return;
+    x = event.clientX; y = event.clientY;
+    if (!raf) raf = requestAnimationFrame(frame);
+  }, { passive: true });
+  document.addEventListener("astro:before-preparation", () => {
+    lit.forEach((f) => f.classList.remove("is-near")); lit = new Set();
+  });
+}
+
+// ── Boot: over once the first-load sequence has played ──────────────────────
+// Sidebar.astro sets html[data-boot]; transitions.css runs the sequence. Drop
+// the attribute when it has finished, so the rolled-up counts are plain text
+// again and nothing can replay.
+const BOOT_ANIMS = new Set(["odo-roll", "boot-row", "boot-lens"]);
+function endBoot() {
+  if (!html.hasAttribute("data-boot")) return;
+  const end = () => html.removeAttribute("data-boot");
+  requestAnimationFrame(() => {
+    const running = document.getAnimations?.().filter((a) => BOOT_ANIMS.has(a.animationName)) ?? [];
+    if (!running.length) return end();
+    Promise.allSettled(running.map((a) => a.finished)).then(end);
+  });
+}
 
 // ── Case-study bodies: reveal on scroll, fade images in ─────────────────────
 function bindReveal() {
@@ -418,12 +538,15 @@ function onPageLoad() {
   bindSidebar();
   markCurrent();
   closePhoneMenu();
-  startClock();
   bindCards();
   bindFeel();
   bindEcho();
   bindPreviews();
   bindReveal();
+  bindMagnetic();
+  bindMagneticPointer();
+  pulseStamp();
+  if (firstPageLoad) { firstPageLoad = false; endBoot(); }
   // The old in-page language buttons some hand-built pages still carry.
   document.querySelectorAll(".lang-btn:not([data-bound])").forEach((b) => {
     b.dataset.bound = "1";

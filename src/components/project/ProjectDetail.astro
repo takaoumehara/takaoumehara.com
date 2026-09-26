@@ -70,6 +70,9 @@ const meta = [
     </div>
 
     <header class="project-header bento-cell">
+      {item.kind === "experiment" && item.input && (
+        <span class="input-stamp project-input">{String(item.input)}</span>
+      )}
       <h1 class="project-title" set:html={t(loc(d.name))} />
       {d.oneLiner && <p class="project-oneliner" set:html={tb(d.oneLiner)} />}
       {d.play && (
@@ -150,6 +153,7 @@ const meta = [
      site-wide `footer { border-top }` rule (site.css) would otherwise draw a
      hairline across this cell that no other cell gets — this is a <footer>
      element only because that is the right landmark role, not a divider. */
+  .project-input { margin-bottom: var(--gap-grid); }
   .project-header,
   .project-meta {
     background: transparent;

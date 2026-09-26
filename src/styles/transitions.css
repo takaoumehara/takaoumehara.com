@@ -4,10 +4,13 @@
    the right pane and grows into the detail teaser (Throw), the teaser is
    thrown back into the rail when you leave (Return), surfaces sink under the
    finger and spring back (Feel), the rail echoes the card you are over (Echo),
-   and the first paint arrives rail → news → grid (Entrance).
+   the first load of a session boots like a system (Boot: counters roll up,
+   the rail indexes in, the pane's cards come into focus one by one), a page
+   switch travels in the direction you moved down or up the rail (Direction),
+   and the input badge on a detail page blinks once on arrival (Pulse).
 
-   Rules: transform and opacity only, no blur, no shadow; every animation is
-   off under prefers-reduced-motion; the root cross-fade that
+   Rules: transform, opacity and filter only for anything that moves, no
+   shadow; every animation is off under prefers-reduced-motion; the root cross-fade that
    tests/page-transitions.test.mjs asserts stays in site.css — this file only
    refines it (same specificity, loaded later by Site.astro).
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -42,6 +45,23 @@
   from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ── Direction: the pane travels the way you moved in the rail ─────────────
+   site.js compares the rail position of the page you are on with the one
+   you are going to (every #side [data-match] link, top to bottom) and sets
+   html[data-nav-dir] for the length of the transition. Going further down
+   the directory, the old pane leaves upward and the new one rises from 8px
+   below; going up, the reverse. Without a direction (a page the rail does
+   not list) the dissolve above runs as before. The hero (Throw) and the rail
+   are their own groups, so they are untouched by this. */
+html[data-nav-dir="down"]::view-transition-old(root) { animation: nav-out-up 200ms cubic-bezier(0.4, 0, 1, 1) both; }
+html[data-nav-dir="down"]::view-transition-new(root) { animation: nav-in-from-below 380ms var(--ease-decel) both; }
+html[data-nav-dir="up"]::view-transition-old(root)   { animation: nav-out-down 200ms cubic-bezier(0.4, 0, 1, 1) both; }
+html[data-nav-dir="up"]::view-transition-new(root)   { animation: nav-in-from-above 380ms var(--ease-decel) both; }
+@keyframes nav-out-up        { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(-8px); } }
+@keyframes nav-out-down      { from { opacity: 1; transform: none; } to { opacity: 0; transform: translateY(8px); } }
+@keyframes nav-in-from-below { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes nav-in-from-above { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 
 /* ── Throw / Return: one element named `hero` per document ───────────────────
    The receiving side is the detail teaser or the home stage ([data-vt-hero]).
@@ -79,17 +99,30 @@
 
 /* ── Feel: sink under the pointer, spring back; the image leans toward it ──── */
 .grid-card.cat-card[data-href],
-.side-item,
 .hn-article {
   transition: transform 380ms var(--ease-spring), background 140ms ease;
 }
 .grid-card.cat-card[data-href]:active,
-.side-item:active,
 .hn-article:active,
-.is-pressed {
+.is-pressed:not(.side-item) {
   transform: scale(0.985);
   transition-duration: 90ms, 140ms;
   transition-timing-function: ease-out, ease;
+}
+
+/* A rail row is a directory entry, so it does not sink: it steps 3px to the
+   right under the press (at least 80ms — site.js holds .is-nudged that long)
+   and springs back with an overshoot. Its fill cross-fades to the inverted
+   "current" state as soon as it is pressed (site.js marks it current before
+   the page has loaded), so the ink block travels from the old row to the new
+   one instead of blinking at the swap. */
+.side-item {
+  transition: transform 420ms var(--ease-nudge), background 160ms ease, color 160ms ease;
+}
+.side-item .side-line { transition: color 160ms ease, opacity 160ms ease; }
+.side-item.is-nudged {
+  transform: translateX(3px);
+  transition: transform 60ms ease-out, background 160ms ease, color 160ms ease;
 }
 /* The lean: --px/--py in −0.5…0.5 come from the pointer's position over the
    card (site.js, rAF-throttled, mouse only). The repeated class outranks
@@ -105,63 +138,143 @@
 /* ── Echo: the rail row of the card you are over answers a beat later ─────── */
 .side-item.is-echo:not([aria-current="page"]) { background: var(--pr-card-2); }
 
-/* ── Entrance: first hard load only. site.js sets html[data-navigated] on the
-   first client-side navigation; after that the view transition does the work.
-   No class is needed for the first paint, so nothing can be left invisible if
-   a script fails: `backwards` fill returns every element to its own styles. */
-html:not([data-navigated]) .side-work .side-item,
-html:not([data-navigated]) .work-grid .grid-card {
-  animation: enter 460ms var(--ease-throw) backwards;
-  animation-delay: calc(var(--enter-base, 0ms) + var(--i, 8) * var(--enter-step, 40ms));
+/* ── Boot: the first load of a session, ~350ms, and never again ─────────────
+   Sidebar.astro's inline script sets html[data-boot] (first load of the tab's
+   session, not under reduced motion) before anything is painted, and numbers
+   the pane's first twelve cards in document order (--boot-i). Nothing here
+   hides an element outside its animation: every animation fills backwards
+   only, so when it ends — or if it never starts — each element is on its own
+   styles. site.js drops data-boot once the sequence is over, and a
+   client-side navigation replaces <html>'s attributes, so it cannot re-run.
+
+   Phase 1 (0–150ms): every count in the rail rolls up from 0 to its value.
+   The real number stays the element's text (screen readers, copy); only a
+   drawn copy counts, via a registered integer and a CSS counter.
+   Phase 2 (100–280ms): the rail's heads and rows index in top to bottom,
+   15ms apart, 4px of travel. The pane's cards come into focus through an
+   optical lens — from a 4px blur, a hair too large, to crisp — 32ms apart so
+   the sequence reads card by card. */
+@property --odo-n {
+  syntax: "<integer>";
+  inherits: false;
+  initial-value: 0;
 }
-.side-work .side-item { --enter-base: 0ms; --enter-step: 35ms; --i: 8; }
-.side-work li:nth-child(1) .side-item { --i: 0; }
-.side-work li:nth-child(2) .side-item { --i: 1; }
-.side-work li:nth-child(3) .side-item { --i: 2; }
-.side-work li:nth-child(4) .side-item { --i: 3; }
-.side-work li:nth-child(5) .side-item { --i: 4; }
-.side-work li:nth-child(6) .side-item { --i: 5; }
-.side-work li:nth-child(7) .side-item { --i: 6; }
-.side-work li:nth-child(8) .side-item { --i: 7; }
-/* The grid follows the news thumbnails (home.css: 120ms + i × 60ms). */
-.work-grid .grid-card { --enter-base: 320ms; --enter-step: 45ms; --i: 9; }
-.work-grid .grid-card:nth-child(1) { --i: 0; }
-.work-grid .grid-card:nth-child(2) { --i: 1; }
-.work-grid .grid-card:nth-child(3) { --i: 2; }
-.work-grid .grid-card:nth-child(4) { --i: 3; }
-.work-grid .grid-card:nth-child(5) { --i: 4; }
-.work-grid .grid-card:nth-child(6) { --i: 5; }
-.work-grid .grid-card:nth-child(7) { --i: 6; }
-.work-grid .grid-card:nth-child(8) { --i: 7; }
-.work-grid .grid-card:nth-child(9) { --i: 8; }
-@keyframes enter {
-  from { opacity: 0; transform: translateY(10px); }
+@media (prefers-reduced-motion: no-preference) {
+  html[data-boot] .odo { color: transparent; }
+  html[data-boot] .odo::after {
+    content: counter(odo);
+    content: counter(odo) / "";
+    counter-reset: odo var(--odo-n);
+    position: absolute; inset: 0; text-align: right;
+    color: var(--pr-ink);
+    --odo-n: var(--to, 0);
+    animation: odo-roll 150ms var(--ease-decel) backwards;
+  }
+  html[data-boot] .side-index .odo::after { animation-delay: 30ms; }
+  /* A category's count rolls as its head arrives (--row-i is inherited from
+     the <summary>), so the roll is seen rather than spent before the fade. */
+  html[data-boot] .side-count .odo::after { animation-delay: calc(100ms + var(--row-i, 0) * 15ms); }
+  @keyframes odo-roll { from { --odo-n: 0; } to { --odo-n: var(--to, 0); } }
+
+  html[data-boot] .side-head,
+  html[data-boot] .side-about {
+    animation: boot-row 200ms var(--ease-decel) backwards;
+  }
+  html[data-boot] .side-about { animation-delay: 60ms; }
+  /* The first twelve heads and rows (Sidebar.astro marks them); the rest,
+     below the first screenful, are simply there. */
+  html[data-boot] .side-work [data-boot-row] {
+    animation: boot-row 180ms var(--ease-decel) backwards;
+    animation-delay: calc(100ms + var(--row-i, 0) * 15ms);
+  }
+
+  html[data-boot] [data-boot-i] {
+    animation: boot-lens 360ms var(--ease-decel) backwards;
+    animation-delay: calc(100ms + var(--boot-i, 0) * 32ms);
+  }
+}
+@keyframes boot-row {
+  from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: none; }
 }
+/* An optical focus: out of focus and a touch magnified (the lens is not yet
+   racked), then sharp at its true size. Transform, opacity and filter only. */
+@keyframes boot-lens {
+  from { opacity: 0; filter: blur(4px); transform: scale(1.012) translateY(4px); }
+  60%  { opacity: 1; }
+  to   { opacity: 1; filter: blur(0); transform: none; }
+}
 
-/* ── Input stamp: what you put in (Handwriting · Voice · Two phones …) ─────
-   The one non-motion signature: Outfit 600, uppercase, ink on canvas, on the
-   thumbnail of every interactive piece and on the hero's caption. */
+/* ── Input stamp: the input a piece takes (BODY · FACE · VOICE · TWO PHONES)
+   A hardware/sensor indicator rather than a label: mono, uppercase, tight
+   tracking, a 1px ink frame on canvas like the silkscreen next to a port.
+   Emitted by GridCard.astro, HomeHero.astro and the detail page. */
 .input-stamp {
-  display: inline-block;
-  font-family: var(--pr-ff-display);
-  font-weight: var(--fw-display, 600);
-  font-size: var(--text-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  box-sizing: border-box;
+  padding: 4px 7px 4px 6px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-family: var(--ff-mono);
+  font-weight: 500;
+  font-size: 11px;
   line-height: 1;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
+  white-space: nowrap;
   color: var(--pr-ink);
+  background: var(--pr-canvas);
+}
+/* The sensor LED: a small square that reads as "input", not decoration. */
+.input-stamp::before {
+  content: "";
+  flex: none;
+  width: 5px;
+  height: 5px;
+  background: currentColor;
 }
 .grid-card .input-stamp {
   position: absolute;
   top: 8px;
   left: 8px;
   z-index: 1;
-  padding: 6px 8px;
-  border-radius: 4px;
-  background: var(--pr-canvas);
   pointer-events: none;
 }
+/* Arrival on a detail page: the badge blinks once — ink block, canvas type —
+   then settles (site.js adds .is-pulse). A color flash, not motion. */
+.input-stamp.is-pulse { animation: stamp-pulse 700ms ease-out 1; }
+@keyframes stamp-pulse {
+  0%, 30% { background: var(--pr-ink); color: var(--pr-canvas); border-color: var(--pr-ink); }
+  100%    { background: var(--pr-canvas); color: var(--pr-ink); border-color: var(--pr-ink); }
+}
+
+/* ── Magnetic links: "Case study →", "Play ↗", the news links ─────────────
+   The arrow glyph (site.js wraps it as .mag-arrow when it is not already its
+   own element) slides 4px to the right on hover and focus; within ~56px of
+   the cursor the link drifts up to 3px toward it (--mx/--my), and the card it
+   sits in lights a faint ring where the cursor is (--cx/--cy). rAF-throttled,
+   mouse only (site.js); nothing under reduced motion. */
+.mag-arrow { display: inline-block; transition: transform 260ms var(--ease-decel); }
+.is-magnetic { transition: transform 320ms var(--ease-decel); transform: translate(var(--mx, 0px), var(--my, 0px)); }
+.is-magnetic:hover .mag-arrow,
+.is-magnetic:focus-visible .mag-arrow { transform: translateX(4px); }
+.mag-field { position: relative; }
+.mag-field::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  box-sizing: border-box;
+  border: 1px solid var(--pr-line-2);
+  -webkit-mask: radial-gradient(180px circle at var(--cx, 50%) var(--cy, 50%), #000 0, transparent 70%);
+          mask: radial-gradient(180px circle at var(--cx, 50%) var(--cy, 50%), #000 0, transparent 70%);
+  transition: opacity 240ms ease;
+}
+.mag-field.is-near::after { opacity: 1; }
 
 /* ── Reduced motion: no names, no travel, no entrance ─────────────────────── */
 @media (prefers-reduced-motion: reduce) {
@@ -181,9 +294,24 @@ html:not([data-navigated]) .work-grid .grid-card {
   .grid-card.cat-card[data-href]:active,
   .side-item:active,
   .hn-article:active,
+  .side-item.is-nudged,
   .is-pressed { transform: none; }
   .grid-card.cat-card.cat-card[data-href]:hover .grid-media.cat-card-media img,
   .hn-article.hn-article:hover .hn-thumb img { transform: none; }
-  html:not([data-navigated]) .side-work .side-item,
-  html:not([data-navigated]) .work-grid .grid-card { animation: none; }
+  html[data-nav-dir]::view-transition-old(root),
+  html[data-nav-dir]::view-transition-new(root) { animation-name: fade-out; }
+  html[data-nav-dir]::view-transition-new(root) { animation-name: fade-in; }
+  .input-stamp.is-pulse { animation: none; }
+  .is-magnetic, .mag-arrow { transition: none; transform: none !important; }
+  .mag-field::after { display: none; }
+}
+
+/* The status dot breathes, slowly, only where motion is welcome. */
+@media (prefers-reduced-motion: no-preference) {
+  .side-dot::after { animation: live-halo 2400ms ease-out infinite; }
+}
+@keyframes live-halo {
+  0%   { opacity: 0.7; transform: scale(0.6); }
+  70%  { opacity: 0; transform: scale(1.6); }
+  100% { opacity: 0; transform: scale(1.6); }
 }
