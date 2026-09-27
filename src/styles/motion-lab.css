@@ -1,0 +1,151 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   The Motion Lab panel (src/scripts/motion-lab.js). Loaded only with the lab
+   (?lab=1 or /lab/motion). The site's own system: mono, small, grey card
+   blocks on canvas, an 8px rhythm, ink for what is on, no shadow — a
+   directory of parameters rather than a debug overlay. Works in both themes
+   through the --pr-* tokens. Every control is at least 24px tall.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.mlab {
+  --mlab-w: 336px;
+  position: fixed;
+  z-index: 1000;
+  top: 8px;
+  right: 8px;
+  width: var(--mlab-w);
+  max-width: calc(100vw - 16px);
+  max-height: calc(100vh - 16px);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: var(--pr-canvas);
+  color: var(--pr-ink);
+  border: 1px solid var(--pr-line-2);
+  border-radius: var(--r, 8px);
+  font-family: var(--ff-mono);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.mlab *, .mlab *::before, .mlab *::after { box-sizing: border-box; }
+.mlab[data-dock="left"] { right: auto; left: 8px; }
+.mlab[data-dock="float"] { right: auto; }
+.mlab.is-collapsed .mlab-body { display: none; }
+
+/* Head: the drag handle */
+.mlab-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 8px 8px 8px 16px; min-height: 40px;
+  border-bottom: 1px solid var(--pr-line);
+  cursor: grab; user-select: none; touch-action: none;
+}
+.mlab-head:active { cursor: grabbing; }
+.mlab.is-collapsed .mlab-head { border-bottom: 0; }
+.mlab-title { margin: 0; min-width: 0; font: inherit; font-weight: 500; text-transform: uppercase; letter-spacing: 0.08em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mlab-ver { margin-left: 4px; font-size: 10px; font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--pr-ink-2); }
+.mlab-tools { display: flex; gap: 4px; }
+.mlab-tools .mlab-btn { width: 28px; padding: 0; font-size: 14px; }
+
+.mlab-body { overflow-y: auto; overscroll-behavior: contain; padding: 8px 8px 16px; display: flex; flex-direction: column; gap: 8px; scrollbar-width: thin; }
+.mlab-body > * { flex: none; }
+
+/* Buttons: grey pills, ink when primary */
+.mlab-btn {
+  appearance: none; min-height: 28px; padding: 0 10px;
+  border: 0; border-radius: 9999px; background: var(--pr-card); color: var(--pr-ink);
+  font: inherit; cursor: pointer; white-space: nowrap;
+}
+.mlab-btn:hover { background: var(--pr-card-2); }
+.mlab-primary { background: var(--pr-ink); color: var(--pr-canvas); }
+.mlab-primary:hover { background: var(--pr-ink); text-decoration: underline; text-underline-offset: 3px; }
+.mlab-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+
+.mlab :focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 1px; }
+
+.mlab-note {
+  margin: 0; padding: 8px 12px; border-radius: var(--r, 8px);
+  background: var(--pr-card); color: var(--pr-ink);
+}
+.mlab-status { margin: 0; min-height: 16px; padding: 0 8px; color: var(--pr-ink-2); }
+.mlab-status:empty { display: none; }
+.mlab-edited {
+  margin-left: 8px; padding: 1px 6px; border: 1px solid currentColor; border-radius: 3px;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em;
+}
+.mlab-edited[hidden] { display: none; }
+
+/* Groups: a directory of folds, like the rail's categories */
+.mlab-groups { display: grid; gap: 4px; }
+.mlab-group { background: var(--pr-card); border-radius: var(--r, 8px); }
+.mlab-group > summary {
+  list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+  min-height: 32px; padding: 0 12px; font-weight: 500;
+}
+.mlab-group > summary::-webkit-details-marker { display: none; }
+.mlab-group > summary::after { content: "+"; content: "+" / ""; margin-left: 8px; color: var(--pr-ink-2); }
+.mlab-group[open] > summary::after { content: "−"; content: "−" / ""; }
+.mlab-group > summary:hover span:first-child { text-decoration: underline; text-underline-offset: 3px; }
+.mlab-count { margin-left: auto; color: var(--pr-ink-2); font-weight: 400; }
+.mlab-fields { display: grid; gap: 4px; padding: 4px 8px 12px; }
+
+/* A field: label (and the JSON key) over its control */
+.mlab-f { display: grid; gap: 2px; padding: 4px; border-radius: 4px; }
+.mlab-lab { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; min-width: 0; }
+.mlab-lab label { color: var(--pr-ink); }
+.mlab-key { color: var(--pr-ink-2); font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mlab-ctl { display: flex; align-items: center; gap: 8px; min-height: 28px; }
+.mlab-ctl-col { flex-direction: column; align-items: stretch; gap: 4px; }
+.mlab-unit, .mlab-minmax { color: var(--pr-ink-2); min-width: 2ch; }
+.mlab-minmax { width: 3ch; }
+
+.mlab select, .mlab .mlab-text, .mlab .mlab-num, .mlab textarea {
+  font: inherit; color: var(--pr-ink); background: var(--pr-canvas);
+  border: 1px solid var(--pr-line-2); border-radius: 4px; min-height: 28px;
+}
+.mlab select { flex: 1 1 auto; min-width: 0; padding: 0 6px; }
+.mlab .mlab-text { flex: 1 1 auto; min-width: 0; padding: 0 8px; }
+.mlab .mlab-text[aria-invalid="true"] { border-color: #c62828; }
+.mlab .mlab-num { width: 8ch; flex: none; padding: 0 6px; text-align: right; -moz-appearance: textfield; appearance: textfield; }
+.mlab .mlab-num::-webkit-inner-spin-button, .mlab .mlab-num::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.mlab textarea { width: 100%; padding: 8px; resize: vertical; font-size: 11px; line-height: 1.4; }
+
+/* Range: a 1px track and a square thumb, 24px hit area */
+.mlab input[type="range"] {
+  flex: 1 1 auto; min-width: 0; height: 24px; margin: 0; background: transparent;
+  -webkit-appearance: none; appearance: none; cursor: pointer;
+}
+.mlab input[type="range"]::-webkit-slider-runnable-track { height: 1px; background: var(--pr-line-2); }
+.mlab input[type="range"]::-moz-range-track { height: 1px; background: var(--pr-line-2); }
+.mlab input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 12px; height: 12px; margin-top: -6px; border-radius: 2px; background: var(--pr-ink); border: 0;
+}
+.mlab input[type="range"]::-moz-range-thumb { width: 12px; height: 12px; border-radius: 2px; background: var(--pr-ink); border: 0; }
+
+/* Toggle: a checkbox drawn as a switch (native semantics, role="switch") */
+.mlab .mlab-switch {
+  -webkit-appearance: none; appearance: none; position: relative; flex: none;
+  width: 40px; height: 24px; margin: 0; border-radius: 9999px;
+  background: var(--pr-card-2); border: 1px solid var(--pr-line-2); cursor: pointer;
+}
+.mlab .mlab-switch::before {
+  content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--pr-ink-2); transition: transform 140ms ease;
+}
+.mlab .mlab-switch:checked { background: var(--pr-ink); border-color: var(--pr-ink); }
+.mlab .mlab-switch:checked::before { transform: translateX(16px); background: var(--pr-canvas); }
+.mlab .mlab-switch:disabled { cursor: not-allowed; }
+.mlab-group .mlab-f-toggle { grid-template-columns: 1fr auto; align-items: center; }
+.mlab-body > .mlab-f-toggle { grid-template-columns: 1fr auto; align-items: center; }
+
+.mlab-swatch { flex: none; width: 16px; height: 16px; border-radius: 3px; border: 1px solid var(--pr-line); }
+
+.mlab-io { display: grid; gap: 8px; padding: 8px; border-radius: var(--r, 8px); background: var(--pr-card); }
+.mlab-io[hidden] { display: none; }
+
+@media (max-width: 600px) {
+  .mlab, .mlab[data-dock] { left: 8px; right: 8px; top: auto; bottom: 8px; width: auto; max-height: 60vh; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .mlab .mlab-switch::before { transition: none; }
+}

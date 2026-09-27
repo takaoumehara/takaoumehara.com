@@ -11,6 +11,7 @@
 // data-match paths each link carries.
 import { getLibrary, orderedCategories, destination, samePage } from "../lib/site.mjs";
 import { t, tb, esc, url } from "../lib/html.mjs";
+import MOTION from "../data/motion.json";
 
 interface Props { current?: string }
 const { current = Astro.url.pathname } = Astro.props;
@@ -43,19 +44,16 @@ const groups = categories.map((category) => {
 const workCount = new Set(groups.flatMap(({ items }) => items.map(({ item }) => item.id ?? item.slug))).size;
 const disciplineCount = groups.length;
 
-// First-load boot order (src/styles/transitions.css): every category head and
-// row gets its place in the rail, top to bottom, so the stagger runs down the
-// whole directory rather than restarting in each group. Only the first ones
-// animate; the rest are simply there.
-const BOOT_ROWS = 12;
-let bootIndex = 0;
-const bootGroups = groups.map((g) => ({ ...g, head: bootIndex++, rows: g.items.map(() => bootIndex++) }));
-const rowStyle = (i) => (i < BOOT_ROWS ? `--row-i: ${i}` : undefined);
+// A count: mono, tabular (shell.css). On the first load its digits are typed
+// as random digits before they settle, like the rest of the rail's type
+// (src/scripts/motion.js).
+const odo = (n) => `<span class="odo">${Number(n) || 0}</span>`;
 
-// A count that rolls up on the first load: the real number is the element's
-// text (what a screen reader reads), and the rolling copy is a decoration
-// drawn over it by CSS from --to.
-const odo = (n) => `<span class="odo" style="--to: ${Number(n) || 0}">${Number(n) || 0}</span>`;
+// What the inline script below needs from the motion config to decide, before
+// the first paint, whether the rail and the pane will play their loading
+// sequence (src/data/motion.json; the Motion Lab's working copy overrides it
+// while the lab is open in the tab).
+const moGate = { enabled: MOTION.global.enabled, runOn: MOTION.global.runOn, railPlayOn: MOTION.rail.playOn };
 
 // A row is named, not described: the Latin short name in both languages.
 // Resona stays "Resona" in the Japanese edition, the way a studio site keeps
@@ -96,29 +94,46 @@ const thumb = (item) => {
 };
 ---
 <aside class="side" id="side" transition:persist="side">
-  <script is:inline>
-    // Set here, at the top of <body>, before the rail or the pane is painted.
-    //  - html[data-boot], on the first load of the session only, turns on the
-    //    rail's boot sequence (src/styles/transitions.css): every boot
-    //    animation fills backwards and ends on the element's own styles.
-    //  - html[data-mo-intro] ("boot" or "reload"), on every full load, keeps
-    //    the right pane transparent until src/scripts/motion.js has laid its
-    //    boxes down and started filling them in; motion.js removes it. If that
-    //    script never runs, the timeout below shows the pane anyway.
-    // Reduced motion sets neither.
+  <script is:inline define:vars={{ moGate }}>
+    // Set here, at the top of <body>, before the rail or the pane is painted:
+    //  - html[data-mo-intro] when the right pane will play its loading
+    //    sequence on this full load (global.runOn is first-load or both);
+    //  - html[data-mo-rail] when the rail will (rail.playOn: session-first =
+    //    the first full load of the tab's session, every-load, always).
+    // CSS keeps those surfaces transparent until src/scripts/motion.js has
+    // laid its first frames down and removes the attributes; if that script
+    // never runs, the timeout below shows everything anyway. ?lab=1 opens
+    // the Motion Lab for the tab (?lab=0 closes it); while it is open its
+    // working config (localStorage "tu-motion-lab") overrides the defaults.
+    // Reduced motion sets neither attribute.
     (function () {
       if (window.__tuBoot) return;
       window.__tuBoot = true;
       var html = document.documentElement;
+      var gate = { enabled: moGate.enabled, runOn: moGate.runOn, railPlayOn: moGate.railPlayOn };
       var first = false;
       try {
         if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        var q = new URLSearchParams(location.search).get("lab");
+        if (q === "1") sessionStorage.setItem("tu-lab", "1");
+        if (q === "0") sessionStorage.removeItem("tu-lab");
+        if (sessionStorage.getItem("tu-lab") === "1") {
+          var lab = JSON.parse(localStorage.getItem("tu-motion-lab") || "null");
+          if (lab && lab.global) {
+            if (typeof lab.global.enabled === "boolean") gate.enabled = lab.global.enabled;
+            if (lab.global.runOn) gate.runOn = lab.global.runOn;
+          }
+          if (lab && lab.rail && lab.rail.playOn) gate.railPlayOn = lab.rail.playOn;
+        }
         first = !sessionStorage.getItem("tu-booted");
         if (first) sessionStorage.setItem("tu-booted", "1");
       } catch (e) { return; }
-      if (first) html.setAttribute("data-boot", "");
-      html.setAttribute("data-mo-intro", first ? "boot" : "reload");
-      setTimeout(function () { html.removeAttribute("data-mo-intro"); }, 2500);
+      if (!gate.enabled) return;
+      var pane = gate.runOn === "first-load" || gate.runOn === "both";
+      var rail = gate.railPlayOn === "every-load" || gate.railPlayOn === "always" || (gate.railPlayOn === "session-first" && first);
+      if (pane) html.setAttribute("data-mo-intro", "");
+      if (rail) html.setAttribute("data-mo-rail", "");
+      if (pane || rail) setTimeout(function () { html.removeAttribute("data-mo-intro"); html.removeAttribute("data-mo-rail"); }, 3000);
     })();
   </script>
   <div class="side-top">
@@ -175,6 +190,10 @@ const thumb = (item) => {
       </dl>
     </div>
 
+    {/* The whole card is the link to /about: the label is the one link (one
+        tab stop, its name "About"), and its ::after stretches over the card
+        (shell.css), so the positioning line underneath is still read as a
+        paragraph and nothing interactive is nested. */}
     <section class="side-about">
       <a class="side-label" href="/about" data-match="/about /about.html" aria-current={cur(samePage("/about", current))}>
         <span class="t-en">About</span><span class="t-jp">について</span>
@@ -183,16 +202,16 @@ const thumb = (item) => {
     </section>
 
     <nav class="side-work" aria-label="Work by category">
-      {bootGroups.map(({ category, items, head, rows }) => (
+      {groups.map(({ category, items }) => (
         <details class="side-group" open>
-          <summary style={rowStyle(head)} data-boot-row={head < BOOT_ROWS ? "" : undefined}>
+          <summary>
             <span class="side-group-title" set:html={t(category.title)} />
             <span class="side-count" set:html={odo(items.length)} />
           </summary>
           <ul>
-            {items.map(({ item, to, href, here }, i) => (
+            {items.map(({ item, to, href, here }) => (
               <li>
-                <a class="side-item" href={href} style={rowStyle(rows[i])} data-boot-row={rows[i] < BOOT_ROWS ? "" : undefined}
+                <a class="side-item" href={href}
                    data-match={to?.external ? undefined : href}
                    aria-current={cur(here)}
                    target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>
