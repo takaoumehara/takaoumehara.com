@@ -18,6 +18,7 @@ import Site from "../layouts/Site.astro";
 import { tb, t, mediaFill } from "../lib/html.mjs";
 import { cardName } from "../lib/labels.mjs";
 import { getLibrary, gridEntries, orderedCategories, destination } from "../lib/site.mjs";
+import profile from "../data/profile.json";
 
 const lib = getLibrary();
 const entries = gridEntries();
@@ -71,7 +72,15 @@ FILTERS[3].count = designCount;
   <main class="work-page-full" data-category="work">
     <header class="work-header">
       <div class="work-header-top">
-        <a class="work-back" href="/">← <span class="t-en">Home</span><span class="t-jp">ホーム</span></a>
+        <!-- The same masthead as the landing's rail: the name (home link), then
+             one mono line of what is indexed and the title line. No "← Home". -->
+        <div class="work-brand">
+          <a class="side-wordmark work-wordmark" href="/">{profile.name}</a>
+          <p class="work-status">
+            <span class="t-en">Index · {FILTERS[0].count} Works</span><span class="t-jp">索引・全 {FILTERS[0].count} 作品</span>
+          </p>
+          <p class="work-tagline" set:html={t(profile.tagline)} />
+        </div>
         <div class="work-controls">
           <button class="work-search-btn" id="work-search-toggle" type="button" aria-label="Search">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -157,16 +166,15 @@ FILTERS[3].count = designCount;
     margin-bottom: 32px;
   }
 
-  .work-back {
-    font-size: var(--text-md);
-    color: var(--ink);
-    text-decoration: none;
-    transition: opacity 0.2s;
+  .work-header-top { align-items: flex-start; }
+  .work-brand { min-width: 0; }
+  .work-wordmark { color: var(--ink); text-decoration: none; }
+  .work-status {
+    margin: var(--sp-3) 0 0;
+    font-family: var(--ff-mono); font-weight: var(--fw-mono); font-size: var(--text-xs);
+    letter-spacing: var(--tracking-mono); color: var(--pr-ink-2); font-variant-numeric: tabular-nums;
   }
-  
-  .work-back:hover {
-    opacity: 0.7;
-  }
+  .work-tagline { margin: 6px 0 0; font-size: var(--text-sm); color: var(--pr-ink-2); max-width: 60ch; }
   
   .work-controls {
     display: flex;
@@ -223,11 +231,26 @@ FILTERS[3].count = designCount;
     flex-wrap: wrap;
   }
 
-  /* Pills, like the home page's — grid.css already styles .filter-btn; these
-     only add the taller hit area this header wants. */
-  .filter-btn {
-    padding: 10px var(--sp-3);
-    font-size: var(--text-body);
+  /* Plain text tabs, not boxed pills: the active discipline is ink and
+     underlined, the rest one ink step quieter; the count is a mono
+     superscript, like the rail's index line. */
+  .work-filters { gap: var(--sp-3); }
+  .work-page-full .filter-btn {
+    appearance: none; border: 0; border-radius: 0; background: none;
+    min-height: 32px; padding: 4px 0;
+    font-size: var(--text-md); color: var(--pr-ink-2);
+    display: inline-flex; align-items: flex-start; gap: 4px;
+    text-decoration: none;
+  }
+  .work-page-full .filter-btn:hover { background: none; color: var(--ink); }
+  .work-page-full .filter-btn.is-active {
+    background: none; color: var(--ink);
+    text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px;
+  }
+  .work-page-full .filter-count,
+  .work-page-full .filter-btn.is-active .filter-count {
+    font-family: var(--ff-mono); font-size: 10px; line-height: 1; color: inherit; opacity: 1;
+    font-variant-numeric: tabular-nums; transform: translateY(2px);
   }
 
   /* ── The free grid ──────────────────────────────────────────────────────
@@ -278,11 +301,33 @@ FILTERS[3].count = designCount;
     flex: none;
     padding: var(--cell-pad, clamp(20px, 3vw, 32px));
   }
-  /* A "feature" tile's media is the point — the caption sits tighter so the
-     image still reads as the largest thing on the tile. */
-  .tile--feature .tile-body { padding-top: calc(var(--cell-pad, clamp(20px, 3vw, 32px)) * 0.6); }
   .tile-title { margin: 0 0 2px; }
   .tile--feature .tile-title { font-size: var(--text-lg); }
+
+  /* Image-only tiles: on a pointer that can hover, the name, line and input
+     stamp stay hidden until the tile is hovered or focused, then rise in on
+     a solid card panel over the bottom of the image (solid, so the text keeps
+     full contrast). Touch screens can't hover, so there the caption stays. */
+  @media (hover: hover) and (pointer: fine) {
+    .tile-body {
+      position: absolute; left: 8px; right: 8px; bottom: 8px; z-index: 3;
+      padding: 12px 16px; border-radius: calc(var(--r) - 2px);
+      background: var(--pr-canvas); color: var(--ink);
+      opacity: 0; transform: translateY(6px); pointer-events: none;
+      transition: opacity 180ms var(--ease-decel, ease-out), transform 180ms var(--ease-decel, ease-out);
+    }
+    .tile .input-stamp {
+      opacity: 0; transition: opacity 180ms var(--ease-decel, ease-out);
+    }
+    .tile:hover .tile-body, .tile:focus-within .tile-body, .tile:focus-visible .tile-body,
+    .tile:hover .input-stamp, .tile:focus-within .input-stamp, .tile:focus-visible .input-stamp {
+      opacity: 1; transform: none;
+    }
+    .tile--feature .tile-title { font-size: var(--text-md); }
+  }
+  @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+    .tile-body, .tile .input-stamp { transition: none; transform: none; }
+  }
 
   @keyframes slideDown {
     from {
@@ -304,10 +349,7 @@ FILTERS[3].count = designCount;
       gap: 8px;
     }
 
-    .filter-btn {
-      padding: 8px 12px;
-      font-size: 13px;
-    }
+    .work-page-full .filter-btn { font-size: var(--text-body); }
 
     /* Fewer columns, and a feature/wide tile only doubles width, never
        height — a 2x2 square at 2 columns wide would run the whole first

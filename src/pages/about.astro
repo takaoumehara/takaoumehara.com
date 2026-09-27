@@ -27,9 +27,27 @@
 // regardless of this file. Flagged in this round's report.
 //
 // Title: profile.tagline (src/data/profile.json) is the site-wide title /
-// positioning source — this round appends "Interactive Media Designer" to
-// it (EN + JP), and this page now reads that value directly via t() instead
-// of duplicating it as a literal string, so it can't drift out of sync.
+// positioning source — this page reads it directly via t() instead of
+// duplicating it as a literal string, so it can't drift out of sync.
+// Round 4 (this round, Takao's live feedback): tagline replaced (was "Design
+// & AI Executive · 0→1 Product & Experience Builder · Interactive Media
+// Designer" — felt off) with "Creative Director · Interactive Media
+// Designer · 0→1 Product & Business Builder", sourced from roles.json (the
+// "Executive Creative Director" title at Creativity Is Everywhere LLC, per
+// src/fragments/about.html, plus "Creative Director" on the dnt/kitadoko
+// client projects; the own-venture roles — cie, intentfirst, breakbias —
+// back "0→1 Product & Business Builder"). Same replacement made in
+// src/lenses/default.json (title/hero.eyebrow/seo.title/seo.description) so
+// the home hero and About agree; tests/strategic-refinement.test.mjs:92
+// still asserts the OLD string against about.html and needs updating (not
+// mine to edit) — see scratchpad/NOTES-A2.md. Also this round: removed the
+// "40+ Verizon designers" stat (Takao: "means little"); regrouped "Selected
+// organizations" into ORG_GROUPS (src/data/about.mjs) by actual relationship
+// instead of one undifferentiated badge row; the #now cell's bullets and its
+// "Updated <month> <year>" label now read from src/data/now.json instead of
+// being hardcoded (see formatNowUpdated in about.mjs); Studio and Work with
+// me rewritten in plain language (see about.mjs / this file's cells for the
+// sourcing of each rewrite).
 import Site from "../layouts/Site.astro";
 import { t, tb } from "../lib/html.mjs";
 import { getLibrary } from "../lib/site.mjs";
@@ -40,14 +58,18 @@ import {
   WORKSHOP_FORMATS,
   WORKSHOP_CLIENTS,
   TEACHING,
+  ORG_GROUPS,
+  formatNowUpdated,
 } from "../data/about.mjs";
 
 const lib = getLibrary();
 const profile = lib.profile;
+const nowData = lib.now;
+const nowUpdated = formatNowUpdated(nowData.updatedAt);
 ---
 <Site
   title="About — Takao Umehara"
-  description="Design & AI Executive and Interactive Media Designer — building interactive experiences and the environments teams ship in."
+  description="Creative Director and Interactive Media Designer — games, learning tools, AI products and interactive experiences, from the same creative base."
   canonical="https://takaoumehara.com/about"
   bodyClass="about-page"
 >
@@ -64,17 +86,21 @@ const profile = lib.profile;
               <span class="t-jp">答えがまだ見えないうちに、いちばん良い仕事をする。</span>
             </h1>
             <p class="about-subtitle">
-              <span class="t-en">Design & AI Executive — building interactive experiences and the environments teams ship in.</span>
-              <span class="t-jp">Design & AI Executive — インタラクティブ体験と、チームが届ける環境をつくる。</span>
+              <span class="t-en">Creative Director &amp; 0→1 Builder — games, learning tools, AI products and interactive experiences, all from the same creative base.</span>
+              <span class="t-jp">クリエイティブディレクター・0→1 ビルダー。ゲームから学びの道具、AI プロダクト、インタラクティブ体験まで。土台はいつも創造性。</span>
             </p>
 
             <p class="about-bio">
-              <span class="t-en">Based between New York and Japan. Twenty-plus years taking products from 0→1 — not only Figma files, but the AI-ready environments teams actually build and ship in.</span>
-              <span class="t-jp">ニューヨークと日本を拠点に。20年以上、0→1 のプロダクトづくりに携わる。Figma だけではない。チームが実際にビルドし届ける、AI 前提の環境まで設計する。</span>
+              <span class="t-en">Based between New York and Japan. Twenty-plus years across brand, product and interactive design — and I do my best work before anyone's agreed on what to build.</span>
+              <span class="t-jp">ニューヨークと日本を拠点に。20 年以上、ブランド・プロダクト・インタラクティブと幅広く手がけてきました。何をつくるかがまだ決まっていない段階が、いちばん力を発揮できるところです。</span>
             </p>
             <p class="about-bio about-bio-2">
-              <span class="t-en">I work at the beginning of things — finding possibilities, connecting disciplines that are usually kept separate, and turning ambiguous ideas into products, experiences, ventures and systems people can actually react to.</span>
-              <span class="t-jp">僕がいちばん力を出せるのは、「何をつくるか」がまだはっきり決まっていない段階です。まだ見えていない可能性を見つけて、一見関係のないものをつなぎ、人が触ったり試したりできるところまで持っていく。</span>
+              <span class="t-en">I love designing physical games — the kind people play together, in the same room. I like designing for how children learn, where play and learning become the same thing. And I like building AI products, interactive experiences, and the new services, products and businesses that didn't exist yesterday — figuring out what's worth making is half the fun.</span>
+              <span class="t-jp">みんなで同じ場所に集まって遊ぶ、フィジカルなゲームをつくるのが好きです。遊びと学びが分かれていない、子どもの学び方に合わせたものをつくるのも好きです。AI プロダクトやインタラクティブな体験、そして昨日までなかった新しいサービスや事業をつくることも。何をつくるべきかを考えること自体が、半分は楽しみです。</span>
+            </p>
+            <p class="about-bio about-bio-3">
+              <span class="t-en">All of it comes from the same place — creativity. I'm not a specialist in one craft; I'm someone who takes on a wide range of problems from that single base.</span>
+              <span class="t-jp">どれも根っこは同じ、創造性です。ひとつの専門を極める人ではなく、創造性という一つの土台から、幅広い課題に向き合うタイプです。</span>
             </p>
           </div>
           <figure class="about-portrait">
@@ -94,13 +120,6 @@ const profile = lib.profile;
             </div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">40+</div>
-            <div class="stat-label">
-              <span class="t-en">Verizon designers supported by AI workflows</span>
-              <span class="t-jp">Verizon — AI ワークフローで支援したデザイナー</span>
-            </div>
-          </div>
-          <div class="stat-item">
             <div class="stat-value">20</div>
             <div class="stat-label">
               <span class="t-en">SOSV founders mentored</span>
@@ -117,57 +136,49 @@ const profile = lib.profile;
         </div>
       </section>
 
-      <!-- Selected organizations — from the old about.html's "Notable Organizations" section -->
+      <!-- Selected organizations — grouped by relationship (Takao: "unclear
+           what 'selected' means" — see src/data/about.mjs ORG_GROUPS for the
+           source of each grouping and each org). -->
       <section class="about-cell bento-cell cell-orgs">
         <h2 class="about-h2">
-          <span class="t-en">Selected organizations</span>
-          <span class="t-jp">協働した主な企業・機関</span>
+          <span class="t-en">Organizations</span>
+          <span class="t-jp">協働した企業・機関</span>
         </h2>
-        <div class="org-badges">
-          <span class="org-badge">Amplify Education</span>
-          <span class="org-badge">Verizon</span>
-          <span class="org-badge">T-Mobile</span>
-          <span class="org-badge">Coca-Cola</span>
-          <span class="org-badge">School of Visual Arts (SVA)</span>
-          <span class="org-badge">SOSV</span>
-          <span class="org-badge">USAA</span>
-          <span class="org-badge">Carnegie Foundation</span>
-          <span class="org-badge">Tokyo Metropolitan Government</span>
-          <span class="org-badge">Emerson Collective</span>
-          <span class="org-badge">Google (training)</span>
-          <span class="org-badge">Microsoft (training)</span>
-          <span class="org-badge">Tiffany &amp; Co. (training)</span>
-          <span class="org-badge">Dentsu</span>
+        <div class="org-group-list">
+          {ORG_GROUPS.map((group) => (
+            <div class="org-group">
+              <h3 class="org-group-label" set:html={t(group.label)} />
+              <p class="org-group-note" set:html={t(group.note)} />
+              <div class="org-badges">
+                {group.orgs.map((org) => <span class="org-badge">{org}</span>)}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
-      <!-- Now -->
+      <!-- Now — bullets and the updated-date label both come from
+           src/data/now.json (summary[], updatedAt), so this cell can't drift
+           out of sync with /now. formatNowUpdated() (src/data/about.mjs)
+           turns "2026-09" into "September 2026" / "2026年9月". -->
       <section id="now" class="about-cell bento-cell cell-now">
-        <h2 class="about-h2">
-          <span class="t-en">Now</span>
-          <span class="t-jp">いま</span>
-        </h2>
+        <div class="about-cell-head">
+          <h2 class="about-h2">
+            <span class="t-en">Now</span>
+            <span class="t-jp">いま</span>
+          </h2>
+          <p class="about-updated">
+            <span class="t-en">Updated {nowUpdated.en}</span>
+            <span class="t-jp">{nowUpdated.jp}更新</span>
+          </p>
+        </div>
         <ul class="about-list">
-          <li>
-            <span class="t-en">Shipping <strong>Intent First</strong> — thesis and practice for Context Grammar: helping AI read intent, not just prompts.</span>
-            <span class="t-jp"><strong>Intent First</strong> — Context Grammar の主張と実践。AI がプロンプトではなく意図を読むための語彙。</span>
-          </li>
-          <li>
-            <span class="t-en">Building <strong>moime</strong> — phone-first pages that start from finished design.</span>
-            <span class="t-jp"><strong>moime</strong> — 完成したデザインから始まる、スマホ前提のページづくり。</span>
-          </li>
-          <li>
-            <span class="t-en">Releasing interactive works (Typespace, Resona, and late-summer playables).</span>
-            <span class="t-jp">インタラクティブ作品の公開（Typespace、Resona、晩夏のプレイアブル）。</span>
-          </li>
-          <li>
-            <span class="t-en">Teaching / coaching AI skills for design and product teams.</span>
-            <span class="t-jp">デザイン／プロダクトチーム向けの AI スキル指導・コーチング。</span>
-          </li>
-          <li>
-            <span class="t-en">Selective studio and hiring conversations.</span>
-            <span class="t-jp">スタジオ案件および採用の対話（厳選）。</span>
-          </li>
+          {nowData.summary.map((item) => (
+            <li>
+              <span class="t-en" set:html={item.en} />
+              <span class="t-jp" set:html={item.jp} />
+            </li>
+          ))}
         </ul>
       </section>
 
@@ -393,13 +404,19 @@ const profile = lib.profile;
         </ul>
       </section>
 
-      <!-- Studio -->
+      <!-- Studio — profile.studio (src/data/profile.json) for name/url; the
+           2020 founding date matches the Experience cell above, sourced from
+           src/fragments/about.html (see scratchpad/NOTES-A2.md for the
+           unresolved 2006 vs. 2020 discrepancy carried over from last round). -->
       <section id="studio" class="about-cell bento-cell cell-studio">
-        <h2 class="about-h2">Studio</h2>
-        <p class="about-studio-tagline">Creativity is Everywhere.</p>
+        <h2 class="about-h2">
+          <span class="t-en">Studio</span>
+          <span class="t-jp">スタジオ</span>
+        </h2>
+        <p class="about-studio-tagline">Creativity Is Everywhere LLC</p>
         <p class="about-text">
-          <span class="t-en">Studio practice under a simple company sentence: Takao Umehara's independent design & AI studio (LLC) — selective collaborations, not an agency mill.</span>
-          <span class="t-jp">独立した Design & AI スタジオ（LLC）としての一文：選抜したコラボレーション。量産エージェンシーではない。</span>
+          <span class="t-en">My independent design &amp; AI studio. I take on a small number of client and venture projects at a time — brand, product and AI work for companies in the US and Japan.</span>
+          <span class="t-jp">独立系のデザイン &amp; AI スタジオです。同時に受けるのは少数の案件だけ。日米の企業やベンチャー向けに、ブランド・プロダクト・AI の仕事をしています。</span>
         </p>
         <p class="about-cta">
           <a href={profile.studio.url} target="_blank" rel="noopener" class="about-link">
@@ -409,22 +426,45 @@ const profile = lib.profile;
         </p>
       </section>
 
-      <!-- Work with me -->
+      <!-- Work with me — rewritten per Takao's own list of engagement types
+           and capabilities (this task's brief); no client names or numbers
+           invented, none used here. Board & advisory kept last and low-key,
+           as asked. -->
       <section id="work-with-me" class="about-cell bento-cell cell-work-with-me">
         <h2 class="about-h2">
           <span class="t-en">Work with me</span>
           <span class="t-jp">仕事の相談</span>
         </h2>
         <p class="about-text">
-          <span class="t-en">Hiring and studio. I help teams and founders when the brief is still soft — interactive experiences, AI product surfaces, and the systems around them.</span>
-          <span class="t-jp">採用とスタジオ。ブリーフがまだ柔らかい段階で、チームと創業者を支援する — インタラクティブ体験、AI プロダクトの表層、その周りの仕組みまで。</span>
+          <span class="t-en">I work alongside teams and founders — from a first idea through to the business built around it.</span>
+          <span class="t-jp">新しい構想やプロダクト、事業を、一緒に伴走しながら形にします。</span>
+        </p>
+
+        <p class="about-subhead">
+          <span class="t-en">Ways to work together</span>
+          <span class="t-jp">働き方</span>
         </p>
         <ul class="about-list about-list--tight">
-          <li><span class="t-en">Full-time / leadership roles</span><span class="t-jp">フルタイム / リーダーシップ</span></li>
-          <li><span class="t-en">Fractional / advisory</span><span class="t-jp">顧問 / フラクショナル</span></li>
-          <li><span class="t-en">0→1 product &amp; technology collaboration</span><span class="t-jp">0→1 プロダクト &amp; 技術協業</span></li>
-          <li><span class="t-en">Speaking / workshops</span><span class="t-jp">講演 / ワークショップ</span></li>
+          <li><span class="t-en">Full-time</span><span class="t-jp">フルタイム</span></li>
+          <li><span class="t-en">Mid- to long-term partnership</span><span class="t-jp">中長期のパートナーシップ</span></li>
+          <li><span class="t-en">Fractional CCO / advisor</span><span class="t-jp">アドバイザー・非常勤 CCO</span></li>
+          <li><span class="t-en">Project (0→1 build, product, brand)</span><span class="t-jp">プロジェクト単位（0→1 の立ち上げ、プロダクト、ブランド）</span></li>
+          <li><span class="t-en">Workshops</span><span class="t-jp">ワークショップ</span></li>
+          <li><span class="t-en">Board &amp; advisory roles</span><span class="t-jp">社外取締役・アドバイザリーボード</span></li>
         </ul>
+
+        <p class="about-subhead">
+          <span class="t-en">What I help with</span>
+          <span class="t-jp">手伝えること</span>
+        </p>
+        <ul class="about-list about-list--tight">
+          <li><span class="t-en">Brand</span><span class="t-jp">ブランド</span></li>
+          <li><span class="t-en">Product design</span><span class="t-jp">プロダクトデザイン</span></li>
+          <li><span class="t-en">Product build</span><span class="t-jp">プロダクト開発（実装まで）</span></li>
+          <li><span class="t-en">New concepts, products, services &amp; businesses</span><span class="t-jp">新しい構想・プロダクト・サービス・事業づくり</span></li>
+          <li><span class="t-en">Design for business strategy &amp; decisions</span><span class="t-jp">経営判断とデザイン（事業戦略の一部として）</span></li>
+        </ul>
+
         <p class="about-contact">
           <span class="t-en">Reach: </span>
           <span class="t-jp">連絡先: </span>
@@ -532,7 +572,7 @@ const profile = lib.profile;
     color: var(--ink);
     margin-bottom: 20px;
   }
-  .about-bio-2 { margin-bottom: 0; }
+  .about-bio-3 { margin-bottom: 0; }
 
   .about-stats {
     display: grid;
@@ -570,6 +610,39 @@ const profile = lib.profile;
     background: var(--pr-card-2);
     border-radius: var(--r-pill);
     padding: 6px 14px;
+  }
+
+  .org-group-list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .org-group-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 4px;
+  }
+  .org-group-note {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--ink-dim);
+    margin: 0;
+  }
+  .org-group .org-badges { margin-top: 12px; }
+
+  .about-cell-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .about-cell-head .about-h2 { margin-bottom: 4px; }
+  .about-updated {
+    font-size: 13px;
+    color: var(--ink-dim);
+    margin: 0 0 20px;
   }
 
   .about-h2 {

@@ -1,6 +1,8 @@
 // Data for src/pages/about.astro — the #books, #writing (articles), Talks &
-// Workshops and Teaching & Mentoring cells. Plain data so the page component
-// stays about layout, not content.
+// Workshops, Teaching & Mentoring, "Selected organizations" (ORG_GROUPS) and
+// the Now cell's "Updated <month> <year>" label (formatNowUpdated, reading
+// src/data/now.json's updatedAt). Plain data so the page component stays
+// about layout, not content.
 //
 // Every fact below is carried over unchanged from a source already in the
 // repo (docs/superforge.md: never invent numbers). Sources, verbatim:
@@ -189,6 +191,87 @@ export const WORKSHOP_CLIENTS = [
   "Google", "Microsoft", "Tiffany & Co.", "Dentsu", "Havas Worldwide",
   "School of Visual Arts (SVA)", "SOSV", "Amplify Education", "Verizon",
   "Tokyo Metropolitan Government",
+];
+
+// "Now" cell — updatedAt ("YYYY-MM", src/data/now.json) formatted as a plain
+// month/year label ("Updated September 2026" / "2026年9月更新") instead of
+// hardcoding the month name, so the label always matches the data file.
+const MONTHS_EN = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December",
+];
+export function formatNowUpdated(yearMonth) {
+  const [y, m] = String(yearMonth).split("-").map(Number);
+  const month = MONTHS_EN[(m || 1) - 1] ?? MONTHS_EN[0];
+  return { en: `${month} ${y}`, jp: `${y}年${m}月` };
+}
+
+// Selected organizations, restructured (Takao: "unclear what 'selected'
+// means") into the relationships that can actually be established from repo
+// records, instead of one undifferentiated badge row. Every org below is
+// carried over from the badge list already on the page; nothing new added.
+// Sources per group:
+//   direct    — src/data/roles.json "cie" role's evidence ids (own venture,
+//               Creativity Is Everywhere LLC), cross-checked against each
+//               project record's own `client`/`organization` field:
+//               src/data/projects/tmobile.json ("T-Mobile", freelance),
+//               dnt.json ("Tokyo Metropolitan Government / Value Frontier",
+//               freelance), xq.json (client "Emerson Collective, with
+//               Amplify Education", freelance).
+//   agency    — src/data/projects/coca-cola.json: client literally recorded
+//               as "The Coca-Cola Company, via Ogilvy" — his role there was
+//               Senior Designer at Ogilvy Brand Integration Group
+//               (roles.json "ogilvy", engagement "employee").
+//   workshops — the same list already used above for WORKSHOP_CLIENTS
+//               (src/fragments/workshop.html "Proven Clients"), minus Tokyo
+//               Metropolitan Government (kept in "direct" only, to avoid the
+//               same badge appearing twice in one cell — the DNT project is
+//               the richer, case-study-backed relationship).
+//   other     — src/data/projects/ux-audit.json (USAA) and carnegie.json
+//               (Carnegie Foundation): both `engagement: "unstated"`, not
+//               listed under any role's evidence — the relationship type
+//               (direct client vs. through an employer) isn't recorded, so
+//               it is not guessed. See scratchpad/NOTES-A2.md.
+export const ORG_GROUPS = [
+  {
+    id: "direct",
+    label: { en: "Direct clients", jp: "直接のクライアント" },
+    note: {
+      en: "Engaged directly, mostly through my studio, Creativity Is Everywhere LLC.",
+      jp: "多くは自身のスタジオ Creativity Is Everywhere LLC を通じて、直接契約した相手。",
+    },
+    orgs: ["T-Mobile", "Tokyo Metropolitan Government", "Emerson Collective (with Amplify Education)"],
+  },
+  {
+    id: "agency",
+    label: { en: "Clients through an employer", jp: "所属先を通じて担当したクライアント" },
+    note: {
+      en: "Reached as an employee of the studio or agency named.",
+      jp: "括弧内に挙げた所属先の社員として関わった相手。",
+    },
+    orgs: ["Coca-Cola (via Ogilvy Brand Integration Group)"],
+  },
+  {
+    id: "workshops",
+    label: { en: "Workshop participants", jp: "ワークショップ研修先" },
+    note: {
+      en: "Teams trained in the BreakBias workshop program.",
+      jp: "BreakBias 研修プログラムを受けたチーム。",
+    },
+    orgs: [
+      "Google", "Microsoft", "Tiffany & Co.", "Dentsu", "Havas Worldwide",
+      "School of Visual Arts (SVA)", "SOSV", "Amplify Education", "Verizon",
+    ],
+  },
+  {
+    id: "other",
+    label: { en: "Other project work", jp: "その他のプロジェクト実績" },
+    note: {
+      en: "Documented project work where the exact relationship (direct client or through an employer) isn't recorded.",
+      jp: "実績としての記録はあるが、直接のクライアントか所属先経由かまでは記録されていない。",
+    },
+    orgs: ["USAA", "Carnegie Foundation"],
+  },
 ];
 
 // Teaching & mentoring — src/fragments/about.html "Teaching, mentoring &
