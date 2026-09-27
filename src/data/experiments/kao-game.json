@@ -1,20 +1,22 @@
 {
   "kind": "experiment",
   "slug": "kao-game",
-  "title": "Kao Game",
+  "title": "KAO",
   "role": "Designer & builder",
   "engagement": "own-venture",
   "summary": {
-    "en": "A game you play with your face — a workout you actually want to repeat.",
-    "jp": "顔だけで遊ぶゲーム。ふつうは続かない運動を、続けたくなる形にした。"
+    "en": "Three games played with nothing but your face — cheeks, tongue and lips are the controller.",
+    "jp": "顔だけで遊ぶ 3 本のゲーム。ほっぺ・ベロ・口がそのままコントローラーになる。"
   },
   "input": "Face",
   "status": "in-progress",
   "playable": true,
   "year": "2025–2026",
   "stack": [
-    "Face tracking",
-    "Web"
+    "MediaPipe Face Landmarker",
+    "LiteRT.js",
+    "Three.js",
+    "Capacitor"
   ],
   "capabilities": [
     {
@@ -32,23 +34,25 @@
   ],
   "contribution": {
     "mine": [
-      "Designed a face-tracking game meant to double as a workout",
-      "Built the web-based face-tracking interaction"
+      "Designed three face-controlled games — KUZUSHI, KASANE and KAO DARUMA — each built around a different set of face muscles",
+      "Built a reusable face-expression engine that tells left, right and both cheeks apart in a 3D frame fixed to the face, and reads the tongue's direction",
+      "Ran the tongue-out output that MediaPipe's own face model computes but discards, in the browser with LiteRT.js",
+      "Built a reaction test bench that runs each game's own detection code, so every threshold was tuned against a real face"
     ],
     "level": "solo"
   },
   "challenge": {
-    "en": "Facial exercises feel clinical, and games that use the camera tend to feel either creepy or finicky. Kao Game had to read as play within the first few seconds, need nothing beyond the camera already in the device, and keep the video on that device.",
-    "jp": "顔の運動は、どうしても治療のようで味気ない。カメラを使うゲームは、気味が悪いか、反応が悪いかのどちらかになりやすい。Kao Game には、遊び始めてすぐに遊びだと分かること、端末のカメラ以外に何も要らないこと、映像を端末の外に出さないことが求められた。"
+    "en": "The movements that make a face game interesting are the ones face trackers read worst. MediaPipe gives a single, weak cheek-puff value with no left or right, and none of its 52 expression values is the tongue. Worse, simply tilting your head made one cheek look puffed. It all had to run on the phone already in your hand, with the camera image never leaving it.",
+    "jp": "顔で遊ぶゲームを面白くする動きほど、顔のトラッキングは苦手にしている。MediaPipe が出す頬の値は左右の区別がない弱い 1 つだけで、52 個ある表情の値にベロは入っていない。しかも、首をかしげるだけで片方の頬がふくらんだことになっていた。それを、手元のスマホだけで、カメラの映像を外に出さずにやる必要があった。"
   },
   "solution": {
-    "en": "Mouth, cheeks and gaze are mapped to short mini-games that reward a clear, deliberate movement rather than precision. Face detection runs in the browser on the device, so the camera image never leaves it. The rules are carried by what moves on screen.",
-    "jp": "口・頬・視線の動きを、短いミニゲームに割り当てた。報われるのは精密さではなく、はっきり大きく動かすこと。顔の検出は端末のブラウザの中で完結し、カメラの映像は外に出ない。ルールは、画面で動くものが伝える。"
+    "en": "Build the face-reading layer before the games. Cheeks are measured in a 3D coordinate frame fixed to the face — eye corner to eye corner, nose to forehead, and the direction the face points — so turning or tilting the head cancels out, and left, right and both are told apart. The tongue comes from an output MediaPipe's face model already computes and throws away. Every game reads the same engine, and nothing leaves the device.",
+    "jp": "ゲームより先に、顔を読む層を作った。頬は、顔に貼りついた 3D の座標（目尻から目尻、鼻の下から額、顔の正面の向き）で測る。首を振っても傾けても値は動かず、右・左・両方を見分けられる。ベロは、MediaPipe の顔モデルが計算していながら捨てていた出力から読む。どのゲームも同じエンジンを使い、処理はすべて端末の中で完結する。"
   },
   "chapter": "interactive",
   "assets": {
     "art": "card-art--kao",
-    "artLabel": "Kao Game"
+    "artLabel": "KAO"
   },
   "links": {
     "live": "http://kaogame.creativityiseverywhere.com/",
@@ -56,25 +60,25 @@
   },
   "visibility": "public",
   "cardKind": {
-    "en": "Face tracking · Web",
-    "jp": "表情トラッキング · ウェブ"
+    "en": "MediaPipe · LiteRT.js · Web",
+    "jp": "MediaPipe · LiteRT.js · ウェブ"
   },
   "cardLine": {
-    "en": "Your face is the controller — short sessions, no hardware.",
-    "jp": "顔がコントローラー。ひと遊びは短く、道具はいらない。"
+    "en": "Puff a cheek, stick out your tongue — your face is the controller.",
+    "jp": "ほっぺを膨らませ、ベロを出す。顔がコントローラー。"
   },
   "detail": {
     "play": {
-      "en": "Play Kao Game",
-      "jp": "Kao Game を遊ぶ"
+      "en": "Play KAO",
+      "jp": "KAO を遊ぶ"
     },
     "role": {
       "en": "Designer & builder",
       "jp": "デザイン・開発"
     },
     "oneLiner": {
-      "en": "A browser game you play with your face — a facial workout you actually want to repeat.",
-      "jp": "顔だけで遊ぶブラウザゲーム。続かないはずの顔の運動を、もう一回やりたくなる遊びにした。"
+      "en": "Three browser games played with nothing but your face — cheeks, tongue and lips, read on the device.",
+      "jp": "顔だけで遊ぶ 3 本のブラウザゲーム。ほっぺ・ベロ・口の動きを、端末の中だけで読み取る。"
     }
   }
 }
