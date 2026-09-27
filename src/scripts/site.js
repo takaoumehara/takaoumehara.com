@@ -74,6 +74,7 @@ function bindSidebar() {
     toggle.addEventListener("click", () => {
       const open = side.classList.toggle("is-open");
       toggle.setAttribute("aria-expanded", String(open));
+      if (open) requestAnimationFrame(() => revealActiveRow({ force: true }));
     });
   }
   // Search toggle
@@ -122,12 +123,43 @@ function bindSidebar() {
       });
     });
   }
-  // The first paint: bring the current row into view without scrolling the page.
-  const current = side.querySelector('.side-item[aria-current="page"]');
-  if (current && window.matchMedia("(min-width: 901px)").matches) {
-    const top = current.getBoundingClientRect().top - side.getBoundingClientRect().top + side.scrollTop;
-    side.scrollTop = Math.max(0, top - side.clientHeight / 2);
-  }
+}
+
+// ── The rail follows the page: the current row is kept in view ──────────────
+// After a navigation (and on the first load of any page) the rail scrolls —
+// the rail only, never the page — so the inverted current row is on screen,
+// centred, when it is not already. Smooth unless motion is reduced (and
+// instant on the first paint, before the rail's loading sequence measures
+// it). A reader who turned the wheel, dragged or scrolled the rail in the
+// last second is left alone.
+const RAIL_HANDS_OFF_MS = 1000;
+let railUserAt = -Infinity, railProgUntil = 0, railWatch = false;
+function watchRailScroll(side) {
+  if (railWatch) return;
+  railWatch = true;
+  const user = () => { railUserAt = performance.now(); };
+  side.addEventListener("wheel", user, { passive: true });
+  side.addEventListener("touchmove", user, { passive: true });
+  side.addEventListener("scroll", () => { if (performance.now() > railProgUntil) user(); }, { passive: true });
+}
+function revealActiveRow({ smooth = false, force = false } = {}) {
+  const side = document.getElementById("side");
+  if (!side) return;
+  watchRailScroll(side);
+  if (side.scrollHeight <= side.clientHeight + 1) return; // nothing to scroll (the phone's closed bar)
+  if (!force && performance.now() - railUserAt < RAIL_HANDS_OFF_MS) return;
+  const row = side.querySelector('.side-item[aria-current="page"]') ?? side.querySelector('.side-panel [data-match][aria-current="page"]');
+  if (!row) return;
+  const group = row.closest("details");
+  if (group && !group.open) group.open = true; // a folded category opens to show where you are
+  if (!row.getClientRects().length) return; // filtered out by the rail's search
+  const sr = side.getBoundingClientRect(), r = row.getBoundingClientRect();
+  const top = Math.max(sr.top, 0) + 8, bottom = Math.min(sr.bottom, window.innerHeight) - 8;
+  if (r.top >= top && r.bottom <= bottom) return;
+  const target = side.scrollTop + (r.top - sr.top) - (Math.min(side.clientHeight, window.innerHeight) - r.height) / 2;
+  const glide = smooth && !stillMotion();
+  railProgUntil = performance.now() + (glide ? 1200 : 120);
+  side.scrollTo({ top: Math.max(0, Math.min(target, side.scrollHeight - side.clientHeight)), behavior: glide ? "smooth" : "auto" });
 }
 // The theme and language controls. The rail's pair is persisted and bound
 // once; a page-level copy (/work) is a new element after every swap, so this
@@ -333,30 +365,40 @@ document.addEventListener("astro:before-preparation", (event) => {
     const from = railIndex(location.pathname);
     const dest = railIndex(to.pathname);
     if (from >= 0 && dest >= 0 && from !== dest) navDir = dest > from ? 1 : -1;
-    if (normalize(to.pathname) !== normalize(location.pathname)) markCurrent(to.pathname);
+    if (normalize(to.pathname) !== normalize(location.pathname)) {
+      markCurrent(to.pathname);
+      revealActiveRow({ smooth: true }); // the rail glides while the page loads
+    }
   }
   motion.onBeforePreparation(event, navDir);
 });
+// The rail is persisted, but moving it into the new document resets its
+// scroll position: carry it across the swap, then make sure the current row
+// is in view, then play the new page in.
+let sideScroll = 0;
+document.addEventListener("astro:before-swap", () => { sideScroll = document.getElementById("side")?.scrollTop ?? 0; });
 document.addEventListener("astro:after-swap", () => {
+  const side = document.getElementById("side");
+  if (side) { railProgUntil = performance.now() + 120; side.scrollTop = sideScroll; }
   markCurrent();
+  revealActiveRow({ smooth: motion.getConfig().rail.playOn !== "always" });
   motion.onAfterSwap(navDir);
   navDir = 0;
 });
 
 // ── Pulse: the input badge on a detail page flashes once on arrival ─────────
-let firstPageLoad = true;
 function pulseStamp() {
   if (stillMotion() || !/^\/projects\//.test(location.pathname)) return;
   const stamps = [...document.querySelectorAll("#main .input-stamp")].filter((el) => !el.closest(".grid-card"));
   if (!stamps.length) return;
-  // Once its cell's type has woken up (motion.js): later on a first load.
-  const wait = html.hasAttribute("data-boot") ? 900 : 700;
-  setTimeout(() => stamps.forEach((el) => {
+  // Once the loading sequence has settled (motion.js).
+  motion.whenSettled().then(() => stamps.forEach((el) => {
+    if (!el.isConnected) return;
     el.classList.remove("is-pulse");
     void el.offsetWidth; // restart if it is still there from a previous visit
     el.classList.add("is-pulse");
     el.addEventListener("animationend", () => el.classList.remove("is-pulse"), { once: true });
-  }), wait);
+  }));
 }
 
 // ── Magnetic links: "Case study →", "Play ↗", the news links ───────────────
@@ -447,21 +489,6 @@ function bindMagneticPointer() {
   });
 }
 
-// ── Boot: over once the first-load sequence has played ──────────────────────
-// Sidebar.astro sets html[data-boot]; transitions.css runs the sequence. Drop
-// the attribute when it has finished, so the rolled-up counts are plain text
-// again and nothing can replay.
-const BOOT_ANIMS = new Set(["odo-roll", "boot-row"]);
-function endBoot() {
-  if (!html.hasAttribute("data-boot")) return;
-  const end = () => html.removeAttribute("data-boot");
-  requestAnimationFrame(() => {
-    const running = document.getAnimations?.().filter((a) => BOOT_ANIMS.has(a.animationName)) ?? [];
-    if (!running.length) return end();
-    Promise.allSettled(running.map((a) => a.finished)).then(end);
-  });
-}
-
 // ── Case-study bodies: reveal on scroll, fade images in ─────────────────────
 function bindReveal() {
   const targets = document.querySelectorAll(".reveal-on-scroll:not(.is-visible)");
@@ -497,7 +524,6 @@ function onPageLoad() {
   bindMagnetic();
   bindMagneticPointer();
   pulseStamp();
-  if (firstPageLoad) { firstPageLoad = false; endBoot(); }
   // The old in-page language buttons some hand-built pages still carry.
   document.querySelectorAll(".lang-btn:not([data-bound])").forEach((b) => {
     b.dataset.bound = "1";
@@ -506,10 +532,12 @@ function onPageLoad() {
 }
 document.addEventListener("astro:page-load", onPageLoad);
 motion.bindMotion();
-motion.intro(); // the first paint: the pane's boxes, then its content
+// The first paint: the current row into view (instantly, before the rail's
+// sequence measures it), then the rail's and the pane's loading sequence.
+revealActiveRow({ force: true });
+motion.intro();
 
-// The rail is persisted, but moving it into the new document resets its
-// scroll position; carry it across the swap.
-let sideScroll = 0;
-document.addEventListener("astro:before-swap", () => { sideScroll = document.getElementById("side")?.scrollTop ?? 0; });
-document.addEventListener("astro:after-swap", () => { const side = document.getElementById("side"); if (side) side.scrollTop = sideScroll; });
+// ── The Motion Lab (?lab=1, or /lab/motion): loaded only when asked for ──
+// A separate chunk (src/scripts/motion-lab.js + its CSS), never on a normal
+// visitor's critical path.
+if (motion.labActive()) import("./motion-lab.js").then((lab) => lab.openLab()).catch(() => {});

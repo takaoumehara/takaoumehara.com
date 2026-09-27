@@ -165,10 +165,20 @@ html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); }
 .odo { position: relative; display: inline-block; font-family: var(--ff-mono); font-variant-numeric: tabular-nums; text-align: right; }
 
 /* ── About ──────────────────────────────────────────────────────────────── */
-.side-about { padding: var(--sp-3); margin-bottom: var(--sp-1); }
-.side-about .side-label { display: inline-block; font-size: var(--text-body); color: var(--pr-ink); }
-.side-about .side-label:hover { text-decoration: underline; text-underline-offset: 3px; }
+/* The whole card is one link to /about: the "About" label is the link, and
+   its ::after stretches over the card (the stretched-link pattern), so there
+   is one tab stop, one accessible name, nothing nested, and the focus ring
+   is drawn around the whole card. Current (on /about) it inverts like a row. */
+.side-about { position: relative; padding: var(--sp-3); margin-bottom: var(--sp-1); transition: background 140ms ease, color 140ms ease; }
+.side-about .side-label { display: inline-block; font-size: var(--text-body); color: var(--pr-ink); outline: none; }
+.side-about .side-label::after { content: ""; position: absolute; inset: 0; border-radius: var(--r); cursor: pointer; }
+.side-about .side-label:focus-visible::after { outline: 2px solid var(--pr-ink); outline-offset: 2px; }
+.side-about:hover { background: var(--pr-card-2); }
+.side-about:hover .side-label { text-decoration: underline; text-underline-offset: 3px; }
 .side-about p { margin: 4px 0 0; font-size: var(--text-body); line-height: var(--leading-body); color: var(--pr-ink-2); }
+.side-about:has(.side-label[aria-current="page"]) { background: var(--pr-ink); }
+.side-about .side-label[aria-current="page"],
+.side-about:has(.side-label[aria-current="page"]) p { color: var(--pr-canvas); }
 .side-pages { display: flex; flex-wrap: wrap; gap: 4px var(--sp-2); margin-top: var(--sp-2); }
 .side-pages a { font-size: var(--text-body); color: var(--pr-blue); }
 .side-pages a:hover, .side-pages a[aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
@@ -213,7 +223,9 @@ html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); }
    marks the open project. Not a slightly darker grey, and never a blue name. */
 .side-item[aria-current="page"] { background: var(--pr-ink); color: var(--pr-canvas); }
 .side-item[aria-current="page"] .side-name { color: var(--pr-canvas); }
-.side-item[aria-current="page"] .side-line { color: var(--pr-canvas); opacity: 0.7; }
+/* The one-liner on the inverted row: a lighter ink mixed from the two
+   tokens, not an opacity, so the type is never dimmed as a whole. */
+.side-item[aria-current="page"] .side-line { color: color-mix(in srgb, var(--pr-canvas) 78%, var(--pr-ink)); }
 .side-thumb { width: var(--side-thumb, 64px); aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--pr-canvas); display: grid; place-items: center; }
 .side-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
