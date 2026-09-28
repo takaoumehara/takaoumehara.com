@@ -92,6 +92,7 @@ export const PRESETS = {
 };
 
 // ── Schema: one control per parameter ──────────────────────────────────────
+const BODY = ["same", "auto", "rise", "fade", "wipe", "pixelate", "none"];
 const ORDERS = ["random", "top-down", "bottom-up", "left-right", "reading", "by-column", "spiral", "center-out", "edges-in", "distance-from-click", "dom"];
 const OUTLINES = ["trace", "sides", "viewfinder", "corners", "midpoints", "march", "none"];
 const FILLS = ["fade", "wipe-left", "wipe-right", "wipe-up", "wipe-down", "iris", "pixel-step", "scan", "mask-reveal", "skeleton", "lens", "none"];
@@ -147,6 +148,7 @@ export const SCHEMA = [
     r("rail.spreadMs", "Spread across order", 0, 3000, 10, "ms", { rand: [200, 1400] }),
     p("rail.randomDelayMs", "Per-box random delay", 0, 2000, 10, "ms", { rand: [0, 700] }),
     r("rail.maxUnits", "Max boxes", 1, 60, 1, ""),
+    s("rail.body", "Body text (same = like the heading)", BODY),
   ] },
   { id: "rail-outline", label: "Rail · outline", fields: outlineFields("rail") },
   { id: "rail-fill", label: "Rail · fill", fields: fillFields("rail") },
@@ -157,6 +159,7 @@ export const SCHEMA = [
     r("pane.maxUnits", "Max boxes", 1, 80, 1, ""),
     s("pane.belowFold", "Below the fold", ["play", "fast", "instant"]),
     r("pane.enterTravelPx", "Travel on navigation", 0, 40, 1, "px", { rand: [0, 12] }),
+    s("pane.body", "Body text (same = like the heading)", BODY),
   ] },
   { id: "pane-outline", label: "Pane · outline", fields: outlineFields("pane") },
   { id: "pane-fill", label: "Pane · fill", fields: fillFields("pane") },
@@ -188,11 +191,11 @@ export const SCHEMA = [
     r("text.headingMaxChars", "Heading max chars", 0, 400, 1, "chars"),
     b("text.labels", "Type mono labels"),
     r("text.shortMaxChars", "Short line max chars", 0, 400, 1, "chars", { rand: [40, 140] }),
-    s("text.long", "Long paragraphs", ["rise", "fade", "wipe", "pixelate", "none"]),
-    r("text.longMs", "Long paragraph duration", 0, 2000, 10, "ms", { rand: [200, 900] }),
-    r("text.longRisePx", "Long paragraph rise", 0, 40, 1, "px", { rand: [0, 12] }),
-    r("text.longPixelPx", "Long paragraph pixel size (pixelate)", 2, 32, 1, "px", { rand: [6, 16] }),
-    r("text.longSteps", "Long paragraph steps (pixelate)", 1, 8, 1, "", { rand: [2, 6] }),
+    s("text.long", "Long paragraphs (body = auto)", ["rise", "fade", "wipe", "pixelate", "none"]),
+    r("text.longMs", "Body duration (rise/fade/wipe/pixelate)", 0, 2000, 10, "ms", { rand: [200, 900] }),
+    r("text.longRisePx", "Body rise distance", 0, 40, 1, "px", { rand: [0, 12] }),
+    r("text.longPixelPx", "Body pixel size (pixelate)", 2, 32, 1, "px", { rand: [6, 16] }),
+    r("text.longSteps", "Body pixelate steps", 1, 8, 1, "", { rand: [2, 6] }),
     b("text.clip", "Clip overflow while typing"),
   ] },
   { id: "media", label: "Media (images, thumbnails)", fields: [

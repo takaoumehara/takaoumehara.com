@@ -442,7 +442,7 @@ function typePlan(chars, T) {
   switch (T.direction) {
     case "rtl": order = sig.slice().reverse(); break;
     case "random": order = sig.slice().sort(() => R() - 0.5); break;
-    case "center-out": { const c = (m - 1) / 2; order = sig.slice().sort((a, b) => Math.abs(sig.indexOf(a) - c) - Math.abs(sig.indexOf(b) - c)); break; }
+    case "center-out": { const c = (m - 1) / 2; order = sig.map((idx, j) => [idx, Math.abs(j - c)]).sort((a, b) => a[1] - b[1]).map(([idx]) => idx); break; }
     default: order = sig;
   }
   order.forEach((idx, r) => { rank[idx] = r; });
@@ -550,7 +550,10 @@ function settleText(only) {
 
 // A unit's text blocks: the nearest non-inline ancestor of each visible text
 // node, classified as typed (headings, labels, short lines) or long.
-function textBlocks(unit, vis, T) {
+// Body text (anything but headings and mono labels) follows its surface's
+// `body` setting: "same" types it like the headings, "auto" types short lines
+// and gives long ones text.long, and rise/fade/wipe/pixelate/none apply as is.
+function textBlocks(unit, vis, T, body = "auto") {
   const disp = new Map();
   const displayOf = (el) => {
     let d = disp.get(el);
@@ -574,14 +577,15 @@ function textBlocks(unit, vis, T) {
     const cs = getComputedStyle(el);
     const label = /mono/i.test(cs.fontFamily) || cs.textTransform === "uppercase";
     const near = inView(el.getBoundingClientRect(), 160);
-    let kind;
+    let kind, style = T.long;
     if (T.mode === "none") kind = "none";
     else if (T.mode === "fade") kind = "long";
-    else if (!near) kind = "long";
-    else if (heading) kind = T.headings && len <= T.headingMaxChars ? "type" : "long";
-    else if (label) kind = T.labels && len <= T.shortMaxChars ? "type" : "long";
-    else kind = len <= T.shortMaxChars ? "type" : "long";
-    return { el, nodes: nodes.filter((n) => !ARROW.test(n.data)), kind };
+    else if (heading) kind = near && T.headings && len <= T.headingMaxChars ? "type" : "long";
+    else if (label) kind = near && T.labels && len <= T.shortMaxChars ? "type" : "long";
+    else if (body === "none") kind = "none";
+    else if (body !== "same" && body !== "auto") { kind = "long"; style = body; }
+    else kind = near && (body === "same" || len <= T.shortMaxChars) ? "type" : "long";
+    return { el, nodes: nodes.filter((n) => !ARROW.test(n.data)), kind, style };
   });
 }
 const MEDIA = "img, video, canvas, iframe, .side-initials";
@@ -789,7 +793,7 @@ function planUnit(unit, rect, s, surface, box) {
   const vis = new Map();
   const media = mediaOf(unit, vis, M).map((m) => ({ m, at: fillEnd + M.afterFillMs + span(M.randomDelayMs) }));
   let end = Math.max(fillEnd, ...media.map((x) => x.at + M.durationMs));
-  const blocks = textBlocks(unit, vis, T).map((b, i) => {
+  const blocks = textBlocks(unit, vis, T, S.body).map((b, i) => {
     const bt = fillEnd + T.afterFillMs + Math.min(i, T.maxStaggered) * T.lineStaggerMs + span(T.randomDelayMs);
     let plan = null;
     if (b.kind === "type" && b.nodes.length) {
@@ -841,15 +845,15 @@ function execute(item, k, g, dir) {
   const now = performance.now();
   item.blocks.forEach((b) => {
     if (b.kind === "none") return;
-    if (b.kind === "long" && T.long === "pixelate") {
+    if (b.kind === "long" && b.style === "pixelate") {
       own(b.el.animate(pixelTextFrames(T), { duration: Math.max(1, T.longMs * k), delay: b.at * k, fill: "backwards" }), g);
       return;
     }
     if (b.kind === "long") {
-      const rise = T.long === "rise" ? T.longRisePx : 0;
-      const frames = T.long === "wipe"
+      const rise = b.style === "rise" ? T.longRisePx : 0;
+      const frames = b.style === "wipe"
         ? [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }]
-        : T.long === "none" ? [{ opacity: 0 }, { opacity: 0, offset: 0.999 }, { opacity: 1 }]
+        : b.style === "none" ? [{ opacity: 0 }, { opacity: 0, offset: 0.999 }, { opacity: 1 }]
         : [{ opacity: 0, transform: `translateY(${rise}px)` }, { opacity: 1, transform: "none" }];
       own(b.el.animate(frames, { duration: Math.max(1, T.longMs * k), delay: b.at * k, easing: ease("decel"), fill: "backwards" }), g);
       return;
