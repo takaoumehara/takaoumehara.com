@@ -227,11 +227,8 @@ export function formatNowUpdated(yearMonth) {
 //               Metropolitan Government (kept in "direct" only, to avoid the
 //               same badge appearing twice in one cell — the DNT project is
 //               the richer, case-study-backed relationship).
-//   other     — src/data/projects/ux-audit.json (USAA) and carnegie.json
-//               (Carnegie Foundation): both `engagement: "unstated"`, not
-//               listed under any role's evidence — the relationship type
-//               (direct client vs. through an employer) isn't recorded, so
-//               it is not guessed. See scratchpad/NOTES-A2.md.
+//   agency    — also USAA (Concentrix Catalyst client) and Carnegie Foundation
+//               (Project Ed client), both confirmed by Takao on 2026-09-28.
 export const ORG_GROUPS = [
   {
     id: "direct",
@@ -249,7 +246,11 @@ export const ORG_GROUPS = [
       en: "Reached as an employee of the studio or agency named.",
       jp: "括弧内に挙げた所属先の社員として関わった相手。",
     },
-    orgs: ["Coca-Cola (via Ogilvy Brand Integration Group)"],
+    orgs: [
+      "Coca-Cola (via Ogilvy Brand Integration Group)",
+      "USAA (via Concentrix Catalyst)",
+      "Carnegie Foundation (via Project Ed)",
+    ],
   },
   {
     id: "workshops",
@@ -262,15 +263,6 @@ export const ORG_GROUPS = [
       "Google", "Microsoft", "Tiffany & Co.", "Dentsu", "Havas Worldwide",
       "School of Visual Arts (SVA)", "SOSV", "Amplify Education", "Verizon",
     ],
-  },
-  {
-    id: "other",
-    label: { en: "Other project work", jp: "その他のプロジェクト実績" },
-    note: {
-      en: "Documented project work where the exact relationship (direct client or through an employer) isn't recorded.",
-      jp: "実績としての記録はあるが、直接のクライアントか所属先経由かまでは記録されていない。",
-    },
-    orgs: ["USAA", "Carnegie Foundation"],
   },
 ];
 
