@@ -92,8 +92,7 @@ export const PRESETS = {
 };
 
 // ── Schema: one control per parameter ──────────────────────────────────────
-const BODY_MODES = ["same", "scramble-typewriter", "scramble", "typewriter", "rise", "fade", "wipe", "pixelate", "none"];
-const BODY = ["default", ...BODY_MODES];
+const BODY = ["default", "scramble-typewriter", "scramble", "typewriter", "rise", "fade", "wipe", "pixelate", "none"];
 const ORDERS = ["random", "top-down", "bottom-up", "left-right", "reading", "by-column", "spiral", "center-out", "edges-in", "distance-from-click", "dom"];
 const OUTLINES = ["trace", "sides", "viewfinder", "corners", "midpoints", "march", "none"];
 const FILLS = ["fade", "wipe-left", "wipe-right", "wipe-up", "wipe-down", "iris", "pixel-step", "scan", "mask-reveal", "skeleton", "lens", "none"];
@@ -129,6 +128,37 @@ const fillFields = (pre) => [
   r(`${pre}.fill.fromXPx`, "Mask from X", -80, 80, 1, "px"),
   r(`${pre}.fill.fromYPx`, "Mask from Y", -80, 80, 1, "px"),
 ];
+// The same controls for All text and for each text type.
+const TEXT_MODES = ["scramble-typewriter", "scramble", "typewriter", "rise", "fade", "wipe", "pixelate", "none"];
+const textFields = (pre) => [
+  s(`${pre}.mode`, "Effect", TEXT_MODES, { randOptions: ["scramble-typewriter", "scramble", "typewriter"] }),
+  s(`${pre}.glyphs`, "Glyph set", ["auto", "latin", "digits", "symbols", "katakana", "kanji", "binary", "blocks", "hex", "custom"]),
+  t(`${pre}.customGlyphs`, "Custom glyphs", { norand: true }),
+  s(`${pre}.jpGlyphs`, "Glyphs for Japanese", ["katakana", "kanji", "mixed", "same"]),
+  b(`${pre}.matchCase`, "Match case"),
+  r(`${pre}.symbolRate`, "Symbol rate (auto)", 0, 1, 0.05, ""),
+  r(`${pre}.cps`, "Typing speed", 2, 240, 1, "cps", { rand: [20, 90] }),
+  r(`${pre}.frameMs`, "Glyph flicker", 16, 300, 1, "ms", { rand: [30, 120] }),
+  r(`${pre}.framesPerChar`, "Scramble frames per char", 0, 40, 1, "", { rand: [1, 12] }),
+  s(`${pre}.settle`, "Settle", ["sweep", "lag"]),
+  r(`${pre}.holdMs`, "Random hold before settling", 0, 3000, 10, "ms", { rand: [0, 700] }),
+  r(`${pre}.resolveCps`, "Settle speed", 2, 400, 1, "cps", { rand: [30, 140] }),
+  s(`${pre}.direction`, "Reveal direction", ["ltr", "rtl", "random", "center-out"]),
+  s(`${pre}.untyped`, "Untyped characters", ["hide", "space", "dot", "underscore", "block"]),
+  b(`${pre}.cursor`, "Cursor"),
+  t(`${pre}.cursorChar`, "Cursor character", { norand: true, maxlength: 2 }),
+  r(`${pre}.cursorBlinkMs`, "Cursor blink", 0, 1200, 10, "ms"),
+  r(`${pre}.maxLineMs`, "Max duration per block", 100, 6000, 50, "ms", { rand: [600, 2400] }),
+  r(`${pre}.lineStaggerMs`, "Stagger between blocks", 0, 600, 5, "ms", { rand: [0, 200] }),
+  r(`${pre}.maxStaggered`, "Blocks staggered (max)", 0, 30, 1, ""),
+  p(`${pre}.randomDelayMs`, "Per-block random delay", 0, 2000, 10, "ms", { rand: [0, 400] }),
+  b(`${pre}.clip`, "Clip overflow while typing"),
+  s(`${pre}.long`, "When too long or off-screen", ["rise", "fade", "wipe", "pixelate", "none"]),
+  r(`${pre}.longMs`, "Duration (rise/fade/wipe/pixelate)", 0, 3000, 10, "ms", { rand: [200, 900] }),
+  r(`${pre}.longRisePx`, "Rise distance", 0, 40, 1, "px", { rand: [0, 12] }),
+  r(`${pre}.longPixelPx`, "Pixel size (pixelate)", 2, 32, 1, "px", { rand: [6, 16] }),
+  r(`${pre}.longSteps`, "Pixelate steps", 1, 8, 1, "", { rand: [2, 6] }),
+];
 export const SCHEMA = [
   { id: "global", label: "Global", fields: [
     b("global.enabled", "Enabled", { norand: true }),
@@ -149,7 +179,7 @@ export const SCHEMA = [
     r("rail.spreadMs", "Spread across order", 0, 3000, 10, "ms", { rand: [200, 1400] }),
     p("rail.randomDelayMs", "Per-box random delay", 0, 2000, 10, "ms", { rand: [0, 700] }),
     r("rail.maxUnits", "Max boxes", 1, 60, 1, ""),
-    s("rail.body", "Body text (default = Body group)", BODY),
+    s("rail.body", "Body text effect here (default = Body text group)", BODY),
   ] },
   { id: "rail-outline", label: "Rail · outline", fields: outlineFields("rail") },
   { id: "rail-fill", label: "Rail · fill", fields: fillFields("rail") },
@@ -160,76 +190,34 @@ export const SCHEMA = [
     r("pane.maxUnits", "Max boxes", 1, 80, 1, ""),
     s("pane.belowFold", "Below the fold", ["play", "fast", "instant"]),
     r("pane.enterTravelPx", "Travel on navigation", 0, 40, 1, "px", { rand: [0, 12] }),
-    s("pane.body", "Body text (default = Body group)", BODY),
+    s("pane.body", "Body text effect here (default = Body text group)", BODY),
   ] },
   { id: "pane-outline", label: "Pane · outline", fields: outlineFields("pane") },
   { id: "pane-fill", label: "Pane · fill", fields: fillFields("pane") },
-  { id: "text", label: "Text · headers (headings, labels)", fields: [
-    s("text.mode", "Mode", ["scramble-typewriter", "scramble", "typewriter", "fade", "none"], { randOptions: ["scramble-typewriter", "scramble", "typewriter"] }),
-    s("text.glyphs", "Glyph set", ["auto", "latin", "digits", "symbols", "katakana", "kanji", "binary", "blocks", "hex", "custom"]),
-    t("text.customGlyphs", "Custom glyphs", { norand: true }),
-    s("text.jpGlyphs", "Glyphs for Japanese", ["katakana", "kanji", "mixed", "same"]),
-    b("text.matchCase", "Match case"),
-    r("text.symbolRate", "Symbol rate (auto)", 0, 1, 0.05, ""),
-    r("text.cps", "Typing speed", 2, 240, 1, "cps", { rand: [20, 90] }),
-    r("text.frameMs", "Glyph flicker", 16, 300, 1, "ms", { rand: [30, 120] }),
-    r("text.framesPerChar", "Scramble frames per char", 0, 40, 1, "", { rand: [1, 12] }),
-    s("text.settle", "Settle", ["sweep", "lag"]),
-    r("text.holdMs", "Random hold before settling", 0, 3000, 10, "ms", { rand: [0, 700] }),
-    r("text.resolveCps", "Settle speed", 2, 400, 1, "cps", { rand: [30, 140] }),
-    s("text.direction", "Reveal direction", ["ltr", "rtl", "random", "center-out"]),
-    s("text.untyped", "Untyped characters", ["hide", "space", "dot", "underscore", "block"]),
-    b("text.cursor", "Cursor"),
-    t("text.cursorChar", "Cursor character", { norand: true, maxlength: 2 }),
-    r("text.cursorBlinkMs", "Cursor blink", 0, 1200, 10, "ms"),
-    r("text.maxLineMs", "Max duration per line", 100, 6000, 50, "ms", { rand: [600, 2400] }),
-    r("text.lineStaggerMs", "Stagger between lines", 0, 600, 5, "ms", { rand: [0, 200] }),
-    r("text.maxStaggered", "Lines staggered (max)", 0, 30, 1, ""),
+  { id: "text", label: "All text · the preset's base", note: "Headings, labels and body text follow these until you change them in their own group.", fields: [
+    ...textFields("text"),
     r("text.afterFillMs", "Delay after fill", -500, 1500, 10, "ms", { rand: [-100, 300] }),
-    p("text.randomDelayMs", "Per-line random delay", 0, 2000, 10, "ms", { rand: [0, 400] }),
     r("text.kidsFadeMs", "Content fade-in", 0, 1000, 10, "ms", { rand: [40, 300] }),
-    b("text.headings", "Type headings"),
-    r("text.headingMaxChars", "Heading max chars", 0, 400, 1, "chars"),
-    b("text.labels", "Type mono labels"),
-    r("text.shortMaxChars", "Short line max chars", 0, 400, 1, "chars", { rand: [40, 140] }),
-    s("text.long", "Too long or off-screen", ["rise", "fade", "wipe", "pixelate", "none"]),
-    r("text.longMs", "Too long / off-screen duration", 0, 2000, 10, "ms", { rand: [200, 900] }),
-    r("text.longRisePx", "Too long / off-screen rise", 0, 40, 1, "px", { rand: [0, 12] }),
-    r("text.longPixelPx", "Too long / off-screen pixel size", 2, 32, 1, "px", { rand: [6, 16] }),
-    r("text.longSteps", "Too long / off-screen pixel steps", 1, 8, 1, "", { rand: [2, 6] }),
-    b("text.clip", "Clip overflow while typing"),
   ] },
-  { id: "body", label: "Body text", fields: [
-    s("body.mode", "Mode (same = like the headers)", BODY_MODES),
-    s("body.relation", "Starts", ["after-header", "during-header", "with-header", "independent"]),
-    r("body.headerPct", "During header: start at", 0, 100, 1, "%", { rand: [20, 90] }),
-    r("body.offsetMs", "Offset from that point", -1500, 1500, 10, "ms", { rand: [-200, 400] }),
-    r("body.speed", "Body speed", 0.1, 4, 0.05, "×", { rand: [0.6, 1.8] }),
-    s("body.glyphs", "Glyph set", ["auto", "latin", "digits", "symbols", "katakana", "kanji", "binary", "blocks", "hex", "custom"]),
-    t("body.customGlyphs", "Custom glyphs", { norand: true }),
-    s("body.jpGlyphs", "Glyphs for Japanese", ["katakana", "kanji", "mixed", "same"]),
-    b("body.matchCase", "Match case"),
-    r("body.symbolRate", "Symbol rate (auto)", 0, 1, 0.05, ""),
-    r("body.cps", "Typing speed", 2, 240, 1, "cps", { rand: [20, 120] }),
-    r("body.frameMs", "Glyph flicker", 16, 300, 1, "ms", { rand: [30, 120] }),
-    r("body.framesPerChar", "Scramble frames per char", 0, 40, 1, "", { rand: [1, 12] }),
-    s("body.settle", "Settle", ["sweep", "lag"]),
-    r("body.holdMs", "Random hold before settling", 0, 3000, 10, "ms", { rand: [0, 700] }),
-    r("body.resolveCps", "Settle speed", 2, 400, 1, "cps", { rand: [30, 200] }),
-    s("body.direction", "Reveal direction", ["ltr", "rtl", "random", "center-out"]),
-    s("body.untyped", "Untyped characters", ["hide", "space", "dot", "underscore", "block"]),
-    b("body.cursor", "Cursor"),
-    t("body.cursorChar", "Cursor character", { norand: true, maxlength: 2 }),
-    r("body.cursorBlinkMs", "Cursor blink", 0, 1200, 10, "ms"),
-    r("body.maxLineMs", "Max duration per paragraph", 100, 6000, 50, "ms", { rand: [600, 2400] }),
-    r("body.lineStaggerMs", "Stagger between paragraphs", 0, 600, 5, "ms", { rand: [0, 200] }),
-    r("body.maxStaggered", "Paragraphs staggered (max)", 0, 30, 1, ""),
-    p("body.randomDelayMs", "Per-paragraph random delay", 0, 2000, 10, "ms", { rand: [0, 400] }),
-    b("body.clip", "Clip overflow while typing"),
-    r("body.durationMs", "Duration (rise/fade/wipe/pixelate)", 0, 3000, 10, "ms", { rand: [200, 900] }),
-    r("body.risePx", "Rise distance", 0, 40, 1, "px", { rand: [0, 12] }),
-    r("body.pixelPx", "Pixel size (pixelate)", 2, 32, 1, "px", { rand: [6, 16] }),
-    r("body.pixelSteps", "Pixelate steps", 1, 8, 1, "", { rand: [2, 6] }),
+  { id: "heading", label: "Headings", type: "heading", fields: [
+    b("heading.follow", "Follow All text", { norand: true, keep: true }),
+    r("heading.speed", "Heading speed", 0.1, 4, 0.05, "×", { keep: true, rand: [0.6, 1.8] }),
+    r("heading.maxChars", "Longest heading typed", 0, 400, 1, "chars", { keep: true }),
+    ...textFields("heading"),
+  ] },
+  { id: "label", label: "Labels (mono, dates, tags)", type: "label", fields: [
+    b("label.follow", "Follow All text", { norand: true, keep: true }),
+    r("label.speed", "Label speed", 0.1, 4, 0.05, "×", { keep: true, rand: [0.6, 1.8] }),
+    r("label.maxChars", "Longest label typed", 0, 400, 1, "chars", { keep: true, rand: [40, 140] }),
+    ...textFields("label"),
+  ] },
+  { id: "body", label: "Body text", type: "body", fields: [
+    b("body.follow", "Follow All text", { norand: true, keep: true }),
+    s("body.relation", "Starts", ["after-header", "during-header", "with-header", "independent"], { keep: true }),
+    r("body.headerPct", "During header: start at", 0, 100, 1, "%", { keep: true, rand: [20, 90] }),
+    r("body.offsetMs", "Offset from that point", -1500, 1500, 10, "ms", { keep: true, rand: [-200, 400] }),
+    r("body.speed", "Body speed", 0.1, 4, 0.05, "×", { keep: true, rand: [0.6, 1.8] }),
+    ...textFields("body"),
   ] },
   { id: "media", label: "Media (images, thumbnails)", fields: [
     s("media.mode", "Mode", ["pop", "pixelate", "wipe", "fade", "scale", "scanline", "none"], { randOptions: ["pop", "pixelate", "wipe", "fade", "scale", "scanline"] }),
@@ -316,18 +304,35 @@ const el = (tag, attrs = {}, ...kids) => {
 };
 const fmt = (v, step) => (step < 1 ? Number(v).toFixed(String(step).split(".")[1]?.length ?? 2) : String(Math.round(v)));
 const updaters = [];
+// Headings, labels and body text follow the All text group (the preset's
+// base) until one of their own settings is changed; then they hold their
+// own copy. Speed, max length and the body's timing always apply.
+const TYPES = new Set(["heading", "label", "body"]);
+const KEEP = new Set(SCHEMA.flatMap((g) => g.fields.filter((f) => f.keep).map((f) => f.key)));
+const shownKey = (key) => {
+  const [g, ...rest] = key.split(".");
+  return TYPES.has(g) && cfg[g]?.follow && !KEEP.has(key) ? `text.${rest.join(".")}` : key;
+};
+const val = (key) => getAt(cfg, shownKey(key));
+const takeBase = (g) => { for (const k of motion.TEXT_KEYS) cfg[g][k] = structuredClone(cfg.text[k]); };
 function field(f) {
   const id = `mlab-f${++uid}`;
   const row = el("div", { class: `mlab-f mlab-f-${f.type}` });
   const label = el("label", { for: id, text: f.label });
   const keyTip = el("span", { class: "mlab-key", text: f.key.split(".").slice(-1)[0], "aria-hidden": "true" });
   row.append(el("div", { class: "mlab-lab" }, label, keyTip));
-  const set = (v) => { setAt(cfg, f.key, v); commit(); };
+  const set = (v) => {
+    const g = f.key.split(".")[0];
+    if (TYPES.has(g) && cfg[g].follow && (!f.keep || (f.key === `${g}.follow` && v === false))) { takeBase(g); cfg[g].follow = false; }
+    setAt(cfg, f.key, v);
+    commit();
+    if (g === "text" || TYPES.has(g)) refresh();
+  };
   if (f.type === "range") {
     const range = el("input", { type: "range", id, min: f.min, max: f.max, step: f.step });
     const num = el("input", { type: "number", min: f.min, max: f.max, step: f.step, "aria-label": `${f.label} value${f.unit ? ` (${f.unit})` : ""}`, class: "mlab-num" });
     const unit = el("span", { class: "mlab-unit", text: f.unit, "aria-hidden": "true" });
-    const sync = () => { const v = getAt(cfg, f.key); range.value = v; num.value = fmt(v, f.step); };
+    const sync = () => { const v = val(f.key); range.value = v; num.value = fmt(v, f.step); };
     range.addEventListener("input", () => { num.value = fmt(range.value, f.step); set(Number(range.value)); });
     num.addEventListener("change", () => { const v = Number(num.value); if (Number.isFinite(v)) { range.value = v; set(v); } else sync(); });
     row.append(el("div", { class: "mlab-ctl" }, range, num, unit));
@@ -337,10 +342,10 @@ function field(f) {
       const rid = i === 0 ? id : `${id}b`;
       const range = el("input", { type: "range", id: rid, min: f.min, max: f.max, step: f.step, "aria-label": `${f.label} ${name}` });
       const num = el("input", { type: "number", min: f.min, max: f.max, step: f.step, "aria-label": `${f.label} ${name} value (${f.unit})`, class: "mlab-num" });
-      const put = (v) => { const arr = getAt(cfg, f.key).slice(); arr[i] = v; set(arr); };
+      const put = (v) => { const arr = val(f.key).slice(); arr[i] = v; set(arr); };
       range.addEventListener("input", () => { num.value = range.value; put(Number(range.value)); });
       num.addEventListener("change", () => { const v = Number(num.value); if (Number.isFinite(v)) { range.value = v; put(v); } });
-      updaters.push(() => { const v = getAt(cfg, f.key)[i]; range.value = v; num.value = fmt(v, f.step); });
+      updaters.push(() => { const v = val(f.key)[i]; range.value = v; num.value = fmt(v, f.step); });
       return el("div", { class: "mlab-ctl" }, el("span", { class: "mlab-minmax", text: name, "aria-hidden": "true" }), range, num, el("span", { class: "mlab-unit", text: f.unit, "aria-hidden": "true" }));
     };
     label.textContent = `${f.label} (min–max)`;
@@ -351,24 +356,24 @@ function field(f) {
     const sw = f.type === "color" ? el("span", { class: "mlab-swatch", "aria-hidden": "true" }) : null;
     sel.addEventListener("change", () => { set(sel.value); if (sw) sw.style.background = `var(--pr-${sel.value})`; });
     row.append(el("div", { class: "mlab-ctl" }, sw, sel));
-    updaters.push(() => { sel.value = getAt(cfg, f.key); if (sw) sw.style.background = `var(--pr-${sel.value})`; });
+    updaters.push(() => { sel.value = val(f.key); if (sw) sw.style.background = `var(--pr-${sel.value})`; });
   } else if (f.type === "toggle") {
     const box = el("input", { type: "checkbox", id, role: "switch", class: "mlab-switch", disabled: f.locked });
     box.addEventListener("change", () => set(box.checked));
     row.append(el("div", { class: "mlab-ctl" }, box, f.locked ? el("span", { class: "mlab-unit", text: "always on" }) : null));
-    updaters.push(() => { box.checked = Boolean(getAt(cfg, f.key)); });
+    updaters.push(() => { box.checked = Boolean(val(f.key)); });
   } else if (f.type === "easing") {
     const sel = el("select", { id }, [...EASE_NAMES, "custom"].map((o) => el("option", { value: o, text: o === "custom" ? "custom…" : o })));
     const custom = el("input", { type: "text", class: "mlab-text", "aria-label": `${f.label}: custom CSS easing`, placeholder: "cubic-bezier(.2,.8,.2,1)", spellcheck: "false" });
     const sync = () => {
-      const v = getAt(cfg, f.key);
+      const v = val(f.key);
       const named = EASE_NAMES.includes(v);
       sel.value = named ? v : "custom";
       custom.hidden = named;
       if (!named) custom.value = v;
     };
     sel.addEventListener("change", () => {
-      if (sel.value === "custom") { custom.hidden = false; custom.value = custom.value || motion.EASINGS[getAt(cfg, f.key)] || "cubic-bezier(0.2, 0.8, 0.2, 1)"; custom.focus(); set(custom.value); }
+      if (sel.value === "custom") { custom.hidden = false; custom.value = custom.value || motion.EASINGS[val(f.key)] || "cubic-bezier(0.2, 0.8, 0.2, 1)"; custom.focus(); set(custom.value); }
       else { custom.hidden = true; set(sel.value); }
     });
     custom.addEventListener("change", () => {
@@ -382,7 +387,7 @@ function field(f) {
     const inp = el("input", { type: "text", id, class: "mlab-text", maxlength: f.maxlength, spellcheck: "false" });
     inp.addEventListener("input", () => set(inp.value));
     row.append(el("div", { class: "mlab-ctl" }, inp));
-    updaters.push(() => { inp.value = getAt(cfg, f.key) ?? ""; });
+    updaters.push(() => { inp.value = val(f.key) ?? ""; });
   }
   return row;
 }
@@ -404,7 +409,6 @@ function randomize() {
     else if (f.type === "easing") setAt(cfg, f.key, EASE_NAMES[(Math.random() * EASE_NAMES.length) | 0]);
     else if (f.type === "toggle") setAt(cfg, f.key, Math.random() < 0.5);
   }));
-  cfg.text.headings = true;
   cfg.preset = "Random";
   refresh();
   commit({ edited: true });
@@ -442,6 +446,15 @@ function importJson(text) {
   commit({ edited: false });
   say(`Imported “${cfg.preset}”.`);
   return true;
+}
+const presetName = () => (baseName(cfg.preset) in PRESETS ? baseName(cfg.preset) : "Default");
+function resetGroup(g) {
+  const name = presetName();
+  const P = motion.resolveConfig(PRESETS[name]);
+  g.fields.forEach((f) => setAt(cfg, f.key, structuredClone(getAt(P, f.key))));
+  refresh();
+  commit();
+  say(`${g.label}: back to “${name}”.`);
 }
 function applyPreset(name) {
   if (!(name in PRESETS)) return;
@@ -492,9 +505,14 @@ function build() {
   auto.checked = ui.autoReplay;
   auto.addEventListener("change", () => { ui.autoReplay = auto.checked; saveUi(); });
   const groups = SCHEMA.map((g) => {
+    const state = g.type ? el("span", { class: "mlab-state" }) : null;
+    if (state) updaters.push(() => { state.textContent = cfg[g.type].follow ? "follows All text" : "own settings"; });
     const d = el("details", { class: "mlab-group", "data-id": g.id, open: ui.open.includes(g.id) },
-      el("summary", {}, el("span", { text: g.label }), el("span", { class: "mlab-count", text: String(g.fields.length), "aria-label": `${g.fields.length} parameters` })),
-      el("div", { class: "mlab-fields" }, g.fields.map(field)));
+      el("summary", {}, el("span", { text: g.label }), state, el("span", { class: "mlab-count", text: String(g.fields.length), "aria-label": `${g.fields.length} parameters` })),
+      el("div", { class: "mlab-fields" },
+        g.note ? el("p", { class: "mlab-note", text: g.note }) : null,
+        el("div", { class: "mlab-actions" }, el("button", { type: "button", class: "mlab-btn", onclick: () => resetGroup(g), text: `Reset ${g.label.split(" ·")[0].split(" (")[0]} to preset` })),
+        g.fields.map(field)));
     d.addEventListener("toggle", () => {
       ui.open = [...panel.querySelectorAll(".mlab-group[open]")].map((x) => x.dataset.id);
       saveUi();
@@ -526,7 +544,7 @@ function build() {
         btn("Replay", () => doReplay("load"), { class: "mlab-btn mlab-primary" }),
         btn("Replay navigation", () => doReplay("nav")),
         btn("Randomize", randomize),
-        btn("Reset", () => applyPreset("Default")),
+        btn("Reset to preset", () => applyPreset(presetName()), { title: "Back to the selected preset's settings" }),
         btn("Copy JSON", copyJson),
         btn("Import JSON", () => showIo(json(), "import"))),
       el("div", { class: "mlab-f mlab-f-toggle" },

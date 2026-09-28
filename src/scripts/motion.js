@@ -581,22 +581,23 @@ function textBlocks(unit, vis) {
   });
 }
 const TYPING = new Set(["scramble-typewriter", "scramble", "typewriter"]);
-const BODY_TYPE_KEYS = ["glyphs", "customGlyphs", "jpGlyphs", "matchCase", "symbolRate", "cps", "frameMs", "framesPerChar", "settle", "holdMs", "resolveCps", "direction", "untyped", "cursor", "cursorChar", "cursorBlinkMs", "maxLineMs", "lineStaggerMs", "maxStaggered", "randomDelayMs", "clip"];
-// How body text plays on a surface: the panel's `body` (or the Body group's
-// mode when it says "default"). "same" copies the Text group's effect and
-// every typing setting; any other mode uses the Body group's own settings.
-function bodySpec(surface) {
-  const T = CFG.text, B = CFG.body;
-  let mode = CFG[surface].body;
-  if (!mode || mode === "default") mode = B.mode;
-  const long = { ms: B.durationMs, rise: B.risePx, px: B.pixelPx, steps: B.pixelSteps };
-  if (mode === "same") {
-    if (TYPING.has(T.mode)) return { mode: T.mode, T, long };
-    return { mode: T.mode === "none" ? "none" : "fade", T, long: { ...long, ms: T.longMs } };
-  }
-  const TB = { ...T, mode };
-  for (const key of BODY_TYPE_KEYS) TB[key] = B[key];
-  return { mode, T: TB, long };
+// Settings every text type (heading, label, body) can override. While a
+// type's `follow` is on it uses the Text group's values: the preset's base.
+export const TEXT_KEYS = ["mode", "glyphs", "customGlyphs", "jpGlyphs", "matchCase", "symbolRate", "cps", "frameMs", "framesPerChar", "settle", "holdMs", "resolveCps", "direction", "untyped", "cursor", "cursorChar", "cursorBlinkMs", "maxLineMs", "lineStaggerMs", "maxStaggered", "randomDelayMs", "clip", "long", "longMs", "longRisePx", "longPixelPx", "longSteps"];
+function textFor(type, modeOverride) {
+  const T = CFG.text, G = CFG[type];
+  const X = { ...T };
+  if (!G.follow) for (const key of TEXT_KEYS) X[key] = G[key];
+  if (modeOverride && modeOverride !== "default") X.mode = modeOverride;
+  return X;
+}
+// Typing modes type the text unless it is off-screen, empty or longer than
+// the type's max; those, and every other mode, animate the whole block.
+function kindOf(b, TT, maxChars) {
+  if (TT.mode === "none") return ["none"];
+  if (!TYPING.has(TT.mode)) return ["long", TT.mode];
+  if (!b.near || !b.nodes.length || b.len > maxChars) return ["long", TT.long];
+  return ["type"];
 }
 const scalePlan = (plan, f) => (f === 1 ? plan : {
   appear: plan.appear.map((x) => x * f), settle: plan.settle.map((x) => x * f), dur: plan.dur * f, typedEnd: plan.typedEnd * f,
@@ -807,33 +808,38 @@ function planUnit(unit, rect, s, surface, box) {
   const media = mediaOf(unit, vis, M).map((m) => ({ m, at: fillEnd + M.afterFillMs + span(M.randomDelayMs) }));
   let end = Math.max(fillEnd, ...media.map((x) => x.at + M.durationMs));
   const segsOf = (b) => b.nodes.map((node) => ({ node, orig: node.data, chars: Array.from(node.data), last: null }));
-  const headerLong = { ms: T.longMs, rise: T.longRisePx, px: T.longPixelPx, steps: T.longSteps };
-  const raw = textBlocks(unit, vis);
   const blocks = [];
-  // Headers: the Text group, staggered from the fill.
-  const t0 = fillEnd + T.afterFillMs;
-  let headStart = Infinity, headEnd = -Infinity;
-  raw.filter((b) => !b.body).forEach((b, i) => {
-    const at = t0 + Math.min(i, T.maxStaggered) * T.lineStaggerMs + span(T.randomDelayMs);
-    let kind;
-    if (T.mode === "none") kind = "none";
-    else if (T.mode === "fade" || !b.near) kind = "long";
-    else if (b.heading) kind = T.headings && b.len <= T.headingMaxChars ? "type" : "long";
-    else kind = T.labels && b.len <= T.shortMaxChars ? "type" : "long";
-    if (kind === "type" && !b.nodes.length) kind = "long";
-    let dur = 0, x = { ...b, at, kind, T };
-    if (kind === "type") { const segs = segsOf(b); const plan = typePlan(segs.flatMap((c) => c.chars), T); x = { ...x, segs, plan }; dur = plan.dur; }
-    else if (kind === "long") { x = { ...x, style: T.long, ...headerLong }; dur = T.longMs; }
-    headStart = Math.min(headStart, at); headEnd = Math.max(headEnd, at + dur);
+  const make = (b, at, TT, slow, maxChars) => {
+    const [kind, style] = kindOf(b, TT, maxChars);
+    let x = { ...b, at, kind, T: TT }, dur = 0;
+    if (kind === "type") {
+      const segs = segsOf(b);
+      x = { ...x, segs, plan: scalePlan(typePlan(segs.flatMap((c) => c.chars), TT), slow) };
+      dur = x.plan.dur;
+    } else if (kind === "long") {
+      x = { ...x, style, ms: TT.longMs * slow, rise: TT.longRisePx, px: TT.longPixelPx, steps: TT.longSteps };
+      dur = x.ms;
+    }
     end = Math.max(end, at + dur);
     blocks.push(x);
+    return dur;
+  };
+  const raw = textBlocks(unit, vis);
+  // Headers (headings and labels) start after the fill, staggered in order.
+  const t0 = fillEnd + T.afterFillMs;
+  let headStart = Infinity, headEnd = -Infinity;
+  const heads = raw.filter((b) => !b.body);
+  heads.forEach((b, i) => {
+    const type = b.heading ? "heading" : "label";
+    const TT = textFor(type), slow = 1 / Math.max(0.05, CFG[type].speed);
+    const at = t0 + (Math.min(i, TT.maxStaggered) * TT.lineStaggerMs + span(TT.randomDelayMs)) * slow;
+    const dur = make(b, at, TT, slow, CFG[type].maxChars);
+    headStart = Math.min(headStart, at); headEnd = Math.max(headEnd, at + dur);
   });
-  // Body: the Body group, timed against this unit's headers.
-  const B = CFG.body, spec = bodySpec(surface), TB = spec.T;
-  const slow = 1 / Math.max(0.05, B.speed);
-  const heads = raw.length - raw.filter((b) => b.body).length;
-  let base = t0, from = heads;
-  if (B.relation !== "independent" && heads) {
+  // Body text: timed against this unit's headers by body.relation.
+  const B = CFG.body, TB = textFor("body", S.body), slow = 1 / Math.max(0.05, B.speed);
+  let base = t0, from = heads.length;
+  if (B.relation !== "independent" && heads.length) {
     from = 0;
     base = B.relation === "with-header" ? headStart
       : B.relation === "during-header" ? headStart + (headEnd - headStart) * Math.min(100, Math.max(0, B.headerPct)) / 100
@@ -841,16 +847,7 @@ function planUnit(unit, rect, s, surface, box) {
   }
   base = Math.max(s, base + B.offsetMs);
   raw.filter((b) => b.body).forEach((b, j) => {
-    const at = base + (Math.min(j + from, TB.maxStaggered) * TB.lineStaggerMs + span(TB.randomDelayMs)) * slow;
-    let kind = spec.mode === "none" ? "none" : TYPING.has(spec.mode) ? (b.near && b.nodes.length ? "type" : "long") : "long";
-    let dur = 0, x = { ...b, at, kind, T: TB };
-    if (kind === "type") { const segs = segsOf(b); const plan = scalePlan(typePlan(segs.flatMap((c) => c.chars), TB), slow); x = { ...x, segs, plan }; dur = plan.dur; }
-    else if (kind === "long") {
-      const style = TYPING.has(spec.mode) ? T.long : spec.mode;
-      x = { ...x, style, ...spec.long, ms: spec.long.ms * slow }; dur = x.ms;
-    }
-    end = Math.max(end, at + dur);
-    blocks.push(x);
+    make(b, base + (Math.min(j + from, TB.maxStaggered) * TB.lineStaggerMs + span(TB.randomDelayMs)) * slow, TB, slow, Infinity);
   });
   const fadeAt = fillEnd + o.lingerMs;
   if (outlineOn) end = Math.max(end, fadeAt + o.fadeOutMs);
