@@ -92,7 +92,8 @@ export const PRESETS = {
 };
 
 // ── Schema: one control per parameter ──────────────────────────────────────
-const BODY = ["same", "auto", "rise", "fade", "wipe", "pixelate", "none"];
+const BODY_MODES = ["same", "scramble-typewriter", "scramble", "typewriter", "rise", "fade", "wipe", "pixelate", "none"];
+const BODY = ["default", ...BODY_MODES];
 const ORDERS = ["random", "top-down", "bottom-up", "left-right", "reading", "by-column", "spiral", "center-out", "edges-in", "distance-from-click", "dom"];
 const OUTLINES = ["trace", "sides", "viewfinder", "corners", "midpoints", "march", "none"];
 const FILLS = ["fade", "wipe-left", "wipe-right", "wipe-up", "wipe-down", "iris", "pixel-step", "scan", "mask-reveal", "skeleton", "lens", "none"];
@@ -148,7 +149,7 @@ export const SCHEMA = [
     r("rail.spreadMs", "Spread across order", 0, 3000, 10, "ms", { rand: [200, 1400] }),
     p("rail.randomDelayMs", "Per-box random delay", 0, 2000, 10, "ms", { rand: [0, 700] }),
     r("rail.maxUnits", "Max boxes", 1, 60, 1, ""),
-    s("rail.body", "Body text (same = like the heading)", BODY),
+    s("rail.body", "Body text (default = Body group)", BODY),
   ] },
   { id: "rail-outline", label: "Rail · outline", fields: outlineFields("rail") },
   { id: "rail-fill", label: "Rail · fill", fields: fillFields("rail") },
@@ -159,11 +160,11 @@ export const SCHEMA = [
     r("pane.maxUnits", "Max boxes", 1, 80, 1, ""),
     s("pane.belowFold", "Below the fold", ["play", "fast", "instant"]),
     r("pane.enterTravelPx", "Travel on navigation", 0, 40, 1, "px", { rand: [0, 12] }),
-    s("pane.body", "Body text (same = like the heading)", BODY),
+    s("pane.body", "Body text (default = Body group)", BODY),
   ] },
   { id: "pane-outline", label: "Pane · outline", fields: outlineFields("pane") },
   { id: "pane-fill", label: "Pane · fill", fields: fillFields("pane") },
-  { id: "text", label: "Text", fields: [
+  { id: "text", label: "Text · headers (headings, labels)", fields: [
     s("text.mode", "Mode", ["scramble-typewriter", "scramble", "typewriter", "fade", "none"], { randOptions: ["scramble-typewriter", "scramble", "typewriter"] }),
     s("text.glyphs", "Glyph set", ["auto", "latin", "digits", "symbols", "katakana", "kanji", "binary", "blocks", "hex", "custom"]),
     t("text.customGlyphs", "Custom glyphs", { norand: true }),
@@ -191,12 +192,44 @@ export const SCHEMA = [
     r("text.headingMaxChars", "Heading max chars", 0, 400, 1, "chars"),
     b("text.labels", "Type mono labels"),
     r("text.shortMaxChars", "Short line max chars", 0, 400, 1, "chars", { rand: [40, 140] }),
-    s("text.long", "Long paragraphs (body = auto)", ["rise", "fade", "wipe", "pixelate", "none"]),
-    r("text.longMs", "Body duration (rise/fade/wipe/pixelate)", 0, 2000, 10, "ms", { rand: [200, 900] }),
-    r("text.longRisePx", "Body rise distance", 0, 40, 1, "px", { rand: [0, 12] }),
-    r("text.longPixelPx", "Body pixel size (pixelate)", 2, 32, 1, "px", { rand: [6, 16] }),
-    r("text.longSteps", "Body pixelate steps", 1, 8, 1, "", { rand: [2, 6] }),
+    s("text.long", "Too long or off-screen", ["rise", "fade", "wipe", "pixelate", "none"]),
+    r("text.longMs", "Too long / off-screen duration", 0, 2000, 10, "ms", { rand: [200, 900] }),
+    r("text.longRisePx", "Too long / off-screen rise", 0, 40, 1, "px", { rand: [0, 12] }),
+    r("text.longPixelPx", "Too long / off-screen pixel size", 2, 32, 1, "px", { rand: [6, 16] }),
+    r("text.longSteps", "Too long / off-screen pixel steps", 1, 8, 1, "", { rand: [2, 6] }),
     b("text.clip", "Clip overflow while typing"),
+  ] },
+  { id: "body", label: "Body text", fields: [
+    s("body.mode", "Mode (same = like the headers)", BODY_MODES),
+    s("body.relation", "Starts", ["after-header", "during-header", "with-header", "independent"]),
+    r("body.headerPct", "During header: start at", 0, 100, 1, "%", { rand: [20, 90] }),
+    r("body.offsetMs", "Offset from that point", -1500, 1500, 10, "ms", { rand: [-200, 400] }),
+    r("body.speed", "Body speed", 0.1, 4, 0.05, "×", { rand: [0.6, 1.8] }),
+    s("body.glyphs", "Glyph set", ["auto", "latin", "digits", "symbols", "katakana", "kanji", "binary", "blocks", "hex", "custom"]),
+    t("body.customGlyphs", "Custom glyphs", { norand: true }),
+    s("body.jpGlyphs", "Glyphs for Japanese", ["katakana", "kanji", "mixed", "same"]),
+    b("body.matchCase", "Match case"),
+    r("body.symbolRate", "Symbol rate (auto)", 0, 1, 0.05, ""),
+    r("body.cps", "Typing speed", 2, 240, 1, "cps", { rand: [20, 120] }),
+    r("body.frameMs", "Glyph flicker", 16, 300, 1, "ms", { rand: [30, 120] }),
+    r("body.framesPerChar", "Scramble frames per char", 0, 40, 1, "", { rand: [1, 12] }),
+    s("body.settle", "Settle", ["sweep", "lag"]),
+    r("body.holdMs", "Random hold before settling", 0, 3000, 10, "ms", { rand: [0, 700] }),
+    r("body.resolveCps", "Settle speed", 2, 400, 1, "cps", { rand: [30, 200] }),
+    s("body.direction", "Reveal direction", ["ltr", "rtl", "random", "center-out"]),
+    s("body.untyped", "Untyped characters", ["hide", "space", "dot", "underscore", "block"]),
+    b("body.cursor", "Cursor"),
+    t("body.cursorChar", "Cursor character", { norand: true, maxlength: 2 }),
+    r("body.cursorBlinkMs", "Cursor blink", 0, 1200, 10, "ms"),
+    r("body.maxLineMs", "Max duration per paragraph", 100, 6000, 50, "ms", { rand: [600, 2400] }),
+    r("body.lineStaggerMs", "Stagger between paragraphs", 0, 600, 5, "ms", { rand: [0, 200] }),
+    r("body.maxStaggered", "Paragraphs staggered (max)", 0, 30, 1, ""),
+    p("body.randomDelayMs", "Per-paragraph random delay", 0, 2000, 10, "ms", { rand: [0, 400] }),
+    b("body.clip", "Clip overflow while typing"),
+    r("body.durationMs", "Duration (rise/fade/wipe/pixelate)", 0, 3000, 10, "ms", { rand: [200, 900] }),
+    r("body.risePx", "Rise distance", 0, 40, 1, "px", { rand: [0, 12] }),
+    r("body.pixelPx", "Pixel size (pixelate)", 2, 32, 1, "px", { rand: [6, 16] }),
+    r("body.pixelSteps", "Pixelate steps", 1, 8, 1, "", { rand: [2, 6] }),
   ] },
   { id: "media", label: "Media (images, thumbnails)", fields: [
     s("media.mode", "Mode", ["pop", "pixelate", "wipe", "fade", "scale", "scanline", "none"], { randOptions: ["pop", "pixelate", "wipe", "fade", "scale", "scanline"] }),
