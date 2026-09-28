@@ -211,7 +211,7 @@ const thumb = (item) => {
           <ul>
             {items.map(({ item, to, href, here }) => (
               <li>
-                <a class="side-item" href={href}
+                <a class="side-item" href={href} data-slug={item.slug}
                    data-match={to?.external ? undefined : href}
                    aria-current={cur(here)}
                    target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>

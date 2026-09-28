@@ -83,10 +83,9 @@ export function detailEmbed(item) {
  */
 const YT_ID = /^[A-Za-z0-9_-]{11}$/;
 const SITE_PATH = /^\/(?!\/)[^\s"'<>]+$/;
-export function detailFilms(item) {
-  const list = item.detail?.teaser?.youtube;
-  if (!Array.isArray(list)) return null;
-  const films = list
+function filmList(list, item) {
+  if (!Array.isArray(list)) return [];
+  return list
     .filter((f) => f && YT_ID.test(f.id ?? ""))
     .map((f) => ({
       id: f.id,
@@ -94,7 +93,23 @@ export function detailFilms(item) {
       sub: typeof f.sub === "string" ? { en: f.sub } : f.sub ?? null,
       poster: SITE_PATH.test(f.poster ?? "") ? f.poster : `https://i.ytimg.com/vi/${f.id}/hqdefault.jpg`,
     }));
+}
+export function detailFilms(item) {
+  const films = filmList(item.detail?.teaser?.youtube, item);
   return films.length ? { kind: "youtube", films } : null;
+}
+
+/**
+ * Films that support the work without being it (a trailer, a walkthrough):
+ * `detail.films = { "title": {en, jp}, "list": [same shape as teaser.youtube] }`.
+ * Rendered as one cell after Challenge | Solution — the same poster, play
+ * button and picker as the films teaser, in the body instead of the hero.
+ */
+export function detailBodyFilms(item) {
+  const f = item.detail?.films;
+  const films = filmList(Array.isArray(f) ? f : f?.list, item);
+  if (!films.length) return null;
+  return { title: (Array.isArray(f) ? null : f?.title) ?? { en: "Films", jp: "映像" }, films };
 }
 
 export function detailFields(item) {
@@ -111,5 +126,6 @@ export function detailFields(item) {
     client: detailClient(item),
     stack: item.detail?.stack ?? item.stack ?? [],
     teaser: detailEmbed(item) ?? detailFilms(item) ?? detailTeaser(item),
+    films: detailBodyFilms(item),
   };
 }
