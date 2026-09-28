@@ -210,11 +210,13 @@ test("the library JSON the Studio and /try load (assets/studio/library.json.ts s
   const lexicon = loadLexicon();
   const json = serializeLibrary(lib, { lexicon, lensSlugs: lenses.map((l) => l.slug) });
   const hydrated = hydrateLibrary(json);
-  assert.equal(hydrated.evidence.size, lib.evidence.size);
+  const published = [...lib.evidence.values()].filter((item) => item.visibility !== "private");
+  assert.equal(hydrated.evidence.size, published.length, "every record but the unpublished (private) ones");
   assert.ok(hydrated.lexicon?.capabilities, "the lexicon travels with the library");
   assert.ok(hydrated.lensSlugs.includes("default"));
-  for (const [slug, item] of lib.evidence) {
+  for (const item of published) {
     const { _notes, ...rest } = item;
+    const slug = item.slug;
     assert.deepEqual(hydrated.evidence.get(slug), rest, `${slug} survives the round trip (without _notes)`);
   }
 });

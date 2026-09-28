@@ -4,6 +4,7 @@
 import Site from "../../layouts/Site.astro";
 import ProjectDetail from "../../components/project/ProjectDetail.astro";
 import { getLibrary, evidenceForCaseStudy } from "../../lib/site.mjs";
+import { pageBuilt } from "../../lib/draft.mjs";
 
 export async function getStaticPaths() {
   const lib = getLibrary();
@@ -18,7 +19,7 @@ export async function getStaticPaths() {
   for (const path of Object.keys(htmlFiles)) {
     const slug = slugOf(path);
     const item = evidenceForCaseStudy(slug);
-    if (item) {
+    if (item && pageBuilt(item)) {
       paths.push({
         params: { slug },
         props: {
@@ -36,8 +37,8 @@ export async function getStaticPaths() {
   
   // Generate for ALL evidence items, prioritizing those with caseStudy links or in main categories
   for (const [slug, item] of lib.evidence.entries()) {
-    // Skip if already generated
-    if (existingSlugs.has(slug)) continue;
+    // Skip if already generated, or unpublished in this build (src/lib/draft.mjs)
+    if (existingSlugs.has(slug) || !pageBuilt(item)) continue;
     
     // Check if item has explicit caseStudy link
     let targetSlug = slug;
@@ -98,6 +99,8 @@ const canonical = meta?.canonical ?? `https://takaoumehara.com${current}`;
 // hand-built page (its own hero, H1 and meta), so it renders on its own rather
 // than inside the template, which would print everything twice.
 const isDetail = !body || meta?.format === "detail";
+// Unpublished work (src/lib/draft.mjs) is never indexed, wherever it is built.
+const noindex = Boolean(meta?.noindex) || item?.visibility === "private";
 const beats = body && body.replace(/<!--[\s\S]*?-->/g, "").trim() ? body : null;
 ---
 {isDetail ? (
@@ -105,6 +108,7 @@ const beats = body && body.replace(/<!--[\s\S]*?-->/g, "").trim() ? body : null;
     title={meta?.title || `${item?.title} — Takao Umehara`}
     description={meta?.description || ""}
     canonical={canonical}
+    noindex={noindex}
     ogImage={meta?.ogImage || item?.assets?.hero}
     ogType={meta?.ogType || "article"}
     current={current}
@@ -118,6 +122,7 @@ const beats = body && body.replace(/<!--[\s\S]*?-->/g, "").trim() ? body : null;
     title={meta?.title || `${item?.title} — Takao Umehara`}
     description={meta?.description || ""}
     canonical={canonical}
+    noindex={noindex}
     ogImage={meta?.ogImage || item?.assets?.hero}
     ogType={meta?.ogType || "article"}
     theme={meta?.theme}
