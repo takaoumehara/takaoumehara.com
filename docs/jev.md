@@ -175,3 +175,29 @@ Claude のクラウド環境は、現時点では `api.typesafe.ai` への通信
 - ユーザーごとのレート制限を `/api/admin/jev/motion` に足すかどうか（現状は
   管理者のみに絞る以外の制限は無い）。
 - 将来の v2 の config（`docs/motion-lab/library-plan.md`）も Jev の判定対象にするかどうか。
+
+---
+
+## 提案（Suggest 3）
+
+Motion Lab の「Judge with Jev」の行にある **Suggest 3** は、入力欄の一文（空でもよい）と今の config から、
+候補の config を 3 つ出す。
+
+- **生成は規則ベース（LLM なし）**: `src/server/motion-suggest.mjs` の `LEXICON` が、言葉（日本語・英語）を
+  config の差分に変える。例: 静か/quiet → 速度 ×0.75・幕は none/dissolve/field・文字は fade、
+  速い/fast → 速度 ×1.6・上限を短く、派手/loud → スラブの幕・wipe・band-sweep と退場 reverse、
+  ゆっくり/slow → ×0.6、幕/curtain → スラブ、色/グラデ → field、文字/type → Terminal・Decode・Kanji、
+  箱/skeleton → Skeleton・Viewfinder、音/sound → サウンド on、スマホ/mobile → 上限 1.2 s。
+  知らない言葉は無視し、言葉が無くても見た目の違う 3 案を出す。幕・開き方は、語彙の中で
+  スタイル・レジストリ（`src/scripts/styles/index.mjs`）に実在する id だけを使う。
+  乱数はシード付き（同じ文・同じシードなら同じ 3 案）。結果は必ず `upgradeConfig()` を通した v2 で、
+  `global.speed` は 0.3〜4、上限（capMs / navCapMs）は 300 ms 以上に丸める。
+- **Jev は並べ替えるだけ**: 3 案それぞれを `judgeMotion()` に一文つきで渡し、`matchesRequest` の確率が
+  高い順に並べる（カードに Jev の読みも出る）。
+- **鍵が無くても動く**: `TYPESAFE_API_KEY` が無い、または Jev が失敗したときは、3 案を並べ替えずに返す
+  （`judged: false`、`error: "Jev is not configured"` / `"Jev unreachable"`）。この場合も 200 を返す。
+- **管理者のみ**: `POST /api/admin/jev/suggest`（`src/pages/api/admin/jev/suggest.ts`）。
+  `/api/admin/jev/motion` と同じく middleware + `requireAdmin` + 同一オリジン。本文の検査も同じ
+  （415 / 413 / 400、形が違えば 422）。一文は 600 文字で切る。
+- **カード**: 「Try」で候補をパネルに読み込み（自動再生が on なら再生される）、「Copy JSON」でその config を
+  クリップボードへ。テストは `tests/suggest.test.mjs`。

@@ -39,8 +39,8 @@ test("motion.json is v2, with the contract's defaults for the new blocks", () =>
   assert.deepEqual(MOTION.boot, { style: "odometer", params: {} });
   assert.deepEqual(MOTION.idle, { style: "none", params: {} });
   assert.deepEqual(MOTION.sound, { enabled: false, volume: 0.25 });
-  assert.deepEqual(MOTION.interactions, {});
-  for (const k of V2_KEYS) assert.deepEqual(MOTION[k], V2_BLOCKS[k], `${k} matches the upgrade's defaults`);
+  assert.deepEqual(MOTION.interactions, INTERACTION_DEFAULTS, "the file carries the feel defaults (motion-interactions.mjs)");
+  for (const k of V2_KEYS) if (k !== "interactions") assert.deepEqual(MOTION[k], V2_BLOCKS[k], `${k} matches the upgrade's defaults`);
 });
 
 test("motion.json keeps every v1 group", () => {
@@ -92,7 +92,7 @@ test("v1 defaults are upgraded too, and style params pass through as given", () 
   assert.equal(c.transition.holdMs, 450);
   assert.equal(c.sound.enabled, true);
   assert.equal("bogus" in c, false);
-  const i = upgradeConfig({ interactions: { press: 2, nope: 1 } }, MOTION, { press: 1, lift: 3 });
+  const i = upgradeConfig({ interactions: { press: 2, nope: 1 } }, { ...MOTION, interactions: {} }, { press: 1, lift: 3 });
   assert.deepEqual(i.interactions, { press: 2, lift: 3 }, "interaction defaults sit under the JSON's");
 });
 
