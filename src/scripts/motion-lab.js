@@ -188,9 +188,11 @@ export const SCHEMA = [
     r("text.headingMaxChars", "Heading max chars", 0, 400, 1, "chars"),
     b("text.labels", "Type mono labels"),
     r("text.shortMaxChars", "Short line max chars", 0, 400, 1, "chars", { rand: [40, 140] }),
-    s("text.long", "Long paragraphs", ["rise", "fade", "wipe", "none"]),
+    s("text.long", "Long paragraphs", ["rise", "fade", "wipe", "pixelate", "none"]),
     r("text.longMs", "Long paragraph duration", 0, 2000, 10, "ms", { rand: [200, 900] }),
     r("text.longRisePx", "Long paragraph rise", 0, 40, 1, "px", { rand: [0, 12] }),
+    r("text.longPixelPx", "Long paragraph pixel size (pixelate)", 2, 32, 1, "px", { rand: [6, 16] }),
+    r("text.longSteps", "Long paragraph steps (pixelate)", 1, 8, 1, "", { rand: [2, 6] }),
     b("text.clip", "Clip overflow while typing"),
   ] },
   { id: "media", label: "Media (images, thumbnails)", fields: [

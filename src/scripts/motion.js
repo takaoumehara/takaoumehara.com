@@ -642,6 +642,44 @@ function pixelate(m, M, dur, layer, g, done) {
   later(() => { canvas.remove(); done(); }, dur, g);
   return true;
 }
+// Paragraphs pixelate through SVG mosaic filters: each block of the text
+// takes the colour of one sample point, then the blocks shrink to nothing.
+// The text stays real text throughout; only its painting is filtered.
+let pixSvg = null;
+function pixelFilter(size) {
+  const id = `mo-tpx-${size}`;
+  if (!pixSvg?.isConnected) {
+    pixSvg = document.createElementNS(SVGNS, "svg");
+    pixSvg.setAttribute("aria-hidden", "true");
+    pixSvg.setAttribute("width", "0");
+    pixSvg.setAttribute("height", "0");
+    pixSvg.style.cssText = "position:absolute;width:0;height:0;overflow:hidden";
+    document.body.append(pixSvg);
+  }
+  if (!pixSvg.querySelector(`#${id}`)) {
+    const c = Math.floor(size / 2);
+    pixSvg.insertAdjacentHTML("beforeend",
+      `<filter id="${id}" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">` +
+      `<feFlood x="${c}" y="${c}" width="1" height="1"/><feComposite width="${size}" height="${size}"/>` +
+      `<feTile result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/>` +
+      `<feMorphology operator="dilate" radius="${c}"/></filter>`);
+  }
+  return `url(#${id})`;
+}
+function pixelTextFrames(T) {
+  const n = Math.max(1, Math.round(T.longSteps));
+  const px = Math.max(2, Math.round(T.longPixelPx));
+  const sizes = Array.from({ length: n }, (_, i) => Math.max(2, Math.round(n === 1 ? px : px * Math.pow(2 / px, i / (n - 1)))));
+  const e = 0.001;
+  const frames = [{ opacity: 0, filter: pixelFilter(sizes[0]), offset: 0 }];
+  sizes.forEach((size, i) => {
+    const f = pixelFilter(size);
+    frames.push({ opacity: 1, filter: f, offset: i === 0 ? e : i / n });
+    frames.push({ opacity: 1, filter: f, offset: Math.max(i / n + e, (i + 1) / n - e) });
+  });
+  frames.push({ opacity: 1, filter: "none", offset: 1 });
+  return frames;
+}
 function revealMedia(m, M, k, layer, g) {
   const dur = Math.max(1, M.durationMs * k);
   const easing = ease(M.easing);
@@ -803,6 +841,10 @@ function execute(item, k, g, dir) {
   const now = performance.now();
   item.blocks.forEach((b) => {
     if (b.kind === "none") return;
+    if (b.kind === "long" && T.long === "pixelate") {
+      own(b.el.animate(pixelTextFrames(T), { duration: Math.max(1, T.longMs * k), delay: b.at * k, fill: "backwards" }), g);
+      return;
+    }
     if (b.kind === "long") {
       const rise = T.long === "rise" ? T.longRisePx : 0;
       const frames = T.long === "wipe"
