@@ -1,0 +1,205 @@
+/* /lab/motion — the Motion Lab tool (src/pages/lab/motion.astro).
+   PORTO ROCHA quiet, from tokens.css: grey card fills, 8px radius, 13–14px
+   text at weight 400, mono uppercase labels, no shadows; System Blue only
+   for what is chosen and for focus. Full viewport: the controls on the left,
+   the stages on the right, each scrolling on its own; stacked when narrow. */
+html, body { margin: 0; min-height: 100%; }
+body.lt {
+  background: var(--pr-canvas);
+  color: var(--pr-ink);
+  font-family: var(--pr-ff);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.lt *, .lt *::before, .lt *::after { box-sizing: border-box; }
+.lt p, .lt h1, .lt h2, .lt figure { margin: 0; }
+.lt-fallback { padding: 16px; }
+
+.lt-app {
+  display: grid;
+  grid-template-columns: minmax(280px, 340px) minmax(0, 1fr);
+  gap: 8px;
+  height: 100vh;
+  height: 100dvh;
+  padding: 8px;
+}
+.lt-controls, .lt-stages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  overflow-y: auto;
+}
+
+.lt-head { padding: 8px 6px 12px; display: flex; flex-direction: column; gap: 6px; }
+.lt-title { font-size: 23px; font-weight: 400; line-height: 1.17; letter-spacing: 0.01em; }
+.lt-lede { font-size: 13px; color: var(--pr-ink-2); }
+.lt-label {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pr-ink-2);
+}
+
+.lt-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 14px;
+  border: 0;
+  border-radius: var(--r, 8px);
+  background: var(--pr-card);
+}
+.lt-card > legend { float: left; width: 100%; padding: 0; margin-bottom: 10px; }
+.lt-card > legend + * { clear: both; }
+fieldset.lt-card { display: block; }
+fieldset.lt-card > * + * { margin-top: 10px; }
+.lt-sub { display: flex; flex-direction: column; gap: 10px; }
+.lt-sub[hidden] { display: none; }
+.lt-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.lt-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+
+.lt select,
+.lt input[type="text"],
+.lt input[type="url"] {
+  width: 100%;
+  min-height: 32px;
+  padding: 0 10px;
+  border: 1px solid var(--pr-line-2);
+  border-radius: var(--r, 8px);
+  background: var(--pr-canvas);
+  color: var(--pr-ink);
+  font: inherit;
+  font-size: 13px;
+}
+.lt select { cursor: pointer; }
+.lt-btn {
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--pr-line-2);
+  border-radius: 999px;
+  background: var(--pr-canvas);
+  color: var(--pr-ink);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.lt-btn:hover, .lt select:hover { background: var(--pr-card-2); }
+.lt :focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+
+/* The stage choice: three segments, the chosen one outlined in blue. */
+.lt-seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; }
+.lt-seg label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 4px 6px;
+  border-radius: var(--r, 8px);
+  background: var(--pr-canvas);
+  font-size: 13px;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+}
+.lt-seg input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.lt-seg label:has(input:checked) { color: var(--pr-blue); outline: 1px solid var(--pr-blue); outline-offset: -1px; }
+.lt-seg label:has(input:focus-visible) { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+
+.lt-drop {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 20px 12px;
+  border: 1px dashed var(--pr-line-2);
+  border-radius: var(--r, 8px);
+  background: var(--pr-canvas);
+  font-size: 13px;
+  text-align: center;
+  cursor: pointer;
+}
+.lt-drop.is-over { border-color: var(--pr-blue); color: var(--pr-blue); }
+.lt-drop:focus-within { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+.lt-vh {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.lt-switch { display: flex; align-items: center; gap: 10px; min-height: 32px; font-size: 13px; cursor: pointer; }
+.lt-switch input {
+  appearance: none;
+  position: relative;
+  flex: none;
+  width: 36px;
+  height: 20px;
+  margin: 0;
+  border-radius: 999px;
+  background: var(--pr-line-2);
+  cursor: pointer;
+}
+.lt-switch input::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--pr-canvas);
+  transition: transform 0.15s var(--ease-decel, ease);
+}
+.lt-switch input:checked { background: var(--pr-blue); }
+.lt-switch input:checked::before { transform: translateX(16px); }
+
+.lt-link {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  min-height: 24px;
+  color: var(--pr-ink);
+  font-size: 13px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lt-status { min-height: 1.4em; font-size: 13px; color: var(--pr-ink-2); }
+
+/* The stages: a 16:10 desktop frame filling the column, a 390 × 760 phone
+   frame beside it when there is room, below it when not. */
+.lt-note { padding: 12px 14px; border-radius: var(--r, 8px); background: var(--pr-card); font-size: 13px; }
+.lt-note[hidden] { display: none; }
+.lt-frames { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; }
+.lt-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 8px;
+  border-radius: var(--r, 8px);
+  background: var(--pr-card);
+}
+.lt-frame iframe { display: block; border: 0; border-radius: 4px; background: var(--pr-canvas); }
+.lt-desk { flex: 1 1 560px; }
+.lt-desk iframe { width: 100%; aspect-ratio: 16 / 10; }
+.lt-phone { flex: none; max-width: 100%; }
+.lt-phone iframe { width: 390px; max-width: 100%; height: 760px; }
+
+@media (max-width: 860px) {
+  .lt-app { grid-template-columns: minmax(0, 1fr); height: auto; }
+  .lt-controls, .lt-stages { overflow: visible; }
+  .lt-desk { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lt-switch input::before { transition: none; }
+}

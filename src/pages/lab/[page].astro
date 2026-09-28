@@ -12,6 +12,16 @@
 //
 // Nothing loops on its own: it plays once when it loads and again only when
 // asked (WCAG 2.2.2). Under reduced motion nothing moves and it says so.
+//
+// It is also the stage of the tool at /lab/motion (src/scripts/lab-tool.js),
+// which embeds it and drives it by postMessage (same origin only):
+//   ?stage=site (default) this miniature · ?stage=shot the visitor's
+//   screenshot as rows × cols tiles (?rows ?cols 2–6, ?title) · ?stage=peek a
+//   template from a URL's metadata (src/scripts/stage.js builds both);
+//   ?frame=phone the phone layout at any width · ?bar=0 no control bar.
+//   In:  { type: "stage:config", config } · { type: "stage:replay", kind }
+//        { type: "stage:shot", dataUrl, title } · { type: "stage:peek", title, description, image, site }
+//   Out: { type: "stage:ready" } to the parent, once it has loaded.
 import "../../styles/tokens.css";
 import "../../styles/transitions.css";
 import { draftPagesBuilt } from "../../lib/draft.mjs";
@@ -57,6 +67,11 @@ const strip = [
       try { html.setAttribute("data-theme", localStorage.getItem("tu-theme") || "light"); } catch (e) {}
       try { if (localStorage.getItem("tu-lang") === "jp") { html.classList.add("lang-jp"); html.lang = "ja"; } } catch (e) {}
       setTimeout(function () { html.removeAttribute("data-mo-intro"); html.removeAttribute("data-mo-rail"); }, 3000);
+      // The stage, frame and bar asked for in the URL, before the first paint.
+      var q = new URLSearchParams(location.search), st = q.get("stage");
+      html.setAttribute("data-stage", st === "shot" || st === "peek" ? st : "site");
+      if (q.get("frame") === "phone") html.classList.add("st-phone");
+      if (q.get("bar") === "0") html.classList.add("st-nobar");
     })();
   </script>
   <meta charset="UTF-8">
@@ -128,6 +143,14 @@ const strip = [
   <script>
     import * as motion from "../../scripts/motion.js";
     import { PRESETS } from "../../scripts/motion-lab.js";
+    import { readStageParams, buildShot, buildPeek } from "../../scripts/stage.js";
+
+    // The visitor's own page instead of the miniature (?stage=shot / peek):
+    // an empty version now, filled when the tool sends the picture or the metadata.
+    const P = readStageParams(location.search);
+    const main = document.getElementById("main");
+    if (P.stage === "shot") buildShot(main, { ...P, dataUrl: null });
+    if (P.stage === "peek") buildPeek(main, null);
 
     // The lab's working copy, when the lab is open in this tab: the stage
     // then offers "Your setting" as well as the named presets.
@@ -155,8 +178,29 @@ const strip = [
     document.getElementById("st-load").addEventListener("click", () => play("load"));
     document.getElementById("st-nav").addEventListener("click", () => play("nav"));
 
+    // The tool that embeds the stage (/lab/motion) drives it from here.
+    window.addEventListener("message", async (e) => {
+      const d = e.data;
+      if (e.origin !== location.origin || !d || typeof d !== "object") return;
+      if (d.type === "stage:config" && d.config && typeof d.config === "object") {
+        motion.setConfig(d.config);
+        play("load");
+      } else if (d.type === "stage:replay") {
+        play(d.kind === "nav" ? "nav" : "load");
+      } else if (d.type === "stage:shot" && P.stage === "shot") {
+        motion.finishAll();
+        await buildShot(main, { ...P, title: typeof d.title === "string" && d.title.trim() ? d.title.trim().slice(0, 120) : P.title, dataUrl: d.dataUrl });
+        play("load");
+      } else if (d.type === "stage:peek" && P.stage === "peek") {
+        motion.finishAll();
+        buildPeek(main, d);
+        play("load");
+      }
+    });
+
     motion.bindMotion();
     motion.intro();
+    if (window.parent !== window) window.parent.postMessage({ type: "stage:ready" }, location.origin);
   </script>
 </body>
 </html>
@@ -314,5 +358,33 @@ const strip = [
     .st-strip { display: none; }
     .st-bar { height: 96px; flex-wrap: wrap; align-content: center; }
     .st-status { margin-left: 0; flex-basis: 100%; }
+  }
+  /* ?frame=phone: the same phone layout at any width (the tool's phone check). */
+  html.st-phone .st-shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; inset: 0 0 96px 0; }
+  html.st-phone .st-rail { flex-direction: row; align-items: center; gap: 8px; }
+  html.st-phone .st-rail .st-group { display: none; }
+  html.st-phone .side-top { padding: 4px 4px 0; }
+  html.st-phone .st-teaser { height: 30%; }
+  html.st-phone .st-strip { display: none; }
+  html.st-phone .st-bar { height: 96px; flex-wrap: wrap; align-content: center; }
+  html.st-phone .st-status { margin-left: 0; flex-basis: 100%; }
+
+  /* ?bar=0: embedded in the tool, which has its own controls. */
+  html.st-nobar .st-bar { display: none; }
+  html.st-nobar .st-shell { inset: 0; }
+
+  /* ?stage=shot / peek: the visitor's page, so no rail of Takao's. */
+  html[data-stage="shot"] .st-shell, html[data-stage="peek"] .st-shell { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr); }
+  html[data-stage="shot"] .st-rail, html[data-stage="peek"] .st-rail { display: none; }
+  .st-tiles { position: relative; flex: 1; min-height: 0; display: grid; gap: 8px; }
+  .st-tile { min-width: 0; min-height: 0; background-color: var(--pr-card); background-repeat: no-repeat; }
+  .st-placeholder {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    border: 1px dashed var(--pr-line-2);
+    text-align: center;
   }
 </style>
