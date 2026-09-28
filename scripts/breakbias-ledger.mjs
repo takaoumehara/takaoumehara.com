@@ -44,8 +44,12 @@ export function merged() {
 
 const cut = (s, n) => (s == null ? "" : String(s).replace(/\s+/g, " ").slice(0, n));
 
+// CLI only when run directly; breakbias-report.mjs imports merged() without this.
 const [cmd, arg] = process.argv.slice(2);
-if (cmd === "list") {
+const isMain = process.argv[1] && new URL(import.meta.url).pathname === (await import("node:path")).resolve(process.argv[1]);
+if (!isMain) {
+  // imported as a module
+} else if (cmd === "list") {
   for (const c of loadCells()) {
     if (arg && !c.cell_id.startsWith(arg + "-")) continue;
     const pa = c.prior_art?.exists ? ` [既出: ${cut(c.prior_art.where, 40)}]` : "";
