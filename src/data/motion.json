@@ -1,27 +1,30 @@
 {
   "version": 1,
-  "preset": "Default",
+  "preset": "Takao — Skeleton (edited), 2026-09-28",
   "global": {
     "enabled": true,
-    "speed": 1,
+    "speed": 0.65,
     "runOn": "both",
     "respectReducedMotion": true,
-    "seed": 0,
+    "seed": 1268,
     "relation": "overlap",
-    "offsetMs": 240,
+    "offsetMs": -500,
     "staggerBaseMs": 0,
-    "capMs": 3600,
+    "capMs": 2100,
     "navSpeed": 1.9,
-    "navCapMs": 1400
+    "navCapMs": 1150
   },
   "rail": {
     "playOn": "session-first",
     "order": "top-down",
     "spreadMs": 760,
-    "randomDelayMs": [0, 280],
+    "randomDelayMs": [
+      0,
+      280
+    ],
     "maxUnits": 24,
     "outline": {
-      "style": "trace",
+      "style": "none",
       "reverse": false,
       "strokeWidth": 1,
       "color": "line-2",
@@ -36,10 +39,10 @@
       "unboxed": "skip"
     },
     "fill": {
-      "style": "fade",
-      "durationMs": 340,
+      "style": "skeleton",
+      "durationMs": 1100,
       "afterOutlineMs": 40,
-      "easing": "decel",
+      "easing": "ease-in-out",
       "steps": 6,
       "fromXPx": -12,
       "fromYPx": 0
@@ -48,12 +51,15 @@
   "pane": {
     "order": "random",
     "spreadMs": 520,
-    "randomDelayMs": [0, 440],
+    "randomDelayMs": [
+      0,
+      440
+    ],
     "maxUnits": 40,
     "belowFold": "play",
     "enterTravelPx": 6,
     "outline": {
-      "style": "trace",
+      "style": "none",
       "reverse": false,
       "strokeWidth": 1,
       "color": "line-2",
@@ -68,10 +74,10 @@
       "unboxed": "skip"
     },
     "fill": {
-      "style": "fade",
-      "durationMs": 380,
+      "style": "skeleton",
+      "durationMs": 1100,
       "afterOutlineMs": 40,
-      "easing": "decel",
+      "easing": "ease-in-out",
       "steps": 6,
       "fromXPx": -12,
       "fromYPx": 0
@@ -87,28 +93,31 @@
     "travelPx": 8
   },
   "text": {
-    "mode": "scramble-typewriter",
-    "glyphs": "auto",
+    "mode": "scramble",
+    "glyphs": "blocks",
     "customGlyphs": "",
-    "jpGlyphs": "katakana",
+    "jpGlyphs": "same",
     "matchCase": true,
     "symbolRate": 0.15,
     "cps": 44,
     "frameMs": 55,
     "framesPerChar": 4,
     "settle": "sweep",
-    "holdMs": 240,
-    "resolveCps": 80,
+    "holdMs": 400,
+    "resolveCps": 60,
     "direction": "ltr",
     "untyped": "hide",
-    "cursor": true,
+    "cursor": false,
     "cursorChar": "▍",
     "cursorBlinkMs": 420,
     "maxLineMs": 1400,
     "lineStaggerMs": 70,
     "maxStaggered": 8,
     "afterFillMs": 60,
-    "randomDelayMs": [0, 140],
+    "randomDelayMs": [
+      0,
+      140
+    ],
     "kidsFadeMs": 120,
     "headings": true,
     "headingMaxChars": 140,
@@ -120,18 +129,21 @@
     "clip": true
   },
   "media": {
-    "mode": "pop",
-    "durationMs": 380,
-    "easing": "back-out",
+    "mode": "pixelate",
+    "durationMs": 510,
+    "easing": "decel",
     "steps": 5,
     "afterFillMs": 0,
-    "randomDelayMs": [80, 760],
+    "randomDelayMs": [
+      80,
+      760
+    ],
     "minSizePx": 40,
     "label": {
-      "mode": "slow",
-      "text": "NOW LOADING",
+      "mode": "always",
+      "text": "LOADING",
       "dotMs": 720,
-      "minVisibleMs": 0,
+      "minVisibleMs": 500,
       "maxWaitMs": 1600,
       "minWidthPx": 120
     }
