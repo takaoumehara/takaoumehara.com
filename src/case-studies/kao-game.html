@@ -8,6 +8,15 @@
     <span class="t-en">Each game is built around a different part of the face. In KUZUSHI you break stone by shaping vowels — ah, oo, ee. In KASANE you cut a moving slab by opening your mouth and snapping it shut, or by pursing into “oo” and pulling wide into “ee”. In KAO DARUMA you knock daruma out of an endless stack by matching the lit face: left cheek, right cheek, tongue or a centred “oo”. There is no tutorial. Anything that needed a sentence of explanation was cut rather than written.</span>
     <span class="t-jp is-block">3 本はそれぞれ、顔の別の場所を使う。KUZUSHI は「あ・う・い」の口の形で石を砕く。KASANE は流れてくる板を、口を開けてパクッと閉じる瞬間か、「ウー」から「イー」へ引く瞬間に切る。KAO DARUMA は、光った顔と同じ動き（左ほっぺ・右ほっぺ・ベロ・ウー）をすると、終わりのないだるま落としが一段飛ぶ。チュートリアルはない。一文の説明が要るものは、書き足すのではなく削った。</span>
   </p>
+  <figure class="beat-media" style="--beat-cols: 3; --beat-cols-sm: 3;">
+    <img src="/assets/kao-game/kuzushi.jpg" alt="KUZUSHI on a phone: a stone monster with glowing red eyes looms over two towers of pastel glass blocks, with an aiming ring between them and mouth-shape meters along the bottom" loading="lazy" width="780" height="1688">
+    <img src="/assets/kao-game/kasane.jpg" alt="KASANE on a phone: a pink slab sliding over the one below it on a dusky pink field, with the hint 'cut when the edge lights up' and a パクッ button" loading="lazy" width="780" height="1688">
+    <img src="/assets/kao-game/daruma-end.jpg" alt="KAO DARUMA at the end of a run: a leaning stack of red daruma, the score 206 and the word おしまい (finished) over a daruma face asking for the right cheek" loading="lazy" width="390" height="844">
+    <figcaption class="beat-caption">
+      <span class="t-en">KUZUSHI, KASANE and KAO DARUMA on a phone, captured during development.</span>
+      <span class="t-jp">開発中に撮った、スマホでの KUZUSHI・KASANE・KAO DARUMA。</span>
+    </figcaption>
+  </figure>
 </section>
 <section class="beat">
   <h2 class="beat-title">
@@ -28,6 +37,16 @@
     <span class="t-en">Early on, tilting your head made one cheek look puffed. The landmark coordinates are scaled separately to the width and height of the camera frame, so a head roll turned into a shear, not a rotation. On a 4:3 camera a three-degree tilt pushed one cheek to six times its noise floor. The fix was to stop measuring on the screen at all. The engine builds a coordinate frame on the face itself, from the eye corners, the base of the nose and the forehead, and watches four cheek points move forward and outward in that frame. Thresholds come from each player's own resting face. Because puffing a cheek needs sealed lips, cheeks are simply not read while the mouth is open.</span>
     <span class="t-jp is-block">はじめは、首をかしげるだけで片方の頬がふくらんだことになっていた。顔の点の座標は、カメラ映像の幅と高さでそれぞれ別に正規化されている。そのため、首の傾きが回転ではなく「ゆがみ」として現れていた。4:3 のカメラでは、3 度傾けるだけで片頬の値がノイズの 6 倍に達した。そこで、画面の上で測るのをやめた。エンジンは目尻・鼻の下・額から顔そのものに座標を張り、頬の 4 点がその座標で前と外へどれだけ出たかを見る。しきい値は、遊ぶ人自身の真顔のゆれから決める。頬を空気でふくらませるには唇を閉じるしかないので、口が開いているあいだは頬を読まない。</span>
   </p>
+  <figure class="beat-media" style="--beat-cols: 4; --beat-cols-sm: 2;">
+    <img src="/assets/kao-game/daruma-cheekLeft.jpg" alt="KAO DARUMA prompt: a daruma face with its left cheek puffed, ringed in green, above the words 左ほっぺをふくらませて (puff your left cheek)" loading="lazy" width="390" height="844">
+    <img src="/assets/kao-game/daruma-cheekRight.jpg" alt="KAO DARUMA prompt: a daruma face with its right cheek puffed, ringed in blue, above the words 右ほっぺをふくらませて (puff your right cheek)" loading="lazy" width="390" height="844">
+    <img src="/assets/kao-game/daruma-tongue.jpg" alt="KAO DARUMA prompt: a daruma face sticking out its tongue, ringed in pink, above the words 舌を出して (stick out your tongue)" loading="lazy" width="390" height="844">
+    <img src="/assets/kao-game/daruma-pucker.jpg" alt="KAO DARUMA prompt: a daruma face with pursed lips, ringed in yellow, above the words 口を「ウー」にして (make an oo)" loading="lazy" width="390" height="844">
+    <figcaption class="beat-caption">
+      <span class="t-en">The four moves KAO DARUMA asks for: left cheek, right cheek, tongue and “oo”. Left and right are the player’s own, as in a mirror.</span>
+      <span class="t-jp">KAO DARUMA が求める 4 つの動き。左ほっぺ・右ほっぺ・ベロ・ウー。左右は鏡と同じく、遊ぶ人自身の左右。</span>
+    </figcaption>
+  </figure>
 </section>
 <section class="beat">
   <h2 class="beat-title">
@@ -38,4 +57,11 @@
     <span class="t-en">Detection that passes in a unit test can still fail on a face, so there is a reaction test page that runs each game's own detection code. You pick a move and repeat it as often as you like. Each success chimes and is counted, and every bar shows the current value, the peak you reached and the line you have to cross. Tuning stopped being guesswork: when “oo” reacted but never succeeded, the peak showed it stalling just under the line. The fixes then went into the games unchanged, because the bench and the games share one engine.</span>
     <span class="t-jp is-block">テストで通る判定でも、実際の顔では通らないことがある。そこで、各ゲームの判定コードをそのまま呼ぶ「反応テスト」のページを作った。動きを選んで、何度でも繰り返せる。成功すると音が鳴って数が増え、バーには「いま・最高・線」の 3 つの値が出る。調整は勘ではなくなった。「ウー」が反応するのに成功しないときは、最高値が線のわずかに下で止まっていることが見えた。テスト台とゲームは同じエンジンを使うので、そこで直したものはそのままゲームに届く。</span>
   </p>
+  <figure class="beat-media">
+    <img src="/assets/kao-game/detect-lab.jpg" alt="KAO DETECT LAB: a synthetic face drawn as a cloud of points on the left; on the right the check 舌を出す (stick out your tongue), item 36 of 39, with its cues, a score bar and a button to measure for eight seconds" loading="lazy" width="1280" height="900">
+    <figcaption class="beat-caption">
+      <span class="t-en">DETECT LAB, the earlier bench: one face input at a time, 39 in all, over the landmark points (here the synthetic mesh it shows when no camera is on).</span>
+      <span class="t-jp">前身の DETECT LAB。顔の入力を全 39 項目、一つずつ点の上で確かめる（カメラなしのときの合成メッシュで表示）。</span>
+    </figcaption>
+  </figure>
 </section>

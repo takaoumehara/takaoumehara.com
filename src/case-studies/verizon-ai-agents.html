@@ -1,6 +1,6 @@
 <!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/verizon-ai-workflow.json, "detail").
      Source for every claim and image below: Takao's "AI Powered Workflow Training Workshop" deck (the published Google Slides deck; 57-page PDF export restored from git e1c14c9^:assets/verizon-ai-agents/Verizon_Work_Transformation.pdf; slide dump in docs/verizon-work-transformation-slides.md).
-     Slides used: 4–5 (interviews, heat map), 6–7 (four frictions → four agents; text only), 8–9 (past and new workflow), 12 (Master Brain inputs), 22 (Sally's knowledge), 35 (Justin's 4-layer scan), 47–49 (WDS), 1 and 31 (session dates).
+     Slides used (PDF page numbers): 7 (frictions → agents), 13 (multiple Master Brains), 23 (Sally in action), 37 (how Justin works), 49 (how WDS works) — rendered from the PDF into deck-*.jpg on 2026-09-28; and, as before, 4–5 (interviews, heat map), 6–7 (four frictions → four agents), 8–9 (past and new workflow), 12 (Master Brain inputs), 22 (Sally's knowledge), 35 (Justin's 4-layer scan), 47–49 (WDS), 1 and 31 (session dates).
      Slides naming client projects, brands or dollar figures (15, 27–29, 39, 53–54) are deliberately not used. The deck states no measured time, adoption or quality KPI, so none is claimed here.
      The full hand-built page this replaced is preserved in src/case-studies/_legacy/verizon-ai-agents.html. -->
 <section class="beat">
@@ -30,13 +30,34 @@
     <span class="t-jp is-block">地図は四つの失敗の型にまとまり、型ごとに答えをひとつだけ置いた。人に閉じた知識には Master Brain。NotebookLM の上に、プロジェクト文書、録画した会議の文字起こし、デザイン経営からの方向、社外の市場情報を集めた。遅い発見には Justin Case。口ぐせは「コードが書かれる前に、ロジックを壊す」。データ・システム・ユーザーの状態・時間の四層で流れを調べ、抜けを表にして返す。根拠のない判断には Sally。ペルソナと画面と目的を受け取り、人の心理に照らして確かめる。拠りどころは Fogg の行動モデル、ナッジ、認知負荷、Nielsen のヒューリスティック、ISO 9241-210。潰された戦略の時間には WDS。BMAD の方法の上に組んだ 5 体で、北欧神話の神の名を持つ。進行・分析・設計・構成・ビジュアルと、依頼を順に受け渡す。</span>
   </p>
   <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/verizon-ai-agents/deck-frictions-to-agents.jpg" alt="Slide titled AI Solutions to the Designers’ Frictions: Tribal Knowledge Trap to Master Brain, Late-Phase Discovery and rework to the Edge Case Detector, Designing in the Dark to the Principal CX Strategist, Strategic Design Compression to the WDS agents" loading="lazy" width="1920" height="1080">
+    <img src="/assets/verizon-ai-agents/deck-multiple-master-brains.jpg" alt="Slide titled Utilizing Multiple Master Brains: a Brand Master Brain and a Research Master Brain both feeding a Project Master Brain" loading="lazy" width="1920" height="1080">
     <img src="/assets/verizon-ai-agents/deck-master-brain-inputs.jpg" alt="Slide showing the NotebookLM Project Master Brain at the centre, fed by project documentation, organizational knowledge, strategic direction and customer and market intelligence" loading="lazy" width="1920" height="1080">
     <img src="/assets/verizon-ai-agents/deck-justin-deep-scan.jpg" alt="Slide titled The 4-Layer Deep Scan Protocol: data, system, user state and temporal layers, each with example edge cases" loading="lazy" width="1920" height="1080">
     <img src="/assets/verizon-ai-agents/deck-sally-knowledge.jpg" alt="Slide titled What knowledge Sally has: behavioral science, cognitive logic, strategic methods and visual and ergonomic design, with the models each draws on" loading="lazy" width="1920" height="1080">
     <img src="/assets/verizon-ai-agents/deck-wds-team.jpg" alt="Slide titled Meet WDS Team: Mimir the orchestrator, Saga the analyst, Freya the designer, Idunn the architect and PM, and Eira the visual designer" loading="lazy" width="1920" height="1080">
     <figcaption class="beat-caption">
-      <span class="t-en">One slide per answer: what feeds the Master Brain, Justin’s four-layer scan, the models Sally reasons from, and the WDS team. From the workshop deck.</span>
-      <span class="t-jp">答えごとに 1 枚。Master Brain に入れるもの、Justin の四層の検査、Sally が拠りどころにする理論、WDS の 5 体。いずれも勉強会の資料から。</span>
+      <span class="t-en">Four frictions, four answers. Reusable brand and research brains compose into each project’s Master Brain; then what feeds it, Justin’s four-layer scan, the models Sally reasons from, and the WDS team. From the workshop deck.</span>
+      <span class="t-jp">四つのつまずきに、四つの答え。ブランドと調査の Master Brain は使い回せて、プロジェクトごとの Master Brain に組み込む。続けて、そこに入れるもの、Justin の四層の検査、Sally が拠りどころにする理論、WDS の 5 体。いずれも勉強会の資料から。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">A few named inputs in, one kind of output out</span>
+    <span class="t-jp is-block">入れるものは決まっていて、出てくるものは一種類</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">In the workshop every agent was taught the same way: what you hand it, and what it hands back. Sally takes UI screens, a persona and a user goal, and returns a detail report, an executive summary or a report in slides. Justin takes the Project Master Brain or the business requirements, the initiative alignment brief or CX playbook, and existing UI screens if there are any; type #audit and he returns the logic-gap matrix as a spreadsheet. The WDS team takes the Master Brain, the initiative alignment brief and optional screens, and returns a CX/UX strategy, multiple scenarios and detailed prototyping prompts for Canvas and Make.</span>
+    <span class="t-jp is-block">勉強会では、どのエージェントも同じ形で教えた。何を渡し、何が返ってくるか。Sally には UI の画面、ペルソナ、ユーザーの目的を渡す。返ってくるのは詳しい報告、要約、スライドの報告のどれか。Justin には Project Master Brain か業務要件、初期の合意文書か CX プレイブック、あれば今の UI の画面を渡す。#audit と打つと、ロジックの抜けを表にしたスプレッドシートが返る。WDS には Master Brain、初期の合意文書、必要なら画面を渡す。返ってくるのは CX・UX の戦略、複数の筋書き、Canvas と Make 用の詳しい試作の指示。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 3; --beat-cols-sm: 1;">
+    <img src="/assets/verizon-ai-agents/deck-sally-in-action.jpg" alt="Slide titled Sally in Action: UI screens, persona and user goal flow into Sally, who produces a detail report, an executive summary and a report in slides" loading="lazy" width="1920" height="1080">
+    <img src="/assets/verizon-ai-agents/deck-justin-how-it-works.jpg" alt="Slide titled How Justin works: Project Master Brain or business requirements, initiative alignment brief or CX playbook, and optional existing UI screens flow into Justin, who produces the logic gap matrix in a spreadsheet when you type #audit" loading="lazy" width="1920" height="1080">
+    <img src="/assets/verizon-ai-agents/deck-wds-how-it-works.jpg" alt="Slide titled How WDS works: Project Master Brain, initiative alignment brief and optional existing UI screens flow into the WDS team, which produces a strategy for CX/UX, multiple scenarios and detail prototyping prompts for Canvas and Make" loading="lazy" width="1920" height="1080">
+    <figcaption class="beat-caption">
+      <span class="t-en">Sally, Justin and the WDS team, each as the workshop explained it: inputs on the left, outputs on the right.</span>
+      <span class="t-jp">勉強会での説明のとおりに、Sally、Justin、WDS。左が渡すもの、右が返ってくるもの。</span>
     </figcaption>
   </figure>
 </section>

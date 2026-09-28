@@ -10,10 +10,11 @@
     <span class="t-jp is-block">横から出るパネルが、スマホでは下から出るシートに変わる。回線を足すたびに金額が変わる。割引は、開いたときだけ見える。こうした動きは、止まった画面では判断できない。まず Figma で 1 回線と 2 回線の購入の流れを地図にし、案はコードで書いた。列を固定したプラン比較表、React で組んだ段階式の設定画面、複数回線の金額の見せ方を変えたカートのパネル。どれも関係部署とエンジニアに直接渡し、動く仕様書として使ってもらった。</span>
   </p>
   <figure class="beat-media">
+    <img src="/assets/verizon-totalwireless/Figma/ex-plan-first-1line.jpg" alt="Figma flow map of a new customer buying one line on the plan-first happy path: product listing, plan selection, product listing, product detail, cart, checkout, account creation and order confirmation, with the screens colour-coded as existing, new or updated" loading="lazy" width="2400" height="1138">
     <img src="/assets/verizon-totalwireless/Figma/ex-plan-first-2lines.jpg" alt="Figma flow map of a new customer buying two lines: plan selection, product listing, product detail and cart for each line, then checkout, account creation and order confirmation" loading="lazy" width="2400" height="1138">
     <figcaption class="beat-caption">
-      <span class="t-en">The two-line purchase flow, screen by screen. Every added line repeats plan, phone and cart — which is where the price stopped making sense.</span>
-      <span class="t-jp">2 回線を買う流れを、画面ごとに並べたもの。回線を足すたびにプラン・端末・カートが繰り返され、そこで金額が分からなくなっていた。</span>
+      <span class="t-en">The one-line and two-line purchase flows, screen by screen. Every added line repeats plan, phone and cart — which is where the price stopped making sense.</span>
+      <span class="t-jp">1 回線と 2 回線を買う流れを、画面ごとに並べたもの。回線を足すたびにプラン・端末・カートが繰り返され、そこで金額が分からなくなっていた。</span>
     </figcaption>
   </figure>
   <a class="beat-link" href="/assets/verizon-totalwireless/Prototype/BottomPanel02.html">
@@ -31,11 +32,33 @@
     <span class="t-jp is-block">うまくいった試作では、回線ごとに小さなカードを置いた。プラン、端末、月額がひと目で分かる。その上に「割引と今日の支払額」のバーを出したままにする。金額は読み解く一つの数字ではなく、1 行ずつ確かめられる一覧になった。回線ごとのカート、内訳、割引のまとめ、端末を選ぶ手順は、デスクトップとモバイルの購入の流れに採用された。</span>
   </p>
   <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop3.png" alt="Choose your phone after picking a plan: bring your own phone, two special-offer phones, or shop all new phones, with the monthly plan price kept at the top" loading="lazy" width="1600" height="1014">
+    <img src="/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop5.png" alt="Phone detail page: pay-in-full offer, then the plans that qualify for it as cards with data speed, hotspot and international compared side by side, and an Update Cart button" loading="lazy" width="1600" height="1014">
     <img src="/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop6.png" alt="Cart with each line shown as its own box: device, plan and monthly cost, with the subtotal and AutoPay summary" loading="lazy" width="1600" height="1014">
     <img src="/assets/verizon-totalwireless/final-web/desktop/TW_shoppingflow_desktop8.png" alt="Checkout with account, number, shipping and payment steps and the running order summary" loading="lazy" width="1600" height="1014">
     <figcaption class="beat-caption">
-      <span class="t-en">Cart and checkout in the shipped flow. Screens re-created for the portfolio under confidentiality.</span>
-      <span class="t-jp">採用後のカートと決済。画面は守秘のため、ポートフォリオ用に作り直したもの。</span>
+      <span class="t-en">Phone, plan, cart and checkout in the shipped flow. Screens re-created for the portfolio under confidentiality.</span>
+      <span class="t-jp">採用後の、端末、プラン、カート、決済。画面は守秘のため、ポートフォリオ用に作り直したもの。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">The same boxes, on a phone</span>
+    <span class="t-jp is-block">同じ箱を、スマホでも</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The responsive behaviour was specified in the prototypes rather than left to interpretation — side drawers that become bottom sheets — and the flow shipped on mobile as well as desktop: a line counter right above the plan, and the same per-line box in the cart.</span>
+    <span class="t-jp is-block">画面幅ごとの動きは、試作の中で決めておき、解釈に任せなかった。横から出るパネルは、下から出るシートに変わる。この流れは、デスクトップと同じくモバイルでも採用された。回線の数はプランのすぐ上で増減でき、カートにはデスクトップと同じ回線ごとの箱が並ぶ。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 4; --beat-cols-sm: 2;">
+    <img src="/assets/verizon-totalwireless/final-web/mobile/TW_shoppingflow_mobile2.png" alt="Mobile plan selection: a Number of lines stepper above a swipeable plan card with price, data speed and hotspot" loading="lazy" width="1179" height="2556">
+    <img src="/assets/verizon-totalwireless/final-web/mobile/TW_shoppingflow_mobile3.png" alt="Mobile phone choice: the plan price at the top, then bring your own phone or one of the special-offer phones" loading="lazy" width="1179" height="2556">
+    <img src="/assets/verizon-totalwireless/final-web/mobile/TW_shoppingflow_mobile5.png" alt="Mobile phone detail: pay-in-full offer and the qualifying plans as stacked cards" loading="lazy" width="1179" height="2556">
+    <img src="/assets/verizon-totalwireless/final-web/mobile/TW_shoppingflow_mobile8.png" alt="Mobile cart: Line 1 as one box holding the phone, device protection and plan, with the subtotal, AutoPay and Checkout fixed at the bottom" loading="lazy" width="1179" height="2556">
+    <figcaption class="beat-caption">
+      <span class="t-en">Plan, phone, offer and cart on mobile. Screens re-created for the portfolio under confidentiality.</span>
+      <span class="t-jp">モバイルのプラン、端末、購入方法、カート。画面は守秘のため、ポートフォリオ用に作り直したもの。</span>
     </figcaption>
   </figure>
 </section>

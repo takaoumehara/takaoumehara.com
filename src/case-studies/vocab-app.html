@@ -1,4 +1,5 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/vocab-app.json. -->
+<!-- Body beats only. Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/vocab-app.json.
+     Every screen is from public/assets/vocab-app/ (all shown on src/case-studies/_legacy/vocab-app.html); alt text re-checked against each image. -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">Two panes make the gap visible</span>
@@ -9,8 +10,14 @@
     <span class="t-jp is-block">左にマスターライブラリ、右に作成中のリストを置いた。どちらも Stream と学年で絞り込める。何があって、何を選んだかを同時に見られるので、複数の表計算ソフトを頭の中で突き合わせる必要がなくなる。</span>
   </p>
   <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_4.png" alt="Create a new word list — dual-pane workspace pairing the master library with the list being built" loading="lazy" width="1600" height="1000">
-    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_24.png" alt="A populated word list — imported words shown with duplicate flags ready for review" loading="lazy" width="1600" height="1000">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_4.png" alt="All Words — the master vocabulary table with definition, context sentence, part of speech, stream and source columns, filters by stream and letter, and 939 pages" loading="lazy" width="1728" height="1117">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_5.png" alt="Create a new word list — the master library on the left and an empty, untitled list on the right, each with its own search and stream filter" loading="lazy" width="1728" height="1117">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_20.png" alt="Five words selected in the master library, ready to add to custom Wordlist 04 with the Add Selected Words button" loading="lazy" width="1728" height="1117">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_24.png" alt="A populated word list, with a green D flag beside every word that also appears in the master library" loading="lazy" width="1728" height="1117">
+    <figcaption class="beat-caption">
+      <span class="t-en">The master library, a new list, picking words from the library, and the finished list with duplicates flagged.</span>
+      <span class="t-jp">マスターライブラリ、新しいリスト、ライブラリからの単語の選択、重複に印が付いた完成したリスト。</span>
+    </figcaption>
   </figure>
 </section>
 <section class="beat">
@@ -23,8 +30,29 @@
     <span class="t-jp is-block">CSV の一括取り込みでは、重複や不備のある行をその場で表示する。同じ単語がすでに別の定義で存在する場合、両方を並べて見せる。データが確定する前に、担当者がその場で判断できる。</span>
   </p>
   <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_9.png" alt="Inline validation flags a row with missing part-of-speech data and surfaces duplicate words before import completes" loading="lazy" width="1600" height="1000">
-    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_8.png" alt="Import confirmation step before words are added to the list" loading="lazy" width="1600" height="1000">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_6.png" alt="Upload CSV opens the file picker on a folder of custom word list spreadsheets" loading="lazy" width="1728" height="1117">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_7.png" alt="Importing to Vocab word list — a progress dialog for custom Wordlist 04, with Next disabled until it finishes" loading="lazy" width="1728" height="1117">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_8.png" alt="Import dialog confirming the file imported successfully, with Cancel and Next" loading="lazy" width="1728" height="1117">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_9.png" alt="Review step: an Incorrect Format note for a row missing its part of speech, and Duplicates Found shown as Master Word List and imported cards side by side" loading="lazy" width="1728" height="1117">
+    <figcaption class="beat-caption">
+      <span class="t-en">Choose a file, import, confirm, then review: a malformed row and duplicates, master entry beside the incoming one.</span>
+      <span class="t-jp">ファイルを選び、取り込み、確認してから見直す。不備のある行と重複を、マスター側と取り込み側で並べて見せる。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Nothing is removed without a way back</span>
+    <span class="t-jp is-block">消すときは、必ず戻せる</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Every destructive action, like removing a word from a list, gets a confirmation step and an undo path. Adding words gets the same undo.</span>
+    <span class="t-jp is-block">リストから単語を外すような、データを消す操作には、確認の手順と元に戻す手段を付けた。単語を加えたときも、同じように元に戻せる。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 3; --beat-cols-sm: 1;">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_13.png" alt="Delete confirmation asking whether to remove the word absurd from custom Wordlist 04, with the word's card shown" loading="lazy" width="1728" height="1117">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_14.png" alt="Orange banner: You just removed absurd from your custom word list, with an Undo button" loading="lazy" width="1728" height="1117">
+    <img src="/assets/vocab-app/ELA_Vocab_Sketch_TU06_New_MacBook_Pro_16_-_22.png" alt="Blue banner: You just added 6 words from the Master Word List, with an Undo button, and the new words highlighted in the list" loading="lazy" width="1728" height="1117">
   </figure>
 </section>
 <section class="beat">

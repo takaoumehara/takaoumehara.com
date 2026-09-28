@@ -1,15 +1,22 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/web3-wallet.json. -->
+<!-- Body beats only. Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/web3-wallet.json.
+     All images are in /assets/web3-wallet/ and were shown on src/case-studies/_legacy/web3-wallet.html. -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">Mapping who needed to trust whom</span>
     <span class="t-jp is-block">誰が誰を信頼する必要があるかを、先に描く</span>
   </h2>
   <p class="beat-text">
-    <span class="t-en">Before any screen, a stakeholder map traced how approval tokens flow from Admin to Managers, who mint NFT tickets for customers, verified by venue staff at the door — the sequence that later became the boundary between the three interfaces.</span>
-    <span class="t-jp is-block">画面を作る前に、承認トークンが管理者から運営者へ渡り、運営者が NFT チケットを発行し、会場スタッフが入場時に確認する、という流れをステークホルダーマップで描いた。この流れが、後の 3 画面の境界線になった。</span>
+    <span class="t-en">Before any screen, a stakeholder map traced how approval tokens flow from Admin to Managers, who mint NFT tickets for customers, verified by venue staff at the door — the sequence that later became the boundary between the three interfaces. A multi-user journey and a service blueprint then placed every actor, touchpoint and system across the event lifecycle.</span>
+    <span class="t-jp is-block">画面を作る前に、承認トークンが管理者から運営者へ渡り、運営者が NFT チケットを発行し、会場スタッフが入場時に確認する、という流れをステークホルダーマップで描いた。この流れが、後の 3 画面の境界線になった。続けて、利用者ごとの行動の流れと、サービス全体の設計図（service blueprint）で、イベントの準備から終了後までの関係者・接点・システムをすべて並べた。</span>
   </p>
-  <figure class="beat-media">
-    <img src="/assets/web3-wallet/Web3_Stakeholders.png" alt="Stakeholder map — Admin sends approval tokens to Managers, who mint NFT tickets for Customers, verified by Event Venue Staff" loading="lazy" width="1600" height="900">
+  <figure class="beat-media" style="--beat-cols: 2; --beat-cols-sm: 1;">
+    <img src="/assets/web3-wallet/Web3_Stakeholders.png" alt="Stakeholder map — Admin sends approval tokens to Managers, who mint NFT tickets for Customers, verified by Event Venue Staff" loading="lazy" width="1248" height="1457">
+    <img src="/assets/web3-wallet/Web3_Customer_Journey.png" alt="Customer journey map — Event Prep, Ticket Sales, Event Day and Post Event, in swimlanes for Admin, Managers, Customers and Event Venue Staff" loading="lazy" width="2500" height="1690">
+    <img src="/assets/web3-wallet/Web3_Service_Blueprint.png" alt="Service blueprint — Event Management Platform with Web3 Custodial Wallet: user actions, front-stage and backstage actions, digital touchpoints, internal interaction and support processes" loading="lazy" width="2500" height="1576" style="grid-column: 1 / -1;">
+    <figcaption class="beat-caption">
+      <span class="t-en">Stakeholder map, multi-user journey and service blueprint.</span>
+      <span class="t-jp">ステークホルダーマップ、利用者ごとの行動の流れ、サービス全体の設計図。</span>
+    </figcaption>
   </figure>
 </section>
 <section class="beat">
@@ -21,10 +28,18 @@
     <span class="t-en">End users get a mobile wallet where an NFT ticket looks like any event pass with a QR code — no crypto knowledge required. Admins and managers get purpose-built dashboards for minting tokens, authorizing staff and tracking financials, each showing only the concepts relevant to that job.</span>
     <span class="t-jp is-block">利用者向けにはモバイルウォレットを用意し、NFT チケットは QR コード付きの普通のイベントパスに見える。暗号資産の知識は要らない。管理者と運営者には、トークン発行・スタッフ承認・収支管理それぞれに特化したダッシュボードを用意し、各自の仕事に関係する概念だけを見せる。</span>
   </p>
-  <figure class="beat-media" style="--beat-cols: 3;">
-    <img src="/assets/web3-wallet/EventStack_Mobile_Wallet.png" alt="End user mobile wallet, NFT ticket with QR code" loading="lazy" width="900" height="1200">
-    <img src="/assets/web3-wallet/EventStack_Admin_Events_Overview.png" alt="Admin — Events Overview dashboard" loading="lazy" width="900" height="1200">
-    <img src="/assets/web3-wallet/EventStack_Manager_Dashboard.png" alt="Manager — Event Dashboard with sales tracking" loading="lazy" width="900" height="1200">
+  <figure class="beat-media" style="--beat-cols: 3; --beat-cols-sm: 1;">
+    <img src="/assets/web3-wallet/EventStack_Mobile_Wallet.png" alt="End user mobile wallet on three phones: browsing events, an event detail, and an NFT ticket with a QR code marked Not Redeemed" loading="lazy" width="1721" height="1081" style="grid-column: 1 / -1;">
+    <img src="/assets/web3-wallet/EventStack_Admin_Events_Overview.png" alt="Admin — Events Overview, browsing all available events by the company" loading="lazy" width="2500" height="1778">
+    <img src="/assets/web3-wallet/EventStack_Admin_Mint_Token.png" alt="Admin — minting a new Authorized Approval Token for a manager" loading="lazy" width="2500" height="1778">
+    <img src="/assets/web3-wallet/EventStack_Admin_Tokens.png" alt="Admin — Tokens, managing every Authorized Approval Token across departments" loading="lazy" width="2500" height="1778">
+    <img src="/assets/web3-wallet/EventStack_Manager_Current_Events.png" alt="Manager — Current Events, the events under their responsibility" loading="lazy" width="2500" height="1778">
+    <img src="/assets/web3-wallet/EventStack_Manager_Dashboard.png" alt="Manager — Event Dashboard with sales comparison and sales-goal tracking" loading="lazy" width="2500" height="1778">
+    <img src="/assets/web3-wallet/EventStack_Manager_NFT_Tickets.png" alt="Manager — NFT Tickets, creating and managing specialized ticket tiers" loading="lazy" width="2500" height="1778">
+    <figcaption class="beat-caption">
+      <span class="t-en">End user (top), Admin (middle row), Manager (bottom row).</span>
+      <span class="t-jp">利用者（上）、管理者（中段）、運営者（下段）。</span>
+    </figcaption>
   </figure>
 </section>
 <section class="beat">

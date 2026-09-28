@@ -1,7 +1,7 @@
 <!-- Body beats only (0–3). Teaser, name, one-liner, Play, Challenge | Solution and Role / Year come from the evidence record (src/data/projects/amazon-firetv.json, "detail").
      Sources: the hand-built case study this replaced (preserved in src/case-studies/_legacy/amazon-firetv.html — input modes, voice phrases, snap-pair details, state mirroring, zero build tooling) and the prototype itself, which already ships at public/projects/amazon-firetv/ (demo.html, index.html, remote.html).
      The teaser is the working simulator itself (public/projects/amazon-firetv/demo.html, embedded via detail.teaser.embed), so the
-     simulator-tv-and-phone.jpg capture that illustrated this beat was dropped as redundant (file kept on disk); orders.jpg is the prototype's own capture, restored from git e1c14c9^:assets/amazon-firetv/orders.jpg. -->
+     simulator-tv-and-phone.jpg capture that illustrated this beat was dropped as redundant (file kept on disk); orders.jpg is the prototype's own capture, restored from git e1c14c9^:assets/amazon-firetv/orders.jpg. hero.jpg (the record's assets.hero, the TV home with its pairing card) joins it in beat 2. -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">The TV is the stage, the phone is the input</span>
@@ -25,11 +25,12 @@
     <span class="t-en">Pairing runs on snap-pair, my open-source pattern: a QR code or a 6-character room code as the rendezvous, room membership checked on the server, a presence heartbeat, and automatic cleanup when someone leaves. Once paired, the cart count, the current screen and the search context are mirrored to the phone in real time, so the remote always knows what the TV is showing. The whole prototype is plain HTML, CSS and JavaScript with Firebase and the Web Speech API — no bundler, no framework — so it runs from a folder or any static host.</span>
     <span class="t-jp is-block">接続には、自作して公開している snap-pair の型を使った。QR か 6 文字のルームコードを待ち合わせの目印にし、部屋への参加はサーバー側で確かめる。つながっているかを定期的に確認し、抜けた人は自動で片づける。つながった後は、カートの点数、いま出ている画面、検索の文脈がリアルタイムにスマホへ映る。だからリモコンは、テレビが何を見せているかを常に知っている。試作全体は素の HTML・CSS・JavaScript に Firebase と Web Speech API だけ。バンドラーもフレームワークもなく、フォルダーひとつ、どんな静的ホストでも動く。</span>
   </p>
-  <figure class="beat-media">
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/amazon-firetv/hero.jpg" alt="The TV home screen: a deal of the day, a Buy again rail, and a Use your phone as remote card with a QR code and a six-character room code; key hints for navigate, select, back, Alexa voice and phone remote run along the bottom" loading="lazy" width="1500" height="904">
     <img src="/assets/amazon-firetv/orders.jpg" alt="Your Orders and Buy Again screen on the TV, with each past order listed and a Buy it again button focused" loading="lazy" width="1500" height="904">
     <figcaption class="beat-caption">
-      <span class="t-en">Buy Again, laid out for the couch. A self-initiated concept prototype, not affiliated with Amazon; product data, orders and voice replies are simulated.</span>
-      <span class="t-jp">ソファから使う「もう一度買う」。自主制作のコンセプト試作で、Amazon とは関係がない。商品データ、注文、音声の応答は模擬。</span>
+      <span class="t-en">The home screen with its pairing card — scan the QR or type the room code — and Buy Again, laid out for the couch.A self-initiated concept prototype, not affiliated with Amazon; product data, orders and voice replies are simulated.</span>
+      <span class="t-jp">接続の案内が出たホーム画面（QR を読むか、ルームコードを打つ）と、ソファから使う「もう一度買う」。自主制作のコンセプト試作で、Amazon とは関係がない。商品データ、注文、音声の応答は模擬。</span>
     </figcaption>
   </figure>
 </section>

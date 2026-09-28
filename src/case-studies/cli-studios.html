@@ -1,4 +1,48 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/cli-studios.json. -->
+<!-- Body beats only (0–5). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/cli-studios.json.
+     Sources: the hand-built case study this replaced (preserved in src/case-studies/_legacy/cli-studios.html — the before/after screens, the heuristic evaluation that surfaced the five problems, the 4-section architecture, the 13-page design system, the rejected paths). heuristics-*.png/jpg are the CLI heuristic-evaluation boards restored from git e1c14c9^ (assets/cli-studios/Heuristics_Evaluation_Heuristics*.png), resized. -->
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Every core screen, before and after</span>
+    <span class="t-jp is-block">主要画面を、全て前後で並べる</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Login, Home, Discover, Library, My Pick — the same journey, restructured: full-page views instead of modals, distinct card designs per content type, and a back button that always means something.</span>
+    <span class="t-jp is-block">ログイン、Home、Discover、Library、My Pick。同じ導線を、モーダルではなく全画面表示に、コンテンツの種類ごとに異なるカードデザインに組み直した。戻るボタンは、常に意味のある場所に戻る。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/cli-studios/Before_and_After__Home.png" alt="Before and after comparison of the Home screen, with notes on each new section" loading="lazy" width="2500" height="3707">
+    <img src="/assets/cli-studios/Before_and_After_Discover.png" alt="Before and after comparison of the new Discover screen" loading="lazy" width="2500" height="3738">
+    <img src="/assets/cli-studios/Before_and_After_Library_(1).png" alt="Before and after comparison of the Library screen with Learning Paths" loading="lazy" width="2500" height="3738">
+    <img src="/assets/cli-studios/Before_and_After__My_Pick.png" alt="Before and after comparison of My Pick, including the flow for creating a playlist" loading="lazy" width="2500" height="3707">
+    <img src="/assets/cli-studios/Before_and_After_login.png" alt="Before and after comparison of the login screen" loading="lazy" width="2500" height="1372">
+    <figcaption class="beat-caption">
+      <span class="t-en">Home, Discover, Library, My Pick and login, each shown before (left) and after (right).</span>
+      <span class="t-jp">Home、Discover、Library、My Pick、ログイン。それぞれ左が改修前、右が改修後。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">The diagnosis, on paper</span>
+    <span class="t-jp is-block">診断を、紙の上に残す</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">A heuristic evaluation against Nielsen’s 10 principles surfaced the five problems: poor information architecture, content types that looked the same, confusing navigation, poor visual clarity and modal overload. Each screen of the old app was marked up issue by issue, with a severity and a suggested fix.</span>
+    <span class="t-jp is-block">Nielsen の 10 原則にもとづくヒューリスティック評価で、5 つの問題が見えた。情報構造の弱さ、見分けのつかないコンテンツの種類、迷うナビゲーション、見た目の分かりにくさ、そしてモーダルの多用。旧アプリの画面ごとに問題を書き込み、重要度と改善案を添えた。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/cli-studios/heuristics-home-navigation.png" alt="Heuristic evaluation of the old Home and Explore screens: notes on inconsistent navigation, small type, a misleading image card and unclear UX writing" loading="lazy" width="2400" height="1428">
+    <img src="/assets/cli-studios/heuristics-card-types.png" alt="Heuristic evaluation of the old card types, marking inconsistent labels and poor readability" loading="lazy" width="2400" height="1428">
+    <img src="/assets/cli-studios/heuristics-modals.png" alt="Heuristic evaluation of stacked sheets and sections, with a suggestion to convert modals to full pages" loading="lazy" width="2400" height="1428">
+    <img src="/assets/cli-studios/heuristics-courses.png" alt="Heuristic evaluation of the old Courses flow" loading="lazy" width="2400" height="1428">
+    <img src="/assets/cli-studios/heuristics-collections.png" alt="Heuristic evaluation of Collections, suggesting they be renamed Playlists and pointing out a long, overloaded list" loading="lazy" width="2400" height="1428">
+    <img src="/assets/cli-studios/heuristics-collections-detail.jpg" alt="Heuristic evaluation of the Collections detail flow" loading="lazy" width="2400" height="1428">
+    <figcaption class="beat-caption">
+      <span class="t-en">The heuristic evaluation, screen by screen.</span>
+      <span class="t-jp">画面ごとのヒューリスティック評価。</span>
+    </figcaption>
+  </figure>
+</section>
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">The wireframes that replaced the modal stack</span>
@@ -9,8 +53,8 @@
     <span class="t-jp is-block">旧アプリには、辿る価値のある最上位の構造がなかった。コンテンツを開くたび、また別のモーダルが上に重なっていく。作り直した構造では、Home・Discover・Library（順序立てた Learning Path）・My Pick（選び抜いた Playlist）という、ユーザーがすでに持っている感覚に合わせた 4 つの対等なセクションにした。</span>
   </p>
   <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/cli-studios/Sketch_(1).png" alt="Wireframe sketch of the global navigation: Home, Discover, Library, My Pick" loading="lazy" width="1600" height="1200">
-    <img src="/assets/cli-studios/Sketch_(2).png" alt="Wireframe sketch of content types and component design: Paths, Classes, Playlists" loading="lazy" width="1600" height="1200">
+    <img src="/assets/cli-studios/Sketch_(1).png" alt="Wireframe sketch of the global navigation: Home, Discover, Library, My Pick" loading="lazy" width="2500" height="1487">
+    <img src="/assets/cli-studios/Sketch_(2).png" alt="Wireframe sketch of content types and component design: Paths, Classes, Playlists" loading="lazy" width="2500" height="1487">
     <figcaption class="beat-caption">
       <span class="t-en">Early wireframes for the four-section architecture and its component system.</span>
       <span class="t-jp">4 セクション構造と部品システムの、初期のワイヤーフレーム。</span>
@@ -33,15 +77,30 @@
 </section>
 <section class="beat">
   <h2 class="beat-title">
-    <span class="t-en">Every core screen, before and after</span>
-    <span class="t-jp is-block">主要画面を、全て前後で並べる</span>
+    <span class="t-en">13 pages that outlive the redesign</span>
+    <span class="t-jp is-block">改修のあとにも残る、13 ページ</span>
   </h2>
   <p class="beat-text">
-    <span class="t-en">Login, Home, Discover, Library, My Pick — the same journey, restructured: full-page views instead of modals, distinct card designs per content type, and a back button that always means something.</span>
-    <span class="t-jp is-block">ログイン、Home、Discover、Library、My Pick。同じ導線を、モーダルではなく全画面表示に、コンテンツの種類ごとに異なるカードデザインに組み直した。戻るボタンは、常に意味のある場所に戻る。</span>
+    <span class="t-en">The delivered design system documents 125+ components, interaction patterns and accessibility specs, so future builds reuse instead of reinvent.</span>
+    <span class="t-jp is-block">納品したデザインシステムには、125 を超える部品、操作パターン、アクセシビリティの仕様をまとめた。次に何かをつくるとき、一から考え直さずに使い回せるように。</span>
   </p>
-  <figure class="beat-media">
-    <img src="/assets/cli-studios/Before_and_After__Home.png" alt="Before and after comparison of the Home screen" loading="lazy" width="1600" height="900">
+  <figure class="beat-media" style="--beat-cols: 4; --beat-cols-sm: 2;">
+    <img src="/assets/cli-studios/Design_System_Parts-1.png" alt="Design system page: colors" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-11.png" alt="Design system page: typography" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-12.png" alt="Design system page: card components for classes, playlists and learning paths" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-2.png" alt="Design system page: gradient photo overlay" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-6.png" alt="Design system page: background blur" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-9.png" alt="Design system page: photography" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-7.png" alt="Design system page: buttons" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-8.png" alt="Design system page: navigation bars" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-3.png" alt="Design system page: headers" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-4.png" alt="Design system page: labels" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-5.png" alt="Design system page: icons" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts.png" alt="Design system page: grid system" loading="lazy" width="1511" height="1770">
+    <figcaption class="beat-caption">
+      <span class="t-en">Twelve of the thirteen design system pages.</span>
+      <span class="t-jp">デザインシステム全 13 ページのうち 12 ページ。</span>
+    </figcaption>
   </figure>
 </section>
 <section class="beat">
