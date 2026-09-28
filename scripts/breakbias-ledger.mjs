@@ -36,6 +36,7 @@ export function merged() {
       out.originality = j.N + j.W;
       out.viability = j.U + j.C;
       out.judge_note = j.note ?? "";
+      out.reentry = j.reentry ?? null;
       out.effort = j.effort ?? null;
       out.status = "judged";
     }
