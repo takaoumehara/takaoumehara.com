@@ -35,7 +35,8 @@ export const PRESETS = {
     both({ outline: { style: "trace", color: "blue", drawMs: 1000, easing: "standard", lingerMs: 520, fadeOutMs: 520 }, fill: { style: "wipe-up", durationMs: 520, afterOutlineMs: 140, easing: "expo-out" } }),
     { text: { mode: "typewriter", cursor: false, cps: 60, maxLineMs: 1200 }, media: { mode: "wipe", durationMs: 520, easing: "expo-out" } },
   ),
-  "Viewfinder (console)": deep(
+  // Viewfinder: from index-console.html's press-frame edge draw-in.
+  Viewfinder: deep(
     both({ outline: { style: "viewfinder", color: "ink", drawMs: 700, easing: "console", lingerMs: 200 }, fill: { style: "mask-reveal", durationMs: 620, easing: "console", fromXPx: -24, afterOutlineMs: -120 } }),
     { text: { mode: "scramble-typewriter", cursor: false }, media: { mode: "fade", durationMs: 520, easing: "console" } },
   ),
@@ -62,7 +63,9 @@ export const PRESETS = {
     both({ outline: { style: "none" }, fill: { style: "fade", durationMs: 700, easing: "ease-out" } }),
     { text: { mode: "fade", long: "fade", longMs: 700 }, media: { mode: "fade", durationMs: 700, easing: "ease-out", label: { mode: "off" } }, out: { style: "fade", durationMs: 360 } },
   ),
-  "Skeleton (Fire TV)": deep(
+  // Skeleton: grey pulse placeholders, after the Amazon Fire TV prototype's
+  // loading screen (public/projects/amazon-firetv).
+  Skeleton: deep(
     both({ outline: { style: "none" }, fill: { style: "skeleton", durationMs: 1100, easing: "ease-in-out" } }),
     { text: { mode: "scramble", glyphs: "blocks", jpGlyphs: "same", holdMs: 400, resolveCps: 60, cursor: false },
       media: { mode: "fade", durationMs: 500, label: { mode: "always", text: "LOADING", minVisibleMs: 500 } } },
@@ -76,7 +79,8 @@ export const PRESETS = {
     both({ outline: { style: "corners", color: "ink" } }),
     { text: { mode: "scramble-typewriter", glyphs: "katakana", jpGlyphs: "kanji", direction: "center-out", cursor: false } },
   ),
-  "Lens (blur, archive)": deep(
+  // Lens: the retired boot-lens blur intro (commit 1eccef2); the only blur.
+  "Lens (blur)": deep(
     both({ outline: { style: "none" }, fill: { style: "lens", durationMs: 640, easing: "decel" } }),
     { text: { mode: "fade", long: "fade" }, media: { mode: "fade" } },
   ),
