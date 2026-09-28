@@ -1,7 +1,7 @@
 # Motion Library — 過去のモーションを全部まるっと取り込む方法（提案）
 
 > 2026-09-28 · 前提: `docs/motion-archive.md`（A〜H）、`docs/motion-lab-plan.md`
-> 状態: **提案（未実装）**。Takao の判断待ちの点は末尾 §6。
+> 状態: **§1〜§4 は実装済み（2026-09-28、`docs/motion-lab/engine-contract.md` が正）**。下の §5 に現状の表、§6 は解消済み。
 
 ## 0. いまどうなっているか（正直に）
 
@@ -77,18 +77,27 @@
 - 各スタディにはアーカイブの記号（H1、H3b-2 など）と出どころのコミットを表示し、
   「一度作って、捨てて、また拾った」過程がそのままプロジェクトページの材料になるようにする。
 
-## 5. 進め方（小さく刻む）
+## 5. いまあるもの（2026-09-28）
 
-1. **エンジンの型と v2 の JSON**（見た目は変えない。v1 と同じ動きになることをテストで保証）
-2. **スラブ幕 5 種**（H3b）を cover として移植 — 一番まとまっていて、型にそのまま入る
-3. **グラデーション・フィールド**（H1）を cover + reveal として復元、各プロジェクトの `tint` を追加
-4. **スラブ・パズル起動**（H3a）、**呼吸**（H3c）、**音**（H3d）
-5. 残り（ワイプ H2、帯スイープ B5、ディゾルブ B4、方向つき B3、投げ込み B2、レンズ A3）
-6. Takao が Lab で選ぶ → その組み合わせを本番の既定値にする
+| 記号 | スタイル id | 種類 | ファイル |
+|---|---|---|---|
+| A2 | `box-first` | reveal（既存エンジン） | `src/scripts/motion.js` |
+| A1 | `odometer` | boot（既存のレール演出） | `src/scripts/motion.js` |
+| H3b-1〜5 | `slabs.quad-stagger` / `slabs.quad-center` / `slabs.split-sharp` / `slabs.split-round` / `slabs.dynamic` | cover | `src/scripts/styles/slabs.mjs` |
+| H1 | `field` / `field-lift` | cover / reveal | `src/scripts/styles/field.mjs`（色は `src/data/tints.json`） |
+| H2 | `wipe` | cover | `src/scripts/styles/wipe.mjs` |
+| B5 / B4 | `band-sweep` / `dissolve` | cover（dissolve は reveal も） | `src/scripts/styles/band.mjs` |
+| H3a | `slabs-puzzle` | boot | `src/scripts/styles/boot-slabs.mjs` |
+| H3c | `breathing` | idle | `src/scripts/styles/idle.mjs` |
+| H3d | snap / swoosh | `ctx.sound`（既定オフ） | `src/scripts/styles/sound.mjs` |
+| — | `none` / `cut` | cover / reveal | `src/scripts/styles/index.mjs` |
 
-各段階で: 単体テスト、`/lab/stage` の録画、`docs/motion-lab/journal/` に日付つきメモ。
+未着手: レンズ A3（Lab 専用・blur）、方向つき B3、投げ込み B2、サムネ→ヒーロー B1、マスク・リビール D2、テキストのグラデーション C3。
+足すときは `src/scripts/styles/<name>.mjs` に配列を 1 つ足し、`index.mjs` の import に並べるだけ。
 
-## 6. Takao に決めてほしいこと
+道具の側: `/lab/motion`（舞台の切替: 自サイト / スクショ / URL、スマホ枠は既定 ON、採る／捨てる、Copy JSON）、`?lab=1` のパネル（Transition / Boot / Idle / Sound / Interactions の各グループ、Export code、Ask Jev、Suggest 3）。
+
+## 6. 決めてもらったこと（解消済み）
 
 1. **スラブのボード（入口 6 枚の画面）の扱い**: Lab の 1 スタディに留める / creativity is everywhere
    （スタジオ）側のトップとして別に作る / takaoumehara.com のトップ候補として比較する

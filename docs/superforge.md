@@ -191,5 +191,5 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   transform / opacity / clip-path と WAAPI だけ、`ctx.own` で finishAll に従い、reduced motion では動かない。GSAP・Tailwind・CSS keyframes の追加は禁止。
 - **色は `ctx.tokens` から。** 生の hex はプロジェクトの tint（`src/data/tints.json`、旧 landing-b の 12 組）だけ。
 - **AI の生成は鍵を増やさない。** 「こうして欲しい」→ 3 案は規則で生成し、Jev が仕分ける（`/api/admin/jev/suggest`、管理者のみ）。LLM 生成は鍵が用意されたら差し替え。
-- **公開する。** `/lab/stage` と Motion Lab の記録は `visibility: public`、Interactive に掲載、`/lab/motion` がツールの家（デスクトップ＋スマホ枠、既定 ON）。
+- **公開は本人の明示の許可待ち。** `/lab/stage` と記録を `visibility: public` にし Interactive に載せ `/lab/breakbias` を出す作業は、セッションの自動許可（公開面の作成）で止まった。コードは全部 preview で動く。`/lab/motion` がツールの家（デスクトップ＋スマホ枠、既定 ON）。
 - **派遣**: T0 土台 → T1〜T9 並列（書くファイルは互いに素、スタブは T0 が先に置く）→ T10 公開・文書 → V 検証（別コンテキスト）。実装は Opus 5.5、公開・文書・検証は Sonnet 5、分解と統合はセッションのモデル。
