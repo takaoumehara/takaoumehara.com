@@ -11,6 +11,7 @@
 // config: pasting it over src/data/motion.json makes it the site's default.
 
 import * as motion from "./motion.js";
+import { jevRow } from "./motion-lab-jev.js";
 import "../styles/motion-lab.css";
 
 // ── Presets: partial configs merged over the defaults ──────────────────────
@@ -490,6 +491,7 @@ function build() {
       el("div", { class: "mlab-f mlab-f-toggle" },
         el("div", { class: "mlab-lab" }, el("label", { for: "mlab-auto", text: "Replay on every change" })),
         el("div", { class: "mlab-ctl" }, auto)),
+      jevRow({ el, getConfig: motion.getConfig, say }),
       io,
       el("p", { class: "mlab-status", role: "status", "aria-live": "polite" }),
       el("div", { class: "mlab-groups" }, groups)));
