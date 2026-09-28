@@ -442,7 +442,7 @@ function typePlan(chars, T) {
   switch (T.direction) {
     case "rtl": order = sig.slice().reverse(); break;
     case "random": order = sig.slice().sort(() => R() - 0.5); break;
-    case "center-out": { const c = (m - 1) / 2; order = sig.slice().sort((a, b) => Math.abs(sig.indexOf(a) - c) - Math.abs(sig.indexOf(b) - c)); break; }
+    case "center-out": { const c = (m - 1) / 2; order = sig.map((idx, j) => [idx, Math.abs(j - c)]).sort((a, b) => a[1] - b[1]).map(([idx]) => idx); break; }
     default: order = sig;
   }
   order.forEach((idx, r) => { rank[idx] = r; });
@@ -550,7 +550,10 @@ function settleText(only) {
 
 // A unit's text blocks: the nearest non-inline ancestor of each visible text
 // node, classified as typed (headings, labels, short lines) or long.
-function textBlocks(unit, vis, T) {
+// Text blocks inside a unit, each marked as a header (headings and mono or
+// uppercase labels) or body (everything else). How each one plays is decided
+// in planUnit: headers by the Text group, body by the Body group.
+function textBlocks(unit, vis) {
   const disp = new Map();
   const displayOf = (el) => {
     let d = disp.get(el);
@@ -572,18 +575,33 @@ function textBlocks(unit, vis, T) {
     const len = nodes.reduce((s, n) => s + n.data.trim().length, 0);
     const heading = /^H[1-6]$/.test(el.tagName) || el.matches(".beat-title, .side-wordmark");
     const cs = getComputedStyle(el);
-    const label = /mono/i.test(cs.fontFamily) || cs.textTransform === "uppercase";
+    const label = !heading && (/mono/i.test(cs.fontFamily) || cs.textTransform === "uppercase");
     const near = inView(el.getBoundingClientRect(), 160);
-    let kind;
-    if (T.mode === "none") kind = "none";
-    else if (T.mode === "fade") kind = "long";
-    else if (!near) kind = "long";
-    else if (heading) kind = T.headings && len <= T.headingMaxChars ? "type" : "long";
-    else if (label) kind = T.labels && len <= T.shortMaxChars ? "type" : "long";
-    else kind = len <= T.shortMaxChars ? "type" : "long";
-    return { el, nodes: nodes.filter((n) => !ARROW.test(n.data)), kind };
+    return { el, nodes: nodes.filter((n) => !ARROW.test(n.data)), len, heading, label, body: !heading && !label, near };
   });
 }
+const TYPING = new Set(["scramble-typewriter", "scramble", "typewriter"]);
+// Settings every text type (heading, label, body) can override. While a
+// type's `follow` is on it uses the Text group's values: the preset's base.
+export const TEXT_KEYS = ["mode", "glyphs", "customGlyphs", "jpGlyphs", "matchCase", "symbolRate", "cps", "frameMs", "framesPerChar", "settle", "holdMs", "resolveCps", "direction", "untyped", "cursor", "cursorChar", "cursorBlinkMs", "maxLineMs", "lineStaggerMs", "maxStaggered", "randomDelayMs", "clip", "long", "longMs", "longRisePx", "longPixelPx", "longSteps"];
+function textFor(type, modeOverride) {
+  const T = CFG.text, G = CFG[type];
+  const X = { ...T };
+  if (!G.follow) for (const key of TEXT_KEYS) X[key] = G[key];
+  if (modeOverride && modeOverride !== "default") X.mode = modeOverride;
+  return X;
+}
+// Typing modes type the text unless it is off-screen, empty or longer than
+// the type's max; those, and every other mode, animate the whole block.
+function kindOf(b, TT, maxChars) {
+  if (TT.mode === "none") return ["none"];
+  if (!TYPING.has(TT.mode)) return ["long", TT.mode];
+  if (!b.near || !b.nodes.length || b.len > maxChars) return ["long", TT.long];
+  return ["type"];
+}
+const scalePlan = (plan, f) => (f === 1 ? plan : {
+  appear: plan.appear.map((x) => x * f), settle: plan.settle.map((x) => x * f), dur: plan.dur * f, typedEnd: plan.typedEnd * f,
+});
 const MEDIA = "img, video, canvas, iframe, .side-initials";
 function mediaOf(unit, vis, M) {
   return [...unit.querySelectorAll(MEDIA)].filter((m) => {
@@ -641,6 +659,44 @@ function pixelate(m, M, dur, layer, g, done) {
   for (let i = 1; i < steps; i++) later(() => level(i), (dur * i) / steps, g);
   later(() => { canvas.remove(); done(); }, dur, g);
   return true;
+}
+// Paragraphs pixelate through SVG mosaic filters: each block of the text
+// takes the colour of one sample point, then the blocks shrink to nothing.
+// The text stays real text throughout; only its painting is filtered.
+let pixSvg = null;
+function pixelFilter(size) {
+  const id = `mo-tpx-${size}`;
+  if (!pixSvg?.isConnected) {
+    pixSvg = document.createElementNS(SVGNS, "svg");
+    pixSvg.setAttribute("aria-hidden", "true");
+    pixSvg.setAttribute("width", "0");
+    pixSvg.setAttribute("height", "0");
+    pixSvg.style.cssText = "position:absolute;width:0;height:0;overflow:hidden";
+    document.body.append(pixSvg);
+  }
+  if (!pixSvg.querySelector(`#${id}`)) {
+    const c = Math.floor(size / 2);
+    pixSvg.insertAdjacentHTML("beforeend",
+      `<filter id="${id}" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">` +
+      `<feFlood x="${c}" y="${c}" width="1" height="1"/><feComposite width="${size}" height="${size}"/>` +
+      `<feTile result="a"/><feComposite in="SourceGraphic" in2="a" operator="in"/>` +
+      `<feMorphology operator="dilate" radius="${c}"/></filter>`);
+  }
+  return `url(#${id})`;
+}
+function pixelTextFrames(pixelPx, steps) {
+  const n = Math.max(1, Math.round(steps));
+  const px = Math.max(2, Math.round(pixelPx));
+  const sizes = Array.from({ length: n }, (_, i) => Math.max(2, Math.round(n === 1 ? px : px * Math.pow(2 / px, i / (n - 1)))));
+  const e = 0.001;
+  const frames = [{ opacity: 0, filter: pixelFilter(sizes[0]), offset: 0 }];
+  sizes.forEach((size, i) => {
+    const f = pixelFilter(size);
+    frames.push({ opacity: 1, filter: f, offset: i === 0 ? e : i / n });
+    frames.push({ opacity: 1, filter: f, offset: Math.max(i / n + e, (i + 1) / n - e) });
+  });
+  frames.push({ opacity: 1, filter: "none", offset: 1 });
+  return frames;
 }
 function revealMedia(m, M, k, layer, g) {
   const dur = Math.max(1, M.durationMs * k);
@@ -751,17 +807,47 @@ function planUnit(unit, rect, s, surface, box) {
   const vis = new Map();
   const media = mediaOf(unit, vis, M).map((m) => ({ m, at: fillEnd + M.afterFillMs + span(M.randomDelayMs) }));
   let end = Math.max(fillEnd, ...media.map((x) => x.at + M.durationMs));
-  const blocks = textBlocks(unit, vis, T).map((b, i) => {
-    const bt = fillEnd + T.afterFillMs + Math.min(i, T.maxStaggered) * T.lineStaggerMs + span(T.randomDelayMs);
-    let plan = null;
-    if (b.kind === "type" && b.nodes.length) {
-      const segs = b.nodes.map((node) => ({ node, orig: node.data, chars: Array.from(node.data), last: null }));
-      plan = typePlan(segs.flatMap((x) => x.chars), T);
-      end = Math.max(end, bt + plan.dur);
-      return { ...b, at: bt, segs, plan };
+  const segsOf = (b) => b.nodes.map((node) => ({ node, orig: node.data, chars: Array.from(node.data), last: null }));
+  const blocks = [];
+  const make = (b, at, TT, slow, maxChars) => {
+    const [kind, style] = kindOf(b, TT, maxChars);
+    let x = { ...b, at, kind, T: TT }, dur = 0;
+    if (kind === "type") {
+      const segs = segsOf(b);
+      x = { ...x, segs, plan: scalePlan(typePlan(segs.flatMap((c) => c.chars), TT), slow) };
+      dur = x.plan.dur;
+    } else if (kind === "long") {
+      x = { ...x, style, ms: TT.longMs * slow, rise: TT.longRisePx, px: TT.longPixelPx, steps: TT.longSteps };
+      dur = x.ms;
     }
-    end = Math.max(end, bt + (b.kind === "long" ? T.longMs : 0));
-    return { ...b, at: bt, kind: b.kind === "type" ? "long" : b.kind };
+    end = Math.max(end, at + dur);
+    blocks.push(x);
+    return dur;
+  };
+  const raw = textBlocks(unit, vis);
+  // Headers (headings and labels) start after the fill, staggered in order.
+  const t0 = fillEnd + T.afterFillMs;
+  let headStart = Infinity, headEnd = -Infinity;
+  const heads = raw.filter((b) => !b.body);
+  heads.forEach((b, i) => {
+    const type = b.heading ? "heading" : "label";
+    const TT = textFor(type), slow = 1 / Math.max(0.05, CFG[type].speed);
+    const at = t0 + (Math.min(i, TT.maxStaggered) * TT.lineStaggerMs + span(TT.randomDelayMs)) * slow;
+    const dur = make(b, at, TT, slow, CFG[type].maxChars);
+    headStart = Math.min(headStart, at); headEnd = Math.max(headEnd, at + dur);
+  });
+  // Body text: timed against this unit's headers by body.relation.
+  const B = CFG.body, TB = textFor("body", S.body), slow = 1 / Math.max(0.05, B.speed);
+  let base = t0, from = heads.length;
+  if (B.relation !== "independent" && heads.length) {
+    from = 0;
+    base = B.relation === "with-header" ? headStart
+      : B.relation === "during-header" ? headStart + (headEnd - headStart) * Math.min(100, Math.max(0, B.headerPct)) / 100
+      : headEnd;
+  }
+  base = Math.max(s, base + B.offsetMs);
+  raw.filter((b) => b.body).forEach((b, j) => {
+    make(b, base + (Math.min(j + from, TB.maxStaggered) * TB.lineStaggerMs + span(TB.randomDelayMs)) * slow, TB, slow, Infinity);
   });
   const fadeAt = fillEnd + o.lingerMs;
   if (outlineOn) end = Math.max(end, fadeAt + o.fadeOutMs);
@@ -803,17 +889,20 @@ function execute(item, k, g, dir) {
   const now = performance.now();
   item.blocks.forEach((b) => {
     if (b.kind === "none") return;
+    if (b.kind === "long" && b.style === "pixelate") {
+      own(b.el.animate(pixelTextFrames(b.px, b.steps), { duration: Math.max(1, b.ms * k), delay: b.at * k, fill: "backwards" }), g);
+      return;
+    }
     if (b.kind === "long") {
-      const rise = T.long === "rise" ? T.longRisePx : 0;
-      const frames = T.long === "wipe"
+      const frames = b.style === "wipe"
         ? [{ clipPath: "inset(0 100% 0 0)" }, { clipPath: "inset(0 0 0 0)" }]
-        : T.long === "none" ? [{ opacity: 0 }, { opacity: 0, offset: 0.999 }, { opacity: 1 }]
-        : [{ opacity: 0, transform: `translateY(${rise}px)` }, { opacity: 1, transform: "none" }];
-      own(b.el.animate(frames, { duration: Math.max(1, T.longMs * k), delay: b.at * k, easing: ease("decel"), fill: "backwards" }), g);
+        : b.style === "none" ? [{ opacity: 0 }, { opacity: 0, offset: 0.999 }, { opacity: 1 }]
+        : [{ opacity: 0, transform: `translateY(${b.style === "rise" ? b.rise : 0}px)` }, { opacity: 1, transform: "none" }];
+      own(b.el.animate(frames, { duration: Math.max(1, b.ms * k), delay: b.at * k, easing: ease("decel"), fill: "backwards" }), g);
       return;
     }
     own(b.el.animate([{ opacity: 0 }, { opacity: 1 }], { duration: Math.max(1, 40 * k), delay: b.at * k, fill: "backwards" }), g);
-    runText({ el: b.el, unit, T, segs: b.segs, flat: b.segs.flatMap((x) => x.chars), plan: b.plan, start: now + b.at * k, k, g, tick: -1e9, cache: [], active: false });
+    runText({ el: b.el, unit, T: b.T, segs: b.segs, flat: b.segs.flatMap((x) => x.chars), plan: b.plan, start: now + b.at * k, k, g, tick: -1e9, cache: [], active: false });
   });
 }
 
