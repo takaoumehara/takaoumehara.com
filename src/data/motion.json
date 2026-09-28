@@ -1,17 +1,17 @@
 {
   "version": 1,
-  "preset": "Takao — Skeleton (edited), 2026-09-28 v2",
+  "preset": "Takao — Skeleton (edited), 2026-09-28 v3",
   "global": {
     "enabled": true,
-    "speed": 1.9,
+    "speed": 1.7,
     "runOn": "both",
     "respectReducedMotion": true,
     "seed": 0,
     "relation": "overlap",
-    "offsetMs": 240,
+    "offsetMs": 230,
     "staggerBaseMs": 0,
-    "capMs": 3600,
-    "navSpeed": 1.9,
+    "capMs": 4700,
+    "navSpeed": 3.25,
     "navCapMs": 1400
   },
   "rail": {
@@ -39,11 +39,11 @@
       "unboxed": "skip"
     },
     "fill": {
-      "style": "skeleton",
-      "durationMs": 1100,
+      "style": "wipe-left",
+      "durationMs": 520,
       "afterOutlineMs": 40,
-      "easing": "ease-in-out",
-      "steps": 6,
+      "easing": "decel",
+      "steps": 3,
       "fromXPx": -12,
       "fromYPx": 0
     }
@@ -59,7 +59,7 @@
     "belowFold": "play",
     "enterTravelPx": 6,
     "outline": {
-      "style": "none",
+      "style": "midpoints",
       "reverse": false,
       "strokeWidth": 1,
       "color": "line-2",
@@ -74,9 +74,9 @@
       "unboxed": "skip"
     },
     "fill": {
-      "style": "skeleton",
-      "durationMs": 1100,
-      "afterOutlineMs": 40,
+      "style": "none",
+      "durationMs": 0,
+      "afterOutlineMs": -1000,
       "easing": "ease-in-out",
       "steps": 6,
       "fromXPx": -12,
@@ -130,13 +130,13 @@
   },
   "media": {
     "mode": "pixelate",
-    "durationMs": 1290,
-    "easing": "decel",
-    "steps": 8,
-    "afterFillMs": -310,
+    "durationMs": 500,
+    "easing": "back-out",
+    "steps": 5,
+    "afterFillMs": 0,
     "randomDelayMs": [
       80,
-      360
+      760
     ],
     "minSizePx": 40,
     "label": {
