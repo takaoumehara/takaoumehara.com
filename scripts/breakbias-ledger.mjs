@@ -20,7 +20,7 @@ const DIR = new URL("../docs/motion-lab/breakbias/ledger/", import.meta.url).pat
 const readJsonl = (name) => (existsSync(join(DIR, name)) ? readFileSync(join(DIR, name), "utf8").trim().split("\n").filter(Boolean).map((l) => JSON.parse(l)) : []);
 
 const readAll = (re) => readdirSync(DIR).filter((f) => re.test(f)).sort().flatMap(readJsonl);
-export const loadCells = () => readAll(/^cells-[A-D]\.jsonl$/);
+export const loadCells = () => readAll(/^cells-[A-DR]\.jsonl$/);
 
 export function merged() {
   const cells = loadCells();
