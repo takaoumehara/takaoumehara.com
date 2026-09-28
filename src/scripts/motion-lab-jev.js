@@ -36,7 +36,7 @@ export async function askJev(config, request, { fetchImpl = globalThis.fetch } =
  * The panel row. `el` is the Lab's element helper, `getConfig` the current
  * config, `say` the status setter. Returns the element to append.
  */
-export function jevRow({ el, getConfig, say }) {
+export function jevRow({ el, getConfig, say, apply }) {
   const input = el("input", { type: "text", id: "mlab-jev-ask", class: "mlab-text", placeholder: "What should it feel like? (optional)", maxlength: "600", autocomplete: "off" });
   const button = el("button", { type: "button", class: "mlab-btn" }, "Ask Jev");
   button.addEventListener("click", async () => {
