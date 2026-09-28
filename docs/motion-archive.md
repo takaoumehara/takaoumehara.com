@@ -337,3 +337,59 @@ koebaku, werewolf}/` には**プレビュー動画・静止画・素材だけ**�
 
 「現存(未接続)」= ルート直下の静的プロトタイプ (`index-*.html`) にコードはあるが、
 現行 Astro サイトの本番導線には組み込まれていない、という意味。
+
+---
+
+## H. 追補（2026-09-28）— 上の棚卸しから漏れていたもの
+
+Takao の指摘（「ローディングの時にグラデーションをやったりもしていた」）で掘り直した。
+A〜G は `src/` と `index-*.html` を中心に見ていたため、ルート直下の旧 `assets/` にあった
+遷移システムと、Takao が別途作った HTML プロトタイプが抜けていた。
+
+### H1. グラデーション・フィールド遷移（handoff.js）— **削除済み・最有力の復元候補**
+- **場所（削除前）**: commit `cfd2e7e`「Make the field one layer the whole site shares」の
+  `assets/handoff.js`（前段: `a54359e`「Make the transition out of the index a colour,
+  not an animation」）。各プロジェクトのリンクに `data-tint` / `data-tint2` / `data-art` /
+  `data-tu-mode`。色の組は `cfd2e7e:landing-b-index.html` に 14 組残っている
+  （例: Verizon `#101731→#2c3f7a`、Marubatsu `#2a1245→#7a35c9`、Rakugaki Jam 系 `#7a0c14→#d8262f`）。
+- **何をするか**: 画面全体の地（`html::before`, `position:fixed; inset:0`）が、プロジェクト
+  ごとの 2 色（radial ×2 + linear 152°）のグラデーションになる。一覧で**ホバーした時点で
+  そのプロジェクトの色が全面に満ちる**ので、クリックの前に行き先の色がもう出ている。
+  クリックすると色を保ったまま遷移し、行き先ページは最初のフレームから同じ色で開く
+  （`sessionStorage` で 8 秒以内の受け渡しだけ有効）。3 つの形:
+  - **colour**: 地の色をそのまま持ち越す（保持 280ms）
+  - **image**: 押したサムネイルが全面まで飛び（`.tu-ghost`, 480ms）、行き先はその画像で開く（保持 440ms）
+  - **veil**: 地を持てないページには同じ色の幕を上からかぶせ、読み込めたら持ち上げる（「必ず色 → ページ、白は挟まない」）
+- **手法**: CSS custom properties + `color-mix(in oklab)` + `sessionStorage`。View Transitions
+  API は使わない（当時 5〜8/10 回しか発火しなかったため）。`<head>` で同期ロード（1 フレーム目に色を出すため）。
+- **現存/削除済み**: 削除済み（Astro 移行 `838d498` で旧 `assets/` ごと退場）。
+- **再利用度**: **high**。現行の box-first ローディングと組み合わせられる
+  （色で繋ぎ、箱で組み上げる）。
+- **Motion Lab パラメータ化**: 2 色・グラデーションの形（stop 位置・角度）、保持 ms、
+  モード（colour / image / veil）、ホバーで点灯するか。
+
+### H2. モノクロ・グラフィック・ワイプ（wipe.js）— **無効化済み**
+- **場所**: commit `1f56886` の `assets/wipe.js` / `assets/wipe.css`。現在の
+  `public/assets/wipe.js` は中身を抜いた「Disarmed」スタブ（どこからも読み込まれていない）。
+- **何をするか**: ink/paper の幕が「Takao Umehara / creativity is everywhere」の文字を載せて
+  画面を横切り、ページを拭き取って次のページを出す。
+- **再利用度**: med（H3 のスラブ幕の祖先。H3 に吸収するのが自然）。
+
+### H3. Living Architectural Slabs（Takao の HTML プロトタイプ, v4）
+- **場所**: `docs/motion-lab/references/living-architectural-slabs-v4.html`（2026-09-28 受領、原本のまま保存）。
+  Tailwind CDN + GSAP 3.12 + Web Audio。
+- **含まれる演出**（それぞれ独立したスタディとして扱える）:
+  - **H3a スラブ・パズル起動**: 9 枚の白黒スラブが画面外（四方）から回転しつつ滑り込み、
+    25ms 刻みで配置に噛み合う（0.62s, power4.out）。最後に「snap」音。
+  - **H3b スラブ幕トランジション 5 種**: 中間点（midpoint）で中身を差し替える「覆う → 0.3s ため → 開く」の型。
+    1. 4-Way Offset（四隅から時間差で重なり、逆順で退場）
+    2. 4-Way Center（四象限が中央へ同時に合流）
+    3. 2-Split Sharp（角丸なしの左右 2 枚が閉じ、上下へ裂けて退場）
+    4. 2-Split Round（角丸つき 2 枚）
+    5. Dynamic（3×3 のスラブが四方八方からランダムに来てランダムに去る）
+  - **H3c 呼吸するボード**: 各スラブが sin/cos で微小に漂い、回転・拡縮し、マウス位置に
+    応じてパララックス（ON/OFF トグルあり）。
+  - **H3d 合成音**: Web Audio で「swoosh」（サイン波 140→35Hz + ローパス）と「snap」（三角波 880→160Hz）。
+  - **H3e カーソル・ドット**: `mix-blend-mode: difference` の追従ドット、ホバーで拡大。
+- **サイトの規則との関係**: 使っている変形は transform / opacity のみで、モーション規則に収まる。
+  GSAP と Tailwind CDN はサイトに入れない（WAAPI と既存トークンで書き直す）。音は既定オフ。

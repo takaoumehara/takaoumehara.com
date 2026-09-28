@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ja" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>creativity is everywhere — design &amp; innovation studio, New York</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- GSAP Animation Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <!-- Google Fonts: Outfit & DM Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Outfit:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Outfit"', 'sans-serif'],
+            mono: ['"DM Mono"', 'monospace'],
+          },
+          colors: {
+            ink: '#0b0b0b',
+            paper: '#f2f1ea',
+            'paper-warm': '#ebeae3',
+            surface: '#121214',
+            line: 'rgba(255, 255, 255, 0.12)',
+            muted: '#82848c'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      /* 参考画像の精密なプロポーションに合わせた、引き締まった角丸（約22px） */
+      --slab-radius: 1.35rem;
+      --paper-color: #f2f1ea;
+      --ink-color: #0b0b0b;
+    }
+
+    @media (min-width: 1024px) {
+      :root {
+        --slab-radius: 1.45rem;
+      }
+    }
+
+    body {
+      background-color: #0b0b0b;
+      color: #f2f1ea;
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* 幾何学スラブ（基本ユニット） */
+    .slab-unit {
+      position: absolute;
+      border-radius: var(--slab-radius);
+      box-sizing: border-box;
+      will-change: transform;
+      transition: box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* 黒スラブ（Ink） */
+    .slab-ink {
+      background-color: #0b0b0b;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: #f2f1ea;
+    }
+
+    /* 白スラブ（Paper） */
+    .slab-paper {
+      background-color: var(--paper-color);
+      color: #0b0b0b;
+      border: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    /* クリッカブルなスラブのホバー演出 */
+    .slab-interactive {
+      cursor: pointer;
+    }
+    .slab-interactive:hover {
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.6);
+      z-index: 35 !important;
+    }
+
+    /* ドロワー（モーダル） */
+    .drawer-panel {
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .drawer-panel.closed {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.98) translateY(12px);
+    }
+    .drawer-panel.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1) translateY(0);
+    }
+
+    /* カスタムカーソルドット */
+    #cursor-dot {
+      pointer-events: none;
+      position: fixed;
+      width: 8px;
+      height: 8px;
+      border-radius: 9999px;
+      background: white;
+      mix-blend-mode: difference;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease;
+      z-index: 9999;
+    }
+    body.is-hovering #cursor-dot {
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+</head>
+<body class="relative flex flex-col justify-between min-h-screen px-4 sm:px-8 py-6 selection:bg-white selection:text-black">
+
+  <div id="cursor-dot" class="hidden sm:block"></div>
+
+  <!-- トランジション・カーテン（全画面オーバーレイ） -->
+  <div id="transition-curtain" class="fixed inset-0 z-[2000] pointer-events-none hidden overflow-hidden">
+    <div id="curtain-slabs" class="relative w-full h-full"></div>
+  </div>
+
+  <header class="w-full flex flex-wrap items-center justify-between gap-4 z-40 relative pb-2">
+    <!-- 左上コントロール群 -->
+    <div class="flex items-center gap-3">
+      <button id="btn-replay-intro" class="group px-3 py-1.5 rounded-full border border-white/15 hover:border-white/40 bg-white/5 hover:bg-white/10 backdrop-blur-md text-xs font-mono tracking-wider text-white transition-all flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span>REPLAY INTRO</span>
+      </button>
+
+      <button id="btn-trigger-test" class="px-3 py-1.5 rounded-full border border-amber-400/30 hover:border-amber-400/70 bg-amber-400/10 hover:bg-amber-400/20 text-amber-300 text-xs font-mono tracking-wider transition-all flex items-center gap-1.5">
+        <span>⚡ TEST TRANSITION</span>
+      </button>
+
+      <div class="h-4 w-[1px] bg-white/10 hidden sm:block"></div>
+
+      <button id="btn-motion-toggle" class="hidden lg:flex items-center gap-2 text-xs font-mono text-zinc-400 hover:text-white transition-colors">
+        <span class="text-zinc-500">MOTION:</span>
+        <span id="txt-motion-state" class="text-white font-semibold">BREATHING (ON)</span>
+      </button>
+    </div>
+
+    <!-- トランジション・プリセット切り替えボタングループ -->
+    <div class="flex flex-wrap items-center gap-1.5 p-1.5 rounded-2xl border border-white/10 bg-black/60 backdrop-blur-md">
+      <span class="font-mono text-[10px] text-zinc-400 uppercase px-2 font-medium">STYLE:</span>
+      <button class="btn-preset active px-2.5 py-1 rounded-xl text-[10px] font-mono transition-all border border-white/20 bg-white text-black font-semibold" data-style="quad-stagger">4-Way Offset (四角ずらし)</button>
+      <button class="btn-preset px-2.5 py-1 rounded-xl text-[10px] font-mono transition-all border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10" data-style="quad-center">4-Way Center (中央重合)</button>
+      <button class="btn-preset px-2.5 py-1 rounded-xl text-[10px] font-mono transition-all border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10" data-style="split-sharp">2-Split (直角・角丸なし)</button>
+      <button class="btn-preset px-2.5 py-1 rounded-xl text-[10px] font-mono transition-all border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10" data-style="split-round">2-Split (角丸)</button>
+      <button class="btn-preset px-2.5 py-1 rounded-xl text-[10px] font-mono transition-all border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10" data-style="dynamic">Dynamic (四方八方)</button>
+    </div>
+
+    <!-- 右上スタジオ情報 (スクリーンショット準拠) -->
+    <div class="text-right hidden sm:block">
+      <p class="font-mono text-[11px] sm:text-xs tracking-wider text-white font-medium uppercase leading-tight">DESIGN &amp; INNOVATION STUDIO</p>
+      <p class="font-mono text-[9px] sm:text-[10px] tracking-widest text-zinc-500 uppercase mt-0.5">NEW YORK — EST. 2006</p>
+    </div>
+  </header>
+
+  <!-- メインボード: 参考画像の幾何学スラブ構造 -->
+  <main class="w-full flex-1 flex items-center justify-center my-4 sm:my-8 relative z-20">
+    <div id="board-container" class="relative w-full max-w-[1240px] h-[540px] sm:h-[620px] lg:h-[680px] select-none">
+      
+      <!-- 01 Work (Ink / 黒スラブ) -->
+      <div id="slab-01" class="slab-unit slab-ink slab-interactive p-6 lg:p-8 flex flex-col justify-between"
+           data-key="work"
+           style="left: 0%; top: 4%; width: 24%; height: 26%;">
+        <span class="font-mono text-xs text-white/50">01</span>
+        <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-white">Work</span>
+      </div>
+
+      <!-- 02 Playable 上部タワー部 (Paper / 白スラブ・連続体) -->
+      <div id="slab-02-tower" class="slab-unit slab-paper pointer-events-none"
+           style="left: 24.5%; top: 0%; width: 12.5%; height: 28%;"></div>
+
+      <!-- 02 Playable 本体部 (Paper / 白スラブ) -->
+      <div id="slab-02" class="slab-unit slab-paper slab-interactive p-6 lg:p-8 flex flex-col justify-between"
+           data-key="playable"
+           style="left: 12.5%; top: 24%; width: 37%; height: 28%;">
+        <span class="font-mono text-xs text-black/50">02</span>
+        <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-black">Playable</span>
+      </div>
+
+      <!-- 右上 Paper 連結スラブ (Paper / 白スラブ) -->
+      <div id="slab-top-bridge" class="slab-unit slab-paper pointer-events-none"
+           style="left: 50%; top: 0%; width: 24%; height: 28%;"></div>
+
+      <!-- 03 Ventures (Paper / 白スラブ) -->
+      <div id="slab-03" class="slab-unit slab-paper slab-interactive p-6 lg:p-8 flex flex-col justify-between"
+           data-key="ventures"
+           style="left: 38%; top: 41%; width: 24.5%; height: 25%;">
+        <span class="font-mono text-xs text-black/50">03</span>
+        <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-black">Ventures</span>
+      </div>
+
+      <!-- 04 Services (Paper / 白スラブ・右垂直棟) -->
+      <div id="slab-04" class="slab-unit slab-paper slab-interactive p-6 lg:p-8 flex flex-col justify-between"
+           data-key="services"
+           style="left: 73.5%; top: 41%; width: 26.5%; height: 50%;">
+        <span class="font-mono text-xs text-black/50">04</span>
+        <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-black">Services</span>
+      </div>
+
+      <!-- 05 Experience (Ink / 黒スラブ) -->
+      <div id="slab-05" class="slab-unit slab-ink slab-interactive p-6 lg:p-8 flex flex-col justify-between"
+           data-key="experience"
+           style="left: 0%; top: 58%; width: 26.5%; height: 33%;">
+        <span class="font-mono text-xs text-white/50">05</span>
+        <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-white">Experience</span>
+      </div>
+
+      <!-- 中央下部 Paper 独立ブロック (Paper / 白角丸正方形) -->
+      <div id="slab-bottom-paper" class="slab-unit slab-paper pointer-events-none"
+           style="left: 25.5%; top: 70%; width: 12.5%; height: 23%;"></div>
+
+      <!-- 06 Studio (Ink / 黒スラブ) -->
+      <div id="slab-06" class="slab-unit slab-ink slab-interactive p-6 lg:p-8 flex flex-col justify-between"
+           data-key="studio"
+           style="left: 50%; top: 58%; width: 24.5%; height: 33%;">
+        <span class="font-mono text-xs text-white/50">06</span>
+        <span class="text-2xl sm:text-3xl lg:text-4xl font-light tracking-tight text-white">Studio</span>
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="w-full flex flex-col md:flex-row items-end justify-between gap-8 z-40 relative pt-4">
+    <!-- ブランドワードマーク -->
+    <div>
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-light tracking-tight text-paper leading-[0.98]">
+        creativity is<br>everywhere.
+      </h1>
+    </div>
+
+    <!-- マニフェスト & メタリンク -->
+    <div class="max-w-md text-right md:text-left flex flex-col items-end md:items-start">
+      <p class="text-base sm:text-lg text-white font-normal leading-snug">
+        Ideas are better when you can touch them.
+      </p>
+      <p class="text-xs sm:text-sm text-zinc-400 font-light leading-relaxed mt-1.5">
+        We help companies imagine, prototype and build new businesses, products, brands and experiences — from the first conversation to something running in your hands.
+      </p>
+
+      <div class="flex items-center gap-2 mt-3 text-[11px] font-mono text-zinc-500 tracking-wider uppercase">
+        <span>Work 09</span>
+        <span>·</span>
+        <span>Playable 08</span>
+        <span>·</span>
+        <span>Ventures 04</span>
+        <span>·</span>
+        <span>Services 04</span>
+      </div>
+
+      <div class="flex items-center gap-4 mt-3 text-xs font-mono">
+        <a href="mailto:hello@creativityiseverywhere.com" class="text-white hover:text-zinc-300 underline underline-offset-4 tracking-wider flex items-center gap-1">
+          EMAIL US <span class="text-[10px]">↗</span>
+        </a>
+        <span class="text-zinc-600">|</span>
+        <span class="text-zinc-400 font-mono tracking-wider">
+          NEW YORK — EST. 2006
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <div id="content-drawer" class="drawer-panel closed fixed inset-0 z-[1500] bg-[#0b0b0b] overflow-y-auto px-6 sm:px-12 lg:px-20 py-12 flex flex-col justify-between" role="dialog" aria-modal="true">
+    <!-- ドロワー上部バー -->
+    <div class="flex items-center justify-between pb-8 border-b border-white/10 sticky top-0 bg-[#0b0b0b]/90 backdrop-blur-xl z-50">
+      <div class="flex items-center gap-3">
+        <span id="drawer-kicker" class="font-mono text-xs text-white/60 tracking-widest uppercase">01 / 06 — WORK</span>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="drawer-btn-next" class="px-4 py-1.5 rounded-full border border-white/20 hover:border-white text-xs font-mono transition-colors flex items-center gap-1.5">
+          <span>NEXT SECTION</span>
+          <span>→</span>
+        </button>
+        <button id="drawer-btn-close" class="w-9 h-9 rounded-full bg-white text-black font-mono text-sm font-bold flex items-center justify-center hover:scale-110 active:scale-95 transition-all" aria-label="Close and return to the board">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- ドロワー本文エリア -->
+    <div id="drawer-body" class="max-w-5xl mx-auto w-full py-12 flex-1">
+      <!-- JavaScriptで動的注入 -->
+    </div>
+
+    <!-- ドロワー下部 -->
+    <div class="pt-12 border-t border-white/10 text-center font-mono text-xs text-zinc-500">
+      CREATIVITY IS EVERYWHERE — EST. 2006 NEW YORK
+    </div>
+  </div>
+
+  <script>
+    // --- 1. オーディオ合成エンジン (Web Audio API) ---
+    let audioCtx = null;
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) audioCtx = new AudioContext();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    }
+
+    function playSound(type) {
+      if (!audioCtx) return;
+      try {
+        const now = audioCtx.currentTime;
+        if (type === 'swoosh') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          const filter = audioCtx.createBiquadFilter();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(140, now);
+          osc.frequency.exponentialRampToValueAtTime(35, now + 0.32);
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(300, now);
+          gain.gain.setValueAtTime(0.001, now);
+          gain.gain.linearRampToValueAtTime(0.25, now + 0.06);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.34);
+        } else if (type === 'snap') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(880, now);
+          osc.frequency.exponentialRampToValueAtTime(160, now + 0.05);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.07);
+        }
+      } catch (e) {}
+    }
+
+    // --- 2. プリセット状態管理 ---
+    let currentTransitionStyle = 'quad-stagger';
+
+    const presetButtons = document.querySelectorAll('.btn-preset');
+    presetButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        presetButtons.forEach(b => {
+          b.className = "btn-preset px-2.5 py-1 rounded-xl text-[10px] font-mono transition-all border border-white/5 text-zinc-400 hover:text-white hover:bg-white/10";
+        });
+        btn.className = "btn-preset active px-2.5 py-1 rounded-xl text-[10px] font-mono transition-all border border-white/20 bg-white text-black font-semibold";
+        currentTransitionStyle = btn.getAttribute('data-style') || 'quad-stagger';
+      });
+    });
+
+    const btnTriggerTest = document.getElementById('btn-trigger-test');
+    if (btnTriggerTest) {
+      btnTriggerTest.addEventListener('click', () => {
+        executeActiveTransition(() => {
+          // テスト実行時のプレースホルダー
+        });
+      });
+    }
+
+    // --- 3. 四六時中動く「Living Kinetic Engine」 ---
+    let kineticActive = true;
+    const livingSlabs = [
+      { id: '#slab-01', seed: 0.25, phase: 0.0 },
+      { id: '#slab-02-tower', seed: 0.7, phase: 1.2 },
+      { id: '#slab-02', seed: 0.45, phase: 2.4 },
+      { id: '#slab-top-bridge', seed: 0.8, phase: 0.7 },
+      { id: '#slab-03', seed: 0.4, phase: 1.8 },
+      { id: '#slab-04', seed: 0.55, phase: 3.1 },
+      { id: '#slab-05', seed: 0.3, phase: 2.0 },
+      { id: '#slab-bottom-paper', seed: 0.65, phase: 0.5 },
+      { id: '#slab-06', seed: 0.4, phase: 1.5 },
+    ];
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetParallaxX = 0;
+    let targetParallaxY = 0;
+    let currentParallaxX = 0;
+    let currentParallaxY = 0;
+
+    window.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      targetParallaxX = mouseX * 8;
+      targetParallaxY = mouseY * 6;
+    });
+
+    let startTime = performance.now();
+    function animateLivingBoard(time) {
+      if (kineticActive && !isTransitioning) {
+        const elapsed = (time - startTime) * 0.0014;
+
+        currentParallaxX += (targetParallaxX - currentParallaxX) * 0.05;
+        currentParallaxY += (targetParallaxY - currentParallaxY) * 0.05;
+
+        livingSlabs.forEach((item) => {
+          const el = document.querySelector(item.id);
+          if (!el) return;
+
+          const waveX = Math.sin(elapsed + item.phase) * (2.6 * item.seed);
+          const waveY = Math.cos(elapsed * 0.85 + item.phase) * (3.2 * item.seed);
+          const subtleRotate = Math.sin(elapsed * 0.6 + item.phase) * (0.3 * item.seed);
+          const subtleScale = 1 + Math.sin(elapsed * 1.1 + item.phase) * 0.003;
+
+          const totalX = waveX + currentParallaxX * item.seed;
+          const totalY = waveY + currentParallaxY * item.seed;
+
+          el.style.transform = `translate3d(${totalX.toFixed(2)}px, ${totalY.toFixed(2)}px, 0) rotate(${subtleRotate.toFixed(2)}deg) scale(${subtleScale.toFixed(3)})`;
+        });
+      }
+      requestAnimationFrame(animateLivingBoard);
+    }
+    requestAnimationFrame(animateLivingBoard);
+
+    // キネティック・トグルボタン
+    const btnMotionToggle = document.getElementById('btn-motion-toggle');
+    const txtMotionState = document.getElementById('txt-motion-state');
+    if (btnMotionToggle) {
+      btnMotionToggle.addEventListener('click', () => {
+        kineticActive = !kineticActive;
+        txtMotionState.innerText = kineticActive ? 'BREATHING (ON)' : 'FROZEN (OFF)';
+        txtMotionState.className = kineticActive ? 'text-white font-semibold' : 'text-zinc-500 font-normal';
+        if (!kineticActive) {
+          livingSlabs.forEach(item => {
+            const el = document.querySelector(item.id);
+            if (el) el.style.transform = 'translate3d(0, 0, 0) scale(1)';
+          });
+        }
+      });
+    }
+
+    // --- 4. 導入アニメーション（四方から白黒スラブが滑り込み、この配置にパズルのように噛み合う） ---
+    function playIntroSequence() {
+      initAudio();
+      playSound('swoosh');
+
+      const tl = gsap.timeline();
+      const allSlabEls = livingSlabs.map(item => document.querySelector(item.id)).filter(Boolean);
+
+      const initialPositions = [
+        { x: '-120vw', y: '-30vh', r: -10 },
+        { x: '0vw', y: '-125vh', r: 6 },
+        { x: '-125vw', y: '25vh', r: -6 },
+        { x: '125vw', y: '-40vh', r: 8 },
+        { x: '0vw', y: '125vh', r: -5 },
+        { x: '125vw', y: '35vh', r: 7 },
+        { x: '-120vw', y: '115vh', r: -8 },
+        { x: '-25vw', y: '125vh', r: 5 },
+        { x: '35vw', y: '125vh', r: 9 },
+      ];
+
+      allSlabEls.forEach((el, i) => {
+        const init = initialPositions[i % initialPositions.length];
+        gsap.set(el, { x: init.x, y: init.y, rotation: init.r, scale: 1.05, opacity: 1 });
+      });
+
+      allSlabEls.forEach((el, i) => {
+        tl.to(el, {
+          x: 0,
+          y: 0,
+          rotation: 0,
+          scale: 1,
+          duration: 0.62,
+          ease: 'power4.out'
+        }, i * 0.025);
+      });
+
+      tl.call(() => playSound('snap'), null, 0.48);
+
+      tl.fromTo('header, footer', 
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.45, ease: 'power2.out' },
+        0.42
+      );
+    }
+
+    const btnReplayIntro = document.getElementById('btn-replay-intro');
+    if (btnReplayIntro) btnReplayIntro.addEventListener('click', playIntroSequence);
+
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(playIntroSequence, 120);
+    });
+
+    // --- 5. トランジション・エンジン (4-Way Offset / 4-Way Center / 2-Split / Dynamic) ---
+    let isTransitioning = false;
+    const curtain = document.getElementById('transition-curtain');
+    const slabsContainer = document.getElementById('curtain-slabs');
+
+    function executeActiveTransition(onMidpoint) {
+      if (isTransitioning) return;
+
+      switch (currentTransitionStyle) {
+        case 'quad-stagger':
+          executeQuadStaggerTransition(onMidpoint);
+          break;
+        case 'quad-center':
+          executeQuadCenterTransition(onMidpoint);
+          break;
+        case 'split-sharp':
+          executeSplitSharpTransition(onMidpoint);
+          break;
+        case 'split-round':
+          executeSplitRoundTransition(onMidpoint);
+          break;
+        case 'dynamic':
+        default:
+          executeDynamicTransition(onMidpoint);
+          break;
+      }
+    }
+
+    // [パターン 1] 4-Way Offset (四角ずらし: 右下 ➔ 左下 ➔ 右上 ➔ 左上)
+    function executeQuadStaggerTransition(onMidpoint) {
+      isTransitioning = true;
+      initAudio();
+      playSound('swoosh');
+
+      curtain.classList.remove('hidden');
+      slabsContainer.innerHTML = '';
+
+      const slabsConfig = [
+        { id: 'br', label: '04 // BR', x: '49vw', y: '49vh', fromX: '110vw', fromY: '110vh', bg: '#f2f1ea', text: '#0b0b0b', border: 'border-l border-t border-black/10' },
+        { id: 'bl', label: '03 // BL', x: '0vw',  y: '49vh', fromX: '-110vw', fromY: '110vh', bg: '#0b0b0b', text: '#f2f1ea', border: 'border-r border-t border-white/15' },
+        { id: 'tr', label: '02 // TR', x: '49vw', y: '0vh',  fromX: '110vw', fromY: '-110vh', bg: '#0b0b0b', text: '#f2f1ea', border: 'border-l border-b border-white/15' },
+        { id: 'tl', label: '01 // TL', x: '0vw',  y: '0vh',   fromX: '-110vw', fromY: '-110vh', bg: '#f2f1ea', text: '#0b0b0b', border: 'border-r border-b border-black/10' },
+      ];
+
+      const slabElements = slabsConfig.map((cfg, index) => {
+        const el = document.createElement('div');
+        el.className = `absolute z-${10 + index} flex flex-col justify-between p-8 shadow-2xl ${cfg.border}`;
+        el.style.width = '53vw';
+        el.style.height = '53vh';
+        el.style.left = cfg.x;
+        el.style.top = cfg.y;
+        el.style.borderRadius = 'var(--slab-radius)';
+        el.style.backgroundColor = cfg.bg;
+        el.style.color = cfg.text;
+        el.innerHTML = `
+          <div class="flex justify-between items-center font-mono text-[10px] tracking-widest opacity-40">
+            <span>${cfg.label}</span>
+            <span>SYSTEM TRANSITION</span>
+          </div>
+          <div class="text-2xl font-light tracking-tight">creativity is everywhere.</div>
+        `;
+        slabsContainer.appendChild(el);
+        return { el, cfg };
+      });
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          curtain.classList.add('hidden');
+          slabsContainer.innerHTML = '';
+          isTransitioning = false;
+        }
+      });
+
+      // 突入（右下 ➔ 左下 ➔ 右上 ➔ 左上）
+      slabElements.forEach((item, i) => {
+        tl.fromTo(item.el,
+          { x: item.cfg.fromX, y: item.cfg.fromY, scale: 1.02 },
+          { x: '0vw', y: '0vh', scale: 1, duration: 0.28, ease: 'power3.out' },
+          i * 0.05
+        );
+      });
+      tl.call(() => playSound('snap'), null, 0.24);
+
+      // ミッドポイント処理（裏でコンテンツ切り替え）
+      tl.call(() => { if (typeof onMidpoint === 'function') onMidpoint(); });
+
+      // 指定の黄金比タメ（0.3秒）
+      tl.to({}, { duration: 0.3 });
+
+      // 脱出（逆順で四隅へ滑り去る）
+      slabElements.slice().reverse().forEach((item, i) => {
+        tl.to(item.el, {
+          x: item.cfg.fromX,
+          y: item.cfg.fromY,
+          duration: 0.24,
+          ease: 'power4.in'
+        }, `exit+=${i * 0.035}`);
+      });
+    }
+
+    // [パターン 2] 4-Way Center (中央重合: 4クアドラントが中央へ同時に合流)
+    function executeQuadCenterTransition(onMidpoint) {
+      isTransitioning = true;
+      initAudio();
+      playSound('swoosh');
+
+      curtain.classList.remove('hidden');
+      slabsContainer.innerHTML = '';
+
+      const quadrants = [
+        { label: 'WORK // 01', x: '0vw', y: '0vh', fromX: '-60vw', fromY: '-60vh', bg: '#0b0b0b', text: '#f2f1ea', border: 'border-r border-b border-white/20' },
+        { label: 'PLAYABLE // 02', x: '49vw', y: '0vh', fromX: '60vw', fromY: '-60vh', bg: '#f2f1ea', text: '#0b0b0b', border: 'border-l border-b border-black/10' },
+        { label: 'VENTURES // 03', x: '0vw', y: '49vh', fromX: '-60vw', fromY: '60vh', bg: '#f2f1ea', text: '#0b0b0b', border: 'border-r border-t border-black/10' },
+        { label: 'STUDIO // 04', x: '49vw', y: '49vh', fromX: '60vw', fromY: '60vh', bg: '#0b0b0b', text: '#f2f1ea', border: 'border-l border-t border-white/20' }
+      ];
+
+      const elements = quadrants.map((q, idx) => {
+        const el = document.createElement('div');
+        el.className = `absolute z-${10 + idx} p-8 flex flex-col justify-between shadow-2xl ${q.border}`;
+        el.style.width = '53vw';
+        el.style.height = '53vh';
+        el.style.left = q.x;
+        el.style.top = q.y;
+        el.style.borderRadius = 'var(--slab-radius)';
+        el.style.backgroundColor = q.bg;
+        el.style.color = q.text;
+        el.innerHTML = `
+          <span class="font-mono text-xs opacity-50 tracking-wider">${q.label}</span>
+          <div class="text-2xl font-light">New York — est. 2006</div>
+        `;
+        slabsContainer.appendChild(el);
+        return { el, q };
+      });
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          curtain.classList.add('hidden');
+          slabsContainer.innerHTML = '';
+          isTransitioning = false;
+        }
+      });
+
+      elements.forEach((item, i) => {
+        tl.fromTo(item.el,
+          { x: item.q.fromX, y: item.q.fromY },
+          { x: 0, y: 0, duration: 0.3, ease: 'expo.out' },
+          i * 0.015
+        );
+      });
+      tl.call(() => playSound('snap'), null, 0.25);
+
+      tl.call(() => { if (typeof onMidpoint === 'function') onMidpoint(); });
+      tl.to({}, { duration: 0.3 });
+
+      elements.forEach((item, i) => {
+        tl.to(item.el, {
+          x: item.q.fromX,
+          y: item.q.fromY,
+          duration: 0.25,
+          ease: 'power4.in'
+        }, `exit+=${i * 0.02}`);
+      });
+    }
+
+    // [パターン 3] 2-Split Sharp (直角・角丸なしモノリスの2分割)
+    function executeSplitSharpTransition(onMidpoint) {
+      isTransitioning = true;
+      initAudio();
+      playSound('swoosh');
+
+      curtain.classList.remove('hidden');
+      slabsContainer.innerHTML = '';
+
+      const leftSlab = document.createElement('div');
+      leftSlab.className = 'absolute left-0 top-0 bottom-0 w-[50.5vw] bg-[#0b0b0b] text-white border-r border-white/20 z-10 flex flex-col justify-between p-10';
+      leftSlab.style.borderRadius = '0px'; // 直角・角丸ゼロ
+      leftSlab.innerHTML = `
+        <span class="font-mono text-xs tracking-widest text-white/40">01 / SHARP MONOLITH</span>
+        <h2 class="text-4xl sm:text-5xl font-light tracking-tighter">creativity is</h2>
+      `;
+
+      const rightSlab = document.createElement('div');
+      rightSlab.className = 'absolute right-0 top-0 bottom-0 w-[50.5vw] bg-[#f2f1ea] text-[#0b0b0b] z-10 flex flex-col justify-between p-10';
+      rightSlab.style.borderRadius = '0px'; // 直角・角丸ゼロ
+      rightSlab.innerHTML = `
+        <div class="text-right font-mono text-xs tracking-widest text-black/40">NYC — EST. 2006</div>
+        <h2 class="text-4xl sm:text-5xl font-light tracking-tighter text-right">everywhere.</h2>
+      `;
+
+      slabsContainer.appendChild(leftSlab);
+      slabsContainer.appendChild(rightSlab);
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          curtain.classList.add('hidden');
+          slabsContainer.innerHTML = '';
+          isTransitioning = false;
+        }
+      });
+
+      // 突入: 左右から水平に挟み込む
+      tl.fromTo(leftSlab, { x: '-101%' }, { x: '0%', duration: 0.28, ease: 'power3.out' });
+      tl.fromTo(rightSlab, { x: '101%' }, { x: '0%', duration: 0.28, ease: 'power3.out' }, '<');
+      tl.call(() => playSound('snap'), null, 0.24);
+
+      tl.call(() => { if (typeof onMidpoint === 'function') onMidpoint(); });
+      tl.to({}, { duration: 0.3 });
+
+      // 脱出: 上下へ直角のままスパッと引き裂かれる
+      tl.to(leftSlab, { y: '-105%', duration: 0.25, ease: 'power4.in' });
+      tl.to(rightSlab, { y: '105%', duration: 0.25, ease: 'power4.in' }, '<0.02');
+    }
+
+    // [パターン 4] 2-Split Round (角丸2分割)
+    function executeSplitRoundTransition(onMidpoint) {
+      isTransitioning = true;
+      initAudio();
+      playSound('swoosh');
+
+      curtain.classList.remove('hidden');
+      slabsContainer.innerHTML = '';
+
+      const leftSlab = document.createElement('div');
+      leftSlab.className = 'absolute left-0 top-0 bottom-0 w-[52vw] bg-[#0b0b0b] text-white border-r border-white/20 z-10 flex items-center justify-end p-8 shadow-2xl';
+      leftSlab.style.borderRadius = '0 var(--slab-radius) var(--slab-radius) 0';
+      leftSlab.innerHTML = `<span class="font-mono text-xs tracking-widest text-white/50 mr-6">01 // INK SLAB</span>`;
+
+      const rightSlab = document.createElement('div');
+      rightSlab.className = 'absolute right-0 top-0 bottom-0 w-[52vw] bg-[#f2f1ea] text-[#0b0b0b] z-10 flex items-center justify-start p-8 shadow-2xl';
+      rightSlab.style.borderRadius = 'var(--slab-radius) 0 0 var(--slab-radius)';
+      rightSlab.innerHTML = `<span class="font-mono text-xs tracking-widest text-black/50 ml-6">PAPER SLAB // 02</span>`;
+
+      slabsContainer.appendChild(leftSlab);
+      slabsContainer.appendChild(rightSlab);
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          curtain.classList.add('hidden');
+          slabsContainer.innerHTML = '';
+          isTransitioning = false;
+        }
+      });
+
+      tl.fromTo(leftSlab, { x: '-105%' }, { x: '0%', duration: 0.3, ease: 'power3.out' });
+      tl.fromTo(rightSlab, { x: '105%' }, { x: '0%', duration: 0.3, ease: 'power3.out' }, '<');
+      tl.call(() => playSound('snap'), null, 0.25);
+
+      tl.call(() => { if (typeof onMidpoint === 'function') onMidpoint(); });
+      tl.to({}, { duration: 0.3 });
+
+      tl.to(leftSlab, { y: '-105%', duration: 0.25, ease: 'power4.in' });
+      tl.to(rightSlab, { y: '105%', duration: 0.25, ease: 'power4.in' }, '<0.02');
+    }
+
+    // [パターン 5] Dynamic (四方八方のジェネレーティブ・スラブ)
+    function executeDynamicTransition(onMidpoint) {
+      isTransitioning = true;
+      initAudio();
+      playSound('swoosh');
+
+      curtain.classList.remove('hidden');
+      slabsContainer.innerHTML = '';
+
+      const numCols = 3;
+      const numRows = 3;
+      const colW = 104 / numCols;
+      const rowH = 104 / numRows;
+      const elements = [];
+
+      const underlap = document.createElement('div');
+      underlap.className = 'absolute inset-0 bg-[#0b0b0b] z-0';
+      slabsContainer.appendChild(underlap);
+
+      const edges = ['left', 'right', 'top', 'bottom'];
+      const words = ['Work', 'Playable', 'Ventures', 'Services', 'Experience', 'Studio'];
+
+      let count = 0;
+      for (let r = 0; r < numRows; r++) {
+        for (let c = 0; c < numCols; c++) {
+          count++;
+          const el = document.createElement('div');
+          const isPaper = (r + c) % 2 === 1;
+          const edge = edges[Math.floor(Math.random() * edges.length)];
+
+          let fromX = '0', fromY = '0';
+          let exitX = '0', exitY = '0';
+          if (edge === 'left') { fromX = '-135vw'; exitX = '-140vw'; exitY = `${(Math.random()-0.5)*30}vh`; }
+          else if (edge === 'right') { fromX = '135vw'; exitX = '140vw'; exitY = `${(Math.random()-0.5)*30}vh`; }
+          else if (edge === 'top') { fromY = '-135vh'; exitY = '-140vh'; exitX = `${(Math.random()-0.5)*30}vw`; }
+          else { fromY = '135vh'; exitY = '140vh'; exitX = `${(Math.random()-0.5)*30}vw`; }
+
+          el.className = `absolute p-6 flex flex-col justify-between overflow-hidden shadow-2xl`;
+          el.style.left = `${c * colW - 2}vw`;
+          el.style.top = `${r * rowH - 2}vh`;
+          el.style.width = `${colW + 4}vw`;
+          el.style.height = `${rowH + 4}vh`;
+          el.style.borderRadius = 'var(--slab-radius)';
+          el.style.backgroundColor = isPaper ? '#f2f1ea' : '#0b0b0b';
+          el.style.color = isPaper ? '#0b0b0b' : '#f2f1ea';
+          el.style.zIndex = `${count + 5}`;
+          if (!isPaper) el.style.border = '1px solid rgba(255,255,255,0.18)';
+
+          const word = words[(r * numCols + c) % words.length];
+          el.innerHTML = `
+            <span class="font-mono text-[10px] opacity-50">0${count}</span>
+            <span class="text-2xl font-light">${word}</span>
+          `;
+
+          slabsContainer.appendChild(el);
+          elements.push({ el, from: { x: fromX, y: fromY }, exit: { x: exitX, y: exitY } });
+        }
+      }
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          curtain.classList.add('hidden');
+          slabsContainer.innerHTML = '';
+          isTransitioning = false;
+        }
+      });
+
+      elements.forEach((item, i) => {
+        tl.fromTo(item.el,
+          { x: item.from.x, y: item.from.y, scale: 1.03 },
+          { x: 0, y: 0, scale: 1, duration: 0.3, ease: 'expo.out' },
+          i * 0.015
+        );
+      });
+      tl.call(() => playSound('snap'), null, 0.25);
+
+      tl.call(() => { if (typeof onMidpoint === 'function') onMidpoint(); });
+      tl.to({}, { duration: 0.3 });
+
+      const randomizedElements = [...elements].sort(() => Math.random() - 0.5);
+      randomizedElements.forEach((item, i) => {
+        tl.to(item.el, {
+          x: item.exit.x,
+          y: item.exit.y,
+          duration: 0.25,
+          ease: 'power4.in'
+        }, `exit+=${i * 0.02}`);
+      });
+    }
+
+    // --- 6. コンテンツ・データ定義 & ドロワー連携 ---
+    const SECTIONS_DATA = {
+      work: {
+        kicker: "01 / 06 — Work",
+        title: "Work",
+        lede: "Nine engagements, told the way they were decided: what was happening, what we saw, what we believed should exist, and what changed. Every one says who engaged us, because work done as this company and work our founder did before it are not the same claim.",
+        items: [
+          { n: "01", t: "Verizon", what: "AI systems built into a design workflow, not beside it", b: "Forty-two designers and eighty-plus people across six brands had every AI tool, and nine months later nothing had improved. Sixteen hours of interviews about the work itself found where the pain actually lived.", s: "Products & AI · Organisation & AI transformation", prov: "Independent — engaged directly, not through the LLC" },
+          { n: "02", t: "Akimatsuri Festival", what: "A school festival rebuilt around eleven designed games", b: "A school festival that had lost its revenue model. Our founder moved the revenue pillar to the games — designing, prototyping and building eleven of them with the festival identity and noren.", s: "Brand & creative · Experiences · Venture & innovation", prov: "Led by our founder in a volunteer capacity" },
+          { n: "03", t: "DO! NUTS TOKYO", what: "A city climate target turned into something a person can join", b: "Tokyo had zero-emission goals and no way for a citizen to take part in them. We shaped a social innovation platform with a youth ambassador programme.", s: "Brand & creative · Venture & innovation", prov: "creativity is everywhere" },
+          { n: "04", t: "Value Frontier", what: "Brand DNA, an identity system, and a sub-brand out of it", b: "A sustainability consultancy entering new markets without the language for what it was becoming. We worked from the business question to brand DNA.", s: "Brand & creative · Venture & innovation", prov: "creativity is everywhere" },
+          { n: "05", t: "KOJI FIZZ", what: "A film series instead of an endorsement", b: "Rather than actors reading lines, we made a short film series with real New York creatives.", s: "Brand & creative · Experiences", prov: "creativity is everywhere" },
+          { n: "06", t: "Konosaki", what: "Identity and site, live now", b: "Identity and site for Konosaki, live and viewable now rather than described after the fact.", s: "Brand & creative", prov: "creativity is everywhere" }
+        ]
+      },
+      playable: {
+        kicker: "02 / 06 — Playable",
+        title: "Playable",
+        lede: "Playable is where we explore before there is a brief. Eight working experiments in interaction, AI and games, built to test an idea by making it real enough to touch — input that isn’t a keyboard.",
+        items: [
+          { n: "01", t: "Resona", what: "Hand-tracking music instrument", b: "Pinch the air and a string is strung there that rings. Seven works, one camera, and all tracking on device.", s: "MediaPipe · Web Audio · on-device" },
+          { n: "02", t: "Rakugaki Jam", what: "Crowd drawing game", b: "Scribble on your phone, flick it at the wall, and watch it swim. A QR code joins any number of phones to one big screen.", s: "Snap Pair · Firebase RTDB" },
+          { n: "03", t: "Typespace", what: "Typing toy for a big screen", b: "Type a word into the dark and it condenses out of drifting particles, holds as a constellation, then dissolves.", s: "1,200 real stars from the HYG catalogue" },
+          { n: "04", t: "Marubatsu 2.0", what: "Online 4×4 tic-tac-toe", b: "One rule changed: a four-by-four board and two marks per turn, so the first move matters again.", s: "Next.js · Firebase · Gemini" }
+        ]
+      },
+      ventures: {
+        kicker: "03 / 06 — Ventures",
+        title: "Ventures",
+        lede: "We help other people build new things. We build our own too. Four bets nobody commissioned, each with the thing we believed written down.",
+        items: [
+          { n: "01", t: "intentfirst", what: "Active", b: "A way to build software that starts from intent rather than from screens. Eight context tokens carry what the user is trying to do.", s: "The bet: intent, not the screen, is the right unit of software" },
+          { n: "02", t: "MyBrainSpec", what: "In development", b: "A short cognitive self-check returning a written profile of how your own attention and memory behave — prose, not a score.", s: "The bet: a written profile is more useful than a number" },
+          { n: "03", t: "Moime", what: "In development", b: "A link-in-bio page for promo codes. Point it at a flyer and it reads dates, codes, and venue off the image.", s: "The bet: the flyer already holds the data" }
+        ]
+      },
+      services: {
+        kicker: "04 / 06 — Services",
+        title: "Services",
+        lede: "Four ways to work with us. They run into each other on purpose: the same small group carries a piece of work from the question to the thing you can use.",
+        items: [
+          { n: "01", t: "New business & venture creation", what: "For organisations that need something new", b: "We run the search deliberately — where the opportunity actually is, what to build first, and what would have to be true.", s: "Opportunity discovery · 0→1 venture development · BreakBias workshops" },
+          { n: "02", t: "Product & experience innovation", what: "Turning ideas into something testable", b: "A digital product, a physical experience, a new way of interacting with a system.", s: "Digital products · AI-enabled products · New interaction models" },
+          { n: "03", t: "Brand & creative direction", what: "Strategy and identity", b: "A brand is the first prototype of a business: strategy, identity, and the experiences that carry it.", s: "Brand strategy · Creative direction · Experiential design" },
+          { n: "04", t: "Executive innovation partnership", what: "Senior creative & product leadership", b: "A seat at the table where decisions are actually made: what to build next, what to stop, where AI is worth the trouble.", s: "Fractional CDO · Executive advisory · Portfolio decisions" }
+        ]
+      },
+      experience: {
+        kicker: "05 / 06 — Experience",
+        title: "Experience",
+        lede: "Every organisation named here, and the capacity in which we worked with it. Most studios show a wall of logos; this is the same information with the assumption removed.",
+        items: [
+          { n: "01", t: "As creativity is everywhere", what: "Client Engagements", b: "Value Frontier, Odell Education, DO! NUTS TOKYO, Konosaki, KOJI FIZZ, CLI Studios, Vocab App Amplify.", s: "Direct studio engagements" },
+          { n: "02", t: "With our founder", what: "Independent", b: "Verizon — knowledge system and AI workflow across six brands.", s: "Direct independent advisory" },
+          { n: "03", t: "Earlier work", what: "Agency / In-house", b: "Coca-Cola, IBM, Motorola, T-Mobile, Carnegie Foundation.", s: "Historical foundation" }
+        ]
+      },
+      studio: {
+        kicker: "06 / 06 — Studio",
+        title: "Studio",
+        lede: "Ideas are better when you can touch them. That is the whole method: we enter situations where the answer isn’t obvious yet, find the opportunity, and make it tangible.",
+        items: [
+          { n: "01", t: "Takao Umehara", what: "Founder & Creative Lead", b: "Takao founded creativity is everywhere in New York in 2006. The work has moved in layers — brand, interactive, product, innovation strategy, and AI.", s: "New York — est. 2006" },
+          { n: "02", t: "Expandable Brain", what: "Operating model", b: "Around each opportunity we assemble the right combination of people, technology and AI systems we build ourselves.", s: "Core team + Open Source tools" },
+          { n: "03", t: "Open Skills on GitHub", what: "Public tooling", b: "superforge, Snap Pair, interactive-experience-skills, intuitive-game-design, cross-model-handoff.", s: "Open source on github.com/takaoumehara" }
+        ]
+      }
+    };
+
+    const sectionKeys = ['work', 'playable', 'ventures', 'services', 'experience', 'studio'];
+    let currentSectionKey = 'work';
+
+    const drawer = document.getElementById('content-drawer');
+    const drawerKicker = document.getElementById('drawer-kicker');
+    const drawerBody = document.getElementById('drawer-body');
+    const drawerBtnNext = document.getElementById('drawer-btn-next');
+    const drawerBtnClose = document.getElementById('drawer-btn-close');
+
+    function renderDrawerContent(key) {
+      currentSectionKey = key;
+      const data = SECTIONS_DATA[key];
+      if (!data) return;
+
+      drawerKicker.innerText = data.kicker;
+      drawerBody.innerHTML = `
+        <div class="mb-12">
+          <h2 class="text-4xl sm:text-6xl font-light text-white mb-4 tracking-tight">${data.title}</h2>
+          <p class="text-base sm:text-xl text-zinc-300 font-light leading-relaxed max-w-3xl">${data.lede}</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-white/10">
+          ${data.items.map(item => `
+            <div class="p-7 rounded-[1.4rem] bg-white/[0.03] border border-white/10 hover:border-white/30 transition-all flex flex-col justify-between">
+              <div>
+                <div class="flex justify-between font-mono text-xs text-zinc-500 mb-3">
+                  <span>${item.n}</span>
+                  <span class="text-zinc-400 font-normal">${item.prov || ''}</span>
+                </div>
+                <h3 class="text-2xl font-light text-white mb-1.5">${item.t}</h3>
+                <p class="text-xs font-mono text-emerald-400 mb-3">${item.what}</p>
+                <p class="text-sm text-zinc-300 font-light leading-relaxed">${item.b}</p>
+              </div>
+              <div class="pt-4 mt-6 border-t border-white/5 font-mono text-[10px] text-zinc-500">
+                ${item.s}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    // スラブクリック時に選択中のトランジションを実行してドロワーを開く
+    document.querySelectorAll('.slab-interactive').forEach(slab => {
+      slab.addEventListener('click', () => {
+        const key = slab.getAttribute('data-key');
+        if (!key) return;
+
+        executeActiveTransition(() => {
+          renderDrawerContent(key);
+          drawer.classList.remove('closed');
+          drawer.classList.add('open');
+          drawer.scrollTop = 0;
+        });
+      });
+    });
+
+    // ドロワー閉じるボタン
+    if (drawerBtnClose) {
+      drawerBtnClose.addEventListener('click', () => {
+        executeActiveTransition(() => {
+          drawer.classList.add('closed');
+          drawer.classList.remove('open');
+        });
+      });
+    }
+
+    // 次のセクションへ
+    if (drawerBtnNext) {
+      drawerBtnNext.addEventListener('click', () => {
+        const nextIndex = (sectionKeys.indexOf(currentSectionKey) + 1) % sectionKeys.length;
+        const nextKey = sectionKeys[nextIndex];
+        executeActiveTransition(() => {
+          renderDrawerContent(nextKey);
+          drawer.scrollTop = 0;
+        });
+      });
+    }
+
+    // カーソル追従
+    const cursor = document.getElementById('cursor-dot');
+    window.addEventListener('mousemove', (e) => {
+      if (cursor) {
+        cursor.style.left = `${e.clientX}px`;
+        cursor.style.top = `${e.clientY}px`;
+      }
+    });
+
+    document.querySelectorAll('button, a, .slab-interactive').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('is-hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('is-hovering'));
+    });
+
+    window.addEventListener('click', () => initAudio(), { once: true });
+  </script>
+</body>
+</html>

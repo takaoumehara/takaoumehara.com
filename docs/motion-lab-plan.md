@@ -2,6 +2,7 @@
 
 > Written by: R (research + plan) · 2026-09-27
 > 前提資料: `docs/motion-archive.md`（過去のローディング/トランジション実装の棚卸し）
+> 全部を持ち替え可能にする設計案: `docs/motion-lab/library-plan.md`（2026-09-28）
 > 関連（並行進行中・他エージェント）: `src/scripts/motion.js`, `src/scripts/site.js`,
 > `src/styles/transitions.css`, `src/styles/shell.css`, NEW `src/data/motion.json`,
 > NEW `src/scripts/motion-lab.js`, NEW `src/styles/motion-lab.css`, NEW `src/pages/lab/**`
