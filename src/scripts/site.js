@@ -2,6 +2,7 @@
 // swapped client-side by Astro's router (Site.astro), the sidebar persists,
 // and everything below is re-run from `astro:page-load`, which fires on the
 // first load and after every navigation. No framework, no dependencies.
+import { bindSearch } from "./search.js";
 import { navigate } from "astro:transitions/client";
 import * as motion from "./motion.js";
 
@@ -97,29 +98,12 @@ function bindSidebar() {
       }
     });
     
-    // Smart search: titles, categories, descriptions
-    searchInput.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      const items = document.querySelectorAll(".side-item");
-      const groups = document.querySelectorAll(".side-group");
-      
-      if (!query) {
-        items.forEach(item => item.style.display = "");
-        groups.forEach(group => group.style.display = "");
-        return;
-      }
-      
-      items.forEach(item => {
-        const text = item.textContent.toLowerCase();
-        const group = item.closest(".side-group");
-        const groupTitle = group ? (group.querySelector(".side-group-title") ?? group.querySelector("summary")).textContent.toLowerCase() : "";
-        item.style.display = (text.includes(query) || groupTitle.includes(query)) ? "" : "none";
-      });
-      
-      groups.forEach(group => {
-        const visibleItems = Array.from(group.querySelectorAll(".side-item"))
-          .filter(item => item.style.display !== "none");
-        group.style.display = visibleItems.length > 0 ? "" : "none";
+    // Full-text search over every work (src/scripts/search.js); a group
+    // whose rows all miss folds away.
+    bindSearch(searchInput, () => document.querySelectorAll(".side-item"), (el) => el.dataset.slug, () => {
+      document.querySelectorAll(".side-group").forEach((group) => {
+        const any = [...group.querySelectorAll(".side-item")].some((item) => item.style.display !== "none");
+        group.style.display = any ? "" : "none";
       });
     });
   }

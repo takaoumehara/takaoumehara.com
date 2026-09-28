@@ -167,3 +167,11 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   （`src/data/profile.json` と `src/lenses/default.json`）。
 - **Werewolf** はレイヤービューア（`/projects/werewolf-card-viewer.html?embed=1`）を埋め込み、**Fire TV** は実働プロトタイプ
   （`demo.html`）をティーザーとして埋め込む（`detail.teaser = {embed, title, aspect, aspectSm}`）。
+
+### Round 4（2026-09-28、本人「リソースを全部使って」「検索が弱い」）
+- **詳細ページの素材**: 5 体で全ページを総当たり。未使用の `public/assets`、`_legacy/` の旧ページ、`e1c14c9`（未使用素材 647 件の削除）で消えた画像を戻した。
+  個人のメール・電話番号・子どもの顔・子どもの名前・ブランド名入りの資料は載せない。
+- **映像**: `detail.teaser.youtube`（映像そのものが作品 — KOJI FIZZ）と `detail.films`（本文の映像セル — XQ / CLI Studios。ELA Quests は本人判断で載せない）。
+  押すまで YouTube を読まない（youtube-nocookie）。ホームのヒーローは静止画のまま。
+- **検索**: レールと `/work` は `/search-index.json`（ビルド時に記録と本文から生成、`src/lib/search-index.mjs`）を Fuse.js で引く。
+  クライアント名・役割・スタック・本文でも当たる。`tests/search.test.mjs`（"Amplify" → ELA Quests）。

@@ -72,6 +72,46 @@ export function detailEmbed(item) {
   return { kind: "embed", src: d.embed, title, aspect, aspectSm };
 }
 
+/**
+ * Films as the teaser, when the films are the work (KOJI FIZZ):
+ * `detail.teaser.youtube = [{ "id": "8mXYhHl5VDU", "title": {en, jp}, "sub": {en, jp}, "poster": "/assets/…" }]`.
+ * The first film fills the 16:9 box as a poster with a play button; the player
+ * (youtube-nocookie) loads only when someone presses play, and the other films
+ * sit in a row beneath it that swaps what the box plays. Without a local
+ * `poster`, a film's frame comes from YouTube's own thumbnail. Like the embed,
+ * the home hero and the admin keep the still from detailTeaser().
+ */
+const YT_ID = /^[A-Za-z0-9_-]{11}$/;
+const SITE_PATH = /^\/(?!\/)[^\s"'<>]+$/;
+function filmList(list, item) {
+  if (!Array.isArray(list)) return [];
+  return list
+    .filter((f) => f && YT_ID.test(f.id ?? ""))
+    .map((f) => ({
+      id: f.id,
+      title: typeof f.title === "string" ? { en: f.title } : f.title ?? { en: detailName(item).en },
+      sub: typeof f.sub === "string" ? { en: f.sub } : f.sub ?? null,
+      poster: SITE_PATH.test(f.poster ?? "") ? f.poster : `https://i.ytimg.com/vi/${f.id}/hqdefault.jpg`,
+    }));
+}
+export function detailFilms(item) {
+  const films = filmList(item.detail?.teaser?.youtube, item);
+  return films.length ? { kind: "youtube", films } : null;
+}
+
+/**
+ * Films that support the work without being it (a trailer, a walkthrough):
+ * `detail.films = { "title": {en, jp}, "list": [same shape as teaser.youtube] }`.
+ * Rendered as one cell after Challenge | Solution — the same poster, play
+ * button and picker as the films teaser, in the body instead of the hero.
+ */
+export function detailBodyFilms(item) {
+  const f = item.detail?.films;
+  const films = filmList(Array.isArray(f) ? f : f?.list, item);
+  if (!films.length) return null;
+  return { title: (Array.isArray(f) ? null : f?.title) ?? { en: "Films", jp: "映像" }, films };
+}
+
 export function detailFields(item) {
   const challenge = item.detail?.challenge ?? item.challenge;
   const solution = item.detail?.solution ?? item.solution;
@@ -85,6 +125,7 @@ export function detailFields(item) {
     year: detailYear(item),
     client: detailClient(item),
     stack: item.detail?.stack ?? item.stack ?? [],
-    teaser: detailEmbed(item) ?? detailTeaser(item),
+    teaser: detailEmbed(item) ?? detailFilms(item) ?? detailTeaser(item),
+    films: detailBodyFilms(item),
   };
 }

@@ -1,7 +1,9 @@
 ---
 // The project detail page, in the locked order:
 //   teaser (muted loop · still · name/logo fallback, 16:9 — or a live,
-//           same-origin prototype in an iframe when detail.teaser.embed is set)
+//           same-origin prototype in an iframe when detail.teaser.embed is set,
+//           or the films themselves when detail.teaser.youtube is set: a poster
+//           with a play button, and a row of the other films beneath it)
 //   → name (H1) + one-liner + Play (the page's only external link)
 //   → Challenge | Solution
 //   → body: 0–3 beats from src/case-studies/<slug>.html
@@ -49,7 +51,21 @@ const meta = [
 ---
 <article class="project-detail">
   <div class="project-bento">
-    <div class={`project-teaser bento-cell${teaser.kind === "embed" ? " project-teaser--embed" : ""}`} data-vt-hero style={teaserStyle}>
+    <div class={`project-teaser bento-cell${teaser.kind === "embed" ? " project-teaser--embed" : ""}`} data-vt-hero style={teaserStyle}
+         data-film-stage={teaser.kind === "youtube" ? "teaser" : undefined}>
+      {teaser.kind === "youtube" && (
+        <Fragment>
+          <img class="project-teaser-media film-poster" src={url(teaser.films[0].poster)} alt="" data-film-poster />
+          <button class="film-play" type="button" data-film-play data-film={teaser.films[0].id}
+                  data-film-title={loc(teaser.films[0].title).en}>
+            <span class="film-play-icon" aria-hidden="true"></span>
+            <span class="film-play-label">
+              <span class="t-en">Play</span><span class="t-jp">再生</span>
+              <span class="film-play-title" data-film-label set:html={t(loc(teaser.films[0].title))} />
+            </span>
+          </button>
+        </Fragment>
+      )}
       {teaser.kind === "embed" && (
         <iframe class="project-teaser-media project-teaser-frame" src={teaser.src} title={teaser.title}
                 loading="lazy" referrerpolicy="same-origin"></iframe>
@@ -79,6 +95,23 @@ const meta = [
       )}
     </div>
 
+    {teaser.kind === "youtube" && teaser.films.length > 1 && (
+      <nav class="project-films bento-cell" aria-label="Films" data-film-for="teaser">
+        <ol class="film-list">
+          {teaser.films.map((f, i) => (
+            <li>
+              <button class="film-pick" type="button" data-film-pick={f.id} data-film-title={loc(f.title).en}
+                      aria-pressed={i === 0 ? "true" : "false"}>
+                <span class="film-thumb"><img src={url(f.poster)} alt="" loading="lazy" decoding="async" /></span>
+                <span class="film-name" set:html={t(loc(f.title))} />
+                {f.sub && <span class="film-sub" set:html={t(loc(f.sub))} />}
+              </button>
+            </li>
+          ))}
+        </ol>
+      </nav>
+    )}
+
     <header class="project-header bento-cell">
       {item.kind === "experiment" && item.input && (
         <span class="input-stamp project-input">{String(item.input)}</span>
@@ -102,6 +135,37 @@ const meta = [
           <h2 class="project-cs-label"><span class="t-en">Solution</span><span class="t-jp">解決</span></h2>
           <p class="project-cs-text" set:html={tb(d.solution)} />
         </div>
+      </section>
+    )}
+
+    {d.films && (
+      <section class="project-filmset bento-cell" aria-label={loc(d.films.title).en}>
+        <h2 class="project-cs-label" set:html={t(loc(d.films.title))} />
+        <div class="project-filmset-stage" data-film-stage="body">
+          <img class="project-teaser-media film-poster" src={url(d.films.films[0].poster)} alt="" loading="lazy" data-film-poster />
+          <button class="film-play" type="button" data-film-play data-film={d.films.films[0].id}
+                  data-film-title={loc(d.films.films[0].title).en}>
+            <span class="film-play-icon" aria-hidden="true"></span>
+            <span class="film-play-label">
+              <span class="t-en">Play</span><span class="t-jp">再生</span>
+              <span class="film-play-title" set:html={t(loc(d.films.films[0].title))} />
+            </span>
+          </button>
+        </div>
+        {d.films.films.length > 1 && (
+          <ol class="film-list" data-film-for="body">
+            {d.films.films.map((f, i) => (
+              <li>
+                <button class="film-pick" type="button" data-film-pick={f.id} data-film-title={loc(f.title).en}
+                        aria-pressed={i === 0 ? "true" : "false"}>
+                  <span class="film-thumb"><img src={url(f.poster)} alt="" loading="lazy" decoding="async" /></span>
+                  <span class="film-name" set:html={t(loc(f.title))} />
+                  {f.sub && <span class="film-sub" set:html={t(loc(f.sub))} />}
+                </button>
+              </li>
+            ))}
+          </ol>
+        )}
       </section>
     )}
 
@@ -195,6 +259,102 @@ const meta = [
   .project-teaser-frame:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: -2px; }
   @media (max-width: 768px) {
     .project-teaser--embed { aspect-ratio: var(--teaser-aspect-sm, var(--teaser-aspect, 16 / 9)); }
+  }
+
+  /* Films as the teaser: the poster fills the box, the play button sits over
+     it (the whole box is the button's hit area), and pressing it swaps in the
+     player. The row beneath picks which film the box plays. */
+  .film-play {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    gap: 14px;
+    padding: var(--cell-pad, clamp(20px, 3vw, 32px));
+    border: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0) 45%);
+    color: #fff;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .film-play:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: -4px; }
+  .film-play-icon {
+    flex: none;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.72);
+    position: relative;
+    transition: transform 160ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .film-play-icon::after {
+    content: "";
+    position: absolute;
+    left: 26px;
+    top: 20px;
+    border-style: solid;
+    border-width: 12px 0 12px 20px;
+    border-color: transparent transparent transparent #fff;
+  }
+  .film-play:hover .film-play-icon { transform: scale(1.06); }
+  .film-play-label { display: flex; flex-direction: column; gap: 2px; font-size: var(--text-sm); }
+  .film-play-label > .t-en,
+  .film-play-label > .t-jp { font-family: var(--ff-mono); font-weight: var(--fw-mono); letter-spacing: 0.06em; text-transform: uppercase; }
+  .film-play-title { font-size: clamp(18px, 2vw, 28px); line-height: 1.15; }
+  /* The player is created by script, so it carries no scoped attribute. */
+  :global(.film-frame) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
+  /* `display: flex / block` above would otherwise beat the hidden attribute. */
+  .film-play[hidden], .film-poster[hidden] { display: none; }
+
+  .project-films { padding: 0; }
+  /* Films in the body: the same player, in a cell of its own with the grey
+     fill of Challenge | Solution. */
+  .project-filmset { background: var(--pr-card); display: flex; flex-direction: column; gap: calc(var(--gap-grid) * 2); }
+  .project-filmset-stage { position: relative; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--r); background: #000; }
+  .film-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: var(--gap-grid);
+  }
+  .film-pick {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 0 0 var(--gap-grid);
+    border: 0;
+    border-radius: var(--r);
+    background: transparent;
+    color: var(--pr-ink);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .film-pick:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+  .film-thumb {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: var(--r);
+    background: var(--pr-card);
+    margin-bottom: 6px;
+    outline: 2px solid transparent;
+    outline-offset: -2px;
+    transition: outline-color 120ms;
+  }
+  .film-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .film-pick[aria-pressed="true"] .film-thumb { outline-color: var(--pr-ink); }
+  .film-name { font-size: var(--text-body); color: var(--pr-ink); }
+  .film-sub { font-size: var(--text-sm); color: var(--pr-ink-2); }
+  @media (max-width: 768px) {
+    .film-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .film-play-icon { width: 52px; height: 52px; }
+    .film-play-icon::after { left: 21px; top: 16px; border-width: 10px 0 10px 16px; }
   }
 
   .video-sound-toggle {
@@ -459,8 +619,40 @@ const meta = [
   function markBeatCells() {
     document.querySelectorAll(".project-beats > .beat").forEach((el) => el.classList.add("bento-cell"));
   }
+  // Films as the teaser: nothing from YouTube loads until someone presses
+  // play. Then the poster and button give way to the player, which starts
+  // on its own because the press was the gesture. Picking another film in the
+  // row below plays it in the same box.
+  function initFilms() {
+    document.querySelectorAll<HTMLElement>("[data-film-stage]").forEach((stage) => {
+      const key = stage.dataset.filmStage;
+      const picks = [...document.querySelectorAll<HTMLButtonElement>(`[data-film-for="${key}"] [data-film-pick]`)];
+      const play = (id: string, title: string) => {
+        stage.querySelector(".film-frame")?.remove();
+        const frame = document.createElement("iframe");
+        frame.className = "film-frame";
+        frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&playsinline=1`;
+        frame.title = title;
+        frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+        frame.allowFullscreen = true;
+        frame.referrerPolicy = "strict-origin-when-cross-origin";
+        stage.querySelector("[data-film-play]")?.setAttribute("hidden", "");
+        stage.querySelector("[data-film-poster]")?.setAttribute("hidden", "");
+        stage.append(frame);
+        frame.focus();
+        picks.forEach((p) => p.setAttribute("aria-pressed", String(p.dataset.filmPick === id)));
+      };
+      const button = stage.querySelector<HTMLButtonElement>("[data-film-play]");
+      button?.addEventListener("click", () => play(button.dataset.film!, button.dataset.filmTitle ?? ""));
+      picks.forEach((p) => p.addEventListener("click", () => {
+        play(p.dataset.filmPick!, p.dataset.filmTitle ?? "");
+        if (stage.getBoundingClientRect().top < 0) stage.scrollIntoView({ block: "start" });
+      }));
+    });
+  }
   function init() {
     initTeaser();
+    initFilms();
     markBeatCells();
   }
   document.addEventListener("astro:page-load", init);

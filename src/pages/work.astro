@@ -376,6 +376,7 @@ FILTERS[3].count = designCount;
 </style>
 
 <script>
+  import { bindSearch } from "../scripts/search.js";
   // Filter functionality
   (() => {
     const btns = document.querySelectorAll(".work-page-full .filter-btn");
@@ -438,14 +439,7 @@ FILTERS[3].count = designCount;
       }
     });
     
-    // Simple search
-    input.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase();
-      const cards = document.querySelectorAll(".work-page-full .cat-card");
-      cards.forEach((card) => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.includes(query) ? "" : "none";
-      });
-    });
+    // Full-text search over every work (src/scripts/search.js).
+    bindSearch(input, () => document.querySelectorAll(".work-page-full .cat-card"), (el) => el.id);
   })();
 </script>
