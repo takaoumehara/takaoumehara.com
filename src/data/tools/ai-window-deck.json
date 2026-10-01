@@ -1,0 +1,94 @@
+{
+  "kind": "tool",
+  "slug": "ai-window-deck",
+  "title": "AI Window Deck",
+  "role": "Designer & builder",
+  "engagement": "open-source",
+  "summary": {
+    "en": "A Chrome extension that opens your AI tools as a deck of real Chrome windows, tiles them, and brings any one forward with a single key.",
+    "jp": "AI ツールを本物の Chrome ウィンドウの束として開き、並べ、キーひとつで 1 枚を手前に大きくする Chrome 拡張。"
+  },
+  "status": "in-progress",
+  "playable": true,
+  "year": "2026",
+  "stack": [
+    "Chrome Manifest V3",
+    "Chrome Windows API",
+    "React",
+    "Tailwind CSS",
+    "Vite"
+  ],
+  "capabilities": [
+    {
+      "id": "ai",
+      "strength": "moderate"
+    },
+    {
+      "id": "ux-cx",
+      "strength": "strong"
+    },
+    {
+      "id": "prototyping",
+      "strength": "strong"
+    },
+    {
+      "id": "zero-to-one",
+      "strength": "moderate"
+    }
+  ],
+  "contribution": {
+    "mine": [
+      "Designed and built a Manifest V3 Chrome extension that opens, names and tiles a deck of real Chrome windows",
+      "Built the spotlight shortcut that enlarges the active window and returns it to its exact tile, with a history kept in session storage so it survives the service worker stopping",
+      "Chose left-hand default shortcuts that avoid keys macOS and Windows Chrome already use",
+      "Built the Arrange canvas in React and Tailwind CSS, with multi-monitor targeting and saved decks synced through Chrome storage"
+    ],
+    "level": "solo"
+  },
+  "challenge": {
+    "en": "Working with several AI tools at once means a desktop full of windows that keep drifting out of place. The obvious fix — one big dashboard of embedded sites — breaks on the tools that matter: some AI sites refuse to be embedded in an iframe, and an embedded page loses the browser's sign-ins, password manager and other extensions.",
+    "jp": "AI ツールを何本も同時に使うと、デスクトップはウィンドウだらけになり、すぐに散らかる。すぐ思いつく解決は、各サイトを埋め込んだ大きなダッシュボード。だが肝心の AI サイトには iframe への埋め込みを禁じているものがあり、埋め込んだページではログインもパスワードマネージャーも、ほかの拡張も使えない。"
+  },
+  "solution": {
+    "en": "Leave every site in its own real Chrome window, and make the extension responsible only for where the windows go. A saved deck opens each window with its own tabs, names it with a coloured tab group and tiles it on the screen you pick. One shortcut enlarges the window you are in; the same shortcut puts it back in its tile.",
+    "jp": "サイトはそれぞれ本物の Chrome ウィンドウのまま残し、拡張が受け持つのは「ウィンドウをどこに置くか」だけにした。保存した構成を開くと、ウィンドウごとにタブが開き、色付きのタブグループで名前が付き、選んだ画面にタイル状に並ぶ。いま使っているウィンドウはショートカットひとつで大きくなり、同じキーでもとの枠へ戻る。"
+  },
+  "chapter": "ai-ventures",
+  "assets": {
+    "thumb": "assets/ai-window-deck/thumb.jpg",
+    "hero": "assets/ai-window-deck/still.jpg",
+    "preview": {
+      "webm": "assets/ai-window-deck/preview.webm",
+      "mp4": "assets/ai-window-deck/preview.mp4"
+    },
+    "artLabel": "AI Window Deck"
+  },
+  "links": {
+    "live": "https://github.com/takaoumehara/ai-window-deck",
+    "repo": "https://github.com/takaoumehara/ai-window-deck",
+    "caseStudy": "projects/ai-window-deck.html"
+  },
+  "visibility": "public",
+  "cardKind": {
+    "en": "Chrome extension · Manifest V3",
+    "jp": "Chrome 拡張 · Manifest V3"
+  },
+  "cardLine": {
+    "en": "Six AI windows. One click to tile them, one key to bring one forward.",
+    "jp": "AI のウィンドウ 6 枚。並べるのはワンクリック、手前に出すのはキーひとつ。"
+  },
+  "detail": {
+    "play": {
+      "en": "Get it on GitHub",
+      "jp": "GitHub で入手"
+    },
+    "role": {
+      "en": "Designer & builder",
+      "jp": "デザイン・開発"
+    },
+    "oneLiner": {
+      "en": "A Chrome extension that opens your AI tools as real Chrome windows, tiles them in one click, and enlarges any one with a single key — then puts it back.",
+      "jp": "AI ツールを本物の Chrome ウィンドウとして開き、ワンクリックで並べる。キーひとつで 1 枚を大きくし、また元の枠へ戻す Chrome 拡張。"
+    }
+  }
+}

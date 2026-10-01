@@ -24,6 +24,7 @@ const PAGES = [
   ["/contact.html", "Contact"],
   ["/projects/koji-fizz.html", "a case study (KOJI FIZZ)"],
   ["/projects/werewolf.html", "a dark case study (Werewolf)"],
+  ["/projects/ai-window-deck.html", "a tool on the detail template (AI Window Deck)"],
 ];
 
 for (const [path, name] of PAGES) {

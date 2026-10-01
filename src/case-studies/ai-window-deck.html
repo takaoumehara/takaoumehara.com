@@ -1,0 +1,55 @@
+<!-- Body beats only (0–3). Teaser, name, one-liner, Play, Challenge | Solution and Role / Year come from src/data/tools/ai-window-deck.json.
+     Sources: the extension's repository (github.com/takaoumehara/ai-window-deck — README, background.js, src/), v2.0 React UI.
+     The teaser and every image on this page were captured from the extension itself, running in Chromium with the English UI.
+     The six windows open neutral stand-in pages (chat.example, deploy.example) so no real account or third-party product is shown. -->
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Draw the deck before you open it</span>
+    <span class="t-jp is-block">開く前に、画面の上で決めておく</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The settings page is a small map of the screen. Each tile is one window with a name and one or more addresses, which open as tabs. Pick a count or a grid, resize the tiles, choose the monitor, and Launch opens every window at once. Saved decks live in Chrome's synced storage, so they follow you to another computer signed in to the same Chrome. There is no server and no account of its own.</span>
+    <span class="t-jp is-block">設定画面は、画面の縮図になっている。1 枚のタイルが 1 つのウィンドウで、名前と、タブとして開くアドレスを持つ。枚数かグリッドを選び、タイルの大きさを整え、モニターを選んで「Launch」を押すと、全部のウィンドウが一度に開く。保存した構成は Chrome の同期ストレージに入るので、同じ Chrome にログインした別のパソコンにもついてくる。専用のサーバーもアカウントもない。</span>
+  </p>
+  <figure class="beat-media">
+    <img src="/assets/ai-window-deck/arrange.jpg" alt="The Arrange tab in English: a list of six saved windows on the left — Research, Draft, Code review, Spec, Deploy and Notes — and a three-by-two canvas of the same windows with a Launch button above it" loading="lazy" width="1580" height="760">
+    <figcaption class="beat-caption">
+      <span class="t-en">The Arrange canvas: six named windows on a 3 × 2 grid, one Launch away. Captured from the extension running in Chromium.</span>
+      <span class="t-jp">Arrange の画面。名前の付いた 6 枚を 3 × 2 に置き、あとは Launch を押すだけ。Chromium で動く拡張から撮影。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">One key out, the same key back</span>
+    <span class="t-jp is-block">同じキーで大きくし、同じキーで戻す</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">⌥X (Alt+X on Windows) enlarges the window you are in to the size you chose — half, three quarters, full height only, full screen or a custom size — around its own centre or in the middle of the screen. Press it again and it lands back in the exact tile it left. An earlier version cycled tile, enlarged, full screen, so every time you only wanted a little more room you had to pass through full screen; full screen moved to its own key, ⌥Q. The way home is kept in session storage, because a Manifest V3 service worker can stop at any moment.</span>
+    <span class="t-jp is-block">⌥X（Windows では Alt+X）で、いま使っているウィンドウが選んだ大きさに広がる。半分、4 分の 3、縦だけいっぱい、全画面、自由な寸法。広げる起点は、そのウィンドウの中心か画面の中央。もう一度押すと、出てきたタイルにぴったり戻る。以前は「タイル → 拡大 → 全画面」の 3 段で、少し広げたいだけでも毎回全画面を通らされた。全画面は専用の ⌥Q に分けた。戻り先はセッションストレージに残す。Manifest V3 の Service Worker は、いつ止まってもおかしくないからだ。</span>
+  </p>
+  <figure class="beat-media">
+    <img src="/assets/ai-window-deck/spotlight.jpg" alt="Six tiled Chrome windows with the Draft window enlarged to three quarters of the screen in the centre; the gap at the top middle is its empty tile" loading="lazy" width="1600" height="900">
+    <figcaption class="beat-caption">
+      <span class="t-en">Draft at three quarters, grown at the screen centre. The empty slot at the top is where it goes back to.</span>
+      <span class="t-jp">Draft を画面中央で 4 分の 3 に。上の空いた枠が、戻る場所。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Four keys under the left hand</span>
+    <span class="t-jp is-block">左手だけで届く 4 つのキー</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The four default keys — ⌥X spotlight, ⌥Z back to the original tile, ⌥A re-tile, ⌥Q full screen — sit under the left hand, so the right one stays on the mouse. Control combinations were dropped because on a Mac ⌃C is an easy slip for ⌘C, and the Alt keys Windows Chrome already uses — Alt+F, Alt+E, Alt+D, Alt+Space — were avoided. Chrome gives an extension only four default keys, so undo, next and previous window and jump to window 1–8 are registered without keys, for people to assign. When windows drift, ⌥A puts them back in the order they already sit, and the last ten arrangements can be undone.</span>
+    <span class="t-jp is-block">既定の 4 つ（⌥X 拡大、⌥Z 元のタイルへ、⌥A 並べ直し、⌥Q 全画面）は、すべて左手で押せる。右手はマウスに置いたままでいい。Ctrl 系はやめた。Mac では ⌃C が ⌘C の押し間違いとして起きやすいからだ。Windows の Chrome が使っている Alt+F・Alt+E・Alt+D・Alt+Space も避けた。拡張が持てる既定キーは 4 つまでなので、やり直し、次と前のウィンドウ、ウィンドウ 1〜8 への移動は、キーなしで登録してある。散らかったら ⌥A で、いまの並び順のままグリッドに戻る。直前の配置は 10 回までやり直せる。</span>
+  </p>
+  <figure class="beat-media">
+    <img src="/assets/ai-window-deck/messy.jpg" alt="Six Chrome windows overlapping at different sizes across the screen, a moment before they are re-tiled" loading="lazy" width="1600" height="900">
+    <figcaption class="beat-caption">
+      <span class="t-en">The same six windows dragged out of place, a moment before ⌥A puts them back in the grid.</span>
+      <span class="t-jp">同じ 6 枚を散らかした状態。この直後に ⌥A でグリッドへ戻る。</span>
+    </figcaption>
+  </figure>
+</section>
