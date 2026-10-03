@@ -89,7 +89,7 @@ test("Workshops page is centered around Break Bias with 4 use cases and studio r
 
 test("About page uses updated professional descriptor", () => {
   const html = read("about.html");
-  assert.match(html, /Creative Director · Interactive Media Designer · 0→1 Product &amp; Business Builder/);
+  assert.match(html, /Creative Director &amp; AI Product Builder/);
 });
 
 test("Publications page uses refined hero title", () => {
