@@ -17,7 +17,8 @@ const CLIENT_10 = {
   carnegie: "carnegie", "coca-cola": "coca-cola", extraordinary: "extraordinary",
   "credit-card-portal": "credit-card-portal", xq: "xq",
 };
-const PAGES = [...INTERACTIVE_8.map((s) => [s, s]), ...Object.entries(CLIENT_10)];
+const AI_TOOLS = ["ai-window-deck"];
+const PAGES = [...INTERACTIVE_8.map((s) => [s, s]), ...Object.entries(CLIENT_10), ...AI_TOOLS.map((s) => [s, s])];
 
 const articleOf = (html) => html.match(/<article class="project-detail"[\s\S]*?<\/article>/)?.[0] ?? "";
 

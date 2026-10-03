@@ -6,7 +6,7 @@
 | Source | src/analyze/samples/stripe-senior-product-designer.txt |
 | Length | 609 words · requirements 11 lines · responsibilities 9 lines |
 | Lens draft | `src/lenses/stripe.json` (status: draft — not built until you publish it) |
-| Evidence scored | 45 of 46 items matched at least one capability |
+| Evidence scored | 46 of 47 items matched at least one capability |
 
 ## 1. What the posting is about
 
@@ -22,9 +22,9 @@ Top themes, from the capability weights below. These become the "focus on …" p
 
 | Capability | Weight | Record | Backed by |
 |---|---|---|---|
-| Prototyping | 100% | DIRECT | strong: amazon-firetv, cross-model-handoff, edutrack, emoji-blast … <br><small>"code"×2 "ship"×2 "css"×1</small> |
+| Prototyping | 100% | DIRECT | strong: ai-window-deck, amazon-firetv, cross-model-handoff, edutrack … <br><small>"code"×2 "ship"×2 "css"×1</small> |
 | Cross-functional Leadership | 94% | DIRECT | strong: verizon-ai-workflow <br><small>"engineering"×2 "across the company"×1 "collaboration"×1</small> |
-| UX / CX | 86% | DIRECT | strong: amazon-firetv, carnegie, cli-studios, credit-card-portal … <br><small>"checkout"×2 "customers"×1 "end to end"×1</small> |
+| UX / CX | 86% | DIRECT | strong: ai-window-deck, amazon-firetv, carnegie, cli-studios … <br><small>"checkout"×2 "customers"×1 "end to end"×1</small> |
 | B2B | 71% | DIRECT | strong: breakbias <br><small>"businesses"×2 "dashboard"×2 "merchants"×2</small> |
 | AI | 63% | DIRECT | strong: cross-model-handoff, failforward, intentfirst, interactive-experience-skills … <br><small>"ai"×2 "AI"×2 "ai-powered"×1</small> |
 | 0→1 | 62% | DIRECT | strong: amazon-firetv, edutrack, festival-reinvention, intentfirst … <br><small>"0 to 1"×1 "0→1"×1 "0→1"×1</small> |
@@ -134,8 +134,8 @@ None at the 30% threshold. Every capability the posting weights is backed by str
 | The posting says | In the record? |
 |---|---|
 | Figma (Figma) | verizon-ai-workflow, verizon-totalwireless |
-| HTML / CSS / JavaScript (HTML, CSS, JavaScript) | amazon-firetv, verizon-totalwireless |
-| React (React) | konosaki, moime, mybrainspec, snap-pair |
+| HTML / CSS / JavaScript (HTML, CSS, JavaScript) | ai-window-deck, amazon-firetv, verizon-totalwireless |
+| React (React) | ai-window-deck, konosaki, moime, mybrainspec, snap-pair |
 | SQL / data analysis (analytics) | **not mentioned anywhere** — if true, it is a gap; if you have it, add it to the record first |
 | User research (user research) | cli-studios, hummingbird |
 | A/B testing / experimentation (A/B test) | extraordinary |
