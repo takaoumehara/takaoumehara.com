@@ -5,12 +5,20 @@
 // the tab across navigations until ?lab=0 or its × button. It is loaded as a
 // separate chunk, only then (site.js), so normal visitors never download it.
 //
-// Every parameter of src/data/motion.json has a control here. The working
-// config is kept in localStorage ("tu-motion-lab") and, while the lab is open,
-// it drives every real navigation too. "Copy JSON" copies the full resolved
-// config: pasting it over src/data/motion.json makes it the site's default.
+// Every parameter of src/data/motion.json has a control here. The v2 blocks
+// (transition / boot / idle / sound / interactions) get theirs from the style
+// registry (src/scripts/styles/index.mjs): pick a style, and the controls for
+// its own params appear under it (docs/motion-lab/engine-contract.md §6).
+// The working config is kept in localStorage ("tu-motion-lab") and, while the
+// lab is open, it drives every real navigation too. "Copy JSON" copies the
+// full resolved config: pasting it over src/data/motion.json makes it the
+// site's default.
 
 import * as motion from "./motion.js";
+import { jevRow } from "./motion-lab-jev.js";
+import { byKind, find as findStyle, resolveParams } from "./styles/index.mjs";
+import { INTERACTION_FIELDS } from "./motion-interactions.mjs";
+import { exportCode } from "./motion-export.mjs";
 import "../styles/motion-lab.css";
 
 // ── Presets: partial configs merged over the defaults ──────────────────────
@@ -104,6 +112,18 @@ const p = (key, label, min, max, step = 10, unit = "ms", o = {}) => ({ key, labe
 const e = (key, label) => ({ key, label, type: "easing" });
 const t = (key, label, o = {}) => ({ key, label, type: "text", ...o });
 const c = (key, label) => ({ key, label, type: "color" });
+// A style select (the registry's styles of one kind; "Lab only" marked) and,
+// under it, the chosen style's own params (built from its `params` spec).
+const styleOptions = (kind) => byKind(kind).map((st) => ({ value: st.id, text: `${st.label}${st.labOnly ? " (Lab only)" : ""}` }));
+const ss = (key, label, kind) => s(key, label, styleOptions(kind), { norand: true, restyle: true });
+const sp = (path, kind) => ({ key: `${path}.params`, label: "Style parameters", type: "params", kind, path, norand: true });
+const paramField = (key, name, spec) => {
+  const label = spec.label || name;
+  if (Array.isArray(spec.options)) return s(key, label, spec.options, { norand: true });
+  if (typeof spec.default === "boolean") return b(key, label, { norand: true });
+  if (typeof spec.default === "number") return r(key, label, spec.min ?? 0, spec.max ?? Math.max(1, spec.default * 2), spec.step ?? 1, spec.unit ?? "", { norand: true });
+  return t(key, label, { norand: true });
+};
 const outlineFields = (pre) => [
   s(`${pre}.outline.style`, "Draw style", OUTLINES),
   b(`${pre}.outline.reverse`, "Counter-clockwise"),
@@ -173,6 +193,27 @@ export const SCHEMA = [
     r("global.navSpeed", "Navigation speed", 0.25, 5, 0.05, "×", { rand: [1.4, 2.6] }),
     r("global.navCapMs", "Total cap, navigation (0 = none)", 0, 5000, 50, "ms", { norand: true }),
   ] },
+  { id: "transition", label: "Transition", note: "Between pages: a cover closes over the page while the next one loads, then lifts while the reveal plays. Cover none + reveal box-first is the v1 behaviour.", fields: [
+    ss("transition.cover.style", "Cover", "cover"),
+    sp("transition.cover", "cover"),
+    ss("transition.reveal.style", "Reveal", "reveal"),
+    sp("transition.reveal", "reveal"),
+    r("transition.holdMs", "Hold, covered (cover only)", 0, 2000, 10, "ms", { norand: true }),
+    r("transition.revealDelayMs", "Reveal after the lift starts (− = under the cover)", -1500, 1500, 10, "ms", { norand: true }),
+  ] },
+  { id: "boot", label: "Boot (first load in the tab)", fields: [
+    ss("boot.style", "Boot", "boot"),
+    sp("boot", "boot"),
+  ] },
+  { id: "idle", label: "Idle (while the page is shown)", fields: [
+    ss("idle.style", "Idle", "idle"),
+    sp("idle", "idle"),
+  ] },
+  { id: "sound", label: "Sound", note: "Off by default. Even when on, nothing sounds before your first click or key.", fields: [
+    b("sound.enabled", "Sound", { norand: true }),
+    r("sound.volume", "Volume", 0, 1, 0.05, "", { norand: true }),
+  ] },
+  ...(INTERACTION_FIELDS.length ? [{ id: "interactions", label: "Interactions", fields: INTERACTION_FIELDS }] : []),
   { id: "rail", label: "Rail (left)", fields: [
     s("rail.playOn", "Rail plays on", ["session-first", "every-load", "always", "never"], { norand: true }),
     s("rail.order", "Order", ORDERS),
@@ -272,6 +313,8 @@ function commit({ edited = true, replay = true } = {}) {
   cfg = motion.setConfig(cfg);
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => store.set(motion.LAB_KEY, cfg), 120);
+  // Anyone on the page (the /lab/motion tool, its stage iframes) hears every change.
+  try { window.dispatchEvent(new CustomEvent("mlab:config", { detail: motion.getConfig() })); } catch (err) {}
   const sel = panel?.querySelector("#mlab-preset");
   if (sel) sel.value = baseName(cfg.preset) in PRESETS ? baseName(cfg.preset) : "";
   const tag = panel?.querySelector(".mlab-edited");
@@ -315,7 +358,30 @@ const shownKey = (key) => {
 };
 const val = (key) => getAt(cfg, shownKey(key));
 const takeBase = (g) => { for (const k of motion.TEXT_KEYS) cfg[g][k] = structuredClone(cfg.text[k]); };
-function field(f) {
+// The chosen style's params: rebuilt whenever the style changes (a select,
+// a preset, an import). Their values are filled in from the style's defaults.
+function styleParams(f) {
+  const box = el("div", { class: "mlab-params", "data-kind": f.kind });
+  let shown = null, local = [];
+  const styleNow = () => findStyle(f.kind, getAt(cfg, `${f.path}.style`));
+  const fill = () => setAt(cfg, f.key, resolveParams(f.kind, shown, getAt(cfg, f.key)));
+  const render = () => {
+    const st = styleNow();
+    shown = st?.id ?? null;
+    fill();
+    local = [];
+    box.replaceChildren(...Object.entries(st?.params ?? {}).map(([k, spec]) => field(paramField(`${f.key}.${k}`, k, spec), local)));
+    local.forEach((u) => u());
+  };
+  updaters.push(() => {
+    if (styleNow()?.id !== shown) return render();
+    fill();
+    local.forEach((u) => u());
+  });
+  return box;
+}
+function field(f, sink = updaters) {
+  if (f.type === "params") return styleParams(f);
   const id = `mlab-f${++uid}`;
   const row = el("div", { class: `mlab-f mlab-f-${f.type}` });
   const label = el("label", { for: id, text: f.label });
@@ -326,7 +392,7 @@ function field(f) {
     if (TYPES.has(g) && cfg[g].follow && (!f.keep || (f.key === `${g}.follow` && v === false))) { takeBase(g); cfg[g].follow = false; }
     setAt(cfg, f.key, v);
     commit();
-    if (g === "text" || TYPES.has(g)) refresh();
+    if (g === "text" || TYPES.has(g) || f.restyle) refresh();
   };
   if (f.type === "range") {
     const range = el("input", { type: "range", id, min: f.min, max: f.max, step: f.step });
@@ -336,7 +402,7 @@ function field(f) {
     range.addEventListener("input", () => { num.value = fmt(range.value, f.step); set(Number(range.value)); });
     num.addEventListener("change", () => { const v = Number(num.value); if (Number.isFinite(v)) { range.value = v; set(v); } else sync(); });
     row.append(el("div", { class: "mlab-ctl" }, range, num, unit));
-    updaters.push(sync);
+    sink.push(sync);
   } else if (f.type === "pair") {
     const mk = (i, name) => {
       const rid = i === 0 ? id : `${id}b`;
@@ -345,23 +411,25 @@ function field(f) {
       const put = (v) => { const arr = val(f.key).slice(); arr[i] = v; set(arr); };
       range.addEventListener("input", () => { num.value = range.value; put(Number(range.value)); });
       num.addEventListener("change", () => { const v = Number(num.value); if (Number.isFinite(v)) { range.value = v; put(v); } });
-      updaters.push(() => { const v = val(f.key)[i]; range.value = v; num.value = fmt(v, f.step); });
+      sink.push(() => { const v = val(f.key)[i]; range.value = v; num.value = fmt(v, f.step); });
       return el("div", { class: "mlab-ctl" }, el("span", { class: "mlab-minmax", text: name, "aria-hidden": "true" }), range, num, el("span", { class: "mlab-unit", text: f.unit, "aria-hidden": "true" }));
     };
     label.textContent = `${f.label} (min–max)`;
     row.append(mk(0, "min"), mk(1, "max"));
   } else if (f.type === "select" || f.type === "color") {
     const opts = f.type === "color" ? COLORS : f.options;
-    const sel = el("select", { id }, opts.map((o) => el("option", { value: o, text: f.type === "color" ? `--pr-${o}` : o })));
+    const sel = el("select", { id }, opts.map((o) => (typeof o === "object"
+      ? el("option", { value: o.value, text: o.text })
+      : el("option", { value: o, text: f.type === "color" ? `--pr-${o}` : o }))));
     const sw = f.type === "color" ? el("span", { class: "mlab-swatch", "aria-hidden": "true" }) : null;
     sel.addEventListener("change", () => { set(sel.value); if (sw) sw.style.background = `var(--pr-${sel.value})`; });
     row.append(el("div", { class: "mlab-ctl" }, sw, sel));
-    updaters.push(() => { sel.value = val(f.key); if (sw) sw.style.background = `var(--pr-${sel.value})`; });
+    sink.push(() => { sel.value = val(f.key); if (sw) sw.style.background = `var(--pr-${sel.value})`; });
   } else if (f.type === "toggle") {
     const box = el("input", { type: "checkbox", id, role: "switch", class: "mlab-switch", disabled: f.locked });
     box.addEventListener("change", () => set(box.checked));
     row.append(el("div", { class: "mlab-ctl" }, box, f.locked ? el("span", { class: "mlab-unit", text: "always on" }) : null));
-    updaters.push(() => { box.checked = Boolean(val(f.key)); });
+    sink.push(() => { box.checked = Boolean(val(f.key)); });
   } else if (f.type === "easing") {
     const sel = el("select", { id }, [...EASE_NAMES, "custom"].map((o) => el("option", { value: o, text: o === "custom" ? "custom…" : o })));
     const custom = el("input", { type: "text", class: "mlab-text", "aria-label": `${f.label}: custom CSS easing`, placeholder: "cubic-bezier(.2,.8,.2,1)", spellcheck: "false" });
@@ -382,12 +450,12 @@ function field(f) {
       if (ok) set(custom.value); else say(`Not a CSS easing: ${custom.value}`);
     });
     row.append(el("div", { class: "mlab-ctl mlab-ctl-col" }, sel, custom));
-    updaters.push(sync);
+    sink.push(sync);
   } else if (f.type === "text") {
     const inp = el("input", { type: "text", id, class: "mlab-text", maxlength: f.maxlength, spellcheck: "false" });
     inp.addEventListener("input", () => set(inp.value));
     row.append(el("div", { class: "mlab-ctl" }, inp));
-    updaters.push(() => { inp.value = val(f.key) ?? ""; });
+    sink.push(() => { inp.value = val(f.key) ?? ""; });
   }
   return row;
 }
@@ -422,10 +490,18 @@ function showIo(text, mode) {
   io.hidden = false;
   io.dataset.mode = mode;
   io.querySelector(".mlab-io-apply").hidden = mode !== "import";
-  io.querySelector(".mlab-io-title").textContent = mode === "import" ? "Paste a config and apply" : "Config JSON — select all and copy";
+  io.querySelector(".mlab-io-title").textContent = mode === "import" ? "Paste a config and apply"
+    : mode === "export" ? "Exported code — CSS + WAAPI (read-only)" : "Config JSON — select all and copy";
+  ta.readOnly = mode === "export";
   ta.value = text;
   ta.focus();
-  if (mode === "copy") ta.select();
+  if (mode === "copy" || mode === "export") ta.select();
+}
+// Export code: the config as CSS + WAAPI to paste elsewhere (motion-export.mjs).
+function exportView() {
+  const x = exportCode(motion.getConfig()) || {};
+  showIo([x.css, x.js, x.note].filter(Boolean).join("\n\n"), "export");
+  say("Exported code: in the box below.");
 }
 async function copyJson() {
   const text = json();
@@ -495,6 +571,7 @@ function drag(head) {
     head.addEventListener("pointercancel", up);
   });
 }
+const countOf = (g) => g.fields.filter((f) => f.type !== "params").length;
 function build() {
   const presetSel = el("select", { id: "mlab-preset" },
     el("option", { value: "", text: "— custom —" }),
@@ -508,18 +585,18 @@ function build() {
     const state = g.type ? el("span", { class: "mlab-state" }) : null;
     if (state) updaters.push(() => { state.textContent = cfg[g.type].follow ? "follows All text" : "own settings"; });
     const d = el("details", { class: "mlab-group", "data-id": g.id, open: ui.open.includes(g.id) },
-      el("summary", {}, el("span", { text: g.label }), state, el("span", { class: "mlab-count", text: String(g.fields.length), "aria-label": `${g.fields.length} parameters` })),
+      el("summary", {}, el("span", { text: g.label }), state, el("span", { class: "mlab-count", text: String(countOf(g)), "aria-label": `${countOf(g)} parameters` })),
       el("div", { class: "mlab-fields" },
         g.note ? el("p", { class: "mlab-note", text: g.note }) : null,
         el("div", { class: "mlab-actions" }, el("button", { type: "button", class: "mlab-btn", onclick: () => resetGroup(g), text: `Reset ${g.label.split(" ·")[0].split(" (")[0]} to preset` })),
-        g.fields.map(field)));
+        g.fields.map((f) => field(f))));
     d.addEventListener("toggle", () => {
       ui.open = [...panel.querySelectorAll(".mlab-group[open]")].map((x) => x.dataset.id);
       saveUi();
     });
     return d;
   });
-  const total = SCHEMA.reduce((n, g) => n + g.fields.length, 0);
+  const total = SCHEMA.reduce((n, g) => n + countOf(g), 0);
   const head = el("header", { class: "mlab-head" },
     el("h2", { class: "mlab-title", id: "mlab-title" }, "Motion Lab", el("span", { class: "mlab-ver", text: `v${cfg.version} · ${total} params` })),
     el("div", { class: "mlab-tools" },
@@ -546,10 +623,12 @@ function build() {
         btn("Randomize", randomize),
         btn("Reset to preset", () => applyPreset(presetName()), { title: "Back to the selected preset's settings" }),
         btn("Copy JSON", copyJson),
-        btn("Import JSON", () => showIo(json(), "import"))),
+        btn("Import JSON", () => showIo(json(), "import")),
+        btn("Export code", exportView)),
       el("div", { class: "mlab-f mlab-f-toggle" },
         el("div", { class: "mlab-lab" }, el("label", { for: "mlab-auto", text: "Replay on every change" })),
         el("div", { class: "mlab-ctl" }, auto)),
+      jevRow({ el, getConfig: motion.getConfig, say, apply: (config) => importJson(JSON.stringify(config)) }),
       io,
       el("p", { class: "mlab-status", role: "status", "aria-live": "polite" }),
       el("div", { class: "mlab-groups" }, groups)));

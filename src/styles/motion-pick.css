@@ -1,0 +1,92 @@
+/* The keep-or-toss picker (src/scripts/motion-pick.js). PORTO ROCHA quiet:
+   a grey card, 8px radius, 13px text, one weight, mono uppercase labels, and
+   System Blue only for the focus ring and the applied row. Colours come from
+   tokens.css only. */
+.mp {
+  --mp-tap: 44px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: var(--r, 8px);
+  background: var(--pr-card);
+  color: var(--pr-ink);
+  font-family: var(--pr-ff);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+.mp *, .mp *::before, .mp *::after { box-sizing: border-box; font-weight: 400; }
+.mp p, .mp ul { margin: 0; }
+.mp [hidden] { display: none !important; }
+
+/* The site's bilingual spans, in case the host page does not carry the rule. */
+.mp .t-jp { display: none; }
+html.lang-jp .mp .t-en { display: none; }
+html.lang-jp .mp .t-jp { display: inline; }
+
+.mp-label, .mp-sublabel, .mp-count, .mp-status, .mp-key {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pr-ink-2);
+}
+.mp-status:empty { display: none; }
+
+.mp-intro, .mp-round, .mp-list { display: flex; flex-direction: column; gap: 12px; }
+.mp-name { font-size: 15px; overflow-wrap: anywhere; }
+
+.mp-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--pr-line);
+  border-radius: var(--r, 8px);
+  background: var(--pr-canvas);
+  color: var(--pr-ink);
+  font: inherit;
+  cursor: pointer;
+}
+.mp-btn:hover { background: var(--pr-card-2); }
+.mp-btn:focus { outline: none; }
+.mp-btn:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+
+.mp-start { align-self: flex-start; min-height: var(--mp-tap); padding: 0 20px; }
+
+.mp-choices { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mp-choices .mp-btn { min-height: 44px; padding: 14px 12px; font-size: 15px; }
+.mp-keep { background: var(--pr-ink); color: var(--pr-canvas); border-color: var(--pr-ink); }
+.mp-keep:hover { background: var(--pr-ink); opacity: 0.85; }
+.mp-keep .mp-key { color: inherit; opacity: 0.7; }
+
+.mp-row { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.mp-rows { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 2px; }
+.mp-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: var(--r, 8px);
+  background: var(--pr-canvas);
+}
+.mp-item[aria-current="true"] .mp-row-name { color: var(--pr-blue); }
+.mp-row-name { min-width: 0; overflow-wrap: anywhere; }
+.mp-item-actions { display: flex; flex-wrap: wrap; gap: 4px; }
+.mp-item .mp-btn { min-height: 28px; padding: 0 8px; background: var(--pr-card); border-color: transparent; }
+.mp-item .mp-btn:hover { background: var(--pr-card-2); }
+.mp-remove { min-width: 28px; }
+
+/* Fingers: every control of the picker reaches the 44px target. */
+@media (pointer: coarse) {
+  .mp-btn, .mp-item .mp-btn { min-height: var(--mp-tap); }
+  .mp-remove { min-width: var(--mp-tap); }
+  .mp-key { display: none; }
+}

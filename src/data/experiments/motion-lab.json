@@ -1,0 +1,133 @@
+{
+  "kind": "experiment",
+  "slug": "motion-lab",
+  "title": "Motion Lab",
+  "role": "Designer & builder",
+  "engagement": "own-venture",
+  "summary": {
+    "en": "The loading of this site, taken apart into 113 parameters and a panel to tune them live — where tuning is the work, and the site is the material.",
+    "jp": "このサイトの読み込みを 113 個のパラメータに分け、その場で調整できるパネルにしたもの。調整すること自体が作品で、素材はこのサイト自身。"
+  },
+  "input": "Sliders",
+  "status": "in-progress",
+  "playable": true,
+  "year": "2026",
+  "stack": [
+    "Web Animations API",
+    "Vanilla JS",
+    "Astro",
+    "JSON"
+  ],
+  "capabilities": [
+    {
+      "id": "interactive",
+      "strength": "strong"
+    },
+    {
+      "id": "creative-technology",
+      "strength": "strong"
+    },
+    {
+      "id": "prototyping",
+      "strength": "strong"
+    },
+    {
+      "id": "design-systems",
+      "strength": "moderate"
+    }
+  ],
+  "contribution": {
+    "mine": [
+      "Designed the box-first loading: each box draws its outline, turns into a grey box, lets its images appear at random moments, then types its short text as random glyphs that settle into the real words",
+      "Moved every timing and behaviour of the loading into one JSON file (src/data/motion.json), so the choreography is data rather than code",
+      "Built the Motion Lab panel: a control for each of the 113 parameters, 12 presets, a working copy that survives real page navigation, and Copy JSON to make a setting the site's default",
+      "Rebuilt earlier loaders as presets — the console page's viewfinder frame and the Fire TV prototype's skeleton pulse — from an inventory of every loader and transition in the site's history"
+    ],
+    "level": "solo"
+  },
+  "metrics": [
+    {
+      "id": "motion-lab-parameters",
+      "value": "113",
+      "label": { "en": "parameters, one control each", "jp": "個のパラメータ。すべてに操作部" },
+      "basis": "Controls in SCHEMA, src/scripts/motion-lab.js",
+      "confidence": "stated"
+    },
+    {
+      "id": "motion-lab-presets",
+      "value": "12",
+      "label": { "en": "presets, the default included", "jp": "個のプリセット（既定を含む）" },
+      "basis": "PRESETS, src/scripts/motion-lab.js",
+      "confidence": "stated"
+    },
+    {
+      "id": "motion-lab-first-load",
+      "value": "3.6 s",
+      "label": { "en": "longest first load", "jp": "初回表示の上限" },
+      "basis": "global.capMs in src/data/motion.json",
+      "confidence": "stated"
+    },
+    {
+      "id": "motion-lab-navigation",
+      "value": "1.4 s",
+      "label": { "en": "longest page change", "jp": "ページ移動の上限" },
+      "basis": "global.navCapMs in src/data/motion.json",
+      "confidence": "stated"
+    }
+  ],
+  "outcome": {
+    "status": "shipped",
+    "note": {
+      "en": "The loading runs on every page of this site. The tuning panel is open to anyone with ?lab=1; picking the final setting is the step in progress.",
+      "jp": "読み込みの演出はこのサイトの全ページで動いている。調整パネルは ?lab=1 で誰でも開ける。いまは本番の設定を決めている段階。"
+    }
+  },
+  "challenge": {
+    "en": "A loading animation is judged in the second it plays, and a number in code cannot be judged at all. Every change meant editing a timing, rebuilding and reloading, so the choice was made by guessing, and the earlier loaders — a console page's viewfinder, a Fire TV skeleton, a deleted blur-in — sat in old prototypes and old commits, where nothing could be compared.",
+    "jp": "ローディングの良し悪しは、動いている 1 秒で決まる。コードの中の数字を見ても判断できない。変えるたびに値を書き換え、ビルドし、読み込み直す。だから決め方は勘だった。過去のローディング（コンソール版のファインダー、Fire TV のスケルトン、消したぼかしのフェードイン）も、古い試作や過去のコミットに散らばり、見比べようがなかった。"
+  },
+  "solution": {
+    "en": "Turn the loading into data and the decision into play. One JSON file holds every timing; a panel on the live site gives each value a control, and the real pages play it as you click through them. The earlier loaders came back as presets, side by side with the new ones, and the chosen setting leaves as JSON.",
+    "jp": "ローディングをデータにして、決めることを遊びにした。タイミングはすべて 1 つの JSON に置く。本物のサイトの上にパネルを出して、どの値もその場で動かせるようにした。クリックしてページを移動すれば、その設定で再生される。過去のローディングはプリセットとして戻し、新しいものと並べて比べる。決めた設定は JSON で持ち出す。"
+  },
+  "chapter": "interactive",
+  "links": {
+    "live": "/lab/motion",
+    "caseStudy": "projects/motion-lab.html"
+  },
+  "visibility": "private",
+  "hideInArchive": true,
+  "cardKind": {
+    "en": "Web Animations API · JSON",
+    "jp": "Web Animations API · JSON"
+  },
+  "cardLine": {
+    "en": "The site's own loading, as an instrument you can tune.",
+    "jp": "このサイトの読み込みを、調律できる楽器に。"
+  },
+  "detail": {
+    "play": {
+      "en": "Open the Lab",
+      "jp": "ラボを開く"
+    },
+    "role": {
+      "en": "Designer & builder",
+      "jp": "デザイン・開発"
+    },
+    "oneLiner": {
+      "en": "This site's loading, taken apart into 113 parameters you can tune live — deciding how it moves is the piece.",
+      "jp": "このサイトの読み込みを 113 個のパラメータに分け、その場で調整できるようにした。どう動かすかを決めること自体が作品。"
+    },
+    "teaser": {
+      "embed": "/lab/stage",
+      "title": "Motion Lab stage: the site's loading, replayed with a chosen preset",
+      "aspect": "16/9",
+      "aspectSm": "4/5"
+    }
+  },
+  "_notes": [
+    "Unpublished (visibility private): the page is built in dev and on Vercel previews only (src/lib/draft.mjs). To publish: visibility public, drop hideInArchive, list it in src/categories/interactive.json.",
+    "Name is a working title — alternatives in docs/motion-lab-plan.md §1 (Loading, Studied / The Tuning Room).",
+    "Numbers: 113 = controls in SCHEMA (73 + 2 × 20 outline/fill fields); 12 = PRESETS including Default; caps from motion.json. Update them if the lab changes."
+  ]
+}

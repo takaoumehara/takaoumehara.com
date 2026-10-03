@@ -24,6 +24,18 @@
 :root {
   /* A spring: overshoots once, settles. Used by every press release. */
   --ease-spring: linear(0, 0.62 12%, 1.05 28%, 0.985 45%, 1.008 62%, 1);
+  /* The feel, tunable in the Motion Lab (motion.json "interactions"):
+     src/scripts/motion-interactions.mjs writes these on <html>; these are its
+     defaults. --ix-press / --ix-hover are 1 (on) or 0 (off) multipliers. */
+  --ix-press: 1;
+  --ix-press-scale: 0.985;
+  --ix-press-ms: 90ms;
+  --ix-spring-ms: 380ms;
+  --ix-hover: 1;
+  --ix-lean-px: 5px;
+  --ix-magnet-px: 4px;
+  --ix-nudge-px: 3px;
+  --ix-nudge-ms: 60ms;
 }
 @supports not (animation-timing-function: linear(0, 1)) {
   :root { --ease-spring: cubic-bezier(0.34, 1.4, 0.64, 1); }
@@ -97,13 +109,13 @@
 /* ── Feel: sink under the pointer, spring back; the image leans toward it ──── */
 .grid-card.cat-card[data-href],
 .hn-article {
-  transition: transform 380ms var(--ease-spring), background 140ms ease;
+  transition: transform var(--ix-spring-ms) var(--ease-spring), background 140ms ease;
 }
 .grid-card.cat-card[data-href]:active,
 .hn-article:active,
 .is-pressed:not(.side-item) {
-  transform: scale(0.985);
-  transition-duration: 90ms, 140ms;
+  transform: scale(calc(1 - (1 - var(--ix-press-scale)) * var(--ix-press)));
+  transition-duration: var(--ix-press-ms), 140ms;
   transition-timing-function: ease-out, ease;
 }
 
@@ -118,15 +130,15 @@
 }
 .side-item .side-line { transition: color 160ms ease, opacity 160ms ease; }
 .side-item.is-nudged {
-  transform: translateX(3px);
-  transition: transform 60ms ease-out, background 160ms ease, color 160ms ease;
+  transform: translateX(var(--ix-nudge-px));
+  transition: transform var(--ix-nudge-ms) ease-out, background 160ms ease, color 160ms ease;
 }
 /* The lean: --px/--py in −0.5…0.5 come from the pointer's position over the
    card (site.js, rAF-throttled, mouse only). The repeated class outranks
    grid.css's hover zoom whichever stylesheet the bundler emits first. */
 .grid-card.cat-card.cat-card[data-href]:hover .grid-media.cat-card-media img,
 .hn-article.hn-article:hover .hn-thumb img {
-  transform: translate(calc(var(--px, 0) * 5px), calc(var(--py, 0) * 5px)) scale(1.04);
+  transform: translate(calc(var(--px, 0) * var(--ix-lean-px) * var(--ix-hover)), calc(var(--py, 0) * var(--ix-lean-px) * var(--ix-hover))) scale(calc(1 + 0.04 * var(--ix-hover)));
 }
 /* The old lift-and-shadow: gone. Shadows are not in this system. */
 .cat-card { view-transition-name: none; }
@@ -187,9 +199,9 @@
    sits in lights a faint ring where the cursor is (--cx/--cy). rAF-throttled,
    mouse only (site.js); nothing under reduced motion. */
 .mag-arrow { display: inline-block; transition: transform 260ms var(--ease-decel); }
-.is-magnetic { transition: transform 320ms var(--ease-decel); transform: translate(var(--mx, 0px), var(--my, 0px)); }
+.is-magnetic { transition: transform 320ms var(--ease-decel); transform: translate(calc(var(--mx, 0px) * var(--ix-hover)), calc(var(--my, 0px) * var(--ix-hover))); }
 .is-magnetic:hover .mag-arrow,
-.is-magnetic:focus-visible .mag-arrow { transform: translateX(4px); }
+.is-magnetic:focus-visible .mag-arrow { transform: translateX(calc(var(--ix-magnet-px) * var(--ix-hover))); }
 .mag-field { position: relative; }
 .mag-field::after {
   content: "";

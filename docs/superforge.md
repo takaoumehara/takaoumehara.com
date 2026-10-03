@@ -167,3 +167,29 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   （`src/data/profile.json` と `src/lenses/default.json`）。
 - **Werewolf** はレイヤービューア（`/projects/werewolf-card-viewer.html?embed=1`）を埋め込み、**Fire TV** は実働プロトタイプ
   （`demo.html`）をティーザーとして埋め込む（`detail.teaser = {embed, title, aspect, aspectSm}`）。
+
+### Round 4（2026-09-28、本人「Motion Lab は自分のサイトの記録ではなく、表現を研究する道具」「一般向けの web サービスとして課金を目指す」）
+- **Jev（TypeSafe AI）は Motion Lab の判定役。** `src/server/jev.mjs` がサーバーでだけ `TYPESAFE_API_KEY` を読み、
+  `/api/admin/jev/motion`（Clerk の管理者のみ・same-origin）が config を判定して 1 行で返す。鍵は Vercel・クラウド環境・`.env` の 3 か所だけ、
+  **チャットに貼らない・コミットしない**（`docs/jev.md`）。判定は「人の目でしか決められないこと」に限り、1 行で検査できる規則はコードのまま。
+- **Motion Lab は製品として考える。** BreakBias 掃引（`docs/product-idea.md`、全案 `docs/product-idea.html`、台帳 `docs/motion-lab/breakbias/`）の結論:
+  **選ぶだけで作る（無料の入口）→ 動きの契約（Jev の合否・速さの保証）→ 生きている仕様（サイトが購読し、本番の再生を持ち帰る）** の順に積む。
+  被り見張り（巡回で「被らない」）は v2。**音（本人の決定 4）は今回すべて Lab** — 本番の既定は無音のまま。禁止した「プリセット＋スライダー」は
+  再訪しても採点で落ちた（スライダーは選んだ後の引き出し）。**実在の利用者にはまだ聞いていない。**
+- **本人の 6 つの決定は掃引で覆さない**（`docs/motion-lab/breakbias/brief.md` §0）: 簡単さ最優先／一般の人向け・課金を目指す／AI に相談・生成・混合／
+  音は可／格好いいサイトの巡回と話題のライブラリ／モバイル検証は希望制・既定 ON。
+- **モデルの割り当て**（本人「Fable 5.1 が豪華すぎるなら Opus 5.5 とか他のモデルをちゃんとアサインして」）: 生成・選別のような量の作業は Opus 5.5、
+  手順が閉じた検証・レビュー・文書・採点は Sonnet 5、分解・判断・統合はセッションのモデル。審判は生成過程を見せない別コンテキストで。
+- **library-plan §6 の 3 問は解消**: スラブのボードは「仮想サイトのテンプレートの 1 つ」、音は道具の設定（本番は既定オフ）、
+  §5-1（エンジンの型と motion.json v2）は PR #28 のマージ後に着手。
+
+### Round 5（2026-09-28、本人「roast も使わなくていいから、普通に考えて僕が欲しい便利だと思う機能で作っちゃう。その上で BreakBias のアイデアも盛り込む」「一気に作ってください」）
+- **Round 4 の「選ぶだけで作る → 動きの契約 → 生きている仕様」の順は撤回。** 課金は二の次（本人）。判定基準は「5 人でも便利」か「就職に有利」。
+  普通の道具を先に作り、BreakBias の案（採る／捨てる、`/lab/breakbias` の地図、音 1 つ）は後付けで入れる。契約・購読・巡回は棚のまま。
+- **エンジンの契約は `docs/motion-lab/engine-contract.md` が正。** motion.json は v2（`transition.cover / reveal`、`boot`、`idle`、`sound`、`interactions`）。
+  v1 の JSON を読んだ結果は v2 既定と deep-equal（見た目が変わらないことをテストで固定）。スタイルは `src/scripts/styles/<name>.mjs` が配列を default export し、
+  transform / opacity / clip-path と WAAPI だけ、`ctx.own` で finishAll に従い、reduced motion では動かない。GSAP・Tailwind・CSS keyframes の追加は禁止。
+- **色は `ctx.tokens` から。** 生の hex はプロジェクトの tint（`src/data/tints.json`、旧 landing-b の 12 組）だけ。
+- **AI の生成は鍵を増やさない。** 「こうして欲しい」→ 3 案は規則で生成し、Jev が仕分ける（`/api/admin/jev/suggest`、管理者のみ）。LLM 生成は鍵が用意されたら差し替え。
+- **公開は本人の明示の許可待ち。** `/lab/stage` と記録を `visibility: public` にし Interactive に載せ `/lab/breakbias` を出す作業は、セッションの自動許可（公開面の作成）で止まった。コードは全部 preview で動く。`/lab/motion` がツールの家（デスクトップ＋スマホ枠、既定 ON）。
+- **派遣**: T0 土台 → T1〜T9 並列（書くファイルは互いに素、スタブは T0 が先に置く）→ T10 公開・文書 → V 検証（別コンテキスト）。実装は Opus 5.5、公開・文書・検証は Sonnet 5、分解と統合はセッションのモデル。

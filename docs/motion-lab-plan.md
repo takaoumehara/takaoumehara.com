@@ -2,6 +2,7 @@
 
 > Written by: R (research + plan) · 2026-09-27
 > 前提資料: `docs/motion-archive.md`（過去のローディング/トランジション実装の棚卸し）
+> 全部を持ち替え可能にする設計案: `docs/motion-lab/library-plan.md`（2026-09-28）
 > 関連（並行進行中・他エージェント）: `src/scripts/motion.js`, `src/scripts/site.js`,
 > `src/styles/transitions.css`, `src/styles/shell.css`, NEW `src/data/motion.json`,
 > NEW `src/scripts/motion-lab.js`, NEW `src/styles/motion-lab.css`, NEW `src/pages/lab/**`
@@ -111,6 +112,10 @@ Takao のこれまでのテーマ（インタラクティブメディアデザ�
 - [ ] トランジション・ラボ（View Transitions 特化サブセクション）+ スタディ・ライブラリ
       （Phase 2、`docs/motion-archive.md` の項目を初期スタディとして移植）
 - [ ] サイト本編のプロジェクト詳細ページ 1本（Phase 3）
+      — 2026-09-28 下書き済み・未公開: `src/data/experiments/motion-lab.json`（`visibility: "private"`）、
+      `src/case-studies/motion-lab.html`（3 ビート）、ティーザーは実際に動く `/lab/stage`。
+      開発サーバーと Vercel のプレビューでだけ作られ、本番ビルドには出ない（`src/lib/draft.mjs`）。
+      公開手順: `visibility` を `public` に、`hideInArchive` を外し、`src/categories/interactive.json` に載せる。
 - [ ] （余力があれば）OSS パッケージ
 
 ## 5. 成功基準 (Success Criteria)

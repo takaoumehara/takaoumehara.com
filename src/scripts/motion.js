@@ -35,6 +35,11 @@
 //  - #main (and #side while the rail plays) carries aria-busy="true".
 
 import DEFAULTS from "../data/motion.json";
+import TINTS from "../data/tints.json";
+import { upgradeConfig } from "./motion-config.mjs";
+import { INTERACTION_DEFAULTS, applyInteractions } from "./motion-interactions.mjs";
+import { find as findStyle, resolveParams } from "./styles/index.mjs";
+import { makeSound } from "./styles/sound.mjs";
 
 const html = document.documentElement;
 const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -44,24 +49,17 @@ export const isStill = still;
 export const LAB_FLAG = "tu-lab";          // sessionStorage: the lab is open in this tab
 export const LAB_KEY = "tu-motion-lab";    // localStorage: the lab's working config
 const clone = (o) => JSON.parse(JSON.stringify(o));
-const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
-function merge(base, over) {
-  if (!isObj(over)) return base;
-  for (const [k, v] of Object.entries(over)) {
-    if (!(k in base)) continue; // unknown keys are ignored
-    if (isObj(base[k])) merge(base[k], v);
-    else if (Array.isArray(base[k])) { if (Array.isArray(v)) base[k] = v.slice(0, base[k].length).map(Number); }
-    else if (typeof base[k] === "number") { const n = Number(v); if (Number.isFinite(n)) base[k] = n; }
-    else if (typeof base[k] === "boolean") base[k] = Boolean(v);
-    else if (typeof v === "string") base[k] = v;
-  }
-  return base;
-}
+// The defaults merged with a partial config (v1 or v2), always v2: a v1 JSON
+// gets the v2 blocks at their defaults, which play exactly as v1 did
+// (src/scripts/motion-config.mjs, docs/motion-lab/engine-contract.md §1).
 export function resolveConfig(partial) {
-  const c = merge(clone(DEFAULTS), partial);
-  c.global.respectReducedMotion = true; // not negotiable
-  c.version = DEFAULTS.version;
-  return c;
+  return upgradeConfig(partial, DEFAULTS, INTERACTION_DEFAULTS);
+}
+// The click / hover feel (motion-interactions.mjs), written on <html> each
+// time the config is set.
+function interactionsOn(c) {
+  if (typeof document === "undefined") return;
+  try { applyInteractions(c.interactions); } catch (e) {}
 }
 export function labActive() {
   try {
@@ -75,9 +73,10 @@ function readLab() {
   try { return JSON.parse(localStorage.getItem(LAB_KEY) || "null"); } catch (e) { return null; }
 }
 let CFG = resolveConfig(labActive() ? readLab() : null);
+interactionsOn(CFG);
 export const defaults = () => clone(DEFAULTS);
 export const getConfig = () => clone(CFG);
-export function setConfig(partial) { CFG = resolveConfig(partial); return getConfig(); }
+export function setConfig(partial) { CFG = resolveConfig(partial); interactionsOn(CFG); return getConfig(); }
 
 // ── Randomness (seeded when global.seed ≠ 0, so a take can be repeated) ─────
 let R = Math.random;
@@ -209,12 +208,16 @@ function unbusy() {
 /** Milliseconds until what is playing now has settled (0 when idle). */
 export const remainingMs = () => Math.max(0, busyUntil - performance.now());
 const match = (g, only) => !only || g === only;
-export function finishAll(only) {
+// keepCover: the engine resetting itself (reset()) under a cover that is
+// still to be lifted leaves that cover alone. Anything else — an input, a new
+// navigation — finishes it and drops every overlay.
+export function finishAll(only, keepCover = false) {
   for (const [fn, g] of finishers) if (match(g, only)) { finishers.delete(fn); fn(); }
   for (const [id, g] of timers) if (match(g, only)) { clearTimeout(id); timers.delete(id); }
-  for (const a of anims) if (match(a.__g, only)) { try { a.finish(); } catch (e) { a.cancel(); } anims.delete(a); }
+  for (const a of anims) if (match(a.__g, only) && !(keepCover && a.__cover)) { try { a.finish(); } catch (e) { a.cancel(); } anims.delete(a); }
   settleText(only);
   clearLayers(only);
+  if (!keepCover && match("main", only)) dropCover();
   if (!only || (!anims.size && !texts.size)) unbusy();
 }
 const busyNow = () => anims.size || texts.size || finishers.size || timers.size;
@@ -924,7 +927,7 @@ function watch(unit) {
   io.observe(unit);
 }
 function reset() {
-  finishAll();
+  finishAll(undefined, coverLive);
   io?.disconnect();
   io = null;
   document.querySelectorAll(".mo-wait").forEach((el) => el.classList.remove("mo-wait"));
@@ -1016,30 +1019,246 @@ function paneOut(dir) {
   });
   return Promise.all(done);
 }
-function cancelOut() {
-  anims.forEach((a) => a.cancel());
-  anims.clear();
+function cancelOut(keepCover = false) {
+  for (const a of anims) { if (keepCover && a.__cover) continue; a.cancel(); anims.delete(a); }
   document.querySelectorAll(".mo-layer").forEach((el) => el.remove());
+  if (!keepCover) dropCover();
 }
 const paneOnNav = () => ["every-navigation", "both"].includes(CFG.global.runOn);
 const railOnNav = () => CFG.rail.playOn === "always";
+
+// ── Styles: cover, reveal, boot, idle (src/scripts/styles/) ─────────────────
+// docs/motion-lab/engine-contract.md §2–§3. A style draws on overlay layers
+// hung off <html> (the router swaps <body>; <html>'s children survive, so a
+// cover outlives the swap). finishAll() and cancelOut() drop every overlay but
+// the idle's; the only exception is reset() under a cover still to be lifted
+// (coverLive). The v1 path — cover none, reveal box-first, boot odometer,
+// idle none — never reaches any of this beyond a no-op check.
+const Z = { cover: 900, reveal: 900, boot: 900, idle: 35 }; // under the lab panel (1000)
+const TOKENS = { ink: "var(--pr-ink)", paper: "var(--pr-canvas)", card: "var(--pr-card)", line: "var(--pr-line-2)" };
+let seq = 0;            // one per navigation, intro or replay: a stale style's calls draw nothing
+let coverLive = false;  // a cover is up (or going up) and has not been lifted yet
+let curCover = null;    // that cover: { style, ctx, p, token }
+let coverWatch = 0;
+const idleAnims = new Set();
+let idleStop = null;
+// One sound for the tab; it reads the live config, so the lab's changes apply.
+const sound = makeSound({ get enabled() { return Boolean(CFG.sound?.enabled); }, get volume() { return Number(CFG.sound?.volume) || 0; } });
+
+const overlays = (kinds) => [...html.children].filter((c) => c.classList.contains("mo-overlay") && (!kinds || kinds.includes(c.dataset.moKind)));
+const dropOverlays = (kinds) => overlays(kinds).forEach((el) => el.remove());
+function dropCover() {
+  clearTimeout(coverWatch);
+  coverLive = false;
+  dropOverlays(["cover", "reveal", "boot"]);
+}
+// The destination's two colours: html[data-tint] on the page itself, else
+// src/data/tints.json by the path's last segment; null when neither has one.
+const slugOf = (path) => String(path || "").replace(/\/+$/, "").split("/").pop().replace(/\.html$/, "");
+function tintFor(url) {
+  const path = url ? url.pathname : location.pathname;
+  const t = path === location.pathname ? html.dataset.tint : "";
+  if (t) {
+    try {
+      const v = t.trim().startsWith("[") ? JSON.parse(t) : t.split(/[\s,]+/).filter(Boolean);
+      if (Array.isArray(v) && v.length >= 2) return [String(v[0]), String(v[1])];
+    } catch (e) {}
+  }
+  const v = TINTS[slugOf(path)];
+  return Array.isArray(v) && v.length >= 2 ? [String(v[0]), String(v[1])] : null;
+}
+function makeCtx(kind, { nav = false, dir = 0, to = null } = {}, token = seq) {
+  const G = CFG.global;
+  const cap = nav ? G.navCapMs : G.capMs;
+  const live = () => token === seq;
+  const mine = (name) => overlays().find((c) => c.dataset.moLayer === String(name) && c.dataset.moSeq === String(token));
+  return {
+    layer(name) {
+      if (!live()) return document.createElement("div"); // stale: draws nowhere
+      let el = mine(name);
+      if (!el) {
+        el = document.createElement("div");
+        el.className = "mo-overlay";
+        el.dataset.moLayer = String(name);
+        el.dataset.moKind = kind;
+        el.dataset.moSeq = String(token);
+        el.setAttribute("aria-hidden", "true");
+        el.style.cssText = `position:fixed;inset:0;pointer-events:none;z-index:${Z[kind]}`;
+        html.append(el);
+      }
+      return el;
+    },
+    drop(name) { mine(name)?.remove(); },
+    k: 1 / Math.max(0.05, G.speed * (nav ? G.navSpeed : 1)),
+    ease,
+    own(a) {
+      if (kind === "idle") { idleAnims.add(a); const d = () => idleAnims.delete(a); a.finished.then(d, d); return a; }
+      a.__cover = kind === "cover";
+      return own(a);
+    },
+    still: still(),
+    dir,
+    stage: document.getElementById("main"),
+    rail: document.getElementById("side"),
+    tokens: { ...TOKENS },
+    tint: tintFor(to),
+    sound,
+    capMs: cap > 0 ? cap : 10000,
+  };
+}
+// A style's promise, never trusted to settle: errors are swallowed and it
+// gives up a little after its cap.
+function safe(fn, cap) {
+  let t = 0;
+  return Promise.race([
+    new Promise((resolve) => resolve(fn())).catch(() => {}),
+    new Promise((resolve) => { t = setTimeout(resolve, cap + 250); }),
+  ]).finally(() => clearTimeout(t));
+}
+// A wait that any finishAll() (an input) cuts short.
+function hold(ms) {
+  return new Promise((resolve) => {
+    if (!(ms > 0)) return resolve();
+    const done = () => { clearTimeout(id); finishers.delete(done); resolve(); };
+    const id = setTimeout(done, ms);
+    finishers.set(done, "main");
+  });
+}
+const settled = () => new Promise((resolve) => {
+  const tick = () => (remainingMs() > 0 ? setTimeout(tick, Math.min(remainingMs() + 20, 400)) : resolve());
+  tick();
+});
+// The cover goes up (before the swap). Null for "none".
+function startCover(opts, token) {
+  const C = CFG.transition.cover;
+  const style = findStyle("cover", C.style);
+  if (!style || style.id === "none") return null;
+  const ctx = makeCtx("cover", opts, token);
+  curCover = { style, ctx, p: resolveParams("cover", style.id, C.params), token };
+  coverLive = true;
+  clearTimeout(coverWatch);
+  // Never leave a cover up if the swap never comes.
+  coverWatch = setTimeout(() => { if (token === seq && coverLive) dropCover(); }, 10000);
+  return safe(() => style.in(ctx, curCover.p), ctx.capMs);
+}
+function liftCover(token) {
+  const c = curCover;
+  if (!coverLive || !c || c.token !== token || token !== seq) return Promise.resolve();
+  return safe(() => c.style.out(c.ctx, c.p), c.ctx.capMs).then(() => {
+    if (token !== seq) return;
+    dropOverlays(["cover"]);
+    coverLive = false;
+  });
+}
+// The reveal: box-first is run() itself (returns its ms), cut shows the page
+// as it is, any other style plays (a promise).
+function reveal(opts, token) {
+  const R = CFG.transition.reveal;
+  const style = findStyle("reveal", R.style);
+  if (!style || style.id === "box-first") return run(opts);
+  if (style.id === "cut") return 0;
+  const ctx = makeCtx("reveal", opts, token);
+  return safe(() => style.play(ctx, resolveParams("reveal", style.id, R.params)), ctx.capMs).then(() => {
+    if (token === seq) dropOverlays(["reveal"]);
+    return 0;
+  });
+}
+function startIdle(token) {
+  if (token !== seq || still() || !CFG.global.enabled) return;
+  const I = CFG.idle, style = findStyle("idle", I.style);
+  if (!style || style.id === "none") return;
+  stopIdle();
+  try {
+    const stop = style.start(makeCtx("idle", {}, token), resolveParams("idle", style.id, I.params));
+    idleStop = typeof stop === "function" ? stop : null;
+  } catch (e) { stopIdle(); }
+}
+function stopIdle() {
+  const stop = idleStop;
+  idleStop = null;
+  try { stop?.(); } catch (e) {}
+  idleAnims.forEach((a) => a.cancel());
+  idleAnims.clear();
+  dropOverlays(["idle"]);
+}
+// Idle starts once what is playing has settled (nothing for "none").
+function idleAfter(result, token) {
+  if (findStyle("idle", CFG.idle.style)?.id === "none") return;
+  Promise.resolve(result).then(settled).then(() => startIdle(token));
+}
+// After the swap (or the lab's stand-in for it): lift the cover, if one is
+// up, and play the reveal; then idle.
+function enter(opts, token) {
+  clearTimeout(coverWatch);
+  if (!(coverLive && curCover?.token === token)) {
+    const r = reveal(opts, token);
+    idleAfter(r, token);
+    return r;
+  }
+  return covered(opts, token);
+}
+async function covered(opts, token) {
+  const T = CFG.transition, t0 = performance.now();
+  const d = Number(T.revealDelayMs) || 0;
+  busy(Math.max(0, T.holdMs) + Math.max(0, d) + 60);
+  await hold(Math.max(0, T.holdMs));
+  if (token !== seq) return 0;
+  let out, rev;
+  if (d >= 0) {
+    out = liftCover(token);
+    await hold(d);
+    if (token !== seq) return 0;
+    rev = reveal(opts, token);
+  } else { // negative: the reveal starts under the cover, the cover lifts |d| later
+    rev = reveal(opts, token);
+    await hold(-d);
+    if (token !== seq) return 0;
+    out = liftCover(token);
+  }
+  await Promise.all([out, Promise.resolve(rev).then(settled)]);
+  idleAfter(0, token);
+  return performance.now() - t0;
+}
+// The first load's sequence: the odometer is run() with the rail; any other
+// boot plays first (only when the rail would), then the pane plays alone.
+function bootIn(pane, rail, token) {
+  const B = CFG.boot, style = findStyle("boot", B.style);
+  if (!style || style.id === "odometer" || !rail) {
+    const ms = run({ pane, rail });
+    idleAfter(ms, token);
+    return ms;
+  }
+  const ctx = makeCtx("boot", {}, token), t0 = performance.now();
+  return safe(() => style.play(ctx, resolveParams("boot", style.id, B.params)), ctx.capMs).then(() => {
+    if (token !== seq) return 0;
+    dropOverlays(["boot"]);
+    const ms = run({ pane, rail: false });
+    idleAfter(ms, token);
+    return performance.now() - t0 + ms;
+  });
+}
 
 // ── Wiring (called from site.js) ────────────────────────────────────────────
 // `dir` is +1 when the destination sits lower in the rail than the page you
 // are on, −1 when higher, 0 otherwise (site.js's Direction).
 export function onBeforePreparation(event, dir) {
   finishAll();
-  if (still() || !CFG.global.enabled || !paneOnNav()) return;
-  const out = paneOut(dir);
+  stopIdle();
+  const token = ++seq;
+  if (still() || !CFG.global.enabled) return;
+  const out = paneOnNav() ? paneOut(dir) : null;
+  const cover = startCover({ nav: true, dir, to: event.to instanceof URL ? event.to : null }, token);
+  if (!out && !cover) return;
+  const wait = cover ? [out, cover] : [out];
   const load = event.loader;
   event.loader = async () => {
-    try { await Promise.all([load(), out]); } catch (e) { cancelOut(); throw e; }
+    try { await Promise.all([load(), ...wait]); } catch (e) { cancelOut(); throw e; }
   };
 }
 export function onAfterSwap(dir) {
   reset();
-  if (still() || !CFG.global.enabled) return;
-  run({ pane: paneOnNav(), rail: railOnNav(), nav: true, dir });
+  if (still() || !CFG.global.enabled) return dropCover();
+  enter({ pane: paneOnNav(), rail: railOnNav(), nav: true, dir }, seq);
 }
 // The first paint. Sidebar.astro's inline script set html[data-mo-intro]
 // (the pane will play) and/or html[data-mo-rail] (the rail will play) and
@@ -1049,10 +1268,7 @@ export function onAfterSwap(dir) {
 let introDone = Promise.resolve();
 /** Resolves once the first paint's sequence (if any) and anything playing now has settled. */
 export function whenSettled() {
-  return introDone.then(() => new Promise((resolve) => {
-    const tick = () => (remainingMs() > 0 ? setTimeout(tick, Math.min(remainingMs() + 20, 400)) : resolve());
-    tick();
-  }));
+  return introDone.then(settled);
 }
 export function intro() {
   introDone = introPlay();
@@ -1061,22 +1277,35 @@ export function intro() {
 async function introPlay() {
   const pane = html.hasAttribute("data-mo-intro"), rail = html.hasAttribute("data-mo-rail");
   const clear = () => { html.removeAttribute("data-mo-intro"); html.removeAttribute("data-mo-rail"); };
-  if (!pane && !rail) return;
+  const token = ++seq;
+  if (!pane && !rail) return idleAfter(0, token);
   if (still() || !CFG.global.enabled) return clear();
   try { await Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 350))]); } catch (e) {}
-  run({ pane, rail });
+  const played = bootIn(pane, rail, token);
+  if (typeof played !== "number") await played;
   clear();
 }
 /** The lab: replay the first load, or a navigation, on the current page. */
 export async function replay(kind = "load") {
   finishAll();
+  stopIdle();
+  const token = ++seq;
   if (still() || !CFG.global.enabled) return 0;
   if (kind === "nav") {
-    if (paneOnNav()) await paneOut(0);
-    cancelOut();
-    return run({ pane: paneOnNav(), rail: railOnNav(), nav: true });
+    const opts = { pane: paneOnNav(), rail: railOnNav(), nav: true };
+    const cover = startCover({ nav: true, dir: 0 }, token);
+    if (!cover) {
+      if (paneOnNav()) await paneOut(0);
+      cancelOut();
+      return enter(opts, token);
+    }
+    await Promise.all([paneOnNav() ? paneOut(0) : null, cover]);
+    if (token !== seq) return 0;
+    cancelOut(true); // the stand-in for the swap: the pane back as it was, under the cover
+    reset();
+    return enter(opts, token);
   }
-  return run({ pane: true, rail: CFG.rail.playOn !== "never" });
+  return bootIn(true, CFG.rail.playOn !== "never", token);
 }
 
 let bound = false;
@@ -1084,6 +1313,8 @@ export function bindMotion() {
   if (bound) return;
   bound = true;
   const inLab = (e) => e.target?.closest?.(".mlab");
+  // Sound may only start after a gesture: the first press unlocks it.
+  document.addEventListener("pointerdown", () => { try { sound.unlock(); } catch (e) {} }, { capture: true, passive: true, once: true });
   // Input always wins: the first press, key or wheel finishes what is playing.
   document.addEventListener("pointerdown", (e) => {
     lastPointer = { x: e.clientX, y: e.clientY };

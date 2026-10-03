@@ -1,0 +1,390 @@
+---
+// /lab/stage — the Motion Lab's stage: a small copy of the site (a rail on
+// the left, a detail page on the right) that plays the real loading
+// (src/scripts/motion.js) with a chosen preset (src/scripts/motion-lab.js),
+// and replays it on demand. It is the live teaser of the Motion Lab project
+// page (src/data/experiments/motion-lab.json, detail.teaser.embed), so it is
+// sized for an iframe: it fills whatever box it is given.
+//
+// Unpublished like that page: built in dev and on Vercel previews only
+// (src/lib/draft.mjs), and noindex wherever it is built. A dynamic route only
+// so production can build no page at all.
+//
+// Nothing loops on its own: it plays once when it loads and again only when
+// asked (WCAG 2.2.2). Under reduced motion nothing moves and it says so.
+//
+// It is also the stage of the tool at /lab/motion (src/scripts/lab-tool.js),
+// which embeds it and drives it by postMessage (same origin only):
+//   ?stage=site (default) this miniature · ?stage=shot the visitor's
+//   screenshot as rows × cols tiles (?rows ?cols 2–6, ?title) · ?stage=peek a
+//   template from a URL's metadata (src/scripts/stage.js builds both);
+//   ?frame=phone the phone layout at any width · ?bar=0 no control bar.
+//   In:  { type: "stage:config", config } · { type: "stage:replay", kind }
+//        { type: "stage:shot", dataUrl, title } · { type: "stage:peek", title, description, image, site }
+//   Out: { type: "stage:ready" } to the parent, once it has loaded.
+import "../../styles/tokens.css";
+import "../../styles/transitions.css";
+import { draftPagesBuilt } from "../../lib/draft.mjs";
+import { orderedCategories } from "../../lib/site.mjs";
+
+export function getStaticPaths() {
+  return draftPagesBuilt() ? [{ params: { page: "stage" } }] : [];
+}
+
+const fonts = "https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&family=Inter:wght@400&family=Geist+Mono:wght@300;400;500&family=Noto+Sans+JP:wght@400&display=swap";
+// The counts are the real rail's (Sidebar.astro), as if Motion Lab were
+// already listed under Interactive — the row the stage shows as "here".
+const cats = orderedCategories();
+const countOf = (slug) => cats.find((c) => c.slug === slug)?.groups.reduce((n, g) => n + g.items.length, 0) ?? 0;
+const workCount = new Set(cats.flatMap((c) => c.groups.flatMap((g) => g.items))).size + 1;
+const rail = [
+  { head: { en: "Interactive", jp: "インタラクティブ" }, count: countOf("interactive") + 1, items: [
+    { name: "Resona", thumb: "/assets/resona/thumb.jpg" },
+    { name: "Rakugaki Jam", thumb: "/assets/rakugaki-jam/thumb.jpg" },
+    { name: "Marubatsu", thumb: "/assets/marubatsu/thumb.jpg" },
+    { name: "Emoji Blast", thumb: "/assets/emoji-blast/thumb.jpg" },
+    { name: "Motion Lab", thumb: null, here: true },
+  ] },
+  { head: { en: "AI Tools", jp: "AI ツール" }, count: countOf("ai-tools"), items: [
+    { name: "superforge", thumb: null },
+    { name: "failforward", thumb: null },
+  ] },
+];
+const strip = [
+  { src: "/assets/resona/still.jpg", label: "Outline" },
+  { src: "/assets/rakugaki-jam/still.jpg", label: "Grey box" },
+  { src: "/assets/marubatsu/still.jpg", label: "Media · Text" },
+];
+---
+<!DOCTYPE html>
+<html lang="en" data-theme="light" data-mo-intro data-mo-rail>
+<head>
+  <script is:inline>
+    // The visitor's theme and language (the site's own keys, same origin),
+    // and a fallback: if motion.js never runs, show everything after 3s.
+    (function () {
+      var html = document.documentElement;
+      try { html.setAttribute("data-theme", localStorage.getItem("tu-theme") || "light"); } catch (e) {}
+      try { if (localStorage.getItem("tu-lang") === "jp") { html.classList.add("lang-jp"); html.lang = "ja"; } } catch (e) {}
+      setTimeout(function () { html.removeAttribute("data-mo-intro"); html.removeAttribute("data-mo-rail"); }, 3000);
+      // The stage, frame and bar asked for in the URL, before the first paint.
+      var q = new URLSearchParams(location.search), st = q.get("stage");
+      html.setAttribute("data-stage", st === "shot" || st === "peek" ? st : "site");
+      if (q.get("frame") === "phone") html.classList.add("st-phone");
+      if (q.get("bar") === "0") html.classList.add("st-nobar");
+    })();
+  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Motion Lab stage — Takao Umehara</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href={fonts} rel="stylesheet">
+</head>
+<body class="stage">
+  <div class="st-shell">
+    <nav id="side" class="st-rail" aria-label="Sample rail">
+      <div class="side-top">
+        <p class="side-wordmark">Takao Umehara</p>
+        <p class="st-mono"><span class="t-en">{workCount} Selected Works</span><span class="t-jp">厳選 {workCount} 作品</span></p>
+      </div>
+      {rail.map((g) => (
+        <div class="st-group">
+          <p class="side-head"><span class="t-en">{g.head.en}</span><span class="t-jp">{g.head.jp}</span><span class="st-count">{g.count}</span></p>
+          {g.items.map((it) => (
+            <p class={`side-item${it.here ? " is-here" : ""}`}>
+              {it.thumb ? <img src={it.thumb} alt="" width="28" height="28" /> : <span class="st-initial" aria-hidden="true">{it.name.slice(0, 1)}</span>}
+              <span>{it.name}</span>
+            </p>
+          ))}
+        </div>
+      ))}
+    </nav>
+
+    <main id="main" class="st-pane">
+      <div class="bento-cell st-teaser"><img src="/assets/emoji-blast/still.jpg" alt="" /></div>
+      <div class="bento-cell st-header">
+        <h1 class="st-title">Motion Lab</h1>
+        <p class="st-oneliner"><span class="t-en">This site's loading, taken apart into parameters you can tune live.</span><span class="t-jp">このサイトの読み込みを、その場で調整できるパラメータに分けた。</span></p>
+      </div>
+      <div class="st-cs">
+        <div class="bento-cell st-card">
+          <p class="st-label"><span class="t-en">Challenge</span><span class="t-jp">課題</span></p>
+          <p class="st-text"><span class="t-en">A loader is judged in the second it plays. A number in code cannot be judged at all, so every choice was a guess.</span><span class="t-jp">ローディングは動いている 1 秒で決まる。コードの中の数字では判断できず、決め方は勘だった。</span></p>
+        </div>
+        <div class="bento-cell st-card">
+          <p class="st-label"><span class="t-en">Solution</span><span class="t-jp">解決</span></p>
+          <p class="st-text"><span class="t-en">One JSON file for every timing, and a panel on the live site to tune it.</span><span class="t-jp">タイミングはすべて 1 つの JSON に。本物のサイトの上で調整する。</span></p>
+        </div>
+      </div>
+      <div class="st-strip">
+        {strip.map((s) => (
+          <div class="bento-cell st-card st-shot">
+            <img src={s.src} alt="" />
+            <p class="st-label">{s.label}</p>
+          </div>
+        ))}
+      </div>
+    </main>
+  </div>
+
+  <div class="st-bar" role="group" aria-label="Replay the loading">
+    <label class="st-field">
+      <span class="st-bar-label"><span class="t-en">Preset</span><span class="t-jp">プリセット</span></span>
+      <select id="st-preset"></select>
+    </label>
+    <button type="button" id="st-load" class="st-btn"><span class="t-en">Replay load</span><span class="t-jp">読み込みを再生</span></button>
+    <button type="button" id="st-nav" class="st-btn"><span class="t-en">Page change</span><span class="t-jp">ページ移動</span></button>
+    <p id="st-status" class="st-status" role="status"></p>
+  </div>
+
+  <script>
+    import * as motion from "../../scripts/motion.js";
+    import { PRESETS } from "../../scripts/motion-lab.js";
+    import { readStageParams, buildShot, buildPeek } from "../../scripts/stage.js";
+
+    // The visitor's own page instead of the miniature (?stage=shot / peek):
+    // an empty version now, filled when the tool sends the picture or the metadata.
+    const P = readStageParams(location.search);
+    const main = document.getElementById("main");
+    if (P.stage === "shot") buildShot(main, { ...P, dataUrl: null });
+    if (P.stage === "peek") buildPeek(main, null);
+
+    // The lab's working copy, when the lab is open in this tab: the stage
+    // then offers "Your setting" as well as the named presets.
+    let own = null;
+    try { if (motion.labActive()) own = JSON.parse(localStorage.getItem(motion.LAB_KEY) || "null"); } catch (e) {}
+    const OWN = "Your setting";
+    const choices = own ? { [OWN]: own, ...PRESETS } : PRESETS;
+
+    const select = document.getElementById("st-preset") as HTMLSelectElement;
+    const status = document.getElementById("st-status");
+    for (const name of Object.keys(choices)) select.add(new Option(name, name));
+    const wanted = new URLSearchParams(location.search).get("preset");
+    select.value = wanted && wanted in choices ? wanted : own ? OWN : "Default";
+    motion.setConfig(choices[select.value]);
+
+    const still = motion.isStill();
+    if (still) {
+      status.textContent = document.documentElement.classList.contains("lang-jp")
+        ? "この端末は「視差効果を減らす」設定のため、動きは再生しません。"
+        : "Reduced motion is on, so nothing here moves.";
+    }
+    const play = (kind) => { if (!still) motion.replay(kind); };
+
+    select.addEventListener("change", () => { motion.setConfig(choices[select.value]); play("load"); });
+    document.getElementById("st-load").addEventListener("click", () => play("load"));
+    document.getElementById("st-nav").addEventListener("click", () => play("nav"));
+
+    // The tool that embeds the stage (/lab/motion) drives it from here.
+    window.addEventListener("message", async (e) => {
+      const d = e.data;
+      if (e.origin !== location.origin || !d || typeof d !== "object") return;
+      if (d.type === "stage:config" && d.config && typeof d.config === "object") {
+        motion.setConfig(d.config);
+        play("load");
+      } else if (d.type === "stage:replay") {
+        play(d.kind === "nav" ? "nav" : "load");
+      } else if (d.type === "stage:shot" && P.stage === "shot") {
+        motion.finishAll();
+        await buildShot(main, { ...P, title: typeof d.title === "string" && d.title.trim() ? d.title.trim().slice(0, 120) : P.title, dataUrl: d.dataUrl });
+        play("load");
+      } else if (d.type === "stage:peek" && P.stage === "peek") {
+        motion.finishAll();
+        buildPeek(main, d);
+        play("load");
+      }
+    });
+
+    motion.bindMotion();
+    motion.intro();
+    if (window.parent !== window) window.parent.postMessage({ type: "stage:ready" }, location.origin);
+  </script>
+</body>
+</html>
+
+<style is:global>
+  /* The stage is a miniature of the site, drawn with its tokens (tokens.css)
+     but none of its layout: a rail and a pane that fill the frame, and a
+     control bar along the bottom that the loading never touches. */
+  html, body { height: 100%; margin: 0; }
+  body.stage {
+    background: var(--pr-canvas);
+    color: var(--pr-ink);
+    font-family: var(--pr-ff);
+    font-size: 13px;
+    overflow: hidden;
+  }
+  .stage p, .stage h1 { margin: 0; }
+  .t-jp { display: none; }
+  html.lang-jp .t-en { display: none; }
+  html.lang-jp .t-jp { display: inline; }
+
+  .st-shell {
+    position: absolute;
+    inset: 0 0 48px 0;
+    display: grid;
+    grid-template-columns: minmax(150px, 24%) 1fr;
+    gap: 8px;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  .st-rail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .side-top { padding: 6px 8px 12px; }
+  .side-wordmark { font-family: var(--pr-ff-display); font-weight: 600; font-size: 15px; letter-spacing: -0.01em; }
+  .st-mono, .st-count, .st-label, .st-bar-label, .st-status {
+    font-family: var(--ff-mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--pr-ink-2);
+  }
+  .st-mono { margin-top: 4px; }
+  .st-group { display: flex; flex-direction: column; gap: 2px; margin-bottom: 10px; }
+  .side-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-radius: var(--r, 8px);
+    background: var(--pr-card);
+    font-weight: 500;
+  }
+  .side-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 3px 8px;
+    border-radius: var(--r, 8px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .side-item.is-here { background: var(--pr-ink); color: var(--pr-canvas); }
+  .side-item img, .st-initial {
+    flex: none;
+    width: 22px;
+    height: 22px;
+    border-radius: 4px;
+    object-fit: cover;
+  }
+  .st-initial {
+    display: inline-grid;
+    place-items: center;
+    background: var(--pr-card-2);
+    color: var(--pr-ink);
+    font-family: var(--ff-mono);
+    font-size: 10px;
+  }
+
+  .st-pane {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .bento-cell { box-sizing: border-box; border-radius: var(--r, 8px); }
+  .st-teaser {
+    flex: none;
+    height: 34%;
+    min-height: 90px;
+    overflow: hidden;
+    background: var(--pr-card);
+  }
+  .st-teaser img, .st-shot img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .st-header { padding: 6px 14px; }
+  .st-title {
+    font-family: var(--pr-ff-display);
+    font-weight: 600;
+    font-size: clamp(22px, 5vw, 44px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+  .st-oneliner { margin-top: 6px; color: var(--pr-ink-2); font-size: clamp(12px, 1.6vw, 15px); line-height: 1.35; max-width: 60ch; }
+  .st-cs, .st-strip { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .st-strip { grid-template-columns: repeat(3, 1fr); grid-template-rows: minmax(0, 1fr); flex: 1; min-height: 0; }
+  .st-card { padding: 12px 14px; background: var(--pr-card); min-width: 0; }
+  .st-text { margin-top: 6px; line-height: 1.45; }
+  .st-shot { display: flex; flex-direction: column; gap: 6px; padding: 8px; min-height: 0; overflow: hidden; }
+  .st-shot img { flex: 1; min-height: 0; height: auto; border-radius: 4px; }
+
+  /* The controls: outside #side and #main, so they never play. */
+  .st-bar {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    border-top: 1px solid var(--pr-line);
+    background: var(--pr-canvas);
+  }
+  .st-field { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .st-bar select, .st-btn {
+    min-height: 32px;
+    padding: 0 12px;
+    border: 1px solid var(--pr-line-2);
+    border-radius: 999px;
+    background: var(--pr-canvas);
+    color: var(--pr-ink);
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    max-width: 100%;
+  }
+  .st-btn:hover, .st-bar select:hover { background: var(--pr-card); }
+  .st-btn:focus-visible, .st-bar select:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+  .st-status { margin-left: auto; text-transform: none; letter-spacing: 0; }
+
+  /* A phone-width frame: the rail folds away to its head, and the pane keeps
+     the teaser, the title and one row of cells. */
+  @media (max-width: 560px) {
+    .st-shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; inset: 0 0 96px 0; }
+    .st-rail { flex-direction: row; align-items: center; gap: 8px; }
+    .st-rail .st-group { display: none; }
+    .side-top { padding: 4px 4px 0; }
+    .st-teaser { height: 30%; }
+    .st-strip { display: none; }
+    .st-bar { height: 96px; flex-wrap: wrap; align-content: center; }
+    .st-status { margin-left: 0; flex-basis: 100%; }
+  }
+  /* ?frame=phone: the same phone layout at any width (the tool's phone check). */
+  html.st-phone .st-shell { grid-template-columns: 1fr; grid-template-rows: auto 1fr; inset: 0 0 96px 0; }
+  html.st-phone .st-rail { flex-direction: row; align-items: center; gap: 8px; }
+  html.st-phone .st-rail .st-group { display: none; }
+  html.st-phone .side-top { padding: 4px 4px 0; }
+  html.st-phone .st-teaser { height: 30%; }
+  html.st-phone .st-strip { display: none; }
+  html.st-phone .st-bar { height: 96px; flex-wrap: wrap; align-content: center; }
+  html.st-phone .st-status { margin-left: 0; flex-basis: 100%; }
+
+  /* ?bar=0: embedded in the tool, which has its own controls. */
+  html.st-nobar .st-bar { display: none; }
+  html.st-nobar .st-shell { inset: 0; }
+
+  /* ?stage=shot / peek: the visitor's page, so no rail of Takao's. */
+  html[data-stage="shot"] .st-shell, html[data-stage="peek"] .st-shell { grid-template-columns: 1fr; grid-template-rows: minmax(0, 1fr); }
+  html[data-stage="shot"] .st-rail, html[data-stage="peek"] .st-rail { display: none; }
+  .st-tiles { position: relative; flex: 1; min-height: 0; display: grid; gap: 8px; }
+  .st-tile { min-width: 0; min-height: 0; background-color: var(--pr-card); background-repeat: no-repeat; }
+  .st-placeholder {
+    flex: 1;
+    min-height: 0;
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    border: 1px dashed var(--pr-line-2);
+    text-align: center;
+  }
+</style>

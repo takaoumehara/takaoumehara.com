@@ -95,8 +95,9 @@ export function loadLibrary(dataDir = DATA_DIR) {
 
 /**
  * The library as one JSON document, for the browser (studio/). Every item is
- * public data already rendered on the site; maintenance notes (_notes) are
- * dropped. hydrateLibrary() in ./library.mjs turns it back into a Library.
+ * public data already rendered on the site; maintenance notes (_notes) and
+ * unpublished records (visibility "private", ./draft.mjs) are dropped.
+ * hydrateLibrary() in ./library.mjs turns it back into a Library.
  */
 export function serializeLibrary(lib, { lexicon, lensSlugs = [] } = {}) {
   const strip = ({ _notes, ...item }) => item;
@@ -108,7 +109,7 @@ export function serializeLibrary(lib, { lexicon, lensSlugs = [] } = {}) {
     theses: lib.theses,
     ideas: lib.ideas ?? [],
     now: lib.now ?? null,
-    evidence: [...lib.evidence.values()].map(strip),
+    evidence: [...lib.evidence.values()].filter((item) => item.visibility !== "private").map(strip),
     lenses: lensSlugs,
     ...(lexicon ? { lexicon } : {}),
   };
