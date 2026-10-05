@@ -150,6 +150,9 @@ test('the default lens\' Selected proof spans experiment, enterprise and venture
 
 test('each AI Tools project detail page exists with its GitHub CTA and a link back to AI Tools', () => {
   const expected = [
+    ['projects/skills.html', 'https://github.com/takaoumehara/skills', 'Claude Code Skills'],
+    ['projects/ai-window-deck.html', 'https://github.com/takaoumehara/ai-window-deck', 'AI Window Deck'],
+    ['projects/repo-cleanup.html', 'https://github.com/takaoumehara/repo-cleanup', 'repo-cleanup'],
     ['projects/snap-pair.html', 'https://github.com/takaoumehara/snap-pair-skill', 'Snap Pair'],
     ['projects/failforward.html', 'https://github.com/takaoumehara/failforward-skill', 'failforward'],
     ['projects/cross-model-handoff.html', 'https://github.com/takaoumehara/cross-model-handoff', 'cross-model-handoff'],

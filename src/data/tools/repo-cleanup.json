@@ -1,0 +1,60 @@
+{
+  "kind": "tool",
+  "slug": "repo-cleanup",
+  "title": "repo-cleanup",
+  "role": "Designer & builder",
+  "engagement": "open-source",
+  "summary": {
+    "en": "A Claude Code skill that safely cleans a messy git working tree: untracks generated files, completes .gitignore, and sorts changes into commit, stash, or discard — without leaking secrets or destroying uncommitted work.",
+    "jp": "散らかった git の作業ツリーを安全に片づける Claude Code スキル。生成物の追跡解除、.gitignore の補完、変更の commit / stash / discard への仕分けまで。秘密情報を漏らさず、未コミットの作業も消さない。"
+  },
+  "status": "released",
+  "stack": [
+    "Claude Code"
+  ],
+  "capabilities": [
+    {
+      "id": "ai",
+      "strength": "strong"
+    },
+    {
+      "id": "prototyping",
+      "strength": "moderate"
+    }
+  ],
+  "contribution": {
+    "mine": [
+      "Encoded a safe cleanup procedure that refuses to stage secrets or discard work irreversibly",
+      "Published as a standalone skill and listed it in the takaoumehara/skills marketplace"
+    ],
+    "level": "solo"
+  },
+  "chapter": "ai-ventures",
+  "assets": {
+    "thumb": "assets/ai-tools/repo-cleanup.svg",
+    "art": "card-art--cleanup",
+    "artLabel": "repo-cleanup"
+  },
+  "links": {
+    "caseStudy": "projects/repo-cleanup.html",
+    "repo": "https://github.com/takaoumehara/repo-cleanup"
+  },
+  "visibility": "public",
+  "cardKind": {
+    "en": "Claude Code skill · MIT",
+    "jp": "Claude Code スキル · MIT"
+  },
+  "cardLine": {
+    "en": "Clean a messy working tree without leaking secrets or losing work.",
+    "jp": "秘密を漏らさず、作業も消さずに、散らかった作業ツリーを片づける。"
+  },
+  "license": "MIT",
+  "challenge": {
+    "en": "Parallel AI coding sessions leave a noisy working tree — generated files tracked, secrets next to real work, and a tempting git add -A that can leak or bury half-done features.",
+    "jp": "並行する AI コーディングで作業ツリーが散らかる。生成物が追跡され、秘密情報が本物の変更の隣にあり、git add -A で漏れたり未完成の作業が埋もれたりする。"
+  },
+  "solution": {
+    "en": "A skill that surveys first, protects secrets, untracks mistracked files, completes .gitignore, then presents a plan and only commits or stashes after confirmation.",
+    "jp": "まず調査し、秘密を守り、誤って追跡されたファイルを外し、.gitignore を補い、計画を出してから確認のうえで commit か stash するスキル。"
+  }
+}
