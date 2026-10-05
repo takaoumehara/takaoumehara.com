@@ -24,6 +24,18 @@ import { showcaseOrder } from "../lib/showcase.mjs";
 
 export const NEWS = [
   {
+    slug: "ai-window-deck",
+    date: "2026-10-05",
+    title: {
+      en: "Developer tools update: Chrome extension, skills marketplace, npm pairing",
+      jp: "開発者ツール更新: Chrome 拡張機能、スキルマーケットプレイス、npm ペアリング",
+    },
+    lead: {
+      en: "AI Window Deck lets you run multiple Claude Code sessions side-by-side. The skills marketplace ships specialist knowledge as plugins. Snap Pair connects devices in one scan, now backed by npm. Plus repo-cleanup, cross-model-handoff, and documentation for every tool.",
+      jp: "AI Window Deck は複数の Claude Code セッションを並行実行。スキルマーケットプレイスは専門知識をプラグインで提供。Snap Pair は npm ベースでデバイスをワンスキャン接続。他に repo-cleanup、cross-model-handoff など、すべてドキュメント付き。",
+    },
+  },
+  {
     slug: "werewolf",
     date: "2026-09-10",
     image: "assets/werewolf/hero-spread.jpg",
