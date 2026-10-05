@@ -5,14 +5,17 @@
   "role": "Designer & builder",
   "engagement": "open-source",
   "summary": {
-    "en": "A React + Firebase pairing layer that lets every phone in the room join an app in one scan.",
-    "jp": "React と Firebase による接続用ライブラリ。会場のスマホ全部を、一回のスキャンでアプリに参加させる。"
+    "en": "Open-source multi-device pairing for the web: QR, 6-digit PIN, and experimental ultrasonic sound, over Firebase, PartyKit, WebRTC, or BroadcastChannel — so every phone in the room can join without installing an app.",
+    "jp": "Web向けのマルチデバイス接続ライブラリ。QR・6桁PIN・実験的な超音波サウンドでペアリングし、Firebase / PartyKit / WebRTC / BroadcastChannel で同期。アプリのインストールなしで、その場のスマホ全部を参加させられる。"
   },
   "status": "released",
   "license": "MIT",
   "stack": [
     "React",
-    "Firebase"
+    "Firebase",
+    "PartyKit",
+    "WebRTC",
+    "Web Audio"
   ],
   "capabilities": [
     {
@@ -38,9 +41,9 @@
   ],
   "contribution": {
     "mine": [
-      "Extracted the pairing logic first built for Marubatsu Arena into a standalone React + Firebase library",
-      "Built QR/6-character-code pairing, presence heartbeat, room capacity, and security rules",
-      "Packaged a Claude Code skill so an agent can add multi-device play to any app"
+      "Extracted the pairing logic first built for Marubatsu Arena into the open-source snap-pair-core library (npm)",
+      "Shipped QR, 6-digit PIN, room-code, and experimental Web Audio ultrasonic (Proximity) pairing, plus four transports: Firebase RTDB, PartyKit, WebRTC DataChannel, and BroadcastChannel",
+      "Packaged a Claude Code skill, CLI wizard (7 presets), HostHUD / ControllerWrapper, and docs site so agents and humans can add multi-device play safely"
     ],
     "level": "solo"
   },
@@ -63,15 +66,17 @@
   },
   "links": {
     "caseStudy": "projects/snap-pair.html",
-    "repo": "https://github.com/takaoumehara/snap-pair-skill"
+    "repo": "https://github.com/takaoumehara/snap-pair-skill",
+    "docs": "https://takaoumehara.github.io/snap-pair-skill/",
+    "npm": "https://www.npmjs.com/package/snap-pair-core"
   },
   "visibility": "public",
   "cardKind": {
-    "en": "React + Firebase · MIT",
-    "jp": "React + Firebase · MIT"
+    "en": "snap-pair-core · MIT",
+    "jp": "snap-pair-core · MIT"
   },
   "cardLine": {
-    "en": "Every phone in the room joins the app in one scan.",
-    "jp": "その場のスマホ全部が、ワンスキャンでアプリに入る。"
+    "en": "QR, PIN, or sound — phones join the room without an app install.",
+    "jp": "QR・PIN・サウンド。アプリ不要で、その場のスマホがルームに入る。"
   }
 }
