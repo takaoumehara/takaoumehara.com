@@ -38,6 +38,18 @@ import { showcaseOrder } from "../lib/showcase.mjs";
 
 export const NEWS = [
   {
+    slug: "intentfirst",
+    date: "2026-10-05",
+    title: {
+      en: "Intent First: updated video introducing Context Grammar",
+      jp: "Intent First — Context Grammar を紹介する映像を更新",
+    },
+    lead: {
+      en: "The Intent First video now demonstrates the 8 Context Tokens and 3-layer memory model across three applied projects — The Living Home, The Family Trip, and Fluid Handoff. Available at intentfirst.ai.",
+      jp: "Intent First の映像では、8 つの Context Token と 3 層の記憶モデルを、3 つの実プロジェクト（The Living Home、The Family Trip、Fluid Handoff）で実証している。intentfirst.ai で公開中。",
+    },
+  },
+  {
     kind: "tool",
     slug: "skills",
     date: "2026-10-05",
