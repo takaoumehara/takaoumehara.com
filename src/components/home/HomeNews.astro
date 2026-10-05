@@ -1,6 +1,8 @@
 ---
 // The home page's news bento, under the hero: the basic-info card first, then
-// one article per interactive launch (src/data/news.mjs), newest first. Cards
+// one article per interactive launch or open tool release (src/data/news.mjs),
+// newest first. Interactive entries link to their detail page; tool entries
+// link to their own href (docs or repo, opened in a new tab). Cards
 // sit on --gap-grid, 3 / 2 / 1 columns like the work grid below, separated by
 // fill and whitespace only.
 import "../../styles/home.css";
@@ -17,26 +19,37 @@ const dateLabel = (iso) => {
   return { en: `${MONTHS[m - 1]} ${d}, ${y}`, jp: `${y}年${m}月${d}日` };
 };
 
+const META = {
+  experiment: { en: "Interactive", jp: "インタラクティブ" },
+  tool: { en: "Open tool", jp: "オープンツール" },
+};
+
 const articles = [...news]
   .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
   .map((entry) => {
-    const item = lib.evidence.get(entry.slug);
+    const kind = entry.kind ?? "experiment";
+    const item = entry.slug ? lib.evidence.get(entry.slug) : null;
+    const assets = item?.assets ?? {};
+    const art = {
+      image: entry.image ?? assets.thumb ?? assets.hero ?? null,
+      art: entry.art ?? assets.art ?? "card-art--motion",
+      artLabel: entry.artLabel ?? assets.artLabel ?? item?.title ?? "",
+      meta: entry.meta ?? META[kind] ?? META.experiment,
+    };
+    if (kind === "tool") {
+      if (!entry.href) return null;
+      return { ...entry, ...art, external: /^https?:/i.test(entry.href) };
+    }
     if (!item) return null;
     const to = destination(item);
-    const image = entry.image ?? item.assets?.thumb ?? item.assets?.hero ?? null;
-    return {
-      ...entry,
-      href: to && !to.external ? to.url : null,
-      image,
-      art: item.assets?.art ?? "card-art--motion",
-      artLabel: item.assets?.artLabel ?? item.title,
-    };
+    return { ...entry, ...art, href: to && !to.external ? to.url : null, external: false };
   })
   .filter((a) => a && a.href);
 
 const links = [
   { href: "/about", label: { en: "About", jp: "プロフィール" } },
   { href: "/contact", label: { en: "Contact", jp: "お問い合わせ" } },
+  { href: "/ai-tools.html", label: { en: "Open tools", jp: "オープンツール" } },
   profile.contact?.linkedin && { href: profile.contact.linkedin, label: { en: "LinkedIn", jp: "LinkedIn" }, external: true },
   profile.contact?.github && { href: profile.contact.github, label: { en: "GitHub", jp: "GitHub" }, external: true },
 ].filter(Boolean);
@@ -65,12 +78,12 @@ const links = [
       return (
         <article class="hn-card hn-article bento-cell" style={`--i: ${i}`}>
           <p class="hn-meta">
-            <span set:html={t({ en: "Interactive", jp: "インタラクティブ" })} />
+            <span set:html={t(a.meta)} />
             <span aria-hidden="true"> · </span>
             <time datetime={a.date} set:html={t(d)} />
           </p>
           <h3 class="hn-title">
-            <a class="hn-link" href={a.href} set:html={t(a.title)} />
+            <a class="hn-link" href={a.href} target={a.external ? "_blank" : undefined} rel={a.external ? "noopener" : undefined} set:html={t(a.title)} />
           </h3>
           <p class="hn-lead" set:html={tb(a.lead)} />
           <div class="hn-thumb">
