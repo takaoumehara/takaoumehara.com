@@ -121,7 +121,7 @@ html[data-lang-fixed] .side-lang { display: none; }
 }
 .side-status {
   margin: var(--sp-3) 0 0; display: grid; gap: 6px;
-  font-family: var(--ff-mono); font-weight: var(--fw-mono); font-size: var(--text-xs); line-height: 1.35;
+  font-family: var(--pr-ff); font-weight: var(--fw-mono); font-size: var(--text-xs); line-height: 1.35;
   letter-spacing: var(--tracking-mono); color: var(--pr-ink-2);
   font-variant-numeric: tabular-nums;
 }
@@ -145,7 +145,7 @@ html[data-lang-fixed] .side-lang { display: none; }
   content: ""; position: absolute; inset: -3px; border-radius: 50%;
   border: 1px solid var(--pr-live); opacity: 0;
 }
-html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-variant-numeric: tabular-nums; }
+html.lang-jp .side-status { font-family: var(--pr-ff-jp); font-variant-numeric: tabular-nums; }
 
 /* Visually hidden, still read. .sr-only is the site-wide name (it used to
    live only in grid.css, so a page without a grid showed its hidden
@@ -162,7 +162,7 @@ html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-v
 
 /* A count (rail groups, the index line): mono, tabular, and the anchor the
    first-load roll-up draws over (transitions.css). */
-.odo { position: relative; display: inline-block; font-family: var(--ff-mono); font-variant-numeric: tabular-nums; text-align: right; }
+.odo { position: relative; display: inline-block; font-family: var(--pr-ff); font-variant-numeric: tabular-nums; text-align: right; }
 
 /* ── About ──────────────────────────────────────────────────────────────── */
 /* The whole card is one link to /about: the "About" label is the link, and
@@ -183,51 +183,29 @@ html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-v
 .side-pages a { font-size: var(--text-body); color: var(--pr-blue); }
 .side-pages a:hover, .side-pages a[aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
 
-/* ── Category list (compact, always visible) ────────────────────────── */
-.side-categories { margin-bottom: var(--sp-2); }
-.side-categories-list { display: flex; flex-wrap: wrap; gap: 6px; }
-.side-cat-chip {
-  appearance: none; cursor: pointer; border: 0; font: inherit; color: inherit;
-  display: inline-flex; align-items: center; gap: 4px;
-  padding: 6px var(--sp-2); border-radius: var(--r-pill); background: var(--pr-card);
-  font-size: var(--text-xs); min-height: 32px;
-  transition: background 140ms ease, color 140ms ease;
-}
-.side-cat-chip:hover { background: var(--pr-card-2); }
-.side-cat-chip[aria-expanded="true"] { background: var(--pr-ink); color: var(--pr-canvas); }
-.side-cat-chip:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
-.side-cat-number {
-  font-family: var(--ff-mono); font-weight: var(--fw-mono); font-size: var(--text-xs);
-  letter-spacing: var(--tracking-mono); font-variant-numeric: tabular-nums;
-  opacity: 0.7;
-}
-.side-cat-chip[aria-expanded="true"] .side-cat-number { opacity: 1; }
-.side-cat-name { flex: 1; min-width: 0; }
-.side-cat-count {
-  flex: none; font-family: var(--ff-mono); font-weight: 400; font-size: var(--text-xs);
-  letter-spacing: var(--tracking-mono); font-variant-numeric: tabular-nums;
-}
-
 /* ── The work, by category ──────────────────────────────────────────────── */
 .side-work { display: flex; flex-direction: column; }
 .side-group {
   border-top: 1px solid var(--pr-line-2); padding-top: var(--sp-2);
 }
+/* A category row is the accordion's <button>: number, name, count and +/−,
+   left-aligned on the rows' text edge (a <button> centres its text by
+   default). At least 44px tall. */
 .side-group-header {
-  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2);
-  padding: var(--sp-3) var(--sp-3) var(--sp-1); font-size: var(--text-sm); color: var(--pr-ink-2); min-height: 40px;
-  background: none; border: none; font: inherit; color: inherit; width: 100%;
+  list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: flex-start; gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-3) var(--sp-1); min-height: 44px; text-align: left;
+  background: none; border: none; font: inherit; font-size: var(--text-body); color: inherit; width: 100%;
   transition: color 140ms ease;
 }
 .side-group-header:hover .side-group-title { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
 .side-group-header:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: -2px; border-radius: var(--r); }
 .side-group-number {
-  flex: none; font-family: var(--ff-mono); font-weight: var(--fw-mono); font-size: var(--text-xs);
+  flex: none; font-family: var(--pr-ff); font-weight: var(--fw-mono); font-size: var(--text-xs);
   letter-spacing: var(--tracking-mono); font-variant-numeric: tabular-nums; color: var(--pr-ink-2); min-width: 2.2ch;
 }
 .side-group-title { flex: 1 1 auto; min-width: 0; color: var(--pr-ink); }
 .side-count {
-  flex: none; display: inline-flex; align-items: center; font-family: var(--ff-mono); font-weight: 400; font-size: var(--text-xs);
+  flex: none; display: inline-flex; align-items: center; font-family: var(--pr-ff); font-weight: 400; font-size: var(--text-xs);
   letter-spacing: var(--tracking-mono); font-variant-numeric: tabular-nums; color: var(--pr-ink);
 }
 .side-count .odo { min-width: 2ch; }
@@ -235,6 +213,7 @@ html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-v
 .side-group-header[aria-expanded="false"] .side-count::after { content: "+"; }
 .side-group-items { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--gap-grid); } /* The one grid gutter */
 .side-group-header[aria-expanded="false"] ~ .side-group-items { display: none; }
+.side-group-header[aria-expanded="true"] .side-group-title { font-weight: 500; }
 .side-item {
   --side-thumb: clamp(64px, 4.2vw, 84px);
   display: grid; grid-template-columns: var(--side-thumb) minmax(0, 1fr); gap: var(--sp-2); align-items: center;
@@ -251,10 +230,6 @@ html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-v
 .side-item[aria-current="page"] .side-line { color: color-mix(in srgb, var(--pr-canvas) 78%, var(--pr-ink)); }
 .side-thumb { width: var(--side-thumb, 64px); aspect-ratio: 1; border-radius: var(--r); overflow: hidden; background: var(--pr-canvas); display: grid; place-items: center; }
 
-/* Category highlight: when a category is selected, matching cards get inverted style */
-.is-category-active { background: var(--pr-ink); color: var(--pr-canvas); }
-.is-category-active .side-name { color: var(--pr-canvas); }
-.is-category-active .side-line { color: color-mix(in srgb, var(--pr-canvas) 78%, var(--pr-ink)); }
 .side-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
 /* No image yet? The row carries a tag badge instead of a shrunken wordmark:
@@ -268,7 +243,7 @@ html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-v
   width: 100%; height: 100%; display: grid; place-items: center;
   border: 1px solid var(--pr-line-2); border-radius: var(--r);
   background: var(--pr-canvas); color: var(--pr-ink);
-  font-family: var(--ff-mono); font-variant-numeric: tabular-nums; font-weight: 500;
+  font-family: var(--pr-ff); font-variant-numeric: tabular-nums; font-weight: 500;
   font-size: clamp(14px, 0.9vw, 17px); line-height: 1; letter-spacing: 0.08em;
 }
 .side-initials::before {
@@ -283,9 +258,9 @@ html[data-theme="dark"] .side-initials::before { background: hsl(var(--initials-
 
 .side-foot {
   margin: var(--sp-4) 0 0; padding: var(--sp-3) var(--sp-3) 0; border-top: 1px solid var(--pr-line);
-  font-family: var(--ff-mono); font-variant-numeric: tabular-nums; font-weight: var(--fw-mono); font-size: var(--text-xs); letter-spacing: var(--tracking-mono); color: var(--pr-ink-2);
+  font-family: var(--pr-ff); font-variant-numeric: tabular-nums; font-weight: var(--fw-mono); font-size: var(--text-xs); letter-spacing: var(--tracking-mono); color: var(--pr-ink-2);
 }
-html.lang-jp .side-foot { font-family: var(--ff-mono), var(--pr-ff-jp); font-variant-numeric: tabular-nums; }
+html.lang-jp .side-foot { font-family: var(--pr-ff-jp); font-variant-numeric: tabular-nums; }
 .side-foot a { color: var(--pr-blue); text-decoration: underline; text-underline-offset: 3px; }
 
 /* The rail is its own view-transition group and never animates. */
@@ -297,7 +272,12 @@ html.lang-jp .side-foot { font-family: var(--ff-mono), var(--pr-ff-jp); font-var
   .shell { display: block; }
   .side { position: sticky; top: 0; height: auto; max-height: 100vh; overflow: hidden; z-index: 40; border-bottom: 1px solid var(--pr-line); padding: var(--pane-pad); }
   .side.is-open { overflow-y: auto; }
-  .side-top { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); min-height: 40px; }
+  /* Top bar: the name and Menu on the first row, the status line on its own
+     row under them, wrapping — never clipped behind the button. */
+  .side-top {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center;
+    column-gap: var(--sp-2); row-gap: 4px; min-height: 40px;
+  }
   .side-top .side-wordmark { font-size: var(--text-lg); }
   .side-toggle {
     display: inline-flex; align-items: center; appearance: none; cursor: pointer; border: 0;
@@ -309,21 +289,43 @@ html.lang-jp .side-foot { font-family: var(--ff-mono), var(--pr-ff-jp); font-var
   .side-head { padding: var(--sp-3) var(--sp-3) var(--sp-4); }
   .side-head .side-wordmark { display: none; }
   .side-head .side-status { margin-top: 0; }
-  /* The status, compact, in the top bar between the name and Menu. */
-  .side-top .side-wordmark { margin-right: auto; }
+  /* The status, on its own row of the top bar. */
+  .side-top .side-wordmark { justify-self: start; }
   .side-top-status {
-    display: inline-flex; align-items: center; min-width: 0; white-space: nowrap;
-    font-family: var(--ff-mono); font-variant-numeric: tabular-nums; font-weight: 400; font-size: 11px; letter-spacing: var(--tracking-mono); color: var(--pr-ink);
+    grid-column: 1 / -1; display: flex; align-items: baseline; min-width: 0; margin: 0;
+    font-size: var(--text-xs); line-height: 1.35; color: var(--pr-ink);
   }
-  html.lang-jp .side-top-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-variant-numeric: tabular-nums; }
+  .side-top-status .side-dot { transform: translateY(-1px); }
   .side-top-status .side-dot { margin-right: 6px; }
   .side-item { --side-thumb: 48px; min-height: 72px; }
   .side-initials { font-size: 13px; }
   .side-initials::before { top: 4px; left: 4px; width: 5px; height: 5px; }
 }
 .side-top-status { display: none; }
-@media (max-width: 900px) { .side-top .side-top-status { display: inline-flex; } }
-@media (max-width: 359px) { .side-top .side-top-status { display: none; } }
+@media (max-width: 900px) { .side-top .side-top-status { display: flex; } }
+
+/* ── Phones: the category list under the top bar (Sidebar.astro) ─────────
+   Visible without opening Menu. Chips wrap (never a horizontal scroller),
+   each a 44px-tall target; an open category inverts, like a current row. */
+.side-cats-phone { display: none; }
+body.work-fullscreen .side-cats-phone { display: none; }
+@media (max-width: 900px) {
+  body:not(.work-fullscreen) .side-cats-phone { display: block; padding: var(--sp-2) var(--pane-pad) 0; }
+  .side-cats-phone-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .side-cat-chip {
+    appearance: none; cursor: pointer; border: 0; margin: 0;
+    display: inline-flex; align-items: center; gap: 6px; min-height: 44px; max-width: 100%;
+    padding: 0 14px; border-radius: var(--r-pill); background: var(--pr-card); color: var(--pr-ink);
+    font-family: var(--pr-ff); font-size: var(--text-sm); line-height: 1.2; text-align: left;
+    transition: background 140ms ease, color 140ms ease;
+  }
+  html.lang-jp .side-cat-chip { font-family: var(--pr-ff-jp); }
+  .side-cat-chip:hover { background: var(--pr-card-2); }
+  .side-cat-chip[aria-expanded="true"] { background: var(--pr-ink); color: var(--pr-canvas); }
+  .side-cat-chip:focus-visible { outline: 2px solid var(--pr-ink); outline-offset: 2px; }
+  .side-cat-count { color: var(--pr-ink-2); font-variant-numeric: tabular-nums; }
+  .side-cat-chip[aria-expanded="true"] .side-cat-count { color: inherit; }
+}
 
 /* ── Site links (Sidebar.astro .side-nav) ────────────────────────────────
    About · Work · Contact · Resume · LinkedIn, one compact line of text links

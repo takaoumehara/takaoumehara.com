@@ -65,78 +65,67 @@ function markCurrent(path = location.pathname) {
   });
 }
 let sidebarBound = false;
+// ── Categories: an exclusive accordion ──────────────────────────────────────
+// The rail's category rows (.side-group-header) and, on phones, the chip list
+// under the top bar (.side-cat-chip) are <button aria-expanded aria-controls>
+// for the same groups (data-cat-index). Opening one closes the others;
+// clicking the open one closes it. While a category is open, the cards on the
+// page that belong to it (#main, matched by slug) take the inverted
+// .is-category-active style. One delegated listener on document, bound once:
+// the rail is persisted across navigations and the chips are re-rendered, so
+// per-element listeners would double up or go missing. syncCategories() runs
+// on every page-load to carry the open state onto the new page's chips/cards.
+const catButtons = () => document.querySelectorAll(".side-group-header[data-cat-index], .side-cat-chip[data-cat-index]");
+function openCategoryIndex() {
+  return document.querySelector('#side .side-group-header[aria-expanded="true"]')?.dataset.catIndex ?? null;
+}
+// The category a visitor picked (by clicking a row or chip). Only a picked
+// category highlights cards; one opened automatically to reveal the current
+// project's row does not.
+let pickedCategory = null;
+function setCategory(index, { pick = true } = {}) {
+  catButtons().forEach((btn) => btn.setAttribute("aria-expanded", String(index !== null && btn.dataset.catIndex === String(index))));
+  pickedCategory = pick ? index : null;
+  highlightCategory(pickedCategory);
+}
+function highlightCategory(index) {
+  const group = index === null ? null : document.querySelector(`#side .side-group[data-cat-index="${index}"]`);
+  const slugs = new Set((group?.dataset.slugs || "").split(",").filter(Boolean));
+  document.querySelectorAll("#main [data-slug], #main .grid-card[id]").forEach((card) => {
+    const slug = card.dataset.slug || card.id;
+    card.classList.toggle("is-category-active", slugs.has(slug));
+  });
+}
+function syncCategories() {
+  const open = openCategoryIndex();
+  setCategory(open, { pick: open !== null && open === pickedCategory });
+}
 let categoriesBound = false;
 function bindCategories() {
   if (categoriesBound) return;
   categoriesBound = true;
-  const chips = document.querySelectorAll(".side-cat-chip");
-  const headers = document.querySelectorAll(".side-group-header");
-  const groups = document.querySelectorAll(".side-group");
-
-  const closeAll = () => {
-    chips.forEach(chip => chip.setAttribute("aria-expanded", "false"));
-    headers.forEach(header => header.setAttribute("aria-expanded", "false"));
-    document.querySelectorAll(".side-group-items").forEach(items => items.style.display = "none");
-    clearCategoryHighlight();
-  };
-
-  const openCategory = (catIndex) => {
-    closeAll();
-    const chip = document.querySelector(`.side-cat-chip[data-cat-index="${catIndex}"]`);
-    const header = document.querySelector(`.side-group-header[data-cat-index="${catIndex}"]`);
-    const itemsList = document.querySelector(`.side-group[data-cat-index="${catIndex}"] .side-group-items`);
-    if (chip) chip.setAttribute("aria-expanded", "true");
-    if (header) header.setAttribute("aria-expanded", "true");
-    if (itemsList) {
-      itemsList.style.display = "";
-      highlightCategory(catIndex);
-    }
-  };
-
-  chips.forEach(chip => {
-    chip.addEventListener("click", () => {
-      const catIndex = chip.dataset.catIndex;
-      const isOpen = chip.getAttribute("aria-expanded") === "true";
-      if (isOpen) {
-        closeAll();
-      } else {
-        openCategory(catIndex);
-      }
-    });
-  });
-
-  headers.forEach(header => {
-    header.addEventListener("click", () => {
-      const catIndex = header.dataset.catIndex;
-      const isOpen = header.getAttribute("aria-expanded") === "true";
-      if (isOpen) {
-        closeAll();
-      } else {
-        openCategory(catIndex);
-      }
-    });
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest?.(".side-group-header[data-cat-index], .side-cat-chip[data-cat-index]");
+    if (!btn) return;
+    const index = btn.dataset.catIndex;
+    const wasOpen = btn.getAttribute("aria-expanded") === "true";
+    setCategory(wasOpen ? null : index);
+    // A phone chip also opens the menu on that category, so its works are
+    // listed right away (the rail is otherwise behind Menu).
+    if (!wasOpen && btn.classList.contains("side-cat-chip")) openPhoneMenuAt(index);
   });
 }
-
-function highlightCategory(catIndex) {
-  const group = document.querySelector(`.side-group[data-cat-index="${catIndex}"]`);
-  if (!group) return;
-  const slugs = (group.dataset.slugs || "").split(",").filter(Boolean);
-
-  // Highlight cards in the main content by data-slug or id
-  document.querySelectorAll("[data-slug], .grid-card, .hn-article").forEach(card => {
-    const cardSlug = card.dataset.slug || card.id;
-    if (cardSlug && slugs.includes(cardSlug)) {
-      card.classList.add("is-category-active");
-    } else {
-      card.classList.remove("is-category-active");
-    }
-  });
-}
-
-function clearCategoryHighlight() {
-  document.querySelectorAll(".is-category-active").forEach(card => {
-    card.classList.remove("is-category-active");
+function openPhoneMenuAt(index) {
+  const side = document.getElementById("side");
+  const toggle = document.getElementById("side-toggle");
+  const header = side?.querySelector(`.side-group-header[data-cat-index="${index}"]`);
+  if (!side || !header) return;
+  side.classList.add("is-open");
+  toggle?.setAttribute("aria-expanded", "true");
+  window.scrollTo({ top: 0, behavior: "auto" });
+  requestAnimationFrame(() => {
+    side.scrollTop += header.getBoundingClientRect().top - side.getBoundingClientRect().top - 8;
+    header.focus({ preventScroll: true });
   });
 }
 
@@ -235,8 +224,9 @@ function revealActiveRow({ smooth = false, force = false } = {}) {
   if (!force && performance.now() - railUserAt < RAIL_HANDS_OFF_MS) return;
   const row = side.querySelector('.side-item[aria-current="page"]') ?? side.querySelector('.side-panel [data-match][aria-current="page"]');
   if (!row) return;
-  const group = row.closest("details");
-  if (group && !group.open) group.open = true; // a folded category opens to show where you are
+  const group = row.closest(".side-group");
+  const header = group?.querySelector(".side-group-header");
+  if (header && header.getAttribute("aria-expanded") !== "true") setCategory(header.dataset.catIndex, { pick: false }); // a folded category opens to show where you are
   if (!row.getClientRects().length) return; // filtered out by the rail's search
   const sr = side.getBoundingClientRect(), r = row.getBoundingClientRect();
   const top = Math.max(sr.top, 0) + 8, bottom = Math.min(sr.bottom, window.innerHeight) - 8;
@@ -468,8 +458,6 @@ document.addEventListener("astro:after-swap", () => {
   markCurrent();
   revealActiveRow({ smooth: motion.getConfig().rail.playOn !== "always" });
   closePhoneMenu();
-  clearCategoryHighlight();
-  categoriesBound = false;
   motion.onAfterSwap(navDir);
   navDir = 0;
 });
@@ -604,6 +592,7 @@ function onPageLoad() {
   bindSidebar();
   markCurrent();
   closePhoneMenu();
+  syncCategories();
   bindCards();
   bindFeel();
   bindEcho();

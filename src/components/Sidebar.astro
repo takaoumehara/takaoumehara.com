@@ -1,7 +1,7 @@
 ---
 // The left rail, a precision directory of the work: controls (all work ·
 // search · theme · language), the wordmark over a system index (how many
-// works, how many disciplines, the advisory status), an About card, then every
+// works, how many disciplines, the "Open to full-time" status), an About card, then every
 // piece of work grouped by category (src/categories/*.json) as rows with a
 // 64px tile or a mono tag badge.
 //
@@ -41,6 +41,10 @@ const groups = categories.map((category) => {
   const shouldOpen = isCategoryPage || containsCurrentItem;
   return { category, items, shouldOpen };
 });
+// The accordion is exclusive: at most one category starts open (the first
+// that matches this page).
+const firstOpen = groups.findIndex(({ shouldOpen }) => shouldOpen);
+groups.forEach((g, i) => { g.shouldOpen = i === firstOpen; });
 
 // The rail head's system index: how many distinct pieces of work the rail
 // lists (a piece filed under two categories counts once) and in how many
@@ -144,8 +148,8 @@ const thumb = (item) => {
   </script>
   <div class="side-top">
     <a class="side-wordmark" href="/">{profile.name}</a>
-    <span class="side-top-status"><span class="side-dot" aria-hidden="true"></span><span class="t-en">Open to full-time roles</span><span class="t-jp" lang="ja">フルタイム募集中</span></span>
     <button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">Menu</button>
+    <p class="side-top-status"><span class="side-dot" aria-hidden="true"></span><span class="t-en">Open to full-time · Staff/Principal Product Designer & AI roles</span><span class="t-jp" lang="ja">フルタイム募集中・Staff/Principal プロダクトデザイナー／AI 職</span></p>
   </div>
 
   <div class="side-panel" id="side-panel">
@@ -227,27 +231,6 @@ const thumb = (item) => {
       <p set:html={tb(profile.positioning[1])} />
     </section>
 
-    {/* Compact category list visible even when menu is collapsed */}
-    <nav class="side-categories" aria-label="Categories">
-      <div class="side-categories-list">
-        {groups.map(({ category, items, shouldOpen }, idx) => (
-          <button
-            class="side-cat-chip"
-            type="button"
-            data-cat-index={idx}
-            data-cat={category.slug}
-            aria-expanded={shouldOpen ? "true" : "false"}
-            aria-controls={`side-group-${category.slug}`}
-            title={`${t(category.title)} (${items.length})`}
-          >
-            <span class="side-cat-number" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
-            <span class="side-cat-name" set:html={t(category.title)} />
-            <span class="side-cat-count" set:html={odo(items.length)} />
-          </button>
-        ))}
-      </div>
-    </nav>
-
     <nav class="side-work" aria-label="Work by category">
       {groups.map(({ category, items, shouldOpen }, idx) => {
         const slugs = items.map(({ item }) => item.slug).filter(Boolean);
@@ -265,7 +248,7 @@ const thumb = (item) => {
               <span class="side-group-title" set:html={t(category.title)} />
               <span class="side-count" set:html={odo(items.length)} />
             </button>
-            <ul id={`side-group-${category.slug}-items`} class="side-group-items" style={shouldOpen ? "" : "display: none;"}>
+            <ul id={`side-group-${category.slug}-items`} class="side-group-items">
               {items.map(({ item, to, href, here }) => (
                 <li>
                   <a class="side-item" href={href}
@@ -296,3 +279,28 @@ const thumb = (item) => {
     </p>
   </div>
 </aside>
+{/* Phones (≤ 900px): the rail sits behind the Menu button, so the
+    categories are also listed here, under the top bar, without opening the
+    menu — one chip per category (name + count). A chip drives the same
+    exclusive accordion as the rail's rows (src/scripts/site.js): it opens
+    that category in the menu and highlights its cards on the page. Hidden on
+    wider screens, where the rail's own rows are the list. Not persisted: it is
+    re-rendered with each page and re-synced on astro:page-load. */}
+<nav class="side-cats-phone" aria-label="Categories">
+  <ul class="side-cats-phone-list">
+    {groups.map(({ category, items, shouldOpen }, idx) => (
+      <li>
+        <button
+          class="side-cat-chip"
+          type="button"
+          data-cat-index={idx}
+          aria-expanded={shouldOpen ? "true" : "false"}
+          aria-controls={`side-group-${category.slug}-items`}
+        >
+          <span class="side-cat-name" set:html={t(category.title)} />
+          <span class="side-cat-count">{items.length}</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+</nav>

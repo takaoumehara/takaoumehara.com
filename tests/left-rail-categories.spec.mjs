@@ -1,164 +1,184 @@
-import { test, expect } from '@playwright/test';
+// The rail's categories (src/components/Sidebar.astro, src/scripts/site.js).
+//
+// Desktop: ONE always-visible list — the accordion's own header rows
+// (number, name, count, +/−), left-aligned. Exclusive: opening one closes
+// the others, clicking the open one closes it; the matching cards in the
+// page take the inverted .is-category-active style while it is open.
+// Phone (≤ 900px): the rail is behind Menu, so a chip list under the top bar
+// shows the categories without opening it; chips are 44px tall and wrap.
+//
+// Also the 390px checks for item 9/J: no horizontal overflow on /, /about,
+// /work, the phone top bar's status line is not clipped, and new strings
+// switch with the EN/JP toggle.
+import { test, expect } from "@playwright/test";
 
-test.describe('Left rail categories', () => {
-  test('category list visible on load at desktop', async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('http://localhost:4321/');
+const desktopOnly = (testInfo) => test.skip(testInfo.project.name !== "desktop", "desktop layout");
+const phoneOnly = (testInfo) => test.skip(testInfo.project.name !== "phone", "phone layout");
 
-    // Category list should be visible
-    const categoryList = page.locator('.side-categories-list');
-    await expect(categoryList).toBeVisible();
+const expanded = (loc) => loc.evaluateAll((els) => els.map((el) => el.getAttribute("aria-expanded")));
 
-    // Should have multiple category chips
-    const chips = page.locator('.side-cat-chip');
-    const chipCount = await chips.count();
-    expect(chipCount).toBeGreaterThan(0);
-  });
-
-  test('exclusive accordion: clicking category opens only that one', async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('http://localhost:4321/');
-
-    const chips = page.locator('.side-cat-chip');
-    const secondChip = chips.nth(1);
-
-    // Click second category
-    await secondChip.click();
-
-    // Wait for state to update
-    await page.waitForTimeout(150);
-
-    // Second chip should be expanded
-    const secondExpanded = await secondChip.getAttribute('aria-expanded');
-    expect(secondExpanded).toBe('true');
-
-    // Other chips should not be expanded
-    const firstChip = chips.first();
-    const firstExpanded = await firstChip.getAttribute('aria-expanded');
-    expect(firstExpanded).toBe('false');
-  });
-
-  test('category headers match chip behavior', async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('http://localhost:4321/');
-
-    const headers = page.locator('.side-group-header');
-    const secondHeader = headers.nth(1);
-
-    // Click second category header
-    await secondHeader.click();
-
-    // Wait for update
-    await page.waitForTimeout(150);
-
-    // Header should be expanded
-    const headerExpanded = await secondHeader.getAttribute('aria-expanded');
-    expect(headerExpanded).toBe('true');
-
-    // Corresponding chip should also be expanded
-    const chips = page.locator('.side-cat-chip');
-    const secondChip = chips.nth(1);
-    const chipExpanded = await secondChip.getAttribute('aria-expanded');
-    expect(chipExpanded).toBe('true');
-  });
-
-  test('matching cards get highlighted when category is open', async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('http://localhost:4321/');
-
-    // Get a category and click it
-    const chip = page.locator('.side-cat-chip').first();
-    await chip.click();
-
-    // Wait for highlighting
-    await page.waitForTimeout(150);
-
-    // Check if any cards have is-category-active class
-    const activeCards = page.locator('.is-category-active');
-    const activeCount = await activeCards.count();
-
-    // Should have some active cards (depends on page content)
-    // This is flexible since not all pages have all categories
-    if (activeCount > 0) {
-      const firstActive = activeCards.first();
-      const classes = await firstActive.getAttribute('class');
-      expect(classes).toContain('is-category-active');
+test.describe("Left rail categories — desktop", () => {
+  test("the header rows are the one category list: visible, left-aligned, ≥44px, no chip list", async ({ page }, testInfo) => {
+    desktopOnly(testInfo);
+    await page.goto("/");
+    await expect(page.locator(".side-cats-phone")).toBeHidden();
+    const headers = page.locator("#side .side-group-header");
+    expect(await headers.count()).toBe(5);
+    for (const header of await headers.all()) {
+      await expect(header).toBeVisible();
+      await expect(header).toHaveAttribute("aria-controls", /side-group-.+-items/);
+      const box = await header.boundingBox();
+      expect(box.height).toBeGreaterThanOrEqual(44);
+      const parts = await header.evaluate((el) => {
+        const r = (sel) => el.querySelector(sel).getBoundingClientRect();
+        return { left: el.getBoundingClientRect().left, num: r(".side-group-number").left, title: r(".side-group-title").left, count: r(".side-count").left, align: getComputedStyle(el).textAlign };
+      });
+      expect(parts.align).toBe("left");
+      expect(parts.num).toBeLessThan(parts.title);
+      expect(parts.title).toBeLessThan(parts.count);
+      // The name starts right after the number, not centred in the row.
+      expect(parts.title - parts.left).toBeLessThan(80);
+      const textLeft = await header.locator(".side-group-title").evaluate((el) => {
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        return range.getBoundingClientRect().left - el.getBoundingClientRect().left;
+      });
+      expect(textLeft).toBeLessThan(2);
     }
   });
 
-  test('keyboard navigation with Tab and Enter', async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('http://localhost:4321/');
-
-    // Focus on first chip with Tab
-    const firstChip = page.locator('.side-cat-chip').first();
-    await firstChip.focus();
-
-    // Verify it's focused
-    await expect(firstChip).toBeFocused();
-
-    // Press Enter to activate
-    await firstChip.press('Enter');
-
-    // Wait for state update
-    await page.waitForTimeout(150);
-
-    // Should be expanded
-    const expanded = await firstChip.getAttribute('aria-expanded');
-    expect(expanded).toBe('true');
+  test("exclusive accordion: one open at a time, the open one closes on click", async ({ page }, testInfo) => {
+    desktopOnly(testInfo);
+    await page.goto("/");
+    const headers = page.locator("#side .side-group-header");
+    await headers.nth(1).click();
+    expect(await expanded(headers)).toEqual(["false", "true", "false", "false", "false"]);
+    await expect(page.locator("#side .side-group").nth(1).locator(".side-group-items")).toBeVisible();
+    await expect(page.locator("#side .side-group").nth(0).locator(".side-group-items")).toBeHidden();
+    await headers.nth(0).click();
+    expect(await expanded(headers)).toEqual(["true", "false", "false", "false", "false"]);
+    await headers.nth(0).click();
+    expect(await expanded(headers)).toEqual(["false", "false", "false", "false", "false"]);
   });
 
-  test('no horizontal scroll at 390px', async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('http://localhost:4321/');
-
-    // Get the scrolling element (document)
-    const scrollWidth = await page.evaluate(() => document.documentElement.scrollWidth);
-    const viewportWidth = 390;
-
-    expect(scrollWidth).toBeLessThanOrEqual(viewportWidth + 1); // +1 for rounding
+  test("an open category inverts its cards on the page; closing clears it", async ({ page }, testInfo) => {
+    desktopOnly(testInfo);
+    await page.goto("/");
+    const interactive = page.locator('#side .side-group-header[data-cat="interactive"]');
+    await interactive.click();
+    const active = page.locator("#main .hn-article.is-category-active");
+    await expect.poll(() => active.count()).toBeGreaterThan(0);
+    const bg = await active.first().evaluate((el) => getComputedStyle(el).backgroundColor);
+    expect(bg).toBe("rgb(0, 0, 0)"); // --pr-ink in the light theme
+    // Rail rows themselves are never highlighted.
+    expect(await page.locator("#side .is-category-active").count()).toBe(0);
+    await interactive.click();
+    await expect(page.locator(".is-category-active")).toHaveCount(0);
   });
 
-  test('closing category clears highlight', async ({ page }) => {
-    await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('http://localhost:4321/');
+  test("keyboard: Enter and Space toggle a focused row", async ({ page }, testInfo) => {
+    desktopOnly(testInfo);
+    await page.goto("/");
+    const header = page.locator("#side .side-group-header").nth(2);
+    await header.focus();
+    await expect(header).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(header).toHaveAttribute("aria-expanded", "true");
+    await page.keyboard.press("Space");
+    await expect(header).toHaveAttribute("aria-expanded", "false");
+  });
 
-    const chip = page.locator('.side-cat-chip').first();
+  test("after a client-side navigation a row still toggles exactly once", async ({ page }, testInfo) => {
+    desktopOnly(testInfo);
+    await page.goto("/");
+    await page.locator('#side .side-nav a[href="/about"]').click();
+    await page.waitForURL(/\/about$/);
+    await page.waitForTimeout(300);
+    const header = page.locator("#side .side-group-header").nth(3);
+    const before = await header.getAttribute("aria-expanded");
+    await header.click();
+    await expect(header).toHaveAttribute("aria-expanded", before === "true" ? "false" : "true");
+  });
 
-    // Open category
-    await chip.click();
-    await page.waitForTimeout(150);
+  test("EN/JP toggle switches the new home strings", async ({ page }, testInfo) => {
+    desktopOnly(testInfo);
+    await page.goto("/");
+    const title = page.locator(".home-now-title");
+    await expect(title.locator(".t-en")).toBeVisible();
+    await page.locator("#lang-cycle").click();
+    await expect(title.locator(".t-jp")).toBeVisible();
+    await expect(title.locator(".t-en")).toBeHidden();
+    await expect(page.locator(".home-updates-heading .t-jp")).toBeVisible();
+    await expect(page.locator(".now-list-latest .t-jp").first()).toBeVisible();
+    await expect(page.locator(".about-intro-actions .t-jp").first()).toBeVisible();
+    await page.locator("#lang-cycle").click();
+    await expect(title.locator(".t-en")).toBeVisible();
+  });
+});
 
-    // Check active cards exist
-    let activeCards = page.locator('.is-category-active');
-    let activeCount = await activeCards.count();
-
-    if (activeCount > 0) {
-      // Click again to close
-      await chip.click();
-      await page.waitForTimeout(150);
-
-      // Active cards should be cleared
-      activeCards = page.locator('.is-category-active');
-      activeCount = await activeCards.count();
-      expect(activeCount).toBe(0);
+test.describe("Left rail categories — phone", () => {
+  test("a chip list is visible without opening Menu; chips are ≥44px and wrap inside 390", async ({ page }, testInfo) => {
+    phoneOnly(testInfo);
+    await page.goto("/");
+    await expect(page.locator("#side-toggle")).toHaveAttribute("aria-expanded", "false");
+    const chips = page.locator(".side-cats-phone .side-cat-chip");
+    expect(await chips.count()).toBe(5);
+    const tops = new Set();
+    for (const chip of await chips.all()) {
+      await expect(chip).toBeVisible();
+      const box = await chip.boundingBox();
+      expect(box.height).toBeGreaterThanOrEqual(44);
+      expect(box.x).toBeGreaterThanOrEqual(0);
+      expect(box.x + box.width).toBeLessThanOrEqual(390);
+      tops.add(Math.round(box.y));
     }
+    expect(tops.size).toBeGreaterThan(1); // wrapped onto more than one row
   });
 
-  test('category list visible on mobile', async ({ page }) => {
-    await page.setViewportSize({ width: 390, height: 844 });
-    await page.goto('http://localhost:4321/');
+  test("a chip opens only its category, in the menu", async ({ page }, testInfo) => {
+    phoneOnly(testInfo);
+    await page.goto("/");
+    const chips = page.locator(".side-cats-phone .side-cat-chip");
+    await chips.nth(2).click();
+    expect(await expanded(chips)).toEqual(["false", "false", "true", "false", "false"]);
+    expect(await expanded(page.locator("#side .side-group-header"))).toEqual(["false", "false", "true", "false", "false"]);
+    await expect(page.locator("#side")).toHaveClass(/is-open/);
+    await expect(page.locator("#side .side-group").nth(2).locator(".side-group-items")).toBeVisible();
+  });
 
-    // Menu toggle should be visible
-    const toggle = page.locator('#side-toggle');
-    await expect(toggle).toBeVisible();
+  test("the top bar's status line is not clipped behind Menu", async ({ page }, testInfo) => {
+    phoneOnly(testInfo);
+    await page.goto("/");
+    const status = page.locator(".side-top-status");
+    await expect(status).toBeVisible();
+    const s = await status.boundingBox();
+    const m = await page.locator("#side-toggle").boundingBox();
+    expect(s.x + s.width).toBeLessThanOrEqual(390);
+    expect(s.y).toBeGreaterThanOrEqual(m.y + m.height - 1); // its own row, under the name and Menu
+    const clipped = await status.evaluate((el) => el.scrollWidth > el.clientWidth + 1);
+    expect(clipped).toBe(false);
+  });
 
-    // Open the menu
-    await toggle.click();
-    await page.waitForTimeout(150);
+  for (const path of ["/", "/about", "/work"]) {
+    test(`no horizontal overflow at 390 on ${path}`, async ({ page }, testInfo) => {
+      phoneOnly(testInfo);
+      await page.goto(path);
+      const width = await page.evaluate(() => document.scrollingElement.scrollWidth);
+      expect(width).toBeLessThanOrEqual(390);
+    });
+  }
 
-    // Category list should be visible in the panel
-    const categoryList = page.locator('.side-categories-list');
-    await expect(categoryList).toBeVisible();
+  test("dark mode: the new About buttons and chips use the dark tokens", async ({ page }, testInfo) => {
+    phoneOnly(testInfo);
+    await page.goto("/");
+    await page.locator("#side-toggle").click();
+    await page.locator("#theme-switch").click();
+    await page.locator("#side-toggle").click();
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+    const btn = await page.locator(".about-intro-btn").first().evaluate((el) => ({ bg: getComputedStyle(el).backgroundColor, fg: getComputedStyle(el).color }));
+    expect(btn.fg).toBe("rgb(255, 255, 255)");
+    expect(btn.bg).toBe("rgb(22, 22, 22)"); // --pr-card, dark
+    const chip = await page.locator(".side-cat-chip").first().evaluate((el) => getComputedStyle(el).backgroundColor);
+    expect(chip).toBe("rgb(22, 22, 22)");
   });
 });
