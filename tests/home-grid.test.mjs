@@ -55,13 +55,31 @@ test("/work carries the five canonical filters (All, Product, AI, Interactive, T
   assert.ok(counts.every((n) => n > 0), "every filter count must be a real number, not zero");
   assert.equal(counts[0], gridIds.size, `the All count must be ${gridIds.size} (every deduplicated grid item)`);
 
-  const catMap = new Map(categories.map((c) => [c.slug, c]));
-  const groupCount = (slug) => catMap.get(slug)?.groups.reduce((n, g) => n + g.items.length, 0) ?? 0;
-  const [, productCount, aiCount, interactiveCount, toolsCount] = counts;
-  assert.equal(productCount, groupCount("brand") + groupCount("work"), "Product count must combine brand + work");
-  assert.equal(aiCount, groupCount("ai-products"), "AI count must match ai-products only (one filter per project)");
-  assert.equal(interactiveCount, groupCount("interactive"), "Interactive count must match the interactive category");
-  assert.equal(toolsCount, groupCount("ai-tools"), "Tools count must match the ai-tools category");
+  // Each item gets exactly ONE primary filter (src/pages/work.astro's
+  // FILTER_PRECEDENCE: ai-products → AI, ai-tools → Tools, interactive →
+  // Interactive, work / brand → Product), so the four counts add up to All
+  // even though the category data files some items under two categories.
+  const membership = new Map();
+  for (const c of categories) for (const g of c.groups) for (const id of g.items) {
+    if (!membership.has(id)) membership.set(id, new Set());
+    membership.get(id).add(c.slug);
+  }
+  const PRECEDENCE = [["ai-products", "ai"], ["ai-tools", "tools"], ["interactive", "interactive"], ["work", "product"], ["brand", "product"]];
+  const expected = { product: 0, ai: 0, interactive: 0, tools: 0 };
+  for (const cats of membership.values()) expected[PRECEDENCE.find(([slug]) => cats.has(slug))[1]] += 1;
+  const [all, productCount, aiCount, interactiveCount, toolsCount] = counts;
+  assert.equal(productCount + aiCount + interactiveCount + toolsCount, all, "the four filter counts must add up to All");
+  assert.deepEqual({ product: productCount, ai: aiCount, interactive: interactiveCount, tools: toolsCount }, expected);
+
+  // Every tile carries exactly one of the four filter ids.
+  const tileFilters = cards(html).map((card) => card.match(/\bdata-filter="([^"]+)"/)?.[1]);
+  assert.ok(tileFilters.every((f) => ["product", "ai", "interactive", "tools"].includes(f)), "every /work tile needs one primary data-filter");
+  for (const id of Object.keys(expected)) assert.equal(tileFilters.filter((f) => f === id).length, expected[id], `${id} tiles must match its count`);
+
+  // Verizon AI Workflow stays filed under both work and ai-products (the rail
+  // and /product-design list it) but is counted once, under AI.
+  assert.ok(membership.get("verizon-ai-workflow")?.has("work"), "verizon-ai-workflow must stay in src/categories/work.json");
+  assert.ok(membership.get("verizon-ai-workflow")?.has("ai-products"), "verizon-ai-workflow must stay in ai-products");
 });
 
 test("/work renders one tile per public item across every category, each carrying data-category and .bento-cell — the free grid", () => {

@@ -99,53 +99,42 @@ const getMeta = (item) => {
   return `<span class="t-en">${esc(parts_en.join(" · "))}</span><span class="t-jp" lang="ja">${esc(parts_jp.join(" · "))}</span>`;
 };
 
+// Each tile lands in exactly ONE non-All filter, so the four counts add up
+// to All. The category data (src/categories/*.json) files some pieces under
+// two categories on purpose — Verizon AI Workflow is both client work and an
+// AI product, and stays in both on the rail and /product-design — so the
+// primary filter is picked here, by precedence, never by editing the data:
+//   ai-products → AI, ai-tools → Tools, interactive → Interactive,
+//   work / brand → Product.
+// The most specific discipline wins: a client project that is also an AI
+// product reads as AI.
+const FILTER_PRECEDENCE = [
+  ["ai-products", "ai"],
+  ["ai-tools", "tools"],
+  ["interactive", "interactive"],
+  ["work", "product"],
+  ["brand", "product"],
+];
+const primaryFilter = (category) => {
+  const cats = String(category).split(" ");
+  return FILTER_PRECEDENCE.find(([slug]) => cats.includes(slug))?.[1] ?? "product";
+};
+
 const tiles = entries.map(({ item, category }, i) => {
   const to = destination(item);
   const stamp = item.kind === "experiment" && item.input ? String(item.input) : null;
   const meta = getMeta(item);
-  return { item, category, to, stamp, size: sizeFor(i), meta };
+  return { item, category, filter: primaryFilter(category), to, stamp, size: sizeFor(i), meta };
 });
 
+const countOf = (id) => tiles.filter((tile) => tile.filter === id).length;
 const FILTERS = [
-  { id: "all", label: { en: "All", jp: "すべて" }, count: entries.length },
-  { id: "product", label: { en: "Product", jp: "プロダクト" }, count: 0 },
-  { id: "ai", label: { en: "AI", jp: "AI" }, count: 0 },
-  { id: "interactive", label: { en: "Interactive", jp: "インタラクティブ" }, count: 0 },
-  { id: "tools", label: { en: "Tools", jp: "ツール" }, count: 0 },
+  { id: "all", label: { en: "All", jp: "すべて" }, count: tiles.length },
+  { id: "product", label: { en: "Product", jp: "プロダクト" }, count: countOf("product") },
+  { id: "ai", label: { en: "AI", jp: "AI" }, count: countOf("ai") },
+  { id: "interactive", label: { en: "Interactive", jp: "インタラクティブ" }, count: countOf("interactive") },
+  { id: "tools", label: { en: "Tools", jp: "ツール" }, count: countOf("tools") },
 ];
-
-// Calculate counts for the new filter categories
-// Each project belongs to exactly ONE non-All filter:
-// Product = work + brand
-// AI = ai-products only
-// Interactive = interactive
-// Tools = ai-tools only
-// Note: verizon-ai-workflow is in ai-products (primary), removed from work to avoid double-counting
-const catMap = new Map(categories.map(c => [c.slug, c]));
-const interactiveCat = catMap.get("interactive");
-const aiProductsCat = catMap.get("ai-products");
-const aiToolsCat = catMap.get("ai-tools");
-const brandCat = catMap.get("brand");
-const workCat = catMap.get("work");
-
-// Product filter = brand + work (client/product design)
-const productCount = (brandCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0) +
-                     (workCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0);
-FILTERS[1].count = productCount;
-
-// AI = ai-products only
-const aiCount = aiProductsCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0;
-FILTERS[2].count = aiCount;
-
-// Interactive
-if (interactiveCat) {
-  FILTERS[3].count = interactiveCat.groups.reduce((n, g) => n + g.items.length, 0);
-}
-
-// Tools = ai-tools only
-if (aiToolsCat) {
-  FILTERS[4].count = aiToolsCat.groups.reduce((n, g) => n + g.items.length, 0);
-}
 ---
 <Site
   title="Work — Takao Umehara"
@@ -206,13 +195,14 @@ if (aiToolsCat) {
     </header>
 
     <div class="work-bento" id="work-bento">
-      {tiles.map(({ item, category, to, stamp, size, meta }) => (
+      {tiles.map(({ item, category, filter, to, stamp, size, meta }) => (
         <article
           class={`tile tile--${size} cat-card grid-card bento-cell`}
           id={item.slug}
           data-href={to ? to.url : undefined}
           data-external={to?.external ? "true" : undefined}
           data-category={category}
+          data-filter={filter}
           tabindex={to ? "0" : undefined}
         >
           <div class="tile-media" set:html={mediaFill(item)} />
@@ -509,22 +499,13 @@ if (aiToolsCat) {
     const cards = document.querySelectorAll(".work-page-full .cat-card[data-category]");
     if (!btns.length || !cards.length) return;
     
-    // Map simplified filters to original category slugs
-    // Each project belongs to exactly ONE non-All filter
-    const filterMap = {
-      'all': () => true,
-      'product': (cats) => cats.includes('brand') || cats.includes('work'),
-      'ai': (cats) => cats.includes('ai-products'),
-      'interactive': (cats) => cats.includes('interactive'),
-      'tools': (cats) => cats.includes('ai-tools')
-    };
-
+    // Each tile carries its one primary filter (data-filter, picked at build
+    // time — see FILTER_PRECEDENCE in the frontmatter).
+    const filterIds = new Set([...btns].map((b) => b.dataset.filter));
     function applyFilter(filter) {
       btns.forEach((b) => b.classList.toggle("is-active", b.dataset.filter === filter));
-      const matcher = filterMap[filter];
       cards.forEach((card) => {
-        const cats = (card.dataset.category || "").split(" ");
-        const show = matcher(cats);
+        const show = filter === "all" || card.dataset.filter === filter;
         card.classList.toggle("is-hidden", !show);
       });
       try {
@@ -539,7 +520,7 @@ if (aiToolsCat) {
     // vercel.json sends the old category addresses to.
     const params = new URLSearchParams(window.location.search);
     const requested = (params.get("filter") || window.location.hash.replace("#", "")).toLowerCase();
-    if (requested && filterMap[requested]) {
+    if (requested && filterIds.has(requested)) {
       applyFilter(requested);
     }
   })();
