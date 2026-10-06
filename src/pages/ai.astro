@@ -41,8 +41,8 @@ const story = [
     jp: { h: "制約の中でつくった", p: "使える AI は Gemini と NotebookLM だけ。独自モデルも API 接続もありません。その制約を設計の前提にして、みんながすでに使っているツールの中に 10 体のエージェントを設計し、自分でつくりました。専任のチームではなく、デザイナーひとりで。" },
   },
   {
-    en: { h: "One shared project brain", p: "A project-level “Master Brain” brings stakeholder input, research, domain knowledge and meeting transcripts into one shared source of context, so nobody starts from a blank page or depends on who remembers what." },
-    jp: { h: "プロジェクトの「共有の頭脳」", p: "プロジェクトごとの「Master Brain」に、関係者の意見、リサーチ、業務知識、会議の書き起こしを集めて、ひとつの共有の文脈にしました。白紙から始める人も、誰かの記憶に頼る人もいなくなります。" },
+    en: { h: "One shared project brain", p: "A project-level “Master Brain” brings stakeholder input, research, domain knowledge and meeting transcripts into one shared source of context, instead of knowledge that lived in a few people’s heads." },
+    jp: { h: "プロジェクトの「共有の頭脳」", p: "プロジェクトごとの「Master Brain」に、関係者の意見、リサーチ、業務知識、会議の書き起こしを集めて、ひとつの共有の文脈にしました。一部の人の頭の中にしかなかった知識を、みんなのものに。" },
   },
   {
     en: { h: "Problems caught before engineering", p: "AI-assisted validation and edge-case workflows surfaced usability issues, missing states and downstream risks while the work was still in design. One audit returns 20–40 ranked edge cases." },
@@ -124,8 +124,8 @@ const steps = [
           <span class="t-jp" lang="ja">Claude Code、Codex、Figma で、AI のプロトタイプとツールを設計し、自分でつくっています。</span>
         </p>
         <p class="ai-status"><span class="ai-dot" aria-hidden="true"></span>
-          <span class="t-en">Open to full-time roles · NYC / Remote</span>
-          <span class="t-jp" lang="ja">フルタイムの仕事を探しています · ニューヨーク / リモート</span>
+          <span class="t-en">Open to full-time roles · <span class="ai-nowrap">NYC / Remote</span></span>
+          <span class="t-jp" lang="ja">フルタイムの仕事を探しています · <span class="ai-nowrap">ニューヨーク / リモート</span></span>
         </p>
         <ul class="ai-actions">
           <li><a class="ai-btn ai-btn--primary" href={`mailto:${email}`}><span class="t-en">Email me</span><span class="t-jp" lang="ja">メールする</span></a></li>
@@ -318,6 +318,7 @@ const steps = [
     font-family: var(--ff-mono); font-weight: var(--fw-mono); letter-spacing: var(--tracking-mono);
     font-size: var(--text-sm) !important;
   }
+  .ai-nowrap { white-space: nowrap; }
   .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pr-live); flex: none; }
 
   .ai-actions { list-style: none; padding: 0; margin: var(--sp-5) 0 0; display: flex; flex-wrap: wrap; gap: var(--sp-2); }
