@@ -79,7 +79,8 @@ function bindSidebar() {
   }
   // Close mobile menu when a link is clicked
   side.addEventListener("click", (e) => {
-    if (e.target instanceof HTMLAnchorElement && e.target.href) {
+    const link = e.target.closest("a[href]");
+    if (link) {
       side.classList.remove("is-open");
       if (toggle) toggle.setAttribute("aria-expanded", "false");
     }
@@ -390,6 +391,7 @@ document.addEventListener("astro:after-swap", () => {
   if (side) { railProgUntil = performance.now() + 120; side.scrollTop = sideScroll; }
   markCurrent();
   revealActiveRow({ smooth: motion.getConfig().rail.playOn !== "always" });
+  closePhoneMenu();
   motion.onAfterSwap(navDir);
   navDir = 0;
 });

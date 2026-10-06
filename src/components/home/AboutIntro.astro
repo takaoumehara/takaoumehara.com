@@ -24,10 +24,10 @@ const profile = lib.profile;
       </p>
       <p class="about-intro-career">
         <span class="t-en">
-          20+ years in product design and brand strategy. Verizon Lead Product Designer (AI Enablement, 2025–2026), Concentrix Catalyst Lead Product Designer (2021–2023), ProjectEd (2015–2018), Amplify Education (2009–2015), and founder of Creativity Is Everywhere (2006–present). I build AI products and agent systems; Intent First is my current venture.
+          20+ years of 0→1 product, brand, and experience work. Verizon Lead Product Designer, AI Enablement (2025–2026), Concentrix Catalyst Lead Product Designer / Design Manager (2021–2023), ProjectEd (2015–2018), Amplify Education (2009–2015), founder of creativity is everywhere (2006–present). Designs and builds AI products and agent systems with Claude Code and Codex; Intent First is his venture.
         </span>
         <span class="t-jp" lang="ja">
-          プロダクトデザイン・ブランド戦略で 20 年以上。Verizon Lead Product Designer（AI Enablement, 2025–2026）、Concentrix Catalyst Lead Product Designer（2021–2023）、ProjectEd（2015–2018）、Amplify Education（2009–2015）、Creativity Is Everywhere 創業（2006–現在）。AI プロダクトとエージェント・システムを構築。Intent First は現在のベンチャー。
+          0→1 プロダクト、ブランド、エクスペリエンスデザインで 20 年以上。Verizon Lead Product Designer（AI Enablement、2025–2026）、Concentrix Catalyst Lead Product Designer / Design Manager（2021–2023）、ProjectEd（2015–2018）、Amplify Education（2009–2015）、creativity is everywhere 創業（2006–現在）。Claude Code や Codex で AI プロダクトとエージェント・システムを構築。Intent First がそのベンチャー。
         </span>
       </p>
       <div class="about-intro-actions">
@@ -35,11 +35,12 @@ const profile = lib.profile;
           <span class="t-en">Resume (PDF)</span>
           <span class="t-jp" lang="ja">履歴書 (PDF)</span>
         </a>
-        <a href={profile.contact.linkedin} target="_blank" rel="noopener" class="about-intro-btn about-intro-btn-linkedin">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <a href={profile.contact.linkedin} target="_blank" rel="noopener" class="about-intro-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
           </svg>
-          <span>LinkedIn</span>
+          <span class="t-en">LinkedIn</span>
+          <span class="t-jp" lang="ja">LinkedIn</span>
         </a>
         <a href="/about#work-with-me" class="about-intro-btn">
           <span class="t-en">Contact</span>
@@ -113,8 +114,8 @@ const profile = lib.profile;
     gap: var(--sp-2);
     min-height: 44px;
     padding: var(--sp-2) var(--sp-3);
-    background: var(--pr-canvas);
-    color: var(--pr-blue);
+    background: var(--pr-card);
+    color: var(--pr-ink);
     text-decoration: none;
     border-radius: var(--r-pill);
     font-size: var(--text-body);
@@ -123,7 +124,7 @@ const profile = lib.profile;
   }
 
   .about-intro-btn:hover {
-    background: var(--pr-line);
+    background: var(--pr-card-2);
     color: var(--pr-ink);
   }
 
@@ -132,15 +133,7 @@ const profile = lib.profile;
     outline-offset: 2px;
   }
 
-  .about-intro-btn-linkedin {
-    padding: var(--sp-2);
-    width: 44px;
-    height: 44px;
-    display: inline-flex;
-    justify-content: center;
-  }
-
-  .about-intro-btn-linkedin svg {
+  .about-intro-btn svg {
     width: 20px;
     height: 20px;
   }
