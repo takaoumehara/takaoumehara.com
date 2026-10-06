@@ -245,6 +245,15 @@ html.lang-jp .hh-cap-line { font-family: var(--ff-jp); }
 .hn-article:hover { background: var(--pr-card-2); }
 .hn-article:focus-within { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
 
+/* Category highlight: matching news cards get inverted style */
+.hn-article.is-category-active {
+  background: var(--pr-ink);
+  color: var(--pr-canvas);
+}
+.hn-article.is-category-active .hn-meta { color: color-mix(in srgb, var(--pr-canvas) 70%, var(--pr-ink)); }
+.hn-article.is-category-active .hn-link { color: var(--pr-canvas); }
+.hn-article.is-category-active .hn-lead { color: color-mix(in srgb, var(--pr-canvas) 78%, var(--pr-ink)); }
+
 /* Metadata (category · date, the location kicker): the mono system voice. */
 .hn-meta, .hn-kicker {
   margin: 0 0 12px;

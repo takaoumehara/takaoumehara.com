@@ -86,6 +86,17 @@ html.lang-jp .grid-card .cat-card-title { font-family: var(--ff-jp); font-weight
 
 .grid-card .cat-card-cta { position: absolute; inset: 0; }
 
+/* Category highlight: matching cards get inverted style */
+.grid-card.is-category-active {
+  background: var(--ink);
+  color: var(--bg);
+}
+.grid-card.is-category-active .cat-card-title { color: var(--bg); }
+.grid-card.is-category-active .cat-card-desc { color: color-mix(in srgb, var(--bg) 78%, var(--ink)); }
+.grid-card.is-category-active .grid-media {
+  background: var(--bg);
+}
+
 /* ── Filter pills (home page + /work) ────────────────────────────────────── */
 .grid-filters {
   display: flex;

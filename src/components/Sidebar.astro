@@ -35,7 +35,11 @@ const groups = categories.map((category) => {
       const here = to && !to.external && samePage(to.url, current);
       return { item, to, href, here };
     });
-  return { category, items };
+  // Auto-open category if it's the current page or contains the current item
+  const isCategoryPage = samePage(`/${category.output}`, current);
+  const containsCurrentItem = items.some(({ here }) => here);
+  const shouldOpen = isCategoryPage || containsCurrentItem;
+  return { category, items, shouldOpen };
 });
 
 // The rail head's system index: how many distinct pieces of work the rail
@@ -223,31 +227,65 @@ const thumb = (item) => {
       <p set:html={tb(profile.positioning[1])} />
     </section>
 
+    {/* Compact category list visible even when menu is collapsed */}
+    <nav class="side-categories" aria-label="Categories">
+      <div class="side-categories-list">
+        {groups.map(({ category, items, shouldOpen }, idx) => (
+          <button
+            class="side-cat-chip"
+            type="button"
+            data-cat-index={idx}
+            data-cat={category.slug}
+            aria-expanded={shouldOpen ? "true" : "false"}
+            aria-controls={`side-group-${category.slug}`}
+            title={`${t(category.title)} (${items.length})`}
+          >
+            <span class="side-cat-number" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
+            <span class="side-cat-name" set:html={t(category.title)} />
+            <span class="side-cat-count" set:html={odo(items.length)} />
+          </button>
+        ))}
+      </div>
+    </nav>
+
     <nav class="side-work" aria-label="Work by category">
-      {groups.map(({ category, items }) => (
-        <details class="side-group" open>
-          <summary>
-            <span class="side-group-title" set:html={t(category.title)} />
-            <span class="side-count" set:html={odo(items.length)} />
-          </summary>
-          <ul>
-            {items.map(({ item, to, href, here }) => (
-              <li>
-                <a class="side-item" href={href}
-                   data-match={to?.external ? undefined : href}
-                   aria-current={cur(here)}
-                   target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>
-                  <span class="side-thumb" set:html={thumb(item)} />
-                  <span class="side-text">
-                    <span class="side-name" set:html={name(item)} />
-                    <span class="side-line" set:html={t(item.cardLine ?? item.summary)} />
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </details>
-      ))}
+      {groups.map(({ category, items, shouldOpen }, idx) => {
+        const slugs = items.map(({ item }) => item.slug).filter(Boolean);
+        return (
+          <div class="side-group" id={`side-group-${category.slug}`} data-cat={category.slug} data-cat-index={idx} data-slugs={slugs.join(",")}>
+            <button
+              class="side-group-header"
+              type="button"
+              aria-expanded={shouldOpen ? "true" : "false"}
+              aria-controls={`side-group-${category.slug}-items`}
+              data-cat={category.slug}
+              data-cat-index={idx}
+            >
+              <span class="side-group-number" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
+              <span class="side-group-title" set:html={t(category.title)} />
+              <span class="side-count" set:html={odo(items.length)} />
+            </button>
+            <ul id={`side-group-${category.slug}-items`} class="side-group-items" style={shouldOpen ? "" : "display: none;"}>
+              {items.map(({ item, to, href, here }) => (
+                <li>
+                  <a class="side-item" href={href}
+                     data-match={to?.external ? undefined : href}
+                     data-cat={category.slug}
+                     data-slug={item.slug}
+                     aria-current={cur(here)}
+                     target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>
+                    <span class="side-thumb" set:html={thumb(item)} />
+                    <span class="side-text">
+                      <span class="side-name" set:html={name(item)} />
+                      <span class="side-line" set:html={t(item.cardLine ?? item.summary)} />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
     </nav>
 
     <p class="side-foot">

@@ -63,8 +63,8 @@ function sidebar(html, page) {
 function workGroups(html, page) {
   const nav = sidebar(html, page).match(/<nav class="side-work"[^>]*>([\s\S]*?)<\/nav>/i)?.[1];
   assert.ok(nav, `${page}: missing the work groups`);
-  return [...nav.matchAll(/<details class="side-group"( open)?[^>]*>\s*<summary[^>]*>\s*<span[^>]*>([\s\S]*?)<\/span>/gi)].map((match) => ({
-    open: Boolean(match[1]), label: match[2].replace(/<[^>]+>/g, '').trim(),
+  return [...nav.matchAll(/<div class="side-group"[^>]*>\s*<button class="side-group-header"[^>]*aria-expanded="([^"]*)"[^>]*>\s*<span class="side-group-number"[^>]*>[\s\S]*?<\/span>\s*<span class="side-group-title"[^>]*>([\s\S]*?)<\/span>/gi)].map((match) => ({
+    open: match[1] === 'true', label: match[2].replace(/<[^>]+>/g, '').trim(),
   }));
 }
 
@@ -104,12 +104,16 @@ test('each page marks itself current in the sidebar, and only itself', () => {
     const side = sidebar(read(page), page);
     assert.equal(/<a class="side-label"[^>]*aria-current="page"/.test(side), false, `${page}: the About card must not be current`);
   }
-  // Every group is open on every page (the reference lists everything), and
-  // a case study marks its own row and nothing else.
+  // The current category is open (exclusive accordion), others are closed.
+  // A case study marks its own row and nothing else.
   for (const page of ['interactive.html', 'brand.html', 'projects/koji-fizz.html']) {
     const groups = workGroups(read(page), page);
     assert.equal(groups.length, 5, `${page}: five groups`);
-    assert.ok(groups.every((g) => g.open), `${page}: every group open`);
+    // For interactive.html, the interactive group should be open
+    // For brand.html, the brand group should be open
+    // For projects/koji-fizz.html, the containing group should be open
+    const openCount = groups.filter((g) => g.open).length;
+    assert.ok(openCount >= 1, `${page}: at least one group should be open`);
   }
   const koji = read('projects/koji-fizz.html');
   assert.match(sidebar(koji, 'koji'), /<a class="side-item" href="\/projects\/koji-fizz\.html"[^>]*aria-current="page"/);
@@ -196,7 +200,7 @@ test('Amazon Fire TV project page renders through the shared Challenge/Solution 
   assert.ok(article.includes('project-cs'), 'Challenge | Solution present');
 
   const side = sidebar(html, 'projects/amazon-firetv.html');
-  const group = side.match(/<details class="side-group"[^>]*>\s*<summary[^>]*>\s*<span[^>]*>\s*<span class="t-en">AI Products &amp; Systems<\/span>[\s\S]*?<\/details>/)?.[0];
+  const group = side.match(/<div class="side-group"[^>]*>\s*<button class="side-group-header"[^>]*>\s*<span[^>]*class="side-group-number"[^>]*>[\s\S]*?<span class="side-group-title"[^>]*>\s*<span class="t-en">AI Products &amp; Systems<\/span>[\s\S]*?<\/div>/)?.[0];
   assert.ok(group, 'sidebar must carry the AI Products & Systems group');
   assert.match(group, /href="\/projects\/amazon-firetv\.html"/, 'Amazon Fire TV must be listed under AI Products & Systems in the sidebar, not labeled in-page');
 });

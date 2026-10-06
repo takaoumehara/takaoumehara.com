@@ -85,7 +85,7 @@ const links = [
     {articles.map((a, i) => {
       const d = dateLabel(a.date);
       return (
-        <article class="hn-card hn-article bento-cell" style={`--i: ${i}`}>
+        <article class="hn-card hn-article bento-cell" data-slug={a.slug} style={`--i: ${i}`}>
           <p class="hn-meta">
             <span set:html={t(a.meta)} />
             <span aria-hidden="true"> · </span>
