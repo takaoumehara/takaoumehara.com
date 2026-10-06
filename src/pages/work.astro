@@ -115,10 +115,12 @@ const FILTERS = [
 ];
 
 // Calculate counts for the new filter categories
-// Product = client/product design work + brand/design (brand + work categories)
-// AI = ai-products + ai-tools
+// Each project belongs to exactly ONE non-All filter:
+// Product = work + brand
+// AI = ai-products only
 // Interactive = interactive
-// Tools = ai-tools + open tools
+// Tools = ai-tools only
+// Note: verizon-ai-workflow is in ai-products (primary), removed from work to avoid double-counting
 const catMap = new Map(categories.map(c => [c.slug, c]));
 const interactiveCat = catMap.get("interactive");
 const aiProductsCat = catMap.get("ai-products");
@@ -131,9 +133,8 @@ const productCount = (brandCat?.groups.reduce((n, g) => n + g.items.length, 0) |
                      (workCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0);
 FILTERS[1].count = productCount;
 
-// AI = ai-products + ai-tools
-const aiCount = (aiProductsCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0) +
-                (aiToolsCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0);
+// AI = ai-products only
+const aiCount = aiProductsCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0;
 FILTERS[2].count = aiCount;
 
 // Interactive
@@ -141,7 +142,7 @@ if (interactiveCat) {
   FILTERS[3].count = interactiveCat.groups.reduce((n, g) => n + g.items.length, 0);
 }
 
-// Tools = ai-tools (open tools category)
+// Tools = ai-tools only
 if (aiToolsCat) {
   FILTERS[4].count = aiToolsCat.groups.reduce((n, g) => n + g.items.length, 0);
 }
@@ -509,10 +510,11 @@ if (aiToolsCat) {
     if (!btns.length || !cards.length) return;
     
     // Map simplified filters to original category slugs
+    // Each project belongs to exactly ONE non-All filter
     const filterMap = {
       'all': () => true,
       'product': (cats) => cats.includes('brand') || cats.includes('work'),
-      'ai': (cats) => cats.includes('ai-products') || cats.includes('ai-tools'),
+      'ai': (cats) => cats.includes('ai-products'),
       'interactive': (cats) => cats.includes('interactive'),
       'tools': (cats) => cats.includes('ai-tools')
     };
