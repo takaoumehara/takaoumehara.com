@@ -59,7 +59,7 @@ test("/work carries the five canonical filters (All, Product, AI, Interactive, T
   const groupCount = (slug) => catMap.get(slug)?.groups.reduce((n, g) => n + g.items.length, 0) ?? 0;
   const [, productCount, aiCount, interactiveCount, toolsCount] = counts;
   assert.equal(productCount, groupCount("brand") + groupCount("work"), "Product count must combine brand + work");
-  assert.equal(aiCount, groupCount("ai-products") + groupCount("ai-tools"), "AI count must combine ai-products + ai-tools");
+  assert.equal(aiCount, groupCount("ai-products"), "AI count must match ai-products only (one filter per project)");
   assert.equal(interactiveCount, groupCount("interactive"), "Interactive count must match the interactive category");
   assert.equal(toolsCount, groupCount("ai-tools"), "Tools count must match the ai-tools category");
 });
