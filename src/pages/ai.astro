@@ -1,0 +1,391 @@
+---
+// /ai — AI Enablement: a one-page summary for people hiring for AI adoption,
+// enablement or forward-deployed roles. Reachable by direct link (resume,
+// applications, LinkedIn); deliberately not in the rail or the main nav.
+//
+// Every fact is sourced, nothing is invented (docs/superforge.md):
+//   Verizon role, numbers, Master Brain, validation/edge-case workflows,
+//   50+ trained — takao-umehara-resume-ai-outfit.pdf and the A.Team profile
+//   copy (takao-applications/26-ateam-profile.md);
+//   16 one-hour interviews, 40+ friction points, Gemini + NotebookLM only, no
+//   custom models, no API access, ten agents, weekly workshops, the product-
+//   strategy team taking over Master Brain, 20–40 ranked edge cases per audit
+//   — src/data/projects/verizon-ai-workflow.json (contribution, outcomes,
+//   constraints) and src/case-studies/verizon-ai-agents.html;
+//   "adoption follows usefulness" — takao-applications/33-ai-strategy-packages.md;
+//   Intent First / Resona — the A.Team profile and src/data records;
+//   Claude Code Skills / AI Window Deck — src/data/tools/*.json (links);
+//   Break Bias clients — src/fragments/breakbias.html (.clients-names).
+import Site from "../layouts/Site.astro";
+import profile from "../data/profile.json";
+import skills from "../data/tools/skills.json";
+import awd from "../data/tools/ai-window-deck.json";
+
+const email = profile.contact.email;            // takaoumehara@gmail.com
+const linkedin = profile.contact.linkedin;      // https://linkedin.com/in/takaoumehara/
+const resume = "/takao-umehara-resume.pdf";
+
+const numbers = [
+  { value: "10", en: "AI agents built into the tools the team already used", jp: "チームが毎日使うツールに組み込んだ AI エージェント" },
+  { value: "40+ / 80+", en: "designers and cross-functional stakeholders using them, across six prepaid brands", jp: "使っていたデザイナーと部門横断の関係者。プリペイド 6 ブランドにわたる" },
+  { value: "50+", en: "designers and product partners trained and onboarded", jp: "トレーニングとオンボーディングをしたデザイナーとプロダクトのパートナー" },
+];
+
+const story = [
+  {
+    en: { h: "I listened first", p: "Sixteen hour-long interviews with designers and strategists, about the working day rather than the deliverables. They surfaced 40+ friction points, which I ranked by severity, business impact, ease of change and where AI could help." },
+    jp: { h: "まず、話を聞いた", p: "デザイナーとストラテジストに 1 時間ずつ、16 回のインタビュー。聞いたのは成果物ではなく、毎日の仕事の進め方です。40 件を超えるつまずきが見えてきて、深刻さ、事業への影響、変えやすさ、AI が役立つかどうかで順位をつけました。" },
+  },
+  {
+    en: { h: "I built inside the constraints", p: "Gemini and NotebookLM were the only AI allowed: no custom models, no API access. I treated that as the brief and designed and built ten agents inside the tools people already used, as one designer rather than a program team." },
+    jp: { h: "制約の中でつくった", p: "使える AI は Gemini と NotebookLM だけ。独自モデルも API 接続もありません。その制約を設計の前提にして、みんながすでに使っているツールの中に 10 体のエージェントを設計し、自分でつくりました。専任のチームではなく、デザイナーひとりで。" },
+  },
+  {
+    en: { h: "One shared project brain", p: "A project-level “Master Brain” brings stakeholder input, research, domain knowledge and meeting transcripts into one shared source of context, instead of knowledge that lived in a few people’s heads." },
+    jp: { h: "プロジェクトの「共有の頭脳」", p: "プロジェクトごとの「Master Brain」に、関係者の意見、リサーチ、業務知識、会議の書き起こしを集めて、ひとつの共有の文脈にしました。一部の人の頭の中にしかなかった知識を、みんなのものに。" },
+  },
+  {
+    en: { h: "Problems caught before engineering", p: "AI-assisted validation and edge-case workflows surfaced usability issues, missing states and downstream risks while the work was still in design. One audit returns 20–40 ranked edge cases." },
+    jp: { h: "開発の前に、問題を見つける", p: "AI を使った検証と例外ケースの洗い出しで、使いにくさ、抜けている状態、後工程のリスクを、まだデザインの段階で見つけられるようにしました。1 回の監査で、順位つきの例外ケースが 20〜40 件出てきます。" },
+  },
+  {
+    en: { h: "Training until it was theirs", p: "I shared every agent live in weekly hands-on workshops and trained and onboarded 50+ designers and product partners. The product-strategy team took over the Master Brain and ran it on real projects." },
+    jp: { h: "自分たちの道具になるまで教える", p: "毎週の実践ワークショップで、すべてのエージェントをその場で見せながら共有しました。トレーニングとオンボーディングをしたのは、デザイナーとプロダクトのパートナー 50 人以上。Master Brain はプロダクト戦略チームが引き継ぎ、実際のプロジェクトで使い続けました。" },
+  },
+];
+
+const builds = [
+  {
+    name: "Intent First",
+    href: "https://intentfirst.ai",
+    host: "intentfirst.ai",
+    img: "/assets/intentfirst/hero-ai-page.webp",
+    w: 800, h: 410,
+    en: "A thesis and toolkit for agentic UX: products should start from what the user intends, not from features. Its Context Grammar decides when an agent should act, ask, or wait.",
+    jp: "エージェント時代の UX のための考え方と道具。プロダクトは機能からではなく、使う人の意図から始めるべきだという主張です。Context Grammar が、エージェントが動くべきか、聞くべきか、待つべきかを決めます。",
+  },
+  {
+    name: "Resona",
+    href: "https://resonamotion.com",
+    host: "resonamotion.com",
+    img: "/assets/resona/thumb-ai-page.webp",
+    w: 800, h: 533,
+    en: "A gesture-to-music instrument. A camera reads body movement and turns it into sound in real time, entirely on the device, with no video sent anywhere.",
+    jp: "身ぶりを音楽に変える楽器。カメラが体の動きを読み取り、その場で音にします。処理はすべて端末の中で完結し、映像はどこにも送りません。",
+  },
+];
+
+const tools = [
+  {
+    name: "Claude Code Skills",
+    docs: skills.links.docs,
+    repo: skills.links.repo,
+    en: "My open Claude Code skills in one marketplace, with a docs site. Add it once, then install only the skills your work needs.",
+    jp: "自作の Claude Code スキルを一か所にまとめたマーケットプレイスと、そのドキュメント。一度追加すれば、仕事に必要なスキルだけを選んで入れられます。",
+  },
+  {
+    name: "AI Window Deck",
+    docs: awd.links.docs,
+    repo: awd.links.repo,
+    en: "A Chrome extension for running several Claude Code or Codex sessions side by side, each in its own window, so you can compare approaches without losing your place.",
+    jp: "複数の Claude Code や Codex のセッションを、それぞれ別のウィンドウで並べて動かせる Chrome 拡張機能。作業の位置を見失わずに、やり方を比べられます。",
+  },
+];
+
+const steps = [
+  { en: { h: "Listen", p: "Start from how people actually work, not from the tool." }, jp: { h: "聞く", p: "ツールからではなく、みんなの実際の仕事から始める。" } },
+  { en: { h: "Build into existing tools", p: "Put AI where the work already happens, so nobody has to switch apps to use it." }, jp: { h: "いつものツールに組み込む", p: "仕事がすでに起きている場所に AI を置く。使うためにアプリを替えなくていいように。" } },
+  { en: { h: "Train and measure adoption", p: "Teach it hands-on, then watch what people keep using and keep improving that." }, jp: { h: "教えて、定着を測る", p: "手を動かしながら教え、使われ続けているものを見て、それを磨いていく。" } },
+];
+---
+<Site
+  title="AI Enablement — Takao Umehara"
+  description="Takao Umehara, Principal Product Designer & AI Product Builder. Led AI adoption inside a 40+ designer enterprise org: interviews, ten AI agents built into the tools people already used, and training for 50+ designers and product partners."
+  canonical="https://takaoumehara.com/ai"
+  ogImage="/og-ai.png"
+  bodyClass="ai-page"
+>
+  <main class="cat-page ai-content" data-category="ai">
+    <div class="ai-bento">
+
+      <!-- Intro -->
+      <section class="ai-cell ai-hero" aria-labelledby="ai-h1">
+        <p class="ai-name">Takao Umehara</p>
+        <h1 class="ai-h1" id="ai-h1">
+          <span class="t-en">Principal Product Designer &amp; AI Product Builder</span>
+          <span class="t-jp" lang="ja">プリンシパル・プロダクトデザイナー / AI プロダクトビルダー</span>
+        </h1>
+        <p class="ai-sub">
+          <span class="t-en">I led AI adoption inside a 40+ designer enterprise org, from interviews, to agents built into the tools people already used, to training.</span>
+          <span class="t-jp" lang="ja">40 人を超えるデザイナーがいる企業組織で、AI の導入を率いました。インタビューから始め、みんなが使っているツールにエージェントを組み込み、トレーニングまで。</span>
+        </p>
+        <p class="ai-line">
+          <span class="t-en">I design and build AI prototypes and tools with Claude Code, Codex and Figma.</span>
+          <span class="t-jp" lang="ja">Claude Code、Codex、Figma で、AI のプロトタイプとツールを設計し、自分でつくっています。</span>
+        </p>
+        <p class="ai-status"><span class="ai-dot" aria-hidden="true"></span>
+          <span class="t-en">Open to full-time roles · <span class="ai-nowrap">NYC / Remote</span></span>
+          <span class="t-jp" lang="ja">フルタイムの仕事を探しています · <span class="ai-nowrap">ニューヨーク / リモート</span></span>
+        </p>
+        <ul class="ai-actions">
+          <li><a class="ai-btn ai-btn--primary" href={`mailto:${email}`}><span class="t-en">Email me</span><span class="t-jp" lang="ja">メールする</span></a></li>
+          <li><a class="ai-btn" href={linkedin} target="_blank" rel="noopener">LinkedIn ↗</a></li>
+          <li><a class="ai-btn" href={resume} target="_blank" rel="noopener"><span class="t-en">Resume (PDF)</span><span class="t-jp" lang="ja">履歴書 (PDF)</span> ↗</a></li>
+        </ul>
+      </section>
+
+      <!-- Verizon -->
+      <section class="ai-cell ai-card ai-verizon" aria-labelledby="ai-verizon-h">
+        <figure class="ai-verizon-media">
+          <img src="/assets/verizon-ai-agents/hero-agents-network-1600.webp" alt="Five glowing nodes joined by light threads: the AI agents connected to one another" width="1600" height="679" loading="eager" decoding="async" />
+        </figure>
+        <p class="ai-kicker">Verizon</p>
+        <h2 class="ai-h2" id="ai-verizon-h">
+          <span class="t-en">AI adoption for a 40+ designer org, led hands-on</span>
+          <span class="t-jp" lang="ja">40 人超のデザイン組織の AI 導入を、自分の手で率いる</span>
+        </h2>
+        <p class="ai-role">
+          <span class="t-en">Lead Product Designer, AI Enablement (contract) · 2025–2026</span>
+          <span class="t-jp" lang="ja">リードプロダクトデザイナー（AI 活用推進・契約）· 2025–2026</span>
+        </p>
+        <dl class="ai-numbers">
+          {numbers.map((n) => (
+            <div class="ai-number">
+              <dt>{n.value}</dt>
+              <dd><span class="t-en">{n.en}</span><span class="t-jp" lang="ja">{n.jp}</span></dd>
+            </div>
+          ))}
+        </dl>
+        <ol class="ai-story">
+          {story.map((s, i) => (
+            <li class="ai-step">
+              <span class="ai-step-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <h3 class="ai-h3"><span class="t-en">{s.en.h}</span><span class="t-jp" lang="ja">{s.jp.h}</span></h3>
+                <p><span class="t-en">{s.en.p}</span><span class="t-jp" lang="ja">{s.jp.p}</span></p>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="ai-more"><a class="ai-link" href="/projects/verizon-ai-agents.html"><span class="t-en">Read the Verizon case study</span><span class="t-jp" lang="ja">Verizon のケーススタディを読む</span> →</a></p>
+      </section>
+
+      <!-- Own products -->
+      <section class="ai-cell ai-card" aria-labelledby="ai-build-h">
+        <h2 class="ai-h2" id="ai-build-h">
+          <span class="t-en">I build AI products myself</span>
+          <span class="t-jp" lang="ja">AI プロダクトを、自分でもつくる</span>
+        </h2>
+        <div class="ai-grid">
+          {builds.map((b) => (
+            <article class="ai-product">
+              <a class="ai-product-media" href={b.href} target="_blank" rel="noopener" tabindex="-1" aria-hidden="true">
+                <img src={b.img} alt="" width={b.w} height={b.h} loading="lazy" decoding="async" />
+              </a>
+              <h3 class="ai-h3">{b.name}</h3>
+              <p><span class="t-en">{b.en}</span><span class="t-jp" lang="ja">{b.jp}</span></p>
+              <a class="ai-link" href={b.href} target="_blank" rel="noopener">{b.host} ↗</a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <!-- Shared tools -->
+      <section class="ai-cell ai-card ai-half" aria-labelledby="ai-tools-h">
+        <h2 class="ai-h2" id="ai-tools-h">
+          <span class="t-en">Tools I’ve shared</span>
+          <span class="t-jp" lang="ja">公開しているツール</span>
+        </h2>
+        <p class="ai-lede">
+          <span class="t-en">Small, open ways to fit AI agents into everyday work.</span>
+          <span class="t-jp" lang="ja">AI エージェントを毎日の仕事になじませるための、小さなオープンツール。</span>
+        </p>
+        <ul class="ai-list">
+          {tools.map((t) => (
+            <li>
+              <h3 class="ai-h3">{t.name}</h3>
+              <p><span class="t-en">{t.en}</span><span class="t-jp" lang="ja">{t.jp}</span></p>
+              <p class="ai-links">
+                <a class="ai-link" href={t.docs} target="_blank" rel="noopener"><span class="t-en">Docs</span><span class="t-jp" lang="ja">ドキュメント</span> ↗</a>
+                <a class="ai-link" href={t.repo} target="_blank" rel="noopener">GitHub ↗</a>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Teaching -->
+      <section class="ai-cell ai-card ai-half" aria-labelledby="ai-teach-h">
+        <h2 class="ai-h2" id="ai-teach-h">
+          <span class="t-en">Teaching</span>
+          <span class="t-jp" lang="ja">教えること</span>
+        </h2>
+        <ul class="ai-list">
+          <li>
+            <h3 class="ai-h3">Break Bias</h3>
+            <p>
+              <span class="t-en">My workshop method for challenging assumptions and finding new ideas, run for teams at Microsoft, Tiffany &amp; Co., Havas, Dentsu and Google.</span>
+              <span class="t-jp" lang="ja">思い込みを疑い、新しいアイデアを見つけるための、自作のワークショップ手法。Microsoft、Tiffany &amp; Co.、Havas、電通、Google のチームと実施しました。</span>
+            </p>
+            <p class="ai-links"><a class="ai-link" href="/breakbias.html"><span class="t-en">About Break Bias</span><span class="t-jp" lang="ja">Break Bias について</span> →</a></p>
+          </li>
+          <li>
+            <h3 class="ai-h3"><span class="t-en">AI coaching for design and product teams</span><span class="t-jp" lang="ja">デザイン・プロダクトチームへの AI コーチング</span></h3>
+            <p>
+              <span class="t-en">Hands-on sessions that start from the work a team already does and leave it with AI workflows it keeps using.</span>
+              <span class="t-jp" lang="ja">チームがすでにしている仕事から始めて、使い続けられる AI のワークフローを残す、実践型のセッション。</span>
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- How I work -->
+      <section class="ai-cell ai-card" aria-labelledby="ai-how-h">
+        <p class="ai-kicker"><span class="t-en">How I work</span><span class="t-jp" lang="ja">進め方</span></p>
+        <h2 class="ai-h2" id="ai-how-h">
+          <span class="t-en">Adoption follows usefulness</span>
+          <span class="t-jp" lang="ja">役に立つものは、使われる</span>
+        </h2>
+        <ol class="ai-flow">
+          {steps.map((s, i) => (
+            <li>
+              <span class="ai-step-n" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <h3 class="ai-h3"><span class="t-en">{s.en.h}</span><span class="t-jp" lang="ja">{s.jp.h}</span></h3>
+              <p><span class="t-en">{s.en.p}</span><span class="t-jp" lang="ja">{s.jp.p}</span></p>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <!-- Closing -->
+      <section class="ai-cell ai-card ai-closing" aria-labelledby="ai-close-h">
+        <h2 class="ai-h2" id="ai-close-h">
+          <span class="t-en">Hiring for AI adoption, enablement or a forward-deployed role?</span>
+          <span class="t-jp" lang="ja">AI の導入・活用推進、またはフォワードデプロイの役割で、人を探していますか？</span>
+        </h2>
+        <ul class="ai-actions">
+          <li><a class="ai-btn ai-btn--primary" href={`mailto:${email}`}><span class="t-en">Email me</span><span class="t-jp" lang="ja">メールする</span></a></li>
+          <li><a class="ai-btn" href={linkedin} target="_blank" rel="noopener">LinkedIn ↗</a></li>
+        </ul>
+        <p class="ai-email">{email}</p>
+      </section>
+
+      <nav class="ai-cell ai-foot" aria-label="More on this site">
+        <a class="ai-link" href="/work"><span class="t-en">Work</span><span class="t-jp" lang="ja">作品</span> →</a>
+        <a class="ai-link" href="/about"><span class="t-en">About</span><span class="t-jp" lang="ja">プロフィール</span> →</a>
+        <a class="ai-link" href="/"><span class="t-en">Home</span><span class="t-jp" lang="ja">ホーム</span> →</a>
+      </nav>
+    </div>
+  </main>
+</Site>
+
+<style>
+  .ai-content { width: 100%; }
+  .ai-bento {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap-grid);
+  }
+  .ai-cell { grid-column: span 12; min-width: 0; padding: var(--cell-pad, clamp(20px, 3vw, 32px)); }
+  .ai-card { background: var(--pr-card); border-radius: var(--r); }
+  .ai-half { grid-column: span 6; }
+
+  /* Japanese: phrase-aware line breaks (Chromium 119+), strict kinsoku
+     elsewhere; every .t-jp here carries lang="ja". */
+  .ai-content :lang(ja) { word-break: auto-phrase; line-break: strict; }
+  .ai-content :where(h1, h2, h3) :lang(ja) { text-wrap: balance; }
+
+  /* Type: Outfit SemiBold headings (--fw-display), site ink/greys. */
+  .ai-h1, .ai-h2, .ai-h3 { font-family: var(--pr-ff-display); font-weight: var(--fw-display, 600); color: var(--pr-ink); margin: 0; }
+  .ai-h1 { font-size: clamp(32px, 4.6vw, 56px); line-height: 1.08; letter-spacing: -0.01em; max-width: 18ch; text-wrap: balance; }
+  :global(html.lang-jp) .ai-h1 { font-size: clamp(28px, 3.8vw, 46px); line-height: 1.25; max-width: 20em; }
+  .ai-h2 { font-size: clamp(22px, 2.4vw, 32px); line-height: 1.2; text-wrap: balance; max-width: 28ch; }
+  :global(html.lang-jp) .ai-h2 { max-width: none; line-height: 1.35; }
+  .ai-h3 { font-size: var(--text-md); line-height: 1.3; margin-bottom: 6px; }
+  .ai-content p { margin: 0; font-size: var(--text-body); line-height: 1.55; color: var(--pr-ink); }
+  :global(html.lang-jp) .ai-content p { line-height: 1.8; }
+
+  .ai-hero { padding-top: clamp(28px, 5vw, 64px); padding-bottom: clamp(28px, 4vw, 48px); }
+  .ai-name {
+    font-family: var(--ff-mono); font-weight: var(--fw-mono); letter-spacing: var(--tracking-mono);
+    font-size: var(--text-sm) !important; color: var(--pr-ink-2) !important; margin-bottom: var(--sp-3) !important;
+  }
+  .ai-hero .ai-sub { font-size: var(--text-lg); line-height: 1.45; max-width: 40ch; margin-top: var(--sp-4); }
+  :global(html.lang-jp) .ai-hero .ai-sub { max-width: 34em; line-height: 1.7; }
+  .ai-hero .ai-line { color: var(--pr-ink-2); margin-top: var(--sp-2); max-width: 60ch; }
+  .ai-status {
+    display: flex; align-items: center; gap: 8px; margin-top: var(--sp-4) !important;
+    font-family: var(--ff-mono); font-weight: var(--fw-mono); letter-spacing: var(--tracking-mono);
+    font-size: var(--text-sm) !important;
+  }
+  .ai-nowrap { white-space: nowrap; }
+  .ai-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--pr-live); flex: none; }
+
+  .ai-actions { list-style: none; padding: 0; margin: var(--sp-5) 0 0; display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+  .ai-btn {
+    display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 20px;
+    border-radius: var(--r-pill); font-size: var(--text-body); text-decoration: none;
+    color: var(--pr-ink); background: var(--pr-card); border: 1px solid var(--pr-line);
+    transition: background 140ms ease, color 140ms ease;
+  }
+  .ai-card .ai-btn { background: var(--pr-canvas); }
+  .ai-btn:hover { background: var(--pr-card-2); }
+  .ai-btn--primary, .ai-card .ai-btn--primary { background: var(--pr-ink); color: var(--pr-canvas); border-color: var(--pr-ink); }
+  .ai-btn--primary:hover { background: var(--pr-ink); opacity: 0.85; }
+  .ai-btn:focus-visible, .ai-link:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; }
+
+  .ai-kicker {
+    font-family: var(--ff-mono); font-weight: var(--fw-mono); letter-spacing: var(--tracking-mono);
+    font-size: var(--text-sm) !important; color: var(--pr-ink-2) !important; margin-bottom: var(--sp-1) !important;
+  }
+  .ai-verizon-media { margin: calc(-1 * var(--cell-pad)) calc(-1 * var(--cell-pad)) var(--cell-pad); border-radius: var(--r) var(--r) 0 0; overflow: hidden; background: #0b0d10; }
+  .ai-verizon-media img { display: block; width: 100%; height: auto; aspect-ratio: 1600 / 679; object-fit: cover; }
+  .ai-role { color: var(--pr-ink-2) !important; margin-top: var(--sp-1) !important; }
+
+  .ai-numbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-grid); margin: var(--sp-6) 0 0; }
+  .ai-number { background: var(--pr-canvas); border-radius: var(--r); padding: var(--sp-4); }
+  .ai-number dt { font-family: var(--pr-ff-display); font-weight: var(--fw-display, 600); font-size: clamp(32px, 3.6vw, 48px); line-height: 1; color: var(--pr-ink); font-variant-numeric: tabular-nums; }
+  .ai-number dd { margin: var(--sp-2) 0 0; font-size: var(--text-sm); line-height: 1.45; color: var(--pr-ink-2); }
+
+  .ai-story { list-style: none; padding: 0; margin: var(--sp-6) 0 0; display: grid; gap: var(--sp-5); max-width: 72ch; }
+  .ai-step { display: grid; grid-template-columns: 2.5em minmax(0, 1fr); gap: var(--sp-2); }
+  .ai-step-n { font-family: var(--ff-mono); font-weight: var(--fw-mono); font-size: var(--text-sm); color: var(--pr-ink-2); padding-top: 3px; font-variant-numeric: tabular-nums; }
+  .ai-more { margin-top: var(--sp-5) !important; }
+
+  .ai-link {
+    display: inline-flex; align-items: center; gap: 4px; min-height: 44px;
+    color: var(--pr-blue); text-decoration: none; font-size: var(--text-body);
+  }
+  .ai-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .ai-links { display: flex; flex-wrap: wrap; column-gap: var(--sp-4); }
+
+  .ai-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gap-grid); margin-top: var(--sp-5); }
+  .ai-product { background: var(--pr-canvas); border-radius: var(--r); padding: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-1); }
+  .ai-product p { flex: 1; }
+  .ai-product-media { display: block; border-radius: calc(var(--r) - 2px); overflow: hidden; margin-bottom: var(--sp-2); background: var(--pr-card); }
+  .ai-product-media img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+
+  .ai-lede { color: var(--pr-ink-2) !important; margin-top: var(--sp-1) !important; }
+  .ai-list { list-style: none; padding: 0; margin: var(--sp-5) 0 0; display: grid; gap: var(--sp-5); }
+
+  .ai-flow { list-style: none; padding: 0; margin: var(--sp-5) 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gap-grid); counter-reset: none; }
+  .ai-flow li { background: var(--pr-canvas); border-radius: var(--r); padding: var(--sp-4); position: relative; }
+  .ai-flow li:not(:last-child)::after {
+    content: "→"; position: absolute; right: calc(-0.5 * var(--gap-grid) - 0.5em); top: 50%; transform: translateY(-50%);
+    color: var(--pr-ink-2); font-size: 14px; z-index: 1; width: 1em; text-align: center;
+  }
+  .ai-flow .ai-step-n { display: block; margin-bottom: var(--sp-1); }
+
+  .ai-closing .ai-h2 { max-width: 30ch; }
+  .ai-email { margin-top: var(--sp-2) !important; font-family: var(--ff-mono); font-weight: var(--fw-mono); font-size: var(--text-sm) !important; color: var(--pr-ink-2) !important; }
+
+  .ai-foot { display: flex; flex-wrap: wrap; gap: var(--sp-5); padding-top: var(--sp-3); padding-bottom: var(--sp-3); }
+
+  @media (max-width: 900px) {
+    .ai-half { grid-column: span 12; }
+    .ai-numbers { grid-template-columns: minmax(0, 1fr); }
+    .ai-grid { grid-template-columns: minmax(0, 1fr); }
+    .ai-flow { grid-template-columns: minmax(0, 1fr); }
+    .ai-flow li:not(:last-child)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: calc(-0.5 * var(--gap-grid) - 0.6em); transform: translateX(-50%); }
+  }
+</style>
