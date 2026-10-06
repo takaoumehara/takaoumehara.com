@@ -1,27 +1,30 @@
 ---
-// About intro block with portrait, name, positioning line, career summary, and links.
-// Reused on home page and About page.
-import { t, url } from "../../lib/html.mjs";
-
-interface Props { lib: any; eager?: boolean }
-const { lib, eager = false } = Astro.props;
+// The About block: portrait, name, positioning line, career summary, and the
+// Resume (PDF) / LinkedIn / Contact buttons. The home page opens with the
+// full block (variant "full"). /about already has the portrait and the name
+// in its own hero, so it renders variant "compact": only the career summary
+// and the buttons, placed directly under its intro text.
+interface Props { lib: any; eager?: boolean; variant?: "full" | "compact" }
+const { lib, eager = false, variant = "full" } = Astro.props;
 const profile = lib.profile;
+const full = variant === "full";
+const Tag = full ? "section" : "div";
 ---
 
-<section class="about-intro bento-cell">
-  <div class="about-intro-grid">
-    <figure class="about-intro-portrait">
+<Tag class={full ? "about-intro bento-cell" : "about-intro about-intro--compact"}>
+  <div class={full ? "about-intro-grid" : undefined}>
+    {full && <figure class="about-intro-portrait">
       <picture>
         <source srcset="/assets/about/TakaoUmehara_passport.webp" type="image/webp" />
         <img src="/assets/about/TakaoUmehara_passport.png" alt={profile.name} width="512" height="512" loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : undefined} decoding="async" />
       </picture>
-    </figure>
+    </figure>}
     <div class="about-intro-copy">
-      <h2 class="about-intro-name">{profile.name}</h2>
-      <p class="about-intro-positioning">
+      {full && <h2 class="about-intro-name">{profile.name}</h2>}
+      {full && <p class="about-intro-positioning">
         <span class="t-en">Principal Product Designer & AI Product Builder</span>
         <span class="t-jp" lang="ja">プリンシパル・プロダクトデザイナー／AI プロダクトビルダー</span>
-      </p>
+      </p>}
       <p class="about-intro-career">
         <span class="t-en">
           20+ years of 0→1 product, brand, and experience work. Verizon Lead Product Designer, AI Enablement (2025–2026), Concentrix Catalyst Lead Product Designer / Design Manager (2021–2023), ProjectEd (2015–2018), Amplify Education (2009–2015), founder of creativity is everywhere (2006–present). Designs and builds AI products and agent systems with Claude Code and Codex; Intent First is his venture.
@@ -49,7 +52,7 @@ const profile = lib.profile;
       </div>
     </div>
   </div>
-</section>
+</Tag>
 
 <style>
   .about-intro {
@@ -62,6 +65,16 @@ const profile = lib.profile;
     gap: var(--sp-6);
     align-items: start;
   }
+
+  /* /about: no cell of its own — it sits inside the About hero's copy column,
+     under the intro text, separated by a hairline. */
+  .about-intro--compact {
+    padding: 0;
+    margin-top: var(--sp-6);
+    padding-top: var(--sp-5);
+    border-top: 1px solid var(--pr-line);
+  }
+  .about-intro--compact .about-intro-career { max-width: 62ch; }
 
   .about-intro-portrait {
     margin: 0;
@@ -148,7 +161,17 @@ const profile = lib.profile;
       gap: var(--sp-5);
     }
 
-    .about-intro-portrait {
+    /* /about: no cell of its own — it sits inside the About hero's copy column,
+     under the intro text, separated by a hairline. */
+  .about-intro--compact {
+    padding: 0;
+    margin-top: var(--sp-6);
+    padding-top: var(--sp-5);
+    border-top: 1px solid var(--pr-line);
+  }
+  .about-intro--compact .about-intro-career { max-width: 62ch; }
+
+  .about-intro-portrait {
       max-width: 280px;
     }
   }

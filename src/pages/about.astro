@@ -52,6 +52,7 @@ import Site from "../layouts/Site.astro";
 import { t, tb } from "../lib/html.mjs";
 import { getLibrary } from "../lib/site.mjs";
 import AboutIntro from "../components/home/AboutIntro.astro";
+import NowList from "../components/now/NowList.astro";
 import {
   BOOKS,
   WRITING_PLATFORMS,
@@ -103,15 +104,16 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
               <span class="t-en">All of it comes from the same place — creativity. I'm not a specialist in one craft; I'm someone who takes on a wide range of problems from that single base.</span>
               <span class="t-jp" lang="ja">どれも根っこは同じ、創造性です。ひとつの専門を極める人ではなく、創造性という一つの土台から、幅広い課題に向き合うタイプです。</span>
             </p>
+            <!-- Career summary + Resume (PDF) / LinkedIn / Contact: the home
+                 About block without its portrait and name (the hero above
+                 already has both). -->
+            <AboutIntro lib={lib} variant="compact" />
           </div>
           <figure class="about-portrait">
             <picture><source srcset="/assets/about/TakaoUmehara_passport.webp" type="image/webp" /><img src="/assets/about/TakaoUmehara_passport.png" alt="Takao Umehara" width="1024" height="1024" loading="eager" decoding="async" /></picture>
           </figure>
         </div>
       </section>
-
-      <!-- Career summary, resume, and LinkedIn block (reused from home) -->
-      <AboutIntro lib={lib} />
 
       <!-- Stats -->
       <section class="about-cell bento-cell cell-stats">
@@ -162,8 +164,9 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
       </section>
 
       <!-- Now — bullets and the updated-date label both come from
-           src/data/now.json (summary[], updatedAt), so this cell can't drift
-           out of sync with /now. formatNowUpdated() (src/data/about.mjs)
+           src/data/now.json (summary[], updatedAt) through the shared NowList
+           (src/components/now/NowList.astro), the same list as the home Now
+           section that /now redirects to. formatNowUpdated() (src/data/about.mjs)
            turns "2026-09" into "September 2026" / "2026年9月". -->
       <section id="now" class="about-cell bento-cell cell-now">
         <div class="about-cell-head">
@@ -176,14 +179,7 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
             <span class="t-jp" lang="ja">{nowUpdated.jp}更新</span>
           </p>
         </div>
-        <ul class="about-list">
-          {nowData.summary.map((item) => (
-            <li>
-              <span class="t-en" set:html={item.en} />
-              <span class="t-jp" lang="ja" set:html={item.jp} />
-            </li>
-          ))}
-        </ul>
+        <NowList lib={lib} />
       </section>
 
       <!-- Books -->

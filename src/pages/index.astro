@@ -1,46 +1,15 @@
 ---
-// The home page: About intro with portrait and career summary, Now section,
-// then the hero slideshow of the work (HomeHero at Porto Rocha size), and
-// the news bento. "All work" — the filter pills and the full work grid —
-// has moved to /work (src/pages/work.astro).
+// The home page. The right pane (About → Now → showcase → Updates) is
+// src/components/home/HomeMain.astro, shared with the Japanese edition
+// (src/pages/ja/index.astro). "Work" — the filter pills and the full work
+// grid — is /work (src/pages/work.astro).
 import Site from "../layouts/Site.astro";
-import AboutIntro from "../components/home/AboutIntro.astro";
-import HomeNow from "../components/home/HomeNow.astro";
-import HomeHero from "../components/home/HomeHero.astro";
-import HomeNews from "../components/home/HomeNews.astro";
-import { NEWS, SHOWCASE } from "../data/news.mjs";
+import HomeMain from "../components/home/HomeMain.astro";
 import { getLibrary, defaultLens } from "../lib/site.mjs";
 
 const lib = getLibrary();
 const lens = defaultLens();
 ---
 <Site title={lens.seo.title} description={lens.seo.description} canonical="https://takaoumehara.com/">
-  <main class="cat-page grid-home" data-category="home">
-    <AboutIntro lib={lib} eager={true} />
-    <HomeNow lib={lib} />
-    <HomeHero lib={lib} order={SHOWCASE} />
-    <h2 class="home-updates-heading">
-      <span class="t-en">Updates</span>
-      <span class="t-jp" lang="ja">最近の更新</span>
-    </h2>
-    <HomeNews lib={lib} news={NEWS} />
-  </main>
+  <HomeMain lib={lib} />
 </Site>
-
-<style>
-  .home-updates-heading {
-    margin: 0;
-    padding: var(--cell-pad);
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.2;
-    color: var(--ink);
-    grid-column: span 5;
-  }
-
-  @media (max-width: 768px) {
-    .home-updates-heading {
-      grid-column: span 1;
-    }
-  }
-</style>

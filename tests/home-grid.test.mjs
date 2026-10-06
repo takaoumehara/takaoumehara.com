@@ -35,7 +35,7 @@ test("the home page opens with the About block, then Now, the showcase and Updat
     const order = ["about-intro", "home-now", "home-hero", "home-updates-heading", "home-news"].map((cls) => main.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
     assert.ok(order.every((i) => i >= 0), `${file}: About, Now, showcase, Updates heading and news must all render`);
     assert.deepEqual([...order].sort((a, b) => a - b), order, `${file}: About → Now → showcase → Updates → news`);
-    assert.match(main, /Principal Product Designer &amp; AI Product Builder/);
+    assert.match(main, /Principal Product Designer &(amp;)? AI Product Builder/);
     assert.ok(!main.includes("hn-info"), `${file}: the old basic-info card must be gone from the news bento`);
     assert.ok(!main.includes("I turn ambiguous ideas"), `${file}: the old hero headline must not be in the right pane`);
     assert.ok(!main.includes("Creative Director · Interactive Media Designer"), `${file}: the old tagline card must not be in the right pane`);

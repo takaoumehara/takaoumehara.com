@@ -2,26 +2,17 @@
 // The home page's news bento ("Updates"), under the showcase: one article per
 // interactive launch or open tool release (src/data/news.mjs), newest first.
 // The old basic-info card (name, tagline, headline, links) is gone — the About
-// block at the top of the page (AboutIntro.astro) carries all of that now. Interactive entries link to their detail page; tool entries
-// link to their own href (docs or repo, opened in a new tab). Cards
+// block at the top of the page (AboutIntro.astro) carries all of that now.
+// Interactive entries link to their detail page; tool entries link to their
+// own href (docs or repo, opened in a new tab) — src/lib/news.mjs. Cards
 // sit on --gap-grid, 3 / 2 / 1 columns like the work grid below, separated by
 // fill and whitespace only.
 import "../../styles/home.css";
 import { t, tb, url } from "../../lib/html.mjs";
-import { destination } from "../../lib/site.mjs";
+import { newsDateLabel, newsLink } from "../../lib/news.mjs";
 
 interface Props { lib: any; news: any[] }
 const { lib, news } = Astro.props;
-
-const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-// "YYYY-MM-DD" → "Oct 5, 2026"; "YYYY-MM" (the day is not on record, see
-// src/data/news.mjs) → "Oct 2026". A month-only date sorts after the dated
-// entries of the same month.
-const dateLabel = (iso) => {
-  const [y, m, d] = iso.split("-").map(Number);
-  if (!d) return { en: `${MONTHS[m - 1]} ${y}`, jp: `${y}年${m}月` };
-  return { en: `${MONTHS[m - 1]} ${d}, ${y}`, jp: `${y}年${m}月${d}日` };
-};
 
 const META = {
   experiment: { en: "Interactive", jp: "インタラクティブ" },
@@ -44,13 +35,9 @@ const articles = [...news]
       // docs screenshots: show the whole frame on a plate, never crop it.
       fit: entry.fit ?? (kind === "tool" ? "contain" : "cover"),
     };
-    if (kind === "tool") {
-      if (!entry.href) return null;
-      return { ...entry, ...art, external: /^https?:/i.test(entry.href) };
-    }
-    if (!item) return null;
-    const to = destination(item);
-    return { ...entry, ...art, href: to && !to.external ? to.url : null, external: false };
+    if (kind !== "tool" && !item) return null;
+    const link = newsLink(entry, lib);
+    return link ? { ...entry, ...art, ...link } : null;
   })
   .filter((a) => a && a.href);
 
@@ -59,7 +46,7 @@ const articles = [...news]
   <h2 class="sr-only" id="home-news-title"><span class="t-en">Recent releases</span><span class="t-jp" lang="ja">最近の公開作</span></h2>
   <div class="hn-grid">
     {articles.map((a, i) => {
-      const d = dateLabel(a.date);
+      const d = newsDateLabel(a.date);
       return (
         <article class="hn-card hn-article bento-cell" data-slug={a.slug} style={`--i: ${i}`}>
           <p class="hn-meta">

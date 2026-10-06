@@ -1,101 +1,44 @@
 ---
-// Now section for home page showing current work from now.json
-import { t, tb } from "../../lib/html.mjs";
+// The home page's Now section (id="now" — /now redirects here, vercel.json).
+// Same source as About's #now cell: src/data/now.json summary[] through the
+// shared NowList (first 4 bullets here), and the same "Updated <Mon YYYY>"
+// label from now.json updatedAt (formatNowUpdated, src/data/about.mjs).
+import NowList from "../now/NowList.astro";
+import { formatNowUpdated } from "../../data/about.mjs";
 
 interface Props { lib: any }
 const { lib } = Astro.props;
-const nowData = lib.now;
-
-// Get 2-4 items from now.json (the "items" array)
-const items = nowData.items?.slice(0, 4) || [];
-
-// Format the updatedAt date from now.json (e.g., "2026-09" → "Sep 2026")
-const formatDate = (dateStr: string) => {
-  if (!dateStr || typeof dateStr !== "string") return null;
-  const [year, month] = dateStr.split("-");
-  if (!year || !month) return null;
-  const monthNames = {
-    "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun",
-    "07": "Jul", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"
-  };
-  const monthName = monthNames[month as keyof typeof monthNames];
-  return monthName ? `${monthName} ${year}` : null;
-};
-
-const updatedDate = formatDate(nowData.updatedAt);
+const updated = lib.now?.updatedAt ? formatNowUpdated(lib.now.updatedAt) : null;
 ---
-
-{items.length > 0 && (
-<section class="home-now bento-cell" id="now">
-  <h2 class="home-now-title">
+{lib.now?.summary?.length > 0 && (
+<section class="home-now bento-cell" id="now" aria-labelledby="home-now-title">
+  <h2 class="home-now-title" id="home-now-title">
     <span class="t-en">Now — what I've been working on lately</span>
     <span class="t-jp" lang="ja">Now — 最近取り組んでいること</span>
   </h2>
-  {updatedDate && (
+  {updated && (
     <p class="home-now-date">
-      <span class="t-en">Updated {updatedDate}</span>
-      <span class="t-jp" lang="ja">{updatedDate}更新</span>
+      <span class="t-en">Updated {updated.en}</span>
+      <span class="t-jp" lang="ja">{updated.jp}更新</span>
     </p>
   )}
-  <ul class="home-now-list">
-    {items.map((item) => (
-      <li class="home-now-item">
-        <p class="home-now-item-title">{item.title}</p>
-        <p class="home-now-item-summary" set:html={tb(item.oneLine)} />
-      </li>
-    ))}
-  </ul>
+  <NowList lib={lib} limit={4} />
 </section>
 )}
 
 <style>
-  .home-now {
-    padding: var(--cell-pad);
-  }
-
+  .home-now { padding: var(--cell-pad); scroll-margin-top: var(--sp-3); }
   .home-now-title {
-    margin: 0 0 var(--sp-2) 0;
+    margin: 0 0 var(--sp-1);
     font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.2;
+    color: var(--pr-ink);
   }
-
   .home-now-date {
-    margin: 0 0 var(--sp-4) 0;
+    margin: 0 0 var(--sp-4);
     font-size: var(--text-xs);
     color: var(--pr-ink-2);
     font-variant-numeric: tabular-nums;
-  }
-
-  .home-now-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--sp-5);
-  }
-
-  .home-now-item {
-  }
-
-  .home-now-item-title {
-    margin: 0 0 var(--sp-2) 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--pr-ink);
-  }
-
-  .home-now-item-summary {
-    margin: 0;
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
-    color: var(--pr-ink);
-  }
-
-  @media (max-width: 768px) {
-    .home-now {
-      padding: var(--cell-pad);
-    }
   }
 </style>

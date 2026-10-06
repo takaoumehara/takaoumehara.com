@@ -1,0 +1,61 @@
+---
+// The one "Now" list, used by the home Now section (HomeNow.astro), About's
+// #now cell and the legacy /now/ build target, so they can never contradict
+// each other. The bullets are src/data/now.json `summary[]` (EN + JP, inline
+// HTML). A bullet that names a release with a dated entry in
+// src/data/news.mjs carries that slug as `latest`; the bullet then shows the
+// entry's real date as "Latest: <date>", linking where its Updates card
+// links (src/lib/news.mjs). No `latest`, no date — none is ever made up.
+import { t } from "../../lib/html.mjs";
+import { newsBySlug, newsDateLabel, newsLink } from "../../lib/news.mjs";
+
+interface Props { lib: any; limit?: number }
+const { lib, limit } = Astro.props;
+
+const summary = lib.now?.summary ?? [];
+const bullets = (limit ? summary.slice(0, limit) : summary).map((item) => {
+  const entry = item.latest ? newsBySlug(item.latest) : null;
+  const link = entry ? newsLink(entry, lib) : null;
+  return { item, latest: entry && link ? { date: entry.date, label: newsDateLabel(entry.date), ...link } : null };
+});
+---
+<ul class="now-list">
+  {bullets.map(({ item, latest }) => (
+    <li class="now-list-item">
+      <span class="t-en" set:html={item.en} />
+      <span class="t-jp" lang="ja" set:html={item.jp} />
+      {latest && (
+        <a class="now-list-latest" href={latest.href} target={latest.external ? "_blank" : undefined} rel={latest.external ? "noopener" : undefined}>
+          <span class="t-en">Latest:</span><span class="t-jp" lang="ja">最新：</span>
+          <time datetime={latest.date} set:html={t(latest.label)} />
+          <span aria-hidden="true">{latest.external ? "↗" : "→"}</span>
+        </a>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  /* The About page's list voice: an em-dash bullet, body size, loose leading. */
+  .now-list { list-style: none; margin: 0; padding: 0; }
+  .now-list-item {
+    position: relative;
+    margin: 0 0 var(--sp-3);
+    padding-left: 24px;
+    font-size: var(--text-body);
+    line-height: 1.65;
+    color: var(--pr-ink);
+  }
+  .now-list-item:last-child { margin-bottom: 0; }
+  .now-list-item::before { content: "—"; position: absolute; left: 0; color: var(--pr-ink-2); }
+  /* "Latest: Oct 5, 2026 →" — on its own line under the bullet, a 44px-tall
+     hit area, grey tabular figures that turn ink on hover. */
+  .now-list-latest {
+    display: flex; align-items: center; gap: 0.35em; width: fit-content;
+    min-height: 44px; margin: 0;
+    font-size: var(--text-sm); color: var(--pr-ink-2); text-decoration: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .now-list-latest:hover, .now-list-latest:focus-visible { color: var(--pr-ink); text-decoration: underline; text-underline-offset: 3px; }
+  .now-list-latest:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 2px; border-radius: 2px; }
+</style>
