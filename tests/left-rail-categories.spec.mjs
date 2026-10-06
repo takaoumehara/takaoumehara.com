@@ -68,8 +68,8 @@ test.describe("Left rail categories — desktop", () => {
     await interactive.click();
     const active = page.locator("#main .hn-article.is-category-active");
     await expect.poll(() => active.count()).toBeGreaterThan(0);
-    const bg = await active.first().evaluate((el) => getComputedStyle(el).backgroundColor);
-    expect(bg).toBe("rgb(0, 0, 0)"); // --pr-ink in the light theme
+    // Polled: the card's background has a short transition.
+    await expect.poll(() => active.first().evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(0, 0, 0)"); // --pr-ink, light theme
     // Rail rows themselves are never highlighted.
     expect(await page.locator("#side .is-category-active").count()).toBe(0);
     await interactive.click();
@@ -175,10 +175,11 @@ test.describe("Left rail categories — phone", () => {
     await page.locator("#theme-switch").click();
     await page.locator("#side-toggle").click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-    const btn = await page.locator(".about-intro-btn").first().evaluate((el) => ({ bg: getComputedStyle(el).backgroundColor, fg: getComputedStyle(el).color }));
-    expect(btn.fg).toBe("rgb(255, 255, 255)");
-    expect(btn.bg).toBe("rgb(22, 22, 22)"); // --pr-card, dark
-    const chip = await page.locator(".side-cat-chip").first().evaluate((el) => getComputedStyle(el).backgroundColor);
-    expect(chip).toBe("rgb(22, 22, 22)");
+    // Polled: colours have short transitions.
+    const btn = page.locator(".about-intro-btn").first();
+    await expect.poll(() => btn.evaluate((el) => getComputedStyle(el).color)).toBe("rgb(255, 255, 255)");
+    await expect.poll(() => btn.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(22, 22, 22)"); // --pr-card, dark
+    const chip = page.locator(".side-cat-chip").first();
+    await expect.poll(() => chip.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(22, 22, 22)");
   });
 });
