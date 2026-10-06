@@ -17,7 +17,7 @@ import "../../styles/home.css";
 import { t, url } from "../../lib/html.mjs";
 import { detailName } from "../../lib/detail.mjs";
 import { assetExists, destination } from "../../lib/site.mjs";
-import { showcaseMediaMap, slideMedia } from "../../lib/showcase.mjs";
+import { showcaseFocusMap, showcaseMediaMap, slideMedia } from "../../lib/showcase.mjs";
 import showcase from "../../data/showcase.json";
 
 // `order` is SHOWCASE (enabled slugs, from showcase.json); an entry may also be
@@ -25,13 +25,18 @@ import showcase from "../../data/showcase.json";
 interface Props { lib: any; order: Array<string | { slug: string; media?: string }> }
 const { lib, order } = Astro.props;
 const stored = showcaseMediaMap(showcase);
+// A slide's `focus` (showcase.json) is its object-position on the stage:
+// the stage crops with object-fit: cover, so a text-heavy screenshot is
+// anchored where its headline is ("left top") instead of the centre.
+const focus = showcaseFocusMap(showcase);
 
 const slides = order
   .map((entry) => (typeof entry === "string" ? { slug: entry, media: stored.get(entry) ?? "auto" } : { media: "auto", ...entry }))
   .map(({ slug, media }) => ({ item: lib.evidence.get(slug), media }))
   .filter(({ item }) => Boolean(item))
   .map(({ item, media }) => {
-    const teaser = slideMedia(item, media, { exists: assetExists });
+    const base = slideMedia(item, media, { exists: assetExists });
+    const teaser = focus.has(item.slug) ? { ...base, position: focus.get(item.slug) } : base;
     const to = destination(item);
     if (teaser.kind === "fallback" || !to || to.external) return null;
     return {

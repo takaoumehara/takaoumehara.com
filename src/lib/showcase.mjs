@@ -10,6 +10,10 @@
 //            "hero"    assets.hero      "thumb"   assets.thumb
 //            "assets/…" any image the site ships under public/assets/
 //   enabled  false keeps the slide in the list but off the page
+//   focus    optional CSS object-position for the slide's still (default
+//            "center"): the stage crops with object-fit: cover, so a
+//            text-heavy screenshot sets e.g. "left top" to keep its headline
+//            whole. One or two of left/center/right/top/bottom or 0–100%.
 //
 // SHOWCASE in src/data/news.mjs is derived from this file (enabled slugs, in order).
 import { detailTeaser } from "./detail.mjs";
@@ -30,6 +34,18 @@ const stillOf = (item) => item?.detail?.teaser?.image ?? item?.assets?.hero ?? i
 /** Enabled slugs in order — what src/data/news.mjs exports as SHOWCASE. */
 export function showcaseOrder(config) {
   return (config?.slides ?? []).filter((s) => s && s.enabled !== false && typeof s.slug === "string").map((s) => s.slug);
+}
+
+const FOCUS_PART = "(?:left|center|right|top|bottom|(?:100|[1-9]?[0-9])%)";
+const FOCUS = new RegExp(`^${FOCUS_PART}(?: ${FOCUS_PART})?$`);
+/** Whether a slide's `focus` is a valid object-position (see the header). */
+export const isFocus = (value) => typeof value === "string" && FOCUS.test(value);
+
+/** slug → focus (object-position) for the enabled slides that set one. */
+export function showcaseFocusMap(config) {
+  const map = new Map();
+  for (const s of config?.slides ?? []) if (s && s.enabled !== false && isFocus(s.focus)) map.set(s.slug, s.focus);
+  return map;
 }
 
 /** slug → media choice for the enabled slides. */
@@ -142,9 +158,10 @@ export function validateShowcase(input, { lib, files }) {
   slides.slice(0, MAX_SLIDES).forEach((s, i) => {
     const at = `slides[${i}]`;
     if (!s || typeof s !== "object" || Array.isArray(s)) { fail(errors, `${at} must be an object`); return; }
-    const extra = Object.keys(s).filter((k) => !["slug", "media", "enabled"].includes(k));
+    const extra = Object.keys(s).filter((k) => !["slug", "media", "enabled", "focus"].includes(k));
     if (extra.length) fail(errors, `${at}: unknown field(s) ${extra.join(", ")}`);
-    const { slug, media = "auto", enabled = true } = s;
+    const { slug, media = "auto", enabled = true, focus } = s;
+    if (focus !== undefined && !isFocus(focus)) fail(errors, `${at}.focus must be an object-position such as "left top" or "30% center"`);
     if (typeof slug !== "string" || !SLUG.test(slug)) { fail(errors, `${at}.slug must be a kebab-case string`); return; }
     const item = lib.evidence.get(slug);
     if (!item) { fail(errors, `${at}.slug "${slug}" is not a record in the library`); return; }
@@ -164,11 +181,11 @@ export function validateShowcase(input, { lib, files }) {
       if (slideMedia(item, media).kind === "fallback") warnings.push(`${at}: "${slug}" has no media yet — the home page skips it`);
       else showable += 1;
     }
-    out.push({ slug, media, enabled });
+    out.push(focus === undefined ? { slug, media, enabled } : { slug, media, enabled, focus });
   });
   if (out.length && !showable) fail(errors, "At least one enabled slide must have media (the home page needs its hero)");
   return errors.length ? { value: null, errors, warnings } : { value: { slides: out }, errors, warnings };
 }
 
 /** The file as committed: stable key order, two-space indent, trailing newline. */
-export const serializeShowcase = (config) => JSON.stringify({ slides: config.slides.map(({ slug, media, enabled }) => ({ slug, media, enabled })) }, null, 2) + "\n";
+export const serializeShowcase = (config) => JSON.stringify({ slides: config.slides.map(({ slug, media, enabled, focus }) => (focus === undefined ? { slug, media, enabled } : { slug, media, enabled, focus })) }, null, 2) + "\n";

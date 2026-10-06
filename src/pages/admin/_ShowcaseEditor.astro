@@ -146,7 +146,7 @@ const payload = JSON.stringify(data).replace(/</g, "\\u003c");
 
   type Option = { value: string; label: string; still: string | null; video?: string | null };
   type Work = { slug: string; name: string; kind: string; line: { en: string; jp: string }; input: string | null; options: Option[] };
-  type Slide = { slug: string; media: string; enabled: boolean };
+  type Slide = { slug: string; media: string; enabled: boolean; focus?: string };
   type Data = { slides: Slide[]; library: Work[]; maxSlides: number; github: { configured: boolean; repo: string; branch: string } };
 
   const root = document.querySelector<HTMLElement>("[data-showcase-editor]");
@@ -155,7 +155,8 @@ const payload = JSON.stringify(data).replace(/</g, "\\u003c");
   function init(root: HTMLElement) {
     const data: Data = JSON.parse(document.getElementById("se-data")!.textContent || "{}");
     const works = new Map(data.library.map((w) => [w.slug, w]));
-    const clone = (s: Slide[]) => s.map(({ slug, media, enabled }) => ({ slug, media: media || "auto", enabled: enabled !== false }));
+    // `focus` (object-position) is edited in showcase.json by hand; keep it.
+    const clone = (s: Slide[]) => s.map(({ slug, media, enabled, focus }) => ({ slug, media: media || "auto", enabled: enabled !== false, ...(focus ? { focus } : {}) }));
     let saved = clone(data.slides);
     let slides = clone(data.slides);
 
