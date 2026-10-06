@@ -77,6 +77,14 @@ function bindSidebar() {
       if (open) requestAnimationFrame(() => revealActiveRow({ force: true }));
     });
   }
+  // Close mobile menu when a link is clicked
+  side.addEventListener("click", (e) => {
+    if (e.target instanceof HTMLAnchorElement && e.target.href) {
+      side.classList.remove("is-open");
+      if (toggle) toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+
   // Search toggle
   const searchToggle = document.getElementById("side-search-toggle");
   const searchPanel = document.getElementById("side-search");

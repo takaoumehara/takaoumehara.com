@@ -13,13 +13,22 @@
   margin: 0 0 var(--gap-grid);
 }
 
-/* ── The stage: the same 16:9 box as the detail page's .project-teaser ───── */
+/* ── The stage: full width, tall viewport-height like Porto Rocha ─────────── */
 .hh-stage {
   position: relative;
-  aspect-ratio: 16 / 9;
+  width: 100%;
+  height: calc(100svh - var(--sp-6) - var(--gap-grid));
+  max-height: 800px;
   overflow: hidden;
   border-radius: var(--r);
   background: var(--pr-card);
+}
+
+@media (max-width: 768px) {
+  .hh-stage {
+    height: 60vh;
+    max-height: 600px;
+  }
 }
 .hh-slide {
   position: absolute;

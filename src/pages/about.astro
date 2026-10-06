@@ -51,6 +51,7 @@
 import Site from "../layouts/Site.astro";
 import { t, tb } from "../lib/html.mjs";
 import { getLibrary } from "../lib/site.mjs";
+import AboutIntro from "../components/home/AboutIntro.astro";
 import {
   BOOKS,
   WRITING_PLATFORMS,
@@ -108,6 +109,9 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
           </figure>
         </div>
       </section>
+
+      <!-- Career summary, resume, and LinkedIn block (reused from home) -->
+      <AboutIntro lib={lib} />
 
       <!-- Stats -->
       <section class="about-cell bento-cell cell-stats">
@@ -486,7 +490,7 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
       <!-- Footer links -->
       <section class="about-cell bento-cell cell-footer">
         <a href="/" class="about-footer-link">← <span class="t-en">Home</span><span class="t-jp" lang="ja">ホーム</span></a>
-        <a href="/work" class="about-footer-link"><span class="t-en">All Work</span><span class="t-jp" lang="ja">すべての作品</span> →</a>
+        <a href="/work" class="about-footer-link"><span class="t-en">Work</span><span class="t-jp" lang="ja">作品</span> →</a>
       </section>
 
     </div>
