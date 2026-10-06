@@ -45,6 +45,7 @@ export const NEWS = [
   {
     slug: "intentfirst",
     date: "2026-10", // month only: no public record of the day the updated film went up (entry added 2026-10-05/06 with PR #34)
+    image: "assets/intentfirst/hero-card.webp", // hero.png cut to the card size (WebP, 800w)
     fit: "contain",
     title: {
       en: "Intent First: updated video introducing Context Grammar",
@@ -59,6 +60,7 @@ export const NEWS = [
     kind: "tool",
     slug: "skills",
     date: "2026-10-05", // takaoumehara/skills repo created and docs first deployed (GitHub Pages) 2026-10-05
+    image: "assets/ai-tools/skills-hero-card.webp", // skills-hero.png cut to the card size (WebP, 800w)
     href: "https://takaoumehara-skills-docs.vercel.app",
     title: {
       en: "Claude Code Skills: one marketplace for my open skills, with docs",
@@ -73,6 +75,7 @@ export const NEWS = [
     kind: "tool",
     slug: "ai-window-deck",
     date: "2026-10-05", // docs site first deployed (GitHub Pages + Vercel production) 2026-10-05
+    image: "assets/ai-tools/ai-window-deck-hero-card.webp", // ai-window-deck-hero.png cut to the card size (WebP, 800w)
     href: "https://ai-window-deck.vercel.app",
     title: {
       en: "AI Window Deck: a Chrome extension for running several AI coding projects at once",
@@ -87,6 +90,7 @@ export const NEWS = [
     kind: "tool",
     slug: "snap-pair",
     date: "2026-10-05", // snap-pair-core 2.1.0 (Proximity) on npm + GitHub release v2.1.0, 2026-10-05
+    image: "assets/ai-tools/snap-pair-hero-card.webp", // snap-pair-hero.png cut to the card size (WebP, 800w)
     href: "https://takaoumehara.github.io/snap-pair-skill/",
     title: {
       en: "Snap Pair: snap-pair-core update and a docs site",
@@ -112,7 +116,8 @@ export const NEWS = [
   },
   {
     slug: "koe-baku",
-    date: "2026-09", // month only: first appears in this repo 2026-09-11; no public repo or deploy record found
+    date: "2026-07", // month only: first listed on this site (as a prototype card) 2026-07-27, commit 938a812; no public repo or deploy record found
+    image: "assets/koebaku/hero-card.webp", // hero.jpg cut to the card size (WebP, 800w)
     title: {
       en: "Koe Baku: shout, and your voice bursts into onomatopoeia",
       jp: "Koe Baku — 叫んだ声が、擬音になって弾ける",
@@ -124,7 +129,8 @@ export const NEWS = [
   },
   {
     slug: "rakugaki-jam",
-    date: "2026-07", // month only: first listed on this site 2026-07-29; app repo not accessible
+    date: "2026-07", // month only: first listed on this site 2026-07-27, commit 938a812; app repo not accessible
+    image: "assets/rakugaki-jam/thumb-card.webp", // thumb.jpg cut to the card size (WebP, 800w)
     title: {
       en: "Rakugaki Jam: doodle on your phone, fling it onto the wall",
       jp: "Rakugaki Jam — スマホの落書きを、壁へ投げる",
@@ -137,6 +143,7 @@ export const NEWS = [
   {
     slug: "marubatsu",
     date: "2026-07", // month only: listed as Shipped in the v3 site spec dated 2026-07-10; app repo not accessible
+    image: "assets/marubatsu/thumb-card.webp", // thumb.jpg cut to the card size (WebP, 800w)
     title: {
       en: "Marubatsu 2.0: tic-tac-toe with one rule changed",
       jp: "Marubatsu 2.0 — ルールを一つだけ変えた○×",
@@ -149,6 +156,7 @@ export const NEWS = [
   {
     slug: "emoji-blast",
     date: "2026-07-24", // takaoumehara/EmojiDropUltimate: first Vercel production deploy 2026-07-24 (a one-commit Pages build dates from 2025-06-06)
+    image: "assets/emoji-blast/thumb-card.webp", // thumb.jpg cut to the card size (WebP, 800w)
     title: {
       en: "Emoji Blast: two phones, one co-op arcade",
       jp: "Emoji Blast — スマホ 2 台で、1 台のアーケード",
@@ -173,6 +181,7 @@ export const NEWS = [
   {
     slug: "resona",
     date: "2026-09", // month only: resonamotion.com first TLS certificate 2026-09-01; repo work began 2026-07-24
+    image: "assets/resona/thumb-card.webp", // thumb.jpg cut to the card size (WebP, 800w)
     title: {
       en: "Resona: meaning you feel before you read it",
       jp: "Resona — 読む前に、手応えで伝わる",
@@ -185,6 +194,7 @@ export const NEWS = [
   {
     slug: "typespace",
     date: "2026-07", // month only: on this site as a prototype at launch, 2026-07-20; app repo not accessible
+    image: "assets/typespace/thumb-card.webp", // thumb.jpg cut to the card size (WebP, 800w)
     title: {
       en: "Typespace: typed words become a constellation",
       jp: "Typespace — 打った言葉が、星座になる",

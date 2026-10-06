@@ -18,7 +18,6 @@
 import { t, tb, esc, url } from "../../lib/html.mjs";
 import { detailFields } from "../../lib/detail.mjs";
 import ProjectHeroFallback from "./ProjectHeroFallback.astro";
-import ContactCta from "../ContactCta.astro";
 
 interface Props {
   item: any;
@@ -46,6 +45,9 @@ const meta = [
   { label: { en: "Role", jp: "役割" }, value: d.role },
   { label: { en: "Year", jp: "年" }, value: d.year },
   { label: { en: "Client", jp: "クライアント" }, value: d.client },
+  // A self-initiated concept (e.g. Amazon Shopping on Fire TV) never shows a
+  // client; it says what it is instead.
+  { label: { en: "Type", jp: "種別" }, value: item.engagement === "concept" ? { en: "Self-initiated concept", jp: "自主提案" } : null },
 ].filter((m) => m.value);
 ---
 <article class="project-detail">
@@ -125,8 +127,6 @@ const meta = [
     </footer>
   </div>
 </article>
-
-<ContactCta />
 
 <style>
   /* The detail page fills the main pane at every width — the rail takes
