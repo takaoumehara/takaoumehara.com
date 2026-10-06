@@ -1,8 +1,11 @@
 // The home page's editorial layer (src/pages/index.astro → src/components/home/).
 // Plain data so it can be edited without touching the components.
 //
-// NEWS — one "article" per interactive launch, newest first on the page (the
-// component sorts by date, so the order here does not matter). Each entry:
+// NEWS — one "article" per interactive launch or open tool release, newest
+// first on the page (the component sorts by date, so the order here does not
+// matter). Two kinds of entry:
+//
+//   Interactive (kind omitted, defaults to "experiment"):
 //   slug   the evidence record (src/data/experiments/<slug>.json) — the card
 //          links to its detail page and takes its thumbnail from it
 //   date   ISO date. The pieces were released from March 2026 onwards; the
@@ -13,6 +16,21 @@
 //          challenge / solution and src/case-studies/<slug>.html. No metrics,
 //          awards, events or collaborations that the records do not carry.
 //   image  optional site-relative still that overrides the record's thumb.
+//   fit    optional "contain" for a text-heavy screenshot thumb: the whole
+//          frame is shown inset on the card's plate instead of cropped to
+//          fill it ("cover", the default for interactive entries).
+//
+//   Tool (kind: "tool") — an open developer tool or Claude Code skill release:
+//   href   required. Where the card goes: the tool's docs site or repo
+//          (external is fine — it opens in a new tab). No experiment record
+//          is needed.
+//   date   ISO date, taken from the repo's GitHub activity (pushes), not a
+//          tagged release date.
+//   title, lead   as above; facts only from the tool's README / docs.
+//   meta   optional { en, jp } label; defaults to "Open tool".
+//   fit    defaults to "contain" (docs screenshots); "cover" to crop.
+//   slug   optional evidence record (src/data/tools/<slug>.json) to borrow
+//          the thumbnail / card art from. image / art / artLabel override it.
 //
 // SHOWCASE — the hero slideshow order: the interactive pieces first, then the
 // client work that has a real hero still. It is derived from
@@ -23,6 +41,61 @@ import showcase from "./showcase.json" with { type: "json" };
 import { showcaseOrder } from "../lib/showcase.mjs";
 
 export const NEWS = [
+  {
+    slug: "intentfirst",
+    date: "2026-10-05",
+    fit: "contain",
+    title: {
+      en: "Intent First: updated video introducing Context Grammar",
+      jp: "Intent First — Context Grammar を紹介する映像を更新",
+    },
+    lead: {
+      en: "The Intent First video now demonstrates the 8 Context Tokens and 3-layer memory model across three applied projects — The Living Home, The Family Trip, and Fluid Handoff. Available at intentfirst.ai.",
+      jp: "Intent First の映像では、8 つの Context Token と 3 層の記憶モデルを、3 つの実プロジェクト（The Living Home、The Family Trip、Fluid Handoff）で実証している。intentfirst.ai で公開中。",
+    },
+  },
+  {
+    kind: "tool",
+    slug: "skills",
+    date: "2026-10-05",
+    href: "https://takaoumehara-skills-docs.vercel.app",
+    title: {
+      en: "Claude Code Skills: one marketplace for my open skills, with docs",
+      jp: "Claude Code Skills — 公開スキルを一つのマーケットプレイスに、ドキュメントつきで",
+    },
+    lead: {
+      en: "My open Claude Code skills now sit in one plugin marketplace index. Add it once with /plugin marketplace add takaoumehara/skills, then install skills by name. A docs site describes each one.",
+      jp: "公開している Claude Code スキルを、一つのプラグインマーケットプレイスにまとめた。/plugin marketplace add takaoumehara/skills で一度追加すれば、あとは名前で入れられる。各スキルの説明はドキュメントサイトにある。",
+    },
+  },
+  {
+    kind: "tool",
+    slug: "ai-window-deck",
+    date: "2026-10-05",
+    href: "https://ai-window-deck.vercel.app",
+    title: {
+      en: "AI Window Deck: a Chrome extension for running several AI coding projects at once",
+      jp: "AI Window Deck — 複数の AI コーディングを同時に回す Chrome 拡張",
+    },
+    lead: {
+      en: "A window manager for Claude Code in the cloud and Codex, so several projects can run side by side without losing track of which window is which. Open source under MIT.",
+      jp: "クラウド版 Claude Code と Codex のためのウィンドウ管理。どのウィンドウがどのプロジェクトかを見失わずに、複数を並行して進められる。MIT ライセンスで公開。",
+    },
+  },
+  {
+    kind: "tool",
+    slug: "snap-pair",
+    date: "2026-10-05",
+    href: "https://takaoumehara.github.io/snap-pair-skill/",
+    title: {
+      en: "Snap Pair: snap-pair-core update and a docs site",
+      jp: "Snap Pair — snap-pair-core の更新とドキュメントサイト",
+    },
+    lead: {
+      en: "The pairing layer behind Rakugaki Jam and Marubatsu now has its own docs site, and snap-pair-core on npm adds an ultrasonic Proximity mode alongside QR and six-character codes.",
+      jp: "Rakugaki Jam や Marubatsu を支える接続用ライブラリに、ドキュメントサイトができた。npm の snap-pair-core には、QR と 6 文字コードに加えて、超音波による Proximity モードが入った。",
+    },
+  },
   {
     slug: "werewolf",
     date: "2026-09-10",

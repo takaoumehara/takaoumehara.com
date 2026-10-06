@@ -278,6 +278,22 @@ html.lang-jp .hn-lead { line-height: 1.7; }
 .hn-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1); }
 .hn-article:hover .hn-thumb img { transform: scale(1.02); }
 .hn-thumb .card-art-label { font-weight: 400; }
+/* Screenshot thumbs (tool docs, landing pages): text runs edge to edge, so
+   cover would cut it. The whole frame sits on the grey plate instead, inset
+   and edged with a hairline, like a print laid on the card. */
+.hn-thumb--shot {
+  display: grid;
+  place-items: center;
+  padding: 5%;
+}
+.hn-thumb--shot img {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px var(--pr-line);
+}
 
 /* The news cards' entrance is the pane's box-first choreography
    (src/scripts/motion.js); nothing here animates them. */
