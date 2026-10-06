@@ -495,7 +495,7 @@ function pulseStamp() {
 // MAG_RADIUS of the mouse the link drifts up to MAG_MAX px toward it, and
 // the card it sits in (.mag-field) lights a faint ring at the cursor.
 // One pointermove listener, one write per frame, mouse only.
-const MAG_HOOKS = ".project-play, .beat-link, .hn-links a, .hn-card a:not(.hn-link)";
+const MAG_HOOKS = ".project-play, .beat-link, .hn-card a:not(.hn-link)";
 const ARROW = /[→↗]\s*$/;
 const MAG_RADIUS = 56, MAG_MAX = 3;
 let magLinks = [];

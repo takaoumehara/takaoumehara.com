@@ -20,12 +20,26 @@ for (const c of categories) for (const g of c.groups) for (const id of g.items) 
 
 const cards = (html) => [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]*"[\s\S]*?<\/article>/g)].map((m) => m[0]);
 
-test("the home page opens with the canonical headline", () => {
-  const html = read("index.html");
-  assert.match(
-    html,
-    /class="grid-headline"[^>]*><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/,
-  );
+// The right pane opens with the About block (portrait, name, positioning,
+// career summary, Resume / LinkedIn / Contact), then Now, the showcase and
+// the Updates bento. The old hero card ("Creative Director · Interactive
+// Media Designer …" / "I turn ambiguous ideas into …" + a row of links) that
+// used to open the news bento is gone; only the rail's About card still
+// carries the positioning line.
+const mainOf = (html) => html.match(/<main\b[\s\S]*?<\/main>/)?.[0] ?? "";
+
+test("the home page opens with the About block, then Now, the showcase and Updates — no old hero card", () => {
+  for (const file of ["index.html", "ja/index.html"]) {
+    const main = mainOf(read(file));
+    assert.ok(main, `${file} needs a <main>`);
+    const order = ["about-intro", "home-now", "home-hero", "home-updates-heading", "home-news"].map((cls) => main.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
+    assert.ok(order.every((i) => i >= 0), `${file}: About, Now, showcase, Updates heading and news must all render`);
+    assert.deepEqual([...order].sort((a, b) => a - b), order, `${file}: About → Now → showcase → Updates → news`);
+    assert.match(main, /Principal Product Designer &amp; AI Product Builder/);
+    assert.ok(!main.includes("hn-info"), `${file}: the old basic-info card must be gone from the news bento`);
+    assert.ok(!main.includes("I turn ambiguous ideas"), `${file}: the old hero headline must not be in the right pane`);
+    assert.ok(!main.includes("Creative Director · Interactive Media Designer"), `${file}: the old tagline card must not be in the right pane`);
+  }
 });
 
 test("the home page no longer carries the 'All work' grid or its filter row — that moved to /work", () => {
@@ -38,7 +52,7 @@ test("the home page no longer carries the 'All work' grid or its filter row — 
 test("the home page's news bento is the only work under the hero, and every card is a bento cell", () => {
   const html = read("index.html");
   const hnCards = [...html.matchAll(/<article class="[^"]*\bhn-card\b[^"]*"/g)];
-  assert.ok(hnCards.length >= 2, "HomeNews must render the info card plus at least one article");
+  assert.ok(hnCards.length >= 2, "HomeNews must render the release articles");
   for (const m of hnCards) {
     assert.match(m[0], /\bbento-cell\b/, "every HomeNews card must carry .bento-cell (the shared cell token)");
   }
