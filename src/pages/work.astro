@@ -338,6 +338,10 @@ FILTERS[3].count = designCount;
     background: none; color: var(--ink);
     text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 6px;
   }
+  /* Touch: each tab is at least a 44px square hit area. */
+  @media (max-width: 900px), (pointer: coarse) {
+    .work-page-full .filter-btn { min-height: 44px; min-width: 44px; align-items: center; }
+  }
   .work-page-full .filter-count,
   .work-page-full .filter-btn.is-active .filter-count {
     font-family: var(--ff-mono); font-size: 10px; line-height: 1; color: inherit; opacity: 1;

@@ -344,7 +344,9 @@ html.lang-jp .side-foot { font-family: var(--ff-mono), var(--pr-ff-jp); }
   .side-all::after {
     content: ""; position: absolute; inset: -3px;
   }
-  .hh-btn::after { content: ""; position: absolute; inset: -6px; }
+  /* Hero controls: the buttons themselves grow to 44px (an overhanging
+     ::after on the right-most one pushed the page 2px wide at 390). */
+  .hh-controls .hh-btn { width: 44px; height: 44px; }
   .hn-links a::after { content: ""; position: absolute; inset: -6px 0; }
   .side-wordmark::after { content: ""; position: absolute; inset: -12px 0; }
   .work-page-full .filter-btn { min-height: 44px; align-items: center; }

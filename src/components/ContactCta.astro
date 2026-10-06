@@ -60,13 +60,9 @@
     outline-offset: 2px;
   }
 
+  /* Phones: stays inside the pane (a full-bleed negative margin pushed the
+     detail pages 8px wider than the screen at 390). */
   @media (max-width: 768px) {
-    .contact-cta {
-      margin-left: calc(-1 * var(--pane-pad));
-      margin-right: calc(-1 * var(--pane-pad));
-      margin-bottom: calc(-1 * var(--pane-pad));
-      padding: var(--sp-6);
-      border-radius: 0;
-    }
+    .contact-cta { padding: var(--sp-5, 24px); }
   }
 </style>
