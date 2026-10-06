@@ -259,7 +259,7 @@ FILTERS[3].count = designCount;
      "feature" (2x2) — src/pages/work.astro's SIZE_CYCLE assigns the class
      deterministically, opening on Interactive. grid-auto-flow: dense means
      that hiding tiles (the filter bar, the search box, both toggle
-     .is-hidden → display:none via src/styles/grid.css) never leaves a hole:
+     .is-hidden → display:none, the .tile.is-hidden rule below) never leaves a hole:
      the remaining tiles re-pack up into it. */
   .work-bento {
     display: grid;
@@ -280,6 +280,10 @@ FILTERS[3].count = designCount;
   }
   .tile--wide { grid-column: span 2; }
   .tile--feature { grid-column: span 2; grid-row: span 2; }
+  /* The filter bar and search box toggle .is-hidden on tiles. The shared
+     rule lives in src/styles/grid.css, which this page does not import, so
+     the hide rule has to live here too or /work?filter=… shows everything. */
+  .tile.is-hidden { display: none !important; }
   .tile-media {
     position: relative;
     flex: 1 1 auto;
