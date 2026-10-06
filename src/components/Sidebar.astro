@@ -140,7 +140,7 @@ const thumb = (item) => {
   </script>
   <div class="side-top">
     <a class="side-wordmark" href="/">{profile.name}</a>
-    <span class="side-top-status"><span class="side-dot" aria-hidden="true"></span><span class="t-en">Open for 0→1</span><span class="t-jp">0→1 受付中</span></span>
+    <span class="side-top-status"><span class="side-dot" aria-hidden="true"></span><span class="t-en">Open for 0→1</span><span class="t-jp" lang="ja">0→1 受付中</span></span>
     <button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">Menu</button>
   </div>
 
@@ -148,7 +148,7 @@ const thumb = (item) => {
     <div class="side-controls">
       <div class="side-controls-left">
         <a class="side-all" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
-          <span class="t-en">All work</span><span class="t-jp">すべての作品</span>
+          <span class="t-en">All work</span><span class="t-jp" lang="ja">すべての作品</span>
         </a>
         <button class="side-search-toggle" id="side-search-toggle" type="button" aria-label="Search" title="Search">
           <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
@@ -162,7 +162,7 @@ const thumb = (item) => {
         <button class="side-lang" id="lang-cycle" type="button" aria-label="Switch to Japanese">JP</button>
       </div>
     </div>
-    
+
     <div class="side-search" id="side-search" hidden>
       <input 
         type="search" 
@@ -178,19 +178,39 @@ const thumb = (item) => {
       <a class="side-wordmark" href="/" data-match="/" aria-current={cur(samePage("/", current))}>{profile.name}</a>
       <dl class="side-status">
         <div class="side-index">
-          <dt class="vh"><span class="t-en">Index</span><span class="t-jp">索引</span></dt>
+          <dt class="vh"><span class="t-en">Index</span><span class="t-jp" lang="ja">索引</span></dt>
           <dd>
-            <span class="t-en"><Fragment set:html={odo(workCount)} /> Selected Works</span><span class="t-jp">厳選 <Fragment set:html={odo(workCount)} /> 作品</span>
+            <span class="t-en"><Fragment set:html={odo(workCount)} /> Selected Works</span><span class="t-jp" lang="ja">厳選 <Fragment set:html={odo(workCount)} /> 作品</span>
             <span class="side-sep" aria-hidden="true">·</span>
-            <span class="t-en"><Fragment set:html={odo(disciplineCount)} /> Disciplines</span><span class="t-jp"><Fragment set:html={odo(disciplineCount)} /> 領域</span>
+            <span class="t-en"><Fragment set:html={odo(disciplineCount)} /> Disciplines</span><span class="t-jp" lang="ja"><Fragment set:html={odo(disciplineCount)} /> 領域</span>
           </dd>
         </div>
         <div class="side-avail">
-          <dt class="vh"><span class="t-en">Status</span><span class="t-jp">ステータス</span></dt>
-          <dd><span class="side-dot" aria-hidden="true"></span><span class="side-avail-text"><span class="t-en">Available for 0→1 Advisory</span><span class="t-jp">0→1 アドバイザリー受付中</span></span></dd>
+          <dt class="vh"><span class="t-en">Status</span><span class="t-jp" lang="ja">ステータス</span></dt>
+          <dd><span class="side-dot" aria-hidden="true"></span><span class="side-avail-text"><span class="t-en">Available for 0→1 Advisory</span><span class="t-jp" lang="ja">0→1 アドバイザリー受付中</span></span></dd>
         </div>
       </dl>
     </div>
+
+    {/* Site links (About · Work · Contact · Resume · LinkedIn): one compact
+        line under the wordmark on desktop; in the mobile menu (the same panel)
+        each link gets a 44px-tall hit area (shell.css .side-nav). The
+        wordmark above is the Home link. */}
+    <nav class="side-nav" aria-label="Site">
+      <a class="side-nav-link" href="/about" data-match="/about /about.html" aria-current={cur(samePage("/about", current))}>
+        <span class="t-en">About</span><span class="t-jp" lang="ja">について</span>
+      </a>
+      <a class="side-nav-link" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
+        <span class="t-en">Work</span><span class="t-jp" lang="ja">作品</span>
+      </a>
+      <a class="side-nav-link" href="/about#work-with-me">
+        <span class="t-en">Contact</span><span class="t-jp" lang="ja">相談</span>
+      </a>
+      <a class="side-nav-link" href="/takao-umehara-resume.pdf" target="_blank" rel="noopener">
+        <span class="t-en">Resume (PDF)</span><span class="t-jp" lang="ja">履歴書 (PDF)</span>
+      </a>
+      <a class="side-nav-link" href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+    </nav>
 
     {/* The whole card is the link to /about: the label is the one link (one
         tab stop, its name "About"), and its ::after stretches over the card
@@ -198,7 +218,7 @@ const thumb = (item) => {
         paragraph and nothing interactive is nested. */}
     <section class="side-about">
       <a class="side-label" href="/about" data-match="/about /about.html" aria-current={cur(samePage("/about", current))}>
-        <span class="t-en">About</span><span class="t-jp">について</span>
+        <span class="t-en">About</span><span class="t-jp" lang="ja">について</span>
       </a>
       <p set:html={tb(profile.positioning[1])} />
     </section>
@@ -230,6 +250,11 @@ const thumb = (item) => {
       ))}
     </nav>
 
-    <p class="side-foot"><span set:html={t(profile.location)} /> · <a href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a></p>
+    <p class="side-foot">
+      <span set:html={t(profile.location)} /> ·
+      <a href="/about#work-with-me"><span class="t-en">Contact</span><span class="t-jp" lang="ja">相談</span></a> ·
+      <a href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a> ·
+      <a href="/takao-umehara-resume.pdf" target="_blank" rel="noopener"><span class="t-en">Resume</span><span class="t-jp" lang="ja">履歴書</span></a>
+    </p>
   </div>
 </aside>

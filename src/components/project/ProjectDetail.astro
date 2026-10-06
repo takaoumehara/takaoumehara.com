@@ -45,6 +45,9 @@ const meta = [
   { label: { en: "Role", jp: "役割" }, value: d.role },
   { label: { en: "Year", jp: "年" }, value: d.year },
   { label: { en: "Client", jp: "クライアント" }, value: d.client },
+  // A self-initiated concept (e.g. Amazon Shopping on Fire TV) never shows a
+  // client; it says what it is instead.
+  { label: { en: "Type", jp: "種別" }, value: item.engagement === "concept" ? { en: "Self-initiated concept", jp: "自主提案" } : null },
 ].filter((m) => m.value);
 ---
 <article class="project-detail">
@@ -74,7 +77,7 @@ const meta = [
       )}
       {hasAudio && (
         <button class="video-sound-toggle" id="video-sound-toggle" type="button" aria-label="Enable sound">
-          <span class="t-en">Sound on</span><span class="t-jp">音を出す</span>
+          <span class="t-en">Sound on</span><span class="t-jp" lang="ja">音を出す</span>
         </button>
       )}
     </div>
@@ -95,11 +98,11 @@ const meta = [
     {d.challenge && (
       <section class="project-cs" aria-label="Challenge and solution">
         <div class="project-cs-cell bento-cell">
-          <h2 class="project-cs-label"><span class="t-en">Challenge</span><span class="t-jp">課題</span></h2>
+          <h2 class="project-cs-label"><span class="t-en">Challenge</span><span class="t-jp" lang="ja">課題</span></h2>
           <p class="project-cs-text" set:html={tb(d.challenge)} />
         </div>
         <div class="project-cs-cell bento-cell">
-          <h2 class="project-cs-label"><span class="t-en">Solution</span><span class="t-jp">解決</span></h2>
+          <h2 class="project-cs-label"><span class="t-en">Solution</span><span class="t-jp" lang="ja">解決</span></h2>
           <p class="project-cs-text" set:html={tb(d.solution)} />
         </div>
       </section>
@@ -119,7 +122,7 @@ const meta = [
         </dl>
       )}
       {d.stack.length > 0 && (
-        <p class="project-stack"><span class="t-en">Stack</span><span class="t-jp">技術</span> — {d.stack.join(" · ")}</p>
+        <p class="project-stack"><span class="t-en">Stack</span><span class="t-jp" lang="ja">技術</span> — {d.stack.join(" · ")}</p>
       )}
     </footer>
   </div>
@@ -439,6 +442,7 @@ const meta = [
     .project-beats :global(.beat-media) { grid-template-columns: repeat(var(--beat-cols-sm, 1), minmax(0, 1fr)); }
     .project-beats :global(.beat-embed iframe) { aspect-ratio: var(--embed-aspect-sm, var(--embed-aspect, 16 / 9)); }
   }
+
 </style>
 
 <script>

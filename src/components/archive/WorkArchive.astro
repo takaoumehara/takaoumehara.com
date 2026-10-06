@@ -29,8 +29,8 @@ const entries = items.map((item) => ({ item, tags: getFilterTags(item).join(" ")
 ---
 <main class="cat-page" data-category="work-archive">
   <header class="cat-head">
-    <h1 class="cat-title"><span class="t-en">Work Archive</span><span class="t-jp">制作・開発アーカイブ</span></h1>
-    <p class="cat-lede"><span class="t-en">20+ years of 0→1 products, AI systems, interactive experiences, brand identities, and learning platforms.</span><span class="t-jp is-block">0→1 のプロダクト、AI システム、インタラクティブ体験、ブランド、学びの基盤まで。</span></p>
+    <h1 class="cat-title"><span class="t-en">Work Archive</span><span class="t-jp" lang="ja">制作・開発アーカイブ</span></h1>
+    <p class="cat-lede"><span class="t-en">20+ years of 0→1 products, AI systems, interactive experiences, brand identities, and learning platforms.</span><span class="t-jp is-block" lang="ja">0→1 のプロダクト、AI システム、インタラクティブ体験、ブランド、学びの基盤まで。</span></p>
     <div class="grid-filters" role="group" aria-label="Filter work by discipline">
       {FILTERS.map((f, i) => (
         <button type="button" class={`filter-btn${i === 0 ? " is-active" : ""}`} data-filter={f.id}>
@@ -39,7 +39,7 @@ const entries = items.map((item) => ({ item, tags: getFilterTags(item).join(" ")
         </button>
       ))}
     </div>
-    <p class="cat-count"><span id="archive-count">{items.length}</span><span class="t-en"> projects</span><span class="t-jp"> 件</span></p>
+    <p class="cat-count"><span id="archive-count">{items.length}</span><span class="t-en"> projects</span><span class="t-jp" lang="ja"> 件</span></p>
   </header>
 
   <WorkGrid entries={entries} />

@@ -54,8 +54,9 @@ const ENGAGEMENT_LABEL = {
   volunteer: { en: "Volunteer role", jp: "ボランティア" },
   "own-venture": { en: "Own venture", jp: "自身のベンチャー" },
   "open-source": { en: "Open source", jp: "オープンソース" },
-  concept: { en: "Self-initiated concept", jp: "自主制作コンセプト" },
+  concept: { en: "Self-initiated concept", jp: "自主提案" },
   freelance: { en: "Independent", jp: "独立案件" },
+  contract: { en: "Contract", jp: "契約" },
   employee: null, unstated: null,
 };
 export const engagementLabel = (value) => ENGAGEMENT_LABEL[value] ?? null;

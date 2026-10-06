@@ -14,8 +14,12 @@ const { lib, news } = Astro.props;
 const profile = lib.profile;
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+// "YYYY-MM-DD" → "Oct 5, 2026"; "YYYY-MM" (the day is not on record, see
+// src/data/news.mjs) → "Oct 2026". A month-only date sorts after the dated
+// entries of the same month.
 const dateLabel = (iso) => {
   const [y, m, d] = iso.split("-").map(Number);
+  if (!d) return { en: `${MONTHS[m - 1]} ${y}`, jp: `${y}年${m}月` };
   return { en: `${MONTHS[m - 1]} ${d}, ${y}`, jp: `${y}年${m}月${d}日` };
 };
 
@@ -53,13 +57,14 @@ const articles = [...news]
 const links = [
   { href: "/about", label: { en: "About", jp: "プロフィール" } },
   { href: "/contact", label: { en: "Contact", jp: "お問い合わせ" } },
+  { href: "/takao-umehara-resume.pdf", label: { en: "Resume (PDF)", jp: "履歴書 (PDF)" }, external: true },
   { href: "/ai-tools.html", label: { en: "Open tools", jp: "オープンツール" } },
   profile.contact?.linkedin && { href: profile.contact.linkedin, label: { en: "LinkedIn", jp: "LinkedIn" }, external: true },
   profile.contact?.github && { href: profile.contact.github, label: { en: "GitHub", jp: "GitHub" }, external: true },
 ].filter(Boolean);
 ---
 <section class="home-news" aria-labelledby="home-news-title">
-  <h2 class="sr-only" id="home-news-title"><span class="t-en">About Takao and recent releases</span><span class="t-jp">プロフィールと最近の公開作</span></h2>
+  <h2 class="sr-only" id="home-news-title"><span class="t-en">About Takao and recent releases</span><span class="t-jp" lang="ja">プロフィールと最近の公開作</span></h2>
   <div class="hn-grid">
     <article class="hn-card hn-info bento-cell">
       <p class="hn-kicker"><span set:html={t(profile.location)} /></p>

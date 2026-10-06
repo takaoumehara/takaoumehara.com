@@ -28,8 +28,8 @@ const cards = section.items.map((id: string) => {
   ].map(venturesRow).join("");
   const isExternal = /^https?:/.test(link ?? "");
   const linkLabel = isExternal
-    ? `<span class="t-en">Open ↗</span><span class="t-jp">開く ↗</span>`
-    : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`;
+    ? `<span class="t-en">Open ↗</span><span class="t-jp" lang="ja">開く ↗</span>`
+    : `<span class="t-en">Read more →</span><span class="t-jp" lang="ja">詳しく →</span>`;
   const linkHtml = link
     ? `<a class="card-link" href="${esc(url(link))}"${isExternal ? ' target="_blank" rel="noopener"' : ""}>${linkLabel}</a>`
     : "";

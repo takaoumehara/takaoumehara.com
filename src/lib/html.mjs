@@ -10,7 +10,7 @@ export const esc = (value) =>
 export function t(value) {
   if (value == null) return "";
   if (typeof value === "string") return esc(value);
-  const jp = value.jp ? `<span class="t-jp">${esc(value.jp)}</span>` : "";
+  const jp = value.jp ? `<span class="t-jp" lang="ja">${esc(value.jp)}</span>` : "";
   return `<span class="t-en">${esc(value.en)}</span>${jp}`;
 }
 
@@ -18,7 +18,7 @@ export function t(value) {
 export function tb(value) {
   if (value == null) return "";
   if (typeof value === "string") return esc(value);
-  const jp = value.jp ? `<span class="t-jp is-block">${esc(value.jp)}</span>` : "";
+  const jp = value.jp ? `<span class="t-jp is-block" lang="ja">${esc(value.jp)}</span>` : "";
   return `<span class="t-en">${esc(value.en)}</span>${jp}`;
 }
 
@@ -40,7 +40,7 @@ export function mediaFill(item) {
     const label = item.assets?.artLabel ?? item.shortTitle ?? item.title;
     return `<div class="card-art ${esc(art)}"><span class="card-art-label">${esc(label)}</span></div>`;
   }
-  const still = `<img src="${esc(url(image))}" alt="" loading="lazy">`;
+  const still = `<img src="${esc(url(image))}" alt="" loading="lazy" decoding="async">`;
   const clip = item.assets?.preview;
   if (!clip) return still;
   // WebM first: the Chromium builds without H.264 stop at the first source they

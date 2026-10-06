@@ -214,7 +214,6 @@ export function formatNowUpdated(yearMonth) {
 //   direct    — src/data/roles.json "cie" role's evidence ids (own venture,
 //               Creativity Is Everywhere LLC), cross-checked against each
 //               project record's own `client`/`organization` field:
-//               src/data/projects/tmobile.json ("T-Mobile", freelance),
 //               dnt.json ("Tokyo Metropolitan Government / Value Frontier",
 //               freelance), xq.json (client "Emerson Collective, with
 //               Amplify Education", freelance).
@@ -228,7 +227,9 @@ export function formatNowUpdated(yearMonth) {
 //               same badge appearing twice in one cell — the DNT project is
 //               the richer, case-study-backed relationship).
 //   agency    — also USAA (Concentrix Catalyst client) and Carnegie Foundation
-//               (Project Ed client), both confirmed by Takao on 2026-09-28.
+//               (Project Ed client), both confirmed by Takao on 2026-09-28;
+//               T-Mobile (Concentrix Catalyst client, not a studio client),
+//               confirmed by Takao on 2026-10-06.
 export const ORG_GROUPS = [
   {
     id: "direct",
@@ -237,7 +238,7 @@ export const ORG_GROUPS = [
       en: "Engaged directly, mostly through my studio, Creativity Is Everywhere LLC.",
       jp: "多くは自身のスタジオ Creativity Is Everywhere LLC を通じて、直接契約した相手。",
     },
-    orgs: ["T-Mobile", "Tokyo Metropolitan Government", "Emerson Collective (with Amplify Education)"],
+    orgs: ["Tokyo Metropolitan Government", "Emerson Collective (with Amplify Education)"],
   },
   {
     id: "agency",
@@ -249,6 +250,7 @@ export const ORG_GROUPS = [
     orgs: [
       "Coca-Cola (via Ogilvy Brand Integration Group)",
       "USAA (via Concentrix Catalyst)",
+      "T-Mobile (via Concentrix Catalyst)",
       "Carnegie Foundation (via Project Ed)",
     ],
   },

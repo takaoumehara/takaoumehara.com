@@ -22,7 +22,7 @@ const count = category.groups.reduce((n, g) => n + g.items.length, 0);
   <header class="cat-head">
     <h1 class="cat-title" set:html={t(category.title)} />
     <p class="cat-lede" set:html={tb(category.lede)} />
-    <p class="cat-count">{count}<span class="t-en"> projects</span><span class="t-jp"> 件</span></p>
+    <p class="cat-count">{count}<span class="t-en"> projects</span><span class="t-jp" lang="ja"> 件</span></p>
   </header>
 
   {category.groups.map((g) => {

@@ -15,8 +15,8 @@ const cards = section.items.map((ref: any) => {
   const summary = ref.summaryOverride ?? (ref.angle ? item.angles[ref.angle] : item.cardLine ?? item.summary);
   const live = item.playable && item.links?.live;
   const link = live
-    ? `<a class="card-link" href="${esc(item.links.live)}" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp">触ってみる ↗</span></a>`
-    : item.links?.caseStudy ? `<a class="card-link" href="${esc(url(item.links.caseStudy))}"><span class="t-en">Case study →</span><span class="t-jp">ケーススタディ →</span></a>` : "";
+    ? `<a class="card-link" href="${esc(item.links.live)}" target="_blank" rel="noopener"><span class="t-en">Try it ↗</span><span class="t-jp" lang="ja">触ってみる ↗</span></a>`
+    : item.links?.caseStudy ? `<a class="card-link" href="${esc(url(item.links.caseStudy))}"><span class="t-en">Case study →</span><span class="t-jp" lang="ja">ケーススタディ →</span></a>` : "";
   const target = live ? ` data-href="${esc(item.links.live)}" data-external="true"` : item.links?.caseStudy ? ` data-href="${esc(url(item.links.caseStudy))}"` : "";
   const art = mediaFill(item);
   return `      <article class="exp-card" tabindex="0"${target}>

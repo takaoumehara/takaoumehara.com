@@ -11,7 +11,7 @@
 //       NotMine Guard — Lens-authored text about an item must not contain any
 //                       phrase the item lists under contribution.notMine.
 
-const ENGAGEMENTS = new Set(["employee", "freelance", "volunteer", "own-venture", "open-source", "concept", "unstated"]);
+const ENGAGEMENTS = new Set(["employee", "freelance", "volunteer", "own-venture", "open-source", "concept", "contract", "unstated"]);
 const STRENGTHS = new Set(["strong", "moderate", "adjacent"]);
 const CONFIDENCE = new Set(["stated", "approximate", "unverified"]);
 const VISIBILITY = new Set(["public", "lens-only", "private"]);
@@ -197,6 +197,9 @@ export function validateLibrary(lib, { assetExists } = {}) {
 
       const caseStudy = item.links?.caseStudy;
       if (caseStudy && !assetExists(caseStudy)) errors.push(`${where}: links.caseStudy "${caseStudy}" does not exist on disk`);
+    }
+    if (item.featured !== undefined) {
+      if (!Number.isInteger(item.featured) || item.featured <= 0) errors.push(`${where}: featured must be a positive integer`);
     }
   }
   return errors;

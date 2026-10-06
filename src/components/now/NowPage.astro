@@ -36,16 +36,16 @@ function nowCardHtml(item) {
   if (l.live) {
     const isExt = /^https?:/.test(l.live);
     const liveUrl = isExt ? l.live : url(l.live);
-    cta = `<a class="card-link" href="${esc(liveUrl)}"${isExt ? ' target="_blank" rel="noopener"' : ""}><span class="t-en">Try live ↗</span><span class="t-jp">触ってみる ↗</span></a>`;
+    cta = `<a class="card-link" href="${esc(liveUrl)}"${isExt ? ' target="_blank" rel="noopener"' : ""}><span class="t-en">Try live ↗</span><span class="t-jp" lang="ja">触ってみる ↗</span></a>`;
     dataHref = ` data-href="${esc(liveUrl)}"${isExt ? ' data-external="true"' : ""}`;
   } else if (l.repo) {
-    cta = `<a class="card-link" href="${esc(l.repo)}" target="_blank" rel="noopener"><span class="t-en">GitHub repo ↗</span><span class="t-jp">ソースコード ↗</span></a>`;
+    cta = `<a class="card-link" href="${esc(l.repo)}" target="_blank" rel="noopener"><span class="t-en">GitHub repo ↗</span><span class="t-jp" lang="ja">ソースコード ↗</span></a>`;
     dataHref = ` data-href="${esc(l.repo)}" data-external="true"`;
   } else if (l.caseStudy) {
-    cta = `<a class="card-link" href="${esc(url(l.caseStudy))}"><span class="t-en">Read case study →</span><span class="t-jp">詳細を読む →</span></a>`;
+    cta = `<a class="card-link" href="${esc(url(l.caseStudy))}"><span class="t-en">Read case study →</span><span class="t-jp" lang="ja">詳細を読む →</span></a>`;
     dataHref = ` data-href="${esc(url(l.caseStudy))}"`;
   } else if (l.external) {
-    cta = `<a class="card-link" href="${esc(l.external)}" target="_blank" rel="noopener"><span class="t-en">Open project ↗</span><span class="t-jp">プロジェクトを開く ↗</span></a>`;
+    cta = `<a class="card-link" href="${esc(l.external)}" target="_blank" rel="noopener"><span class="t-en">Open project ↗</span><span class="t-jp" lang="ja">プロジェクトを開く ↗</span></a>`;
     dataHref = ` data-href="${esc(l.external)}" data-external="true"`;
   }
 
@@ -64,11 +64,11 @@ function nowCardHtml(item) {
         <p class="now-card-oneline">${t(item.oneLine)}</p>
         <dl class="now-details">
           <div class="now-row">
-            <dt class="now-dt"><span class="t-en">Why it exists</span><span class="t-jp">なぜ作るのか</span></dt>
+            <dt class="now-dt"><span class="t-en">Why it exists</span><span class="t-jp" lang="ja">なぜ作るのか</span></dt>
             <dd class="now-dd">${t(item.why)}</dd>
           </div>
           <div class="now-row">
-            <dt class="now-dt"><span class="t-en">What's next</span><span class="t-jp">次の一歩</span></dt>
+            <dt class="now-dt"><span class="t-en">What's next</span><span class="t-jp" lang="ja">次の一歩</span></dt>
             <dd class="now-dd">${t(item.next)}</dd>
           </div>
         </dl>
@@ -84,32 +84,32 @@ const cardsHtml = items.map((item) => nowCardHtml(item)).join("\n");
     <div class="now-meta-badge">
       <span class="now-pulse-dot" />
       <span class="t-en">Live Lab Bench · Updated {nowData.updatedAt}</span>
-      <span class="t-jp">現在の作業台 · {nowData.updatedAt} 更新</span>
+      <span class="t-jp" lang="ja">現在の作業台 · {nowData.updatedAt} 更新</span>
     </div>
     <h1 class="now-title">
       <span class="t-en">What I’m Working On</span>
-      <span class="t-jp">いま、つくっているもの</span>
+      <span class="t-jp" lang="ja">いま、つくっているもの</span>
     </h1>
     <p class="now-lede">
       <span class="t-en">{nowData.lede.en}</span>
-      <span class="t-jp is-block">{nowData.lede.jp}</span>
+      <span class="t-jp is-block" lang="ja">{nowData.lede.jp}</span>
     </p>
     <div class="now-filter-bar" role="group" aria-label="Filter current work">
       <button type="button" class="filter-btn is-active" data-filter="all">
         <span class="t-en">All ({items.length})</span>
-        <span class="t-jp">すべて ({items.length})</span>
+        <span class="t-jp" lang="ja">すべて ({items.length})</span>
       </button>
       <button type="button" class="filter-btn" data-filter="ai-product" id="ventures">
         <span class="t-en">0→1 Products &amp; Ventures</span>
-        <span class="t-jp">0→1 プロダクト &amp; 事業</span>
+        <span class="t-jp" lang="ja">0→1 プロダクト &amp; 事業</span>
       </button>
       <button type="button" class="filter-btn" data-filter="interactive" id="experiments">
         <span class="t-en">Interactive</span>
-        <span class="t-jp">インタラクティブ</span>
+        <span class="t-jp" lang="ja">インタラクティブ</span>
       </button>
       <button type="button" class="filter-btn" data-filter="developer-tool" id="tools">
         <span class="t-en">Developer Tools</span>
-        <span class="t-jp">開発ツール</span>
+        <span class="t-jp" lang="ja">開発ツール</span>
       </button>
       <span id="ai-product" style="display:none;" />
     </div>
@@ -121,16 +121,16 @@ const cardsHtml = items.map((item) => nowCardHtml(item)).join("\n");
     <div class="now-invite-inner">
       <h2 class="now-invite-title">
         <span class="t-en">Have a question or want to build something together?</span>
-        <span class="t-jp">プロトタイプを一緒に試したい、あるいはまだ名前のないアイデアの相談</span>
+        <span class="t-jp" lang="ja">プロトタイプを一緒に試したい、あるいはまだ名前のないアイデアの相談</span>
       </h2>
       <p class="now-invite-desc">
         <span class="t-en">I collaborate with founders, leadership teams, and engineers who want to test ideas by building them.</span>
-        <span class="t-jp is-block">「まずは動くものを作って確かめたい」チームや創業者と、0→1 の検証をご一緒しています。</span>
+        <span class="t-jp is-block" lang="ja">「まずは動くものを作って確かめたい」チームや創業者と、0→1 の検証をご一緒しています。</span>
       </p>
       <div class="now-invite-cta">
         <a href={url("contact.html")} class="btn btn--primary">
           <span class="t-en">Work with me →</span>
-          <span class="t-jp">相談してみる →</span>
+          <span class="t-jp" lang="ja">相談してみる →</span>
         </a>
       </div>
     </div>

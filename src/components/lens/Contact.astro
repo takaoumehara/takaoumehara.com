@@ -14,15 +14,15 @@ const siteUrl = (path: string) => (path === "index.html" ? "/" : url(path));
 
 const secondary = lens.cta.secondary
   ? `<a href="${esc(siteUrl(lens.cta.secondary.href))}" class="hero-alt">${t(lens.cta.secondary.label)}</a>`
-  : `<a href="${esc(lib.profile.contact.linkedin)}" target="_blank" rel="noopener" class="hero-alt"><span class="t-en">Or reach me on LinkedIn →</span><span class="t-jp">LinkedIn でも →</span></a>`;
+  : `<a href="${esc(lib.profile.contact.linkedin)}" target="_blank" rel="noopener" class="hero-alt"><span class="t-en">Or reach me on LinkedIn →</span><span class="t-jp" lang="ja">LinkedIn でも →</span></a>`;
 
 // The note is the standard sentence, or the lens's own (a Localized value,
 // checked by the Claim Guard) when it wants to name what it was arranged for.
 const noteText = showLensNote && typeof showLensNote === "object"
   ? tb(showLensNote)
-  : `<span class="t-en">This view surfaces work from Takao's career archive most relevant to this opportunity. Same experience. Different lens.</span><span class="t-jp">このページは、Takao のキャリアの記録から、この機会にもっとも関係の深い仕事を選んで見せています。同じ経験。違うレンズ。</span>`;
+  : `<span class="t-en">This view surfaces work from Takao's career archive most relevant to this opportunity. Same experience. Different lens.</span><span class="t-jp" lang="ja">このページは、Takao のキャリアの記録から、この機会にもっとも関係の深い仕事を選んで見せています。同じ経験。違うレンズ。</span>`;
 const note = showLensNote
-  ? `    <p class="lens-note">${noteText} <a href="${esc(siteUrl("index.html"))}"><span class="t-en">The whole story →</span><span class="t-jp">全体の物語 →</span></a></p>`
+  ? `    <p class="lens-note">${noteText} <a href="${esc(siteUrl("index.html"))}"><span class="t-en">The whole story →</span><span class="t-jp" lang="ja">全体の物語 →</span></a></p>`
   : "";
 ---
 <section class="end" id="contact">
