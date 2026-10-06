@@ -108,12 +108,17 @@ const tiles = entries.map(({ item, category }, i) => {
 
 const FILTERS = [
   { id: "all", label: { en: "All", jp: "すべて" }, count: entries.length },
-  { id: "interactive", label: { en: "Interactive", jp: "インタラクティブ" }, count: 0 },
+  { id: "product", label: { en: "Product", jp: "プロダクト" }, count: 0 },
   { id: "ai", label: { en: "AI", jp: "AI" }, count: 0 },
-  { id: "design", label: { en: "Design", jp: "デザイン" }, count: 0 },
+  { id: "interactive", label: { en: "Interactive", jp: "インタラクティブ" }, count: 0 },
+  { id: "tools", label: { en: "Tools", jp: "ツール" }, count: 0 },
 ];
 
-// Calculate counts for simplified filters
+// Calculate counts for the new filter categories
+// Product = client/product design work + brand/design (brand + work categories)
+// AI = ai-products + ai-tools
+// Interactive = interactive
+// Tools = ai-tools + open tools
 const catMap = new Map(categories.map(c => [c.slug, c]));
 const interactiveCat = catMap.get("interactive");
 const aiProductsCat = catMap.get("ai-products");
@@ -121,17 +126,25 @@ const aiToolsCat = catMap.get("ai-tools");
 const brandCat = catMap.get("brand");
 const workCat = catMap.get("work");
 
-if (interactiveCat) {
-  FILTERS[1].count = interactiveCat.groups.reduce((n, g) => n + g.items.length, 0);
-}
+// Product filter = brand + work (client/product design)
+const productCount = (brandCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0) +
+                     (workCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0);
+FILTERS[1].count = productCount;
+
 // AI = ai-products + ai-tools
-const aiCount = (aiProductsCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0) + 
+const aiCount = (aiProductsCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0) +
                 (aiToolsCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0);
 FILTERS[2].count = aiCount;
-// Design = brand + work
-const designCount = (brandCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0) + 
-                    (workCat?.groups.reduce((n, g) => n + g.items.length, 0) || 0);
-FILTERS[3].count = designCount;
+
+// Interactive
+if (interactiveCat) {
+  FILTERS[3].count = interactiveCat.groups.reduce((n, g) => n + g.items.length, 0);
+}
+
+// Tools = ai-tools (open tools category)
+if (aiToolsCat) {
+  FILTERS[4].count = aiToolsCat.groups.reduce((n, g) => n + g.items.length, 0);
+}
 ---
 <Site
   title="Work — Takao Umehara"
@@ -498,9 +511,10 @@ FILTERS[3].count = designCount;
     // Map simplified filters to original category slugs
     const filterMap = {
       'all': () => true,
-      'interactive': (cats) => cats.includes('interactive'),
+      'product': (cats) => cats.includes('brand') || cats.includes('work'),
       'ai': (cats) => cats.includes('ai-products') || cats.includes('ai-tools'),
-      'design': (cats) => cats.includes('brand') || cats.includes('work')
+      'interactive': (cats) => cats.includes('interactive'),
+      'tools': (cats) => cats.includes('ai-tools')
     };
 
     function applyFilter(filter) {

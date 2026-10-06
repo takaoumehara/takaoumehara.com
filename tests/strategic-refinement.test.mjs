@@ -3,7 +3,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { read, exists } from "./_dist.mjs";
 
-test("All work is one canonical fullscreen page at /work, and /all/ redirects to it", () => {
+test("Work is one canonical fullscreen page at /work, and /all/ redirects to it", () => {
   assert.ok(exists("work.html"), "work.html must exist — it is the canonical archive");
   const html = read("work.html");
 
@@ -15,8 +15,8 @@ test("All work is one canonical fullscreen page at /work, and /all/ redirects to
   assert.ok(cards.length > 30, `the archive must render the work grid (got ${cards.length} cards)`);
   assert.ok(!html.includes("Kanji Puzzle"), "Kanji Puzzle must be hidden from the archive");
 
-  // The four canonical discipline filters of the current IA.
-  for (const f of ["all", "interactive", "ai", "design"]) {
+  // The five canonical discipline filters: All, Product, AI, Interactive, Tools
+  for (const f of ["all", "product", "ai", "interactive", "tools"]) {
     assert.match(html, new RegExp(`data-filter="${f}"`), `Filter tab ${f} must exist`);
   }
 

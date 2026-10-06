@@ -21,14 +21,13 @@
   --pr-line-2: #808080;       /* emphasis hairline (Ash Gray as drawn) */
   --pr-blue: #0062cc;         /* System Blue for text, darkened from #007aff (4.0:1) to 5.3:1 on white / 4.9:1 on the card grey */
 
-  /* Type — Outfit everywhere for now (running text and display alike), with the
-     Japanese stack directly behind it so CJK glyphs, which Outfit does not
-     carry, fall to a real JP face rather than a per-glyph browser substitution.
-     Headings stay Outfit SemiBold (--fw-display). */
-  --pr-ff: "Outfit", -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* Type — Outfit everywhere (running text and display alike), with Japanese
+     fonts as fallback so CJK glyphs (which Outfit does not carry) use real JP
+     typefaces. Headings use Outfit SemiBold (--fw-display). */
+  --pr-ff: "Outfit", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
   --pr-ff-display: var(--pr-ff);
   --fw-display: 600;
-  --pr-ff-jp: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", sans-serif;
+  --pr-ff-jp: "Outfit", "Noto Sans JP", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
   /* The hand-built pages' design-system.css redefines --ff on :root; the rail
      reads the --pr-* names, which nothing else defines. */
   --ff: var(--pr-ff);

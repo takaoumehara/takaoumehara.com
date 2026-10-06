@@ -87,7 +87,7 @@ test('every page carries the same sidebar: the About card (no longer a page list
     // The old per-page-type nav is gone; nothing should resurrect it.
     assert.equal(/<nav class="side-pages"/.test(side), false, `${page}: the old side-pages nav must not come back`);
     assert.deepEqual(workGroups(html, page).map((g) => g.label), expectedGroups, `${page}: work groups`);
-    assert.match(side, /<a class="side-all" href="\/work"/, `${page}: the "All work" link`);
+    assert.match(side, /<a class="side-all" href="\/work"/, `${page}: the Work link`);
     assert.match(side, /<a class="side-label" href="\/about"[^>]*data-match="\/about \/about\.html"/, `${page}: the About card links to the About page`);
     assert.match(side, /<button class="side-theme" id="theme-switch" type="button" role="switch"/, `${page}: the theme switch`);
     assert.match(side, /<button class="side-lang" id="lang-cycle" type="button"/, `${page}: the language button`);
@@ -97,9 +97,9 @@ test('every page carries the same sidebar: the About card (no longer a page list
 
 test('each page marks itself current in the sidebar, and only itself', () => {
   // Without a page list, the only "current page" markers left in the rail
-  // are the About card, the "All work" link, and a project's own row.
+  // are the About card, the Work link, and a project's own row.
   assert.match(sidebar(read('about.html'), 'about'), /<a class="side-label" href="\/about"[^>]*aria-current="page"/, 'about.html: the About card marks itself');
-  assert.match(sidebar(read('work.html'), 'work'), /<a class="side-all" href="\/work"[^>]*aria-current="page"/, 'work.html: the "All work" link marks itself');
+  assert.match(sidebar(read('work.html'), 'work'), /<a class="side-all" href="\/work"[^>]*aria-current="page"/, 'work.html: the Work link marks itself');
   for (const page of ['index.html', 'interactive.html', 'brand.html', 'contact.html']) {
     const side = sidebar(read(page), page);
     assert.equal(/<a class="side-label"[^>]*aria-current="page"/.test(side), false, `${page}: the About card must not be current`);

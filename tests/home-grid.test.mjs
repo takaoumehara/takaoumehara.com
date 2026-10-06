@@ -44,23 +44,24 @@ test("the home page's news bento is the only work under the hero, and every card
   }
 });
 
-test("/work carries the four canonical filters (All, Interactive, AI, Design), each with a real count", () => {
+test("/work carries the five canonical filters (All, Product, AI, Interactive, Tools), each with a real count", () => {
   const html = read("work.html");
   const filters = html.match(/<div class="work-filters"[^>]*>[\s\S]*?<\/div>/)?.[0];
   assert.ok(filters, "work.html needs the filter row");
-  const expectedFilters = ["all", "interactive", "ai", "design"];
+  const expectedFilters = ["all", "product", "ai", "interactive", "tools"];
   for (const f of expectedFilters) assert.match(filters, new RegExp(`data-filter="${f}"`), `filter row missing ${f}`);
   const counts = [...filters.matchAll(/class="filter-count"[^>]*>(\d+)</g)].map((m) => Number(m[1]));
-  assert.equal(counts.length, expectedFilters.length, "one count per pill: All, Interactive, AI, Design");
+  assert.equal(counts.length, expectedFilters.length, "one count per pill: All, Product, AI, Interactive, Tools");
   assert.ok(counts.every((n) => n > 0), "every filter count must be a real number, not zero");
   assert.equal(counts[0], gridIds.size, `the All count must be ${gridIds.size} (every deduplicated grid item)`);
 
   const catMap = new Map(categories.map((c) => [c.slug, c]));
   const groupCount = (slug) => catMap.get(slug)?.groups.reduce((n, g) => n + g.items.length, 0) ?? 0;
-  const [, interactiveCount, aiCount, designCount] = counts;
-  assert.equal(interactiveCount, groupCount("interactive"), "Interactive count must match the interactive category");
+  const [, productCount, aiCount, interactiveCount, toolsCount] = counts;
+  assert.equal(productCount, groupCount("brand") + groupCount("work"), "Product count must combine brand + work");
   assert.equal(aiCount, groupCount("ai-products") + groupCount("ai-tools"), "AI count must combine ai-products + ai-tools");
-  assert.equal(designCount, groupCount("brand") + groupCount("work"), "Design count must combine brand + work");
+  assert.equal(interactiveCount, groupCount("interactive"), "Interactive count must match the interactive category");
+  assert.equal(toolsCount, groupCount("ai-tools"), "Tools count must match the ai-tools category");
 });
 
 test("/work renders one tile per public item across every category, each carrying data-category and .bento-cell — the free grid", () => {
