@@ -16,9 +16,31 @@ const lens = defaultLens();
 ---
 <Site title={lens.seo.title} description={lens.seo.description} canonical="https://takaoumehara.com/">
   <main class="cat-page grid-home" data-category="home">
-    <AboutIntro lib={lib} />
+    <AboutIntro lib={lib} eager={true} />
     <HomeNow lib={lib} />
     <HomeHero lib={lib} order={SHOWCASE} />
+    <h2 class="home-updates-heading">
+      <span class="t-en">Updates</span>
+      <span class="t-jp" lang="ja">最近の更新</span>
+    </h2>
     <HomeNews lib={lib} news={NEWS} />
   </main>
 </Site>
+
+<style>
+  .home-updates-heading {
+    margin: 0;
+    padding: var(--cell-pad);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
+    grid-column: span 5;
+  }
+
+  @media (max-width: 768px) {
+    .home-updates-heading {
+      grid-column: span 1;
+    }
+  }
+</style>

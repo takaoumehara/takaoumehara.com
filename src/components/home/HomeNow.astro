@@ -8,14 +8,35 @@ const nowData = lib.now;
 
 // Get 2-4 items from now.json (the "items" array)
 const items = nowData.items?.slice(0, 4) || [];
+
+// Format the updatedAt date from now.json (e.g., "2026-09" → "Sep 2026")
+const formatDate = (dateStr: string) => {
+  if (!dateStr || typeof dateStr !== "string") return null;
+  const [year, month] = dateStr.split("-");
+  if (!year || !month) return null;
+  const monthNames = {
+    "01": "Jan", "02": "Feb", "03": "Mar", "04": "Apr", "05": "May", "06": "Jun",
+    "07": "Jul", "08": "Aug", "09": "Sep", "10": "Oct", "11": "Nov", "12": "Dec"
+  };
+  const monthName = monthNames[month as keyof typeof monthNames];
+  return monthName ? `${monthName} ${year}` : null;
+};
+
+const updatedDate = formatDate(nowData.updatedAt);
 ---
 
 {items.length > 0 && (
-<section class="home-now bento-cell">
+<section class="home-now bento-cell" id="now">
   <h2 class="home-now-title">
     <span class="t-en">Now — what I've been working on lately</span>
     <span class="t-jp" lang="ja">Now — 最近取り組んでいること</span>
   </h2>
+  {updatedDate && (
+    <p class="home-now-date">
+      <span class="t-en">Updated {updatedDate}</span>
+      <span class="t-jp" lang="ja">{updatedDate}更新</span>
+    </p>
+  )}
   <ul class="home-now-list">
     {items.map((item) => (
       <li class="home-now-item">
@@ -33,10 +54,17 @@ const items = nowData.items?.slice(0, 4) || [];
   }
 
   .home-now-title {
-    margin: 0 0 var(--sp-4) 0;
+    margin: 0 0 var(--sp-2) 0;
     font-size: 1.25rem;
     font-weight: 600;
     line-height: 1.2;
+  }
+
+  .home-now-date {
+    margin: 0 0 var(--sp-4) 0;
+    font-size: var(--text-xs);
+    color: var(--pr-ink-2);
+    font-variant-numeric: tabular-nums;
   }
 
   .home-now-list {

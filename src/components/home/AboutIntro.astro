@@ -3,8 +3,8 @@
 // Reused on home page and About page.
 import { t, url } from "../../lib/html.mjs";
 
-interface Props { lib: any }
-const { lib } = Astro.props;
+interface Props { lib: any; eager?: boolean }
+const { lib, eager = false } = Astro.props;
 const profile = lib.profile;
 ---
 
@@ -13,7 +13,7 @@ const profile = lib.profile;
     <figure class="about-intro-portrait">
       <picture>
         <source srcset="/assets/about/TakaoUmehara_passport.webp" type="image/webp" />
-        <img src="/assets/about/TakaoUmehara_passport.png" alt={profile.name} width="512" height="512" loading="lazy" decoding="async" />
+        <img src="/assets/about/TakaoUmehara_passport.png" alt={profile.name} width="512" height="512" loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : undefined} decoding="async" />
       </picture>
     </figure>
     <div class="about-intro-copy">
