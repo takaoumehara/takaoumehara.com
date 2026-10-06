@@ -3,6 +3,7 @@
 // Generates detail pages for ALL projects/experiments with case studies
 import Site from "../../layouts/Site.astro";
 import ProjectDetail from "../../components/project/ProjectDetail.astro";
+import ContactCta from "../../components/ContactCta.astro";
 import { getLibrary, evidenceForCaseStudy } from "../../lib/site.mjs";
 
 export async function getStaticPaths() {
@@ -111,6 +112,7 @@ const beats = body && body.replace(/<!--[\s\S]*?-->/g, "").trim() ? body : null;
   >
     <main class="project-page">
       <ProjectDetail item={item} body={beats} />
+      <ContactCta />
     </main>
   </Site>
 ) : (
@@ -128,7 +130,10 @@ const beats = body && body.replace(/<!--[\s\S]*?-->/g, "").trim() ? body : null;
     style={css}
     fonts={meta?.fonts}
   >
-    <div class="project-legacy" set:html={body} />
+    <main class="project-page">
+      <div class="project-legacy" set:html={body} />
+      <ContactCta />
+    </main>
   </Site>
 )}
 

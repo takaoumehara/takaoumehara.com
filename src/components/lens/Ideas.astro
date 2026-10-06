@@ -13,8 +13,8 @@ const cards = items.map((idea: any) => {
   const link = idea.links?.external ?? idea.links?.caseStudy;
   const linkIsExternal = /^https?:/.test(link ?? "");
   const linkLabel = linkIsExternal
-    ? `<span class="t-en">Explore ↗</span><span class="t-jp">詳細 ↗</span>`
-    : `<span class="t-en">Read more →</span><span class="t-jp">詳しく →</span>`;
+    ? `<span class="t-en">Explore ↗</span><span class="t-jp" lang="ja">詳細 ↗</span>`
+    : `<span class="t-en">Read more →</span><span class="t-jp" lang="ja">詳しく →</span>`;
   const linkHtml = link
     ? `<a class="card-link" href="${esc(url(link))}"${linkIsExternal ? ' target="_blank" rel="noopener"' : ""}>${linkLabel}</a>`
     : "";

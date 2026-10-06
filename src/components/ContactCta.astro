@@ -1,0 +1,72 @@
+---
+// Contact call-to-action block reused on project pages and /work
+---
+<section class="contact-cta bento-cell">
+  <p class="contact-cta-text">
+    <span class="t-en">Have a 0→1 product or AI workflow to build? Let's talk.</span>
+    <span class="t-jp" lang="ja">0→1 のプロダクトや AI ワークフローを作りたい。一緒に進めませんか？</span>
+  </p>
+  <ul class="contact-cta-links">
+    <li><a href="/about#work-with-me"><span class="t-en">Contact</span><span class="t-jp" lang="ja">相談する</span> →</a></li>
+    <li><a href="/takao-umehara-resume.pdf" target="_blank" rel="noopener"><span class="t-en">Resume (PDF)</span><span class="t-jp" lang="ja">履歴書 (PDF)</span> ↗</a></li>
+    <li><a href={`https://linkedin.com/in/takaoumehara/`} target="_blank" rel="noopener">LinkedIn ↗</a></li>
+  </ul>
+</section>
+
+<style>
+  .contact-cta {
+    margin-top: var(--sp-6);
+    padding: var(--sp-6);
+    background: var(--pr-card);
+    border-radius: var(--r);
+  }
+
+  .contact-cta-text {
+    margin: 0 0 var(--sp-4);
+    font-size: var(--text-body);
+    line-height: var(--leading-body);
+    color: var(--pr-ink);
+  }
+
+  .contact-cta-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+  }
+
+  .contact-cta-links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: var(--sp-2) var(--sp-3);
+    color: var(--pr-blue);
+    text-decoration: none;
+    background: var(--pr-canvas);
+    border-radius: var(--r-pill);
+    font-size: var(--text-body);
+    transition: background 140ms ease, color 140ms ease;
+  }
+
+  .contact-cta-links a:hover {
+    background: var(--pr-line);
+    color: var(--pr-ink);
+  }
+
+  .contact-cta-links a:focus-visible {
+    outline: 2px solid var(--pr-blue);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .contact-cta {
+      margin-left: calc(-1 * var(--pane-pad));
+      margin-right: calc(-1 * var(--pane-pad));
+      margin-bottom: calc(-1 * var(--pane-pad));
+      padding: var(--sp-6);
+      border-radius: 0;
+    }
+  }
+</style>

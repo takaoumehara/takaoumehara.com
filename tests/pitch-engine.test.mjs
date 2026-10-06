@@ -332,7 +332,8 @@ test("the guards reach tailoredResume and a custom lensNote", () => {
 test("the audit asks the recruiter's questions of every record that cannot answer them", () => {
   const verizon = auditItem(lib.evidence.get("verizon-ai-workflow"));
   const ids = verizon.map((g) => g.id);
-  assert.ok(ids.includes("level") && ids.includes("engagement") && ids.includes("unverified") && ids.includes("decisions"), ids.join(", "));
+  // engagement recorded as contract 2026-10-06
+  assert.ok(ids.includes("level") && ids.includes("unverified") && ids.includes("decisions"), ids.join(", "));
   const resona = auditItem(lib.evidence.get("resona"));
   assert.ok(!resona.some((g) => g.id === "level"), "recorded as solo — nothing to ask");
   assert.ok(existsSync(join(ROOT, "docs", "evidence-gaps.md")), "run: node scripts/audit-evidence.mjs");

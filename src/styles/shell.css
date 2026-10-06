@@ -296,3 +296,60 @@ html.lang-jp .side-foot { font-family: var(--ff-mono), var(--pr-ff-jp); }
 .side-top-status { display: none; }
 @media (max-width: 900px) { .side-top .side-top-status { display: inline-flex; } }
 @media (max-width: 359px) { .side-top .side-top-status { display: none; } }
+
+/* ── Site links (Sidebar.astro .side-nav) ────────────────────────────────
+   About · Work · Contact · Resume · LinkedIn, one compact line of text links
+   under the wordmark. The rail persists across pages, so this is the
+   "reachable from every page" route to contact and the resume. In the mobile
+   menu (the same panel) each link gets a 44px-tall hit area. */
+.side-nav {
+  display: flex; flex-wrap: wrap; column-gap: var(--sp-3); row-gap: 0; align-items: center;
+  margin: 0 0 var(--sp-3); padding: 0 var(--sp-3);
+}
+.side-nav-link {
+  display: inline-flex; align-items: center; min-height: 28px;
+  font-size: var(--text-sm); color: var(--pr-ink-2); text-decoration: none;
+  transition: color 140ms ease;
+}
+.side-nav-link:hover, .side-nav-link:focus-visible { color: var(--pr-ink); text-decoration: underline; text-underline-offset: 4px; }
+.side-nav-link[aria-current="page"] { color: var(--pr-ink); text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 900px) {
+  .side-nav { padding: 0; column-gap: var(--sp-4, 24px); }
+  .side-nav-link { min-height: 44px; font-size: var(--text-body); }
+}
+
+/* ── Japanese text: phrase-aware line breaking ───────────────────────────
+   word-break: auto-phrase (Chromium 119+) keeps Japanese phrases whole
+   (no 知っ/ている, ビルダ/ー). It only applies where the content language
+   is ja: html[lang=ja] in the Japanese edition, and every .t-jp span, which
+   carries lang="ja". line-break: strict keeps small kana and prolonged
+   sound marks off the start of a line in browsers without auto-phrase. */
+:lang(ja) { word-break: auto-phrase; line-break: strict; }
+:where(h1, h2, h3, h4):lang(ja) { text-wrap: balance; }
+@media (max-width: 640px) {
+  html.lang-jp .about-h1, :lang(ja) .about-h1,
+  html.lang-jp .about-subtitle, :lang(ja) .about-subtitle {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* ── Tap targets: ≥44px hit areas on touch / narrow screens ───────────────
+   Visual size stays; the hit area grows. Fixed-size controls get an
+   invisible ::after that overhangs the box; text links get min-height. */
+@media (max-width: 900px), (pointer: coarse) {
+  .side-toggle { min-height: 44px; }
+  .side-all, .side-search-toggle, .side-theme, .side-lang,
+  .work-search-btn, .hh-btn, .hn-links a, .side-wordmark { position: relative; }
+  .side-search-toggle::after, .side-theme::after, .side-lang::after, .work-search-btn::after,
+  .side-all::after {
+    content: ""; position: absolute; inset: -3px;
+  }
+  .hh-btn::after { content: ""; position: absolute; inset: -6px; }
+  .hn-links a::after { content: ""; position: absolute; inset: -6px 0; }
+  .side-wordmark::after { content: ""; position: absolute; inset: -12px 0; }
+  .work-page-full .filter-btn { min-height: 44px; align-items: center; }
+  .site-footer .footer-links a, .side-foot a,
+  .about-link, .about-footer-link, .writing-link, .writing-card li a {
+    display: inline-flex; align-items: center; min-height: 44px;
+  }
+}

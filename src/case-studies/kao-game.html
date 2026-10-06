@@ -2,40 +2,40 @@
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">Three games, three sets of muscles</span>
-    <span class="t-jp is-block">3 本のゲーム、3 通りの筋肉</span>
+    <span class="t-jp is-block" lang="ja">3 本のゲーム、3 通りの筋肉</span>
   </h2>
   <p class="beat-text">
     <span class="t-en">Each game is built around a different part of the face. In KUZUSHI you break stone by shaping vowels — ah, oo, ee. In KASANE you cut a moving slab by opening your mouth and snapping it shut, or by pursing into “oo” and pulling wide into “ee”. In KAO DARUMA you knock daruma out of an endless stack by matching the lit face: left cheek, right cheek, tongue or a centred “oo”. There is no tutorial. Anything that needed a sentence of explanation was cut rather than written.</span>
-    <span class="t-jp is-block">3 本はそれぞれ、顔の別の場所を使う。KUZUSHI は「あ・う・い」の口の形で石を砕く。KASANE は流れてくる板を、口を開けてパクッと閉じる瞬間か、「ウー」から「イー」へ引く瞬間に切る。KAO DARUMA は、光った顔と同じ動き（左ほっぺ・右ほっぺ・ベロ・ウー）をすると、終わりのないだるま落としが一段飛ぶ。チュートリアルはない。一文の説明が要るものは、書き足すのではなく削った。</span>
+    <span class="t-jp is-block" lang="ja">3 本はそれぞれ、顔の別の場所を使う。KUZUSHI は「あ・う・い」の口の形で石を砕く。KASANE は流れてくる板を、口を開けてパクッと閉じる瞬間か、「ウー」から「イー」へ引く瞬間に切る。KAO DARUMA は、光った顔と同じ動き（左ほっぺ・右ほっぺ・ベロ・ウー）をすると、終わりのないだるま落としが一段飛ぶ。チュートリアルはない。一文の説明が要るものは、書き足すのではなく削った。</span>
   </p>
 </section>
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">The tongue signal MediaPipe already had</span>
-    <span class="t-jp is-block">MediaPipe が捨てていたベロ</span>
+    <span class="t-jp is-block" lang="ja">MediaPipe が捨てていたベロ</span>
   </h2>
   <p class="beat-text">
     <span class="t-en">MediaPipe's 52 expression values have no tongue, so the obvious routes were colour heuristics or training a model. Opening the face model bundle turned up a third output, documented as “score of whether tongue is out of mouth”, which MediaPipe computes on every frame and never reads. KAO runs that same model in the browser with LiteRT.js, about twelve times a second: a neutral face scores 0.004, a tongue out scores around 0.9. An open mouth alone reached 0.74, so the game counts the tongue only above 0.8 and only with the lips apart.</span>
-    <span class="t-jp is-block">MediaPipe の 52 個の表情の値には、ベロがない。ふつうなら色で推し量るか、モデルを学習させるしかない。ところが顔モデルの中身を開けてみると、3 つめの出力があった。説明は「舌が口の外に出ているかのスコア」。MediaPipe は毎フレーム計算していながら、一度も読んでいなかった。KAO はこの同じモデルを LiteRT.js でブラウザの中で動かし、1 秒に約 12 回読む。真顔は 0.004、ベロを出すと 0.9 前後になる。口を開けただけでも 0.74 まで上がったので、ベロと数えるのは 0.8 以上で、かつ唇が開いているときだけにした。</span>
+    <span class="t-jp is-block" lang="ja">MediaPipe の 52 個の表情の値には、ベロがない。ふつうなら色で推し量るか、モデルを学習させるしかない。ところが顔モデルの中身を開けてみると、3 つめの出力があった。説明は「舌が口の外に出ているかのスコア」。MediaPipe は毎フレーム計算していながら、一度も読んでいなかった。KAO はこの同じモデルを LiteRT.js でブラウザの中で動かし、1 秒に約 12 回読む。真顔は 0.004、ベロを出すと 0.9 前後になる。口を開けただけでも 0.74 まで上がったので、ベロと数えるのは 0.8 以上で、かつ唇が開いているときだけにした。</span>
   </p>
 </section>
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">Cheeks measured on the face, not on the screen</span>
-    <span class="t-jp is-block">頬は画面の上ではなく、顔の上で測る</span>
+    <span class="t-jp is-block" lang="ja">頬は画面の上ではなく、顔の上で測る</span>
   </h2>
   <p class="beat-text">
     <span class="t-en">Early on, tilting your head made one cheek look puffed. The landmark coordinates are scaled separately to the width and height of the camera frame, so a head roll turned into a shear, not a rotation. On a 4:3 camera a three-degree tilt pushed one cheek to six times its noise floor. The fix was to stop measuring on the screen at all. The engine builds a coordinate frame on the face itself, from the eye corners, the base of the nose and the forehead, and watches four cheek points move forward and outward in that frame. Thresholds come from each player's own resting face. Because puffing a cheek needs sealed lips, cheeks are simply not read while the mouth is open.</span>
-    <span class="t-jp is-block">はじめは、首をかしげるだけで片方の頬がふくらんだことになっていた。顔の点の座標は、カメラ映像の幅と高さでそれぞれ別に正規化されている。そのため、首の傾きが回転ではなく「ゆがみ」として現れていた。4:3 のカメラでは、3 度傾けるだけで片頬の値がノイズの 6 倍に達した。そこで、画面の上で測るのをやめた。エンジンは目尻・鼻の下・額から顔そのものに座標を張り、頬の 4 点がその座標で前と外へどれだけ出たかを見る。しきい値は、遊ぶ人自身の真顔のゆれから決める。頬を空気でふくらませるには唇を閉じるしかないので、口が開いているあいだは頬を読まない。</span>
+    <span class="t-jp is-block" lang="ja">はじめは、首をかしげるだけで片方の頬がふくらんだことになっていた。顔の点の座標は、カメラ映像の幅と高さでそれぞれ別に正規化されている。そのため、首の傾きが回転ではなく「ゆがみ」として現れていた。4:3 のカメラでは、3 度傾けるだけで片頬の値がノイズの 6 倍に達した。そこで、画面の上で測るのをやめた。エンジンは目尻・鼻の下・額から顔そのものに座標を張り、頬の 4 点がその座標で前と外へどれだけ出たかを見る。しきい値は、遊ぶ人自身の真顔のゆれから決める。頬を空気でふくらませるには唇を閉じるしかないので、口が開いているあいだは頬を読まない。</span>
   </p>
 </section>
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">A test bench that runs the real game code</span>
-    <span class="t-jp is-block">本物の判定を、何度でも試せる台</span>
+    <span class="t-jp is-block" lang="ja">本物の判定を、何度でも試せる台</span>
   </h2>
   <p class="beat-text">
     <span class="t-en">Detection that passes in a unit test can still fail on a face, so there is a reaction test page that runs each game's own detection code. You pick a move and repeat it as often as you like. Each success chimes and is counted, and every bar shows the current value, the peak you reached and the line you have to cross. Tuning stopped being guesswork: when “oo” reacted but never succeeded, the peak showed it stalling just under the line. The fixes then went into the games unchanged, because the bench and the games share one engine.</span>
-    <span class="t-jp is-block">テストで通る判定でも、実際の顔では通らないことがある。そこで、各ゲームの判定コードをそのまま呼ぶ「反応テスト」のページを作った。動きを選んで、何度でも繰り返せる。成功すると音が鳴って数が増え、バーには「いま・最高・線」の 3 つの値が出る。調整は勘ではなくなった。「ウー」が反応するのに成功しないときは、最高値が線のわずかに下で止まっていることが見えた。テスト台とゲームは同じエンジンを使うので、そこで直したものはそのままゲームに届く。</span>
+    <span class="t-jp is-block" lang="ja">テストで通る判定でも、実際の顔では通らないことがある。そこで、各ゲームの判定コードをそのまま呼ぶ「反応テスト」のページを作った。動きを選んで、何度でも繰り返せる。成功すると音が鳴って数が増え、バーには「いま・最高・線」の 3 つの値が出る。調整は勘ではなくなった。「ウー」が反応するのに成功しないときは、最高値が線のわずかに下で止まっていることが見えた。テスト台とゲームは同じエンジンを使うので、そこで直したものはそのままゲームに届く。</span>
   </p>
 </section>
