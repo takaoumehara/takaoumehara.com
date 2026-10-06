@@ -16,6 +16,9 @@
 //          challenge / solution and src/case-studies/<slug>.html. No metrics,
 //          awards, events or collaborations that the records do not carry.
 //   image  optional site-relative still that overrides the record's thumb.
+//   fit    optional "contain" for a text-heavy screenshot thumb: the whole
+//          frame is shown inset on the card's plate instead of cropped to
+//          fill it ("cover", the default for interactive entries).
 //
 //   Tool (kind: "tool") — an open developer tool or Claude Code skill release:
 //   href   required. Where the card goes: the tool's docs site or repo
@@ -25,6 +28,7 @@
 //          tagged release date.
 //   title, lead   as above; facts only from the tool's README / docs.
 //   meta   optional { en, jp } label; defaults to "Open tool".
+//   fit    defaults to "contain" (docs screenshots); "cover" to crop.
 //   slug   optional evidence record (src/data/tools/<slug>.json) to borrow
 //          the thumbnail / card art from. image / art / artLabel override it.
 //
@@ -40,6 +44,7 @@ export const NEWS = [
   {
     slug: "intentfirst",
     date: "2026-10-05",
+    fit: "contain",
     title: {
       en: "Intent First: updated video introducing Context Grammar",
       jp: "Intent First — Context Grammar を紹介する映像を更新",

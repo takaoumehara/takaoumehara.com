@@ -86,8 +86,10 @@ const hue = (seed) => {
 
 // No image: a tag badge — the initials in mono inside a 1px frame, with the
 // project's deterministic hue kept only as a small tag mark in the corner.
+// assets.railThumb, when a record carries one, is a small pre-cut square for
+// this 64-84px slot, so the rail (on every page) never pulls a full-size still.
 const thumb = (item) => {
-  const image = item.assets?.thumb ?? item.assets?.hero;
+  const image = item.assets?.railThumb ?? item.assets?.thumb ?? item.assets?.hero;
   if (image) return `<img src="${esc(url(image))}" alt="" loading="lazy" width="64" height="64">`;
   const label = initials(item.shortTitle ?? item.title);
   return `<span class="side-initials" style="--initials-h: ${hue(item.slug ?? label)}" aria-hidden="true">${esc(label)}</span>`;

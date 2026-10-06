@@ -36,6 +36,9 @@ const articles = [...news]
       art: entry.art ?? assets.art ?? "card-art--motion",
       artLabel: entry.artLabel ?? assets.artLabel ?? item?.title ?? "",
       meta: entry.meta ?? META[kind] ?? META.experiment,
+      // Tool releases (and any entry with fit: "contain") carry text-heavy
+      // docs screenshots: show the whole frame on a plate, never crop it.
+      fit: entry.fit ?? (kind === "tool" ? "contain" : "cover"),
     };
     if (kind === "tool") {
       if (!entry.href) return null;
@@ -87,7 +90,7 @@ const links = [
             <a class="hn-link" href={a.href} target={a.external ? "_blank" : undefined} rel={a.external ? "noopener" : undefined} set:html={t(a.title)} />
           </h3>
           <p class="hn-lead" set:html={tb(a.lead)} />
-          <div class="hn-thumb">
+          <div class={`hn-thumb${a.image && a.fit === "contain" ? " hn-thumb--shot" : ""}`}>
             {a.image
               ? <img src={url(a.image)} alt="" loading="lazy" decoding="async" />
               : <div class={`card-art ${a.art}`}><span class="card-art-label">{a.artLabel}</span></div>}
