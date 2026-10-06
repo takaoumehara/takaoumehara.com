@@ -35,11 +35,14 @@
   --ff-jp: var(--pr-ff-jp);
   --serif: var(--pr-ff-display);
   --fw: 400;
-  /* Metadata, counts, statuses and sensor badges: an ultralight monospace,
-     the "system directory" voice under the display type. Geist Mono is
-     loaded by Site.astro; the rest of the stack is what a machine already has. */
-  --ff-mono: "Geist Mono", "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  --fw-mono: 300;
+  /* Metadata, counts, statuses and sensor badges. These used to be set in a
+     monospace; the standing decision is Outfit for ALL UI text, so the "mono"
+     token now IS the Outfit stack and every rule that reads it also sets
+     font-variant-numeric: tabular-nums so counts and dates still line up.
+     Real code (<code>, <pre>, <kbd>, <samp>) reads --ff-code instead. */
+  --ff-mono: var(--pr-ff);
+  --ff-code: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --fw-mono: 400;
   --tracking-mono: 0.02em;
 
   /* Fluid type. Every step holds its Porto Rocha value up to a 1280px viewport,

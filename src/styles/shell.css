@@ -145,7 +145,7 @@ html[data-lang-fixed] .side-lang { display: none; }
   content: ""; position: absolute; inset: -3px; border-radius: 50%;
   border: 1px solid var(--pr-live); opacity: 0;
 }
-html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); }
+html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-variant-numeric: tabular-nums; }
 
 /* Visually hidden, still read. .sr-only is the site-wide name (it used to
    live only in grid.css, so a page without a grid showed its hidden
@@ -268,7 +268,7 @@ html.lang-jp .side-status { font-family: var(--ff-mono), var(--pr-ff-jp); }
   width: 100%; height: 100%; display: grid; place-items: center;
   border: 1px solid var(--pr-line-2); border-radius: var(--r);
   background: var(--pr-canvas); color: var(--pr-ink);
-  font-family: var(--ff-mono); font-weight: 500;
+  font-family: var(--ff-mono); font-variant-numeric: tabular-nums; font-weight: 500;
   font-size: clamp(14px, 0.9vw, 17px); line-height: 1; letter-spacing: 0.08em;
 }
 .side-initials::before {
@@ -283,9 +283,9 @@ html[data-theme="dark"] .side-initials::before { background: hsl(var(--initials-
 
 .side-foot {
   margin: var(--sp-4) 0 0; padding: var(--sp-3) var(--sp-3) 0; border-top: 1px solid var(--pr-line);
-  font-family: var(--ff-mono); font-weight: var(--fw-mono); font-size: var(--text-xs); letter-spacing: var(--tracking-mono); color: var(--pr-ink-2);
+  font-family: var(--ff-mono); font-variant-numeric: tabular-nums; font-weight: var(--fw-mono); font-size: var(--text-xs); letter-spacing: var(--tracking-mono); color: var(--pr-ink-2);
 }
-html.lang-jp .side-foot { font-family: var(--ff-mono), var(--pr-ff-jp); }
+html.lang-jp .side-foot { font-family: var(--ff-mono), var(--pr-ff-jp); font-variant-numeric: tabular-nums; }
 .side-foot a { color: var(--pr-blue); text-decoration: underline; text-underline-offset: 3px; }
 
 /* The rail is its own view-transition group and never animates. */
@@ -313,9 +313,9 @@ html.lang-jp .side-foot { font-family: var(--ff-mono), var(--pr-ff-jp); }
   .side-top .side-wordmark { margin-right: auto; }
   .side-top-status {
     display: inline-flex; align-items: center; min-width: 0; white-space: nowrap;
-    font-family: var(--ff-mono); font-weight: 400; font-size: 11px; letter-spacing: var(--tracking-mono); color: var(--pr-ink);
+    font-family: var(--ff-mono); font-variant-numeric: tabular-nums; font-weight: 400; font-size: 11px; letter-spacing: var(--tracking-mono); color: var(--pr-ink);
   }
-  html.lang-jp .side-top-status { font-family: var(--ff-mono), var(--pr-ff-jp); }
+  html.lang-jp .side-top-status { font-family: var(--ff-mono), var(--pr-ff-jp); font-variant-numeric: tabular-nums; }
   .side-top-status .side-dot { margin-right: 6px; }
   .side-item { --side-thumb: 48px; min-height: 72px; }
   .side-initials { font-size: 13px; }
