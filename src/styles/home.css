@@ -71,13 +71,11 @@
 /* ── Caption + controls: over the stage's bottom edge on a wide pane, under it
    on a narrow one ─────────────────────────────────────────────────────────── */
 .hh-bar {
-  position: absolute;
-  left: var(--gap-grid);
-  right: var(--gap-grid);
-  bottom: var(--gap-grid);
+  position: relative;
+  margin-top: var(--gap-grid);
   z-index: 3;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: var(--gap-grid);
   pointer-events: none;
@@ -85,16 +83,17 @@
 .hh-captions {
   display: grid;          /* every caption in one cell: no height jump between slides */
   min-width: 0;
-  max-width: min(60%, 560px);
+  flex: 1;
+  max-width: none;
 }
 .hh-cap {
   grid-area: 1 / 1;
   align-self: end;
   justify-self: start;
   display: block;
-  padding: 12px 16px 14px;
+  padding: var(--gap-grid) 0;
   border-radius: var(--r);
-  background: var(--pr-canvas);
+  background: transparent;
   color: var(--pr-ink);
   text-decoration: none;
   opacity: 0;
@@ -111,12 +110,12 @@
   transition: opacity 520ms cubic-bezier(0.2, 0.7, 0.2, 1) 180ms, transform 620ms cubic-bezier(0.2, 0.7, 0.2, 1) 180ms, visibility 0s;
 }
 /* The input stamp (transitions.css sets the type) sits above the name. */
-.hh-cap-stamp { display: inline-flex; margin-bottom: 8px; }
+.hh-cap-stamp { display: inline-flex; margin-bottom: var(--gap-grid); }
 .hh-cap-name {
   display: block;
   font-family: var(--pr-ff-display);
   font-weight: var(--fw-display);
-  font-size: var(--text-display);
+  font-size: var(--text-lg);
   line-height: var(--leading-display);
   letter-spacing: var(--tracking-display);
 }

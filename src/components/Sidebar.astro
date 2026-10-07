@@ -130,7 +130,7 @@ const thumb = (item) => {
         if (sessionStorage.getItem("tu-lab") === "1") {
           var lab = JSON.parse(localStorage.getItem("tu-motion-lab") || "null");
           if (lab && lab.global) {
-            if (typeof lab.global.enabled === "boolean") gate.enabled = lab.global.enabled;
+            // Legacy choreography stays paused while sand entrances are active.
             if (lab.global.runOn) gate.runOn = lab.global.runOn;
           }
           if (lab && lab.rail && lab.rail.playOn) gate.railPlayOn = lab.rail.playOn;

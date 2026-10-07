@@ -4,6 +4,7 @@
 // first load and after every navigation. No framework, no dependencies.
 import { navigate } from "astro:transitions/client";
 import * as motion from "./motion.js";
+import { initSand, stopSand } from "./sand.js";
 
 const html = document.documentElement;
 const store = {
@@ -83,8 +84,36 @@ function openCategoryIndex() {
 // category highlights cards; one opened automatically to reveal the current
 // project's row does not.
 let pickedCategory = null;
+const panelAnimations = new WeakMap();
+function setPanel(btn, open) {
+  const panel = document.getElementById(btn.getAttribute("aria-controls"));
+  if (!panel || !btn.classList.contains("side-group-header")) return;
+  panel.inert = !open;
+  if (btn.getAttribute("aria-expanded") === String(open)) return;
+  const height = panel.getBoundingClientRect().height;
+  panelAnimations.get(panel)?.cancel();
+  panel.style.display = "grid";
+  panel.style.overflow = "hidden";
+  const end = open ? panel.scrollHeight : 0;
+  const finish = () => {
+    panel.style.display = open ? "grid" : "none";
+    panel.style.removeProperty("overflow");
+    panel.style.removeProperty("height");
+    panelAnimations.delete(panel);
+  };
+  if (stillMotion()) return finish();
+  const animation = panel.animate([{ height: `${height}px`, opacity: open ? 0.6 : 1 }, { height: `${end}px`, opacity: open ? 1 : 0.6 }], {
+    duration: open ? 220 : 180, easing: "cubic-bezier(.215,.61,.355,1)", fill: "both",
+  });
+  panelAnimations.set(panel, animation);
+  animation.onfinish = () => { finish(); animation.cancel(); };
+}
 function setCategory(index, { pick = true } = {}) {
-  catButtons().forEach((btn) => btn.setAttribute("aria-expanded", String(index !== null && btn.dataset.catIndex === String(index))));
+  catButtons().forEach((btn) => {
+    const open = index !== null && btn.dataset.catIndex === String(index);
+    setPanel(btn, open);
+    btn.setAttribute("aria-expanded", String(open));
+  });
   pickedCategory = pick ? index : null;
   highlightCategory(pickedCategory);
 }
@@ -598,6 +627,7 @@ function onPageLoad() {
   bindEcho();
   bindPreviews();
   bindReveal();
+  initSand();
   bindMagnetic();
   bindMagneticPointer();
   pulseStamp();
@@ -608,6 +638,7 @@ function onPageLoad() {
   });
 }
 document.addEventListener("astro:page-load", onPageLoad);
+document.addEventListener("astro:before-preparation", stopSand);
 motion.bindMotion();
 // The first paint: the current row into view (instantly, before the rail's
 // sequence measures it), then the rail's and the pane's loading sequence.

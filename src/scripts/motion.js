@@ -59,6 +59,7 @@ function merge(base, over) {
 }
 export function resolveConfig(partial) {
   const c = merge(clone(DEFAULTS), partial);
+  c.global.enabled = false; // Sand entrance replaces the outline / wipe / decrypt sequence.
   c.global.respectReducedMotion = true; // not negotiable
   c.version = DEFAULTS.version;
   return c;

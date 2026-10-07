@@ -129,3 +129,30 @@ PC 1440×900、phone 390×844、reduced-motion 有効。
 
 変更範囲の機能・レイアウトは上記の検証を通過。全体スイートは未合格。
 フォームの実配送と本番公開は未確認。設定手順は docs/contact-form.md。
+
+## Sand motion / captions — 2026-10-07
+
+Mode: single-pass (grader = implementer). Independent Canvas 2D entrance, not the
+CanvasUI React component. Implementation decisions/limits: docs/sand-motion.md.
+
+Fresh `npm run build`: complete, Server built in 5.42s.
+
+`npx playwright test tests/sand-motion.spec.mjs tests/home-about-navigation.spec.mjs tests/left-rail-categories.spec.mjs --workers=3 --reporter=line`:
+
+```
+14 skipped
+26 passed (12.4s)
+```
+
+Includes first viewport and newly scrolled card grains, one-shot cleanup, no legacy
+motion overlays, live reduced-motion cancellation, accordion height animation and
+reversal with inert closed links, stable captions below media, existing navigation,
+EN/JP/theme, mobile layout, form mocks and axe checks. Device skips are intentional.
+The grain test initially used a selector that excluded its target as soon as the
+entrance began, then an incorrect data-slug attribute; fixed to a stable card id.
+
+1440×900 and 390×844 Chromium captures and a short WebM of first paint, scrolling,
+accordion and Home saved to this task's outputs. No browser page errors observed.
+The user's in-app browser at port 4190 was refreshed for local review. Performance
+on actual low-end devices, Safari, and Firefox is unverified. Full-suite baseline
+failures above are historical evidence, not a fresh all-suite pass for this change.
