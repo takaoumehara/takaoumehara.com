@@ -21,7 +21,7 @@ const profile = lib.profile;
 const categories = orderedCategories();
 
 // Person pages consolidated into /about
-// Work archive is no longer in sidebar per IA redesign
+// All Work sits immediately above the category directory.
 
 const matches = (page) => page.match ?? [page.href];
 const isCurrent = (page) => matches(page).some((p) => samePage(p, current));
@@ -155,15 +155,7 @@ const thumb = (item) => {
   <div class="side-panel" id="side-panel">
     <div class="side-controls">
       <div class="side-controls-left">
-        <a class="side-all" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
-          <span class="t-en">Work</span><span class="t-jp" lang="ja">作品</span>
-        </a>
-        <button class="side-search-toggle" id="side-search-toggle" type="button" aria-label="Search" title="Search">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="8" cy="8" r="6"/>
-            <path d="M13 13l5 5"/>
-          </svg>
-        </button>
+
       </div>
       <div class="side-ctl">
         <button class="side-theme" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
@@ -200,26 +192,6 @@ const thumb = (item) => {
       </dl>
     </div>
 
-    {/* Site links (About · Work · Contact · Resume · LinkedIn): one compact
-        line under the wordmark on desktop; in the mobile menu (the same panel)
-        each link gets a 44px-tall hit area (shell.css .side-nav). The
-        wordmark above is the Home link. */}
-    <nav class="side-nav" aria-label="Site">
-      <a class="side-nav-link" href="/about" data-match="/about /about.html" aria-current={cur(samePage("/about", current))}>
-        <span class="t-en">About</span><span class="t-jp" lang="ja">について</span>
-      </a>
-      <a class="side-nav-link" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
-        <span class="t-en">Work</span><span class="t-jp" lang="ja">作品</span>
-      </a>
-      <a class="side-nav-link" href="/about#work-with-me">
-        <span class="t-en">Contact</span><span class="t-jp" lang="ja">相談</span>
-      </a>
-      <a class="side-nav-link" href="/takao-umehara-resume.pdf" target="_blank" rel="noopener">
-        <span class="t-en">Resume (PDF)</span><span class="t-jp" lang="ja">履歴書 (PDF)</span>
-      </a>
-      <a class="side-nav-link" href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-    </nav>
-
     {/* The whole card is the link to /about: the label is the one link (one
         tab stop, its name "About"), and its ::after stretches over the card
         (shell.css), so the positioning line underneath is still read as a
@@ -231,6 +203,15 @@ const thumb = (item) => {
       <p set:html={tb(profile.positioning[1])} />
     </section>
 
+    <div class="side-work-heading">
+      <a class="side-all" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}><span class="t-en">All Work</span><span class="t-jp" lang="ja">すべての作品</span></a>
+        <button class="side-search-toggle" id="side-search-toggle" type="button" aria-label="Search" title="Search">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="8" cy="8" r="6"/>
+            <path d="M13 13l5 5"/>
+          </svg>
+        </button>
+    </div>
     <nav class="side-work" aria-label="Work by category">
       {groups.map(({ category, items, shouldOpen }, idx) => {
         const slugs = items.map(({ item }) => item.slug).filter(Boolean);
@@ -271,12 +252,7 @@ const thumb = (item) => {
       })}
     </nav>
 
-    <p class="side-foot">
-      <span set:html={t(profile.location)} /> ·
-      <a href="/about#work-with-me"><span class="t-en">Contact</span><span class="t-jp" lang="ja">相談</span></a> ·
-      <a href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a> ·
-      <a href="/takao-umehara-resume.pdf" target="_blank" rel="noopener"><span class="t-en">Resume</span><span class="t-jp" lang="ja">履歴書</span></a>
-    </p>
+
   </div>
 </aside>
 {/* Phones (≤ 900px): the rail sits behind the Menu button, so the

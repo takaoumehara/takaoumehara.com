@@ -167,3 +167,14 @@ docs/ のファイル: 日本語（既存の `docs/portfolio-*.md` に合わせ�
   （`src/data/profile.json` と `src/lenses/default.json`）。
 - **Werewolf** はレイヤービューア（`/projects/werewolf-card-viewer.html?embed=1`）を埋め込み、**Fire TV** は実働プロトタイプ
   （`demo.html`）をティーザーとして埋め込む（`detail.teaser = {embed, title, aspect, aspectSm}`）。
+
+## 現在の Home / About 方針（2026-10-07、本人承認）
+
+この項目が旧 Home の About→Now 配置・Work 全画面方針に優先する。
+Home は作品 Hero→短い紹介→Updates。人物の詳細・写真・Now は About に集約。
+左パネルから重複した Work と Contact / Resume / LinkedIn を撤去し、
+All Work と検索をカテゴリ直上に配置。Work も通常の二列シェルを使用。
+紹介はブランド・デジタル・実空間を含む一文。About 上部に強みと作品の対応を示す。
+企業名はカテゴリなしの一覧＋関係の幅を示す説明。データ上の関係は維持。
+Resend 問い合わせフォームを About に配置。秘密値の設定・実配送確認は未完了。
+現在の設計は `docs/landing-design.md`、設定は `docs/contact-form.md`。

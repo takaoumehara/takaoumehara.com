@@ -1,178 +1,30 @@
 ---
-// The About block: portrait, name, positioning line, career summary, and the
-// Resume (PDF) / LinkedIn / Contact buttons. The home page opens with the
-// full block (variant "full"). /about already has the portrait and the name
-// in its own hero, so it renders variant "compact": only the career summary
-// and the buttons, placed directly under its intro text.
-interface Props { lib: any; eager?: boolean; variant?: "full" | "compact" }
-const { lib, eager = false, variant = "full" } = Astro.props;
-const profile = lib.profile;
-const full = variant === "full";
-const Tag = full ? "section" : "div";
+// A short introduction; the full biography and portrait belong to About.
+interface Props { lib: any }
+const { lib } = Astro.props;
 ---
-
-<Tag class={full ? "about-intro bento-cell" : "about-intro about-intro--compact"}>
-  <div class={full ? "about-intro-grid" : undefined}>
-    {full && <figure class="about-intro-portrait">
-      <picture>
-        <source srcset="/assets/about/TakaoUmehara_passport.webp" type="image/webp" />
-        <img src="/assets/about/TakaoUmehara_passport.png" alt={profile.name} width="512" height="512" loading={eager ? "eager" : "lazy"} fetchpriority={eager ? "high" : undefined} decoding="async" />
-      </picture>
-    </figure>}
-    <div class="about-intro-copy">
-      {full && <h2 class="about-intro-name">{profile.name}</h2>}
-      {full && <p class="about-intro-positioning">
-        <span class="t-en">Principal Product Designer & AI Product Builder</span>
-        <span class="t-jp" lang="ja">プリンシパル・プロダクトデザイナー／AI プロダクトビルダー</span>
-      </p>}
-      <p class="about-intro-career">
-        <span class="t-en">
-          20+ years of 0→1 product, brand, and experience work. Verizon Lead Product Designer, AI Enablement (2025–2026), Concentrix Catalyst Lead Product Designer / Design Manager (2021–2023), ProjectEd (2015–2018), Amplify Education (2009–2015), founder of creativity is everywhere (2006–present). Designs and builds AI products and agent systems with Claude Code and Codex; Intent First is his venture.
-        </span>
-        <span class="t-jp" lang="ja">
-          0→1 プロダクト、ブランド、エクスペリエンスデザインで 20 年以上。Verizon Lead Product Designer（AI Enablement、2025–2026）、Concentrix Catalyst Lead Product Designer / Design Manager（2021–2023）、ProjectEd（2015–2018）、Amplify Education（2009–2015）、creativity is everywhere 創業（2006–現在）。Claude Code や Codex で AI プロダクトとエージェント・システムを構築。Intent First がそのベンチャー。
-        </span>
-      </p>
-      <div class="about-intro-actions">
-        <a href="/takao-umehara-resume.pdf" class="about-intro-btn" download>
-          <span class="t-en">Resume (PDF)</span>
-          <span class="t-jp" lang="ja">履歴書 (PDF)</span>
-        </a>
-        <a href={profile.contact.linkedin} target="_blank" rel="noopener" class="about-intro-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/>
-          </svg>
-          <span class="t-en">LinkedIn</span>
-          <span class="t-jp" lang="ja">LinkedIn</span>
-        </a>
-        <a href="/about#work-with-me" class="about-intro-btn">
-          <span class="t-en">Contact</span>
-          <span class="t-jp" lang="ja">相談</span>
-        </a>
-      </div>
-    </div>
+<section class="about-intro bento-cell" aria-labelledby="home-intro-name">
+  <div class="about-intro-copy">
+    <h1 id="home-intro-name">{lib.profile.name}</h1>
+    <p class="intro-role"><span class="t-en">Principal Product Designer &amp; AI Product Builder</span><span class="t-jp" lang="ja">プリンシパル・プロダクトデザイナー／AI プロダクトビルダー</span></p>
+    <p class="intro-line"><span class="t-en">I turn ambiguous ideas into brands, products, and experiences — across digital and physical worlds.</span><span class="t-jp" lang="ja">まだ曖昧なアイデアから、ブランド、プロダクト、体験を形にします。画面の中から、人が集まる実空間まで。</span></p>
   </div>
-</Tag>
-
+  <nav class="about-intro-actions" aria-label="More about Takao">
+    <a href="/about" class="intro-about"><span class="t-en">About →</span><span class="t-jp" lang="ja">詳しく →</span></a>
+    <a href={lib.profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>
+  </nav>
+</section>
 <style>
-  .about-intro {
-    padding: var(--cell-pad);
-  }
-
-  .about-intro-grid {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: var(--sp-6);
-    align-items: start;
-  }
-
-  /* /about: no cell of its own — it sits inside the About hero's copy column,
-     under the intro text, separated by a hairline. */
-  .about-intro--compact {
-    padding: 0;
-    margin-top: var(--sp-6);
-    padding-top: var(--sp-5);
-    border-top: 1px solid var(--pr-line);
-  }
-  .about-intro--compact .about-intro-career { max-width: 62ch; }
-
-  .about-intro-portrait {
-    margin: 0;
-    padding: 0;
-    border-radius: var(--r);
-    overflow: hidden;
-    aspect-ratio: 1;
-  }
-
-  .about-intro-portrait img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .about-intro-name {
-    margin: 0 0 var(--sp-2) 0;
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    color: var(--pr-ink);
-  }
-
-  .about-intro-positioning {
-    margin: 0 0 var(--sp-4) 0;
-    font-size: 0.95rem;
-    font-weight: 600;
-    line-height: 1.4;
-    color: var(--pr-tint);
-  }
-
-  .about-intro-career {
-    margin: 0 0 var(--sp-5) 0;
-    font-size: var(--text-body);
-    line-height: var(--leading-body);
-    color: var(--pr-ink);
-  }
-
-  .about-intro-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--sp-3);
-    align-items: center;
-  }
-
-  .about-intro-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sp-2);
-    min-height: 44px;
-    padding: var(--sp-2) var(--sp-3);
-    background: var(--pr-card);
-    color: var(--pr-ink);
-    text-decoration: none;
-    border-radius: var(--r-pill);
-    font-size: var(--text-body);
-    font-weight: 500;
-    transition: background 140ms ease, color 140ms ease;
-  }
-
-  .about-intro-btn:hover {
-    background: var(--pr-card-2);
-    color: var(--pr-ink);
-  }
-
-  .about-intro-btn:focus-visible {
-    outline: 2px solid var(--pr-blue);
-    outline-offset: 2px;
-  }
-
-  .about-intro-btn svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  @media (max-width: 768px) {
-    .about-intro {
-      padding: var(--cell-pad);
-    }
-
-    .about-intro-grid {
-      grid-template-columns: 1fr;
-      gap: var(--sp-5);
-    }
-
-    /* /about: no cell of its own — it sits inside the About hero's copy column,
-     under the intro text, separated by a hairline. */
-  .about-intro--compact {
-    padding: 0;
-    margin-top: var(--sp-6);
-    padding-top: var(--sp-5);
-    border-top: 1px solid var(--pr-line);
-  }
-  .about-intro--compact .about-intro-career { max-width: 62ch; }
-
-  .about-intro-portrait {
-      max-width: 280px;
-    }
-  }
+.about-intro { padding: var(--cell-pad); display: flex; align-items: center; justify-content: space-between; gap: var(--sp-6); background: var(--pr-card); border-radius: var(--r); }
+.about-intro-copy { min-width: 0; }
+h1 { font-size: var(--text-display); line-height: var(--leading-display); margin: 0 0 var(--sp-1); }
+p { margin: 0; }
+.intro-role { font-size: var(--text-body); }
+.intro-line { margin-top: var(--sp-2); max-width: 65ch; color: var(--ink-dim); font-size: var(--text-body); line-height: 1.5; }
+.about-intro-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); flex-shrink: 0; }
+a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-dim); text-decoration: none; }
+a:hover { color: var(--pr-blue); }
+.intro-about { color: var(--ink); }
+a:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 4px; border-radius: var(--r); }
+@media(max-width: 1100px) { .about-intro { align-items: flex-start; flex-direction: column; gap: var(--sp-2); } }
 </style>

@@ -3,13 +3,13 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { read, exists } from "./_dist.mjs";
 
-test("Work is one canonical fullscreen page at /work, and /all/ redirects to it", () => {
+test("Work is one canonical page with the left rail at /work, and /all/ redirects to it", () => {
   assert.ok(exists("work.html"), "work.html must exist — it is the canonical archive");
   const html = read("work.html");
 
   // Fullscreen: body.work-fullscreen drops the rail and collapses the shell to
   // one column (src/styles/shell.css).
-  assert.match(html, /<body class="work-fullscreen">/, "the archive must render fullscreen, without the left rail");
+  assert.match(html, /<body class="work-with-rail">/, "the archive must preserve the left rail");
 
   const cards = [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]*"/g)];
   assert.ok(cards.length > 30, `the archive must render the work grid (got ${cards.length} cards)`);
@@ -89,7 +89,7 @@ test("Workshops page is centered around Break Bias with 4 use cases and studio r
 
 test("About page uses updated professional descriptor", () => {
   const html = read("about.html");
-  assert.match(html, /Creative Director · Interactive Media Designer · 0→1 Product &amp; Business Builder/);
+  assert.match(html, /Principal Product Designer &amp; AI Product Builder/);
 });
 
 test("Publications page uses refined hero title", () => {

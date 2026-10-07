@@ -91,7 +91,7 @@ test.describe("Left rail categories — desktop", () => {
   test("after a client-side navigation a row still toggles exactly once", async ({ page }, testInfo) => {
     desktopOnly(testInfo);
     await page.goto("/");
-    await page.locator('#side .side-nav a[href="/about"]').click();
+    await page.locator('#side .side-about a[href="/about"]').click();
     await page.waitForURL(/\/about$/);
     await page.waitForTimeout(300);
     const header = page.locator("#side .side-group-header").nth(3);
@@ -103,13 +103,12 @@ test.describe("Left rail categories — desktop", () => {
   test("EN/JP toggle switches the new home strings", async ({ page }, testInfo) => {
     desktopOnly(testInfo);
     await page.goto("/");
-    const title = page.locator(".home-now-title");
+    const title = page.locator(".intro-role");
     await expect(title.locator(".t-en")).toBeVisible();
     await page.locator("#lang-cycle").click();
     await expect(title.locator(".t-jp")).toBeVisible();
     await expect(title.locator(".t-en")).toBeHidden();
     await expect(page.locator(".home-updates-heading .t-jp")).toBeVisible();
-    await expect(page.locator(".now-list-latest .t-jp").first()).toBeVisible();
     await expect(page.locator(".about-intro-actions .t-jp").first()).toBeVisible();
     await page.locator("#lang-cycle").click();
     await expect(title.locator(".t-en")).toBeVisible();
@@ -176,9 +175,9 @@ test.describe("Left rail categories — phone", () => {
     await page.locator("#side-toggle").click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     // Polled: colours have short transitions.
-    const btn = page.locator(".about-intro-btn").first();
+    const btn = page.locator(".intro-about");
     await expect.poll(() => btn.evaluate((el) => getComputedStyle(el).color)).toBe("rgb(255, 255, 255)");
-    await expect.poll(() => btn.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(22, 22, 22)"); // --pr-card, dark
+    await expect.poll(() => page.locator(".about-intro").evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(22, 22, 22)"); // --pr-card, dark
     const chip = page.locator(".side-cat-chip").first();
     await expect.poll(() => chip.evaluate((el) => getComputedStyle(el).backgroundColor)).toBe("rgb(22, 22, 22)");
   });

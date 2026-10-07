@@ -58,7 +58,7 @@ test("extensionless page URLs are served, not 404", () => {
 
 test("vercel.json redirects are part of the served routes", () => {
   assert.match(serve("/all") ?? "", /work\.html$/);
-  assert.match(serve("/now") ?? "", /index\.html$/);
+  assert.match(serve("/now") ?? "", /about\.html$/);
 });
 
 test("every root-absolute internal link on every page resolves", () => {

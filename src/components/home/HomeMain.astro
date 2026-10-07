@@ -1,11 +1,6 @@
 ---
-// The home page's right pane, shared by src/pages/index.astro and the
-// Japanese edition src/pages/ja/index.astro (only lang and canonical differ):
-// the About block (portrait, career summary, Resume / LinkedIn / Contact),
-// Now, the big showcase slideshow (Porto Rocha size), then "Updates" over the
-// news bento. "Work" — the filter pills and the full grid — is /work.
+// Home: showcase → short introduction → Updates. Shared with /ja/.
 import AboutIntro from "./AboutIntro.astro";
-import HomeNow from "./HomeNow.astro";
 import HomeHero from "./HomeHero.astro";
 import HomeNews from "./HomeNews.astro";
 import { NEWS, SHOWCASE } from "../../data/news.mjs";
@@ -14,9 +9,8 @@ interface Props { lib: any }
 const { lib } = Astro.props;
 ---
 <main class="cat-page grid-home" data-category="home">
-  <AboutIntro lib={lib} eager={true} />
-  <HomeNow lib={lib} />
   <HomeHero lib={lib} order={SHOWCASE} />
+  <AboutIntro lib={lib} />
   <h2 class="home-updates-heading">
     <span class="t-en">Updates</span>
     <span class="t-jp" lang="ja">最近の更新</span>

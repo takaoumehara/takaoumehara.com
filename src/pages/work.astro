@@ -1,25 +1,10 @@
 ---
-// The Work page: fullscreen grid WITHOUT left rail, with filters and search.
-// This is the canonical work archive page at /work.
-//
-// The grid itself is a "free" bento, not the fixed 3-column PORTO ROCHA grid
-// (src/components/grid/WorkGrid.astro / src/styles/grid.css) every other
-// page uses: tiles vary in size (a "feature" 2x2, a "wide" 2x1, and the plain
-// 1x1) and pack densely (grid-auto-flow: dense), the way the pre-Astro
-// "Bento: a landing that re-cuts itself" branch (origin/claude/exciting-cerf-xgoyxb,
-// src/lib/bentoShapes.mjs's BENTO_PATTERNS/cutBento) varied tile width per
-// row — ported here as a per-tile size class instead of that row-summed
-// layout, because dense packing (not a fixed 12-column row) is what keeps the
-// grid whole while the filter bar hides and reveals tiles. gridEntries()
-// already orders Interactive first (src/lib/site.mjs's CATEGORY_ORDER), so
-// the deterministic size cycle below opens on an Interactive feature tile
-// without any extra sort.
+// All Work lives in the normal two-pane shell, with combined filters and search.
 import Site from "../layouts/Site.astro";
 import { tb, t, mediaFill, esc } from "../lib/html.mjs";
 import { cardName } from "../lib/labels.mjs";
 import { getLibrary, gridEntries, orderedCategories, destination } from "../lib/site.mjs";
 import ContactCta from "../components/ContactCta.astro";
-import profile from "../data/profile.json";
 
 const lib = getLibrary();
 let entries = gridEntries();
@@ -140,36 +125,18 @@ const FILTERS = [
   title="Work — Takao Umehara"
   description="Complete portfolio of interactive experiences, AI products, and design work by Takao Umehara"
   canonical="https://takaoumehara.com/work"
-  bodyClass="work-fullscreen"
+  bodyClass="work-with-rail"
 >
   <main class="work-page-full" data-category="work">
     <header class="work-header">
       <div class="work-header-top">
-        <!-- The same masthead as the landing's rail: the name (home link), then
-             one mono line of what is indexed and the title line. No "← Home". -->
-        <div class="work-brand">
-          <a class="side-wordmark work-wordmark" href="/">{profile.name}</a>
-          <p class="work-avail">
-            <span class="side-dot" aria-hidden="true"></span>
-            <span class="t-en">Open to full-time · Staff/Principal Product Designer & AI roles</span><span class="t-jp" lang="ja">フルタイム募集中・Staff/Principal プロダクトデザイナー／AI 職</span>
-          </p>
-          <nav class="work-nav" aria-label="Site">
-            <a href="/"><span class="t-en">Home</span><span class="t-jp" lang="ja">ホーム</span></a>
-            <a href="/about"><span class="t-en">About</span><span class="t-jp" lang="ja">について</span></a>
-            <a href="/about#work-with-me"><span class="t-en">Contact</span><span class="t-jp" lang="ja">相談</span></a>
-            <a href="/takao-umehara-resume.pdf" target="_blank" rel="noopener"><span class="t-en">Resume (PDF)</span><span class="t-jp" lang="ja">履歴書 (PDF)</span></a>
-            <a href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-          </nav>
-        </div>
         <div class="work-controls">
-          <button class="work-search-btn" id="work-search-toggle" type="button" aria-label="Search">
+          <button class="work-search-btn" id="work-search-toggle" type="button" aria-expanded="false" aria-controls="work-search-panel" aria-label="Search">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <circle cx="8" cy="8" r="6"/>
               <path d="M13 13l5 5"/>
             </svg>
           </button>
-          <button class="side-theme" data-theme-switch="true" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
-          <button class="side-lang" data-lang-cycle="true" type="button" aria-label="Switch to Japanese">JP</button>
         </div>
       </div>
       
@@ -185,7 +152,7 @@ const FILTERS = [
       </div>
       
       <div class="work-title-row">
-        <h1 class="work-title"><span class="t-en">Work</span><span class="t-jp" lang="ja">作品</span></h1>
+        <h1 class="work-title"><span class="t-en">All Work</span><span class="t-jp" lang="ja">すべての作品</span></h1>
         <p class="work-status">
           <span class="t-en">Index · {FILTERS[0].count} Works</span><span class="t-jp" lang="ja">索引・全 {FILTERS[0].count} 作品</span>
         </p>
@@ -243,7 +210,7 @@ const FILTERS = [
      View Transitions swap. This page then runs the full viewport. */
   .work-page-full {
     width: 100%;
-    padding: clamp(24px, 3vw, 56px) var(--gutter);
+    padding: var(--pane-pad) var(--pane-pad) var(--cell-pad) 0;
   }
 
   .work-header {
@@ -252,7 +219,7 @@ const FILTERS = [
 
   .work-header-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     margin-bottom: 32px;
   }
@@ -376,7 +343,7 @@ const FILTERS = [
      the remaining tiles re-pack up into it. */
   .work-bento {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     grid-auto-rows: 220px;
     gap: var(--gap-grid);
     grid-auto-flow: dense;
@@ -507,69 +474,36 @@ const FILTERS = [
 </style>
 
 <script>
-  // Filter functionality
-  (() => {
-    const btns = document.querySelectorAll(".work-page-full .filter-btn");
-    const cards = document.querySelectorAll(".work-page-full .cat-card[data-category]");
-    if (!btns.length || !cards.length) return;
-    
-    // Each tile carries its one primary filter (data-filter, picked at build
-    // time — see FILTER_PRECEDENCE in the frontmatter).
-    const filterIds = new Set([...btns].map((b) => b.dataset.filter));
-    function applyFilter(filter) {
-      btns.forEach((b) => b.classList.toggle("is-active", b.dataset.filter === filter));
-      cards.forEach((card) => {
-        const show = filter === "all" || card.dataset.filter === filter;
-        card.classList.toggle("is-hidden", !show);
-      });
-      try {
-        if (filter !== "all") history.replaceState(null, "", "#" + filter);
-        else if (window.location.hash) history.replaceState(null, "", window.location.pathname);
-      } catch (e) {}
-    }
-
-    btns.forEach((b) => b.addEventListener("click", () => applyFilter(b.dataset.filter)));
-
-    // Either form opens a discipline: #design, or ?filter=design, which is what
-    // vercel.json sends the old category addresses to.
-    const params = new URLSearchParams(window.location.search);
-    const requested = (params.get("filter") || window.location.hash.replace("#", "")).toLowerCase();
-    if (requested && filterIds.has(requested)) {
-      applyFilter(requested);
-    }
-  })();
-  
-  // Search toggle
-  (() => {
-    const toggle = document.getElementById("work-search-toggle");
-    const panel = document.getElementById("work-search-panel");
-    const input = document.getElementById("work-search-input");
-    
-    if (!toggle || !panel || !input) return;
-    
-    toggle.addEventListener("click", () => {
-      const isHidden = panel.hasAttribute("hidden");
-      if (isHidden) {
-        panel.removeAttribute("hidden");
-        input.focus();
-      } else {
-        panel.setAttribute("hidden", "");
-        input.value = "";
-        // Clear search filter
-        document.querySelectorAll(".work-page-full .cat-card").forEach(c => {
-          c.style.display = "";
-        });
-      }
-    });
-    
-    // Simple search
-    input.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase();
-      const cards = document.querySelectorAll(".work-page-full .cat-card");
-      cards.forEach((card) => {
-        const text = card.textContent.toLowerCase();
-        card.style.display = text.includes(query) ? "" : "none";
-      });
-    });
-  })();
+function initWork() {
+  const root = document.querySelector<HTMLElement>('.work-page-full');
+  if (!root || root.dataset.bound) return;
+  root.dataset.bound = 'true';
+  const btns = root.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = root.querySelectorAll<HTMLElement>('.cat-card');
+  const toggle = root.querySelector<HTMLButtonElement>('#work-search-toggle');
+  const panel = root.querySelector<HTMLElement>('#work-search-panel');
+  const input = root.querySelector<HTMLInputElement>('#work-search-input');
+  const ids = new Set([...btns].map(b => b.dataset.filter));
+  const requested = new URLSearchParams(location.search).get('filter') || location.hash.slice(1);
+  let filter = ids.has(requested) ? requested : 'all';
+  function update() {
+    const query = input?.value.trim().toLowerCase() ?? '';
+    btns.forEach(b => { const active = b.dataset.filter === filter; b.classList.toggle('is-active', active); b.setAttribute('aria-pressed', String(active)); });
+    cards.forEach(card => card.classList.toggle('is-hidden', !((filter === 'all' || card.dataset.filter === filter) && (card.textContent ?? '').toLowerCase().includes(query))));
+  }
+  btns.forEach(b => b.addEventListener('click', () => {
+    filter = b.dataset.filter!;
+    const url = new URL(location.href); url.searchParams.delete('filter'); url.hash = filter === 'all' ? '' : filter;
+    history.replaceState(null, '', url); update();
+  }));
+  toggle?.addEventListener('click', () => {
+    if (!panel || !input) return;
+    panel.hidden = !panel.hidden; toggle.setAttribute('aria-expanded', String(!panel.hidden));
+    if (panel.hidden) { input.value = ''; update(); } else input.focus();
+  });
+  input?.addEventListener('input', update);
+  update();
+}
+initWork();
+document.addEventListener('astro:page-load', initWork);
 </script>

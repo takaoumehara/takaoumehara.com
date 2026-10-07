@@ -10,10 +10,10 @@ import { test, expect } from "@playwright/test";
 const scrollY = (page) => page.evaluate(() => window.scrollY);
 
 test.describe("Contact keeps the page scrollable", () => {
-  test("desktop: rail Contact → /about#work-with-me, then wheel-up over the rail scrolls the page", async ({ page }, testInfo) => {
+  test("desktop: Work Contact → /about#work-with-me, then wheel-up over the rail scrolls the page", async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== "desktop", "desktop layout");
-    await page.goto("/");
-    await page.locator('#side .side-nav a[href="/about#work-with-me"]').click();
+    await page.goto("/work");
+    await page.locator('.contact-cta a[href="/about#work-with-me"]').click();
     await page.waitForURL(/\/about#work-with-me$/);
     await expect(page.locator("#work-with-me")).toBeInViewport();
     await page.waitForTimeout(400); // let the hash jump settle
@@ -28,14 +28,14 @@ test.describe("Contact keeps the page scrollable", () => {
     await expect.poll(() => scrollY(page), { timeout: 3000 }).toBeLessThan(before);
   });
 
-  test("phone: Menu → Contact closes the menu and the page still scrolls", async ({ page }, testInfo) => {
+  test("phone: Menu → About closes the menu and the page still scrolls", async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== "phone", "phone layout");
     await page.goto("/");
     const toggle = page.locator("#side-toggle");
     await toggle.click();
     await expect(page.locator("#side")).toHaveClass(/is-open/);
-    await page.locator('#side .side-nav a[href="/about#work-with-me"]').click();
-    await page.waitForURL(/\/about#work-with-me$/);
+    await page.locator('#side .side-about a[href="/about"]').click();
+    await page.waitForURL(/\/about$/);
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
     await expect(page.locator("#side")).not.toHaveClass(/is-open/);
     await page.waitForTimeout(400);

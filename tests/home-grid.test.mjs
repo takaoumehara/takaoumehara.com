@@ -28,16 +28,19 @@ const cards = (html) => [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]
 // carries the positioning line.
 const mainOf = (html) => html.match(/<main\b[\s\S]*?<\/main>/)?.[0] ?? "";
 
-test("the home page opens with the About block, then Now, the showcase and Updates — no old hero card", () => {
+test("the home page opens with the showcase, short intro and Updates", () => {
   for (const file of ["index.html", "ja/index.html"]) {
     const main = mainOf(read(file));
     assert.ok(main, `${file} needs a <main>`);
-    const order = ["about-intro", "home-now", "home-hero", "home-updates-heading", "home-news"].map((cls) => main.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
+    const order = ["home-hero", "about-intro", "home-updates-heading", "home-news"].map((cls) => main.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
     assert.ok(order.every((i) => i >= 0), `${file}: About, Now, showcase, Updates heading and news must all render`);
     assert.deepEqual([...order].sort((a, b) => a - b), order, `${file}: About → Now → showcase → Updates → news`);
     assert.match(main, /Principal Product Designer &(amp;)? AI Product Builder/);
     assert.ok(!main.includes("hn-info"), `${file}: the old basic-info card must be gone from the news bento`);
-    assert.ok(!main.includes("I turn ambiguous ideas"), `${file}: the old hero headline must not be in the right pane`);
+    assert.ok(main.includes("I turn ambiguous ideas into brands, products, and experiences"));
+    assert.ok(!main.includes("TakaoUmehara_passport"));
+    assert.ok(!main.includes("home-now"));
+    assert.ok(!main.includes("takao-umehara-resume.pdf"));
     assert.ok(!main.includes("Creative Director · Interactive Media Designer"), `${file}: the old tagline card must not be in the right pane`);
   }
 });

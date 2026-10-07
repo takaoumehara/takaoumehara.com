@@ -6,7 +6,7 @@ import { ROOT } from "../src/lib/load.mjs";
 import { read, exists } from "./_dist.mjs";
 import { formatNowUpdated } from "../src/data/about.mjs";
 
-// One Now list, three places: the home Now section (/#now — where /now and
+// One Now list, three places: the About Now section (/about#now — where /now and
 // /now/ redirect, vercel.json), About's #now cell, and the legacy
 // now/index.html build target. All three render src/components/now/
 // NowList.astro from src/data/now.json summary[], with the same "Updated
@@ -14,46 +14,46 @@ import { formatNowUpdated } from "../src/data/about.mjs";
 const now = JSON.parse(readFileSync(join(ROOT, "src", "data", "now.json"), "utf8"));
 const firstEn = (html) => html.match(/<li class="now-list-item"[^>]*>\s*<span class="t-en"[^>]*>([\s\S]*?)<\/span>/)?.[1];
 
-test("/now redirects to the home Now section; now.html and now/index.html point there too", () => {
+test("/now redirects to the About Now section; now.html and now/index.html point there too", () => {
   const vercel = JSON.parse(readFileSync(join(ROOT, "vercel.json"), "utf8"));
   for (const source of ["/now", "/now/"]) {
     const r = vercel.redirects.find((x) => x.source === source);
-    assert.equal(r?.destination, "/#now", `${source} must redirect to /#now`);
+    assert.equal(r?.destination, "/about#now", `${source} must redirect to /about#now`);
   }
-  assert.match(read("now.html"), /http-equiv="refresh" content="0; url=\/#now"/, "now.html must redirect to /#now");
+  assert.match(read("now.html"), /http-equiv="refresh" content="0; url=\/about#now"/, "now.html must redirect to /about#now");
   assert.ok(exists("now/index.html"), "now/index.html must exist (legacy build target)");
-  assert.match(read("now/index.html"), /href="\/#now"/, "now/index.html must link to /#now");
-  assert.match(read("index.html"), /<section class="home-now[^"]*" id="now"/, "the home page needs the #now section");
+  assert.match(read("now/index.html"), /href="\/about#now"/, "now/index.html must link to /about#now");
+  assert.match(read("about.html"), /<section id="now"/, "About needs the #now section");
 });
 
 test("home Now, About #now and /now render the same now.json summary bullets and Updated label", () => {
   const home = read("index.html");
   const about = read("about.html");
   const legacy = read("now/index.html");
-  for (const [name, html] of [["home", home], ["about", about], ["now", legacy]]) {
+  for (const [name, html] of [["about", about], ["now", legacy]]) {
     assert.equal(firstEn(html), now.summary[0].en, `${name}: the first Now bullet must be now.json summary[0]`);
     assert.ok(html.includes(`Updated ${formatNowUpdated(now.updatedAt).en}`), `${name}: the Updated label must come from now.json updatedAt`);
   }
   const count = (html) => (html.match(/<li class="now-list-item"/g) ?? []).length;
-  assert.equal(count(home), Math.min(4, now.summary.length), "home shows the first 4 bullets");
+  assert.equal(count(home), 0, "Now belongs only to About");
   assert.equal(count(about), now.summary.length, "About shows every bullet");
   // The old items[] cards (Moime.app, MyBrainSpec …) are not on the home page.
   assert.ok(!/MyBrainSpec/.test(home.match(/<section class="home-now[\s\S]*?<\/section>/)?.[0] ?? ""), "home Now must not use now.json items[]");
 });
 
 test("a Now bullet shows a 'Latest' date only from a real news.mjs entry", () => {
-  const home = read("index.html");
+  const home = read("about.html");
   const latest = [...home.matchAll(/class="now-list-latest"[^>]*>[\s\S]*?<time datetime="([^"]+)"/g)].map((m) => m[1]);
-  const expected = now.summary.slice(0, 4).filter((b) => b.latest).length;
+  const expected = now.summary.filter((b) => b.latest).length;
   assert.equal(latest.length, expected, "one Latest link per bullet with a `latest` news slug");
   for (const date of latest) assert.match(date, /^\d{4}-\d{2}(-\d{2})?$/);
 });
 
 // The rail's old page list (which had its own "Now" link) is gone, and the
-// live route /now (and /now/) permanently redirects to /#now (vercel.json). now/index.html is kept only as a legacy build target for the
+// live route /now (and /now/) permanently redirects to /about#now (vercel.json). now/index.html is kept only as a legacy build target for the
 // bare URL; it renders the same shared sidebar as everything else, which
 // rightly does not claim any entry as "this page" for it.
-test("/now/index.html (a legacy page superseded by the /#now redirect) does not falsely mark any sidebar entry as current", () => {
+test("/now/index.html (a legacy page superseded by the /about#now redirect) does not falsely mark any sidebar entry as current", () => {
   const html = read("now/index.html");
   const side = html.match(/<aside[^>]*class="side"[\s\S]*?<\/aside>/i)?.[0];
   assert.ok(side, "missing sidebar");

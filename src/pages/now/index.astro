@@ -1,11 +1,11 @@
 ---
-// /now and /now/ permanently redirect to the home page's Now section, /#now
+// /now and /now/ permanently redirect to the home page's Now section, /about#now
 // (vercel.json). This page is kept only as the build target for the bare URL
 // on hosts without those redirects (astro preview, a static mirror), and it
 // renders the same shared NowList as the home Now section and About's #now
 // cell, from the same src/data/now.json summary[] — so it cannot contradict
-// them — plus a link to /#now. public/now.html (the older alias) points at
-// /#now too.
+// them — plus a link to /about#now. public/now.html (the older alias) points at
+// /about#now too.
 import Site from "../../layouts/Site.astro";
 import NowList from "../../components/now/NowList.astro";
 import { getLibrary } from "../../lib/site.mjs";
@@ -17,7 +17,7 @@ const updated = formatNowUpdated(lib.now.updatedAt);
 <Site
   title="Now — Takao Umehara"
   description="What Takao Umehara has been working on lately."
-  canonical="https://takaoumehara.com/#now"
+  canonical="https://takaoumehara.com/about#now"
   current="/now/"
   noindex
 >
@@ -32,7 +32,7 @@ const updated = formatNowUpdated(lib.now.updatedAt);
     </p>
     <NowList lib={lib} />
     <p class="now-legacy-home">
-      <a href="/#now"><span class="t-en">This list lives on the home page →</span><span class="t-jp" lang="ja">このリストはホームにあります →</span></a>
+      <a href="/about#now"><span class="t-en">This list lives on About →</span><span class="t-jp" lang="ja">このリストは About にあります →</span></a>
     </p>
   </main>
 </Site>
