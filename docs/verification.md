@@ -156,3 +156,34 @@ accordion and Home saved to this task's outputs. No browser page errors observed
 The user's in-app browser at port 4190 was refreshed for local review. Performance
 on actual low-end devices, Safari, and Firefox is unverified. Full-suite baseline
 failures above are historical evidence, not a fresh all-suite pass for this change.
+
+## Visible sand / shared motion system revision
+
+Fresh build: Server built in 6.44s, Complete.
+Fresh focused run on the final shared rules:
+
+```
+npx playwright test tests/sand-motion.spec.mjs tests/home-about-navigation.spec.mjs tests/left-rail-categories.spec.mjs --workers=3 --reporter=line
+15 skipped
+51 passed (36.5s)
+```
+
+New checks cover substantial grain counts and the common 2200ms token on Home,
+About, Interactive/Brand categories, AI, Typespace detail, Creative lens, and
+legacy Intent First / Workshop / Publications / Break Bias pages, on desktop
+and phone. Keyboard focus immediately removes its overlay. A 2000px viewport
+regression verifies surfaces beyond six concurrent canvases queue and eventually
+play. Existing navigation, accordion, form mocks, language/theme, axe and mobile
+checks remain passing. Recorded updated Work/scroll/Interactive/About preview:
+zero page errors, no residual canvases after settlement.
+
+Failure lessons: initial structural fallback assumed every page had a nested
+main; the shared shell is a div and legacy/lens sections can sit directly beneath
+it. Added common #main-child rules rather than route-specific exceptions. Also,
+overlapping Playwright runs reused a dev server owned by another run, which exited
+and caused connection-reset/refused failures. Re-ran sequentially with a single
+owning runner; all focused checks above passed. Do not overlap test runners using
+an automatically managed shared port. failforward CLI is unavailable on PATH;
+these lessons are recorded here instead.
+
+Low-end hardware, Safari/Firefox and live Resend delivery remain unverified.

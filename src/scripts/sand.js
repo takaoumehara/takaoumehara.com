@@ -2,16 +2,38 @@
 // the temporary canvas samples local images and visible text, never the DOM
 // into an experimental html-in-canvas renderer. No scroll interception.
 import "../styles/sand.css";
+import TOKENS from "../data/sand-motion.json";
 const reduced = matchMedia("(prefers-reduced-motion: reduce)");
 let observer;
 const playing = new Map();
+const pending = new Set();
+function finish(canvas) {
+  canvas.parentElement?.classList.remove("sand-active");
+  canvas.remove();
+  playing.delete(canvas);
+}
+function pump() {
+  for (const el of pending) {
+    if (playing.size >= TOKENS.maxConcurrent) break;
+    pending.delete(el);
+    if (reveal(el)) observer?.unobserve(el);
+  }
+}
 
 export function stopSand() {
   observer?.disconnect();
   observer = null;
-  for (const [canvas, frame] of playing) { cancelAnimationFrame(frame); canvas.remove(); }
+  pending.clear();
+  for (const [canvas, frame] of playing) { cancelAnimationFrame(frame); finish(canvas); }
   playing.clear();
 }
+// A focused or pressed control must become readable immediately.
+for (const event of ["pointerdown", "focusin"]) document.addEventListener(event, e => {
+  for (const [canvas, frame] of playing) {
+    if (canvas.parentElement?.contains(e.target)) { cancelAnimationFrame(frame); finish(canvas); }
+  }
+  pump();
+}, { passive: true });
 reduced.addEventListener("change", () => { if (reduced.matches) stopSand(); else initSand(); });
 document.addEventListener("visibilitychange", () => { if (document.hidden) stopSand(); else initSand(); });
 let resizeTimer;
@@ -64,7 +86,7 @@ function paintSource(el, source, rect) {
 }
 
 function reveal(el) {
-  if (reduced.matches || !el.isConnected || playing.size >= 6) return;
+  if (reduced.matches || !el.isConnected || document.hidden) return false;
   const rect = el.getBoundingClientRect();
   if (rect.width < 2 || rect.height < 2) return;
   // Sample in CSS pixels, with a strict cap independent of DPR and card size.
@@ -86,7 +108,7 @@ function reveal(el) {
   const background = style.backgroundColor === "rgba(0, 0, 0, 0)" ? getComputedStyle(document.documentElement).getPropertyValue("--pr-canvas").trim() : style.backgroundColor;
   const ink = getComputedStyle(document.documentElement).getPropertyValue("--pr-ink-2").trim();
   const grains = [];
-  const step = Math.max(3, Math.sqrt(source.width * source.height / 4200));
+  const step = Math.max(2, Math.sqrt(source.width * source.height / TOKENS.particleBudget));
   for (let y = 1; y < source.height; y += step) {
     for (let x = 1; x < source.width; x += step) {
       const pos = (Math.floor(y) * source.width + Math.floor(x)) * 4;
@@ -97,49 +119,67 @@ function reveal(el) {
       const chroma = Math.max(pixels[pos], pixels[pos+1], pixels[pos+2]) - Math.min(pixels[pos], pixels[pos+1], pixels[pos+2]);
       // Flat black/white regions produce soot or static; keep their edges and
       // the actual image colours, plus a few quieter grains over empty cells.
-      if (hasContent && contrast < 12 && chroma < 24 && (luminance < 40 || luminance > 225)) continue;
-      if (!hasContent && Math.random() > 0.025) continue;
-      grains.push({ x, y, dx: (Math.random() - 0.5) * 100, dy: 24 + Math.random() * 65,
-        delay: Math.random() * 0.2, size: 0.7 + Math.random() * 1.2,
+      if (hasContent && contrast < 12 && chroma < 24 && (luminance < 40 || luminance > 225) && Math.random() > 0.25) continue;
+      if (!hasContent && Math.random() > TOKENS.ambientDensity) continue;
+      grains.push({ x, y, dx: (Math.random() - 0.5) * TOKENS.horizontalSpreadPx, dy: 40 + Math.random() * TOKENS.verticalSpreadPx,
+        delay: Math.random() * 0.2, size: TOKENS.minGrainPx + Math.random() * TOKENS.grainVariationPx,
         color: hasContent ? `rgb(${pixels[pos]},${pixels[pos+1]},${pixels[pos+2]})` : ink,
-        alpha: hasContent ? 0.65 : 0.14 });
+        alpha: hasContent ? 1 : 0.7 });
     }
   }
+  canvas.dataset.grainCount = String(grains.length);
+  el.style.setProperty("--sand-duration", `${TOKENS.durationMs}ms`);
+  el.style.setProperty("--sand-reveal-delay", `${TOKENS.durationMs * TOKENS.contentRevealStart}ms`);
+  el.style.setProperty("--sand-reveal-duration", `${TOKENS.durationMs * (TOKENS.contentRevealEnd - TOKENS.contentRevealStart)}ms`);
+  if (style.position === "static") el.classList.add("sand-positioned");
+  el.classList.add("sand-active");
   el.append(canvas);
   el.dataset.sandPlayed = "true";
   const start = performance.now();
   function frame(now) {
-    if (!el.isConnected || reduced.matches || now - start > 1050) { canvas.remove(); playing.delete(canvas); return; }
-    const t = Math.min(1, (now - start) / 950);
+    if (!el.isConnected || reduced.matches || now - start > TOKENS.durationMs) { finish(canvas); pump(); return; }
+    const t = Math.min(1, (now - start) / TOKENS.durationMs);
     ctx.clearRect(0, 0, rect.width, source.height);
-    ctx.globalAlpha = Math.max(0, 1 - Math.max(0, t - 0.25) / 0.4);
+    ctx.globalAlpha = Math.max(0, 1 - Math.max(0, t - TOKENS.contentRevealStart) / (TOKENS.contentRevealEnd - TOKENS.contentRevealStart));
     ctx.fillStyle = background || "transparent";
     ctx.fillRect(0, 0, rect.width, source.height);
     for (const g of grains) {
       const p = Math.max(0, Math.min(1, (t - g.delay) / (1 - g.delay)));
-      const remaining = (1 - p) ** 3;
-      ctx.globalAlpha = g.alpha * Math.min(1, t * 8) * Math.min(1, (1 - t) * 5);
+      const remaining = (1 - p) ** 2;
+      ctx.globalAlpha = g.alpha * Math.min(1, t * 12) * Math.min(1, (1 - t) * 6);
       ctx.fillStyle = g.color;
-      ctx.fillRect(g.x + g.dx * remaining + Math.sin(p * Math.PI) * 7, g.y + g.dy * remaining, g.size, g.size);
+      ctx.fillRect(g.x + g.dx * remaining + Math.sin(p * Math.PI) * 24, g.y + g.dy * remaining, g.size, g.size);
     }
     ctx.globalAlpha = 1;
     playing.set(canvas, requestAnimationFrame(frame));
   }
   playing.set(canvas, requestAnimationFrame(frame));
+  return true;
 }
 
 export function initSand() {
   stopSand();
   if (reduced.matches || !("IntersectionObserver" in window)) return;
-  const targets = [...document.querySelectorAll("#main .bento-cell, #main .hh-stage, #main .project-beats > .beat")]
-    .filter(el => !el.parentElement.closest(".bento-cell") && !el.dataset.sandPlayed);
+  // Shared surface taxonomy plus structural fallback: pages need no bespoke
+  // motion code. Explicit surfaces win over nested children and whole sections.
+  const explicit = [...document.querySelectorAll(`#main :is(${TOKENS.surfaceSelector})`)];
+  const fallback = [...document.querySelectorAll(`#main :is(${TOKENS.fallbackSelector})`)]
+    .filter(el => !el.querySelector(TOKENS.surfaceSelector));
+  const candidates = new Set([...explicit, ...fallback]);
+  const targets = [...candidates].filter(el => {
+    if (el.dataset.sandPlayed || el.closest(TOKENS.excludeSelector)) return false;
+    for (let parent = el.parentElement; parent; parent = parent.parentElement) {
+      if (candidates.has(parent)) return false;
+    }
+    el.dataset.sandSurface = "";
+    return true;
+  });
   observer = new IntersectionObserver(entries => {
     for (const entry of entries) {
-      if (!entry.isIntersecting) continue;
-      // Hidden filters remain observed until they actually become visible.
-      observer?.unobserve(entry.target);
-      reveal(entry.target);
+      if (entry.isIntersecting) pending.add(entry.target);
+      else pending.delete(entry.target);
     }
+    pump();
   }, { threshold: 0.08 });
   for (const el of targets) observer.observe(el);
 }

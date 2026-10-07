@@ -1,6 +1,6 @@
 # Sand entrances — 2026-10-07
 
-The approved direction is fine sand gathering into a bento's images and text.
+The approved direction is visible sand gathering into a bento's images and text.
 The previous frame-drawing, image wipes, and text decryption are paused, including
 saved Motion Lab overrides. Their source stays available for a future decision.
 
@@ -12,9 +12,9 @@ Videos and CSS artwork keep their real rendering underneath; those are not
 captured into particle textures. Images still downloading enter with text grains.
 
 - Initial viewport, client-side page entry, and newly visible bento cells: one
-  entrance per element, roughly 950ms plus one frame for removal.
+  entrance per element, 2200ms plus one frame for removal.
 - No reverse dissolve, repeated scroll scrubbing, or intercepted scrolling.
-- Six simultaneous canvases maximum; further cells show normally under load.
+- Six simultaneous canvases maximum; further visible cells queue and play as slots free.
 - About long cells sample only their first 1200 CSS pixels; DPR capped at 1.5.
 - Flat black/white image areas are excluded to avoid noisy fields of soot/static.
 - Canvas overlays accept no pointer events and are hidden from accessibility APIs.
@@ -38,3 +38,26 @@ regression checks image fit and bottom alignment, besides caption placement.
 Aceternity's hover-expanding sidebar was considered and not adopted: this site
 uses long category titles and nested project links, which benefit from a stable
 rail width. Its React/Motion dependencies are unnecessary for this refinement.
+
+## Visibility and shared system revision
+
+The initial 950ms overlay was too subtle in actual use. The current default is
+2200ms, with 1.5–3px grains, a 230px horizontal / 155px vertical scatter range,
+full opacity for source grains, and a distinct particle-first phase. Real child
+content begins appearing at 46% and reaches full opacity at 88% of the sequence.
+All numerical controls and surface discovery rules live in
+`src/data/sand-motion.json`; edit this file to change the whole site's treatment.
+
+The engine is loaded once through the shared Site script. Existing bento, archive,
+category, AI, proof and other lens cards are discovered by their shared classes.
+Structural section/header/figure fallbacks also cover legacy FragmentPage pages.
+Nested surfaces are deduplicated; there is no per-route animation code. A new
+page using these components or normal section structure inherits the treatment.
+A special surface can opt out with `data-sand="off"`. Admin, studio tools, forms
+as standalone surfaces, and the sidebar remain excluded; normal form containers
+reveal with the rest of their bento, and focusing a control immediately settles it.
+
+Six simultaneous canvases are allowed. Additional visible surfaces queue instead
+of silently losing their entrance; leaving the viewport removes a queued surface.
+Focus or pointer input settles its own surface immediately. Existing one-shot,
+cleanup, and live reduced-motion rules remain in force. All current defaults are defined by the shared JSON token file.

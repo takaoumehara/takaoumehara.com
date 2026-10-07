@@ -5,12 +5,12 @@ test('sand appears on entry, settles, and returns for newly scrolled cards only'
   await page.goto('/work');
   await expect(page.locator('.sand-layer').first()).toBeVisible();
   await expect(page.locator('.mo-layer')).toHaveCount(0);
-  await expect(page.locator('.sand-layer')).toHaveCount(0, { timeout: 3000 });
+  await expect(page.locator('.sand-layer')).toHaveCount(0, { timeout: 6500 });
   const slug = await page.locator('.tile:not([data-sand-played])').nth(3).getAttribute('id');
   const next = page.locator(`.tile[id="${slug}"]`);
   await next.scrollIntoViewIfNeeded();
   await expect(next.locator('.sand-layer')).toBeVisible();
-  await expect(next.locator('.sand-layer')).toHaveCount(0, { timeout: 3000 });
+  await expect(next.locator('.sand-layer')).toHaveCount(0, { timeout: 6500 });
   await page.locator('.tile').first().scrollIntoViewIfNeeded();
   await expect(page.locator('.tile').first().locator('.sand-layer')).toHaveCount(0);
 });
@@ -63,4 +63,45 @@ test('project captions sit below the media rather than covering it', async ({ pa
   await page.goto('/');
   expect(await page.locator('.hh-bar').evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThanOrEqual(
     await page.locator('.hh-stage').evaluate(el => el.getBoundingClientRect().bottom));
+});
+
+
+for (const route of ['/', '/about', '/interactive', '/brand', '/ai', '/projects/typespace.html', '/lens/creative/', '/intentfirst.html', '/workshop.html', '/publications.html', '/breakbias.html']) {
+  test(`shared sand system automatically covers ${route}`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto(route);
+    const canvas = page.locator('.sand-layer').first();
+    await expect(canvas).toBeVisible();
+    // More than a fleeting dust speck: substantial particles remain visible
+    // before the contents start appearing, using the same shared tokens.
+    expect(Number(await canvas.getAttribute('data-grain-count'))).toBeGreaterThan(100);
+    const duration = await canvas.evaluate(el => getComputedStyle(el.parentElement).getPropertyValue('--sand-duration'));
+    expect(duration).toBe('2200ms');
+    await expect(page.locator('.sand-layer')).toHaveCount(0, { timeout: 9000 });
+    await expect(page.locator('.sand-active')).toHaveCount(0);
+  });
+}
+
+test('keyboard focus finishes the decorative overlay without blocking the link', async ({ page }) => {
+  await page.goto('/work');
+  const canvas = page.locator('.tile .sand-layer').first();
+  await expect(canvas).toBeVisible();
+  const id = await canvas.evaluate(el => el.parentElement.id);
+  const tile = page.locator(`.tile[id="${id}"]`);
+  await tile.focus();
+  await expect(tile.locator('.sand-layer')).toHaveCount(0);
+  await expect(tile).toBeFocused();
+});
+
+test('visible surfaces beyond the concurrency limit eventually receive their entrance', async ({ page }, info) => {
+  test.skip(info.project.name !== 'desktop');
+  await page.setViewportSize({ width: 1440, height: 2000 });
+  await page.goto('/work');
+  const visibleIds = await page.locator('.tile').evaluateAll(els => els.filter(el => {
+    const r = el.getBoundingClientRect(); return r.top < innerHeight && r.bottom > 0;
+  }).map(el => el.id));
+  expect(visibleIds.length).toBeGreaterThan(6);
+  await expect.poll(async () => page.locator('.tile[data-sand-played]').evaluateAll(
+    (els, ids) => ids.every(id => els.some(el => el.id === id)), visibleIds), { timeout: 12000 }).toBe(true);
+  await expect(page.locator('.sand-layer')).toHaveCount(0, { timeout: 9000 });
 });
