@@ -11,6 +11,7 @@
 // config: pasting it over src/data/motion.json makes it the site's default.
 
 import * as motion from "./motion.js";
+import { replaySand, stopSand, initSand } from "./sand.js";
 import "../styles/motion-lab.css";
 
 // ── Presets: partial configs merged over the defaults ──────────────────────
@@ -91,6 +92,15 @@ export const PRESETS = {
   ),
 };
 
+Object.assign(PRESETS, {
+  "Original — before particles": { global: { engine: "legacy", enabled: true } },
+  "Sand — fine & quick": { global: { engine: "sand", enabled: true } },
+  "Sand — snap": { global: { engine: "sand", enabled: true }, sand: { durationMs: 450, minGrainPx: 0.4, grainVariationPx: 0.3, particleBudget: 14000, horizontalSpreadPx: 35, verticalSpreadPx: 30, swirlPx: 4 } },
+  "Sand — soft": { global: { engine: "sand", enabled: true }, sand: { durationMs: 1000, minGrainPx: 0.65, grainVariationPx: 0.35, horizontalSpreadPx: 45, verticalSpreadPx: 40, boxContrast: 0.12 } },
+  "Sand — previous coarse": { global: { engine: "sand", enabled: true }, sand: { durationMs: 2200, minGrainPx: 1.5, grainVariationPx: 1.5, horizontalSpreadPx: 230, verticalSpreadPx: 155, ambientDensity: 0.18, boxParticles: false, contentRevealStart: 0.46 } },
+  "Off — instant": { global: { engine: "off" } },
+});
+
 // ── Schema: one control per parameter ──────────────────────────────────────
 const BODY = ["default", "scramble-typewriter", "scramble", "typewriter", "rise", "fade", "wipe", "pixelate", "none"];
 const ORDERS = ["random", "top-down", "bottom-up", "left-right", "reading", "by-column", "spiral", "center-out", "edges-in", "distance-from-click", "dom"];
@@ -161,6 +171,8 @@ const textFields = (pre) => [
 ];
 export const SCHEMA = [
   { id: "global", label: "Global", fields: [
+    s("global.engine", "Effect family", ["sand", "legacy", "off"], { norand: true }),
+    s("layout.namePosition", "Name placement (preview)", ["current", "top-left"], { norand: true }),
     b("global.enabled", "Enabled", { norand: true }),
     r("global.speed", "Speed", 0.1, 4, 0.05, "×", { rand: [0.6, 1.6] }),
     s("global.runOn", "Pane plays on", ["both", "first-load", "every-navigation"], { norand: true }),
@@ -172,6 +184,28 @@ export const SCHEMA = [
     r("global.capMs", "Total cap, first load (0 = none)", 0, 10000, 100, "ms", { norand: true }),
     r("global.navSpeed", "Navigation speed", 0.25, 5, 0.05, "×", { rand: [1.4, 2.6] }),
     r("global.navCapMs", "Total cap, navigation (0 = none)", 0, 5000, 50, "ms", { norand: true }),
+  ] },
+  { id: "interaction", label: "Interaction · アコーディオン", fields: [
+    r("interaction.accordionOpenMs", "Accordion open · 開く時間", 0, 1000, 10),
+    r("interaction.accordionCloseMs", "Accordion close · 閉じる時間", 0, 1000, 10),
+    e("interaction.accordionEasing", "Accordion easing · 開閉のイージング"),
+  ] },
+  { id: "sand", label: "Sand · 粒子と箱", note: "Whole box + contents. Fine & quick is the recommended starting point. Replay after adjusting; export the JSON to send back to Codex.", fields: [
+    b("sand.boxParticles", "Particle box background · 箱も粒子化"),
+    r("sand.durationMs", "Duration · 表示時間", 150, 5000, 25),
+    r("sand.minGrainPx", "Grain size · 粒のサイズ", 0.25, 4, 0.05, "px"),
+    r("sand.grainVariationPx", "Size variation · 粒のばらつき", 0, 3, 0.05, "px"),
+    r("sand.particleBudget", "Density budget · 粒の密度", 500, 24000, 500, "grains"),
+    r("sand.horizontalSpreadPx", "Scatter X · 横の広がり", 0, 400, 5, "px"),
+    r("sand.verticalSpreadPx", "Scatter Y · 縦の広がり", 0, 400, 5, "px"),
+    r("sand.swirlPx", "Swirl · 揺れ", 0, 80, 1, "px"),
+    r("sand.gravityPx", "Gravity · 下からの距離", 0, 200, 1, "px"),
+    r("sand.staggerFraction", "Stagger · 粒の時間差", 0, 0.6, 0.01, ""),
+    r("sand.boxContrast", "Box grain contrast · 箱の粒の濃さ", 0, 0.8, 0.01, ""),
+    r("sand.ambientDensity", "Extra dust · 余白の粒", 0, 1, 0.01, ""),
+    r("sand.contentRevealStart", "Content starts · 内容が現れるタイミング", 0, 0.85, 0.01, ""),
+    r("sand.contentRevealEnd", "Content settled · 内容の完成タイミング", 0.1, 1, 0.01, ""),
+    r("sand.maxConcurrent", "Concurrent boxes · 同時再生数", 1, 8, 1, ""),
   ] },
   { id: "rail", label: "Rail (left)", fields: [
     s("rail.playOn", "Rail plays on", ["session-first", "every-load", "always", "never"], { norand: true }),
@@ -255,7 +289,7 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (err) {} },
 };
 let cfg = motion.getConfig();
-let ui = { dock: "right", x: 0, y: 0, collapsed: false, open: ["global"], autoReplay: true, ...(store.get(UI_KEY) || {}) };
+let ui = { dock: "right", x: 0, y: 0, collapsed: false, open: ["global", "sand"], autoReplay: true, ...(store.get(UI_KEY) || {}) };
 const getAt = (obj, path) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), obj);
 const setAt = (obj, path, v) => {
   const ks = path.split(".");
@@ -270,6 +304,7 @@ const saveUi = () => store.set(UI_KEY, ui);
 function commit({ edited = true, replay = true } = {}) {
   if (edited) cfg.preset = `${baseName(cfg.preset)} (edited)`;
   cfg = motion.setConfig(cfg);
+  syncGroups();
   clearTimeout(saveTimer);
   saveTimer = setTimeout(() => store.set(motion.LAB_KEY, cfg), 120);
   const sel = panel?.querySelector("#mlab-preset");
@@ -284,7 +319,8 @@ function commit({ edited = true, replay = true } = {}) {
 function say(msg) { if (statusEl) statusEl.textContent = msg; }
 async function doReplay(kind) {
   if (motion.isStill()) { say("Reduced motion is on: nothing plays."); return; }
-  const ms = await motion.replay(kind);
+  stopSand();
+  const ms = cfg.global.engine === "sand" ? replaySand() : await motion.replay(kind);
   say(`${kind === "nav" ? "Navigation" : "First load"}: ${(ms / 1000).toFixed(2)} s`);
 }
 
@@ -391,7 +427,17 @@ function field(f) {
   }
   return row;
 }
-const refresh = () => updaters.forEach((u) => u());
+function syncGroups() {
+  panel?.querySelectorAll(".mlab-group").forEach(group => {
+    const id = group.dataset.id;
+    group.hidden = id === "sand" ? cfg.global.engine !== "sand" : !["global", "interaction"].includes(id) && cfg.global.engine !== "legacy";
+  });
+  panel?.querySelectorAll('[data-id="global"] .mlab-f').forEach(row => {
+    const label = row.querySelector("label")?.textContent || "";
+    row.hidden = cfg.global.engine !== "legacy" && !["Effect family", "Name placement (preview)", "Enabled", "Respect reduced motion"].includes(label);
+  });
+}
+const refresh = () => { updaters.forEach((u) => u()); syncGroups(); };
 
 // ── Randomize: sensible values within each control's range ─────────────────
 function randomize() {
@@ -431,16 +477,24 @@ async function copyJson() {
   const text = json();
   try {
     await navigator.clipboard.writeText(text);
-    say(`Copied ${text.length.toLocaleString()} characters of JSON. Paste it to Claude, or over src/data/motion.json.`);
+    say(`Copied ${text.length.toLocaleString()} characters of JSON. Send this JSON to Codex to apply it to the site.`);
   } catch (err) {
     showIo(text, "copy");
     say("Clipboard unavailable: the JSON is in the box below.");
   }
 }
+function downloadJson() {
+  const blob = new Blob([json()], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a"); link.href = url; link.download = "takao-motion-config.json";
+  link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  say("Downloaded takao-motion-config.json. Send this file to Codex.");
+}
 function importJson(text) {
   let parsed;
   try { parsed = JSON.parse(text); } catch (err) { say(`Not valid JSON: ${err.message}`); return false; }
   if (!parsed || typeof parsed !== "object") { say("Not a config object."); return false; }
+  if (!parsed.sand && parsed.global && !parsed.global.engine) parsed.global.engine = "legacy";
   cfg = motion.setConfig(parsed);
   refresh();
   commit({ edited: false });
@@ -448,9 +502,14 @@ function importJson(text) {
   return true;
 }
 const presetName = () => (baseName(cfg.preset) in PRESETS ? baseName(cfg.preset) : "Default");
+function presetConfig(name) {
+  return motion.resolveConfig(deep(PRESETS[name], { global: {
+    engine: PRESETS[name].global?.engine ?? (name === "Default" ? "sand" : "legacy"), enabled: true
+  } }));
+}
 function resetGroup(g) {
   const name = presetName();
-  const P = motion.resolveConfig(PRESETS[name]);
+  const P = presetConfig(name);
   g.fields.forEach((f) => setAt(cfg, f.key, structuredClone(getAt(P, f.key))));
   refresh();
   commit();
@@ -458,7 +517,10 @@ function resetGroup(g) {
 }
 function applyPreset(name) {
   if (!(name in PRESETS)) return;
-  cfg = motion.resolveConfig(PRESETS[name]);
+  const { layout, interaction } = cfg;
+  cfg = presetConfig(name);
+  cfg.layout = layout;
+  cfg.interaction = interaction;
   cfg.preset = name;
   refresh();
   commit({ edited: false });
@@ -546,6 +608,7 @@ function build() {
         btn("Randomize", randomize),
         btn("Reset to preset", () => applyPreset(presetName()), { title: "Back to the selected preset's settings" }),
         btn("Copy JSON", copyJson),
+        btn("Download JSON", downloadJson),
         btn("Import JSON", () => showIo(json(), "import"))),
       el("div", { class: "mlab-f mlab-f-toggle" },
         el("div", { class: "mlab-lab" }, el("label", { for: "mlab-auto", text: "Replay on every change" })),
@@ -561,10 +624,15 @@ function build() {
   return panel;
 }
 function closeLab() {
+  clearTimeout(replayTimer);
+  clearTimeout(saveTimer);
+  updaters.length = 0;
   try { sessionStorage.removeItem(motion.LAB_FLAG); } catch (err) {}
-  motion.setConfig(null); // back to src/data/motion.json
+  motion.setConfig(null); // back to the public defaults
+  initSand();
   panel?.remove();
   panel = null;
+  opened = false;
   const u = new URL(location.href);
   if (u.searchParams.has("lab")) { u.searchParams.delete("lab"); history.replaceState(history.state, "", u); }
 }

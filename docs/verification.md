@@ -187,3 +187,43 @@ an automatically managed shared port. failforward CLI is unavailable on PATH;
 these lessons are recorded here instead.
 
 Low-end hardware, Safari/Firefox and live Resend delivery remain unverified.
+
+## Motion comparison UI / whole-box fine particles
+
+Mode: single-pass (grader = implementer). Latest defaults: fine 0.55–1px grains,
+700ms entrance; box backgrounds are sampled and become transparent during
+scatter. Source/config/limitations: docs/motion-playground.md.
+
+Focused desktop/phone suite before the final independent accordion control:
+
+```
+npx playwright test tests/motion-lab.spec.mjs tests/sand-motion.spec.mjs tests/home-about-navigation.spec.mjs tests/left-rail-categories.spec.mjs --workers=3 --reporter=line
+15 skipped
+55 passed (24.6s)
+```
+
+Final Motion Lab checks (including accordion duration + named easing, independent
+of preset selection):
+
+```
+npx playwright test tests/motion-lab.spec.mjs --workers=2 --reporter=line
+1 skipped
+5 passed (9.8s)
+```
+
+The UI tests exercise sand vs legacy switching and relevant group visibility,
+JSON file download and round-trip import, storage/reload, off mode, previewing
+name placement, live box transparency/restoration, and accordion controls.
+Root box transparency test uses manual replay to reliably inspect the particle
+phase rather than observing the tail of a previous short entrance. Numeric
+control changes commit on blur; tests use Tab before changing preset via the
+programmatic selectOption API. Native CSS grid rules initially overrode hidden
+fields; scoped .mlab [hidden] restores correct engine-specific controls. Named
+accordion easings now resolve to actual CSS easing functions.
+
+Chromium comparison recording: fine sand, previous coarse sand, original,
+Blueprint, snap. No page errors. Saved screenshot and an exported example JSON
+with top-left identity preview in this task's outputs. Names and interaction
+choices persist while effect presets change. Low-end hardware, Safari/Firefox,
+full texture capture of video/gradients/iframes, and live mail delivery remain
+unverified. Historical whole-suite failures above are not claimed as resolved.

@@ -76,7 +76,7 @@ for (const route of ['/', '/about', '/interactive', '/brand', '/ai', '/projects/
     // before the contents start appearing, using the same shared tokens.
     expect(Number(await canvas.getAttribute('data-grain-count'))).toBeGreaterThan(100);
     const duration = await canvas.evaluate(el => getComputedStyle(el.parentElement).getPropertyValue('--sand-duration'));
-    expect(duration).toBe('2200ms');
+    expect(duration).toBe('700ms');
     await expect(page.locator('.sand-layer')).toHaveCount(0, { timeout: 9000 });
     await expect(page.locator('.sand-active')).toHaveCount(0);
   });

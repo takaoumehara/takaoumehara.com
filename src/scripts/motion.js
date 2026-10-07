@@ -35,6 +35,25 @@
 //  - #main (and #side while the rail plays) carries aria-busy="true".
 
 import DEFAULTS from "../data/motion.json";
+import SAND_DEFAULTS from "../data/sand-motion.json";
+const baseDefaults = () => ({ ...clone(DEFAULTS), sand: clone(SAND_DEFAULTS) });
+
+export const EASINGS = {
+  linear: "linear",
+  ease: "ease",
+  "ease-in": "ease-in",
+  "ease-out": "ease-out",
+  "ease-in-out": "ease-in-out",
+  decel: "cubic-bezier(0.16, 1, 0.3, 1)",
+  accel: "cubic-bezier(0.4, 0, 1, 1)",
+  standard: "cubic-bezier(0.4, 0, 0.2, 1)",
+  "expo-out": "cubic-bezier(0.19, 1, 0.22, 1)",
+  "back-out": "cubic-bezier(0.34, 1.56, 0.64, 1)",
+  console: "cubic-bezier(0.22, 0.84, 0.22, 1)",
+  spring: "linear(0, 0.62 12%, 1.05 28%, 0.985 45%, 1.008 62%, 1)",
+  "steps-4": "steps(4, end)",
+  "steps-8": "steps(8, end)",
+};
 
 const html = document.documentElement;
 const still = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -48,7 +67,7 @@ const isObj = (v) => v && typeof v === "object" && !Array.isArray(v);
 function merge(base, over) {
   if (!isObj(over)) return base;
   for (const [k, v] of Object.entries(over)) {
-    if (!(k in base)) continue; // unknown keys are ignored
+    if (!Object.hasOwn(base, k)) continue; // ignore unknown and inherited keys
     if (isObj(base[k])) merge(base[k], v);
     else if (Array.isArray(base[k])) { if (Array.isArray(v)) base[k] = v.slice(0, base[k].length).map(Number); }
     else if (typeof base[k] === "number") { const n = Number(v); if (Number.isFinite(n)) base[k] = n; }
@@ -58,8 +77,16 @@ function merge(base, over) {
   return base;
 }
 export function resolveConfig(partial) {
-  const c = merge(clone(DEFAULTS), partial);
-  c.global.enabled = false; // Sand entrance replaces the outline / wipe / decrypt sequence.
+  const c = merge(baseDefaults(), partial);
+  if (!["sand", "legacy", "off"].includes(c.global.engine)) c.global.engine = "sand";
+  const bounds = { durationMs: [150,5000], contentRevealStart: [0,0.85], contentRevealEnd: [0.1,1], maxConcurrent: [1,8], particleBudget: [500,24000], minGrainPx: [0.25,4], grainVariationPx: [0,3], horizontalSpreadPx: [0,400], verticalSpreadPx: [0,400], ambientDensity: [0,1], boxContrast: [0,0.8], swirlPx: [0,80], gravityPx: [0,200], staggerFraction: [0,0.6] };
+  for (const [key,[min,max]] of Object.entries(bounds)) c.sand[key] = Math.max(min, Math.min(max, c.sand[key]));
+  c.sand.maxConcurrent = Math.round(c.sand.maxConcurrent);
+  for (const key of ["accordionOpenMs", "accordionCloseMs"]) c.interaction[key] = Math.max(0, Math.min(1000, c.interaction[key]));
+  if (!CSS.supports("animation-timing-function", EASINGS[c.interaction.accordionEasing] || c.interaction.accordionEasing)) c.interaction.accordionEasing = DEFAULTS.interaction.accordionEasing;
+  c.sand.contentRevealEnd = Math.max(c.sand.contentRevealStart + 0.05, c.sand.contentRevealEnd);
+  // Import files can tune effects, never replace discovery/exclusion rules.
+  for (const key of ["surfaceSelector","fallbackSelector","excludeSelector"]) c.sand[key] = SAND_DEFAULTS[key];
   c.global.respectReducedMotion = true; // not negotiable
   c.version = DEFAULTS.version;
   return c;
@@ -76,9 +103,16 @@ function readLab() {
   try { return JSON.parse(localStorage.getItem(LAB_KEY) || "null"); } catch (e) { return null; }
 }
 let CFG = resolveConfig(labActive() ? readLab() : null);
-export const defaults = () => clone(DEFAULTS);
+export const defaults = baseDefaults;
+const legacyEnabled = () => CFG.global.enabled && CFG.global.engine === "legacy";
 export const getConfig = () => clone(CFG);
-export function setConfig(partial) { CFG = resolveConfig(partial); return getConfig(); }
+export function setConfig(partial) {
+  finishAll();
+  reset();
+  CFG = resolveConfig(partial);
+  document.dispatchEvent(new CustomEvent("tu:motion-config", { detail: getConfig() }));
+  return getConfig();
+}
 
 // ── Randomness (seeded when global.seed ≠ 0, so a take can be repeated) ─────
 let R = Math.random;
@@ -97,22 +131,7 @@ const span = (v) => (Array.isArray(v) ? rr(Math.min(v[0] ?? 0, v[1] ?? 0), Math.
 const pick = (s) => s[(Math.random() * s.length) | 0];
 
 // ── Easing ──────────────────────────────────────────────────────────────────
-export const EASINGS = {
-  linear: "linear",
-  ease: "ease",
-  "ease-in": "ease-in",
-  "ease-out": "ease-out",
-  "ease-in-out": "ease-in-out",
-  decel: "cubic-bezier(0.16, 1, 0.3, 1)",
-  accel: "cubic-bezier(0.4, 0, 1, 1)",
-  standard: "cubic-bezier(0.4, 0, 0.2, 1)",
-  "expo-out": "cubic-bezier(0.19, 1, 0.22, 1)",
-  "back-out": "cubic-bezier(0.34, 1.56, 0.64, 1)",
-  console: "cubic-bezier(0.22, 0.84, 0.22, 1)",
-  spring: "linear(0, 0.62 12%, 1.05 28%, 0.985 45%, 1.008 62%, 1)",
-  "steps-4": "steps(4, end)",
-  "steps-8": "steps(8, end)",
-};
+
 const easeCache = new Map();
 function ease(v) {
   if (EASINGS[v]) {
@@ -915,7 +934,7 @@ function watch(unit) {
     const batch = entries.filter((e) => e.isIntersecting).map((e) => e.target);
     if (!batch.length) return;
     batch.forEach((u) => { io.unobserve(u); u.classList.remove("mo-wait"); });
-    if (still() || !CFG.global.enabled) return;
+    if (still() || !legacyEnabled()) return;
     const plan = planSurface("pane", batch, 0, 0.3);
     const k = 1 / Math.max(0.05, CFG.global.speed) / (CFG.pane.belowFold === "fast" ? 2 : 1);
     plan.items.forEach((it) => execute(it, k, "scroll", 0));
@@ -935,7 +954,7 @@ function reset() {
 /** Plays the IN: the rail and/or the pane, with the sequencing in `global`. */
 function run({ rail = false, pane = false, nav = false, dir = 0 } = {}) {
   reset();
-  if (still() || !CFG.global.enabled || (!rail && !pane)) return 0;
+  if (still() || !legacyEnabled() || (!rail && !pane)) return 0;
   const G = CFG.global;
   seedRng(G.seed);
   const side = document.getElementById("side");
@@ -1030,7 +1049,7 @@ const railOnNav = () => CFG.rail.playOn === "always";
 // are on, −1 when higher, 0 otherwise (site.js's Direction).
 export function onBeforePreparation(event, dir) {
   finishAll();
-  if (still() || !CFG.global.enabled || !paneOnNav()) return;
+  if (still() || !legacyEnabled() || !paneOnNav()) return;
   const out = paneOut(dir);
   const load = event.loader;
   event.loader = async () => {
@@ -1039,7 +1058,7 @@ export function onBeforePreparation(event, dir) {
 }
 export function onAfterSwap(dir) {
   reset();
-  if (still() || !CFG.global.enabled) return;
+  if (still() || !legacyEnabled()) return;
   run({ pane: paneOnNav(), rail: railOnNav(), nav: true, dir });
 }
 // The first paint. Sidebar.astro's inline script set html[data-mo-intro]
@@ -1063,7 +1082,7 @@ async function introPlay() {
   const pane = html.hasAttribute("data-mo-intro"), rail = html.hasAttribute("data-mo-rail");
   const clear = () => { html.removeAttribute("data-mo-intro"); html.removeAttribute("data-mo-rail"); };
   if (!pane && !rail) return;
-  if (still() || !CFG.global.enabled) return clear();
+  if (still() || !legacyEnabled()) return clear();
   try { await Promise.race([document.fonts?.ready, new Promise((r) => setTimeout(r, 350))]); } catch (e) {}
   run({ pane, rail });
   clear();
@@ -1071,7 +1090,7 @@ async function introPlay() {
 /** The lab: replay the first load, or a navigation, on the current page. */
 export async function replay(kind = "load") {
   finishAll();
-  if (still() || !CFG.global.enabled) return 0;
+  if (still() || !legacyEnabled()) return 0;
   if (kind === "nav") {
     if (paneOnNav()) await paneOut(0);
     cancelOut();

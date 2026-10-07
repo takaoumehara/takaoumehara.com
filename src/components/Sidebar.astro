@@ -61,7 +61,7 @@ const odo = (n) => `<span class="odo">${Number(n) || 0}</span>`;
 // the first paint, whether the rail and the pane will play their loading
 // sequence (src/data/motion.json; the Motion Lab's working copy overrides it
 // while the lab is open in the tab).
-const moGate = { enabled: MOTION.global.enabled, runOn: MOTION.global.runOn, railPlayOn: MOTION.rail.playOn };
+const moGate = { enabled: MOTION.global.enabled && MOTION.global.engine === "legacy", runOn: MOTION.global.runOn, railPlayOn: MOTION.rail.playOn };
 
 // A row is named, not described: the Latin short name in both languages.
 // Resona stays "Resona" in the Japanese edition, the way a studio site keeps
@@ -130,7 +130,7 @@ const thumb = (item) => {
         if (sessionStorage.getItem("tu-lab") === "1") {
           var lab = JSON.parse(localStorage.getItem("tu-motion-lab") || "null");
           if (lab && lab.global) {
-            // Legacy choreography stays paused while sand entrances are active.
+            gate.enabled = lab.global.enabled !== false && lab.global.engine === "legacy";
             if (lab.global.runOn) gate.runOn = lab.global.runOn;
           }
           if (lab && lab.rail && lab.rail.playOn) gate.railPlayOn = lab.rail.playOn;

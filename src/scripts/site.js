@@ -103,7 +103,7 @@ function setPanel(btn, open) {
   };
   if (stillMotion()) return finish();
   const animation = panel.animate([{ height: `${height}px`, opacity: open ? 0.6 : 1 }, { height: `${end}px`, opacity: open ? 1 : 0.6 }], {
-    duration: open ? 220 : 180, easing: "cubic-bezier(.215,.61,.355,1)", fill: "both",
+    duration: open ? motion.getConfig().interaction.accordionOpenMs : motion.getConfig().interaction.accordionCloseMs, easing: motion.EASINGS[motion.getConfig().interaction.accordionEasing] || motion.getConfig().interaction.accordionEasing, fill: "both",
   });
   panelAnimations.set(panel, animation);
   animation.onfinish = () => { finish(); animation.cancel(); };
@@ -649,3 +649,18 @@ motion.intro();
 // A separate chunk (src/scripts/motion-lab.js + its CSS), never on a normal
 // visitor's critical path.
 if (motion.labActive()) import("./motion-lab.js").then((lab) => lab.openLab()).catch(() => {});
+
+// Identity placement is an experimental lab parameter; normal layout stays put.
+function applyIdentityPlacement() {
+  const side = document.getElementById("side");
+  const name = side?.querySelector(".side-panel .side-wordmark");
+  const head = side?.querySelector(".side-head");
+  const controls = side?.querySelector(".side-controls-left");
+  if (!name || !head || !controls) return;
+  const top = motion.getConfig().layout.namePosition === "top-left";
+  side.classList.toggle("side-identity-top", top);
+  if (top) controls.prepend(name); else head.prepend(name);
+}
+document.addEventListener("tu:motion-config", applyIdentityPlacement);
+document.addEventListener("astro:page-load", applyIdentityPlacement);
+applyIdentityPlacement();
