@@ -100,6 +100,20 @@ test.describe("Left rail categories — desktop", () => {
     await expect(header).toHaveAttribute("aria-expanded", before === "true" ? "false" : "true");
   });
 
+  test("jumping to a project from the page opens its category in the rail, closing the one open before", async ({ page }, testInfo) => {
+    desktopOnly(testInfo);
+    await page.goto("/");
+    const headers = page.locator("#side .side-group-header");
+    await page.locator('#side .side-group-header[data-cat="brand"]').click();
+    // A reader who just scrolled the rail is not scrolled for — but the category still opens.
+    await page.locator("#side").dispatchEvent("wheel");
+    await page.locator('#main a[href="/projects/resona.html"]:visible').first().click();
+    await page.waitForURL(/\/projects\/resona/);
+    await expect(page.locator('#side .side-group-header[data-cat="interactive"]')).toHaveAttribute("aria-expanded", "true");
+    expect((await expanded(headers)).filter((v) => v === "true")).toHaveLength(1);
+    await expect(page.locator('#side .side-item[aria-current="page"][data-cat="interactive"]')).toBeVisible();
+  });
+
   test("EN/JP toggle switches the new home strings", async ({ page }, testInfo) => {
     desktopOnly(testInfo);
     await page.goto("/");
@@ -143,6 +157,16 @@ test.describe("Left rail categories — phone", () => {
     expect(await expanded(page.locator("#side .side-group-header"))).toEqual(["false", "false", "true", "false", "false"]);
     await expect(page.locator("#side")).toHaveClass(/is-open/);
     await expect(page.locator("#side .side-group").nth(2).locator(".side-group-items")).toBeVisible();
+  });
+
+  test("arriving on a project opens its category, so Menu shows it", async ({ page }, testInfo) => {
+    phoneOnly(testInfo);
+    await page.goto("/");
+    await page.locator('#main a[href="/projects/resona.html"]:visible').first().click();
+    await page.waitForURL(/\/projects\/resona/);
+    await expect(page.locator('#side .side-group-header[data-cat="interactive"]')).toHaveAttribute("aria-expanded", "true");
+    await page.locator("#side-toggle").click();
+    await expect(page.locator('#side .side-item[aria-current="page"][data-cat="interactive"]')).toBeVisible();
   });
 
   test("the top bar's status line is not clipped behind Menu", async ({ page }, testInfo) => {

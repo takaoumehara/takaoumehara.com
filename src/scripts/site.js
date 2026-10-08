@@ -245,18 +245,28 @@ function watchRailScroll(side) {
   side.addEventListener("touchmove", user, { passive: true });
   side.addEventListener("scroll", () => { if (performance.now() > railProgUntil) user(); }, { passive: true });
 }
+// The current project's row, preferring the copy in the open category when a
+// piece is filed under two.
+function activeRow(side) {
+  return side.querySelector('.side-group-header[aria-expanded="true"] + .side-group-items .side-item[aria-current="page"]')
+    ?? side.querySelector('.side-item[aria-current="page"]')
+    ?? side.querySelector('.side-panel [data-match][aria-current="page"]');
+}
+// Arriving on a project always opens its category in the rail, whatever was
+// open before, even when the rail is not scrolled (or the phone's menu is shut).
+function openActiveCategory(side) {
+  const header = activeRow(side)?.closest(".side-group")?.querySelector(".side-group-header");
+  if (header && header.getAttribute("aria-expanded") !== "true") setCategory(header.dataset.catIndex, { pick: false });
+}
 function revealActiveRow({ smooth = false, force = false } = {}) {
   const side = document.getElementById("side");
   if (!side) return;
   watchRailScroll(side);
+  openActiveCategory(side);
   if (side.scrollHeight <= side.clientHeight + 1) return; // nothing to scroll (the phone's closed bar)
   if (!force && performance.now() - railUserAt < RAIL_HANDS_OFF_MS) return;
-  const row = side.querySelector('.side-item[aria-current="page"]') ?? side.querySelector('.side-panel [data-match][aria-current="page"]');
-  if (!row) return;
-  const group = row.closest(".side-group");
-  const header = group?.querySelector(".side-group-header");
-  if (header && header.getAttribute("aria-expanded") !== "true") setCategory(header.dataset.catIndex, { pick: false }); // a folded category opens to show where you are
-  if (!row.getClientRects().length) return; // filtered out by the rail's search
+  const row = activeRow(side);
+  if (!row || !row.getClientRects().length) return; // none, or filtered out by the rail's search
   const sr = side.getBoundingClientRect(), r = row.getBoundingClientRect();
   const top = Math.max(sr.top, 0) + 8, bottom = Math.min(sr.bottom, window.innerHeight) - 8;
   if (r.top >= top && r.bottom <= bottom) return;
