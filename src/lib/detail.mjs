@@ -72,6 +72,31 @@ export function detailEmbed(item) {
   return { kind: "embed", src: d.embed, title, aspect, aspectSm };
 }
 
+/**
+ * Films as the teaser, when the films are the work (KOJI FIZZ):
+ * `detail.teaser.youtube = [{ "id": "8mXYhHl5VDU", "title": {en, jp}, "sub": {en, jp}, "poster": "/assets/…" }]`.
+ * The first film fills the 16:9 box as a poster with a play button; the player
+ * (youtube-nocookie) loads only when someone presses play, and the other films
+ * sit in a row beneath it that swaps what the box plays. Without a local
+ * `poster`, a film's frame comes from YouTube's own thumbnail. Like the embed,
+ * the home hero and the admin keep the still from detailTeaser().
+ */
+const YT_ID = /^[A-Za-z0-9_-]{11}$/;
+const SITE_PATH = /^\/(?!\/)[^\s"'<>]+$/;
+export function detailFilms(item) {
+  const list = item.detail?.teaser?.youtube;
+  if (!Array.isArray(list)) return null;
+  const films = list
+    .filter((f) => f && YT_ID.test(f.id ?? ""))
+    .map((f) => ({
+      id: f.id,
+      title: typeof f.title === "string" ? { en: f.title } : f.title ?? { en: detailName(item).en },
+      sub: typeof f.sub === "string" ? { en: f.sub } : f.sub ?? null,
+      poster: SITE_PATH.test(f.poster ?? "") ? f.poster : `https://i.ytimg.com/vi/${f.id}/hqdefault.jpg`,
+    }));
+  return films.length ? { kind: "youtube", films } : null;
+}
+
 export function detailFields(item) {
   const challenge = item.detail?.challenge ?? item.challenge;
   const solution = item.detail?.solution ?? item.solution;
@@ -85,6 +110,6 @@ export function detailFields(item) {
     year: detailYear(item),
     client: detailClient(item),
     stack: item.detail?.stack ?? item.stack ?? [],
-    teaser: detailEmbed(item) ?? detailTeaser(item),
+    teaser: detailEmbed(item) ?? detailFilms(item) ?? detailTeaser(item),
   };
 }

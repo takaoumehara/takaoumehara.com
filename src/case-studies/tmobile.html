@@ -1,5 +1,8 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/tmobile.json, "detail").
-     Sources: the hand-built case study this replaced (preserved in src/case-studies/_legacy/tmobile.html — the three touchpoints, the voice questions, the kiosk sequence, methods, team roles, the preferred-partner outcome) and the work files in public/assets/tmobile/ (walkthrough videos, journey maps, kiosk flow, sketches, 3D renders). The kiosk steps in beat 3 are read off Kiosk-mini-wire.png. Branding removed for confidentiality. -->
+<!-- Body beats only (0–5). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from the evidence record (src/data/projects/tmobile.json, "detail").
+     Sources: the hand-built case study this replaced (preserved in src/case-studies/_legacy/tmobile.html — the three touchpoints, the voice questions, the kiosk sequence, methods, team roles, the preferred-partner outcome, the white/wood kiosk material exploration) and the work files in public/assets/tmobile/ (walkthrough videos, journey maps, kiosk flow, sketches, 3D renders). The kiosk steps in beat 4 are read off Kiosk-mini-wire.png; the persona names, the staff-app screens and the storyboard captions in beats 2, 3 and 5 are read off the images themselves. Several screens and renders still show T-Mobile branding, so the captions no longer claim it was removed (2026-10-10).
+     Restored 2026-09-28 from git e1c14c9^ (assets/tmobile/): 00_Process_Stakeholders, 00_Process_Research_Future_frames, the Customer Care screens (Maiin-calendar, Main_Screen-_Customer-3, -5) and the Micah low/high-fidelity sketches (PNG, ≤2400px), Kiosk_Frame-4/-7/-8/-10/-11/-12 and 04_Kiosk_Solution_M-mobile-retail-facade (JPEG). 04_Kiosk_UI_Frame_34.jpg and 04_Kiosk_Process_Frame_31.jpg are web-size copies of PNGs already on disk.
+     Merge note (2026-10): conflict with PR #29 resolved; this page keeps #29's richer text and figures (personas and research board in beat 2, the staff-app beat 3, stills under each walkthrough). Today's assessment proposals were already covered. Not added: legacy per-figure captions and methods list (unchanged from main), deleted process sketches whose authorship is unconfirmed (sketch-takao, Dylan sketch), GIF journey animation (22 MB).
+     Deliberately not used: 00_Misc_Animatic_Setup2/3 (they show the client's name on the café wall, against the branding-removed notice). -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">Three touchpoints, one pickup</span>
@@ -13,11 +16,19 @@
     <video src="/assets/tmobile/CustomerCare-walkthru.mp4" poster="/assets/tmobile/CustomerCare-walkthru-poster.jpg" controls muted playsinline preload="none" aria-label="Customer Care App walkthrough"></video>
     <video src="/assets/tmobile/Kiosk-walkthru.mp4" poster="/assets/tmobile/Kiosk-walkthru-poster.jpg" controls muted playsinline preload="none" aria-label="Kiosk and locker walkthrough"></video>
     <video src="/assets/tmobile/VoiceAI-walkthru.mp4" poster="/assets/tmobile/VoiceAI-walkthru-poster.jpg" controls muted playsinline preload="none" aria-label="Voice assistant walkthrough"></video>
+    <img src="/assets/tmobile/03_CustomerCareTool_2x_Main_Screen-_Customer.png" alt="Customer Care App: a customer's profile with the upcoming appointment, kiosk 2 and locker 3, the phone and case to pick up, preferences and smart recommendations" loading="lazy" width="2732" height="2048">
+    <img src="/assets/tmobile/04_Kiosk_UI_Frame_34.jpg" alt="3D render of a customer at the kiosk as the locker beside it opens, captioned Picking up the new phone" loading="lazy" width="2400" height="1800">
+    <img src="/assets/tmobile/01_VoiceAItool_M-Mobile_Conversational_UX_2x.png" alt="Three phone screens of the voice assistant: a greeting with quick options, an upgrade offer with yes and no, and scheduling a time to pick up the new phone" loading="lazy" width="3450" height="2150">
     <figcaption class="beat-caption">
-      <span class="t-en">Walkthroughs of the staff app, the kiosk and locker, and the voice assistant. Branding removed for confidentiality.</span>
-      <span class="t-jp" lang="ja">店員用アプリ、受け取り端末とロッカー、音声アシスタントの操作の流れ。守秘のためブランド要素は外している。</span>
+      <span class="t-en">Walkthroughs of the staff app, the kiosk and locker, and the voice assistant, each with a still below it.</span>
+      <span class="t-jp" lang="ja">店員用アプリ、受け取り端末とロッカー、音声アシスタントの操作の流れ。下にそれぞれの静止画。</span>
     </figcaption>
   </figure>
+  <div class="beat-facts">
+    <div class="beat-fact"><p class="beat-fact-num">3</p><p class="beat-fact-label"><span class="t-en">touchpoints: voice, kiosk, staff app</span><span class="t-jp" lang="ja">接点（音声・端末・店員用アプリ）</span></p></div>
+    <div class="beat-fact"><p class="beat-fact-num">12+</p><p class="beat-fact-label"><span class="t-en">high-fidelity kiosk screens</span><span class="t-jp" lang="ja">本番品質の端末画面</span></p></div>
+    <div class="beat-fact"><p class="beat-fact-num">2</p><p class="beat-fact-label"><span class="t-en">end-to-end journey maps</span><span class="t-jp" lang="ja">購入から受け取りまでの地図</span></p></div>
+  </div>
 </section>
 <section class="beat">
   <h2 class="beat-title">
@@ -25,15 +36,39 @@
     <span class="t-jp is-block" lang="ja">画面より先に、つなぎ目を描く</span>
   </h2>
   <p class="beat-text">
-    <span class="t-en">The work started with customer research interviews and a CX/UX audit, then two end-to-end journey maps: what each customer did, which touchpoint they met, and where it hurt, from the online order to leaving the store with a working phone. Laid out that way, the pain sat almost entirely in the handoffs — between channels, and between self-service and staff — which is what the three touchpoints were then designed around.</span>
-    <span class="t-jp is-block" lang="ja">始まりは顧客への聞き取りと、CX・UX の監査。そのうえで購入から受け取りまでの地図を 2 枚描いた。客がそれぞれ何をし、どの接点に出会い、どこでつまずくか。オンラインの注文から、使える状態の電話を持って店を出るまで。こう並べると、痛みはほとんど「受け渡し」に集まっていた。チャネルとチャネルの間、セルフと店員の間。三つの接点は、そのつなぎ目に合わせて設計した。</span>
+    <span class="t-en">The work started with customer research interviews and a CX/UX audit, then personas — Dylan, Keith’s mother; Keith, her son; Micah, a store agent — and two end-to-end journey maps: what each customer did, which touchpoint they met, and where it hurt, from the online order to leaving the store with a working phone. Laid out that way, the pain sat almost entirely in the handoffs — between channels, and between self-service and staff — which is what the three touchpoints were then designed around.</span>
+    <span class="t-jp is-block" lang="ja">始まりは顧客への聞き取りと、CX・UX の監査。続けて人物像を描いた。Keith の母親の Dylan、息子の Keith、店員の Micah。そのうえで購入から受け取りまでの地図を 2 枚描いた。客がそれぞれ何をし、どの接点に出会い、どこでつまずくか。オンラインの注文から、使える状態の電話を持って店を出るまで。こう並べると、痛みはほとんど「受け渡し」に集まっていた。チャネルとチャネルの間、セルフと店員の間。三つの接点は、そのつなぎ目に合わせて設計した。</span>
   </p>
-  <figure class="beat-media" style="--beat-cols: 2; --beat-cols-sm: 1;">
+  <figure class="beat-media beat-media--frame" style="--beat-cols: 2; --beat-cols-sm: 1;">
     <img src="/assets/tmobile/Mmobile-journey1.png" alt="Journey map, part 1: two customers' actions, the touchpoints they meet (voice AI, chatbot, app, email) and pain points in red" loading="lazy" width="2500" height="1377">
     <img src="/assets/tmobile/Mmobile-journey2.png" alt="Journey map, part 2: the in-store pickup and setup, with touchpoints and pain points" loading="lazy" width="2500" height="1377">
+    <img src="/assets/tmobile/00_Process_Stakeholders.png" alt="Three persona cards: Dylan, mom to Keith; Keith, son of Dylan; Micah, a store agent, each with needs and wants" loading="lazy" width="2054" height="965">
+    <img src="/assets/tmobile/00_Process_Research_Future_frames.png" alt="Research board pairing trends in experience, convenience, and data and education with a future frame for each" loading="lazy" width="1009" height="977">
     <figcaption class="beat-caption">
-      <span class="t-en">The two journey maps: customer actions, touchpoints, pain points.</span>
-      <span class="t-jp" lang="ja">2 枚の地図。客の行動、接点、つまずき。</span>
+      <span class="t-en">The two journey maps, the three personas, and the research board that turned trends into future frames.</span>
+      <span class="t-jp" lang="ja">2 枚の地図、3 人の人物像、そして傾向を「未来の枠組み」に置き換えた調査のボード。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Behind the counter</span>
+    <span class="t-jp is-block" lang="ja">カウンターの内側</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The Customer Care App is the store agent’s half of the same pickup. It opens on a dashboard of satisfaction scores, the day’s appointments and a knowledge base, with a schedule one tap away. A customer’s profile holds the upcoming appointment with its kiosk and locker, their preferences and smart recommendations; from there the agent can confirm an upgrade or work through an appointment checklist. It went from low- and high-fidelity sketches, drawn for Micah, the store-agent persona, to finished screens.</span>
+    <span class="t-jp is-block" lang="ja">店員用のアプリは、同じ受け取りの店員側の半分だ。開くと、満足度の数字、その日の予約、社内の知識集が並ぶ。予定表もすぐ隣にある。客の画面には、次の予約と、その端末とロッカー、好み、おすすめの品。そこから店員は機種変更を確定したり、予約ごとの確認項目を順に片づけたりできる。店員の人物像 Micah のための下描きを、粗いものから細かいものへ進め、本番の画面に仕上げた。</span>
+  </p>
+  <figure class="beat-media beat-media--frame" style="--beat-cols: 3; --beat-cols-sm: 1;">
+    <img src="/assets/tmobile/03_CustomerCareTool_2x_Main-dash.png" alt="Customer Care App dashboard: customer satisfaction score, response time, net promoter score, a satisfaction trend chart, upcoming appointments and a knowledge base" loading="lazy" width="2748" height="2048">
+    <img src="/assets/tmobile/03_CustomerCareTool_2x_Maiin-calendar.png" alt="Customer Care App schedule: three days of appointments laid out by time" loading="lazy" width="2400" height="1799">
+    <img src="/assets/tmobile/03_CustomerCareTool_2x_Main_Screen-_Customer-3.png" alt="Upgrade Order panel over the customer's profile: the current case, an arrow, and the recommended upgrade with a Confirm Upgrade button" loading="lazy" width="2400" height="1799">
+    <img src="/assets/tmobile/03_CustomerCareTool_2x_Main_Screen-_Customer-5.png" alt="Appointment Checklist panel over the customer's profile: confirm order status, greet and check in, smart recommendations, beverage, post-appointment follow-up" loading="lazy" width="2400" height="1799">
+    <img src="/assets/tmobile/03_CustomerCareTool_lowfi_sketch-_Micah.png" alt="Low-fidelity sketch of the staff customer screen: appointment, checklist and accessories boxes" loading="lazy" width="2400" height="1548">
+    <img src="/assets/tmobile/03_CustomerCareTool_Hifi_sketch-_Micah.png" alt="Annotated high-fidelity layout of the customer screen, with callouts around each panel" loading="lazy" width="2400" height="1500">
+    <figcaption class="beat-caption">
+      <span class="t-en">Dashboard, schedule, an upgrade and the appointment checklist; then the sketches they came from.</span>
+      <span class="t-jp" lang="ja">ダッシュボード、予定表、機種変更、予約の確認項目。続けて、その元になった下描き。</span>
     </figcaption>
   </figure>
 </section>
@@ -49,11 +84,35 @@
   <figure class="beat-media beat-media--frame" style="--beat-cols: 2;">
     <img src="/assets/tmobile/04_Kiosk_Process_lofi_sketch-_Kiosk.png" alt="Low-fidelity sketches of the kiosk screens: greeting, locker unlocked, account creation, activation steps, data transfer in progress" loading="lazy" width="6299" height="3227">
     <img src="/assets/tmobile/Kiosk-mini-wire.png" alt="Kiosk flow in ten steps, from start and QR scan through locker unlock and pickup to phone setup, data transfer and tips" loading="lazy" width="2500" height="952">
-    <img src="/assets/tmobile/04_Kiosk_Process_Locker-kiosk2_1.png" alt="Line sketch of the store with kiosks, lockers and customers" loading="lazy" width="2793" height="2172">
+    <img src="/assets/tmobile/04_Kiosk_Process_Locker-kiosk2_1-1600.webp" alt="Line sketch of the store with kiosks, lockers and customers" loading="lazy" width="1600" height="1244">
     <img src="/assets/tmobile/04_Kiosk_3D_render_Kiosk_Screen_1.png" alt="3D render of the kiosk showing the welcome screen" loading="lazy" width="950" height="713">
     <figcaption class="beat-caption">
       <span class="t-en">Sketches, the kiosk flow, the store layout and the rendered kiosk.</span>
       <span class="t-jp" lang="ja">下描き、端末の流れ、店の配置、レンダリングした端末。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">The visit, played through the store</span>
+    <span class="t-jp is-block" lang="ja">来店の流れを、店の中で通してみる</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The flow was then played through the 3D store, one captioned moment at a time: check in at the digital kiosk; the associate informed of a product choice change as the customer walks in; the locker unlocking; the data transfer guide; a break at the store’s M cafe while the phone sets up; and all phone setup complete. The same renders were used to compare the kiosk’s finish — new white and wood against the original all-wood.</span>
+    <span class="t-jp is-block" lang="ja">その流れを、3D の店の中で場面ごとに通した。場面ごとに説明が付く。受け取り端末でのチェックイン。客が店に入ると、商品の選び直しが店員に伝わる。ロッカーが開く。データ移行の案内。電話の設定を待つ間、店内の M cafe でひと休み。そして、設定がすべて終わる。同じレンダーで、端末の仕上げも比べた。新しい白と木の組み合わせと、元の木だけのもの。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2; --beat-cols-sm: 1;">
+    <img src="/assets/tmobile/Kiosk_Frame-11.jpg" alt="3D render of the kiosk welcome screen with a large neon M, captioned Check in at the digital kiosk" loading="lazy" width="2400" height="1801">
+    <img src="/assets/tmobile/Kiosk_Frame-12.jpg" alt="3D render of the store interior seen from the entrance, with kiosks and tables, captioned Enter the store, informs associate product choice change" loading="lazy" width="2400" height="1801">
+    <img src="/assets/tmobile/Kiosk_Frame-4.jpg" alt="3D render of the kiosk screen saying Locker 3 is now unlocked, a phone resting on the counter, captioned Unlocking the locker" loading="lazy" width="2400" height="1801">
+    <img src="/assets/tmobile/Kiosk_Frame-7.jpg" alt="3D render of the kiosk asking how to transfer data to the new phone, the new phone on the counter, captioned Data transfer guide" loading="lazy" width="2400" height="1801">
+    <img src="/assets/tmobile/Kiosk_Frame-8.jpg" alt="3D render of the in-store M cafe with wooden counters and stools, captioned Taking a break at M cafe" loading="lazy" width="2400" height="1801">
+    <img src="/assets/tmobile/Kiosk_Frame-10.jpg" alt="3D render of the kiosk showing Success with suggestions to browse the store while data transfers, captioned All phone set up is complete" loading="lazy" width="2400" height="1801">
+    <img src="/assets/tmobile/04_Kiosk_Solution_M-mobile-retail-facade.jpg" alt="3D render of the whole store seen through its glass front: kiosks in the foreground, the M cafe at the back" loading="lazy" width="2400" height="1782">
+    <img src="/assets/tmobile/04_Kiosk_Process_Frame_31.jpg" alt="Material comparison in four renders: the cafe and the store in new white and wood beside the original wood finish" loading="lazy" width="2395" height="1837">
+    <figcaption class="beat-caption">
+      <span class="t-en">The visit in six captioned moments, the store from the street, and the finish comparison.</span>
+      <span class="t-jp" lang="ja">説明付きの六つの場面、通りから見た店、仕上げの比較。</span>
     </figcaption>
   </figure>
 </section>

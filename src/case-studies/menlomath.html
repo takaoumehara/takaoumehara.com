@@ -1,21 +1,33 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/menlomath.json. -->
+<!-- Body beats only. Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/menlomath.json.
+     Merged 2026-10 from PR #29 (a721d7f: unit-overview and activity before/after pairs, extra app states), the legacy page and today's assessment (B-education). The six unit names and the "We got a job for you!" line are read off the screens and the record. Heavy PNGs are shown as 1600 px WebP copies; the home screen is a redacted copy (the UI greeting that named colleagues is painted out) -- the original PNG is untouched.
+     Left out on purpose: After Page_08 (colleague names in the user menu), the four full workshop photos (identifiable faces, unblurred; only name-free crops of the sticky-note wall and persona sheet are used), the legacy "ticket booths and crowd meter" sentence (not visible in the screens), After Page_05/06 (loading state, graph-options panel; no new information). -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">Six identical units become six visible stories</span>
     <span class="t-jp is-block" lang="ja">同じに見えた 6 つの単元が、それぞれの物語になる</span>
   </h2>
   <p class="beat-text">
-    <span class="t-en">The home screen listed six units as plain text rows with small, repeating thumbnails — nothing distinguished a ratio unit from a data unit until it was opened. The redesign turned it into a photographic card grid, each unit leading with the real-world hook it was already built on.</span>
-    <span class="t-jp is-block" lang="ja">もとのホーム画面は、6 つの単元をただのテキスト行と小さな使い回しのサムネイルで並べていた。比率の単元もデータの単元も、開くまで見分けがつかない。作り直したホーム画面は写真カードの並びにし、それぞれの単元がもともと持っていた実生活の題材を、開く前から見せるようにした。</span>
+    <span class="t-en">The home screen listed six units as plain text rows with small, repeating thumbnails — nothing distinguished a ratio unit from a data unit until it was opened. The redesign turned it into a photographic card grid, each unit leading with the real-world hook it was already built on: “Ratio” became “True Color Murals”, “Rate and Proportionality” became “Managing the Soccer Team”. Unit overviews took on a narrative voice (“We got a job for you!”) and laid their investigations out as cards instead of a numbered list.</span>
+    <span class="t-jp is-block" lang="ja">もとのホーム画面は、6 つの単元をただのテキスト行と小さな使い回しのサムネイルで並べていた。比率の単元もデータの単元も、開くまで見分けがつかない。作り直したホーム画面は写真カードの並びにし、それぞれの単元がもともと持っていた実生活の題材を、開く前から見せるようにした。「比率」は「True Color Murals」に、「比と比例」は「Managing the Soccer Team」になった。単元の概要には語りかける声を入れ（「We got a job for you!」）、調べ学習は番号の並びではなくカードにした。</span>
   </p>
-  <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/menlomath/Before_Menlo-Math_Before_Page_3.png" alt="Before — original home screen, six units listed as plain text rows with small thumbnails" loading="lazy" width="1600" height="1200">
-    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01.png" alt="After — home screen as a photographic card grid with plain-language subtitles" loading="lazy" width="1600" height="1200">
+  <figure class="beat-media" style="--beat-cols: 2; --beat-cols-sm: 2;">
+    <img src="/assets/menlomath/Before_Menlo-Math_Before_Page_3-1600.webp" alt="Before — original SunBay Math home screen, six units listed as plain text rows with small thumbnails" loading="lazy" width="1600" height="1201">
+    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_01-redacted-1600.webp" alt="After — home screen as a photographic card grid with plain-language subtitles" loading="lazy" width="1600" height="1584">
+    <img src="/assets/menlomath/Before_Menlo-Math_Before_Page_4-1600.webp" alt="Before — the investigation menu as eight identical numbered gray tiles" loading="lazy" width="1600" height="1201">
+    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_02-1600.webp" alt="After — Managing the Soccer Team unit overview: a soccer photo banner with the line “We got a job for you!” above eight named investigation cards" loading="lazy" width="1600" height="1200">
+    <img src="/assets/menlomath/Before_Menlo-Math_Before_Page_5-1600.webp" alt="Before — Investigation 1 activity list repeating the same generic thumbnail for all four activities" loading="lazy" width="1600" height="1201">
+    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_03-1600.webp" alt="After — Investigation 1, A Race Day, opened in place with its own description, four activity buttons and a Start link" loading="lazy" width="1600" height="1583">
     <figcaption class="beat-caption">
-      <span class="t-en">Before (left) and after (right) — the same six units, now led by their scenario instead of a number.</span>
-      <span class="t-jp" lang="ja">改修前（左）と改修後（右）。同じ 6 つの単元を、番号ではなく題材で先頭に見せる。</span>
+      <span class="t-en">Before (left) and after (right): the home screen, a unit overview, and an investigation.</span>
+      <span class="t-jp" lang="ja">改修前（左）と改修後（右）。ホーム画面、単元の概要、調べ学習の画面。</span>
     </figcaption>
   </figure>
+  <div class="beat-facts">
+    <div class="beat-fact">
+      <p class="beat-fact-num">6</p>
+      <p class="beat-fact-label"><span class="t-en">curriculum units restructured around real-world scenarios</span><span class="t-jp" lang="ja">実生活の場面を軸に組み直したカリキュラムの単元</span></p>
+    </div>
+  </div>
 </section>
 <section class="beat">
   <h2 class="beat-title">
@@ -26,9 +38,17 @@
     <span class="t-en">An activity screen used to be a bare position-time graph with no thematic context. The rebuilt version keeps the same underlying simulation, graph and data table, but sets them inside a themed scene — a soccer field instead of an abstract line — so the math stays connected to the story a student is already following.</span>
     <span class="t-jp is-block" lang="ja">改修前の活動画面は、文脈のない裸のグラフだった。作り直した画面は、同じシミュレーション・グラフ・データテーブルをそのまま使いながら、抽象的な線ではなくサッカーの試合場という題材に沿った場面の中に置いた。生徒が追っている物語と、数学がつながったままになる。</span>
   </p>
-  <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/menlomath/Before_Menlo-Math_Before_Page_1.png" alt="Before — bare position-time graph with no thematic context" loading="lazy" width="1600" height="1200">
-    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_04.png" alt="After — soccer-field simulation, position graph, data table and function panel working together" loading="lazy" width="1600" height="1200">
+  <figure class="beat-media" style="--beat-cols: 2; --beat-cols-sm: 2;">
+    <img src="/assets/menlomath/Before_Menlo-Math_Before_Page_1-1600.webp" alt="Before — bare position-time graph for Activity 1.3, no thematic context" loading="lazy" width="1600" height="1201">
+    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_04-1600.webp" alt="After — soccer-field simulation, position graph, data table and function panel working together" loading="lazy" width="1600" height="1200">
+    <img src="/assets/menlomath/Before_Menlo-Math_Before_Page_2-1600.webp" alt="Before — a plain data table of Clara's and Fatima's distance readings beside the graph" loading="lazy" width="1600" height="1201">
+    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_09-1600.webp" alt="After — editing mode: students change Clara's slope and intercept directly in the function panel" loading="lazy" width="1600" height="1200">
+    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_07-1600.webp" alt="Instructions panel beside the activity, with guided questions A through F about Clara's sprint" loading="lazy" width="1600" height="1200">
+    <img src="/assets/menlomath/After_MenloMath_Proto_Final_03_CS6_Page_10-1600.webp" alt="Editing mode switched to Erica, so both runners' functions can be compared" loading="lazy" width="1600" height="1200">
+    <figcaption class="beat-caption">
+      <span class="t-en">Before (left) and after (right) for the activity screen and the data table, then the instructions panel and editing mode from the rebuilt tool.</span>
+      <span class="t-jp" lang="ja">活動画面とデータテーブルの改修前（左）と改修後（右）。その下は、作り直した画面の手順パネルと編集モード。</span>
+    </figcaption>
   </figure>
 </section>
 <section class="beat">
@@ -40,5 +60,27 @@
     <video controls preload="metadata" poster="/assets/menlomath/MenloMath_walkthru-poster.jpg">
       <source src="/assets/menlomath/MenloMath_walkthru.mp4" type="video/mp4">
     </video>
+    <figcaption class="beat-caption">
+      <span class="t-en">A 2 min 32 s walkthrough of the redesigned app.</span>
+      <span class="t-jp" lang="ja">作り直したアプリの操作を、2 分 32 秒で見せる映像。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Worked out on the wall with the curriculum team</span>
+    <span class="t-jp is-block" lang="ja">カリキュラムのチームと、壁の前で詰めた</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">The redesign was workshopped with the SunBay Math curriculum team and product stakeholders: user flows and concept sketches on the wall, requirements mapped on sticky notes, and stakeholder personas drawn by hand.</span>
+    <span class="t-jp is-block" lang="ja">改修の中身は、SunBay Math のカリキュラムのチームや製品の関係者とのワークショップで詰めた。壁に画面の流れとコンセプトのスケッチを貼り、付箋で要件を整理し、関係者の人物像を手で描いた。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2; --beat-cols-sm: 2;">
+    <img src="/assets/menlomath/Workshop_stickynotes-crop.jpg" alt="Close-up of the workshop wall: hand-drawn sketches on orange sticky notes, with the questions “Where in the market it would be” and “How would we fit?”" loading="lazy" width="360" height="210">
+    <img src="/assets/menlomath/Workshop_personas-crop.jpg" alt="A large sheet of hand-drawn stakeholder personas, a CEO and a VP of Product, with short notes under each" loading="lazy" width="460" height="490">
+    <figcaption class="beat-caption">
+      <span class="t-en">From the workshop wall: requirement sketches on sticky notes, and the two stakeholder personas.</span>
+      <span class="t-jp" lang="ja">ワークショップの壁から。付箋に描いた要件のスケッチと、二人の関係者の人物像。</span>
+    </figcaption>
   </figure>
 </section>

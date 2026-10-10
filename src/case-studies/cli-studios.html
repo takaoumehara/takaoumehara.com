@@ -1,16 +1,62 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/cli-studios.json. -->
+<!-- Body beats only (0–5). Teaser, name, one-liner, Challenge | Solution and Role / Year / Client come from src/data/projects/cli-studios.json.
+     Sources: current main; PR #29 (a721d7f) for the before/after boards, the heuristic-evaluation boards and the 13-page design system; the legacy page and 7935e48 for the third rejected path, the interaction flow and the retrospective (EN+JP); today's D-product assessment. heuristics-*.png/jpg are the CLI heuristic-evaluation boards (git e1c14c9^ assets/cli-studios/Heuristics_Evaluation_Heuristics*.png), resized; heavy PNGs are shown as 1600 px WebP copies.
+     Left out on purpose: the 25% dev-time figure (a projection, unverified; not stated as fact), the "No AI in the room" line (awaiting confirmation), the before/after YouTube films (status unknown, no new components), design-system parts -10 (not reviewed). Only the retrospective points that do not rest on a number are kept. -->
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">Every core screen, before and after</span>
+    <span class="t-jp is-block">主要画面を、全て前後で並べる</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Login, Home, Discover, Library, My Pick — the same journey, restructured: full-page views instead of modals, distinct card designs per content type, and a back button that always means something.</span>
+    <span class="t-jp is-block">ログイン、Home、Discover、Library、My Pick。同じ導線を、モーダルではなく全画面表示に、コンテンツの種類ごとに異なるカードデザインに組み直した。戻るボタンは、常に意味のある場所に戻る。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/cli-studios/Before_and_After__Home-1600.webp" alt="Before and after comparison of the Home screen, with notes on each new section" loading="lazy" width="1079" height="1600">
+    <img src="/assets/cli-studios/Before_and_After_Discover-1600.webp" alt="Before and after comparison of the new Discover screen" loading="lazy" width="1070" height="1600">
+    <img src="/assets/cli-studios/Before_and_After_Library_(1)-1600.webp" alt="Before and after comparison of the Library screen with Learning Paths" loading="lazy" width="1070" height="1600">
+    <img src="/assets/cli-studios/Before_and_After__My_Pick-1600.webp" alt="Before and after comparison of My Pick, including the flow for creating a playlist" loading="lazy" width="1079" height="1600">
+    <img src="/assets/cli-studios/Before_and_After_login-1600.webp" alt="Before and after comparison of the login screen" loading="lazy" width="1600" height="878">
+    <figcaption class="beat-caption">
+      <span class="t-en">Home, Discover, Library, My Pick and login, each shown before (left) and after (right).</span>
+      <span class="t-jp">Home、Discover、Library、My Pick、ログイン。それぞれ左が改修前、右が改修後。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">The diagnosis, on paper</span>
+    <span class="t-jp is-block">診断を、紙の上に残す</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">A heuristic evaluation against Nielsen’s 10 principles surfaced the five problems: poor information architecture, content types that looked the same, confusing navigation, poor visual clarity and modal overload. Each screen of the old app was marked up issue by issue, with a severity and a suggested fix.</span>
+    <span class="t-jp is-block">Nielsen の 10 原則にもとづくヒューリスティック評価で、5 つの問題が見えた。情報構造の弱さ、見分けのつかないコンテンツの種類、迷うナビゲーション、見た目の分かりにくさ、そしてモーダルの多用。旧アプリの画面ごとに問題を書き込み、重要度と改善案を添えた。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/cli-studios/heuristics-home-navigation-1600.webp" alt="Heuristic evaluation of the old Home and Explore screens: notes on inconsistent navigation, small type, a misleading image card and unclear UX writing" loading="lazy" width="1600" height="952">
+    <img src="/assets/cli-studios/heuristics-card-types-1600.webp" alt="Heuristic evaluation of the old card types, marking inconsistent labels and poor readability" loading="lazy" width="1600" height="952">
+    <img src="/assets/cli-studios/heuristics-modals-1600.webp" alt="Heuristic evaluation of stacked sheets and sections, with a suggestion to convert modals to full pages" loading="lazy" width="1600" height="952">
+    <img src="/assets/cli-studios/heuristics-courses-1600.webp" alt="Heuristic evaluation of the old Courses flow" loading="lazy" width="1600" height="952">
+    <img src="/assets/cli-studios/heuristics-collections-1600.webp" alt="Heuristic evaluation of Collections, suggesting they be renamed Playlists and pointing out a long, overloaded list" loading="lazy" width="1600" height="952">
+    <img src="/assets/cli-studios/heuristics-collections-detail-1600.webp" alt="Heuristic evaluation of the Collections detail flow" loading="lazy" width="1600" height="952">
+    <img src="/assets/cli-studios/Interaction_Flow-1600.webp" alt="CLI Studios interaction flow: a site map of the app's screens and how they connect" loading="lazy" width="1600" height="1185" style="grid-column: 1 / -1;">
+    <figcaption class="beat-caption">
+      <span class="t-en">The heuristic evaluation, screen by screen, and the interaction flow that shaped the structural answer.</span>
+      <span class="t-jp" lang="ja">画面ごとのヒューリスティック評価と、構造の答えを形づくった画面遷移図。</span>
+    </figcaption>
+  </figure>
+</section>
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">The wireframes that replaced the modal stack</span>
     <span class="t-jp is-block" lang="ja">モーダルの積み重ねを、4 セクションの構造に描き直す</span>
   </h2>
   <p class="beat-text">
-    <span class="t-en">The old app had no top level worth navigating — every content type opened another modal on top of the last. The rebuild gave it four peer sections, named the way users already think about the content: Home, Discover, Library (sequential Learning Paths) and My Pick (curated Playlists).</span>
-    <span class="t-jp is-block" lang="ja">旧アプリには、辿る価値のある最上位の構造がなかった。コンテンツを開くたび、また別のモーダルが上に重なっていく。作り直した構造では、Home・Discover・Library（順序立てた Learning Path）・My Pick（選び抜いた Playlist）という、ユーザーがすでに持っている感覚に合わせた 4 つの対等なセクションにした。</span>
+    <span class="t-en">The old app had no top level worth navigating — every content type opened another modal on top of the last. The rebuild gave it four peer sections, named the way users already think about the content: Home, Discover, Library (sequential Learning Paths) and My Pick (curated Playlists). Before: Home, then a Courses modal, a Course detail modal and a video player modal, three layers deep with no consistent way back. After: full-page views throughout, so every screen has a parent and back always means something.</span>
+    <span class="t-jp is-block" lang="ja">旧アプリには、辿る価値のある最上位の構造がなかった。コンテンツを開くたび、また別のモーダルが上に重なっていく。作り直した構造では、Home・Discover・Library（順序立てた Learning Path）・My Pick（選び抜いた Playlist）という、ユーザーがすでに持っている感覚に合わせた 4 つの対等なセクションにした。以前は Home から Courses、Course 詳細、動画プレイヤーと、モーダルが 3 層も続き、確実に戻る道がなかった。今は全画面表示で、どの画面にも親がある。だから「戻る」が、いつでも意味を持つ。</span>
   </p>
   <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/cli-studios/Sketch_(1).png" alt="Wireframe sketch of the global navigation: Home, Discover, Library, My Pick" loading="lazy" width="1600" height="1200">
-    <img src="/assets/cli-studios/Sketch_(2).png" alt="Wireframe sketch of content types and component design: Paths, Classes, Playlists" loading="lazy" width="1600" height="1200">
+    <img src="/assets/cli-studios/Sketch_(1)-1600.webp" alt="Wireframe sketch of the global navigation: Home, Discover, Library, My Pick" loading="lazy" width="1600" height="952">
+    <img src="/assets/cli-studios/Sketch_(2)-1600.webp" alt="Wireframe sketch of content types and component design: Paths, Classes, Playlists" loading="lazy" width="1600" height="952">
     <figcaption class="beat-caption">
       <span class="t-en">Early wireframes for the four-section architecture and its component system.</span>
       <span class="t-jp" lang="ja">4 セクション構造と部品システムの、初期のワイヤーフレーム。</span>
@@ -33,24 +79,49 @@
 </section>
 <section class="beat">
   <h2 class="beat-title">
-    <span class="t-en">Every core screen, before and after</span>
-    <span class="t-jp is-block" lang="ja">主要画面を、全て前後で並べる</span>
+    <span class="t-en">13 pages that outlive the redesign</span>
+    <span class="t-jp is-block">改修のあとにも残る、13 ページ</span>
   </h2>
   <p class="beat-text">
-    <span class="t-en">Login, Home, Discover, Library, My Pick — the same journey, restructured: full-page views instead of modals, distinct card designs per content type, and a back button that always means something.</span>
-    <span class="t-jp is-block" lang="ja">ログイン、Home、Discover、Library、My Pick。同じ導線を、モーダルではなく全画面表示に、コンテンツの種類ごとに異なるカードデザインに組み直した。戻るボタンは、常に意味のある場所に戻る。</span>
+    <span class="t-en">The delivered design system documents 125+ components, interaction patterns and accessibility specs, so future builds reuse instead of reinvent.</span>
+    <span class="t-jp is-block">納品したデザインシステムには、125 を超える部品、操作パターン、アクセシビリティの仕様をまとめた。次に何かをつくるとき、一から考え直さずに使い回せるように。</span>
   </p>
-  <figure class="beat-media">
-    <img src="/assets/cli-studios/Before_and_After__Home.png" alt="Before and after comparison of the Home screen" loading="lazy" width="1600" height="900">
+  <figure class="beat-media" style="--beat-cols: 4; --beat-cols-sm: 2;">
+    <img src="/assets/cli-studios/Design_System_Parts-1.png" alt="Design system page: colors" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-11.png" alt="Design system page: typography" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-12.png" alt="Design system page: card components for classes, playlists and learning paths" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-2.png" alt="Design system page: gradient photo overlay" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-6.png" alt="Design system page: background blur" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-9-1600.webp" alt="Design system page: photography" loading="lazy" width="1366" height="1600">
+    <img src="/assets/cli-studios/Design_System_Parts-7.png" alt="Design system page: buttons" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-8.png" alt="Design system page: navigation bars" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-3.png" alt="Design system page: headers" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-4.png" alt="Design system page: labels" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts-5.png" alt="Design system page: icons" loading="lazy" width="1511" height="1770">
+    <img src="/assets/cli-studios/Design_System_Parts.png" alt="Design system page: grid system" loading="lazy" width="1511" height="1770">
+    <figcaption class="beat-caption">
+      <span class="t-en">Twelve of the thirteen design system pages.</span>
+      <span class="t-jp">デザインシステム全 13 ページのうち 12 ページ。</span>
+    </figcaption>
   </figure>
 </section>
 <section class="beat">
   <h2 class="beat-title">
-    <span class="t-en">Two paths rejected, on the record</span>
-    <span class="t-jp is-block" lang="ja">採らなかった 2 つの道を、理由ごと残す</span>
+    <span class="t-en">Three paths rejected, on the record</span>
+    <span class="t-jp is-block" lang="ja">採らなかった 3 つの道を、理由ごと残す</span>
   </h2>
   <p class="beat-text">
-    <span class="t-en">A visual refresh alone would have looked like progress fastest, but every problem traced to the architecture — a surface pass would have returned all five on a different screen. Improving the modals instead of removing them breaks nothing already built, but the modals were the cause, not the symptom: improved modals are still modals.</span>
-    <span class="t-jp is-block" lang="ja">見た目だけの刷新なら、一番早く「前進した」ように見せられた。しかし 5 つの不満はすべて構造に起因していたので、表面だけ直せば、また別の画面で同じ 5 つが再発する。モーダルを直す案は、既存のものを何も壊さずに済むが、モーダルこそが原因であって症状ではない。直したところで、モーダルはモーダルのままだ。</span>
+    <span class="t-en">A visual refresh alone would have looked like progress fastest, but every problem traced to the architecture — a surface pass would have returned all five on a different screen. Improving the modals instead of removing them breaks nothing already built, but the modals were the cause, not the symptom: improved modals are still modals. Fixing the five problems one by one is defensible, and it would have closed every ticket, but it would also have produced five unrelated patches, with no single decision running through them and no design system at the end.</span>
+    <span class="t-jp is-block" lang="ja">見た目だけの刷新なら、一番早く「前進した」ように見せられた。しかし 5 つの不満はすべて構造に起因していたので、表面だけ直せば、また別の画面で同じ 5 つが再発する。モーダルを直す案は、既存のものを何も壊さずに済むが、モーダルこそが原因であって症状ではない。直したところで、モーダルはモーダルのままだ。5 つの問題を 1 つずつ直す案も、筋は通る。チケットは全部閉じられる。ただし出来上がるのは、バラバラな 5 つの当て板だ。全体を貫く判断も、最後に残るデザインシステムも生まれない。</span>
+  </p>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">What is still open</span>
+    <span class="t-jp is-block" lang="ja">まだ決着していないこと</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Starting from structure means weeks with no screens to show. This engagement had room for that, and I do not yet have a good answer for winning the same argument where it does not. And a design system is only a system once someone uses it: 13 pages and 125+ components are a document until the next build reaches for them, and that happens after handoff.</span>
+    <span class="t-jp is-block" lang="ja">構造から入ると、見せられる画面がない期間が数週間続く。この案件にはその余地があった。余地のない現場で同じ判断をどう通すか、まだ良い答えを持っていない。もう一つ。デザインシステムは、使われて初めてシステムになる。13 ページと 125 以上の部品は、次の開発が手を伸ばすまで、ただの資料だ。使われ始めるのは、納品のあとになる。</span>
   </p>
 </section>
