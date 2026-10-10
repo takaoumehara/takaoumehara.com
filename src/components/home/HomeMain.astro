@@ -1,0 +1,30 @@
+---
+// Home: showcase → short introduction → Updates. Shared with /ja/.
+import AboutIntro from "./AboutIntro.astro";
+import HomeHero from "./HomeHero.astro";
+import HomeNews from "./HomeNews.astro";
+import { NEWS, SHOWCASE } from "../../data/news.mjs";
+
+interface Props { lib: any }
+const { lib } = Astro.props;
+---
+<main class="cat-page grid-home" data-category="home">
+  <HomeHero lib={lib} order={SHOWCASE} />
+  <AboutIntro lib={lib} />
+  <h2 class="home-updates-heading">
+    <span class="t-en">Updates</span>
+    <span class="t-jp" lang="ja">最近の更新</span>
+  </h2>
+  <HomeNews lib={lib} news={NEWS} />
+</main>
+
+<style>
+  .home-updates-heading {
+    margin: 0;
+    padding: var(--cell-pad);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--ink);
+  }
+</style>

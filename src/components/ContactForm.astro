@@ -1,0 +1,82 @@
+<form class="contact-form" action="/api/contact" method="post" data-contact-form>
+  <div class="contact-form-heading"><span aria-hidden="true">✉</span><h3><span class="t-en">Say hello</span><span class="t-jp" lang="ja">気軽にメッセージを</span></h3></div>
+  <p class="form-note"><span class="t-en">A role, a project, or an idea you’d like to explore together.</span><span class="t-jp" lang="ja">採用、プロジェクト、一緒に考えてみたいアイデアなど。</span></p>
+  <div class="contact-fields">
+    <label><span class="t-en">Your name</span><span class="t-jp" lang="ja">お名前</span><input name="name" autocomplete="name" required maxlength="100" /></label>
+    <label><span class="t-en">Your email</span><span class="t-jp" lang="ja">返信先メールアドレス</span><input name="email" type="email" autocomplete="email" required maxlength="254" /></label>
+  </div>
+  <label><span class="t-en">What’s on your mind?</span><span class="t-jp" lang="ja">どんなことを話したいですか？</span><textarea name="message" required maxlength="5000" rows="5"></textarea></label>
+  <div class="contact-trap" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off" /></label></div>
+  <input type="hidden" name="requestId" />
+  <div class="contact-submit-row"><button type="submit"><span class="t-en">Send message →</span><span class="t-jp" lang="ja">メッセージを送る →</span></button><p class="form-note"><span class="t-en">Your details are used only to reply to your message.</span><span class="t-jp" lang="ja">入力した情報は、このメッセージへの返信に使います。</span></p></div>
+  <p class="contact-status" role="status" aria-live="polite" tabindex="-1"></p>
+  <noscript><p><span class="t-en">The form opens a confirmation page after you submit.</span><span class="t-jp" lang="ja">送信後、結果を別のページに表示します。</span></p></noscript>
+</form>
+<script>
+function initContact() {
+  document.querySelectorAll<HTMLFormElement>('[data-contact-form]').forEach(form => {
+    if (form.dataset.bound) return;
+    form.dataset.bound = 'true';
+    const status = form.querySelector<HTMLElement>('.contact-status')!;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+    const id = form.querySelector<HTMLInputElement>('[name="requestId"]')!;
+    const language = () => document.documentElement.lang.startsWith('ja') || document.documentElement.classList.contains('lang-jp');
+    const say = (en: string, jp: string) => language() ? jp : en;
+    id.value = crypto.randomUUID();
+    form.addEventListener('input', () => { id.value = crypto.randomUUID(); });
+    form.addEventListener('submit', async event => {
+      event.preventDefault();
+      if (button.disabled) return;
+      button.disabled = true;
+      form.setAttribute('aria-busy', 'true');
+      status.textContent = say('Sending…', '送信しています…');
+      status.dataset.state = 'loading';
+      try {
+        const response = await fetch('/api/contact', { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+        const result = await response.json();
+        if (!response.ok || !result.ok) throw new Error(String(response.status));
+        form.reset();
+        id.value = crypto.randomUUID();
+        status.dataset.state = 'success';
+        status.textContent = say('Thanks — your message is on its way.', 'ありがとうございます。メッセージを送信しました。');
+      } catch (error) {
+        const code = error instanceof Error ? error.message : '';
+        status.dataset.state = 'error';
+        status.textContent = code === '503'
+          ? say('The message form is temporarily unavailable. Please contact me on LinkedIn below.', '現在フォームを利用できません。下の LinkedIn からご連絡ください。')
+          : code === '429'
+            ? say('Please wait a minute before trying again. Your message is still here.', '少し時間を置いて、もう一度お試しください。入力内容は残っています。')
+            : say('Your message could not be sent. Your text is saved here — please try again, or use LinkedIn below.', '送信できませんでした。入力内容は残っています。再送するか、下の LinkedIn からご連絡ください。');
+      } finally {
+        button.disabled = false;
+        form.removeAttribute('aria-busy');
+        status.focus();
+      }
+    });
+  });
+}
+initContact();
+document.addEventListener('astro:page-load', initContact);
+</script>
+<style>
+.contact-form { margin-top: var(--sp-6); padding: var(--cell-pad); border-radius: var(--r); background: var(--pr-canvas); }
+.contact-form-heading { display: flex; align-items: center; gap: var(--sp-2); }
+.contact-form-heading > span { font-size: var(--text-display); }
+h3 { margin: 0; font-size: var(--text-lg); }
+.form-note { color: var(--ink-dim); font-size: var(--text-sm); line-height: 1.5; }
+.contact-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-3); }
+label { display: block; margin-top: var(--sp-3); font-size: var(--text-body); }
+input, textarea { box-sizing: border-box; display: block; width: 100%; min-height: 44px; margin-top: var(--sp-1); padding: var(--sp-2); font: inherit; color: var(--ink); background: var(--pr-card); border: 1px solid var(--pr-line); border-radius: var(--r); }
+textarea { resize: vertical; }
+input:focus-visible, textarea:focus-visible, button:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 4px; }
+.contact-submit-row { display: flex; align-items: center; flex-wrap: wrap; gap: var(--sp-3); margin-top: var(--sp-3); }
+button { min-height: 44px; padding: var(--sp-2) var(--sp-4); border: 0; border-radius: var(--r-pill); background: var(--pr-card); color: var(--ink); font: inherit; cursor: pointer; }
+button:hover { background: var(--pr-card-2); }
+button:active { transform: scale(.98); }
+button:disabled { cursor: wait; color: var(--ink-dim); }
+.contact-status { font-size: var(--text-body); line-height: 1.5; margin-bottom: 0; }
+.contact-status:empty { display: none; }
+.contact-status[data-state="success"] { color: var(--pr-live); }
+.contact-trap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+@media(max-width: 640px) { .contact-fields { grid-template-columns: 1fr; } }
+</style>

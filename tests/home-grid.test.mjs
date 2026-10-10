@@ -20,12 +20,29 @@ for (const c of categories) for (const g of c.groups) for (const id of g.items) 
 
 const cards = (html) => [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]*"[\s\S]*?<\/article>/g)].map((m) => m[0]);
 
-test("the home page opens with the canonical headline", () => {
-  const html = read("index.html");
-  assert.match(
-    html,
-    /class="grid-headline"[^>]*><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/,
-  );
+// The right pane opens with the About block (portrait, name, positioning,
+// career summary, Resume / LinkedIn / Contact), then Now, the showcase and
+// the Updates bento. The old hero card ("Creative Director · Interactive
+// Media Designer …" / "I turn ambiguous ideas into …" + a row of links) that
+// used to open the news bento is gone; only the rail's About card still
+// carries the positioning line.
+const mainOf = (html) => html.match(/<main\b[\s\S]*?<\/main>/)?.[0] ?? "";
+
+test("the home page opens with the showcase, short intro and Updates", () => {
+  for (const file of ["index.html", "ja/index.html"]) {
+    const main = mainOf(read(file));
+    assert.ok(main, `${file} needs a <main>`);
+    const order = ["home-hero", "about-intro", "home-updates-heading", "home-news"].map((cls) => main.search(new RegExp(`class="[^"]*\\b${cls}\\b`)));
+    assert.ok(order.every((i) => i >= 0), `${file}: About, Now, showcase, Updates heading and news must all render`);
+    assert.deepEqual([...order].sort((a, b) => a - b), order, `${file}: About → Now → showcase → Updates → news`);
+    assert.match(main, /Principal Product Designer &(amp;)? AI Product Builder/);
+    assert.ok(!main.includes("hn-info"), `${file}: the old basic-info card must be gone from the news bento`);
+    assert.ok(main.includes("I turn ambiguous ideas into brands, products, and experiences"));
+    assert.ok(!main.includes("TakaoUmehara_passport"));
+    assert.ok(!main.includes("home-now"));
+    assert.ok(!main.includes("takao-umehara-resume.pdf"));
+    assert.ok(!main.includes("Creative Director · Interactive Media Designer"), `${file}: the old tagline card must not be in the right pane`);
+  }
 });
 
 test("the home page no longer carries the 'All work' grid or its filter row — that moved to /work", () => {
@@ -38,29 +55,48 @@ test("the home page no longer carries the 'All work' grid or its filter row — 
 test("the home page's news bento is the only work under the hero, and every card is a bento cell", () => {
   const html = read("index.html");
   const hnCards = [...html.matchAll(/<article class="[^"]*\bhn-card\b[^"]*"/g)];
-  assert.ok(hnCards.length >= 2, "HomeNews must render the info card plus at least one article");
+  assert.ok(hnCards.length >= 2, "HomeNews must render the release articles");
   for (const m of hnCards) {
     assert.match(m[0], /\bbento-cell\b/, "every HomeNews card must carry .bento-cell (the shared cell token)");
   }
 });
 
-test("/work carries the four canonical filters (All, Interactive, AI, Design), each with a real count", () => {
+test("/work carries the five canonical filters (All, Product, AI, Interactive, Tools), each with a real count", () => {
   const html = read("work.html");
   const filters = html.match(/<div class="work-filters"[^>]*>[\s\S]*?<\/div>/)?.[0];
   assert.ok(filters, "work.html needs the filter row");
-  const expectedFilters = ["all", "interactive", "ai", "design"];
+  const expectedFilters = ["all", "product", "ai", "interactive", "tools"];
   for (const f of expectedFilters) assert.match(filters, new RegExp(`data-filter="${f}"`), `filter row missing ${f}`);
   const counts = [...filters.matchAll(/class="filter-count"[^>]*>(\d+)</g)].map((m) => Number(m[1]));
-  assert.equal(counts.length, expectedFilters.length, "one count per pill: All, Interactive, AI, Design");
+  assert.equal(counts.length, expectedFilters.length, "one count per pill: All, Product, AI, Interactive, Tools");
   assert.ok(counts.every((n) => n > 0), "every filter count must be a real number, not zero");
   assert.equal(counts[0], gridIds.size, `the All count must be ${gridIds.size} (every deduplicated grid item)`);
 
-  const catMap = new Map(categories.map((c) => [c.slug, c]));
-  const groupCount = (slug) => catMap.get(slug)?.groups.reduce((n, g) => n + g.items.length, 0) ?? 0;
-  const [, interactiveCount, aiCount, designCount] = counts;
-  assert.equal(interactiveCount, groupCount("interactive"), "Interactive count must match the interactive category");
-  assert.equal(aiCount, groupCount("ai-products") + groupCount("ai-tools"), "AI count must combine ai-products + ai-tools");
-  assert.equal(designCount, groupCount("brand") + groupCount("work"), "Design count must combine brand + work");
+  // Each item gets exactly ONE primary filter (src/pages/work.astro's
+  // FILTER_PRECEDENCE: ai-products → AI, ai-tools → Tools, interactive →
+  // Interactive, work / brand → Product), so the four counts add up to All
+  // even though the category data files some items under two categories.
+  const membership = new Map();
+  for (const c of categories) for (const g of c.groups) for (const id of g.items) {
+    if (!membership.has(id)) membership.set(id, new Set());
+    membership.get(id).add(c.slug);
+  }
+  const PRECEDENCE = [["ai-products", "ai"], ["ai-tools", "tools"], ["interactive", "interactive"], ["work", "product"], ["brand", "product"]];
+  const expected = { product: 0, ai: 0, interactive: 0, tools: 0 };
+  for (const cats of membership.values()) expected[PRECEDENCE.find(([slug]) => cats.has(slug))[1]] += 1;
+  const [all, productCount, aiCount, interactiveCount, toolsCount] = counts;
+  assert.equal(productCount + aiCount + interactiveCount + toolsCount, all, "the four filter counts must add up to All");
+  assert.deepEqual({ product: productCount, ai: aiCount, interactive: interactiveCount, tools: toolsCount }, expected);
+
+  // Every tile carries exactly one of the four filter ids.
+  const tileFilters = cards(html).map((card) => card.match(/\bdata-filter="([^"]+)"/)?.[1]);
+  assert.ok(tileFilters.every((f) => ["product", "ai", "interactive", "tools"].includes(f)), "every /work tile needs one primary data-filter");
+  for (const id of Object.keys(expected)) assert.equal(tileFilters.filter((f) => f === id).length, expected[id], `${id} tiles must match its count`);
+
+  // Verizon AI Workflow stays filed under both work and ai-products (the rail
+  // and /product-design list it) but is counted once, under AI.
+  assert.ok(membership.get("verizon-ai-workflow")?.has("work"), "verizon-ai-workflow must stay in src/categories/work.json");
+  assert.ok(membership.get("verizon-ai-workflow")?.has("ai-products"), "verizon-ai-workflow must stay in ai-products");
 });
 
 test("/work renders one tile per public item across every category, each carrying data-category and .bento-cell — the free grid", () => {

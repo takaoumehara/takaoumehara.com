@@ -3,20 +3,20 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { read, exists } from "./_dist.mjs";
 
-test("All work is one canonical fullscreen page at /work, and /all/ redirects to it", () => {
+test("Work is one canonical page with the left rail at /work, and /all/ redirects to it", () => {
   assert.ok(exists("work.html"), "work.html must exist — it is the canonical archive");
   const html = read("work.html");
 
   // Fullscreen: body.work-fullscreen drops the rail and collapses the shell to
   // one column (src/styles/shell.css).
-  assert.match(html, /<body class="work-fullscreen">/, "the archive must render fullscreen, without the left rail");
+  assert.match(html, /<body class="work-with-rail">/, "the archive must preserve the left rail");
 
   const cards = [...html.matchAll(/<article class="[^"]*\bcat-card\b[^"]*"/g)];
   assert.ok(cards.length > 30, `the archive must render the work grid (got ${cards.length} cards)`);
   assert.ok(!html.includes("Kanji Puzzle"), "Kanji Puzzle must be hidden from the archive");
 
-  // The four canonical discipline filters of the current IA.
-  for (const f of ["all", "interactive", "ai", "design"]) {
+  // The five canonical discipline filters: All, Product, AI, Interactive, Tools
+  for (const f of ["all", "product", "ai", "interactive", "tools"]) {
     assert.match(html, new RegExp(`data-filter="${f}"`), `Filter tab ${f} must exist`);
   }
 
@@ -89,7 +89,7 @@ test("Workshops page is centered around Break Bias with 4 use cases and studio r
 
 test("About page uses updated professional descriptor", () => {
   const html = read("about.html");
-  assert.match(html, /Creative Director · Interactive Media Designer · 0→1 Product &amp; Business Builder/);
+  assert.match(html, /Principal Product Designer &amp; AI Product Builder/);
 });
 
 test("Publications page uses refined hero title", () => {
@@ -149,9 +149,10 @@ test("Homepage headline leads with concrete high-business-value executive capabi
   const index = read("index.html");
   const jaIndex = read("ja/index.html");
 
-  // The image grid (src/pages/index.astro) leads with profile.positioning[1].
-  assert.match(index, /class="grid-headline"[^>]*><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
-  assert.match(jaIndex, /class="grid-headline"[^>]*><span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
+  // The rail's About card carries profile.positioning[1] on every page (the
+  // home right pane now opens with the About block instead).
+  assert.match(index, /<span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
+  assert.match(jaIndex, /<span class="t-en">I turn ambiguous ideas into interactive experiences, working AI prototypes, and 0→1 products\.<\/span>/);
   assert.match(jaIndex, /曖昧なアイデアを、実際に触れる体験や、動く AI プロトタイプ、0→1 のプロダクトにする。/);
 
   // The canonical lens (lens/default/index.html) still leads with the same

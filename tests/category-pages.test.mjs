@@ -62,12 +62,13 @@ test("one h1 per page, and the sidebar lists every section open with this one ma
   for (const c of categories) {
     const html = read(c.output);
     assert.equal([...html.matchAll(/<h1\b/gi)].length, 1, `${c.output}: exactly one h1`);
-    // The rail lists every section open (the reference shows everything);
-    // nothing in it is marked current on a category page except the
-    // category's own rows are reachable.
-    const groups = [...html.matchAll(/<details class="side-group"( open)?>/g)];
+    // The rail shows every section, with the current category's group open (exclusive accordion).
+    // On category pages, that category's group is automatically open.
+    const groups = [...html.matchAll(/<div class="side-group"[^>]*>/g)];
     assert.equal(groups.length, 5, `${c.output}: five groups`);
-    assert.ok(groups.every((m) => m[1]), `${c.output}: every group open`);
+    // Check that at least one group has aria-expanded="true" (the current category)
+    const openGroups = [...html.matchAll(/<button[^>]*class="side-group-header"[^>]*aria-expanded="true"/g)];
+    assert.ok(openGroups.length >= 1, `${c.output}: at least one group open`);
     const title = typeof c.title === "string" ? c.title : c.title.en;
     assert.ok(html.includes(`<span class="t-en">${title.replace(/&/g, "&amp;")}</span>`), `${c.output}: the rail names "${title}"`);
   }

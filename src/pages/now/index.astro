@@ -1,24 +1,46 @@
 ---
-// The Lab Bench at /now/: active ventures, prototypes and tools in motion.
-// The old build also wrote now.html; that address now redirects here
-// (vercel.json) — Astro treats now.html and now/ as one route.
+// /now and /now/ permanently redirect to the home page's Now section, /about#now
+// (vercel.json). This page is kept only as the build target for the bare URL
+// on hosts without those redirects (astro preview, a static mirror), and it
+// renders the same shared NowList as the home Now section and About's #now
+// cell, from the same src/data/now.json summary[] — so it cannot contradict
+// them — plus a link to /about#now. public/now.html (the older alias) points at
+// /about#now too.
 import Site from "../../layouts/Site.astro";
-import NowPage from "../../components/now/NowPage.astro";
+import NowList from "../../components/now/NowList.astro";
 import { getLibrary } from "../../lib/site.mjs";
+import { formatNowUpdated } from "../../data/about.mjs";
 
 const lib = getLibrary();
-const nowData = lib.now;
-
-const seo = {
-  title: "Now — Takao Umehara",
-  description: "Active ventures, running prototypes, and open-source tools currently on Takao Umehara's desk.",
-};
+const updated = formatNowUpdated(lib.now.updatedAt);
 ---
 <Site
-  title={seo.title}
-  description={seo.description}
-  canonical="https://takaoumehara.com/now"
+  title="Now — Takao Umehara"
+  description="What Takao Umehara has been working on lately."
+  canonical="https://takaoumehara.com/about#now"
   current="/now/"
+  noindex
 >
-  <NowPage nowData={nowData} />
+  <main class="now-legacy bento-cell">
+    <h1 class="now-legacy-title">
+      <span class="t-en">Now — what I've been working on lately</span>
+      <span class="t-jp" lang="ja">Now — 最近取り組んでいること</span>
+    </h1>
+    <p class="now-legacy-date">
+      <span class="t-en">Updated {updated.en}</span>
+      <span class="t-jp" lang="ja">{updated.jp}更新</span>
+    </p>
+    <NowList lib={lib} />
+    <p class="now-legacy-home">
+      <a href="/about#now"><span class="t-en">This list lives on About →</span><span class="t-jp" lang="ja">このリストは About にあります →</span></a>
+    </p>
+  </main>
 </Site>
+
+<style>
+  .now-legacy { margin: var(--pane-pad) var(--pane-pad) var(--pane-pad) 0; padding: var(--cell-pad); background: var(--pr-card); border-radius: var(--r); }
+  .now-legacy-title { margin: 0 0 var(--sp-1); font-size: var(--text-lg); font-weight: var(--fw-display); line-height: 1.25; color: var(--pr-ink); }
+  .now-legacy-date { margin: 0 0 var(--sp-4); font-size: var(--text-xs); color: var(--pr-ink-2); font-variant-numeric: tabular-nums; }
+  .now-legacy-home { margin: var(--sp-5) 0 0; }
+  .now-legacy-home a { display: inline-flex; align-items: center; min-height: 44px; color: var(--pr-blue); }
+</style>

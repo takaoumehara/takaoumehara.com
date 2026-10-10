@@ -1,0 +1,44 @@
+---
+// The home page's Now section (id="now" — /now redirects here, vercel.json).
+// Same source as About's #now cell: src/data/now.json summary[] through the
+// shared NowList (first 4 bullets here), and the same "Updated <Mon YYYY>"
+// label from now.json updatedAt (formatNowUpdated, src/data/about.mjs).
+import NowList from "../now/NowList.astro";
+import { formatNowUpdated } from "../../data/about.mjs";
+
+interface Props { lib: any }
+const { lib } = Astro.props;
+const updated = lib.now?.updatedAt ? formatNowUpdated(lib.now.updatedAt) : null;
+---
+{lib.now?.summary?.length > 0 && (
+<section class="home-now bento-cell" id="now" aria-labelledby="home-now-title">
+  <h2 class="home-now-title" id="home-now-title">
+    <span class="t-en">Now — what I've been working on lately</span>
+    <span class="t-jp" lang="ja">Now — 最近取り組んでいること</span>
+  </h2>
+  {updated && (
+    <p class="home-now-date">
+      <span class="t-en">Updated {updated.en}</span>
+      <span class="t-jp" lang="ja">{updated.jp}更新</span>
+    </p>
+  )}
+  <NowList lib={lib} limit={4} />
+</section>
+)}
+
+<style>
+  .home-now { padding: var(--cell-pad); scroll-margin-top: var(--sp-3); }
+  .home-now-title {
+    margin: 0 0 var(--sp-1);
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--pr-ink);
+  }
+  .home-now-date {
+    margin: 0 0 var(--sp-4);
+    font-size: var(--text-xs);
+    color: var(--pr-ink-2);
+    font-variant-numeric: tabular-nums;
+  }
+</style>

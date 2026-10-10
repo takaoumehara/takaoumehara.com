@@ -1,7 +1,7 @@
 ---
 // The left rail, a precision directory of the work: controls (all work ·
 // search · theme · language), the wordmark over a system index (how many
-// works, how many disciplines, the advisory status), an About card, then every
+// works, how many disciplines, the "Open to full-time" status), an About card, then every
 // piece of work grouped by category (src/categories/*.json) as rows with a
 // 64px tile or a mono tag badge.
 //
@@ -21,7 +21,7 @@ const profile = lib.profile;
 const categories = orderedCategories();
 
 // Person pages consolidated into /about
-// Work archive is no longer in sidebar per IA redesign
+// All Work sits immediately above the category directory.
 
 const matches = (page) => page.match ?? [page.href];
 const isCurrent = (page) => matches(page).some((p) => samePage(p, current));
@@ -35,8 +35,16 @@ const groups = categories.map((category) => {
       const here = to && !to.external && samePage(to.url, current);
       return { item, to, href, here };
     });
-  return { category, items };
+  // Auto-open category if it's the current page or contains the current item
+  const isCategoryPage = samePage(`/${category.output}`, current);
+  const containsCurrentItem = items.some(({ here }) => here);
+  const shouldOpen = isCategoryPage || containsCurrentItem;
+  return { category, items, shouldOpen };
 });
+// The accordion is exclusive: at most one category starts open (the first
+// that matches this page).
+const firstOpen = groups.findIndex(({ shouldOpen }) => shouldOpen);
+groups.forEach((g, i) => { g.shouldOpen = i === firstOpen; });
 
 // The rail head's system index: how many distinct pieces of work the rail
 // lists (a piece filed under two categories counts once) and in how many
@@ -53,7 +61,7 @@ const odo = (n) => `<span class="odo">${Number(n) || 0}</span>`;
 // the first paint, whether the rail and the pane will play their loading
 // sequence (src/data/motion.json; the Motion Lab's working copy overrides it
 // while the lab is open in the tab).
-const moGate = { enabled: MOTION.global.enabled, runOn: MOTION.global.runOn, railPlayOn: MOTION.rail.playOn };
+const moGate = { enabled: MOTION.global.enabled && MOTION.global.engine === "legacy", runOn: MOTION.global.runOn, railPlayOn: MOTION.rail.playOn };
 
 // A row is named, not described: the Latin short name in both languages.
 // Resona stays "Resona" in the Japanese edition, the way a studio site keeps
@@ -122,7 +130,7 @@ const thumb = (item) => {
         if (sessionStorage.getItem("tu-lab") === "1") {
           var lab = JSON.parse(localStorage.getItem("tu-motion-lab") || "null");
           if (lab && lab.global) {
-            if (typeof lab.global.enabled === "boolean") gate.enabled = lab.global.enabled;
+            gate.enabled = lab.global.enabled !== false && lab.global.engine === "legacy";
             if (lab.global.runOn) gate.runOn = lab.global.runOn;
           }
           if (lab && lab.rail && lab.rail.playOn) gate.railPlayOn = lab.rail.playOn;
@@ -140,22 +148,14 @@ const thumb = (item) => {
   </script>
   <div class="side-top">
     <a class="side-wordmark" href="/">{profile.name}</a>
-    <span class="side-top-status"><span class="side-dot" aria-hidden="true"></span><span class="t-en">Open for 0→1</span><span class="t-jp" lang="ja">0→1 受付中</span></span>
     <button class="side-toggle" id="side-toggle" type="button" aria-expanded="false" aria-controls="side-panel">Menu</button>
+    <p class="side-top-status"><span class="side-dot" aria-hidden="true"></span><span class="t-en">Open to full-time · Staff/Principal Product Designer & AI roles</span><span class="t-jp" lang="ja">フルタイム募集中・Staff/Principal プロダクトデザイナー／AI 職</span></p>
   </div>
 
   <div class="side-panel" id="side-panel">
     <div class="side-controls">
       <div class="side-controls-left">
-        <a class="side-all" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
-          <span class="t-en">All work</span><span class="t-jp" lang="ja">すべての作品</span>
-        </a>
-        <button class="side-search-toggle" id="side-search-toggle" type="button" aria-label="Search" title="Search">
-          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="8" cy="8" r="6"/>
-            <path d="M13 13l5 5"/>
-          </svg>
-        </button>
+
       </div>
       <div class="side-ctl">
         <button class="side-theme" id="theme-switch" type="button" role="switch" aria-checked="false" aria-label="Dark mode"></button>
@@ -187,30 +187,10 @@ const thumb = (item) => {
         </div>
         <div class="side-avail">
           <dt class="vh"><span class="t-en">Status</span><span class="t-jp" lang="ja">ステータス</span></dt>
-          <dd><span class="side-dot" aria-hidden="true"></span><span class="side-avail-text"><span class="t-en">Available for 0→1 Advisory</span><span class="t-jp" lang="ja">0→1 アドバイザリー受付中</span></span></dd>
+          <dd><span class="side-dot" aria-hidden="true"></span><span class="side-avail-text"><span class="t-en">Open to full-time · Staff/Principal Product Designer & AI roles</span><span class="t-jp" lang="ja">フルタイム募集中・Staff/Principal プロダクトデザイナー／AI 職</span></span></dd>
         </div>
       </dl>
     </div>
-
-    {/* Site links (About · Work · Contact · Resume · LinkedIn): one compact
-        line under the wordmark on desktop; in the mobile menu (the same panel)
-        each link gets a 44px-tall hit area (shell.css .side-nav). The
-        wordmark above is the Home link. */}
-    <nav class="side-nav" aria-label="Site">
-      <a class="side-nav-link" href="/about" data-match="/about /about.html" aria-current={cur(samePage("/about", current))}>
-        <span class="t-en">About</span><span class="t-jp" lang="ja">について</span>
-      </a>
-      <a class="side-nav-link" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}>
-        <span class="t-en">Work</span><span class="t-jp" lang="ja">作品</span>
-      </a>
-      <a class="side-nav-link" href="/about#work-with-me">
-        <span class="t-en">Contact</span><span class="t-jp" lang="ja">相談</span>
-      </a>
-      <a class="side-nav-link" href="/takao-umehara-resume.pdf" target="_blank" rel="noopener">
-        <span class="t-en">Resume (PDF)</span><span class="t-jp" lang="ja">履歴書 (PDF)</span>
-      </a>
-      <a class="side-nav-link" href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-    </nav>
 
     {/* The whole card is the link to /about: the label is the one link (one
         tab stop, its name "About"), and its ::after stretches over the card
@@ -223,38 +203,80 @@ const thumb = (item) => {
       <p set:html={tb(profile.positioning[1])} />
     </section>
 
+    <div class="side-work-heading">
+      <a class="side-all" href="/work" data-match="/work /work.html" aria-current={cur(samePage("/work", current))}><span class="t-en">All Work</span><span class="t-jp" lang="ja">すべての作品</span></a>
+        <button class="side-search-toggle" id="side-search-toggle" type="button" aria-label="Search" title="Search">
+          <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="8" cy="8" r="6"/>
+            <path d="M13 13l5 5"/>
+          </svg>
+        </button>
+    </div>
     <nav class="side-work" aria-label="Work by category">
-      {groups.map(({ category, items }) => (
-        <details class="side-group" open>
-          <summary>
-            <span class="side-group-title" set:html={t(category.title)} />
-            <span class="side-count" set:html={odo(items.length)} />
-          </summary>
-          <ul>
-            {items.map(({ item, to, href, here }) => (
-              <li>
-                <a class="side-item" href={href}
-                   data-match={to?.external ? undefined : href}
-                   aria-current={cur(here)}
-                   target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>
-                  <span class="side-thumb" set:html={thumb(item)} />
-                  <span class="side-text">
-                    <span class="side-name" set:html={name(item)} />
-                    <span class="side-line" set:html={t(item.cardLine ?? item.summary)} />
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </details>
-      ))}
+      {groups.map(({ category, items, shouldOpen }, idx) => {
+        const slugs = items.map(({ item }) => item.slug).filter(Boolean);
+        return (
+          <div class="side-group" id={`side-group-${category.slug}`} data-cat={category.slug} data-cat-index={idx} data-slugs={slugs.join(",")}>
+            <button
+              class="side-group-header"
+              type="button"
+              aria-expanded={shouldOpen ? "true" : "false"}
+              aria-controls={`side-group-${category.slug}-items`}
+              data-cat={category.slug}
+              data-cat-index={idx}
+            >
+              <span class="side-group-number" aria-hidden="true">{String(idx + 1).padStart(2, "0")}</span>
+              <span class="side-group-title" set:html={t(category.title)} />
+              <span class="side-count" set:html={odo(items.length)} />
+            </button>
+            <ul id={`side-group-${category.slug}-items`} class="side-group-items">
+              {items.map(({ item, to, href, here }) => (
+                <li>
+                  <a class="side-item" href={href}
+                     data-match={to?.external ? undefined : href}
+                     data-cat={category.slug}
+                     data-slug={item.slug}
+                     aria-current={cur(here)}
+                     target={to?.external ? "_blank" : undefined} rel={to?.external ? "noopener" : undefined}>
+                    <span class="side-thumb" set:html={thumb(item)} />
+                    <span class="side-text">
+                      <span class="side-name" set:html={name(item)} />
+                      <span class="side-line" set:html={t(item.cardLine ?? item.summary)} />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
     </nav>
 
-    <p class="side-foot">
-      <span set:html={t(profile.location)} /> ·
-      <a href="/about#work-with-me"><span class="t-en">Contact</span><span class="t-jp" lang="ja">相談</span></a> ·
-      <a href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn</a> ·
-      <a href="/takao-umehara-resume.pdf" target="_blank" rel="noopener"><span class="t-en">Resume</span><span class="t-jp" lang="ja">履歴書</span></a>
-    </p>
+
   </div>
 </aside>
+{/* Phones (≤ 900px): the rail sits behind the Menu button, so the
+    categories are also listed here, under the top bar, without opening the
+    menu — one chip per category (name + count). A chip drives the same
+    exclusive accordion as the rail's rows (src/scripts/site.js): it opens
+    that category in the menu and highlights its cards on the page. Hidden on
+    wider screens, where the rail's own rows are the list. Not persisted: it is
+    re-rendered with each page and re-synced on astro:page-load. */}
+<nav class="side-cats-phone" aria-label="Categories">
+  <ul class="side-cats-phone-list">
+    {groups.map(({ category, items, shouldOpen }, idx) => (
+      <li>
+        <button
+          class="side-cat-chip"
+          type="button"
+          data-cat-index={idx}
+          aria-expanded={shouldOpen ? "true" : "false"}
+          aria-controls={`side-group-${category.slug}-items`}
+        >
+          <span class="side-cat-name" set:html={t(category.title)} />
+          <span class="side-cat-count">{items.length}</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+</nav>

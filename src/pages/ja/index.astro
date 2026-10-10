@@ -1,11 +1,9 @@
 ---
-// The Japanese edition of the home page: the same hero slideshow and news
-// bento as src/pages/index.astro — only lang and canonical differ. "All
-// work" lives at /work (both languages share it). Keep the two files in step.
+// The Japanese edition of the home page: the same right pane as
+// src/pages/index.astro (src/components/home/HomeMain.astro) — only lang and
+// canonical differ. "Work" lives at /work (both languages share it).
 import Site from "../../layouts/Site.astro";
-import HomeHero from "../../components/home/HomeHero.astro";
-import HomeNews from "../../components/home/HomeNews.astro";
-import { NEWS, SHOWCASE } from "../../data/news.mjs";
+import HomeMain from "../../components/home/HomeMain.astro";
 import { getLibrary, defaultLens } from "../../lib/site.mjs";
 
 const lib = getLibrary();
@@ -17,8 +15,5 @@ const lens = defaultLens();
   canonical="https://takaoumehara.com/ja"
   lang="ja"
 >
-  <main class="cat-page grid-home" data-category="home">
-    <HomeHero lib={lib} order={SHOWCASE} />
-    <HomeNews lib={lib} news={NEWS} />
-  </main>
+  <HomeMain lib={lib} />
 </Site>

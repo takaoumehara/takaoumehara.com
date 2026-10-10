@@ -1,0 +1,30 @@
+---
+// A short introduction; the full biography and portrait belong to About.
+interface Props { lib: any }
+const { lib } = Astro.props;
+---
+<section class="about-intro bento-cell" aria-labelledby="home-intro-name">
+  <div class="about-intro-copy">
+    <h1 id="home-intro-name">{lib.profile.name}</h1>
+    <p class="intro-role"><span class="t-en">Principal Product Designer &amp; AI Product Builder</span><span class="t-jp" lang="ja">プリンシパル・プロダクトデザイナー／AI プロダクトビルダー</span></p>
+    <p class="intro-line"><span class="t-en">I turn ambiguous ideas into brands, products, and experiences — across digital and physical worlds.</span><span class="t-jp" lang="ja">まだ曖昧なアイデアから、ブランド、プロダクト、体験を形にします。画面の中から、人が集まる実空間まで。</span></p>
+  </div>
+  <nav class="about-intro-actions" aria-label="More about Takao">
+    <a href="/about" class="intro-about"><span class="t-en">About →</span><span class="t-jp" lang="ja">詳しく →</span></a>
+    <a href={lib.profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>
+  </nav>
+</section>
+<style>
+.about-intro { padding: var(--cell-pad); display: flex; align-items: center; justify-content: space-between; gap: var(--sp-6); background: var(--pr-card); border-radius: var(--r); }
+.about-intro-copy { min-width: 0; }
+h1 { font-size: var(--text-display); line-height: var(--leading-display); margin: 0 0 var(--sp-1); }
+p { margin: 0; }
+.intro-role { font-size: var(--text-body); }
+.intro-line { margin-top: var(--sp-2); max-width: 65ch; color: var(--ink-dim); font-size: var(--text-body); line-height: 1.5; }
+.about-intro-actions { display: flex; flex-wrap: wrap; gap: var(--sp-3); flex-shrink: 0; }
+a { display: inline-flex; align-items: center; min-height: 44px; color: var(--ink-dim); text-decoration: none; }
+a:hover { color: var(--pr-blue); }
+.intro-about { color: var(--ink); }
+a:focus-visible { outline: 2px solid var(--pr-blue); outline-offset: 4px; border-radius: var(--r); }
+@media(max-width: 1100px) { .about-intro { align-items: flex-start; flex-direction: column; gap: var(--sp-2); } }
+</style>

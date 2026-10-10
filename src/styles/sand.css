@@ -1,0 +1,13 @@
+/* All public page surfaces use one motion treatment and shared JSON tokens. */
+.sand-positioned { position: relative; }
+.sand-layer { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 8; pointer-events: none; border-radius: inherit; }
+.sand-active > :not(.sand-layer) {
+  animation: sand-content var(--sand-reveal-duration) ease-out var(--sand-reveal-delay) both;
+}
+@keyframes sand-content { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .sand-layer { display: none; }
+  .sand-active > :not(.sand-layer) { animation: none; }
+}
+
+.sand-box-active { background-image: none !important; }

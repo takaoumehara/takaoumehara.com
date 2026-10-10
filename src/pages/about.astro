@@ -1,56 +1,11 @@
 ---
-// The About page: consolidates every page that used to be about the person —
-// about.html, publications.html, workshop.html, work-with-me.html and
-// contact.html (src/fragments/*, the pre-Astro static site) plus src/data/now.json,
-// src/data/profile.json, src/data/roles.json and the new src/data/about.mjs
-// (books, writing platforms, workshop formats, teaching) — into one page,
-// laid out as a bento: every section is one or more cells (.about-cell
-// .bento-cell), each carrying the site's one inner padding (--cell-pad) so
-// every piece of text lines up with the work grid and the detail page. Every
-// fact below is carried over unchanged from those sources (docs/superforge.md:
-// never invent numbers) — see scratchpad/NOTES-A.md for exact source paths
-// and the two discrepancies found (extra•ordinary's year, CIE LLC's founding
-// year) that were left unresolved rather than guessed.
-//
-// Sections: #intro (hero + stats + orgs), #now, #books, #writing,
-// #workshops (talks & workshops), teaching & mentoring, #experience,
-// #studio, #work-with-me. vercel.json redirects the old standalone addresses
-// (/now, /publications, /workshop, /work-with-me, /studio, /contact) to
-// these anchors — keep them.
-//
-// The rail: this page used to hide the left rail (body.about-page .side {
-// display: none }, right below). That local override is removed here per
-// the person's request ("About... show them here in the same bento-box
-// style" — i.e. inside the normal shell, rail included). src/styles/shell.css
-// (agent M's file) also collapses the shell to one column and hides .side
-// for body.about-page — that rule has to go too, or the rail stays hidden
-// regardless of this file. Flagged in this round's report.
-//
-// Title: profile.tagline (src/data/profile.json) is the site-wide title /
-// positioning source — this page reads it directly via t() instead of
-// duplicating it as a literal string, so it can't drift out of sync.
-// Round 4 (this round, Takao's live feedback): tagline replaced (was "Design
-// & AI Executive · 0→1 Product & Experience Builder · Interactive Media
-// Designer" — felt off) with "Creative Director · Interactive Media
-// Designer · 0→1 Product & Business Builder", sourced from roles.json (the
-// "Executive Creative Director" title at Creativity Is Everywhere LLC, per
-// src/fragments/about.html, plus "Creative Director" on the dnt/kitadoko
-// client projects; the own-venture roles — cie, intentfirst, breakbias —
-// back "0→1 Product & Business Builder"). Same replacement made in
-// src/lenses/default.json (title/hero.eyebrow/seo.title/seo.description) so
-// the home hero and About agree; tests/strategic-refinement.test.mjs:92
-// still asserts the OLD string against about.html and needs updating (not
-// mine to edit) — see scratchpad/NOTES-A2.md. Also this round: removed the
-// "40+ Verizon designers" stat (Takao: "means little"); regrouped "Selected
-// organizations" into ORG_GROUPS (src/data/about.mjs) by actual relationship
-// instead of one undifferentiated badge row; the #now cell's bullets and its
-// "Updated <month> <year>" label now read from src/data/now.json instead of
-// being hardcoded (see formatNowUpdated in about.mjs); Studio and Work with
-// me rewritten in plain language (see about.mjs / this file's cells for the
-// sourcing of each rewrite).
+// About owns the portrait, capabilities, career, ongoing work and contact.
+// Retain legacy anchors used by redirects in vercel.json. Facts are drawn from src/data.
 import Site from "../layouts/Site.astro";
 import { t, tb } from "../lib/html.mjs";
-import { getLibrary } from "../lib/site.mjs";
+import { getLibrary, destination } from "../lib/site.mjs";
+import ContactForm from "../components/ContactForm.astro";
+import NowList from "../components/now/NowList.astro";
 import {
   BOOKS,
   WRITING_PLATFORMS,
@@ -80,27 +35,19 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
       <section id="intro" class="about-cell bento-cell cell-hero">
         <div class="about-hero-grid">
           <div class="about-hero-copy">
-            <p class="about-role" set:html={t(profile.tagline)} />
+            <p class="about-role">Takao Umehara</p>
             <h1 class="about-h1">
               <span class="t-en">I do my best work before the answer is obvious.</span>
               <span class="t-jp" lang="ja">答えがまだ見えないうちに、いちばん良い仕事をする。</span>
             </h1>
             <p class="about-subtitle">
-              <span class="t-en">Creative Director &amp; 0→1 Builder — games, learning tools, AI products and interactive experiences, all from the same creative base.</span>
-              <span class="t-jp" lang="ja">クリエイティブディレクター・0→1 ビルダー。ゲームから学びの道具、AI プロダクト、インタラクティブ体験まで。土台はいつも創造性。</span>
+              <span class="t-en">Principal Product Designer &amp; AI Product Builder. A creative practice spanning brands, services, and digital and physical experiences.</span>
+              <span class="t-jp" lang="ja">プリンシパル・プロダクトデザイナー／AI プロダクトビルダー。ブランド、サービス、デジタルと実空間の体験を、ひとつの創造性からつくります。</span>
             </p>
 
             <p class="about-bio">
               <span class="t-en">Based between New York and Japan. Twenty-plus years across brand, product and interactive design — and I do my best work before anyone's agreed on what to build.</span>
               <span class="t-jp" lang="ja">ニューヨークと日本を拠点に。20 年以上、ブランド・プロダクト・インタラクティブと幅広く手がけてきました。何をつくるかがまだ決まっていない段階が、いちばん力を発揮できるところです。</span>
-            </p>
-            <p class="about-bio about-bio-2">
-              <span class="t-en">I love designing physical games — the kind people play together, in the same room. I like designing for how children learn, where play and learning become the same thing. And I like building AI products, interactive experiences, and the new services, products and businesses that didn't exist yesterday — figuring out what's worth making is half the fun.</span>
-              <span class="t-jp" lang="ja">みんなで同じ場所に集まって遊ぶ、フィジカルなゲームをつくるのが好きです。遊びと学びが分かれていない、子どもの学び方に合わせたものをつくるのも好きです。AI プロダクトやインタラクティブな体験、そして昨日までなかった新しいサービスや事業をつくることも。何をつくるべきかを考えること自体が、半分は楽しみです。</span>
-            </p>
-            <p class="about-bio about-bio-3">
-              <span class="t-en">All of it comes from the same place — creativity. I'm not a specialist in one craft; I'm someone who takes on a wide range of problems from that single base.</span>
-              <span class="t-jp" lang="ja">どれも根っこは同じ、創造性です。ひとつの専門を極める人ではなく、創造性という一つの土台から、幅広い課題に向き合うタイプです。</span>
             </p>
           </div>
           <figure class="about-portrait">
@@ -109,223 +56,15 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
         </div>
       </section>
 
-      <!-- Stats -->
-      <section class="about-cell bento-cell cell-stats">
-        <div class="about-stats">
-          <div class="stat-item">
-            <div class="stat-value">20+</div>
-            <div class="stat-label">
-              <span class="t-en">Years</span>
-              <span class="t-jp" lang="ja">年</span>
-            </div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">20</div>
-            <div class="stat-label">
-              <span class="t-en">SOSV founders mentored</span>
-              <span class="t-jp" lang="ja">SOSV — メンタリングした創業者</span>
-            </div>
-          </div>
-          <div class="stat-item">
-            <div class="stat-value">11K+</div>
-            <div class="stat-label">
-              <span class="t-en">extra•ordinary book copies sold</span>
-              <span class="t-jp" lang="ja">extra•ordinary — 販売部数</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Selected organizations — grouped by relationship (Takao: "unclear
-           what 'selected' means" — see src/data/about.mjs ORG_GROUPS for the
-           source of each grouping and each org). -->
-      <section class="about-cell bento-cell cell-orgs">
-        <h2 class="about-h2">
-          <span class="t-en">Organizations</span>
-          <span class="t-jp" lang="ja">協働した企業・機関</span>
-        </h2>
-        <div class="org-group-list">
-          {ORG_GROUPS.map((group) => (
-            <div class="org-group">
-              <h3 class="org-group-label" set:html={t(group.label)} />
-              <p class="org-group-note" set:html={t(group.note)} />
-              <div class="org-badges">
-                {group.orgs.map((org) => <span class="org-badge">{org}</span>)}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <!-- Now — bullets and the updated-date label both come from
-           src/data/now.json (summary[], updatedAt), so this cell can't drift
-           out of sync with /now. formatNowUpdated() (src/data/about.mjs)
-           turns "2026-09" into "September 2026" / "2026年9月". -->
-      <section id="now" class="about-cell bento-cell cell-now">
-        <div class="about-cell-head">
-          <h2 class="about-h2">
-            <span class="t-en">Now</span>
-            <span class="t-jp" lang="ja">いま</span>
-          </h2>
-          <p class="about-updated">
-            <span class="t-en">Updated {nowUpdated.en}</span>
-            <span class="t-jp" lang="ja">{nowUpdated.jp}更新</span>
-          </p>
-        </div>
-        <ul class="about-list">
-          {nowData.summary.map((item) => (
-            <li>
-              <span class="t-en" set:html={item.en} />
-              <span class="t-jp" lang="ja" set:html={item.jp} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <!-- Books -->
-      <section id="books" class="about-cell bento-cell cell-books">
-        <h2 class="about-h2">
-          <span class="t-en">Books</span>
-          <span class="t-jp" lang="ja">著書</span>
-        </h2>
-        {BOOKS.map((book) => (
-          <div class="book-card">
-            <a href={book.links.caseStudy} class="book-cover">
-              <img src={book.cover} alt={`${book.title.en} — book cover`} loading="lazy" />
-            </a>
-            <div class="book-info">
-              <h3 class="book-title">
-                <span class="t-en">{book.title.en}</span>
-                <span class="t-jp" lang="ja">{book.title.jp}</span>
-              </h3>
-              <p class="book-subtitle" set:html={t(book.subtitle)} />
-              <p class="book-summary" set:html={tb(book.summary)} />
-              <dl class="book-meta">
-                <div class="book-meta-item"><dt><span class="t-en">Year</span><span class="t-jp" lang="ja">刊行年</span></dt><dd>{book.year}</dd></div>
-                <div class="book-meta-item"><dt><span class="t-en">Publisher</span><span class="t-jp" lang="ja">出版社</span></dt><dd>{book.publisher}</dd></div>
-                <div class="book-meta-item"><dt><span class="t-en">Role</span><span class="t-jp" lang="ja">役割</span></dt><dd set:html={t(book.role)} /></div>
-                <div class="book-meta-item"><dt><span class="t-en">Co-author</span><span class="t-jp" lang="ja">共著</span></dt><dd>{book.coAuthor}</dd></div>
-                <div class="book-meta-item"><dt><span class="t-en">Copies sold</span><span class="t-jp" lang="ja">販売部数</span></dt><dd>{book.copies}</dd></div>
-                <div class="book-meta-item"><dt><span class="t-en">Feature</span><span class="t-jp" lang="ja">掲載</span></dt><dd set:html={t(book.feature)} /></div>
-              </dl>
-              <div class="book-actions">
-                <a href={book.links.caseStudy} class="about-link">
-                  <span class="t-en">View case study →</span>
-                  <span class="t-jp" lang="ja">ケーススタディを見る →</span>
-                </a>
-                <a href={book.links.buy} target="_blank" rel="noopener" class="about-link">
-                  <span class="t-en">Buy on Amazon ↗</span>
-                  <span class="t-jp" lang="ja">Amazon で見る ↗</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        ))}
-      </section>
-
-      <!-- Writing -->
-      <section id="writing" class="about-cell bento-cell cell-writing">
-        <h2 class="about-h2">
-          <span class="t-en">Writing</span>
-          <span class="t-jp" lang="ja">文章</span>
-        </h2>
-        <div class="writing-cards">
-          {WRITING_PLATFORMS.map((platform) => (
-            <div class="writing-card">
-              <div class="writing-card-head">
-                <h3 class="writing-title">{platform.name}</h3>
-                <span class="writing-kind" set:html={t(platform.kind)} />
-              </div>
-              <p class="writing-excerpt" set:html={tb(platform.blurb)} />
-              <ul class="writing-article-list">
-                {platform.articles.map((article) => (
-                  <li>
-                    <a href={article.url ?? platform.url} target="_blank" rel="noopener" set:html={t(article.title)} />
-                  </li>
-                ))}
-              </ul>
-              <a href={platform.url} target="_blank" rel="noopener" class="writing-link">
-                <span class="t-en">More on {platform.host} →</span>
-                <span class="t-jp" lang="ja">{platform.host} で読む →</span>
-              </a>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <!-- Talks & Workshops -->
-      <section id="workshops" class="about-cell bento-cell cell-workshops">
-        <h2 class="about-h2">
-          <span class="t-en">Talks &amp; Workshops</span>
-          <span class="t-jp" lang="ja">講演・ワークショップ</span>
-        </h2>
-        <p class="about-text">
-          <span class="t-en">Short intensives on interactive craft + AI build environments (not prompt theater), built on <strong>Break Bias</strong> — 8 systematic transformation tools developed over 15 years.</span>
-          <span class="t-jp" lang="ja">インタラクティブの手仕事と、AI 前提のビルド環境についての短期集中（プロンプト劇ではない）。15 年以上かけて体系化した <strong>Break Bias</strong> の 8 つの思考ツールが土台。</span>
-        </p>
-        <ul class="about-list about-list--tight">
-          <li><span class="t-en">For new ventures</span><span class="t-jp" lang="ja">新規事業・0→1</span></li>
-          <li><span class="t-en">For product &amp; innovation teams</span><span class="t-jp" lang="ja">プロダクト・イノベーションチーム</span></li>
-          <li><span class="t-en">For creative challenges</span><span class="t-jp" lang="ja">クリエイティブ課題解決</span></li>
-          <li><span class="t-en">For leadership teams</span><span class="t-jp" lang="ja">経営・リーダーシップ層</span></li>
-        </ul>
-        <p class="about-subhead">
-          <span class="t-en">The 8 BreakBias tools</span>
-          <span class="t-jp" lang="ja">BreakBias — 8 つの思考ツール</span>
-        </p>
-        <div class="tool-badges">
-          {BREAKBIAS_TOOLS.map((tool) => <span class="tool-badge">{tool}</span>)}
-        </div>
-        <p class="about-subhead">
-          <span class="t-en">Formats</span>
-          <span class="t-jp" lang="ja">実施形式</span>
-        </p>
-        <ul class="format-list">
-          {WORKSHOP_FORMATS.map((f) => (
-            <li>
-              <span class="format-time" set:html={t(f.time)} />
-              <strong class="format-name" set:html={t(f.name)} />
-              <span class="format-desc" set:html={tb(f.desc)} />
-            </li>
-          ))}
-        </ul>
-        <p class="about-subhead">
-          <span class="t-en">Delivered at</span>
-          <span class="t-jp" lang="ja">実績</span>
-        </p>
-        <div class="org-badges org-badges--tight">
-          {WORKSHOP_CLIENTS.map((c) => <span class="org-badge">{c}</span>)}
-        </div>
-        <p class="about-cta">
-          <a href="#work-with-me" class="about-link">
-            <span class="t-en">Ask about a workshop →</span>
-            <span class="t-jp" lang="ja">ワークショップについて問い合わせる →</span>
-          </a>
-        </p>
-      </section>
-
-      <!-- Teaching & Mentoring -->
-      <section id="teaching" class="about-cell bento-cell cell-teaching">
-        <h2 class="about-h2">
-          <span class="t-en">Teaching &amp; mentoring</span>
-          <span class="t-jp" lang="ja">教えること、学ぶこと</span>
-        </h2>
-        <ul class="teaching-list">
-          {TEACHING.map((item) => (
-            <li class="teaching-item">
-              <span class="teaching-tag" set:html={t(item.tag)} />
-              <p class="teaching-title">
-                <span set:html={t(item.title)} />
-                {item.period && <span class="teaching-period"> ({item.period})</span>}
-              </p>
-              <p class="teaching-desc" set:html={tb(item.desc)} />
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <!-- Experience: the career timeline, from the old about.html -->
-      <section id="experience" class="about-cell bento-cell cell-experience">
+<section id="capabilities" class="about-cell bento-cell cell-capabilities">
+<h2 class="about-h2"><span class="t-en">What I bring</span><span class="t-jp" lang="ja">仕事で生かせる強み</span></h2>
+<div class="capability-grid">
+<article><h3><span class="t-en">From ambiguity to a direction</span><span class="t-jp" lang="ja">曖昧な構想から、進む方向をつくる</span></h3><p class="about-text"><span class="t-en">Innovation and experience strategy: frame the opportunity, connect customer needs with business intent, and make ideas tangible enough to test.</span><span class="t-jp" lang="ja">顧客の必要と事業の意図をつなぎ、何をつくる価値があるかを考える。構想を、確かめられる形まで具体化します。</span></p><a class="about-link" href={destination(lib.evidence.get("verizon-ai-workflow"))?.url}>Verizon AI Workflow →</a></article>
+<article><h3><span class="t-en">A brand people can experience</span><span class="t-jp" lang="ja">人が体験できるブランドをつくる</span></h3><p class="about-text"><span class="t-en">Brand strategy, identity, and storytelling, carried through the touchpoints where people meet a business — from a website to a real-world encounter.</span><span class="t-jp" lang="ja">ブランドの戦略、アイデンティティ、伝え方を、ウェブサイトや実際の接点まで一貫した体験にします。</span></p><a class="about-link" href={destination(lib.evidence.get("konosaki"))?.url}>Konosaki →</a></article>
+<article><h3><span class="t-en">Across screens and shared spaces</span><span class="t-jp" lang="ja">画面と、人が集まる空間をつなぐ</span></h3><p class="about-text"><span class="t-en">Service and interaction design across digital and physical worlds: how people move, participate, learn, and play together.</span><span class="t-jp" lang="ja">デジタルと実空間をまたぐサービスと体験の設計。人の動き、参加、学び、遊びを一緒に考えます。</span></p><a class="about-link" href={destination(lib.evidence.get("rakugaki-jam"))?.url}>Rakugaki Jam →</a></article>
+<article><h3><span class="t-en">Make it work, then help it grow</span><span class="t-jp" lang="ja">動くものをつくり、チームと育てる</span></h3><p class="about-text"><span class="t-en">AI prototypes and 0→1 product building, paired with design leadership, facilitation, and mentoring that help teams make decisions.</span><span class="t-jp" lang="ja">AI の試作と 0→1 のプロダクト開発。デザインの実践に、チームの意思決定を支える進行やメンタリングを組み合わせます。</span></p><a class="about-link" href={destination(lib.evidence.get("intentfirst"))?.url}>Intent First →</a></article>
+</div></section>
+<section id="experience" class="about-cell bento-cell cell-experience">
         <h2 class="about-h2">
           <span class="t-en">Experience</span>
           <span class="t-jp" lang="ja">経歴</span>
@@ -413,12 +152,187 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
           </li>
         </ul>
       </section>
-
-      <!-- Studio — profile.studio (src/data/profile.json) for name/url; the
-           2020 founding date matches the Experience cell above, sourced from
-           src/fragments/about.html (see scratchpad/NOTES-A2.md for the
-           unresolved 2006 vs. 2020 discrepancy carried over from last round). -->
-      <section id="studio" class="about-cell bento-cell cell-studio">
+<section class="about-cell bento-cell cell-stats">
+        <div class="about-stats">
+          <div class="stat-item">
+            <div class="stat-value">20+</div>
+            <div class="stat-label">
+              <span class="t-en">Years</span>
+              <span class="t-jp" lang="ja">年</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">20</div>
+            <div class="stat-label">
+              <span class="t-en">SOSV founders mentored</span>
+              <span class="t-jp" lang="ja">SOSV — メンタリングした創業者</span>
+            </div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">11K+</div>
+            <div class="stat-label">
+              <span class="t-en">extra•ordinary book copies sold</span>
+              <span class="t-jp" lang="ja">extra•ordinary — 販売部数</span>
+            </div>
+          </div>
+        </div>
+      </section>
+<section class="about-cell bento-cell cell-orgs">
+        <h2 class="about-h2">
+          <span class="t-en">Teams I’ve worked with</span>
+          <span class="t-jp" lang="ja">協働した企業・機関</span>
+        </h2>
+        <p class="about-text"><span class="t-en">Across product and brand projects, teaching, mentoring, and workshops.</span><span class="t-jp" lang="ja">プロダクトやブランドの制作、教育、メンタリング、ワークショップを通じて関わった企業・チーム。</span></p>
+        <div class="org-badges">{[...new Set(ORG_GROUPS.flatMap(group => group.orgs.map(org => org.replace(/ \(.*$/, ""))))].map(org => <span class="org-badge">{org}</span>)}</div>
+      </section>
+<section id="now" class="about-cell bento-cell cell-now">
+        <div class="about-cell-head">
+          <h2 class="about-h2">
+            <span class="t-en">Now</span>
+            <span class="t-jp" lang="ja">いま</span>
+          </h2>
+          <p class="about-updated">
+            <span class="t-en">Updated {nowUpdated.en}</span>
+            <span class="t-jp" lang="ja">{nowUpdated.jp}更新</span>
+          </p>
+        </div>
+        <NowList lib={lib} />
+      </section>
+<section id="books" class="about-cell bento-cell cell-books">
+        <h2 class="about-h2">
+          <span class="t-en">Books</span>
+          <span class="t-jp" lang="ja">著書</span>
+        </h2>
+        {BOOKS.map((book) => (
+          <div class="book-card">
+            <a href={book.links.caseStudy} class="book-cover">
+              <img src={book.cover} alt={`${book.title.en} — book cover`} loading="lazy" />
+            </a>
+            <div class="book-info">
+              <h3 class="book-title">
+                <span class="t-en">{book.title.en}</span>
+                <span class="t-jp" lang="ja">{book.title.jp}</span>
+              </h3>
+              <p class="book-subtitle" set:html={t(book.subtitle)} />
+              <p class="book-summary" set:html={tb(book.summary)} />
+              <dl class="book-meta">
+                <div class="book-meta-item"><dt><span class="t-en">Year</span><span class="t-jp" lang="ja">刊行年</span></dt><dd>{book.year}</dd></div>
+                <div class="book-meta-item"><dt><span class="t-en">Publisher</span><span class="t-jp" lang="ja">出版社</span></dt><dd>{book.publisher}</dd></div>
+                <div class="book-meta-item"><dt><span class="t-en">Role</span><span class="t-jp" lang="ja">役割</span></dt><dd set:html={t(book.role)} /></div>
+                <div class="book-meta-item"><dt><span class="t-en">Co-author</span><span class="t-jp" lang="ja">共著</span></dt><dd>{book.coAuthor}</dd></div>
+                <div class="book-meta-item"><dt><span class="t-en">Copies sold</span><span class="t-jp" lang="ja">販売部数</span></dt><dd>{book.copies}</dd></div>
+                <div class="book-meta-item"><dt><span class="t-en">Feature</span><span class="t-jp" lang="ja">掲載</span></dt><dd set:html={t(book.feature)} /></div>
+              </dl>
+              <div class="book-actions">
+                <a href={book.links.caseStudy} class="about-link">
+                  <span class="t-en">View case study →</span>
+                  <span class="t-jp" lang="ja">ケーススタディを見る →</span>
+                </a>
+                <a href={book.links.buy} target="_blank" rel="noopener" class="about-link">
+                  <span class="t-en">Buy on Amazon ↗</span>
+                  <span class="t-jp" lang="ja">Amazon で見る ↗</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </section>
+<section id="writing" class="about-cell bento-cell cell-writing">
+        <h2 class="about-h2">
+          <span class="t-en">Writing</span>
+          <span class="t-jp" lang="ja">文章</span>
+        </h2>
+        <div class="writing-cards">
+          {WRITING_PLATFORMS.map((platform) => (
+            <div class="writing-card">
+              <div class="writing-card-head">
+                <h3 class="writing-title">{platform.name}</h3>
+                <span class="writing-kind" set:html={t(platform.kind)} />
+              </div>
+              <p class="writing-excerpt" set:html={tb(platform.blurb)} />
+              <ul class="writing-article-list">
+                {platform.articles.map((article) => (
+                  <li>
+                    <a href={article.url ?? platform.url} target="_blank" rel="noopener" set:html={t(article.title)} />
+                  </li>
+                ))}
+              </ul>
+              <a href={platform.url} target="_blank" rel="noopener" class="writing-link">
+                <span class="t-en">More on {platform.host} →</span>
+                <span class="t-jp" lang="ja">{platform.host} で読む →</span>
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+<section id="workshops" class="about-cell bento-cell cell-workshops">
+        <h2 class="about-h2">
+          <span class="t-en">Talks &amp; Workshops</span>
+          <span class="t-jp" lang="ja">講演・ワークショップ</span>
+        </h2>
+        <p class="about-text">
+          <span class="t-en">Short intensives on interactive craft + AI build environments (not prompt theater), built on <strong>Break Bias</strong> — 8 systematic transformation tools developed over 15 years.</span>
+          <span class="t-jp" lang="ja">インタラクティブの手仕事と、AI 前提のビルド環境についての短期集中（プロンプト劇ではない）。15 年以上かけて体系化した <strong>Break Bias</strong> の 8 つの思考ツールが土台。</span>
+        </p>
+        <ul class="about-list about-list--tight">
+          <li><span class="t-en">For new ventures</span><span class="t-jp" lang="ja">新規事業・0→1</span></li>
+          <li><span class="t-en">For product &amp; innovation teams</span><span class="t-jp" lang="ja">プロダクト・イノベーションチーム</span></li>
+          <li><span class="t-en">For creative challenges</span><span class="t-jp" lang="ja">クリエイティブ課題解決</span></li>
+          <li><span class="t-en">For leadership teams</span><span class="t-jp" lang="ja">経営・リーダーシップ層</span></li>
+        </ul>
+        <p class="about-subhead">
+          <span class="t-en">The 8 BreakBias tools</span>
+          <span class="t-jp" lang="ja">BreakBias — 8 つの思考ツール</span>
+        </p>
+        <div class="tool-badges">
+          {BREAKBIAS_TOOLS.map((tool) => <span class="tool-badge">{tool}</span>)}
+        </div>
+        <p class="about-subhead">
+          <span class="t-en">Formats</span>
+          <span class="t-jp" lang="ja">実施形式</span>
+        </p>
+        <ul class="format-list">
+          {WORKSHOP_FORMATS.map((f) => (
+            <li>
+              <span class="format-time" set:html={t(f.time)} />
+              <strong class="format-name" set:html={t(f.name)} />
+              <span class="format-desc" set:html={tb(f.desc)} />
+            </li>
+          ))}
+        </ul>
+        <p class="about-subhead">
+          <span class="t-en">Delivered at</span>
+          <span class="t-jp" lang="ja">実績</span>
+        </p>
+        <div class="org-badges org-badges--tight">
+          {WORKSHOP_CLIENTS.map((c) => <span class="org-badge">{c}</span>)}
+        </div>
+        <p class="about-cta">
+          <a href="#work-with-me" class="about-link">
+            <span class="t-en">Ask about a workshop →</span>
+            <span class="t-jp" lang="ja">ワークショップについて問い合わせる →</span>
+          </a>
+        </p>
+      </section>
+<section id="teaching" class="about-cell bento-cell cell-teaching">
+        <h2 class="about-h2">
+          <span class="t-en">Teaching &amp; mentoring</span>
+          <span class="t-jp" lang="ja">教えること、学ぶこと</span>
+        </h2>
+        <ul class="teaching-list">
+          {TEACHING.map((item) => (
+            <li class="teaching-item">
+              <span class="teaching-tag" set:html={t(item.tag)} />
+              <p class="teaching-title">
+                <span set:html={t(item.title)} />
+                {item.period && <span class="teaching-period"> ({item.period})</span>}
+              </p>
+              <p class="teaching-desc" set:html={tb(item.desc)} />
+            </li>
+          ))}
+        </ul>
+      </section>
+<section id="studio" class="about-cell bento-cell cell-studio">
         <h2 class="about-h2">
           <span class="t-en">Studio</span>
           <span class="t-jp" lang="ja">スタジオ</span>
@@ -435,16 +349,12 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
           </a>
         </p>
       </section>
-
-      <!-- Work with me — rewritten per Takao's own list of engagement types
-           and capabilities (this task's brief); no client names or numbers
-           invented, none used here. Board & advisory kept last and low-key,
-           as asked. -->
-      <section id="work-with-me" class="about-cell bento-cell cell-work-with-me">
+<section id="work-with-me" class="about-cell bento-cell cell-work-with-me">
         <h2 class="about-h2">
           <span class="t-en">Work with me</span>
           <span class="t-jp" lang="ja">仕事の相談</span>
         </h2>
+        <div class="work-with-me-grid"><div class="work-with-me-copy">
         <p class="about-text">
           <span class="t-en">I work alongside teams and founders — from a first idea through to the business built around it.</span>
           <span class="t-jp" lang="ja">新しい構想やプロダクト、事業を、一緒に伴走しながら形にします。</span>
@@ -463,30 +373,16 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
           <li><span class="t-en">Board &amp; advisory roles</span><span class="t-jp" lang="ja">社外取締役・アドバイザリーボード</span></li>
         </ul>
 
-        <p class="about-subhead">
-          <span class="t-en">What I help with</span>
-          <span class="t-jp" lang="ja">手伝えること</span>
-        </p>
-        <ul class="about-list about-list--tight">
-          <li><span class="t-en">Brand</span><span class="t-jp" lang="ja">ブランド</span></li>
-          <li><span class="t-en">Product design</span><span class="t-jp" lang="ja">プロダクトデザイン</span></li>
-          <li><span class="t-en">Product build</span><span class="t-jp" lang="ja">プロダクト開発（実装まで）</span></li>
-          <li><span class="t-en">New concepts, products, services &amp; businesses</span><span class="t-jp" lang="ja">新しい構想・プロダクト・サービス・事業づくり</span></li>
-          <li><span class="t-en">Design for business strategy &amp; decisions</span><span class="t-jp" lang="ja">経営判断とデザイン（事業戦略の一部として）</span></li>
-        </ul>
+        </div><div class="work-with-me-message">
+        <ContactForm />
+        <a class="about-link" href={profile.contact.linkedin} target="_blank" rel="noopener">LinkedIn ↗</a>
 
-        <p class="about-contact">
-          <span class="t-en">Reach: </span>
-          <span class="t-jp" lang="ja">連絡先: </span>
-          <a href="mailto:takaoumehara@gmail.com" class="about-email">takaoumehara@gmail.com</a> ·
-          <a href="/takao-umehara-resume.pdf" target="_blank" rel="noopener"><span class="t-en">Resume (PDF)</span><span class="t-jp" lang="ja">履歴書 (PDF)</span></a>
-        </p>
-      </section>
-
+              </div></div>
+</section>
       <!-- Footer links -->
       <section class="about-cell bento-cell cell-footer">
         <a href="/" class="about-footer-link">← <span class="t-en">Home</span><span class="t-jp" lang="ja">ホーム</span></a>
-        <a href="/work" class="about-footer-link"><span class="t-en">All Work</span><span class="t-jp" lang="ja">すべての作品</span> →</a>
+        <a href="/work" class="about-footer-link"><span class="t-en">Work</span><span class="t-jp" lang="ja">作品</span> →</a>
       </section>
 
     </div>
@@ -522,7 +418,7 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
   .cell-books { grid-column: span 7; }
   .cell-workshops { grid-column: span 7; }
   .cell-teaching { grid-column: span 5; }
-  .cell-experience { grid-column: span 7; }
+  .cell-experience { grid-column: span 12; }
   .cell-studio { grid-column: span 5; }
 
   .cell-footer {
@@ -964,4 +860,14 @@ const nowUpdated = formatNowUpdated(nowData.updatedAt);
       gap: 16px;
     }
   }
+</style>
+
+<style>
+.work-with-me-grid { display: grid; grid-template-columns: 1fr 1.25fr; gap: var(--sp-6); align-items: start; }
+.work-with-me-message :global(.contact-form) { margin-top: 0; }
+@media(max-width: 1100px) { .work-with-me-grid { grid-template-columns: 1fr; } }
+.capability-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--sp-6); }
+.capability-grid h3 { font-size: var(--text-lg); margin: 0 0 var(--sp-2); }
+.capability-grid .about-link { display: inline-flex; align-items: center; min-height: 44px; }
+@media(max-width: 640px) { .capability-grid { grid-template-columns: 1fr; } }
 </style>

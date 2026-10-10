@@ -1,21 +1,15 @@
 ---
-// The home page, in the right-hand pane: the hero slideshow of the work
-// (HomeHero) and the news bento — basic info, then one article per
-// interactive release (HomeNews, data in src/data/news.mjs). "All work" — the
-// filter pills and the full work grid — has moved to its own fullscreen page,
-// /work (src/pages/work.astro); the left rail's "All work" link points there.
+// The home page. The right pane (About → Now → showcase → Updates) is
+// src/components/home/HomeMain.astro, shared with the Japanese edition
+// (src/pages/ja/index.astro). "Work" — the filter pills and the full work
+// grid — is /work (src/pages/work.astro).
 import Site from "../layouts/Site.astro";
-import HomeHero from "../components/home/HomeHero.astro";
-import HomeNews from "../components/home/HomeNews.astro";
-import { NEWS, SHOWCASE } from "../data/news.mjs";
+import HomeMain from "../components/home/HomeMain.astro";
 import { getLibrary, defaultLens } from "../lib/site.mjs";
 
 const lib = getLibrary();
 const lens = defaultLens();
 ---
 <Site title={lens.seo.title} description={lens.seo.description} canonical="https://takaoumehara.com/">
-  <main class="cat-page grid-home" data-category="home">
-    <HomeHero lib={lib} order={SHOWCASE} />
-    <HomeNews lib={lib} news={NEWS} />
-  </main>
+  <HomeMain lib={lib} />
 </Site>

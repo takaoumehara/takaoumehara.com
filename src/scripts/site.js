@@ -4,6 +4,7 @@
 // first load and after every navigation. No framework, no dependencies.
 import { navigate } from "astro:transitions/client";
 import * as motion from "./motion.js";
+import { initSand, stopSand } from "./sand.js";
 
 const html = document.documentElement;
 const store = {
@@ -65,6 +66,98 @@ function markCurrent(path = location.pathname) {
   });
 }
 let sidebarBound = false;
+// ── Categories: an exclusive accordion ──────────────────────────────────────
+// The rail's category rows (.side-group-header) and, on phones, the chip list
+// under the top bar (.side-cat-chip) are <button aria-expanded aria-controls>
+// for the same groups (data-cat-index). Opening one closes the others;
+// clicking the open one closes it. While a category is open, the cards on the
+// page that belong to it (#main, matched by slug) take the inverted
+// .is-category-active style. One delegated listener on document, bound once:
+// the rail is persisted across navigations and the chips are re-rendered, so
+// per-element listeners would double up or go missing. syncCategories() runs
+// on every page-load to carry the open state onto the new page's chips/cards.
+const catButtons = () => document.querySelectorAll(".side-group-header[data-cat-index], .side-cat-chip[data-cat-index]");
+function openCategoryIndex() {
+  return document.querySelector('#side .side-group-header[aria-expanded="true"]')?.dataset.catIndex ?? null;
+}
+// The category a visitor picked (by clicking a row or chip). Only a picked
+// category highlights cards; one opened automatically to reveal the current
+// project's row does not.
+let pickedCategory = null;
+const panelAnimations = new WeakMap();
+function setPanel(btn, open) {
+  const panel = document.getElementById(btn.getAttribute("aria-controls"));
+  if (!panel || !btn.classList.contains("side-group-header")) return;
+  panel.inert = !open;
+  if (btn.getAttribute("aria-expanded") === String(open)) return;
+  const height = panel.getBoundingClientRect().height;
+  panelAnimations.get(panel)?.cancel();
+  panel.style.display = "grid";
+  panel.style.overflow = "hidden";
+  const end = open ? panel.scrollHeight : 0;
+  const finish = () => {
+    panel.style.display = open ? "grid" : "none";
+    panel.style.removeProperty("overflow");
+    panel.style.removeProperty("height");
+    panelAnimations.delete(panel);
+  };
+  if (stillMotion()) return finish();
+  const animation = panel.animate([{ height: `${height}px`, opacity: open ? 0.6 : 1 }, { height: `${end}px`, opacity: open ? 1 : 0.6 }], {
+    duration: open ? motion.getConfig().interaction.accordionOpenMs : motion.getConfig().interaction.accordionCloseMs, easing: motion.EASINGS[motion.getConfig().interaction.accordionEasing] || motion.getConfig().interaction.accordionEasing, fill: "both",
+  });
+  panelAnimations.set(panel, animation);
+  animation.onfinish = () => { finish(); animation.cancel(); };
+}
+function setCategory(index, { pick = true } = {}) {
+  catButtons().forEach((btn) => {
+    const open = index !== null && btn.dataset.catIndex === String(index);
+    setPanel(btn, open);
+    btn.setAttribute("aria-expanded", String(open));
+  });
+  pickedCategory = pick ? index : null;
+  highlightCategory(pickedCategory);
+}
+function highlightCategory(index) {
+  const group = index === null ? null : document.querySelector(`#side .side-group[data-cat-index="${index}"]`);
+  const slugs = new Set((group?.dataset.slugs || "").split(",").filter(Boolean));
+  document.querySelectorAll("#main [data-slug], #main .grid-card[id]").forEach((card) => {
+    const slug = card.dataset.slug || card.id;
+    card.classList.toggle("is-category-active", slugs.has(slug));
+  });
+}
+function syncCategories() {
+  const open = openCategoryIndex();
+  setCategory(open, { pick: open !== null && open === pickedCategory });
+}
+let categoriesBound = false;
+function bindCategories() {
+  if (categoriesBound) return;
+  categoriesBound = true;
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest?.(".side-group-header[data-cat-index], .side-cat-chip[data-cat-index]");
+    if (!btn) return;
+    const index = btn.dataset.catIndex;
+    const wasOpen = btn.getAttribute("aria-expanded") === "true";
+    setCategory(wasOpen ? null : index);
+    // A phone chip also opens the menu on that category, so its works are
+    // listed right away (the rail is otherwise behind Menu).
+    if (!wasOpen && btn.classList.contains("side-cat-chip")) openPhoneMenuAt(index);
+  });
+}
+function openPhoneMenuAt(index) {
+  const side = document.getElementById("side");
+  const toggle = document.getElementById("side-toggle");
+  const header = side?.querySelector(`.side-group-header[data-cat-index="${index}"]`);
+  if (!side || !header) return;
+  side.classList.add("is-open");
+  toggle?.setAttribute("aria-expanded", "true");
+  window.scrollTo({ top: 0, behavior: "auto" });
+  requestAnimationFrame(() => {
+    side.scrollTop += header.getBoundingClientRect().top - side.getBoundingClientRect().top - 8;
+    header.focus({ preventScroll: true });
+  });
+}
+
 function bindSidebar() {
   const side = document.getElementById("side");
   if (!side || sidebarBound) return;
@@ -77,6 +170,16 @@ function bindSidebar() {
       if (open) requestAnimationFrame(() => revealActiveRow({ force: true }));
     });
   }
+  // Close mobile menu when a link is clicked
+  side.addEventListener("click", (e) => {
+    const link = e.target.closest("a[href]");
+    if (link) {
+      side.classList.remove("is-open");
+      if (toggle) toggle.setAttribute("aria-expanded", "false");
+    }
+  });
+  bindCategories();
+
   // Search toggle
   const searchToggle = document.getElementById("side-search-toggle");
   const searchPanel = document.getElementById("side-search");
@@ -142,17 +245,28 @@ function watchRailScroll(side) {
   side.addEventListener("touchmove", user, { passive: true });
   side.addEventListener("scroll", () => { if (performance.now() > railProgUntil) user(); }, { passive: true });
 }
+// The current project's row, preferring the copy in the open category when a
+// piece is filed under two.
+function activeRow(side) {
+  return side.querySelector('.side-group-header[aria-expanded="true"] + .side-group-items .side-item[aria-current="page"]')
+    ?? side.querySelector('.side-item[aria-current="page"]')
+    ?? side.querySelector('.side-panel [data-match][aria-current="page"]');
+}
+// Arriving on a project always opens its category in the rail, whatever was
+// open before, even when the rail is not scrolled (or the phone's menu is shut).
+function openActiveCategory(side) {
+  const header = activeRow(side)?.closest(".side-group")?.querySelector(".side-group-header");
+  if (header && header.getAttribute("aria-expanded") !== "true") setCategory(header.dataset.catIndex, { pick: false });
+}
 function revealActiveRow({ smooth = false, force = false } = {}) {
   const side = document.getElementById("side");
   if (!side) return;
   watchRailScroll(side);
+  openActiveCategory(side);
   if (side.scrollHeight <= side.clientHeight + 1) return; // nothing to scroll (the phone's closed bar)
   if (!force && performance.now() - railUserAt < RAIL_HANDS_OFF_MS) return;
-  const row = side.querySelector('.side-item[aria-current="page"]') ?? side.querySelector('.side-panel [data-match][aria-current="page"]');
-  if (!row) return;
-  const group = row.closest("details");
-  if (group && !group.open) group.open = true; // a folded category opens to show where you are
-  if (!row.getClientRects().length) return; // filtered out by the rail's search
+  const row = activeRow(side);
+  if (!row || !row.getClientRects().length) return; // none, or filtered out by the rail's search
   const sr = side.getBoundingClientRect(), r = row.getBoundingClientRect();
   const top = Math.max(sr.top, 0) + 8, bottom = Math.min(sr.bottom, window.innerHeight) - 8;
   if (r.top >= top && r.bottom <= bottom) return;
@@ -382,6 +496,7 @@ document.addEventListener("astro:after-swap", () => {
   if (side) { railProgUntil = performance.now() + 120; side.scrollTop = sideScroll; }
   markCurrent();
   revealActiveRow({ smooth: motion.getConfig().rail.playOn !== "always" });
+  closePhoneMenu();
   motion.onAfterSwap(navDir);
   navDir = 0;
 });
@@ -407,7 +522,7 @@ function pulseStamp() {
 // MAG_RADIUS of the mouse the link drifts up to MAG_MAX px toward it, and
 // the card it sits in (.mag-field) lights a faint ring at the cursor.
 // One pointermove listener, one write per frame, mouse only.
-const MAG_HOOKS = ".project-play, .beat-link, .hn-links a, .hn-card a:not(.hn-link)";
+const MAG_HOOKS = ".project-play, .beat-link, .hn-card a:not(.hn-link)";
 const ARROW = /[→↗]\s*$/;
 const MAG_RADIUS = 56, MAG_MAX = 3;
 let magLinks = [];
@@ -516,11 +631,13 @@ function onPageLoad() {
   bindSidebar();
   markCurrent();
   closePhoneMenu();
+  syncCategories();
   bindCards();
   bindFeel();
   bindEcho();
   bindPreviews();
   bindReveal();
+  initSand();
   bindMagnetic();
   bindMagneticPointer();
   pulseStamp();
@@ -531,6 +648,7 @@ function onPageLoad() {
   });
 }
 document.addEventListener("astro:page-load", onPageLoad);
+document.addEventListener("astro:before-preparation", stopSand);
 motion.bindMotion();
 // The first paint: the current row into view (instantly, before the rail's
 // sequence measures it), then the rail's and the pane's loading sequence.
@@ -541,3 +659,18 @@ motion.intro();
 // A separate chunk (src/scripts/motion-lab.js + its CSS), never on a normal
 // visitor's critical path.
 if (motion.labActive()) import("./motion-lab.js").then((lab) => lab.openLab()).catch(() => {});
+
+// Identity placement is an experimental lab parameter; normal layout stays put.
+function applyIdentityPlacement() {
+  const side = document.getElementById("side");
+  const name = side?.querySelector(".side-panel .side-wordmark");
+  const head = side?.querySelector(".side-head");
+  const controls = side?.querySelector(".side-controls-left");
+  if (!name || !head || !controls) return;
+  const top = motion.getConfig().layout.namePosition === "top-left";
+  side.classList.toggle("side-identity-top", top);
+  if (top) controls.prepend(name); else head.prepend(name);
+}
+document.addEventListener("tu:motion-config", applyIdentityPlacement);
+document.addEventListener("astro:page-load", applyIdentityPlacement);
+applyIdentityPlacement();
