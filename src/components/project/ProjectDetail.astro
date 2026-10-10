@@ -55,7 +55,10 @@ const meta = [
     <div class={`project-teaser bento-cell${teaser.kind === "embed" ? " project-teaser--embed" : ""}`} data-vt-hero style={teaserStyle}>
       {teaser.kind === "embed" && (
         <iframe class="project-teaser-media project-teaser-frame" src={teaser.src} title={teaser.title}
-                loading="lazy" referrerpolicy="same-origin"></iframe>
+                loading={teaser.provider === "youtube" ? "eager" : "lazy"}
+                referrerpolicy={teaser.provider === "youtube" ? "strict-origin-when-cross-origin" : "same-origin"}
+                allow={teaser.provider === "youtube" ? "accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; web-share" : undefined}
+                allowfullscreen={teaser.provider === "youtube"}></iframe>
       )}
       {teaser.kind === "video" && (
         <video class="project-teaser-media project-video" autoplay muted loop playsinline preload="metadata"

@@ -55,16 +55,24 @@ export function detailTeaser(item) {
 }
 
 /**
- * A live, same-origin prototype in the teaser box instead of a still:
+ * A live, same-origin prototype or a validated YouTube film in the teaser box:
  * `detail.teaser = { "embed": "/projects/x/demo.html", "title": "…",
- * "aspect": "16/9", "aspectSm": "9/16" }`. Only site-absolute paths are
- * embedded (no other origin, no scheme). `aspectSm` applies at phone width.
+ * "aspect": "16/9", "aspectSm": "9/16" }`. `embed` accepts only site-absolute
+ * paths (no other origin, no scheme). `aspectSm` applies at phone width.
+ * A film may instead set `youtube` to an 11-character video ID; its URL is
+ * constructed here on YouTube's fixed embed origin, always at 16:9.
  * The detail page opens on this; the home hero and the admin keep using the
  * still from detailTeaser(), because a slide never hosts a live page.
  */
 const ASPECT = /^\d+(?:\.\d+)?\s*\/\s*\d+(?:\.\d+)?$/;
 export function detailEmbed(item) {
   const d = item.detail?.teaser ?? {};
+  if (typeof d.youtube === "string" && /^[A-Za-z0-9_-]{11}$/.test(d.youtube)) {
+    const title = typeof d.title === "string" ? d.title : d.title?.en ?? `${detailName(item).en} film`;
+    return { kind: "embed", provider: "youtube",
+      src: `https://www.youtube-nocookie.com/embed/${d.youtube}?playsinline=1&rel=0`,
+      title, aspect: "16/9", aspectSm: "16/9" };
+  }
   if (typeof d.embed !== "string" || !/^\/(?!\/)[^\s"'<>]+$/.test(d.embed)) return null;
   const title = typeof d.title === "string" ? d.title : d.title?.en ?? `${detailName(item).en} prototype`;
   const aspect = ASPECT.test(d.aspect ?? "") ? d.aspect : "16/9";
