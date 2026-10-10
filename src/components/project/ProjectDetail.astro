@@ -440,6 +440,18 @@ const meta = [
   @media (max-width: 768px) {
     .project-cs { grid-template-columns: 1fr; }
     .project-beats :global(.beat-media) { grid-template-columns: repeat(var(--beat-cols-sm, 1), minmax(0, 1fr)); }
+    /* A tall image that spans two rows beside wide neighbours on desktop
+       (inline "grid-row: span 2; height: 0; min-height: 100%") has no
+       neighbour to size its rows once those neighbours take the full phone
+       width, and collapses to a sliver. On phones it gets its own row at 4:5. */
+    .project-beats :global(.beat-media img[style*="grid-row: span 2"]) {
+      grid-column: 1 / -1 !important;
+      grid-row: auto !important;
+      height: auto !important;
+      min-height: 0 !important;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+    }
     .project-beats :global(.beat-embed iframe) { aspect-ratio: var(--embed-aspect-sm, var(--embed-aspect, 16 / 9)); }
   }
 
