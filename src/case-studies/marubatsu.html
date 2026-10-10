@@ -1,4 +1,5 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Play, Challenge | Solution and Role / Year come from src/data/experiments/marubatsu.json. -->
+<!-- Body beats only (0–3). Teaser, name, one-liner, Play, Challenge | Solution and Role / Year come from src/data/experiments/marubatsu.json.
+     Sources: a721d7f (PR #29) sketches, phone shots, AI-opponent beat; e1c14c9 deletions; today's assessment E-interactive. Left out: the ferry/Manhattan story, the son's naming, the Turrtide footer credit and the extra deleted screenshots. -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">The rule came before the code</span>
@@ -8,6 +9,20 @@
     <span class="t-en">The rule — a 4×4 board, two marks a turn — was worked out with my son over hundreds of rounds on paper and in notes apps, before any code. The second mark is what the “2.0” means. The app’s job was only to carry that board everywhere.</span>
     <span class="t-jp is-block" lang="ja">4×4 の盤に 1 手 2 個置き。このルールは、コードを書く前に、息子と紙やメモアプリで何百局も指しながら決めた。「2.0」とは、この 2 個目のこと。アプリの仕事は、その盤をどこへでも持ち運べるようにすることだけだった。</span>
   </p>
+  <figure class="beat-media" style="--beat-cols: 4; --beat-cols-sm: 4;">
+    <img src="/assets/marubatsu/sketch-1.png" alt="Hand-drawn 4×4 board: purple circles and yellow crosses on a boxed grid" loading="lazy" width="300" height="427">
+    <img src="/assets/marubatsu/sketch-2.png" alt="Hand-drawn 4×4 board: a yellow line runs down a column of four yellow circles past purple crosses" loading="lazy" width="300" height="427">
+    <img src="/assets/marubatsu/sketch-3.png" alt="Hand-drawn 4×4 board: yellow circles in a line down the left edge, green crosses in the middle" loading="lazy" width="300" height="427">
+    <img src="/assets/marubatsu/sketch-4.png" alt="Hand-drawn 4×4 board: yellow circles and purple crosses scattered with no winning line yet" loading="lazy" width="300" height="427">
+    <img src="/assets/marubatsu/sketch-5.png" alt="Hand-drawn 4×4 board: a yellow diagonal line through four yellow circles, purple circles around it" loading="lazy" width="300" height="427">
+    <img src="/assets/marubatsu/sketch-6.png" alt="Hand-drawn 4×4 board: a yellow line across a row of four yellow circles above red crosses" loading="lazy" width="300" height="427">
+    <img src="/assets/marubatsu/sketch-7.png" alt="Hand-drawn 4×4 board: red circles and yellow circles crowded together, with lines through a row of each" loading="lazy" width="300" height="427">
+    <img src="/assets/marubatsu/sketch-8.png" alt="Hand-drawn 4×4 board: a nearly full grid of yellow and blue circles" loading="lazy" width="300" height="427">
+    <figcaption class="beat-caption">
+      <span class="t-en">Boards from the notes app, before any code: 4×4 grids drawn by finger, one colour per player, the winning four struck through.</span>
+      <span class="t-jp" lang="ja">コードを書く前、メモアプリに指で描いた盤。4×4 のマスに一人一色で書き込み、そろった 4 つに線を引いている。</span>
+    </figcaption>
+  </figure>
 </section>
 <section class="beat">
   <h2 class="beat-title">
@@ -23,6 +38,32 @@
     <figcaption class="beat-caption">
       <span class="t-en">The same online match on a laptop and a phone, room code EZ75M6.</span>
       <span class="t-jp" lang="ja">パソコンとスマホで同じオンライン対戦。ルームコードは EZ75M6。</span>
+    </figcaption>
+  </figure>
+  <figure class="beat-media" style="--beat-cols: 3; --beat-cols-sm: 3;">
+    <img src="/assets/marubatsu/mobile-join.png" alt="Marubatsu 2.0 on a phone: Online Match, step-by-step matchmaking, an invitation to join room N3HPRA, a name field and a Step 2: Join Match button" loading="lazy" width="564" height="951">
+    <img src="/assets/marubatsu/mobile-board.png" alt="The online board on a phone, room H4D2GH: a 4×4 grid with two crosses and two circles, and Reset Match and Delete Room below" loading="lazy" width="564" height="951">
+    <img src="/assets/marubatsu/mobile-win.png" alt="The same room at the end of a game: four circles along the bottom row struck through with a glowing line, with Next Game and Match History buttons" loading="lazy" width="564" height="951">
+    <figcaption class="beat-caption">
+      <span class="t-en">On a phone alone: joining a room from an invitation, a board two turns in, and a finished game with its winning row lit.</span>
+      <span class="t-jp" lang="ja">スマホだけで見ると。招待からルームに入り、2 手進んだ盤、そろった列が光って終わった対局。</span>
+    </figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">An opponent that never stalls</span>
+    <span class="t-jp is-block" lang="ja">止まらない対戦相手</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Playing alone, you face an AI at one of four levels, from Easy to Impossible. It asks Gemini first and hands over to a search on the device when Gemini is unavailable, so a match never waits on the network.</span>
+    <span class="t-jp is-block" lang="ja">一人のときは、Easy から Impossible まで 4 段階の AI と指す。AI はまず Gemini に聞き、使えないときは端末内の探索が代わりに指す。だから対局が通信待ちで止まることはない。</span>
+  </p>
+  <figure class="beat-media">
+    <img src="/assets/marubatsu/desktop-ai.png" alt="Marubatsu 2.0 in AI vs You mode at Impossible: circles win along a diagonal marked by a glowing line, the score reads cross 1, circle 4, and a column of finished boards lists winners, draws and times" loading="lazy" width="1787" height="1123">
+    <figcaption class="beat-caption">
+      <span class="t-en">AI vs You at Impossible, with each finished board kept beside the game.</span>
+      <span class="t-jp" lang="ja">Impossible の AI との対局。終わった盤は、ゲームの横に 1 枚ずつ残っていく。</span>
     </figcaption>
   </figure>
 </section>

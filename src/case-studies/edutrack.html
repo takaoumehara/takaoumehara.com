@@ -1,4 +1,7 @@
-<!-- Body beats only (0–3). Teaser, name, one-liner, Play, Challenge | Solution and Role / Year come from src/data/projects/edutrack.json. -->
+<!-- Body beats only. Teaser, name, one-liner, Play, Challenge | Solution and Role / Year come from src/data/projects/edutrack.json.
+     Screens: /assets/edutrack/screenshots/ (all seven were on the legacy page) and the Lesson Scheduler iPad files in
+     /assets/edutrack/claude-design/uploads/ (the design uploaded to ClaudeDesign; same files git e1c14c9 removed from assets/edutrack/).
+     Merged 2026-10 with PR #29 / today's assessment: added the unit-menu screenshot (00007), the first-run tour frame and a Plan/Do/Review + K-5 facts strip (both on record). Left out on purpose: the prototype's own "Why it works" and craft claims (not Takao's voice), the 105-minute block / Vitamin timings (from the generated prototype document, unconfirmed), legacy research-method lists (concept only, no research on record), the verify screenshots. -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">Lessons behave like physical index cards</span>
@@ -9,9 +12,24 @@
     <span class="t-jp is-block" lang="ja">すぐに使える基準対応済みのレッスンカードが棚に並び、その上に 1 年分のタイムラインがある。教師はカードを 1 枚取り、日に置く。フォームに入力する動作ではなく、紙の教案帳を並べ替える動作そのものだ。</span>
   </p>
   <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00001.png" alt="EduTrack lesson planning interface, a shelf of lesson cards above a year-long timeline" loading="lazy" width="1600" height="1000">
-    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00003.png" alt="EduTrack scheduling screen" loading="lazy" width="1600" height="1000">
+    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00001.png" alt="EduTrack Plan view: a shelf of brown lesson cards and green vitamin cards above a September timeline for the Character Study unit" loading="lazy" width="1580" height="1007">
+    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00002.png" alt="A lesson card opened on the shelf, listing materials, duration, description, the standard it covers and notes from other teachers" loading="lazy" width="1580" height="1007">
+    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00003.png" alt="A green vitamin card opened over the timeline, showing its materials, a ten-minute duration and a teacher note" loading="lazy" width="1580" height="1007">
+    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00006.png" alt="Calendar view of the marking period: month tabs across the top and three weeks of placed lesson cards on unit bars" loading="lazy" width="1580" height="1007">
+    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00007.png" alt="The calendar menu open over the timeline, listing the year's units with how many lessons are planned in each" loading="lazy" width="1580" height="1007">
+    <img src="/assets/edutrack/claude-design/screenshots/onboarding.png" alt="First-run tour, step 1 of 5: a spotlight on the lesson shelf explaining that every unit comes loaded with ready-to-teach lessons" loading="lazy" width="924" height="540">
+    <figcaption class="beat-caption"><span class="t-en">Plan: the shelf, an opened lesson card, an opened vitamin card, the marking-period calendar, the unit menu, and the first-run tour of the shelf.</span><span class="t-jp is-block" lang="ja">Plan の画面。カードの棚、開いたレッスンカードとビタミンカード、学期のカレンダー、単元の一覧、そして棚を案内する最初のツアー。</span></figcaption>
   </figure>
+  <div class="beat-facts">
+    <div class="beat-fact">
+      <p class="beat-fact-num">3</p>
+      <p class="beat-fact-label"><span class="t-en">phases: Plan, Do, Review</span><span class="t-jp" lang="ja">段階は三つ。Plan、Do、Review</span></p>
+    </div>
+    <div class="beat-fact">
+      <p class="beat-fact-num">K–5</p>
+      <p class="beat-fact-label"><span class="t-en">the grades it is designed for</span><span class="t-jp" lang="ja">対象は小学校の K〜5 年生</span></p>
+    </div>
+  </div>
 </section>
 <section class="beat">
   <h2 class="beat-title">
@@ -23,8 +41,25 @@
     <span class="t-jp is-block" lang="ja">面は温かみのある紙、角は直角、影の付き方でカードが机からどれだけ浮いているかが分かる。無機質な edtech とは意図的に逆の見た目にした。日々の授業と基準の達成が、新しく覚えるシステムではなく、使い慣れた道具の延長として感じられるようにした。</span>
   </p>
   <figure class="beat-media" style="--beat-cols: 2;">
-    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00004.png" alt="EduTrack assignment view" loading="lazy" width="1600" height="1000">
-    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00006.png" alt="EduTrack semester overview" loading="lazy" width="1600" height="1000">
+    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00004.png" alt="EduTrack Do view: the day's run-of-show with a timed lesson, materials to prep, today's standard and conference-note chips for each student" loading="lazy" width="1580" height="1007">
+    <img src="/assets/edutrack/screenshots/EduTrack_Screenshots00005.png" alt="EduTrack Review view: a standards coverage table beside a lesson log where each taught lesson is marked went well or reteach" loading="lazy" width="1580" height="1007">
+    <figcaption class="beat-caption"><span class="t-en">Do: a daily run-of-show with agenda, materials and conference notes. Review: standards coverage rolls up from what was planned and taught.</span><span class="t-jp is-block" lang="ja">Do は、その日の進行・準備物・個別の記録。Review では、計画して教えた分から基準の達成状況が自動で積み上がる。</span></figcaption>
+  </figure>
+</section>
+<section class="beat">
+  <h2 class="beat-title">
+    <span class="t-en">The iPad screens it was rebuilt from</span>
+    <span class="t-jp is-block" lang="ja">元になった iPad の画面</span>
+  </h2>
+  <p class="beat-text">
+    <span class="t-en">Lesson Scheduler, the iPad design behind the prototype. The same parts are already there: a shelf of lesson and vitamin cards, start and due flags, and a timeline of units — here laid out for a math course.</span>
+    <span class="t-jp is-block" lang="ja">試作版の元になった iPad のデザイン「Lesson Scheduler」。レッスンとビタミンのカードの棚、開始と締切の旗、単元のタイムライン。部品はすでに揃っている。こちらは数学の単元で組んである。</span>
+  </p>
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/edutrack/claude-design/uploads/Lesson+Scheduler+app+-+ipad-1.png" alt="Lesson Scheduler on an iPad: a shelf of lesson and vitamin cards above a September timeline for Sequences and Equations" loading="lazy" width="2339" height="1662">
+    <img src="/assets/edutrack/claude-design/uploads/Lesson+Scheduler+app+-+ipad-2.png" alt="Lesson Scheduler on an iPad with Lesson A opened, showing fields for materials, duration, description and notes from others" loading="lazy" width="2339" height="1662">
+    <img src="/assets/edutrack/claude-design/uploads/Lesson+Scheduler+app+-+ipad-4.png" alt="Lesson Scheduler on an iPad with cards and start and due flags placed along the Equations unit" loading="lazy" width="2339" height="1662">
+    <img src="/assets/edutrack/claude-design/uploads/Lesson+Scheduler+app+-+ipad-5.png" alt="Lesson Scheduler calendar on an iPad: three rows of weeks with cards placed across math units from Sequences to Expressions" loading="lazy" width="2339" height="1662">
   </figure>
 </section>
 <section class="beat">

@@ -1,7 +1,6 @@
 <!-- Body beats only (0–3). Teaser, name, one-liner, Play, Challenge | Solution and Role / Year come from the evidence record (src/data/projects/amazon-firetv.json, "detail").
      Sources: the hand-built case study this replaced (preserved in src/case-studies/_legacy/amazon-firetv.html — input modes, voice phrases, snap-pair details, state mirroring, zero build tooling) and the prototype itself, which already ships at public/projects/amazon-firetv/ (demo.html, index.html, remote.html).
-     The teaser is the working simulator itself (public/projects/amazon-firetv/demo.html, embedded via detail.teaser.embed), so the
-     simulator-tv-and-phone.jpg capture that illustrated this beat was dropped as redundant (file kept on disk); orders.jpg is the prototype's own capture, restored from git e1c14c9^:assets/amazon-firetv/orders.jpg. -->
+     The teaser is the working simulator itself (public/projects/amazon-firetv/demo.html, embedded via detail.teaser.embed). simulator-tv-and-phone.jpg is back in beat 1 (the phone remote is not visible in the embed until paired; today's assessment, PR #29 a721d7f); orders.jpg is the prototype's own capture, restored from git e1c14c9^:assets/amazon-firetv/orders.jpg. hero.jpg (the record's assets.hero, the TV home with its pairing card) joins it in beat 2. Metric strip values are the three on the evidence record. Left out on purpose: the Cloudinary walkthrough video (external host, tool provenance unconfirmed), the full voice-command and key-map lists, cloud-TTS claims, and new screen captures (none exist). -->
 <section class="beat">
   <h2 class="beat-title">
     <span class="t-en">The TV is the stage, the phone is the input</span>
@@ -11,6 +10,18 @@
     <span class="t-en">Each input does the job it is best at. The D-pad browses rails of products from across the room. Voice carries intent: press V or the mic and say “show me chocolate protein”, “add this to my cart” or “checkout”, and a local intent parser routes the command. When you need to type, point precisely or talk privately, the phone is already paired: it becomes a D-pad, joystick, trackpad, search box and hold-to-talk mic. The TV layout is built for ten feet — oversized focus rings, a dark, high-contrast screen.</span>
     <span class="t-jp is-block" lang="ja">入力ごとに、得意な仕事だけを任せた。部屋の向こうから商品の列を眺めるのは D-pad。意図を伝えるのは声。V キーかマイクを押して「チョコ味のプロテインを見せて」「カートに入れて」「購入」と言う。すると端末の中の意図解析が、命令を振り分ける。文字を打つ、細かく指す、小声で話す。そのときスマホはもうつながっていて、D-pad、ジョイスティック、トラックパッド、検索欄、押して話すマイクになる。テレビ側の画面は 3 メートル先から見る前提で、大きなフォーカス枠とコントラストの強い暗い画面にした。</span>
   </p>
+  <figure class="beat-media">
+    <img src="/assets/amazon-firetv/simulator-tv-and-phone.jpg" alt="The simulator: the TV home screen on the left and, beside it, an iPhone showing the phone remote with Swipe anywhere to move and D-pad, Joystick and Trackpad tabs" loading="lazy" width="1456" height="819">
+    <figcaption class="beat-caption">
+      <span class="t-en">The TV and the paired phone remote, side by side in the simulator.</span>
+      <span class="t-jp" lang="ja">シミュレーターの中の、テレビと、つながったスマホのリモコン。</span>
+    </figcaption>
+  </figure>
+  <div class="beat-facts">
+    <div class="beat-fact"><p class="beat-fact-num">3</p><p class="beat-fact-label"><span class="t-en">input modes unified: D-pad, voice, phone remote</span><span class="t-jp" lang="ja">統合した入力方式（D-pad・声・スマホ）</span></p></div>
+    <div class="beat-fact"><p class="beat-fact-num">1</p><p class="beat-fact-label"><span class="t-en">scan to pair</span><span class="t-jp" lang="ja">つなぐための読み取り</span></p></div>
+    <div class="beat-fact"><p class="beat-fact-num">0</p><p class="beat-fact-label"><span class="t-en">build dependencies</span><span class="t-jp" lang="ja">ビルドの依存</span></p></div>
+  </div>
   <a class="beat-link" href="/projects/amazon-firetv/demo.html">
     <span class="t-en">Open the simulator full screen</span>
     <span class="t-jp" lang="ja">シミュレーターを全画面で開く</span>
@@ -25,11 +36,12 @@
     <span class="t-en">Pairing runs on snap-pair, my open-source pattern (now published as snap-pair-core): a QR code or a 6-character room code as the rendezvous, room membership checked on the server, a presence heartbeat, and automatic cleanup when someone leaves. The library has since grown to also support 6-digit PIN, experimental ultrasonic sound pairing, and transports beyond Firebase (PartyKit, WebRTC, BroadcastChannel). Once paired, the cart count, the current screen and the search context are mirrored to the phone in real time, so the remote always knows what the TV is showing. The whole prototype is plain HTML, CSS and JavaScript with Firebase and the Web Speech API — no bundler, no framework — so it runs from a folder or any static host.</span>
     <span class="t-jp is-block" lang="ja">接続には、自作して公開している snap-pair の型を使った。QR か 6 文字のルームコードを待ち合わせの目印にし、部屋への参加はサーバー側で確かめる。つながっているかを定期的に確認し、抜けた人は自動で片づける。つながった後は、カートの点数、いま出ている画面、検索の文脈がリアルタイムにスマホへ映る。だからリモコンは、テレビが何を見せているかを常に知っている。試作全体は素の HTML・CSS・JavaScript に Firebase と Web Speech API だけ。バンドラーもフレームワークもなく、フォルダーひとつ、どんな静的ホストでも動く。</span>
   </p>
-  <figure class="beat-media">
+  <figure class="beat-media" style="--beat-cols: 2;">
+    <img src="/assets/amazon-firetv/hero.jpg" alt="The TV home screen: a deal of the day, a Buy again rail, and a Use your phone as remote card with a QR code and a six-character room code; key hints for navigate, select, back, Alexa voice and phone remote run along the bottom" loading="lazy" width="1500" height="904">
     <img src="/assets/amazon-firetv/orders.jpg" alt="Your Orders and Buy Again screen on the TV, with each past order listed and a Buy it again button focused" loading="lazy" width="1500" height="904">
     <figcaption class="beat-caption">
-      <span class="t-en">Buy Again, laid out for the couch. A self-initiated concept prototype, not affiliated with Amazon; product data, orders and voice replies are simulated.</span>
-      <span class="t-jp" lang="ja">ソファから使う「もう一度買う」。自主制作のコンセプト試作で、Amazon とは関係がない。商品データ、注文、音声の応答は模擬。</span>
+      <span class="t-en">The home screen with its pairing card — scan the QR or type the room code — and Buy Again, laid out for the couch. A self-initiated concept prototype, not affiliated with Amazon; product data, orders and voice replies are simulated.</span>
+      <span class="t-jp" lang="ja">接続の案内が出たホーム画面（QR を読むか、ルームコードを打つ）と、ソファから使う「もう一度買う」。自主制作のコンセプト試作で、Amazon とは関係がない。商品データ、注文、音声の応答は模擬。</span>
     </figcaption>
   </figure>
 </section>
