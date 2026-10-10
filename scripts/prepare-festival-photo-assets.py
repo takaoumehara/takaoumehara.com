@@ -23,7 +23,11 @@ assert len(photos) == len(set(photos)) == 26, 'Expected exactly 26 distinct phot
 no_faces = {'yurayura-photo-1600', 'tsurimaster-fish', 'katanuki-play-1600', 'katanuki-1600'}
 selected = {}
 for stem in photos:
-    if stem not in no_faces:
+    corrected = OUT / (stem + '-corrected.png')
+    if corrected.exists():
+        # Reviewed corrections include fictional people or their own privacy pass.
+        image = corrected
+    elif stem not in no_faces:
         image = OUT / (stem + '-private.png')
         assert image.exists(), 'Identity replacement missing: ' + stem
     else:
